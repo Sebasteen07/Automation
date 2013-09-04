@@ -1,0 +1,4 @@
+TestObject.TestCaseId,TestObject.TestMethod,TestObject.TestTitle,TestObject.TestEnv,PracticeUrl.Practice,Patient.UserName,Patient.Password,Patient.SecAnswer,Patient.GmailUName,Patient.GmailPassword
+1,ForgotUserID,Forgot User Id on DEV3,DEV3,dev3-2prac-allsolutions,communitytest+dev3,Intuit123,a,community.test.ihg.dev3@gmail.com,Intuit123
+2,ForgotUserID,Forgot User Id on DEMO,DEMO,demo-2prac-allsolutions,communitytest+demo,Intuit123,a,community.test.ihg.demo@gmail.com,Intuit123
+3,ForgotUserID,Forgot User Id on PROD,PROD,ihg-community-2prac-test,communitytest+prod,Intuit123,a,community.test.ihg.prod@gmail.com,Intuit123
