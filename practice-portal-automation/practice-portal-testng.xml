@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "practice-portal-automation" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+
+<!--  	
+<test name = "PracticePortal-Automation" >
+	<classes>
+		<class name = "com.intuit.ihg.product.practice.test.PracticePortalAcceptanceTests" />
+	</classes>
+</test>
+
+ -->
+<test name = "PracticePortal-Automation" > 
+<classes>
+	<class name="com.intuit.ihg.product.practice.test.PracticePortalAcceptanceTests" />
+      <methods>
+          <include name="testClickOnTabs"/>
+          <include name="testCreateTreatmentPlan"/>
+          <include name="testPatientSearchLink"/>
+          <include name="testPracticePortal"/>
+          <include name="testQuickSendPatientPDF"/>
+          <include name="testUploadDoc"/>
+      </methods>   
+</classes>     
+</test>
+</suite>
