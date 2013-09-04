@@ -1,0 +1,10 @@
+TestObject.TestCaseId,TestObject.TestMethod,TestObject.TestTitle,TestObject.TestEnv,AppointmentRequest.ApptDate,AppointmentRequest.ApptTime,AppointmentRequest.Reason,Patient.UserName,Patient.Password,Patient.EmailId,Patient.GmailUName,Patient.GmailPassword,Practice.DocSearchString,Practice.LocationId,Practice.DocUName,Practice.DocPassword,errorMessage
+1,testMobileARPreferredDocOneLocation,Test Appointment with Preferred Doc OneLocation,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,Akram,,,,null
+2,testMobileARPreferredDocMultiLocation,Test Appointment with Preferred Doc Multi Location,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,20130201,40006,,,null
+3,testMobileARSelectDocOneLocation,Test Appointment with Selected Doc from list One Location,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,Einstein,,DrAlbert,intuit123,null
+4,testMobileARSelectDocMultiLocation,Test Appointment with Selected Doc from Multi Location,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,20130201,40006,,,null
+5,testMobileARSearchDocOneLocation,Test Appointment with Searched Doc One Location,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,Einstein,,,,null
+6,testMobileARSearchDocMultiLocation,Test Appointment with Searched Doc Multi Location,Prod,First Available Date,Morning,Test,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,20130201,40006,,,null
+7,testMobileARNegative,Test Appointment with reason missing,Prod,First Available Date,Morning,,prod001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,Akram,,,,Please enter the reason for your visit.
+8,testMobileARNegative,Test Appointment with reason missing,Dev3,First Available Date,Morning,,dev3001,intuit123,ihg4mobile+prod001@gmail.com,ihg4mobile@gmail.com,intuit123,Akram,,,,Please enter the reason for your visit.
+

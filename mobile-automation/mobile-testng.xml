@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "IHG-AUTOMATION-Suite" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+<parameter name="webdriver.chrome.driver" value = "C:\Users\vvalsan\chromedriver.exe"/>
+<test name = "Mobile-Automation" >
+   <!-- <parameter name="selenium.browser" value = "*firefox"/>
+    <parameter name="test.env" value = "Dev3"/>-->
+	<!--<classes>
+		<class name = "com.intuit.ihg.product.mobile.test.AppointmentRequestTestPlan" />
+      <methods>
+            <include name="testMobileARNegative"/>
+        </methods>
+	</classes>
+    <groups>
+        <include name="AcceptanceTests"/>
+    </groups> -->
+
+    <classes>
+		<class name = "com.intuit.ihg.product.mobile.test.AppointmentRequestTestPlan" />
+     <!-- <methods>
+            <include name="testMobileARSelectDocOneLocation"/>
+        </methods>-->
+	</classes>
+</test>
+
+
+<!--<test name = "Mobile-Automation 1" >
+
+	<classes>
+		<class name = "com.intuit.ihg.product.mobile.test.MobileSmokeTestPlan" />
+	</classes>
+</test>-->
+</suite>

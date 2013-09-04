@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "MOBILE-SMOKE-AUTOMATION-SUITE" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+<!--
+<parameter name="webdriver.chrome.driver" value = "C:\Users\vvalsan\chromedriver.exe"/>
+-->
+<test name = "Mobile-Smoke-Automation" >
+     <classes>
+		<class name = "com.intuit.ihg.product.mobile.test.MobileSmokeTestPlan" />
+<!--   <methods>
+        <include name="testCCDViewer"/>
+        <include name="testMobileLogin"/>
+        </methods>-->
+	</classes>
+</test>
+</suite>
