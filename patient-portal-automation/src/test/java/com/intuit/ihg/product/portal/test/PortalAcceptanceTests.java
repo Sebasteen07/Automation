@@ -1369,11 +1369,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		rxRenewalSearchPage.getRxRenewalDetails();
 
 		log("Set the RxRenewal Fields in Practice Portal");
-		String subject = rxRenewalSearchPage.setRxRenewalFields();
+		rxRenewalSearchPage.setRxRenewalFields();
 
 		log("Click On Process RxRenewal Button in Practice Portal");
 		rxRenewalSearchPage.clickProcessRxRenewal();
 
+		String subject = rxRenewalSearchPage.getSubject();
 		log("Verify Prescription Confirmation in Practice Portal");
 		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
 
