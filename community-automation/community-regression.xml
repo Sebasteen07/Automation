@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "community-automation" verbose = "2" >
+<suite name = "IHG-AUTOMATION-Suite" verbose = "2" >
 <listeners>
   <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
  	
-<test name="Community-Automation">
+	<test name="community-regression">
 		<classes>
-			<class name="com.intuit.ihg.product.community.test.ForgotUserIdTest" />
-			<class name="com.intuit.ihg.product.community.test.ForgotUserPasswordTest" />
-			<class name="com.intuit.ihg.product.community.test.MyAccountEmailAddressTest" />
-			<class name="com.intuit.ihg.product.community.test.MyAccountPasswordTest" />
-			<class name="com.intuit.ihg.product.community.test.MyAccountProfileTest" />
-			<class name="com.intuit.ihg.product.community.test.MyAccountSecurityQuestionTest" />
-            
+			<class name="com.intuit.ihg.product.community.test.CommunityRegressionTests" />
+			<methods>
+				<include name="testCommunityMyAccountProfile" />
+				<include name="testCommunityMyAccountSecurityQuestion()" />
+			</methods>
 		</classes>
+
 	</test>
 </suite>

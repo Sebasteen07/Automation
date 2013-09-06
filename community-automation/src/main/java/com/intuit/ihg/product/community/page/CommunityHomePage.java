@@ -16,6 +16,7 @@ import com.intuit.ihg.product.community.page.AskAQuestion.AskAQuestionQuestionTy
 import com.intuit.ihg.product.community.page.AskAQuestion.AskAQuestionSelectDoctor;
 import com.intuit.ihg.product.community.page.BillPay.BillPayChooseYourPractice;
 import com.intuit.ihg.product.community.page.MakeAppointmentRequest.AppointmentRequestSelectDoctorPage;
+import com.intuit.ihg.product.community.page.MyAccount.MyAccountMenuPage;
 import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalChoosePrescription;
 import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
@@ -173,5 +174,13 @@ public class CommunityHomePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		link_Renewal_Request.click();
 		return PageFactory.initElements(driver, RxRenewalChoosePrescription.class);
+	}
+	
+	// Clicks on My Account link in Home Page
+	public MyAccountMenuPage  clickMyAccount()
+			throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		btn_My_Account.click();
+		return PageFactory.initElements(driver, MyAccountMenuPage.class);
 	}
 }

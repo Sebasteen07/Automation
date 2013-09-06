@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.entities.Patient;
 import com.intuit.ihg.common.entities.TestObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.community.utils.GmailMessage;
 import com.intuit.ihg.product.community.utils.PracticeUrl;
 
@@ -127,5 +128,34 @@ public class MyAccountProfilePage extends BasePageObject {
 		
 		return successNotification.isDisplayed();
 	}
+	
 	 
+public void updateProfile(String streetaddress)throws Exception {
+		
+		IHGUtil.PrintMethodName();
+		streetAddress.click();
+		streetAddress.clear();
+		log ("Clearing  street address and the value is now :" +streetAddress.getAttribute("value"));
+		streetAddress.sendKeys(streetaddress);
+		log ("Entering Street adrress and saving the value :" +streetAddress.getAttribute("value"));
+		log("Clicking on Save button");
+		btnSaveChanges.click();
+		
 }
+	public boolean checkProfileSave(String randomstreet)throws Exception{
+		IHGUtil.PrintMethodName();
+		
+		IHGUtil.waitForElement(driver, 30,streetAddress );
+		log ("street address value now :" +streetAddress.getAttribute("value"));
+		if (streetAddress.getAttribute("value").contains(randomstreet)){
+			return true;
+		}
+			else
+				return false;
+			
+		}
+
+	
+	}
+	
+

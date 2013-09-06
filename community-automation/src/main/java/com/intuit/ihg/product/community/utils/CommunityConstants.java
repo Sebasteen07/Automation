@@ -18,6 +18,7 @@ public class CommunityConstants {
 	public final static String Dosage = "30";
 	
 	
-
+	//My Account Profile fields
+	public final static String MyAccountSecurityQuestion = "Who was your childhood hero?";
 
 }
