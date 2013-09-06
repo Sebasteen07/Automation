@@ -189,6 +189,8 @@ public class MessageSync extends BaseTestNGWebDriver {
 
 		MobileTestCaseData mobileTestCaseData = new MobileTestCaseData(mobile);
 
+		log("Logging to Mobile: "+mobileTestCaseData.getUrl());
+		log("As patient: "+testcasesData.getUsername()+" and password: "+testcasesData.getPassword());
 		MobileSignInPage mobileSignInPage = new MobileSignInPage(driver, mobileTestCaseData.getUrl());
 
 		MobileHomePage mobileHomePage = mobileSignInPage.login(testcasesData.getUsername(), testcasesData.getPassword());
@@ -196,11 +198,12 @@ public class MessageSync extends BaseTestNGWebDriver {
 		log("step 22 :Moving to my messages");
 		MessageInboxPage messageInboxPage = mobileHomePage.clickMyMessages();
 
+		log("Looking for message with subject: "+uniquePracticeResponse);
 		log("step 23 :Checking message");
 		verifyTrue(messageInboxPage.findMessage(uniquePracticeResponse), "Message found");
 
 		log("step 24 :Checking message");
-		verifyFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
+		assertFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
 
 	}
 
@@ -325,6 +328,8 @@ public class MessageSync extends BaseTestNGWebDriver {
 
 		MobileTestCaseData mobileTestCaseData = new MobileTestCaseData(mobile);
 
+		log("Logging to Mobile: "+mobileTestCaseData.getUrl());
+		log("As patient: "+testcasesData.getUsername()+" and password: "+testcasesData.getPassword());
 		MobileSignInPage mobileSignInPage = new MobileSignInPage(driver, mobileTestCaseData.getUrl());
 
 		MobileHomePage mobileHomePage = mobileSignInPage.login(testcasesData.getUsername(), testcasesData.getPassword());
@@ -332,11 +337,12 @@ public class MessageSync extends BaseTestNGWebDriver {
 		log("step 18 :Moving to my messages");
 		MessageInboxPage messageInboxPage = mobileHomePage.clickMyMessages();
 
+		log("Looking for message with subject: "+uniquePracticeResponse);
 		log("step 19 :Checking message");
 		verifyTrue(messageInboxPage.findMessage(uniquePracticeResponse), "Message found");
 
 		log("step 20 :Checking message");
-		verifyFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
+		assertFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
 
 	}
 	
@@ -428,9 +434,10 @@ public class MessageSync extends BaseTestNGWebDriver {
 
 		log("Click On Process RxRenewal Button in Practice Portal");
 		rxRenewalSearchPage.clickProcessRxRenewal();
-
+		
+		String subject = rxRenewalSearchPage.getSubject();
 		log("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection();
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
 
 		log("Set Action Radio Button in Practice Portal");
 		rxRenewalSearchPage.setActionRadioButton();
@@ -484,6 +491,8 @@ public class MessageSync extends BaseTestNGWebDriver {
 
 		MobileTestCaseData mobileTestCaseData = new MobileTestCaseData(mobile);
 
+		log("Logging to Mobile: "+mobileTestCaseData.getUrl());
+		log("As patient: "+testcasesData.getUsername()+" and password: "+testcasesData.getPassword());
 		MobileSignInPage mobileSignInPage = new MobileSignInPage(driver, mobileTestCaseData.getUrl());
 
 		MobileHomePage mobileHomePage = mobileSignInPage.login(testcasesData.getUsername(), testcasesData.getPassword());
@@ -491,11 +500,12 @@ public class MessageSync extends BaseTestNGWebDriver {
 		log("step 19 :Moving to my messages");
 		MessageInboxPage messageInboxPage = mobileHomePage.clickMyMessages();
 
+		log("Looking for message with subject: "+uniquePracticeResponse);
 		log("step 20 :Checking message");
 		verifyTrue(messageInboxPage.findMessage(uniquePracticeResponse), "Message found");
 
 		log("step 21 :Checking message");
-		verifyFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
+		assertFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
 
 	}
 	
@@ -640,7 +650,9 @@ public class MessageSync extends BaseTestNGWebDriver {
 		Mobile mobile = new Mobile();
 
 		MobileTestCaseData mobileTestCaseData = new MobileTestCaseData(mobile);
-
+		
+		log("Logging to Mobile: "+mobileTestCaseData.getUrl());
+		log("As patient: "+testcasesData.getUsername()+" and password: "+testcasesData.getPassword());
 		MobileSignInPage mobileSignInPage = new MobileSignInPage(driver, mobileTestCaseData.getUrl());
 
 		MobileHomePage mobileHomePage = mobileSignInPage.login(testcasesData.getUsername(), testcasesData.getPassword());
@@ -648,11 +660,12 @@ public class MessageSync extends BaseTestNGWebDriver {
 		log("step 23 :Moving to my messages");
 		MessageInboxPage messageInboxPage = mobileHomePage.clickMyMessages();
 
+		log("Looking for message with subject: "+uniquePracticeResponse);
 		log("step 24 :Checking message");
 		verifyTrue(messageInboxPage.findMessage(uniquePracticeResponse), "Message found");
 
 		log("step 25 :Checking message");
-		verifyFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
+		assertFalse(messageInboxPage.findUnreadMessage(uniquePracticeResponse), "Message found");
 	}
 	
 }
