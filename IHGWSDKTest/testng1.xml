@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="Medfusion Integration Test suite" verbose="1">
+
+  <test name="Medfusion Integration Test">
+    <classes>
+      <class name="net.medfusion.integrations.webservices.MedfusionWebservicesTest"/>
+      <class name="net.medfusion.integrations.webservices.IntegrationEngineTest"/>
+    </classes>
+  </test> 
+</suite> 

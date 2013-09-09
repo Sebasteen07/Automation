@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Medfusion Integration Test suite]">
+  <test name="Medfusion Integration Test(failed)" preserve-order="true">
+    <classes>
+      <class name="net.medfusion.integrations.webservices.IntegrationEngineTest">
+        <methods>
+          <include name="oneTimeTearDown"/>
+          <include name="oneTimeSetUp"/>
+        </methods>
+      </class> <!-- net.medfusion.integrations.webservices.IntegrationEngineTest -->
+      <class name="net.medfusion.integrations.webservices.MedfusionWebservicesTest">
+        <methods>
+          <include name="oneTimeSetUp"/>
+          <include name="testMemberLockedCreateMinFieldsWebServices"/>
+          <include name="oneTimeTearDown"/>
+          <include name="testApptReqWebServices"/>
+        </methods>
+      </class> <!-- net.medfusion.integrations.webservices.MedfusionWebservicesTest -->
+    </classes>
+  </test> <!-- Medfusion Integration Test(failed) -->
+</suite> <!-- Failed suite [Medfusion Integration Test suite] -->

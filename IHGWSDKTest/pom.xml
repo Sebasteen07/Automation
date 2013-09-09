@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.intuit.ihg</groupId>
+        <artifactId>ihg-depot-qa-parent-pom</artifactId>
+        <version>ihg-depot-trunk-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.intuit.ihg</groupId>
+    <artifactId>wsdk-automation</artifactId>
+    <name>wsdk-automation</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ihg.version>ihg-depot-trunk-SNAPSHOT</ihg.version>
+        <suite.xml>wsdk-testng.xml</suite.xml>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>IHG-nexus</id>
+            <name>IHG-nexus</name>
+            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+        </repository>
+    </repositories>
+
+     <dependencies>
+        <dependency>
+            <groupId>com.intuit.ihg</groupId>
+            <artifactId>qa-automation-utils</artifactId>
+             <version>${ihg.version}</version>
+        </dependency>
+                <dependency>
+            <groupId>com.intuit.ihg</groupId>
+            <artifactId>practice-portal-automation</artifactId>
+            <version>${ihg.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.medfusion</groupId>
+            <artifactId>integrations</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/medfusion-integration-webservices-client.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxrpc-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <!-- source directory maven plugin -->
+        <directory>target</directory>
+        <outputDirectory>target/classes</outputDirectory>
+        <testOutputDirectory>target/test-classes</testOutputDirectory>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+
+        <plugins>
+            <!-- Fail safe maven plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <forkCount>4C</forkCount>
+                            <reuseForks>true</reuseForks>
+                            <forkedProcessTimeoutInSeconds>30</forkedProcessTimeoutInSeconds>
+                            <parallel>methods</parallel>
+                            <threadCount>3</threadCount>
+                            <perCoreThreadCount>2</perCoreThreadCount>
+                            <!--
+                            <argLine>-Xms1024m -Xmx2048m -XX:MaxPermSize=256m</argLine>
+                            -->
+                            <perCoreThreadCount>true</perCoreThreadCount>
+                            <!--<groups>${testGroups}</groups> -->
+                            <suiteXmlFiles>
+                                <suiteXmlFile>${suite.xml}</suiteXmlFile>
+                            </suiteXmlFiles>
+                            <!--
+                            <systemProperties>
+                                <property>
+                                    <name>webservicesclient.properties</name>
+                                    <value>webservicesclient.properties</value>
+                                </property>
+                            </systemProperties>                            
+                            -->
+                            <properties>
+                                <usedefaultlisteners>false</usedefaultlisteners>
+                                <workingDirectory>target/surefire-reports/</workingDirectory>
+                            </properties>
+                        </configuration>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Jar maven plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <outputDirectory>target/autolab</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Find bugs maven plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+                    <xmlOutput>true</xmlOutput>
+                    <xmlOutputDirectory>target/site</xmlOutputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <!-- Resources -->
+        <resources>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>webservicesclient*.properties</include>
+                    <include>log4j.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>webservicesclient*.properties</include>
+                    <include>log4j.properties</include>
+                </includes>
+            </testResource>
+         </testResources>
+    </build>
+</project>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Filename: build.xml
+  Note: You have to change the followings according to your environment:
+          -<pathelement location="lib/testng/testng-5.14.7.jar"/>
+          -<pathelement location="bin"/>
+-->
+<project basedir="." default="runTestNG" name="Ant file for TestNG">
+ 
+  <!-- Define <testng> task -->
+  <taskdef name="testng" classname="org.testng.TestNGAntTask">
+    <classpath>
+      <pathelement location="lib/testng-6.5.2.jar"/>
+      
+    </classpath>
+  </taskdef>
+ 
+  <!-- Directory name where the TestNG report will be saved. -->
+  <property name="testng.output.dir" value="test-output"/>
+ 
+  <!-- Directory path of compiled classes(i.e *.class) -->
+  <path id="classes">
+  	 <pathelement location="bin/"/>
+  	 <pathelement location="lib/testng-6.5.2.jar"/>
+  	 <pathelement location="lib/medfusion-integration-webservices-client.jar"/> 
+  	 <pathelement location="lib/activation.jar"/>
+  	 <pathelement location="lib/commons-discovery-0.2.jar"/>
+  	 <pathelement location="lib/axis.jar"/>
+  	 <pathelement location="lib/commons-lang-2.0.jar"/>
+  	 <pathelement location="lib/saaj.jar"/>
+  	 <pathelement location="lib/wsdl4j-1.5.1.jar"/>
+  	 <pathelement location="lib/commons-logging-1.0.4.jar"/>
+  	 <pathelement location="lib/jaxrpc.jar"/>
+  	 <pathelement location="lib/mailapi_1_3_1.jar"/>
+  </path>
+	
+	<target name="compile"
+	           description="compile the examples"
+	           >
+	      <echo message="  -- testng-compile--"/>
+
+	     <javac   debug="true"
+	              fork="true"
+	              source="1.5"
+	     	      destdir ="./bin"
+	              classpathref="classes">
+	              <src path="./src"/>
+	     	      <src path="./test"/>
+	              
+	      </javac>
+	   </target>
+ 
+  <!--
+  Target to run TestNG. It will run according to what are defined in testng.xml.
+  The report will be saved at .../testng_output/index.html.
+  -->
+  <target name="runTestNG" depends="compile">
+ 
+    <mkdir dir="${testng.output.dir}"/><!-- Create the output directory. -->
+ 
+    <testng outputdir="${testng.output.dir}" classpathref="classes"> 
+     <jvmarg value="-Dwebservicesclient.properties=webservicesclient-PROD.properties" />
+      <xmlfileset dir="." includes="testng1.xml"/> 
+    </testng>
+  	<echo>Some of these tests should have failed, see the file test.out for the details</echo>
+  	      <junitreport todir="./reports">
+  	         <fileset dir="${testng.output.dir}/junitreports">
+  	            <include name="*.xml"/>
+  	         </fileset>
+  	         <report format="noframes" />
+  	      </junitreport>
+ 
+  </target>
+ 
+</project>

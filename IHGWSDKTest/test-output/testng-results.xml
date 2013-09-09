@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="38681" started-at="2013-01-06T13:40:25Z" finished-at="2013-01-06T13:41:04Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="38681" started-at="2013-01-06T13:40:25Z" finished-at="2013-01-06T13:41:04Z">
+      <class name="net.medfusion.integrations.webservices.MedfusionWebservicesTest">
+        <test-method status="PASS" signature="oneTimeSetUp()[pri:0, instance:net.medfusion.integrations.webservices.MedfusionWebservicesTest@18f1d7e]" name="oneTimeSetUp" is-config="true" duration-ms="1852" started-at="2013-01-06T08:40:25Z" finished-at="2013-01-06T08:40:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- oneTimeSetUp -->
+        <test-method status="PASS" signature="testPharmacyWebServices()[pri:0, instance:net.medfusion.integrations.webservices.MedfusionWebservicesTest@18f1d7e]" name="testPharmacyWebServices" duration-ms="36819" started-at="2013-01-06T08:40:27Z" finished-at="2013-01-06T08:41:04Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testPharmacyWebServices -->
+        <test-method status="PASS" signature="oneTimeTearDown()[pri:0, instance:net.medfusion.integrations.webservices.MedfusionWebservicesTest@18f1d7e]" name="oneTimeTearDown" is-config="true" duration-ms="0" started-at="2013-01-06T08:41:04Z" finished-at="2013-01-06T08:41:04Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- oneTimeTearDown -->
+      </class> <!-- net.medfusion.integrations.webservices.MedfusionWebservicesTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
