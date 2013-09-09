@@ -1,0 +1,217 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-qa-parent-pom</artifactId>
+		<version>ihg-depot-trunk-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.intuit.ihg</groupId>
+	<artifactId>service-mediator-automation</artifactId>
+	<version>ihg-depot-trunk-SNAPSHOT</version>
+	<name>service mediator automation</name>
+	<description>Service Mediator Automation</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>ihg-depot-trunk-SNAPSHOT</ihg.version>
+		<dcf-version>ihg-depot-trunk-SNAPSHOT</dcf-version>
+		<messages-version>ihg-depot-trunk-SNAPSHOT</messages-version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>phr-portal-automation</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-common</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-client-bootstrap</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-client</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.framework.dc</groupId>
+			<artifactId>datachannel-framework-core</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.framework.dc.services.objstore</groupId>
+			<artifactId>datachannel-framework-services-objstore</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patient-portal-automation</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.framework.dc.services.tracking</groupId>
+			<artifactId>datachannel-framework-services-tracking</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.internal.objectstore</groupId>
+			<artifactId>object-store-client</artifactId>
+			<version>1.3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.7</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.rwsdk.core</groupId>
+			<artifactId>rwsdk-core-dto</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.health.integration</groupId>
+			<artifactId>am-core-dto</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+		
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<configuration>
+							<failBuild>false</failBuild>
+							<!--<groups>${testGroups}</groups> -->
+							<suiteXmlFiles>
+								<suiteXmlFile>sm-integration-acceptance.xml</suiteXmlFile>
+							</suiteXmlFiles>
+							<systemPropertyVariables>
+								<testRoot>${basedir}</testRoot>
+								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
+								<testResultScreenshots>true</testResultScreenshots>
+								<testResultVideos>true</testResultVideos>
+							</systemPropertyVariables>
+							<properties>
+								<usedefaultlisteners>false</usedefaultlisteners>
+								<workingDirectory>target/surefire-reports/</workingDirectory>
+							</properties>
+						</configuration>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>target/autolab</outputDirectory>
+					<archive>
+						<manifest>
+							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/test-classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/test/resources/testfiles/${execution.env}</directory>
+							   </resource>
+						</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

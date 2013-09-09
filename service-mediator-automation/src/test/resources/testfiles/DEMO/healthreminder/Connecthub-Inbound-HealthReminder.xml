@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+                <S:Header/>
+                <S:Body>
+<AllscriptsMessageEnvelope xmlns="http://Allscripts.com/UAI/Schemas/2010/02/15" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                <MessageDispatchHeader>
+                                <ID xmlns="">0906b2b2-e690-459f-82f0-82d6c33e6e03</ID>
+                                <Noun xmlns="">HealthReminder</Noun>
+                                <Verb xmlns="">Requested</Verb>
+                                <TimeStamp xmlns="">9:36:36 PM</TimeStamp>
+                                <Description xmlns="">Test Description</Description>
+                                <Originator xmlns=""/>
+                                <Destination xmlns=""/>
+                </MessageDispatchHeader>
+                <EntityContext>
+                                <KeyedValues>
+                                                <KeyedValue>
+                                                                <Key>AccountID</Key>
+                                                                <Value>00000000000000099930</Value>
+                                                </KeyedValue>
+                                                <KeyedValue>
+                                                                <Key>SiteID</Key>
+                                                                <Value>2222222</Value>
+                                                </KeyedValue>
+                                                <KeyedValue>
+                                                                <Key>ProductID</Key>
+                                                                <Value>EEHR</Value>
+                                                </KeyedValue>
+                                                <KeyedValue>
+                                                                <Key>ProductVersion</Key>
+                                                                <Value>11.2</Value>
+                                                </KeyedValue>
+                                                <KeyedValue>
+                                                                <Key>OrgID</Key>
+                                                                <Value>5678</Value>
+                                                </KeyedValue>
+                                                <KeyedValue>
+                                                                <Key>DestinationSiteID</Key>
+                                                                <Value>11332</Value>
+                                                </KeyedValue>
+                                </KeyedValues>
+                </EntityContext>
+                                                <MessageContent xmlns="">
+        <HealthReminder xmlns="urn:Allscripts:Hub:PatientMsg" xmlns:mombt="urn:Allscripts:mombt" SchemaName="HealthReminder" xsi:schemaLocation="urn:Allscripts:Hub:PatientMsg PortalPHRMsg.xsd">
+           <PatientMsgBase Audience="text" ReceiptRequired="false">
+                <mombt:MessageID>General Message</mombt:MessageID>
+                <mombt:ReplyToMessageID/>
+                <mombt:Subject>Please get back ASAP! 17-APRIL-2013</mombt:Subject>
+                <mombt:Content>I need more details &lt;a href=http://www.google.com/&gt;Google&lt;/a&gt; Test has been completed 2</mombt:Content>
+                <mombt:Patient>
+                    <mombt:Mrn>20130888888</mombt:Mrn>
+                    <mombt:IDs>
+                        <mombt:CodeValue>29054</mombt:CodeValue>
+                        <mombt:CodeDescription>Patient</mombt:CodeDescription>
+                        <mombt:CodeType>Id</mombt:CodeType>
+                        <mombt:CodingSystem>Intuit</mombt:CodingSystem>
+                    </mombt:IDs>
+                    <mombt:Name>
+                        <mombt:First>First Name</mombt:First>
+                        <mombt:Middle>Middle Name</mombt:Middle>
+                        <mombt:Last>Last Name</mombt:Last>
+                    </mombt:Name>
+                    <mombt:Ssn>Patient SSN Value</mombt:Ssn>
+                    <mombt:Gender>Patient Gender</mombt:Gender>
+                </mombt:Patient>
+                <mombt:Provider>
+                    <mombt:Npi>91171</mombt:Npi>
+                    <mombt:Role>Provider Role</mombt:Role>
+                    <mombt:IDs>
+                        <mombt:CodeValue>20468</mombt:CodeValue>
+                        <mombt:CodeDescription>Provider</mombt:CodeDescription>
+                        <mombt:CodeType>Id</mombt:CodeType>
+                        <mombt:CodingSystem>Intuit</mombt:CodingSystem>
+                    </mombt:IDs>
+                    <mombt:IDs>
+                        <mombt:CodeValue>91171</mombt:CodeValue>
+                        <mombt:CodeDescription>Provider</mombt:CodeDescription>
+                        <mombt:CodeType>Id</mombt:CodeType>
+                        <mombt:CodingSystem>Allscripts</mombt:CodingSystem>
+                    </mombt:IDs>
+                    <mombt:Name>
+                        <mombt:First>Patient</mombt:First>
+                        <mombt:Middle>Jr</mombt:Middle>
+                        <mombt:Last>2013032702</mombt:Last>
+                    </mombt:Name>
+                    <mombt:Speciality>Cardiologist</mombt:Speciality>
+                </mombt:Provider>
+            </PatientMsgBase>
+            <mombt:SenderPhone>
+                <mombt:SimplePhoneNumber>781-577-1542</mombt:SimplePhoneNumber>
+            </mombt:SenderPhone>
+            <mombt:TreatmentLocation>
+                <mombt:Code>01803</mombt:Code>
+                <mombt:Name>Burlington</mombt:Name>
+                <mombt:Type>Home</mombt:Type>
+                <mombt:Address>
+                    <mombt:SimpleAddress>Suite No 14, 1st Avenue, Menlo Park, California, US</mombt:SimpleAddress>
+                </mombt:Address>
+            </mombt:TreatmentLocation>
+        </HealthReminder>
+    </MessageContent>
+</AllscriptsMessageEnvelope>
+                </S:Body>
+</S:Envelope>

@@ -1,0 +1,101 @@
+<S:Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'>
+	<S:Header/>
+	<S:Body>
+		<AllscriptsMessageEnvelope xmlns='http://Allscripts.com/UAI/Schemas/2010/02/15' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+			<MessageDispatchHeader>
+				<ID xmlns=''>0906b2b2-e690-459f-82f0-82d6c33e6e03</ID>
+				<Noun xmlns=''>PortalInvitation</Noun>
+				<Verb xmlns=''>Requested</Verb>
+				<TimeStamp xmlns=''>9:36:36 PM</TimeStamp>
+				<Description xmlns=''>Test Description</Description>
+				<Originator xmlns=''/>
+				<Destination xmlns=''/>
+			</MessageDispatchHeader>
+			<EntityContext xmlns='http://Allscripts.com/UAI/Schemas/2010/02/15'>
+				<KeyedValues>
+					<KeyedValue>
+						<Key>AccountID</Key>
+						<Value>00000000000000099930</Value>
+					</KeyedValue>
+					<KeyedValue>
+						<Key>SiteID</Key>
+						<Value>2222222</Value>
+					</KeyedValue>
+					<KeyedValue>
+						<Key>ProductID</Key>
+						<Value>EEHR</Value>
+					</KeyedValue>
+					<KeyedValue>
+						<Key>ProductVersion</Key>
+						<Value>11.3</Value>
+					</KeyedValue>
+					<KeyedValue>
+						<Key>OrgID</Key>
+						<Value>5678</Value>
+					</KeyedValue>
+					<KeyedValue>
+						<Key>DestinationSiteID</Key>
+						<Value>??20971??</Value>
+					</KeyedValue>
+				</KeyedValues>
+			</EntityContext>
+			<MessageContent xmlns=''>
+				<PatientDemographics SchemaName='PatientDemographics' xmlns='urn:Allscripts:Hub:PatientMsg' xmlns:mombt='urn:Allscripts:mombt' xsi:schemaLocation='urn:Allscripts:Hub:PatientMsg PortalPHRMsg.xsd'>
+					<Demographics>
+						<mombt:Mrn>??2013080601??</mombt:Mrn>
+						<mombt:Name>
+							<mombt:Title>Mr</mombt:Title>
+							<mombt:First>??Patient??</mombt:First>
+							<mombt:Middle>MN</mombt:Middle>
+							<mombt:Last>??2013080602??</mombt:Last>
+						</mombt:Name>
+						<mombt:Ssn>201-30-8062</mombt:Ssn>
+						<mombt:DateOfBirth>2000-01-01</mombt:DateOfBirth>
+						<mombt:Gender>Male</mombt:Gender>
+						<mombt:Email>
+							<mombt:EmailAddress>??tejorart+2013080602@gmail.com??</mombt:EmailAddress>
+						</mombt:Email>
+						<mombt:Address>
+							<mombt:StructuredAddress>
+								<mombt:StreetAddress1>??202,??</mombt:StreetAddress1>
+								<mombt:City>??Cary??</mombt:City>
+								<mombt:StateOrProvince>??NC??</mombt:StateOrProvince>
+								<mombt:PostalCode>??27511??</mombt:PostalCode>
+								<mombt:AddressType>Home</mombt:AddressType>
+								<mombt:Country>US</mombt:Country>
+							</mombt:StructuredAddress>
+						</mombt:Address>
+						<mombt:Occupation>Banking</mombt:Occupation>
+						<mombt:MaritalStatus>Single</mombt:MaritalStatus>
+						<mombt:Providers>
+							<mombt:Npi>String</mombt:Npi>
+							<mombt:Role>String</mombt:Role>
+							<mombt:IDs>
+								<mombt:CodeValue>??22393??</mombt:CodeValue>
+								<mombt:CodeDescription>Provider</mombt:CodeDescription>
+								<mombt:CodeType>Id</mombt:CodeType>
+								<mombt:CodingSystem>Intuit</mombt:CodingSystem>
+							</mombt:IDs>
+							<mombt:IDs>
+								<mombt:CodeValue>91171</mombt:CodeValue>
+								<mombt:CodeDescription>Provider</mombt:CodeDescription>
+								<mombt:CodeType>Id</mombt:CodeType>
+								<mombt:CodingSystem>Allscripts</mombt:CodingSystem>
+							</mombt:IDs>
+							<mombt:Name>
+								<mombt:Title>String</mombt:Title>
+								<mombt:First>String</mombt:First>
+								<mombt:Middle>String</mombt:Middle>
+								<mombt:Last>String</mombt:Last>
+								<mombt:Suffix>String</mombt:Suffix>
+								<mombt:NameType>Legal</mombt:NameType>
+								<mombt:Degree>String</mombt:Degree>
+							</mombt:Name>
+							<mombt:Speciality>String</mombt:Speciality>
+						</mombt:Providers>
+					</Demographics>
+				</PatientDemographics>
+			</MessageContent>
+		</AllscriptsMessageEnvelope>
+	</S:Body>
+</S:Envelope>
