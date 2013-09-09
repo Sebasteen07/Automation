@@ -15,6 +15,7 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
@@ -206,6 +207,20 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String actualSubject = msg.getPracticeReplyMessageTitle();
 		assertTrue(msg.getPracticeReplyMessageTitle().contains(messageIdentifier), "Expected subject containting ["
 						+ messageIdentifier + "but actual subject was [" + actualSubject + "]");
+		
+		log("step 10: Reply to the message");
+		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
+		
+		log("step 11: Do a GET and get the message");
+		// get only messages from last day in epoch time to avoid transferring lot of data
+		Long since = timestamp / 1000L - 60 * 60 * 24;
+
+		log("Getting messages since timestamp: " + since);
+
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("step 12: Validate message reply");
+		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
 		
 	}
 	

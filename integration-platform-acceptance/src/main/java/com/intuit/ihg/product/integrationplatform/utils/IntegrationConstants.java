@@ -26,4 +26,5 @@ public class IntegrationConstants {
 	public static final String HOME_ADDRESS = "HomeAddress";
 	public static final String LINE1 = "Line1";
 	public static final String LINE2 = "Line2";
+	public static final String MESSAGE_REPLY = "Reply";
 }

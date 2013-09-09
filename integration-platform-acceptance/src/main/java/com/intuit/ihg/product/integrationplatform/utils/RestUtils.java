@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.integrationplatform.utils;
+	package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -82,27 +82,7 @@ public class RestUtils {
 			out.close();
 		}
 	}
-	
-	
-	/**
-	 * Reads the contents from an InputStream and captures them in a String
-	 * @param is InputStream object
-	 * @return String that contains the content read from InputStream
-	 * @throws IOException 
-	 */
-	public static String readResponse(InputStream is) throws IOException {
-		IHGUtil.PrintMethodName();
-		StringBuilder response = new StringBuilder();
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			response.append(line);
-		}
-		reader.close();
-
-		return response.toString();
-	}
 
 	/**
 	 * Reads the XML and checks asked Question if it complies
@@ -114,16 +94,7 @@ public class RestUtils {
 	 */
 	public static void isQuestionResponseXMLValid(String xmlFileName, Long timestamp) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
-		File response = new File(xmlFileName);
-		
-		DocumentBuilderFactory dbFactory;
-		DocumentBuilder dBuilder;
-		Document doc = null;
-		dbFactory = DocumentBuilderFactory.newInstance();
-		dBuilder = dbFactory.newDocumentBuilder();
-		doc = dBuilder.parse(response);
-		
-		doc.getDocumentElement().normalize();
+		Document doc = buildDOMXML(xmlFileName);
 
 		Log4jUtil.log("finding sent message");
 		boolean found = false;
@@ -132,7 +103,7 @@ public class RestUtils {
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			node = nodes.item(i);
-			System.out.println("Searching: " + node.getChildNodes().item(0).getTextContent() + "to be found: " + (timestamp.toString()));
+			System.out.println("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (timestamp.toString()));
 			if (node.getChildNodes().item(0).getTextContent().contains(timestamp.toString())) {
 				found = true;
 				break;
@@ -176,12 +147,7 @@ public class RestUtils {
 	 */
 	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
-		File msg = new File(xmlFileName);
-		
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(msg);
-		doc.getDocumentElement().normalize();
+		Document doc = buildDOMXML(xmlFileName);
 		
 		//get message root element
 		Node node = doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE).item(0);
@@ -280,17 +246,7 @@ public class RestUtils {
 	}
 	
 	public static boolean isMessageProcessingCompleted(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
-		IHGUtil.PrintMethodName();
-		File response = new File(xmlFileName);
-		
-		DocumentBuilderFactory dbFactory;
-		DocumentBuilder dBuilder;
-		Document doc = null;
-		dbFactory = DocumentBuilderFactory.newInstance();
-		dBuilder = dbFactory.newDocumentBuilder();
-		doc = dBuilder.parse(response);
-		
-		doc.getDocumentElement().normalize();
+		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
 		BaseTestSoftAssert.verifyTrue(nodes.getLength() == 2, "There should be 2 State elements in processing status response");
@@ -310,16 +266,7 @@ public class RestUtils {
 	 */
 	public static void isPatientUpdated(String xmlFileName, String patientId , String firstLine, String secondLine) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
-		File response = new File(xmlFileName);
-
-		DocumentBuilderFactory dbFactory;
-		DocumentBuilder dBuilder;
-		Document doc = null;
-		dbFactory = DocumentBuilderFactory.newInstance();
-		dBuilder = dbFactory.newDocumentBuilder();
-		doc = dBuilder.parse(response);
-
-		doc.getDocumentElement().normalize();
+		Document doc = buildDOMXML(xmlFileName);
 		
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICE_ID);
 		for (int i = 0; i < nodes.getLength(); i++){
@@ -334,6 +281,42 @@ public class RestUtils {
 			}
 		}
 		
+	}
+
+	private static Document buildDOMXML(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		File response = new File(xmlFileName);
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(response);
+
+		doc.getDocumentElement().normalize();
+		return doc;
+	}
+
+	
+	public static void isReplyPresent(String responsePath, String messageIdentifier) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(responsePath);
+
+		Log4jUtil.log("finding sent message");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.QUESTION_SUBJECT);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (messageIdentifier.toString()));
+			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
+				Element question = (Element) node.getParentNode();
+				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
+				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), IntegrationConstants.MESSAGE_REPLY, "Received reply is not the same as sent");
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Reply was not found in response XML");
 	}
 	
 		
