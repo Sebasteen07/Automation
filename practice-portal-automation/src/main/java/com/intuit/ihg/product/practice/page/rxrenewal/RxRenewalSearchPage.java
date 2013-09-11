@@ -85,6 +85,13 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public WebElement processingCompletedtxt;
 
 	private long createdTs;
+	
+	private String subject;
+	
+	public String getSubject() {
+		IHGUtil.PrintMethodName();
+		return subject;
+	}
 
 	public long getCreatedTs() {
 		IHGUtil.PrintMethodName();
@@ -139,7 +146,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 	/**
 	 * @Description:Set The RxRenewal Fields
 	 */
-	public String setRxRenewalFields()
+	public void setRxRenewalFields()
 	{
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -147,10 +154,10 @@ public class RxRenewalSearchPage extends BasePageObject {
 		setQuantity.sendKeys(PracticeConstants.Quantity);
 		Select startDaySelect = new Select(setFrequency);
 		startDaySelect.selectByVisibleText(PracticeConstants.Frequency);
-		String subject = createdTs+PracticeConstants.SubjectMessage;
+		subject = createdTs+PracticeConstants.SubjectMessage;
 		setSubject.sendKeys(subject);
 		setSubjectBody.sendKeys(PracticeConstants.BodyMessage);
-		return subject;
+	
 
 	}
 
