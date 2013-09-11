@@ -25,6 +25,7 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 				testcasesData.getSSN(), patientActivationTest.getEmailAddressString());
 
 		GmailBot gBot = new GmailBot();
+		Thread.sleep(10000);
 		log("Checking for the activation link inside the patient Gmail inbox");
 
 		// Searching for the link for password reset in the Gmail Trash
@@ -61,6 +62,7 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 						patientActivationSearchTest.getEmailAddressString());
 
 		log("Checking for the activation link inside the patient Gmail inbox");
+		Thread.sleep(10000);
 		GmailBot gBot = new GmailBot();
 
 		// Searching for the link for password reset in the Gmail Trash

@@ -268,7 +268,7 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 		
 		log("I am on the second Page :======");
 		
-		IHGUtil.waitForElement(driver, 30, txtUserIdActivation);
+		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
 		txtUserIdActivation.sendKeys(sEmail);
 		txtUserPasswordActivation.sendKeys(sPassword);
 		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
