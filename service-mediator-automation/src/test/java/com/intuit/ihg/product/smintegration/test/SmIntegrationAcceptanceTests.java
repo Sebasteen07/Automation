@@ -167,7 +167,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			SmIntegrationUtil util = new SmIntegrationUtil(driver);
 
 			log("Step 12 : Write the DB xml to below path");
-			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_RESPONSE_PATH+"dbresponse.xml",appointmentReq_xml);
+			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"dbresponse.xml",appointmentReq_xml);
 
 			String reasonForVisit = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_REQUEST+"dbresponse.xml", "appointmentRequest", "reasonForVisit");
 
@@ -235,7 +235,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			String responseXml=util.postXMLRequest(testData.getEndPointUrl(),updatedReqXmlInString);
 
 			log("Converting the response string to an xml");
-			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_RESPONSE_PATH+"response.xml",responseXml);
+			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"response.xml",responseXml);
 
 			Thread.sleep(30000);
 			log("Step 2 :Getting the ppia status and state value from pgDB");
@@ -251,12 +251,12 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			}
 
 			log("Step 3 : Write the DB xml to below path");
-			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_RESPONSE_PATH+"dbresponse.xml",dataMapIn.get(SmIntegrationConstants.PPIA_REQUEST_XML));
+			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"dbresponse.xml",dataMapIn.get(SmIntegrationConstants.PPIA_REQUEST_XML));
 
 
 			log("Step 4 : get the externalPatientRef value to query the DB");
-			String emailSubject_Db_Response = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_RESPONSE_PATH+"dbresponse.xml", "generalMessage", "messageSubject");
-			String emailContent_Db_Response = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_RESPONSE_PATH+"dbresponse.xml", "generalMessage", "messageBody");
+			String emailSubject_Db_Response = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"dbresponse.xml", "generalMessage", "messageSubject");
+			String emailContent_Db_Response = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"dbresponse.xml", "generalMessage", "messageBody");
 
 			log("emailSubject from Db_Response####################################"+emailSubject_Db_Response);
 			log("emailContent from Db_Response####################################"+emailContent_Db_Response);
