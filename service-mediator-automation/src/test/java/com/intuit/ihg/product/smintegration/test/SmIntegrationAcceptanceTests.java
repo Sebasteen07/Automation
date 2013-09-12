@@ -277,13 +277,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			ConsolidatedInboxPage inboxPage = home.clickViewAllMessages();
 
 			log("step 20: Find message in Inbox");
-			ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(emailContent_Db_Response);
+			ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(emailSubject_Db_Response);
 	
 			
 			log("step 21: Validate message loads and is the right message");
 			String actualSubject = message.getPracticeReplyMessageTitle();
-			verifyTrue(message.getPracticeReplyMessageTitle().trim().equalsIgnoreCase(emailContent_Db_Response), "Expected subject containting ["
-					+ emailContent_Db_Response + "but actual subject was [" + actualSubject + "]");
+			verifyTrue(message.getPracticeReplyMessageTitle().trim().equalsIgnoreCase(emailSubject_Db_Response), "Expected subject containting ["
+					+ emailSubject_Db_Response + "but actual subject was [" + actualSubject + "]");
 
 			
 			Thread.sleep(10000);
