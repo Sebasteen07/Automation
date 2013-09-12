@@ -27,4 +27,9 @@ public class IntegrationConstants {
 	public static final String LINE1 = "Line1";
 	public static final String LINE2 = "Line2";
 	public static final String MESSAGE_REPLY = "Reply";
+	public static final String PRACTICE_PATIENT_ID = "PracticePatientId";
+	public static final String PATIENT = "Patient";
+	public static final Object NAME = "Name";
+	public static final String FIRST_NAME = "FirstName";
+	public static final String LAST_NAME = "LastName";
 }

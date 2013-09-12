@@ -37,6 +37,10 @@ public class PIDCTestData {
 		return PidcObj.RestUrl;
 	}
 	
+	public String getPatientPath(){
+		return PidcObj.PatientPath;
+	}
+	
 	public String getResponsePath(){
 		return PidcObj.ResponsePath;
 	}
@@ -60,4 +64,41 @@ public class PIDCTestData {
 	public String getOAuthPassword(){
 		return PidcObj.OAuthPassword;
 	}	
+	
+	public String getGmailUsername(){
+		return PidcObj.GmailUsername;
+	}	
+	
+	public String getGmailPassword(){
+		return PidcObj.GmailPassword;
+	}
+	
+	public String getBirthDay(){
+		return PidcObj.BirthDay;
+	}
+	
+	public String getZipCode(){
+		return PidcObj.ZipCode;
+	}
+	
+	public String getSSN(){
+		return PidcObj.SSN;
+	}
+	
+	public String getEmail(){
+		return PidcObj.Email;
+	}
+	
+	public String getPatientPassword(){
+		return PidcObj.PatientPassword;
+	}	
+	
+	public String getSecretQuestion(){
+		return PidcObj.SecretQuestion;
+	}	
+	
+	public String getSecretAnswer(){
+		return PidcObj.SecretAnswer;
+	}	
+	
 }

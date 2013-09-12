@@ -4,13 +4,18 @@ package com.intuit.ihg.product.integrationplatform.test;
 import java.io.IOException;
 import java.util.Random;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.testng.annotations.Test;
+import org.xml.sax.SAXException;
 
 import com.intuit.api.security.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
@@ -21,6 +26,7 @@ import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
+import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
@@ -30,6 +36,7 @@ import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep3Page;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.portal.utils.Portal;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 
 
@@ -128,7 +135,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 8: Setup Oauth client"); 
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 		
-		OAuthPropertyManager.init(testData.getOAuthProperty());
+		//OAuthPropertyManager.init(testData.getOAuthProperty());
 		
 		log("step 9: Get AMDC Rest call");
 		//get only messages from last day in epoch time to avoid transferring lot of data
@@ -211,6 +218,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 10: Reply to the message");
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
 		
+		Thread.sleep(15000);
+		
 		log("step 11: Do a GET and get the message");
 		// get only messages from last day in epoch time to avoid transferring lot of data
 		Long since = timestamp / 1000L - 60 * 60 * 24;
@@ -228,25 +237,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");
-
-		log("step 1: Get Data from Excel");
-		PIDC PIDCData = new PIDC();
-		PIDCTestData testData = new PIDCTestData(PIDCData);
-
-		log("Url: " + testData.getUrl());
-		log("User Name: " + testData.getUserName());
-		log("Password: " + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
+		PIDCTestData testData = loadDataFromExcel();
 
 		log("step 2:LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
@@ -279,6 +270,84 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 9:Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName() , firstLine, secondLine);
 		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPIDCPatientRegistration() throws Exception{
+		log("Test Case: PIDC Patient Registration");
+		PIDCTestData testData = loadDataFromExcel();
+		
+		log("step 2: Prepare patient to post");
+		Long timestamp = System.currentTimeMillis();
+		String practicePatientId = "Patient" +timestamp;
+		String firstName = "Name" + timestamp;
+		String lastName = "Surname" + timestamp;
+		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName);
+		
+		log("step 3: Setup Oauth client"); 
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		log("step 3: Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient, testData.getResponsePath());
+		
+		log("step 4: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(10000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+		
+		GmailBot gBot = new GmailBot();
+		log("step 5: Checking for the activation link inside the patient Gmail inbox");
+
+		// Searching for the link for patient activation in the Gmail Inbox
+		 String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(),
+				PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLink, 2, false, true);
+
+		log("step 6: Moving to the link obtained from the email message");
+		// Moving to the Link from email
+		//driver.get(activationUrl);
+		BetaSiteCreateAccountPage betaSiteCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(activationUrl);
+
+		log("Step 7: Filling in user credentials and finishing the registration");
+		// Filing the User credentials
+		MyPatientPage myPatientPage = betaSiteCreateAccountPage.fillEmailActivaion("",
+				testData.getBirthDay(), testData.getZipCode(), testData.getSSN(),
+				testData.getEmail(), testData.getPatientPassword(), testData.getSecretQuestion(),
+				testData.getSecretAnswer());
+
+		log("Step 8: Signing out of the Patient Portal");
+		myPatientPage.clickLogout(driver);
+		
+		//TO DO 
+		
+	}
+	
+	private PIDCTestData loadDataFromExcel() throws Exception{
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+		PIDC PIDCData = new PIDC();
+		PIDCTestData testData = new PIDCTestData(PIDCData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		return testData;
 	}
 
 	

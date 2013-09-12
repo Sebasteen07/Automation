@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -164,15 +165,7 @@ public class RestUtils {
 		nTo.setTextContent(to);
 		nSubject.setTextContent(subject);
 
-		// convert prepared xml to String
-		TransformerFactory tFactory = TransformerFactory.newInstance();
-		Transformer transformer = tFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		StringWriter writer = new StringWriter();
-		StreamResult result = new StreamResult(writer);
-		transformer.transform(source, result);
-		
-		return writer.toString();
+		return domToString(doc);
 	}
 	
 	//generate four digit random for the message id
@@ -180,6 +173,39 @@ public class RestUtils {
 		return (new Random()).nextInt(9000) + 1000;
 	}
 	
+	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName) throws ParserConfigurationException, SAXException, IOException, TransformerException{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		Node idNode = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(0);
+		idNode.setTextContent(practicePatientId);
+		
+		Node patient = doc.getElementsByTagName(IntegrationConstants.PATIENT).item(0);
+		NodeList childNodes = patient.getChildNodes();
+		for(int i = 0; i < childNodes.getLength(); i++){
+			if(childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals(IntegrationConstants.NAME)){
+				Element name = (Element) childNodes.item(i);
+				Node firstNameNode = name.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				Node lastNameNode = name.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				firstNameNode.setTextContent(firstName);
+				lastNameNode.setTextContent(lastName);
+			}
+		}
+		
+		return domToString(doc);
+	}
+	
+	public static String domToString(Document doc) throws TransformerException{
+		// convert prepared xml to String
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		Transformer transformer = tFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StringWriter writer = new StringWriter();
+		StreamResult result = new StreamResult(writer);
+		transformer.transform(source, result);
+
+		return writer.toString();
+	}
 	
 	
 	/**
