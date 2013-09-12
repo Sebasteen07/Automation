@@ -16,9 +16,12 @@ public class FormSocialHistoryPage extends BasePageObject
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
-	@FindBy(xpath="//div[@id='container']/section/div[@class='done_frame']/a")
+	@FindBy(xpath="//*[@id='container']//section/div[@class='done_frame']/a")
 	private WebElement submitForm;
 
+	@FindBy( xpath = ".//iframe[@title ='Forms']")
+	private WebElement iframe;
+	
 	/**
 	 * @Description:Click on Save and Continue Form Button
 	 * @return
@@ -31,6 +34,9 @@ public class FormSocialHistoryPage extends BasePageObject
 		saveAndContinuebtn.click();
 	}
 
+	
+
+	
 	/**
 	 * @Description:Click on Submit Form Button
 	 * @return
@@ -41,6 +47,10 @@ public class FormSocialHistoryPage extends BasePageObject
 		Thread.sleep(10000);
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		Thread.sleep(5000);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(iframe);
+
 		submitForm.click();
 
 	}
