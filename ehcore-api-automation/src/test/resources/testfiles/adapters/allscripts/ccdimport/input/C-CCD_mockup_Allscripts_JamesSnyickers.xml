@@ -1,0 +1,824 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Header/>
+	<S:Body>
+<AllscriptsMessageEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://Allscripts.com/UAI/Schemas/2010/02/15">
+	<MessageDispatchHeader>
+		<ID xmlns="">8aa5d265-6875-44e7-b3f1-084b71d22a4e</ID>
+		<Noun xmlns="">Encounter</Noun>
+		<Verb xmlns="">Completed</Verb>
+		<TimeStamp xmlns="">10/14/2010 10:33:18 AM</TimeStamp>
+		<Originator xmlns=""/>
+		<Destination xmlns=""/>
+	</MessageDispatchHeader>
+	<EntityContext>
+		<KeyedValues>
+			<KeyedValue>
+				<Key>AccountID</Key>
+				<Value>00000000000000099930</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>PatientID</Key>
+				<Value>28121001</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>ProviderID</Key>
+				<Value>91171</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>UserID</Key>
+				<Value>91171</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>DestinationID</Key>
+				<Value>Intuit</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>DestinationSiteID</Key>
+				<Value>50</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>ReplyToMessageID</Key>
+				<Value>0</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>DocumentID</Key>
+				<Value>0</Value>
+			</KeyedValue>
+			<KeyedValue>
+				<Key>ProductID</Key>
+				<Value>MYWAY</Value>
+			</KeyedValue>
+		</KeyedValues>
+	</EntityContext>
+	<MessageContent xmlns="">
+		<EncounterData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SchemaName="EncounterData" xmlns="urn:Allscripts:Hub:PatientMsg">
+			<PatientMsgBase ReceiptRequired="true">
+				<MessageID xmlns="urn:Allscripts:mombt">8aa5d265-6875-44e7-b3f1-084b71d22a4e</MessageID>
+				<ReplyToMessageID xmlns="urn:Allscripts:mombt"/>
+				<Patient xmlns="urn:Allscripts:mombt">
+					<Mrn>28121001</Mrn>
+					<IDs>
+						<CodeValue>45046</CodeValue>
+						<CodeDescription>Intuit Patient</CodeDescription>
+						<CodeType>Id</CodeType>
+						<CodingSystem>Intuit</CodingSystem>
+					</IDs>
+				</Patient>
+				<Provider xmlns="urn:Allscripts:mombt">
+					<IDs>
+						<CodeValue>91171</CodeValue>
+						<CodeDescription>EEHR Provider ID</CodeDescription>
+						<CodeType>EEHR</CodeType>
+						<CodingSystem>Allscripts</CodingSystem>
+					</IDs>
+					<IDs>
+						<CodeValue>57</CodeValue>
+						<CodeDescription>Intuit Provider ID</CodeDescription>
+						<CodeType>Id</CodeType>
+						<CodingSystem>Intuit</CodingSystem>
+					</IDs>
+				</Provider>
+			</PatientMsgBase>
+			<ihe:CEDDocument xmlns:ihe="urn:Allscripts:ihe">
+				<ihe:Xml>
+
+<![CDATA[
+<?xml-stylesheet type='text/xsl' href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <!--
+
+********************************************************
+
+  CDA Header
+
+********************************************************
+
+	-->
+  <realmCode code="US"/>
+  <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+  <templateId root="2.16.840.1.113883.10.20.22.1.1"/>
+  <templateId root="2.16.840.1.113883.10.20.22.1.2"/>
+  <id extension="1087872" root="1.3.6.1.4.1.22812.3.302.3.1"/>
+  <code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+    displayName="SUMMARIZATION OF EPISODE NOTE"/>
+  <title>New World Health Medical Summary</title>
+  <effectiveTime value="20120205212840-0500"/>
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+  <languageCode code="en-US"/>
+  <recordTarget>
+    <patientRole>
+      <id extension="110627160906793" root="1.3.6.1.4.1.22812.3.302.3.3.2"/>
+      <addr>
+        <streetAddressLine>1097 Pine Top</streetAddressLine>
+        <city>Burlington</city>
+        <state>VT</state>
+        <postalCode>05428</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom value="tel:+1-(802)549-2033" use="HP"/>
+      <patient>
+        <name>
+          <given>James</given>
+          <family>Snyickers</family>
+        </name>
+        <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+        <birthTime value="19920226"/>
+        <maritalStatusCode codeSystem="2.16.840.1.113883.5.2" code="S" displayName="Never Married"/>
+        <languageCommunication>
+          <templateId root="2.16.840.1.113883.3.88.11.32.2"/>
+          <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.1"/>
+          <languageCode nullFlavor="UNK"/>
+        </languageCommunication>
+      </patient>
+      <providerOrganization>
+        <id extension="3" root="1.3.6.1.4.1.22812.3.302.3"/>
+        <name>New World Health</name>
+        <telecom value="tel:+1-(802)985-1234" use="WP"/>
+        <addr>
+          <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+          <city>South Burlington</city>
+          <state>VT</state>
+          <postalCode>05403</postalCode>
+          <country>US</country>
+        </addr>
+      </providerOrganization>
+    </patientRole>
+  </recordTarget>
+  <author>
+    <time value="20120205212840-0500"/>
+    <assignedAuthor>
+      <id extension="9988665544" root="2.16.840.1.113883.4.6"/>
+      <code code="SELF" codeSystem="2.16.840.1.113883.5.111" displayName="Self"
+        codeSystemName="RoleCode"/>
+      <addr nullFlavor="UNK"/>
+      <telecom value="tel:+1-(802)985-1234" use="WP"/>
+      <assignedPerson>
+        <name>
+          <given>Sherri</given>
+          <family>Kitts</family>
+        </name>
+      </assignedPerson>
+    </assignedAuthor>
+  </author>
+  <author>
+    <time value="20120205212840-0500"/>
+    <assignedAuthor>
+      <id extension="3" root="1.3.6.1.4.1.22812.3.302.3.3.3"/>
+      <addr>
+        <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+        <city>South Burlington</city>
+        <state>VT</state>
+        <postalCode>05403</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom value="tel:+1-(802)985-1234" use="WP"/>
+      <assignedAuthoringDevice>
+        <softwareName>Enterprise EHR 11.200.4078.19879</softwareName>
+      </assignedAuthoringDevice>
+      <representedOrganization>
+        <id extension="3" root="1.3.6.1.4.1.22812.3.302.3"/>
+        <name>New World Health</name>
+        <telecom value="tel:+1-(802)985-1234" use="WP"/>
+        <addr>
+          <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+          <city>South Burlington</city>
+          <state>VT</state>
+          <postalCode>05403</postalCode>
+          <country>US</country>
+        </addr>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id extension="3" root="1.3.6.1.4.1.22812.3.302.3"/>
+        <name>New World Health</name>
+        <telecom value="tel:+1-(802)985-1234" use="WP"/>
+        <addr>
+          <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+          <city>South Burlington</city>
+          <state>VT</state>
+          <postalCode>05403</postalCode>
+          <country>US</country>
+        </addr>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <informationRecipient>
+    <intendedRecipient>
+      <id extension="3" root="1.3.6.1.4.1.22812.3.302.3.3.1"/>
+      <addr>
+        <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+        <city>South Burlington</city>
+        <state>VT</state>
+        <postalCode>05403</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom value="tel:+1-(802)985-1234" use="WP"/>
+      <receivedOrganization>
+        <name>New World Health</name>
+        <telecom value="tel:+1-(802)985-1234" use="WP"/>
+        <addr>
+          <streetAddressLine>25 Green Mountain Drive</streetAddressLine>
+          <city>South Burlington</city>
+          <state>VT</state>
+          <postalCode>05403</postalCode>
+          <country>US</country>
+        </addr>
+      </receivedOrganization>
+    </intendedRecipient>
+  </informationRecipient>
+  <authenticator>
+    <time value="20120205212840-0500"/>
+    <signatureCode code="S"/>
+    <assignedEntity>
+      <id extension="322" root="1.3.6.1.4.1.22812.3.302.3.3.2"/>
+      <addr nullFlavor="UNK"/>
+      <telecom value="tel:+1-(802)985-1234" use="WP"/>
+      <assignedPerson>
+        <name>
+          <given>Sherri</given>
+          <family>Kitts</family>
+        </name>
+      </assignedPerson>
+    </assignedEntity>
+  </authenticator>
+  <participant typeCode="IND">
+    <!-- <templateId root="2.16.840.1.113883.3.88.11.32.3"/>
+    <templateId root="2.16.840.1.113883.3.88.11.83.3"/>
+    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.4"/>  -->
+    <time value="20120205212840-0500"/>
+    <associatedEntity classCode="CAREGIVER">
+      <id root="1.3.6.1.4.1.22812.3.302.3.3.2.1"/>
+      <code code="FRND" displayName=" Unrelated Friend" codeSystem="2.16.840.1.113883.5.111"
+        codeSystemName="RoleCode"/>
+      <addr nullFlavor="UNK"/>
+      <telecom value="tel:+1-(802)985-1234" use="WP"/>
+      <associatedPerson>
+        <name>
+          <given>Dana</given>
+          <family>Woolley</family>
+        </name>
+      </associatedPerson>
+    </associatedEntity>
+  </participant>
+  <documentationOf>
+    <serviceEvent classCode="PCPR">
+      <effectiveTime>
+        <low value="20120205212742+0000"/>
+        <high value="20120205212840-0500"/>
+      </effectiveTime>
+      <performer typeCode="PRF">
+       <!--  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/>
+        <templateId root="2.16.840.1.113883.3.88.11.32.4"/>
+        <templateId root="2.16.840.1.113883.3.88.11.83.4"/>
+         -->
+        <functionCode code="PP" codeSystem="2.16.840.1.113883.12.443"/>
+        <time>
+          <low/>
+          <high/>
+        </time>
+        <assignedEntity>
+          <id extension="8654209765" root="2.16.840.1.113883.4.6"/>
+          <code code="260000000X" codeSystem="2.16.840.1.113883.6.101"
+            codeSystemName="ProviderCodes" displayName="Ambulatory Health Care Facilities"/>
+          <addr nullFlavor="UNK"/>
+          <telecom value="tel:+1-(802)985-1234" use="WP"/>
+          <assignedPerson>
+            <name>
+              <given>Dana</given>
+              <family>Woolley</family>
+            </name>
+          </assignedPerson>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PPRF">
+       <!--  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/>  -->
+        <time>
+          <low/>
+          <high/>
+        </time>
+        <assignedEntity classCode="ASSIGNED">
+          <id extension="500" root="1.3.6.1.4.1.22812.3.302.3.3.6"/>
+          <code code="PHARMACY" codeSystem="1.3.5.1.4.1.19376.1.5.3.3" codeSystemName="IHERoleCode"/>
+          <addr>
+            <streetAddressLine>5 Market St</streetAddressLine>
+            <city>Burlington</city>
+            <state>VT</state>
+            <postalCode>05401</postalCode>
+            <country>US</country>
+          </addr>
+          <telecom value="tel:+1-(802)555-5555" use="WP"/>
+          <representedOrganization>
+            <name>Rite-Aid Market Street</name>
+            <telecom value="tel:+1-(802)555-5555" use="WP"/>
+            <addr>
+              <streetAddressLine>5 Market St</streetAddressLine>
+              <city>Burlington</city>
+              <state>VT</state>
+              <postalCode>05401</postalCode>
+              <country>US</country>
+            </addr>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+    </serviceEvent>
+  </documentationOf>
+  <!-- ********************************************************
+
+     CDA Body
+
+     ******************************************************** -->
+  <componentOf>
+    <encompassingEncounter>
+      <id extension="10362" root="1.3.6.1.4.1.22812.3.302.3.3.4"/>
+      <effectiveTime>
+        <low value="20120205212742+0000"/>
+        <high value="20120205212840-0500"/>
+      </effectiveTime>
+    </encompassingEncounter>
+  </componentOf>
+  <component>
+    <structuredBody>
+<!-- *********************** -->
+<!--
+
+********************************************************
+
+Allergies, Adverse Reactions, Alerts
+
+********************************************************
+
+-->
+
+      <templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"/>
+      <component>
+        <section>
+          <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.1"/>
+          <code code="42349-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="Reason for Referral"/>
+          <title>Reason for Referral</title>
+          <text>No Reason for Referral was given.</text>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4"/>
+          <code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="HPI"/>
+          <title>History of Present Illness</title>
+          <text>No HPI available.</text>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.5.1"/>   
+          <templateId root="2.16.840.1.113883.10.20.22.2.5"/>
+          <code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="Problem list"/>
+          <title>Problems</title>
+          <text>
+            <list>
+              <item><content ID="pr10836100000">Normal Routine History And Physical Adult</content>
+                  (<content ID="pr10836100000-sta">Active</content>) </item>
+              <item><content ID="pr10864600037">Migraine, Common (w/o Aura)</content> (<content
+                  ID="pr10864600037-sta">Active</content>) </item>
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
+              <id extension="10836100000" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+              <id extension="10864600039" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+              <code nullFlavor="NA"/>
+              <statusCode code="active"/>
+              <effectiveTime>
+                <low nullFlavor="UNK"/>
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+                  <id extension="10836100000" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+                  <id extension="10864600039" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+                  <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+                    code="55607006"/>
+                  <text>
+                    <reference value="#pr10836100000"/>
+                  </text>
+                  <statusCode code="completed"/>
+                  <effectiveTime>
+                    <low nullFlavor="UNK"/>
+                  </effectiveTime>
+                  <value xsi:type="CD" nullFlavor="UNK">
+                    <translation xsi:type="CD" code="V70.0" codeSystem="2.16.840.1.113883.6.103"
+                      codeSystemName="ICD-9" displayName="Normal Routine History And Physical Adult"/>
+                    <translation xsi:type="CD" code="34848" codeSystem="2.16.840.1.113883.6.26"
+                      codeSystemName="Medcin"
+                      displayName="Normal Routine History And Physical Adult"/>
+                  </value>
+                  <entryRelationship typeCode="REFR" inversionInd="false">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.22.4.6"/>
+                      <code code="33999-4" displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+                        codeSystemName="LOINC"/>
+                      <text>
+                        <reference value="#pr10836100000-sta"/>
+                      </text>
+                      <statusCode code="completed"/>
+                      <value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                        codeSystemName="SNOMED CT" code="55561003"/>
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
+              <id extension="10864600037" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+              <id extension="10864600041" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+              <code nullFlavor="NA"/>
+              <statusCode code="active"/>
+              <effectiveTime>
+                <low nullFlavor="UNK"/>
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+                  <id extension="10864600037" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+                  <id extension="10864600041" root="1.3.6.1.4.1.22812.3.302.3.4.1"/>
+                  <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+                    code="55607006"/>
+                  <text>
+                    <reference value="#pr10864600037"/>
+                  </text>
+                  <statusCode code="completed"/>
+                  <effectiveTime>
+                    <low nullFlavor="UNK"/>
+                  </effectiveTime>
+                  <value xsi:type="CD" nullFlavor="UNK">
+                    <translation xsi:type="CD" code="346.10" codeSystem="2.16.840.1.113883.6.103"
+                      codeSystemName="ICD-9" displayName="Migraine, Common (w/o Aura)"/>
+                    <translation xsi:type="CD" code="36009" codeSystem="2.16.840.1.113883.6.26"
+                      codeSystemName="Medcin" displayName="Migraine, Common (w/o Aura)"/>
+                  </value>
+                  <entryRelationship typeCode="REFR" inversionInd="false">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.22.4.6"/>
+                      <code code="33999-4" displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+                        codeSystemName="LOINC"/>
+                      <text>
+                        <reference value="#pr10864600037-sta"/>
+                      </text>
+                      <statusCode code="completed"/>
+                      <value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                        codeSystemName="SNOMED CT" code="55561003"/>
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.1"/>
+		  <templateId root="2.16.840.1.113883.10.20.22.2.1.1"/>
+          <code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="History of medication use"/>
+          <title>Medication</title>
+          <text>
+            <list>
+              <item>
+                <content ID="me10864600049"><content ID="me10864600049-entryName">Imitrex 5 MG/ACT
+                    Nasal Solution</content>; <content ID="me10864600049-sig">USE 1 SPRAY INTO ONE
+                    NOSTRIL AS NEEDED FOR MIGRAINE RELIEF, MAY REPEAT ONCE AFTER 2 HOURS. MAX -
+                    40MG/DAY.</content>; Start Date: 09/14/2011 (Active)</content>
+              </item>
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <substanceAdministration classCode="SBADM" moodCode="EVN">
+             <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
+              <id extension="10864600049" root="1.3.6.1.4.1.22812.3.302.3.4.4"/>
+              <id extension="10864600051" root="1.3.6.1.4.1.22812.3.302.3.4.4"/>
+              <text>
+                <reference value="#me10864600049"/>
+              </text>
+              <statusCode code="completed"/>
+              <effectiveTime xsi:type="IVL_TS">
+                <low value="20110914000000-0400"/>
+                <high nullFlavor="UNK"/>
+              </effectiveTime>
+              <doseQuantity value="0"/>
+              <consumable typeCode="CSM">
+                <manufacturedProduct classCode="MANU">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.23"/>
+                  <manufacturedMaterial>
+                    <code code="582330" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm"
+                      displayName="Imitrex 5 MG/ACT Nasal Solution">
+                      <originalText>
+                        <reference value="#me10864600049-entryName"/>
+                      </originalText>
+                      <translation code="55045373206" codeSystem="2.16.840.1.113883.6.69"
+                        codeSystemName="NDC" displayName="Imitrex 5 MG/ACT Nasal Solution"/>
+                    </code>
+                    <name>Imitrex</name>
+                  </manufacturedMaterial>
+                </manufacturedProduct>
+              </consumable>
+              <entryRelationship typeCode="REFR">
+                <observation classCode="OBS" moodCode="EVN">
+                  <!-- 
+                  <templateId root="2.16.840.1.113883.10.20.1.57"/>
+                  <templateId root="2.16.840.1.113883.10.20.1.47"/>
+                   -->
+                  <code code="33999-4" displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+                    codeSystemName="LOINC"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                    codeSystemName="SNOMED CT" code="55561003" displayName="Active"/>
+                </observation>
+              </entryRelationship>
+            </substanceAdministration>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.6"/>
+          <templateId root="2.16.840.1.113883.10.20.22.2.6.1"/>
+          <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="Allergies, adverse reactions, alerts"/>
+          <title>Allergies and Adverse Reactions</title>
+          <text>
+            <list>
+              <item><content ID="al10864600047">Sulfa Drugs</content>; 09/14/2006; <content
+                  ID="al10864600047-r1">Rash</content> (<content ID="al10864600047-sta"
+                  >Active</content>)</item>
+            </list>
+          </text>
+          <entry>
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
+              <id extension="10864600047" root="1.3.6.1.4.1.22812.3.302.3.4.4"/>
+              <id extension="10864600053" root="1.3.6.1.4.1.22812.3.302.3.4.4"/>
+              <code nullFlavor="NA"/>
+              <statusCode code="completed"/>
+              <effectiveTime>
+                <low/>
+                <high/>
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
+                  <id extension="10864600047" root="1.3.6.1.4.1.22812.3.302.3.4.4.2.1"/>
+                  <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+                    code="416098002" displayName="drug allergy"/>
+                  <text>
+                    <reference value="#al10864600047"/>
+                  </text>
+                  <statusCode code="completed"/>
+                  <effectiveTime>
+                    <low value="20060914"/>
+                  </effectiveTime>
+                  <value xsi:type="CD" codeSystem="2.16.840.1.113883.6.96" code="416098002"
+                    displayName="drug allergy"/>
+                  <participant typeCode="CSM">
+                    <participantRole classCode="MANU">
+                      <playingEntity classCode="MMAT">
+                        <code codeSystem="2.16.840.1.113883.6.65" code="87"
+                          codeSystemName="Medispan" displayName="Sulfa Drugs">
+                          <originalText>
+                            <reference value="#al10864600047"/>
+                          </originalText>
+                        </code>
+                        <name>Sulfa Drugs</name>
+                      </playingEntity>
+                    </participantRole>
+                  </participant>
+                  <entryRelationship typeCode="MFST">
+                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6.1"/>
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+                      <id extension="10864600047" root="1.3.6.1.4.1.22812.3.302.3.4.4.1.1"/>
+                      <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                      <text>
+                        <reference value="#al10864600047-r1"/>
+                      </text>
+                      <statusCode code="completed"/>
+                      <effectiveTime>
+                        <low nullFlavor="UNK"/>
+                      </effectiveTime>
+                      <value xsi:type="CD" nullFlavor="UNK">
+                        <originalText>
+                          <reference value="#al10864600047-r1"/>
+                        </originalText>
+                      </value>
+                    </observation>
+                  </entryRelationship>
+                  <entryRelationship typeCode="REFR" inversionInd="false">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.22.4.6"/>
+                      <id extension="10864600047" root="1.3.6.1.4.1.22812.3.302.3.4.4.2.2"/>
+                      <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status"/>
+                      <text>
+                        <reference value="#al10864600047-sta"/>
+                      </text>
+                      <statusCode code="completed"/>
+                      <effectiveTime>
+                        <low nullFlavor="UNK"/>
+                      </effectiveTime>
+                      <value xsi:type="CE" code="55561003" codeSystem="2.16.840.1.113883.6.96"
+                        displayName="Active"/>
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.20"/>
+          <code code="11348-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="Past Medical History"/>
+          <title>Past Medical History</title>
+          <text>
+            <list>
+              <item>
+                <content ID="noPastProb">No Significant Medical History</content>
+              </item>
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
+              <id root="1.3.6.1.4.1.22812.3.42.3.4.1"/>
+              <code nullFlavor="NA"/>
+              <statusCode code="active"/>
+              <effectiveTime>
+                <low nullFlavor="UNK"/>
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+                  <id root="1.3.6.1.4.1.22812.3.42.3.4.1.2.1"/>
+                  <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+                    code="282291009"/>
+                  <text>
+                    <reference value="#noPastProb"/>
+                  </text>
+                  <statusCode code="completed"/>
+                  <effectiveTime>
+                    <low nullFlavor="UNK"/>
+                  </effectiveTime>
+                  <value xsi:type="CD" codeSystem="2.16.840.1.113883.6.96" code="160243008"/>
+                  <entryRelationship typeCode="REFR" inversionInd="false">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.22.4.6"/>
+                      <code code="33999-4" displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+                        codeSystemName="LOINC"/>
+                      <text/>
+                      <statusCode code="completed"/>
+                      <value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                        codeSystemName="SNOMED CT" code="55561003"/>
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.21"/>
+          <code code="42348-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="Advance Directives"/>
+          <title>Advance Directives</title>
+          <text>
+            <list>
+              <item>
+                <content ID="noDirectives">No Advance Directives available.</content>
+              </item>
+            </list>
+          </text>
+          <entry>
+            <observation moodCode="EVN" classCode="OBS">
+              <templateId root="2.16.840.1.113883.10.20.22.4.48"/>
+              <id root="1.1"/>
+              <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" code="78823007">
+                <originalText>
+                  <reference value="#noDirectives"/>
+                </originalText>
+              </code>
+              <text>
+                <reference value="#noDirectives"/>
+              </text>
+              <statusCode code="completed"/>
+              <effectiveTime nullFlavor="UNK">
+                <low nullFlavor="UNK"/>
+                <high nullFlavor="UNK"/>
+              </effectiveTime>
+              <value xsi:type="BL"/>
+              <participant typeCode="CST">
+                <participantRole classCode="AGNT">
+                  <playingEntity>
+                    <name>James Snyickers</name>
+                  </playingEntity>
+                </participantRole>
+              </participant>
+              <entryRelationship typeCode="REFR">
+                <observation classCode="OBS" moodCode="EVN">
+                  <!-- <templateId root="2.16.840.1.113883.10.20.1.37"/> -->
+                  <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CE" code="15240007" codeSystem="2.16.840.1.113883.6.96"
+                    displayName="Current and verified"/>
+                </observation>
+              </entryRelationship>
+            </observation>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.22"/>
+          <code code="46240-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="History of encounters"/>
+          <title>Encounters</title>
+          <text>
+            <list>
+              <item><content ID="enc10362">Result Review</content> 02/05/2012 </item>
+            </list>
+          </text>
+          <entry>
+            <encounter classCode="ENC" moodCode="EVN">
+            <!-- 
+              <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.14"/>
+              <templateId root="2.16.840.1.113883.10.20.1.21"/>
+              <templateId root="2.16.840.1.113883.3.88.11.83.16"/>
+              <templateId root="2.16.840.1.113883.3.88.11.32.17"/>
+             -->
+              <id extension="10362" root="1.3.6.1.4.1.22812.3.302.3.3.4"/>
+              <code codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActEncounterCode">
+                <originalText>
+                  <reference value="#enc10362"/>
+                </originalText>
+              </code>
+              <text>
+                <reference value="#enc10362"/>
+              </text>
+              <effectiveTime>
+                <low value="20120205212742+0000"/>
+                <high value="20120205212840-0500"/>
+              </effectiveTime>
+            </encounter>
+          </entry>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>
+
+]]>
+
+				</ihe:Xml>
+				<ihe:Html>
+
+&lt;html&gt;
+	&lt;body&gt;
+		&lt;h1&gt;You should not see this content&lt;/h1&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+
+				</ihe:Html>
+				<ihe:MimeType>text/xml</ihe:MimeType>
+				<ihe:DocType>CCD</ihe:DocType>
+				<ihe:B64NonXmlBody/>
+				<ihe:MediaType/>
+				<ihe:Id>1.3.6.1.4.1.22812.3.99930.3.1.51556762</ihe:Id>
+				<ihe:SourceID>1.3.6.1.4.1.22812.3.99930.3.3</ihe:SourceID>
+				<ihe:PatientLastName>Biggs</ihe:PatientLastName>
+				<ihe:PatientFirstname>Samantha</ihe:PatientFirstname>
+				<ihe:PatientMiddleName/>
+				<ihe:PatientAddressLine1/>
+				<ihe:PatientAddressLine2/>
+				<ihe:PatientCity/>
+				<ihe:PatientState/>
+				<ihe:PatientZip/>
+				<ihe:PatientSex>M</ihe:PatientSex>
+				<ihe:PatientHomePhone/>
+				<ihe:PatientDOB>20051011</ihe:PatientDOB>
+				<ihe:PatientID>101010063116483</ihe:PatientID>
+			</ihe:CEDDocument>
+		</EncounterData>
+	</MessageContent>
+</AllscriptsMessageEnvelope>
+	</S:Body>
+</S:Envelope>

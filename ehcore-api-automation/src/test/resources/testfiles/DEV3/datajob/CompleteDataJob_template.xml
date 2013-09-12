@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:DataJob xmlns:ns2="http://schema.intuit.com/health/ccd/v1">
+    <DataJobId>13b67b79-7158-4604-ae9d-f221bc8f11cd</DataJobId>
+    <TransmissionStatus>TRANSMISSION_END</TransmissionStatus>
+    <MessageType>ccd</MessageType>
+    <DataChannel>EHDataChannel</DataChannel>
+    <DataFeed>CCDImportDataFeed</DataFeed>
+</ns2:DataJob>

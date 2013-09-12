@@ -1,0 +1,6 @@
+<CCDImport>
+	<SourceDocumentRef>messageId</SourceDocumentRef>
+	<Description>The CCD Exchange Message ID</Description>
+	<IntuitPracticeId>50</IntuitPracticeId>
+	<CCDMessageLength>58641</CCDMessageLength>
+</CCDImport>

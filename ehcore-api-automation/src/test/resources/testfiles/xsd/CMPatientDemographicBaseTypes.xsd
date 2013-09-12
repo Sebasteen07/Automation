@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:eh="http://schema.intuit.com/health/ccd/v1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	targetNamespace="http://schema.intuit.com/health/ccd/v1">
+
+	<xs:simpleType name="MaritalStatusEnum">
+		<xs:annotation>
+			<xs:documentation>
+				Defined set of Marital Statuses in the system
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SINGLE"/>
+			<xs:enumeration value="MARRIED"/>
+			<xs:enumeration value="DIVORCED"/>
+			<xs:enumeration value="SEPARATED"/>
+			<xs:enumeration value="WIDOWED"/>
+			<xs:enumeration value="PARTNER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="RaceEnum">
+		<xs:annotation>
+			<xs:documentation>
+				Reported race.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="American Indian or Alaska Native">
+				<xs:annotation><xs:documentation>CDC Race Code is: 1002-5</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Asian">
+				<xs:annotation><xs:documentation>CDC Race Code is: 2028-9</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Black or African American">
+				<xs:annotation><xs:documentation>CDC Race Code is: 2054-5</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Native Hawaiian or Other Pacific Islander">
+				<xs:annotation><xs:documentation>CDC Race Code is: 2076-8</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="White">
+				<xs:annotation><xs:documentation>CDC Race Code is: 2106-3</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="More than one race">
+				<xs:annotation><xs:documentation>CDC Race Code is: not directly mapped, use Other, 2131-1</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Unreported or refused to report">
+				<xs:annotation><xs:documentation>CDC Race Code is: not directly mapped. leave blank or use Other, 2131-1</xs:documentation></xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="LanguageEnum">
+		<xs:annotation>
+			<xs:documentation>
+				(Preffered) Language Choices
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Arabic">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: ar</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Chinese">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: zh</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="English">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: en</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="French">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: fr</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="German">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: de</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Italian">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: it</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Japanese">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: ja</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Korean">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: ko</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Polish">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: pl</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Portuguese">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: pt</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Russian">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: ru</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Spanish">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: es</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Urdu">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: ur</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vietnamese">
+				<xs:annotation><xs:documentation>ISO 639-1 Code is: vi</xs:documentation></xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="CommunicationMethodEnum">
+		<xs:annotation>
+			<xs:documentation>
+				Preferred means of communication.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="US Mail" />
+			<xs:enumeration value="Secure Email" />
+			<xs:enumeration value="Home Phone" />
+			<xs:enumeration value="Work Phone" />
+			<xs:enumeration value="Mobile Phone" />         
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EthnicityEnum">
+		<xs:annotation>
+			<xs:documentation>
+				Reported ethnic group.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hispanic or Latino">
+				<xs:annotation><xs:documentation>CDC Ehtnicity (Ethnic Group) Code is: 2135-2</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Not Hispanic or Latino">
+				<xs:annotation><xs:documentation>CDC Ehtnicity (Ethnic Group) Code is: 2186-5</xs:documentation></xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Unreported">
+				<xs:annotation><xs:documentation>CDC Ehtnicity (Ethnic Group) Code is: doesn't map. Set CDA code nullFlavor to NASK or UNK</xs:documentation></xs:annotation>
+				
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

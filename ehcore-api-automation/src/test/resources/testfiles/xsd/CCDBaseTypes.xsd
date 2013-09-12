@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:eh="http://schema.intuit.com/health/ccd/v1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	jaxb:version="1.0"
+	targetNamespace="http://schema.intuit.com/health/ccd/v1">
+	<xs:include schemaLocation="CMPrimitiveTypes.xsd"/>
+	<xs:include schemaLocation="CMPatientDemographicBaseTypes.xsd"/>
+	
+	<xs:complexType name="NameValueMap">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="KeyValuePair">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Key" type="xs:string"/>
+						<xs:element name="Value" type="xs:anyType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="PracticeInformation">
+		<xs:annotation>
+			<xs:documentation>The practice information. Includes practice name and contact info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PracticeIdentifier" type="eh:PracticeIdentifiers"/>
+			<xs:element name="PracticeName" type="xs:string"/>
+			<xs:element name="Address" type="eh:AddressInformation" minOccurs="0"/>
+			<xs:element name="Contact" type="eh:ContactPersonal" minOccurs="0"/>
+			<xs:element name="Provider" type="eh:Provider" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<jaxb:property name="ProviderList" />
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PracticeIdentifiers">
+		<xs:sequence>
+			<xs:element name="PracticeId" type="xs:string"/>
+			<xs:element name="IntuitPracticeId" type="eh:UniversalKey" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatientIdentifiers">
+		<xs:sequence>
+			<!-- Up to caller to provide one or both identifiers  -->
+			<xs:element name="PracticePatientId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The Practice system's identifier for this patient</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntuitPatientId" type="eh:UniversalKey" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProviderIdentifiers">
+		<xs:annotation>
+			<xs:documentation>Identifier type for provider (staff)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PracticeProviderId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The Practice's identifier for this provider</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntuitProviderId" type="eh:UniversalKey" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressInformation">
+		<xs:annotation>
+			<xs:documentation>Address information structure for either a person or an organization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Line1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Line2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="City">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="State">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Country" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ZipCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="15"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactPersonal">
+		<xs:annotation>
+			<xs:documentation>Electronic contact informatrion like phones, email  for a person.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ContactName" type="eh:PersonName" minOccurs="0"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+			<xs:element name="Telephone" type="eh:Telephone" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<jaxb:property name="TelephoneList" />
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="relationship" type="xs:string" use="optional" default="SELF"/>
+	</xs:complexType>
+	<xs:complexType name="PatientDemographics">
+		<xs:sequence>
+			<xs:element name="PatientIdentifier" type="eh:PatientIdentifiers">
+				<xs:annotation>
+					<xs:documentation>MRN for EHR systems and Account Number for PMS systems</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="eh:PersonName"/>
+			<xs:element name="Address" type="eh:AddressInformation" minOccurs="0"/>
+			<xs:element name="Contact" type="eh:ContactPersonal" minOccurs="0"/>
+			<xs:element name="Gender" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A code or string indicating the patient’s individual gender or sex
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaritalStatus" type="eh:MaritalStatusEnum" minOccurs="0"/>
+			<xs:element name="Race" type="eh:RaceEnum" minOccurs="0"/>
+			<xs:element name="Ethnicity" type="eh:EthnicityEnum" minOccurs="0"/>
+			<xs:element name="Language" type="eh:LanguageEnum" minOccurs="0"/>
+			<xs:element name="PreferredCommunicationMethod" type="eh:CommunicationMethodEnum" minOccurs="0"/>
+			<xs:element name="DateOfBirth" type="eh:Calendar" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Patient DOB</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Telephone">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>
+					The "Type" specifier and number are required.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:element name="Type" type="eh:TelephoneTypeEnum"/>
+			<xs:element name="Number" type="eh:Phone"/>
+			<xs:element name="Primary" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Device">
+		<xs:annotation>
+			<xs:documentation>Used for identifying devices that interact with the web service.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DeviceArguments" type="eh:NameValueMap" minOccurs="0" maxOccurs="15">
+				<xs:annotation>
+					<xs:documentation>Fields used for sending any additional information that may be required by the reciever. (Supports custom implementations.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="deviceName" type="eh:String64" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of the interface software sending message.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="deviceVersion" type="eh:String64" use="required">
+			<xs:annotation>
+				<xs:documentation>Version of the interface software sending message.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="deviceLocalTime" type="xs:dateTime">
+			<xs:annotation>
+				<xs:documentation>Current local date/time as identified by the Sender.	</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="deviceUTCTime" type="xs:dateTime">
+			<xs:annotation>
+				<xs:documentation>Current UTC date/time as identified by the Sender.	</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="vendorName"/>
+	</xs:complexType>
+	
+	<xs:complexType name="Provider">
+		<xs:annotation>
+			<xs:documentation>Describes the provider's information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" type="eh:String256" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Describes provider as rendering, billing, payTo, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProviderIdentifier" type="eh:ProviderIdentifiers">
+				<xs:annotation>
+					<xs:documentation>Pair of identifiers for this particular provider.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Demographics" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OrganizationName" type="eh:String256" minOccurs="0"/>
+						<xs:element name="Contact" type="eh:ContactPersonal" minOccurs="0"/>
+						<xs:element name="Address" type="eh:AddressInformation" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CcdDataJob">
+		<xs:sequence>
+			<xs:element name="DataJobId" type="xs:string"/>
+			<xs:element name="Memo" type="xs:string" minOccurs="0"/>
+			<xs:element name="DataJobType" type="eh:DataJobEnum" minOccurs="0"/>
+			<xs:element name="RecordNum" type="xs:string" minOccurs="0"/>
+			<xs:element name="TotalRecords" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PersonName">
+		<!-- NOTE: This element has been harmonized with Hub CM and RWSDK. -->
+		<xs:annotation>
+			<xs:documentation>PersonName
+				Person Name should be set in one of two (mutually-exclusive) ways:
+				1) First and Last names (required) with middle name, prefix and suffix are optional
+				2) Full name string.
+				One of those two choices is required ("null flavor" does not apply). Any enclosing
+				class/type will make the person name itself optional if it may be omitted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="FullName" type="xs:string"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="Prefix" type="xs:string" minOccurs="0"/>
+				<xs:element name="FirstName" type="xs:string" minOccurs="1"/>
+				<xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+				<xs:element name="LastName" type="xs:string" minOccurs="1"/>
+				<xs:element name="Suffix" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:complexType name="CcdMessageHeaders">
+		<xs:sequence>
+			<xs:element name="Sender" type="eh:Device"/>
+			<xs:element name="Partner" type="eh:Device" minOccurs="0"/>
+			<xs:element name="Destination" type="eh:Device" minOccurs="0"/>
+			<xs:element name="LastUpdated" type="xs:dateTime"/>
+			<!--  This is message id generated by either partner or adapter --> 
+			<xs:element name="MessageId" type="xs:string"/>
+			<!-- This datajob will either be created by partner or we will create it implicitly in adapter  This will contain information to track how many messages have been processed and how many left -->
+			<xs:element name="DataJob" type="eh:CcdDataJob"/>
+			
+			<xs:element name="RoutingMap" type="eh:NameValueMap" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:simpleType name="TelephoneTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HOME"/>
+			<xs:enumeration value="WORK"/>
+			<xs:enumeration value="MOBILE"/>
+			<xs:enumeration value="PAGER"/>         
+			<xs:enumeration value="FAX"/>
+			<xs:enumeration value="BILLING"/>
+			<xs:enumeration value="EMERGENCY_CONTACT"/>
+			<xs:enumeration value="UNKNOWN"/>           
+		</xs:restriction>
+	</xs:simpleType> 
+	
+	<xs:simpleType name="DataJobEnum">
+		<xs:annotation>
+			<xs:documentation>Enumeration for datajob like Push, Batch, onDemand etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="batch"/>
+			<xs:enumeration value="onDemand"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="UniversalKey">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Phone">
+		<xs:annotation>
+			<xs:documentation>Used for validating phone data</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="String64">
+		<xs:annotation>
+			<xs:documentation>Used for validating string data</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="String256">
+		<xs:annotation>
+			<xs:documentation>Used for validating string data</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

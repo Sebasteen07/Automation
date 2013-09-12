@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:eh="http://schema.intuit.com/health/ccd/v1" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0"
+	targetNamespace="http://schema.intuit.com/health/ccd/v1">
+	<xs:include schemaLocation="CCDBaseTypes.xsd"/>
+	
+	<xs:element name="CcdExchange">
+    <!-- This seems to be the only way to get the @XmlRootElement annotation? -->	
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>It contains CCD along with meta data information</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="CcdMessageHeaders" type="eh:CcdMessageHeaders"/>
+				<xs:element name="PatientDemographics" type="eh:PatientDemographics"/>
+				<xs:element name="PracticeInformation" type="eh:PracticeInformation"/>
+				<xs:element name="Ccd">
+					<xs:complexType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jaxb:class name="CCD" />
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="CcdXml" type="xs:string"/>
+							<xs:element name="Attachment" type="xs:base64Binary" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:appinfo>
+										<jaxb:property name="Attachments" />
+									</xs:appinfo>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>	
+</xs:schema>

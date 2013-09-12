@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-qa-parent-pom</artifactId>
+		<version>ihg-depot-trunk-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.intuit.ihg</groupId>
+	<artifactId>ehcore-api-automation</artifactId>
+	<version>ihg-depot-trunk-SNAPSHOT</version>
+	<name>ehcore-api-automation</name>
+	<description>Ehcore Api Automation</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>ihg-depot-trunk-SNAPSHOT</ihg.version>
+		<dcf-version>ihg-depot-trunk-SNAPSHOT</dcf-version>
+		<eh-core-version>ihg-depot-trunk-SNAPSHOT</eh-core-version>
+		<messages-version>ihg-depot-trunk-SNAPSHOT</messages-version>
+		<keyreg-client-version>ihg-depot-trunk-SNAPSHOT</keyreg-client-version>
+		<resteasy-version>2.2.2.GA</resteasy-version>
+		<codification-version>12.2.0.4</codification-version>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
+			 <exclusions>
+				<exclusion>
+               <groupId>org.apache.commons</groupId>
+                 <artifactId>commons-io</artifactId>
+               </exclusion>
+		</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-common</artifactId>
+			<version>${dcf-version}</version>
+		 <exclusions>
+				<exclusion>
+               <groupId>org.apache.commons</groupId>
+                 <artifactId>commons-io</artifactId>
+               </exclusion>
+		</exclusions>
+			
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-client-bootstrap</artifactId>
+			<version>${dcf-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.api.security</groupId>
+			<artifactId>oauth-core-client</artifactId>
+			<version>${dcf-version}</version>
+			 <exclusions>
+				<exclusion>
+               <groupId>org.apache.commons</groupId>
+                 <artifactId>commons-io</artifactId>
+               </exclusion>
+		</exclusions>
+			
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.internal.objectstore</groupId>
+			<artifactId>object-store-client</artifactId>
+			<version>1.3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.7</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- Kavitha's ccd project START -->
+		<!-- Allscripts Dependencies START -->
+
+		<dependency>
+			<groupId>com.allscripts</groupId>
+			<artifactId>connecthub-pojos</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.allscripts</groupId>
+			<artifactId>connecthub-schemas</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.allscripts</groupId>
+			<artifactId>connecthub-stubs</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.health.eh.adapters</groupId>
+			<artifactId>allscripts-ehr-adapter-dto</artifactId>
+			<version>ihg-depot-trunk-SNAPSHOT</version>
+		</dependency>
+		<!-- Allscripts Dependencies END -->
+		
+		<!-- Message Hub Publisher dependencies START -->
+		<dependency>
+			<groupId>com.intuit.qhg.hub.schemas</groupId>
+			<artifactId>Messages</artifactId>
+			<version>${messages-version}</version>
+			<type>jar</type>
+		</dependency>
+		<!-- Message Hub Publisher dependencies END -->
+
+		<!-- Codification Dependency Start -->
+		<dependency>
+			<groupId>com.intuit.health</groupId>
+			<artifactId>codification-client</artifactId>
+			<version>${codification-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.health</groupId>
+			<artifactId>codification-dto</artifactId>
+			<version>${codification-version}</version>
+		</dependency>
+		<!-- Codification Dependency End -->
+		<!-- Key Registry Dependency Start -->
+		<dependency>
+			<groupId>com.intuit.internal.keyregistry.client</groupId>
+			<artifactId>kr-client</artifactId>
+			<version>${keyreg-client-version}</version>
+			<exclusions>
+
+				<exclusion>
+					<artifactId>jcl-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- DataChannelFramework dependency START -->
+		<dependency>
+			<groupId>com.intuit.framework.dc</groupId>
+			<artifactId>datachannel-framework-core</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>jcl-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.framework.dc.services.objstore</groupId>
+			<artifactId>datachannel-framework-services-objstore</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>xmlmanipulationengine</artifactId>
+					<groupId>com.intuit.internal.core.common</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.framework.dc.services.tracking</groupId>
+			<artifactId>datachannel-framework-services-tracking</artifactId>
+			<version>${dcf-version}</version>
+			<type>jar</type>
+		</dependency>
+		<!-- DataChannelFramework dependency END -->
+		<!-- IHG internal dependencies START -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>jdbc</artifactId>
+			<version>11g</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<!-- RESTEasy dependency START -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${resteasy-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-httpclient</groupId>
+					<artifactId>commons-httpclient</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>
+			<version>${resteasy-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxb-provider</artifactId>
+			<version>${resteasy-version}</version>
+		</dependency>
+		<!-- RESTEasy dependency END -->
+
+		<!-- EH-CORE dependency START -->
+		<dependency>
+			<groupId>com.intuit.eh.core</groupId>
+			<artifactId>eh-core-dto</artifactId>
+			<version>${eh-core-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.eh.core</groupId>
+			<artifactId>eh-core-services</artifactId>
+			<version>${eh-core-version}</version>
+		</dependency>
+		<!-- EH-CORE dependency END -->
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<configuration>
+							<failBuild>false</failBuild>
+							<!--<groups>${testGroups}</groups> -->
+							<suiteXmlFiles>
+								<suiteXmlFile>ehcore-api-automation.xml</suiteXmlFile>
+							</suiteXmlFiles>
+							<systemPropertyVariables>
+								<testRoot>${basedir}</testRoot>
+								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
+								<testResultScreenshots>true</testResultScreenshots>
+								<testResultVideos>true</testResultVideos>
+							</systemPropertyVariables>
+							<properties>
+								<usedefaultlisteners>false</usedefaultlisteners>
+								<workingDirectory>target/surefire-reports/</workingDirectory>
+							</properties>
+						</configuration>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					 <outputDirectory>target/autolab</outputDirectory>
+				<archive>
+						<manifest>
+							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/test-classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/test/resources/testfiles/${execution.env}</directory>
+							   </resource>
+						</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

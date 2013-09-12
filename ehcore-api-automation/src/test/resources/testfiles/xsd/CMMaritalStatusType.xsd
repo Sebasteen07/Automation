@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:eh="http://schema.intuit.com/health/ccd/v1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	targetNamespace="http://schema.intuit.com/health/ccd/v1">
+
+	<xs:simpleType name="MaritalStatusEnum">
+		<xs:annotation>
+			<xs:documentation>
+				Defined set of Marital Statuses in the system
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SINGLE"/>
+			<xs:enumeration value="MARRIED"/>
+			<xs:enumeration value="DIVORCED"/>
+			<xs:enumeration value="SEPARATED"/>
+			<xs:enumeration value="WIDOWED"/>
+			<xs:enumeration value="PARTNER"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

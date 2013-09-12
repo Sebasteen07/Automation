@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:DataJob xmlns:ns2="http://schema.intuit.com/health/ccd/v1">
+    <FileName>""</FileName>
+    <TransmissionStatus>INIT</TransmissionStatus>
+    <MessageType>""</MessageType>
+    <DataChannel>""</DataChannel>
+    <DataFeed>""</DataFeed>
+    <DataSource>""</DataSource>
+    <DataPartner>""</DataPartner>
+</ns2:DataJob>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eh="http://schema.intuit.com/health/ccd/v1" xmlns="http://schema.intuit.com/health/ccd/v1"
+	targetNamespace="http://schema.intuit.com/health/ccd/v1" elementFormDefault="unqualified"
+	attributeFormDefault="unqualified">
+	<xs:element name="ProcessingResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DataJobId" type="xs:string" minOccurs="0" />
+				<xs:element name="MessageId" type="xs:string" minOccurs="0" />
+				<xs:element name="ProcessingStatus" type="xs:string" minOccurs="1"/>
+				<xs:element name="ResponseMessage" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

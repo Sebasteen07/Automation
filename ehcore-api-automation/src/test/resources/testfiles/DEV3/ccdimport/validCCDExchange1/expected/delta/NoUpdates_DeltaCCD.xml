@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<eh:SimpleCcdExchange
+	xsi:schemaLocation="http://schema.intuit.com/health/ccd/v1 SimpleCcdExchange.xsd"
+	xmlns:eh="http://schema.intuit.com/health/ccd/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<CcdMessageHeaders>
+		<Sender vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>_IGNORE_</Key>
+					<Value>SenderValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Sender>
+		<Partner vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>PartnerKey</Key>
+					<Value>PartnerValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Partner>
+		<Destination vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>DestinationKey</Key>
+					<Value>DestinationValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Destination>
+		<LastUpdated>2001-12-31T12:00:00</LastUpdated>
+		<MessageId>messageId</MessageId>
+		<DataJob>
+			<DataJobId>0</DataJobId>
+		</DataJob>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>CDATypeEnum</Key>
+				<Value xsi:type="xs:string">C32_CCD</Value>
+			</KeyValuePair>
+		</RoutingMap>
+	</CcdMessageHeaders>
+	<PatientDemographics>
+		<PatientIdentifier>
+			<PracticePatientId>28121001</PracticePatientId>
+			<IntuitPatientId>_IGNORE_</IntuitPatientId>
+		</PatientIdentifier>
+		<Name>
+			<Prefix>Mrs</Prefix>
+			<FirstName>Barbara</FirstName>
+			<MiddleName>m</MiddleName>
+			<LastName>Simpson</LastName>
+			<Suffix>x</Suffix>
+		</Name>
+		<Address>
+			<Line1>996 Dalton St</Line1>
+			<Line2>Mailstop 1501172</Line2>
+			<City>Fargo</City>
+			<State>ND</State>
+			<Country>USA</Country>
+			<ZipCode>94043</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<Prefix>Mrs</Prefix>
+				<FirstName>Barbara</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>Simpson</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Barbara.simpson@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1212</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-5555</Number>
+			</Telephone>
+		</Contact>
+		<Gender>F</Gender>
+		<DateOfBirth>_IGNORE_</DateOfBirth>
+	</PatientDemographics>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>00000000000000099930</PracticeId>
+			<IntuitPracticeId>_IGNORE_</IntuitPracticeId>
+		</PracticeIdentifier>
+		<PracticeName>Medfusion CCD Test</PracticeName>
+		<Address>
+			<Line1>25 GREEN MOUNTAIN DR</Line1>
+			<Line2>address2</Line2>
+			<City>BURLINGTON</City>
+			<State>VT</State>
+			<Country>USA</Country>
+			<ZipCode>94620</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<FirstName>Robert</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>James</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Robert_James@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1515</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-7777</Number>
+			</Telephone>
+		</Contact>
+		<Provider>
+			<Role>Prescribing clinician</Role>
+			<ProviderIdentifier>
+				<PracticeProviderId>91171</PracticeProviderId>
+				<IntuitProviderId>_IGNORE_</IntuitProviderId>
+			</ProviderIdentifier>
+			<Demographics>
+				<Contact>
+					<ContactName>
+						<FirstName>Robert</FirstName>
+						<MiddleName>m</MiddleName>
+						<LastName>James</LastName>
+						<Suffix>x</Suffix>
+					</ContactName>
+					<Email>Robert_James@mailinator.com</Email>
+					<Telephone>
+						<Type>HOME</Type>
+						<Number>650-944-1616</Number>
+					</Telephone>
+					<Telephone>
+						<Type>WORK</Type>
+						<Number>650-944-9999</Number>
+					</Telephone>
+				</Contact>
+				<Address>
+					<Line1>25 GREEN MOUNTAIN DR</Line1>
+					<Line2>address2</Line2>
+					<City>BURLINGTON</City>
+					<State>VT</State>
+					<Country>USA</Country>
+					<ZipCode>94620</ZipCode>
+				</Address>
+			</Demographics>
+		</Provider>
+	</PracticeInformation>
+	<SimpleCcdWithAttachments>
+		<Source>
+			<Channel>
+				<ID>EH</ID>
+				<DocumentRef>_IGNORE_</DocumentRef>
+				<ClinicalDocumentType>C32_CCD</ClinicalDocumentType>
+			</Channel>
+			<OtherSourceInformation>Janell Carlson at MyWay Practice QA_Test002
+			</OtherSourceInformation>
+		</Source>
+		<Informant>
+			<Id>
+				<Root>2.16.840.1.113883.4.6</Root>
+				<Extension>1114001559</Extension>
+			</Id>
+			<Name>
+				<FirstName>Janell</FirstName>
+				<LastName>Carlson</LastName>
+			</Name>
+			<OrganizationName>MyWay Practice QA_Test002</OrganizationName>
+		</Informant>
+		<Summary>No changes</Summary>
+		<CcdXml>
+			<AllergyList />
+			<MedicationList />
+			<ImmunizationList />
+			<ProblemList />
+			<TestResultList />
+			<ProcedureList />
+			<VitalSignList />
+			<SocialHistoryList />
+		</CcdXml>
+	</SimpleCcdWithAttachments>
+</eh:SimpleCcdExchange>

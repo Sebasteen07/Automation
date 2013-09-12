@@ -1,0 +1,1382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+                <S:Header />
+                <S:Body>
+                                <AllscriptsMessageEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                                xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://Allscripts.com/UAI/Schemas/2010/02/15">
+                                                <MessageDispatchHeader>
+                                                    <ID xmlns="">7a66873b-bfad-4c64-9c0f-5208e1bffbab</ID>
+                                                                <Noun xmlns="">Encounter</Noun>
+                                                                <Verb xmlns="">Completed</Verb>
+                                                                <TimeStamp xmlns="">01/10/2011 12:00:00 PM</TimeStamp>
+                                                                <Originator xmlns="" />
+                                                                <Destination xmlns="" />
+                                                </MessageDispatchHeader>
+                                                <EntityContext>
+                                                                <KeyedValues>
+                                                                                <KeyedValue>
+                                                                                                <Key>AccountID</Key>
+                                                                                                <Value>00000000000000099930</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>PatientID</Key>
+                                                                                                <Value>110105160433377</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>ProviderID</Key>
+                                                                                                <Value>91171</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>UserID</Key>
+                                                                                                <Value>91171</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>DestinationID</Key>
+                                                                                                <Value>Intuit</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>DestinationSiteID</Key>
+                                                                                                <Value>50</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>ReplyToMessageID</Key>
+                                                                                                <Value>0</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>DocumentID</Key>
+                                                                                                <Value>0</Value>
+                                                                                </KeyedValue>
+                                                                                <KeyedValue>
+                                                                                                <Key>ProductID</Key>
+                                                                                                <Value>EEHR</Value>
+                                                                                </KeyedValue>
+                                                                </KeyedValues>
+                                                </EntityContext>
+                                                <MessageContent xmlns="">
+                                                                <EncounterData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                                                                xmlns:xsd="http://www.w3.org/2001/XMLSchema" SchemaName="EncounterData"
+                                                                                xmlns="urn:Allscripts:Hub:PatientMsg">
+                                                                                <PatientMsgBase ReceiptRequired="true">
+                                                                                    <MessageID xmlns="urn:Allscripts:mombt">6766873a-dfcd-4c64-9c0f-5208e1bfbfb9</MessageID>
+                                                                                                <ReplyToMessageID xmlns="urn:Allscripts:mombt" />
+                                                                                                <Patient xmlns="urn:Allscripts:mombt">
+                                                                                                                <Mrn>110105160433377</Mrn>
+                                                                                                                <IDs>
+                                                                                                                                <CodeValue>43185</CodeValue>
+                                                                                                                                <CodeDescription>Intuit Patient ID</CodeDescription>
+                                                                                                                                <CodeType>Id</CodeType>
+                                                                                                                                <CodingSystem>Intuit</CodingSystem>
+                                                                                                                </IDs>
+                                                                                                </Patient>
+                                                                                                <Provider xmlns="urn:Allscripts:mombt">
+                                                                                                                <IDs>
+                                                                                                                                <CodeValue>91171</CodeValue>
+                                                                                                                                <CodeDescription>EEHR Provider ID</CodeDescription>
+                                                                                                                                <CodeType>EEHR</CodeType>
+                                                                                                                                <CodingSystem>Allscripts</CodingSystem>
+                                                                                                                </IDs>
+                                                                                                                <IDs>
+                                                                                                                                <CodeValue>57</CodeValue>
+                                                                                                                                <CodeDescription>Intuit Provider ID</CodeDescription>
+                                                                                                                                <CodeType>Id</CodeType>
+                                                                                                                                <CodingSystem>Intuit</CodingSystem>
+                                                                                                                </IDs>
+                                                                                                </Provider>
+                                                                                </PatientMsgBase>
+                                                                                <ihe:CEDDocument xmlns:ihe="urn:Allscripts:ihe">
+                                                                                                <ihe:Xml>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+    &lt;realmCode code="US"/&gt;
+    &lt;typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/&gt;
+    &lt;templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"/&gt;
+    &lt;templateId extension="Medical Summary" root="1.3.6.1.4.1.19376.1.5.3.1.1.2"/&gt;
+    &lt;templateId extension="Referral Summary" root="1.3.6.1.4.1.19376.1.5.3.1.1.3"/&gt;
+    &lt;templateId root="2.16.840.1.113883.10.20.1"/&gt;
+    &lt;templateId root="2.16.840.1.113883.10.20.3"/&gt;
+    &lt;templateId root="2.16.840.1.113883.3.88.11.32.1"/&gt;
+    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1"/&gt;
+    &lt;id extension="1087242" root="1.3.6.1.4.1.22812.3.301.3.1"/&gt;
+    &lt;code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+        displayName="SUMMARIZATION OF EPISODE NOTE"/&gt;
+    &lt;title&gt;New World Health Medical Summary&lt;/title&gt;
+    &lt;effectiveTime value="20110930145004-0400"/&gt;
+    &lt;confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/&gt;
+    &lt;languageCode code="en-US"/&gt;
+    &lt;recordTarget&gt;
+        &lt;patientRole&gt;
+            &lt;id extension="110105160433377" root="1.3.6.1.4.1.22812.3.301.3.3.2"/&gt;
+            &lt;addr&gt;
+                &lt;streetAddressLine&gt;684 Prospect Avenue&lt;/streetAddressLine&gt;
+                &lt;city&gt;Burlington&lt;/city&gt;
+                &lt;state&gt;VT&lt;/state&gt;
+                &lt;postalCode&gt;05480&lt;/postalCode&gt;
+                &lt;country&gt;US&lt;/country&gt;
+            &lt;/addr&gt;
+            &lt;telecom value="tel:+1-(315)789-1298" use="HP"/&gt;
+            &lt;patient&gt;
+                &lt;name&gt;
+                    &lt;given&gt;Steve&lt;/given&gt;
+                    &lt;family&gt;Reynolds&lt;/family&gt;
+                &lt;/name&gt;
+                &lt;administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/&gt;
+                &lt;birthTime value="19550415"/&gt;
+                &lt;maritalStatusCode codeSystem="2.16.840.1.113883.5.2" code="M" displayName="Married"/&gt;
+                &lt;languageCommunication&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.32.2"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.1"/&gt;
+                    &lt;languageCode nullFlavor="UNK"/&gt;
+                &lt;/languageCommunication&gt;
+            &lt;/patient&gt;
+            &lt;providerOrganization&gt;
+                &lt;id extension="3" root="1.3.6.1.4.1.22812.3.301.3"/&gt;
+                &lt;name&gt;New World Health&lt;/name&gt;
+                &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+                &lt;addr&gt;
+                    &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                    &lt;city&gt;South Burlington&lt;/city&gt;
+                    &lt;state&gt;VT&lt;/state&gt;
+                    &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                    &lt;country&gt;US&lt;/country&gt;
+                &lt;/addr&gt;
+            &lt;/providerOrganization&gt;
+        &lt;/patientRole&gt;
+    &lt;/recordTarget&gt;
+    &lt;author&gt;
+        &lt;time value="20110930145004-0400"/&gt;
+        &lt;assignedAuthor&gt;
+            &lt;id extension="0099887766" root="2.16.840.1.113883.4.6"/&gt;
+            &lt;code code="SELF" codeSystem="2.16.840.1.113883.5.111" displayName="Self"
+                codeSystemName="RoleCode"/&gt;
+            &lt;addr nullFlavor="UNK"/&gt;
+            &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+            &lt;assignedPerson&gt;
+                &lt;name&gt;
+                    &lt;given&gt;Stacey&lt;/given&gt;
+                    &lt;family&gt;Springsteen&lt;/family&gt;
+                &lt;/name&gt;
+            &lt;/assignedPerson&gt;
+        &lt;/assignedAuthor&gt;
+    &lt;/author&gt;
+    &lt;author&gt;
+        &lt;time value="20110930145004-0400"/&gt;
+        &lt;assignedAuthor&gt;
+            &lt;id extension="3" root="1.3.6.1.4.1.22812.3.301.3.3.3"/&gt;
+            &lt;addr&gt;
+                &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                &lt;city&gt;South Burlington&lt;/city&gt;
+                &lt;state&gt;VT&lt;/state&gt;
+                &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                &lt;country&gt;US&lt;/country&gt;
+            &lt;/addr&gt;
+            &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+            &lt;assignedAuthoringDevice&gt;
+                &lt;softwareName&gt;Enterprise EHR 11.200.4078.19879&lt;/softwareName&gt;
+            &lt;/assignedAuthoringDevice&gt;
+            &lt;representedOrganization&gt;
+                &lt;id extension="3" root="1.3.6.1.4.1.22812.3.301.3"/&gt;
+                &lt;name&gt;New World Health&lt;/name&gt;
+                &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+                &lt;addr&gt;
+                    &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                    &lt;city&gt;South Burlington&lt;/city&gt;
+                    &lt;state&gt;VT&lt;/state&gt;
+                    &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                    &lt;country&gt;US&lt;/country&gt;
+                &lt;/addr&gt;
+            &lt;/representedOrganization&gt;
+        &lt;/assignedAuthor&gt;
+    &lt;/author&gt;
+    &lt;custodian&gt;
+        &lt;assignedCustodian&gt;
+            &lt;representedCustodianOrganization&gt;
+                &lt;id extension="3" root="1.3.6.1.4.1.22812.3.301.3"/&gt;
+                &lt;name&gt;New World Health&lt;/name&gt;
+                &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+                &lt;addr&gt;
+                    &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                    &lt;city&gt;South Burlington&lt;/city&gt;
+                    &lt;state&gt;VT&lt;/state&gt;
+                    &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                    &lt;country&gt;US&lt;/country&gt;
+                &lt;/addr&gt;
+            &lt;/representedCustodianOrganization&gt;
+        &lt;/assignedCustodian&gt;
+    &lt;/custodian&gt;
+    &lt;informationRecipient&gt;
+        &lt;intendedRecipient&gt;
+            &lt;id extension="3" root="1.3.6.1.4.1.22812.3.301.3.3.1"/&gt;
+            &lt;addr&gt;
+                &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                &lt;city&gt;South Burlington&lt;/city&gt;
+                &lt;state&gt;VT&lt;/state&gt;
+                &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                &lt;country&gt;US&lt;/country&gt;
+            &lt;/addr&gt;
+            &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+            &lt;receivedOrganization&gt;
+                &lt;name&gt;New World Health&lt;/name&gt;
+                &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+                &lt;addr&gt;
+                    &lt;streetAddressLine&gt;25 Green Mountain Drive&lt;/streetAddressLine&gt;
+                    &lt;city&gt;South Burlington&lt;/city&gt;
+                    &lt;state&gt;VT&lt;/state&gt;
+                    &lt;postalCode&gt;05403&lt;/postalCode&gt;
+                    &lt;country&gt;US&lt;/country&gt;
+                &lt;/addr&gt;
+            &lt;/receivedOrganization&gt;
+        &lt;/intendedRecipient&gt;
+    &lt;/informationRecipient&gt;
+    &lt;authenticator&gt;
+        &lt;time value="20110930145004-0400"/&gt;
+        &lt;signatureCode code="S"/&gt;
+        &lt;assignedEntity&gt;
+            &lt;id extension="306" root="1.3.6.1.4.1.22812.3.301.3.3.2"/&gt;
+            &lt;addr nullFlavor="UNK"/&gt;
+            &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+            &lt;assignedPerson&gt;
+                &lt;name&gt;
+                    &lt;given&gt;Stacey&lt;/given&gt;
+                    &lt;family&gt;Springsteen&lt;/family&gt;
+                &lt;/name&gt;
+            &lt;/assignedPerson&gt;
+        &lt;/assignedEntity&gt;
+    &lt;/authenticator&gt;
+    &lt;participant typeCode="IND"&gt;
+        &lt;templateId root="2.16.840.1.113883.3.88.11.32.3"/&gt;
+        &lt;templateId root="2.16.840.1.113883.3.88.11.83.3"/&gt;
+        &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.4"/&gt;
+        &lt;time value="20110930145004-0400"/&gt;
+        &lt;associatedEntity classCode="CAREGIVER"&gt;
+            &lt;id root="1.3.6.1.4.1.22812.3.301.3.3.2.1"/&gt;
+            &lt;code code="FRND" displayName=" Unrelated Friend" codeSystem="2.16.840.1.113883.5.111"
+                codeSystemName="RoleCode"/&gt;
+            &lt;addr nullFlavor="UNK"/&gt;
+            &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+            &lt;associatedPerson&gt;
+                &lt;name&gt;
+                    &lt;given&gt;James&lt;/given&gt;
+                    &lt;family&gt;Medici&lt;/family&gt;
+                &lt;/name&gt;
+            &lt;/associatedPerson&gt;
+        &lt;/associatedEntity&gt;
+    &lt;/participant&gt;
+    &lt;documentationOf&gt;
+        &lt;serviceEvent classCode="PCPR"&gt;
+            &lt;effectiveTime&gt;
+                &lt;low value="20110930145004+0000"/&gt;
+                &lt;high value="20110930145004-0400"/&gt;
+            &lt;/effectiveTime&gt;
+            &lt;performer typeCode="PRF"&gt;
+                &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/&gt;
+                &lt;templateId root="2.16.840.1.113883.3.88.11.32.4"/&gt;
+                &lt;templateId root="2.16.840.1.113883.3.88.11.83.4"/&gt;
+                &lt;functionCode code="PP" codeSystem="2.16.840.1.113883.12.443"/&gt;
+                &lt;time&gt;
+                    &lt;low/&gt;
+                    &lt;high/&gt;
+                &lt;/time&gt;
+                &lt;assignedEntity&gt;
+                    &lt;id extension="1234567890" root="2.16.840.1.113883.4.6"/&gt;
+                    &lt;code code="260000000X" codeSystem="2.16.840.1.113883.6.101"
+                        codeSystemName="ProviderCodes"
+                        displayName="Ambulatory Health Care Facilities"/&gt;
+                    &lt;addr nullFlavor="UNK"/&gt;
+                    &lt;telecom value="tel:+1-(802)985-1234" use="WP"/&gt;
+                    &lt;assignedPerson&gt;
+                        &lt;name&gt;
+                            &lt;given&gt;James&lt;/given&gt;
+                            &lt;family&gt;Medici&lt;/family&gt;
+                        &lt;/name&gt;
+                    &lt;/assignedPerson&gt;
+                &lt;/assignedEntity&gt;
+            &lt;/performer&gt;
+            &lt;performer typeCode="PPRF"&gt;
+                &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/&gt;
+                &lt;time&gt;
+                    &lt;low/&gt;
+                    &lt;high/&gt;
+                &lt;/time&gt;
+                &lt;assignedEntity classCode="ASSIGNED"&gt;
+                    &lt;id extension="600" root="1.3.6.1.4.1.22812.3.301.3.3.6"/&gt;
+                    &lt;code code="PHARMACY" codeSystem="1.3.5.1.4.1.19376.1.5.3.3"
+                        codeSystemName="IHERoleCode"/&gt;
+                    &lt;addr&gt;
+                        &lt;streetAddressLine&gt;982 South St&lt;/streetAddressLine&gt;
+                        &lt;city&gt;Burlington&lt;/city&gt;
+                        &lt;state&gt;VT&lt;/state&gt;
+                        &lt;postalCode&gt;05401&lt;/postalCode&gt;
+                        &lt;country&gt;US&lt;/country&gt;
+                    &lt;/addr&gt;
+                    &lt;telecom value="tel:+1-(802)555-6666" use="WP"/&gt;
+                    &lt;representedOrganization&gt;
+                        &lt;name&gt;Walgreens Center City&lt;/name&gt;
+                        &lt;telecom value="tel:+1-(802)555-6666" use="WP"/&gt;
+                        &lt;addr&gt;
+                            &lt;streetAddressLine&gt;982 South St&lt;/streetAddressLine&gt;
+                            &lt;city&gt;Burlington&lt;/city&gt;
+                            &lt;state&gt;VT&lt;/state&gt;
+                            &lt;postalCode&gt;05401&lt;/postalCode&gt;
+                            &lt;country&gt;US&lt;/country&gt;
+                        &lt;/addr&gt;
+                    &lt;/representedOrganization&gt;
+                &lt;/assignedEntity&gt;
+            &lt;/performer&gt;
+        &lt;/serviceEvent&gt;
+    &lt;/documentationOf&gt;
+    &lt;componentOf&gt;
+        &lt;encompassingEncounter&gt;
+            &lt;id extension="8738" root="1.3.6.1.4.1.22812.3.301.3.3.4"/&gt;
+            &lt;effectiveTime&gt;
+                &lt;low value="20110930145004+0000"/&gt;
+                &lt;high value="20110930145004-0400"/&gt;
+            &lt;/effectiveTime&gt;
+        &lt;/encompassingEncounter&gt;
+    &lt;/componentOf&gt;
+    &lt;component&gt;
+        &lt;structuredBody&gt;
+            &lt;templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"/&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.1"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.4.8"/&gt;
+                    &lt;code code="42349-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Reason for Referral"/&gt;
+                    &lt;title&gt;Reason for Referral&lt;/title&gt;
+                    &lt;text&gt;No Reason for Referral was given.&lt;/text&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.4"/&gt;
+                    &lt;code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="HPI"/&gt;
+                    &lt;title&gt;History of Present Illness&lt;/title&gt;
+                    &lt;text&gt;No HPI available.&lt;/text&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.11"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.6"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.103"/&gt;
+                    &lt;code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Problem list"/&gt;
+                    &lt;title&gt;Problems&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="pr10755100001"&gt;Asthma&lt;/content&gt; (&lt;content
+                                    ID="pr10755100001-sta"&gt;Active&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;&lt;content ID="pr10755000000"&gt;Normal Routine History And Physical
+                                    Adult&lt;/content&gt; (&lt;content ID="pr10755000000-sta"
+                                    &gt;Active&lt;/content&gt;) &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;act classCode="ACT" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.27"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.7"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.7"/&gt;
+                            &lt;id extension="10755100001" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100027" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="active"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100001" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100027" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#pr10755100001"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD" nullFlavor="UNK"&gt;
+                                        &lt;translation xsi:type="CD" code="493.90"
+                                            codeSystem="2.16.840.1.113883.6.103"
+                                            codeSystemName="ICD-9" displayName="Asthma"/&gt;
+                                        &lt;translation xsi:type="CD" code="32881"
+                                            codeSystem="2.16.840.1.113883.6.26"
+                                            codeSystemName="Medcin" displayName="Asthma"/&gt;
+                                    &lt;/value&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#pr10755100001-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/act&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;act classCode="ACT" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.27"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.7"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.7"/&gt;
+                            &lt;id extension="10755000000" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10861400037" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="active"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755000000" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10861400037" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#pr10755000000"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD" nullFlavor="UNK"&gt;
+                                        &lt;translation xsi:type="CD" code="V70.0"
+                                            codeSystem="2.16.840.1.113883.6.103"
+                                            codeSystemName="ICD-9"
+                                            displayName="Normal Routine History And Physical Adult"/&gt;
+                                        &lt;translation xsi:type="CD" code="34848"
+                                            codeSystem="2.16.840.1.113883.6.26"
+                                            codeSystemName="Medcin"
+                                            displayName="Normal Routine History And Physical Adult"
+                                        /&gt;
+                                    &lt;/value&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#pr10755000000-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/act&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.8"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.19"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.112"/&gt;
+                    &lt;code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of medication use"/&gt;
+                    &lt;title&gt;Medication&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;
+                                &lt;content ID="me10860900001"&gt;&lt;content ID="me10860900001-entryName"
+                                        &gt;Naproxen 250 MG Oral Tablet&lt;/content&gt;; &lt;content
+                                        ID="me10860900001-sig"&gt;TAKE 1 TABLET 3 TIMES DAILY WITH
+                                        MEALS.&lt;/content&gt;; Start Date: 09/14/2011 (Active)&lt;/content&gt;
+                            &lt;/item&gt;
+                            &lt;item&gt;
+                                &lt;content ID="me10860900005"&gt;&lt;content ID="me10860900005-entryName"
+                                        &gt;Singulair 10 MG Oral Tablet&lt;/content&gt;; &lt;content
+                                        ID="me10860900005-sig"&gt;TAKE 1 TABLET IN THE
+                                        EVENING.&lt;/content&gt;; Start Date: 09/14/2011
+                                    (Active)&lt;/content&gt;
+                            &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;substanceAdministration classCode="SBADM" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.24"/&gt;
+                            &lt;templateId extension="medication" root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.8"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.8"/&gt;
+                            &lt;id extension="10860900001" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;id extension="10860900003" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;text&gt;
+                                &lt;reference value="#me10860900001"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime xsi:type="IVL_TS"&gt;
+                                &lt;low value="20110914000000-0400"/&gt;
+                                &lt;high nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;effectiveTime xsi:type="PIVL_TS" institutionSpecified="true"
+                                operator="A"&gt;
+                                &lt;period value="8" unit="h"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;doseQuantity value="3"/&gt;
+                            &lt;consumable typeCode="CSM"&gt;
+                                &lt;manufacturedProduct classCode="MANU"&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.53"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.8.2"/&gt;
+                                    &lt;manufacturedMaterial&gt;
+                                        &lt;code code="198013" codeSystem="2.16.840.1.113883.6.88"
+                                            codeSystemName="RxNorm"
+                                            displayName="Naproxen 250 MG Oral Tablet"&gt;
+                                            &lt;originalText&gt;
+                                                &lt;reference value="#me10860900001-entryName"/&gt;
+                                            &lt;/originalText&gt;
+                                            &lt;translation code="68462018805"
+                                                codeSystem="2.16.840.1.113883.6.69"
+                                                codeSystemName="NDC"
+                                                displayName="Naproxen 250 MG Oral Tablet"/&gt;
+                                        &lt;/code&gt;
+                                        &lt;name&gt;Naproxen&lt;/name&gt;
+                                    &lt;/manufacturedMaterial&gt;
+                                &lt;/manufacturedProduct&gt;
+                            &lt;/consumable&gt;
+                            &lt;entryRelationship typeCode="REFR"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.47"/&gt;
+                                    &lt;code code="33999-4" displayName="Status"
+                                        codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55561003"
+                                        displayName="Active"/&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/substanceAdministration&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;substanceAdministration classCode="SBADM" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.24"/&gt;
+                            &lt;templateId extension="medication" root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.8"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.8"/&gt;
+                            &lt;id extension="10860900005" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;id extension="10860900007" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;text&gt;
+                                &lt;reference value="#me10860900005"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime xsi:type="IVL_TS"&gt;
+                                &lt;low value="20110914000000-0400"/&gt;
+                                &lt;high nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;doseQuantity value="1"/&gt;
+                            &lt;consumable typeCode="CSM"&gt;
+                                &lt;manufacturedProduct classCode="MANU"&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.53"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.8.2"/&gt;
+                                    &lt;manufacturedMaterial&gt;
+                                        &lt;code code="153892" codeSystem="2.16.840.1.113883.6.88"
+                                            codeSystemName="RxNorm"
+                                            displayName="Singulair 10 MG Oral Tablet"&gt;
+                                            &lt;originalText&gt;
+                                                &lt;reference value="#me10860900005-entryName"/&gt;
+                                            &lt;/originalText&gt;
+                                            &lt;translation code="66105016410"
+                                                codeSystem="2.16.840.1.113883.6.69"
+                                                codeSystemName="NDC"
+                                                displayName="Singulair 10 MG Oral Tablet"/&gt;
+                                        &lt;/code&gt;
+                                        &lt;name&gt;Singulair&lt;/name&gt;
+                                    &lt;/manufacturedMaterial&gt;
+                                &lt;/manufacturedProduct&gt;
+                            &lt;/consumable&gt;
+                            &lt;entryRelationship typeCode="REFR"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.47"/&gt;
+                                    &lt;code code="33999-4" displayName="Status"
+                                        codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55561003"
+                                        displayName="Active"/&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/substanceAdministration&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.2"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.13"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.102"/&gt;
+                    &lt;code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Allergies, adverse reactions, alerts"/&gt;
+                    &lt;title&gt;Allergies and Adverse Reactions&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="al10755100021"&gt;Amoxicillin TABS&lt;/content&gt; (&lt;content
+                                    ID="al10755100021-sta"&gt;Active&lt;/content&gt;)&lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry&gt;
+                        &lt;act classCode="ACT" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.27"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.6"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.6"/&gt;
+                            &lt;id extension="10755100021" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;id extension="10755100047" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low/&gt;
+                                &lt;high/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.18"/&gt;
+                                    &lt;templateId extension="allergy"
+                                        root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;templateId extension="allergy"
+                                        root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/&gt;
+                                    &lt;id extension="10755100021"
+                                        root="1.3.6.1.4.1.22812.3.301.3.4.4.2.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="416098002"
+                                        displayName="drug allergy"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#al10755100021"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD" codeSystem="2.16.840.1.113883.6.96"
+                                        code="416098002" displayName="drug allergy"/&gt;
+                                    &lt;participant typeCode="CSM"&gt;
+                                        &lt;participantRole classCode="MANU"&gt;
+                                            &lt;playingEntity classCode="MMAT"&gt;
+                                                &lt;code codeSystem="2.16.840.1.113883.6.88"
+                                                  code="308194" codeSystemName="RxNorm"
+                                                  displayName="Amoxicillin TABS"&gt;
+                                                  &lt;originalText&gt;
+                                                  &lt;reference value="#al10755100021"/&gt;
+                                                  &lt;/originalText&gt;
+                                                &lt;/code&gt;
+                                                &lt;name&gt;Amoxicillin TABS&lt;/name&gt;
+                                            &lt;/playingEntity&gt;
+                                        &lt;/participantRole&gt;
+                                    &lt;/participant&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;id extension="10755100021"
+                                                root="1.3.6.1.4.1.22812.3.301.3.4.4.2.2"/&gt;
+                                            &lt;code code="33999-4" codeSystem="2.16.840.1.113883.6.1"
+                                                displayName="Status"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#al10755100021-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;effectiveTime&gt;
+                                                &lt;low nullFlavor="UNK"/&gt;
+                                            &lt;/effectiveTime&gt;
+                                            &lt;value xsi:type="CE" code="55561003"
+                                                codeSystem="2.16.840.1.113883.6.96"
+                                                displayName="Active"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/act&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.8"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.4.9"/&gt;
+                    &lt;code code="11348-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Past Medical History"/&gt;
+                    &lt;title&gt;Past Medical History&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="prpmh10755100003-cat"&gt;History of &lt;/content&gt;&lt;content
+                                    ID="prpmh10755100003"&gt;Allergic Rhinitis&lt;/content&gt; (&lt;content
+                                    ID="prpmh10755100003-sta"&gt;Resolved&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;&lt;content ID="prpmh10755100005-cat"&gt;History of &lt;/content&gt;&lt;content
+                                    ID="prpmh10755100005"&gt;Bronchitis, Acute&lt;/content&gt; (&lt;content
+                                    ID="prpmh10755100005-sta"&gt;Resolved&lt;/content&gt;) &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;act classCode="ACT" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.27"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.7"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.7"/&gt;
+                            &lt;id extension="10755100003" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100029" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="active"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100003" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100029" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prpmh10755100003"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD" nullFlavor="UNK"&gt;
+                                        &lt;translation xsi:type="CD" code="477.9"
+                                            codeSystem="2.16.840.1.113883.6.103"
+                                            codeSystemName="ICD-9" displayName="Allergic Rhinitis"/&gt;
+                                        &lt;translation xsi:type="CD" code="30791"
+                                            codeSystem="2.16.840.1.113883.6.26"
+                                            codeSystemName="Medcin" displayName="Allergic Rhinitis"
+                                        /&gt;
+                                    &lt;/value&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prpmh10755100003-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="413322009"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/act&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;act classCode="ACT" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.27"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.7"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.7"/&gt;
+                            &lt;id extension="10755100005" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100031" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="active"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100005" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100031" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prpmh10755100005"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD" nullFlavor="UNK"&gt;
+                                        &lt;translation xsi:type="CD" code="466.0"
+                                            codeSystem="2.16.840.1.113883.6.103"
+                                            codeSystemName="ICD-9" displayName="Bronchitis, Acute"/&gt;
+                                        &lt;translation xsi:type="CD" code="32890"
+                                            codeSystem="2.16.840.1.113883.6.26"
+                                            codeSystemName="Medcin" displayName="Bronchitis, Acute"
+                                        /&gt;
+                                    &lt;/value&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prpmh10755100005-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="413322009"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/act&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.12"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.11"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.12"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.108"/&gt;
+                    &lt;code code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of Procedures"/&gt;
+                    &lt;title&gt;Procedures&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;table width="100%"&gt;
+                            &lt;thead&gt;
+                                &lt;tr&gt;
+                                    &lt;th&gt;Procedure&lt;/th&gt;
+                                    &lt;th&gt;Procedure Date&lt;/th&gt;
+                                    &lt;th&gt;Date Completed&lt;/th&gt;
+                                    &lt;th&gt;Status&lt;/th&gt;
+                                &lt;/tr&gt;
+                            &lt;/thead&gt;
+                            &lt;tbody&gt;
+                                &lt;tr&gt;
+                                    &lt;td&gt;
+                                        &lt;content ID="prpsh10755100007"&gt;Appendectomy&lt;/content&gt;
+                                    &lt;/td&gt;
+                                    &lt;td align="center"&gt;-&lt;/td&gt;
+                                    &lt;td align="center"&gt;-&lt;/td&gt;
+                                    &lt;td align="center"&gt;
+                                        &lt;content ID="prpsh10755100007-sta"&gt;Active&lt;/content&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/tbody&gt;
+                        &lt;/table&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;procedure classCode="PROC" moodCode="EVN"&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.19"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.29"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.17"/&gt;
+                            &lt;id extension="10755100007" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100033" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"&gt;
+                                &lt;originalText&gt;
+                                    &lt;reference value="#prpsh10755100007"/&gt;
+                                &lt;/originalText&gt;
+                            &lt;/code&gt;
+                            &lt;text&gt;
+                                &lt;reference value="#prpsh10755100007"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="active"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                        &lt;/procedure&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.6"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.23"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.117"/&gt;
+                    &lt;code code="11369-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of Immunizations"/&gt;
+                    &lt;title&gt;Immunization&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;
+                                &lt;content ID="im10757700059"&gt;&lt;content ID="im10757700059-entryName"
+                                        &gt;Td&lt;/content&gt;; # - Administered on: 01/06/2008&lt;/content&gt;
+                            &lt;/item&gt;
+                            &lt;item&gt;
+                                &lt;content ID="im10757700071"&gt;&lt;content ID="im10757700071-entryName"
+                                        &gt;Influenza&lt;/content&gt;; # - Administered on:
+                                    10/23/2010&lt;/content&gt;
+                            &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;substanceAdministration classCode="SBADM" negationInd="false"
+                            moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.24"/&gt;
+                            &lt;templateId extension="immunization"
+                                root="1.3.6.1.4.1.19376.1.5.3.1.4.12"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.14"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.13"/&gt;
+                            &lt;id extension="10757700059" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;id extension="10757700061" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;code code="IMMUNIZ" codeSystem="2.16.840.1.113883.5.4"
+                                codeSystemName="ActCode"/&gt;
+                            &lt;text mediaType="text/xml"&gt;
+                                &lt;reference value="#im10757700059"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime value="20080106000000+0000"/&gt;
+                            &lt;consumable typeCode="CSM"&gt;
+                                &lt;manufacturedProduct classCode="MANU"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.53"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/&gt;
+                                    &lt;manufacturedMaterial&gt;
+                                        &lt;code code="113" codeSystem="2.16.840.1.113883.6.59"
+                                            codeSystemName="CVX" displayName="Name"&gt;
+                                            &lt;originalText&gt;
+                                                &lt;reference value="#im10757700059-entryName"/&gt;
+                                            &lt;/originalText&gt;
+                                        &lt;/code&gt;
+                                        &lt;lotNumberText/&gt;
+                                    &lt;/manufacturedMaterial&gt;
+                                &lt;/manufacturedProduct&gt;
+                            &lt;/consumable&gt;
+                        &lt;/substanceAdministration&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;substanceAdministration classCode="SBADM" negationInd="false"
+                            moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.24"/&gt;
+                            &lt;templateId extension="immunization"
+                                root="1.3.6.1.4.1.19376.1.5.3.1.4.12"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.14"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.13"/&gt;
+                            &lt;id extension="10757700071" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;id extension="10757700073" root="1.3.6.1.4.1.22812.3.301.3.4.4"/&gt;
+                            &lt;code code="IMMUNIZ" codeSystem="2.16.840.1.113883.5.4"
+                                codeSystemName="ActCode"/&gt;
+                            &lt;text mediaType="text/xml"&gt;
+                                &lt;reference value="#im10757700071"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime value="20101023000000+0000"/&gt;
+                            &lt;consumable typeCode="CSM"&gt;
+                                &lt;manufacturedProduct classCode="MANU"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.53"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/&gt;
+                                    &lt;manufacturedMaterial&gt;
+                                        &lt;code code="88" codeSystem="2.16.840.1.113883.6.59"
+                                            codeSystemName="CVX" displayName="Name"&gt;
+                                            &lt;originalText&gt;
+                                                &lt;reference value="#im10757700071-entryName"/&gt;
+                                            &lt;/originalText&gt;
+                                        &lt;/code&gt;
+                                        &lt;lotNumberText/&gt;
+                                    &lt;/manufacturedMaterial&gt;
+                                &lt;/manufacturedProduct&gt;
+                            &lt;/consumable&gt;
+                        &lt;/substanceAdministration&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.4"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.14"/&gt;
+                    &lt;code code="10157-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of family member diseases"/&gt;
+                    &lt;title&gt;Family History&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="prfh10755100009-cat"&gt;Paternal history of
+                                    &lt;/content&gt;&lt;content ID="prfh10755100009"&gt;Coronary Artery Disease
+                                    (CAD)&lt;/content&gt; (&lt;content ID="prfh10755100009-sta"
+                                    &gt;Active&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;&lt;content ID="prfh10755100011-cat"&gt;Maternal history of
+                                    &lt;/content&gt;&lt;content ID="prfh10755100011"&gt;Hyperlipidemia&lt;/content&gt;
+                                    (&lt;content ID="prfh10755100011-sta"&gt;Active&lt;/content&gt;) &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.15"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.16"/&gt;
+                    &lt;code code="29762-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Social History"/&gt;
+                    &lt;title&gt;Social History&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="prph10755100013"&gt;Being A Social Drinker&lt;/content&gt;
+                                    (&lt;content ID="prph10755100013-sta"&gt;Active&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;&lt;content ID="prph10755100015"&gt;Caffeine Use&lt;/content&gt; (&lt;content
+                                    ID="prph10755100015-sta"&gt;Active&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;&lt;content ID="prph10755100017"&gt;Marital History - Currently
+                                    Married&lt;/content&gt; (&lt;content ID="prph10755100017-sta"
+                                    &gt;Active&lt;/content&gt;) &lt;/item&gt;
+                            &lt;item&gt;No &lt;content ID="prph10755100019-cat"&gt;History of &lt;/content&gt;&lt;content
+                                    ID="prph10755100019"&gt;Smoking Cigarettes&lt;/content&gt; (&lt;content
+                                    ID="prph10755100019-sta"&gt;Active&lt;/content&gt;) &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.33"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.4"/&gt;
+                            &lt;id extension="10755100013" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100039" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100013" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100039" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prph10755100013"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD"/&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prph10755100013-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/observation&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.33"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.4"/&gt;
+                            &lt;id extension="10755100015" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100041" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100015" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100041" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prph10755100015"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD"/&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prph10755100015-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/observation&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.33"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.4"/&gt;
+                            &lt;id extension="10755100017" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100043" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100017" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100043" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prph10755100017"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD"/&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prph10755100017-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/observation&gt;
+                    &lt;/entry&gt;
+                    &lt;entry typeCode="DRIV"&gt;
+                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.33"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.4"/&gt;
+                            &lt;id extension="10755100019" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;id extension="10755100045" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                            &lt;code nullFlavor="NA"/&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;entryRelationship typeCode="SUBJ" inversionInd="false"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN" negationInd="true"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.28"/&gt;
+                                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/&gt;
+                                    &lt;id extension="10755100019" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;id extension="10755100045" root="1.3.6.1.4.1.22812.3.301.3.4.1"/&gt;
+                                    &lt;code codeSystem="2.16.840.1.113883.6.96"
+                                        codeSystemName="SNOMED CT" code="55607006"/&gt;
+                                    &lt;text&gt;
+                                        &lt;reference value="#prph10755100019"/&gt;
+                                    &lt;/text&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;effectiveTime&gt;
+                                        &lt;low nullFlavor="UNK"/&gt;
+                                    &lt;/effectiveTime&gt;
+                                    &lt;value xsi:type="CD"/&gt;
+                                    &lt;entryRelationship typeCode="REFR" inversionInd="false"&gt;
+                                        &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.57"/&gt;
+                                            &lt;templateId root="2.16.840.1.113883.10.20.1.50"/&gt;
+                                            &lt;code code="33999-4" displayName="Status"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/&gt;
+                                            &lt;text&gt;
+                                                &lt;reference value="#prph10755100019-sta"/&gt;
+                                            &lt;/text&gt;
+                                            &lt;statusCode code="completed"/&gt;
+                                            &lt;value xsi:type="CE" codeSystem="2.16.840.1.113883.6.96"
+                                                codeSystemName="SNOMED CT" code="55561003"/&gt;
+                                        &lt;/observation&gt;
+                                    &lt;/entryRelationship&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/observation&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.31"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.10"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.2.7"/&gt;
+                    &lt;code code="18776-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="TREATMENT PLAN"/&gt;
+                    &lt;title&gt;Treatment Plan&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;Colonoscopy 09/30/2011 10 years&lt;/item&gt;
+                            &lt;item&gt;Td 09/30/2011 10 years&lt;/item&gt;
+                            &lt;item&gt;Influenza 09/30/2011 1 year&lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.1"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.34"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.35"/&gt;
+                    &lt;code code="42348-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Advance Directives"/&gt;
+                    &lt;title&gt;Advance Directives&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;
+                                &lt;content ID="noDirectives"&gt;No Advance Directives
+                                    available.&lt;/content&gt;
+                            &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry&gt;
+                        &lt;observation moodCode="EVN" classCode="OBS"&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.17"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.12"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13"/&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.7"/&gt;
+                            &lt;id root="1.1"/&gt;
+                            &lt;code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+                                code="78823007"&gt;
+                                &lt;originalText&gt;
+                                    &lt;reference value="#noDirectives"/&gt;
+                                &lt;/originalText&gt;
+                            &lt;/code&gt;
+                            &lt;text&gt;
+                                &lt;reference value="#noDirectives"/&gt;
+                            &lt;/text&gt;
+                            &lt;statusCode code="completed"/&gt;
+                            &lt;effectiveTime nullFlavor="UNK"&gt;
+                                &lt;low nullFlavor="UNK"/&gt;
+                                &lt;high nullFlavor="UNK"/&gt;
+                            &lt;/effectiveTime&gt;
+                            &lt;value xsi:type="BL"/&gt;
+                            &lt;participant typeCode="CST"&gt;
+                                &lt;participantRole classCode="AGNT"&gt;
+                                    &lt;playingEntity&gt;
+                                        &lt;name&gt;Steve Reynolds&lt;/name&gt;
+                                    &lt;/playingEntity&gt;
+                                &lt;/participantRole&gt;
+                            &lt;/participant&gt;
+                            &lt;entryRelationship typeCode="REFR"&gt;
+                                &lt;observation classCode="OBS" moodCode="EVN"&gt;
+                                    &lt;templateId root="2.16.840.1.113883.10.20.1.37"/&gt;
+                                    &lt;code code="33999-4" codeSystem="2.16.840.1.113883.6.1"
+                                        displayName="Status"/&gt;
+                                    &lt;statusCode code="completed"/&gt;
+                                    &lt;value xsi:type="CE" code="15240007"
+                                        codeSystem="2.16.840.1.113883.6.96"
+                                        displayName="Current and verified"/&gt;
+                                &lt;/observation&gt;
+                            &lt;/entryRelationship&gt;
+                        &lt;/observation&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+            &lt;component&gt;
+                &lt;section&gt;
+                    &lt;templateId root="2.16.840.1.113883.3.88.11.83.127"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3"/&gt;
+                    &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.3"/&gt;
+                    &lt;templateId root="2.16.840.1.113883.10.20.1.3"/&gt;
+                    &lt;code code="46240-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of encounters"/&gt;
+                    &lt;title&gt;Encounters&lt;/title&gt;
+                    &lt;text&gt;
+                        &lt;list&gt;
+                            &lt;item&gt;&lt;content ID="enc8738"&gt;AUDIT&lt;/content&gt; 09/30/2011 &lt;/item&gt;
+                        &lt;/list&gt;
+                    &lt;/text&gt;
+                    &lt;entry&gt;
+                        &lt;encounter classCode="ENC" moodCode="EVN"&gt;
+                            &lt;templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.14"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.10.20.1.21"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.83.16"/&gt;
+                            &lt;templateId root="2.16.840.1.113883.3.88.11.32.17"/&gt;
+                            &lt;id extension="8738" root="1.3.6.1.4.1.22812.3.301.3.3.4"/&gt;
+                            &lt;code codeSystem="2.16.840.1.113883.5.4"
+                                codeSystemName="ActEncounterCode"&gt;
+                                &lt;originalText&gt;
+                                    &lt;reference value="#enc8738"/&gt;
+                                &lt;/originalText&gt;
+                            &lt;/code&gt;
+                            &lt;text&gt;
+                                &lt;reference value="#enc8738"/&gt;
+                            &lt;/text&gt;
+                            &lt;effectiveTime&gt;
+                                &lt;low value="20110930145004+0000"/&gt;
+                                &lt;high value="20110930145004-0400"/&gt;
+                            &lt;/effectiveTime&gt;
+                        &lt;/encounter&gt;
+                    &lt;/entry&gt;
+                &lt;/section&gt;
+            &lt;/component&gt;
+        &lt;/structuredBody&gt;
+    &lt;/component&gt;
+&lt;/ClinicalDocument&gt;</ihe:Xml>
+                                                                                                <ihe:Html></ihe:Html>
+                                                                                                <ihe:MimeType>text/xml</ihe:MimeType>
+                                                                                                <ihe:DocType>CCD</ihe:DocType>
+                                                                                                <ihe:B64NonXmlBody />
+                                                                                                <ihe:MediaType />
+                                                                                                <ihe:Id>1.3.6.1.4.1.22812.3.99930.3.1.51556762</ihe:Id>
+                                                                                    <ihe:ClassCode>34133-9</ihe:ClassCode>
+                                                                                    <ihe:ClassCodeSystem>2.16.840.1.113883.6.1</ihe:ClassCodeSystem>
+                                                                                    <ihe:ClassCodeDisplayName>SUMMARIZATION OF EPISODE NOTE</ihe:ClassCodeDisplayName>
+                                                                                                <ihe:SourceID>1.3.6.1.4.1.22812.3.99930.3.3</ihe:SourceID>
+                                                                                                <ihe:PatientLastName>Reynolds</ihe:PatientLastName>
+                                                                                                <ihe:PatientFirstname>Steve</ihe:PatientFirstname>
+                                                                                                <ihe:PatientMiddleName />
+                                                                                                <ihe:PatientAddressLine1 />
+                                                                                                <ihe:PatientAddressLine2 />
+                                                                                                <ihe:PatientCity />
+                                                                                                <ihe:PatientState />
+                                                                                                <ihe:PatientZip />
+                                                                                                <ihe:PatientSex>M</ihe:PatientSex>
+                                                                                                <ihe:PatientHomePhone />
+                                                                                                <ihe:PatientDOB>04151955</ihe:PatientDOB>
+                                                                                                <ihe:PatientID>110105160433377</ihe:PatientID>
+                                                                                </ihe:CEDDocument>
+                                                                </EncounterData>
+                                                </MessageContent>
+                                </AllscriptsMessageEnvelope>
+                </S:Body>
+</S:Envelope>

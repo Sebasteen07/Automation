@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:eh="http://schema.intuit.com/health/ccd/v1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	targetNamespace="http://schema.intuit.com/health/ccd/v1">
+	<xs:simpleType name="NonEmptyString">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType> 
+	<xs:simpleType name="Calendar">
+		<xs:annotation>
+			<xs:documentation>
+				This primitive type, when used, will have a java type of java.util.Calendar.
+				Depends on this Jaxb global bindings configuration:
+				&lt;jaxb:javaType name="java.util.Calendar" xmlType="msg:Calendar"
+					parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+					printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/&gt;
+				
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+</xs:schema>
