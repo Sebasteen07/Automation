@@ -21,6 +21,11 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import com.intuit.dc.framework.tracking.constants.TrackingEnumHolder;
 import com.intuit.dc.framework.tracking.entity.Message;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.bind.JAXBContext;
@@ -35,7 +40,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -71,7 +76,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	private static final String SOAP_BODY_END = "</soap:Body>";
 	private static final String SOAP_BODY_START = "<soap:Body>";
 	public static int expectedHttpCodeAccepted= HttpURLConnection.HTTP_ACCEPTED;
-	private static final Logger logger = Logger.getLogger(EhcoreAPIUtil.class);
+	//private static final Logger logger = Logger.getLogger(EhcoreAPIUtil.class);
 	public static String schemaSource = null;
 	public static int expectedHttpCode= HttpURLConnection.HTTP_OK;
 	public static int expectedHttpCode_InternalError = HttpURLConnection.HTTP_INTERNAL_ERROR;
@@ -238,7 +243,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		// unmarshall the response into  Datajob object
@@ -291,7 +296,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				conn.disconnect();                
 			}
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 	}
@@ -306,25 +311,25 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 */
 	public static HttpsURLConnection setupHttpsConnection(String strUrl, String reqMethod, String xmlFilePath,String value,String djId,boolean isCCDImport)  {
 
-		logger.debug("URL to be connected  to: " + strUrl);
+		Log4jUtil.log("URL to be connected  to: " + strUrl);
 		URL url = null;
 		try {
-			logger.debug("Creating URL object for above URL");
+			Log4jUtil.log("Creating URL object for above URL");
 			url = new URL(strUrl);
-			logger.debug("Created URL object");
+			Log4jUtil.log("Created URL object");
 		} catch (MalformedURLException mue) {
-			logger.error(mue.getMessage(), mue);
+			Assert.fail(mue.getMessage(), mue);
 			Assert.fail(mue.getMessage());
 		}
 
 		Assert.assertNotNull(url);
 		HttpsURLConnection connection = null;
 		try {
-			logger.debug("Attempting to get secure connection");
+			Log4jUtil.log("Attempting to get secure connection");
 			connection = (HttpsURLConnection) url.openConnection();
-			logger.debug("Got connection");
+			Log4jUtil.log("Got connection");
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		Assert.assertNotNull(connection);
@@ -351,27 +356,27 @@ public class EhcoreAPIUtil extends IHGUtil {
 			}
 
 			if (xmlFilePath != null) {
-				logger.debug("Getting an output stream on connection and writting XML to it");
+				Log4jUtil.log("Getting an output stream on connection and writting XML to it");
 				OutputStream os = connection.getOutputStream();
-				logger.debug("Output stream obtained");
+				Log4jUtil.log("Output stream obtained");
 				os.write(fileToBytes(xmlFilePath));
 				os.flush();
-				logger.debug("XML written to output stream");
+				Log4jUtil.log("XML written to output stream");
 			} else if (reqMethod.equals(EhcoreAPIConstants.GET_REQUEST)){
-				logger.debug("Path specified to XML input is null. Not writing anything " +
+				Log4jUtil.log("Path specified to XML input is null. Not writing anything " +
 						"to the connection since its a \"Get\" request");
 			} else {
-				logger.error("No XML input file specified for the \"Post\" request");
+				Assert.fail("No XML input file specified for the \"Post\" request");
 				Assert.fail("No XML input file specified for the \"Post\" request");
 			}
 
-			logger.debug("HTTPS response code: " + connection.getResponseCode());
-			logger.debug("HTTPS response message: " + connection.getResponseMessage());
+			Log4jUtil.log("HTTPS response code: " + connection.getResponseCode());
+			Log4jUtil.log("HTTPS response message: " + connection.getResponseMessage());
 		} catch (ProtocolException pe) {
-			logger.error(pe.getMessage(), pe);
+			Assert.fail(pe.getMessage(), pe);
 			Assert.fail(pe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 
@@ -394,7 +399,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 			long length = file.length();
 			if (length > Integer.MAX_VALUE) {
-				logger.error("File is too large to be processed: " + filePath);
+				Assert.fail("File is too large to be processed: " + filePath);
 				Assert.fail("File is too large to be processed: " + filePath);
 			}
 			bytes = new byte[(int) length];
@@ -406,29 +411,29 @@ public class EhcoreAPIUtil extends IHGUtil {
 			}
 
 			if (offset != bytes.length) {
-				logger.error("Could not completely read file " + filePath);
+				Assert.fail("Could not completely read file " + filePath);
 				Assert.fail("Could not completely read file " + filePath);
 			}
-			//logger.debug("Request &&&&: " + new String(bytes));
+			//Log4jUtil.log("Request &&&&: " + new String(bytes));
 			// Save actual to a file.
 			String actualCcdFileName = EhcoreAPIConstants.MARSHAL_CCD + "marshallccd351.xml"; 
 			try {
 				FileUtils.writeStringToFile(new File(actualCcdFileName),
 						new String(bytes), false);
 			}catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				Assert.fail(e.getMessage(), e);
 				Assert.fail("Failed to write actualCcd to file. "
 						+ e.getMessage());
 			}
 			is.close();
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch(IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
-		logger.debug("fileToBytes content::" + bytes.toString());
+		Log4jUtil.log("fileToBytes content::" + bytes.toString());
 		return bytes;
 	}
 
@@ -442,25 +447,25 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 */
 	public static HttpURLConnection setupHttpConnection(String strUrl, String reqMethod, String xmlFilePath,String contentType,String djId,boolean isValidDjID)  {
 
-		logger.debug("URL to be connected  to: " + strUrl);
+		Log4jUtil.log("URL to be connected  to: " + strUrl);
 		URL url = null;
 		try {
-			logger.debug("Creating URL object for above URL");
+			Log4jUtil.log("Creating URL object for above URL");
 			url = new URL(strUrl);
-			logger.debug("Created URL object");
+			Log4jUtil.log("Created URL object");
 		} catch (MalformedURLException mue) {
-			logger.error(mue.getMessage(), mue);
+			Assert.fail(mue.getMessage(), mue);
 			Assert.fail(mue.getMessage());
 		}
 
 		Assert.assertNotNull(url);
 		HttpURLConnection connection = null;
 		try {
-			logger.debug("Opening URL connection");
+			Log4jUtil.log("Opening URL connection");
 			connection = (HttpURLConnection) url.openConnection();
-			logger.debug("URL connection established");
+			Log4jUtil.log("URL connection established");
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 
@@ -484,31 +489,31 @@ public class EhcoreAPIUtil extends IHGUtil {
 			}else if(contentType.equalsIgnoreCase("null")){
 				connection.setRequestProperty("Content-Type", "null");
 			}else{
-				logger.debug("Without Content-Type in Request Header");
+				Log4jUtil.log("Without Content-Type in Request Header");
 			}
 
 			if (xmlFilePath != null) {
-				logger.debug("Getting an output stream on connection and writting XML to it");
+				Log4jUtil.log("Getting an output stream on connection and writting XML to it");
 				OutputStream os = connection.getOutputStream();
-				logger.debug("Output stream obtained");
+				Log4jUtil.log("Output stream obtained");
 				os.write(fileToBytes(xmlFilePath));
 				os.flush();
-				logger.debug("XML written to output stream"); 
+				Log4jUtil.log("XML written to output stream"); 
 			} else if (reqMethod.equals(EhcoreAPIConstants.GET_REQUEST)){
-				logger.debug("Path specified to XML input is null. Not writing anything to the connection since its a \"Get\" request");
+				Log4jUtil.log("Path specified to XML input is null. Not writing anything to the connection since its a \"Get\" request");
 			} else {
-				logger.error("No XML input file specified for the \"Post\" request");
+				Assert.fail("No XML input file specified for the \"Post\" request");
 				Assert.fail("No XML input file specified for the \"Post\" request");
 			}
 
-			logger.debug("HTTP response code: " + connection.getResponseCode());
-			logger.debug("HTTP response message: " + connection.getResponseMessage());
+			Log4jUtil.log("HTTP response code: " + connection.getResponseCode());
+			Log4jUtil.log("HTTP response message: " + connection.getResponseMessage());
 
 		} catch (ProtocolException pe) {
-			logger.error(pe.getMessage(), pe);
+			Assert.fail(pe.getMessage(), pe);
 			Assert.fail(pe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		return connection;
@@ -527,10 +532,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			while ((line = reader.readLine()) != null) {
 				response.append(line).append("\n");
 			}
-			logger.debug("Response: " + response);
+			Log4jUtil.log("Response: " + response);
 			reader.close();
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 
@@ -545,7 +550,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				stream = new FileInputStream(new File(path));
 			} catch (FileNotFoundException e1) {
-				logger.error(e1.getMessage(), e1);
+				Assert.fail(e1.getMessage(), e1);
 				Assert.fail(e1.getMessage());
 			}
 			FileChannel fc = stream.getChannel();     
@@ -553,7 +558,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				Assert.fail(e.getMessage(), e);
 				Assert.fail(e.getMessage());
 			}     
 			/* Instead of using default, pass in a decoder. */     
@@ -564,7 +569,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				stream.close();
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				Assert.fail(e.getMessage(), e);
 				Assert.fail(e.getMessage());
 			}   }  	 
 
@@ -622,7 +627,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		return EhcoreAPIUtil.unmarshallCCDResponse(xmlResponse);
@@ -667,7 +672,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 
@@ -786,13 +791,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 */
 	public static boolean validateXML(String xsdFilePath, String xml){ 
 
-		logger.debug(" Validate XML :XSD File Path ::"+xsdFilePath);
-		//logger.debug(" Validate XML :Xml input ::"+xml);
+		Log4jUtil.log(" Validate XML :XSD File Path ::"+xsdFilePath);
+		//Log4jUtil.log(" Validate XML :Xml input ::"+xml);
 		Schema schema = null;
 		try {
 			schema = getSchema(xsdFilePath);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Assert.fail(e.getMessage(), e);
 			Assert.fail(e.getMessage());
 		}
 		Validator validator = schema.newValidator();
@@ -809,7 +814,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 							+ exception.getLineNumber() + " , "
 							+ exception.getColumnNumber() + " ) : "
 							+ exception.getMessage());
-					logger.debug("Warning in (" + exception.getLineNumber()
+					Log4jUtil.log("Warning in (" + exception.getLineNumber()
 							+ " , " + exception.getColumnNumber() + " ) : "
 							+ exception.getMessage());
 				}
@@ -820,7 +825,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 							+ exception.getLineNumber() + " , "
 							+ exception.getColumnNumber() + " ) : "
 							+ exception.getMessage());
-					logger.debug("Fatal Error in ( "
+					Log4jUtil.log("Fatal Error in ( "
 							+ exception.getLineNumber() + " , "
 							+ exception.getColumnNumber() + " ) : "
 							+ exception.getMessage());
@@ -831,7 +836,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 					errors.add("Error in (" + exception.getLineNumber()
 							+ " , " + exception.getColumnNumber() + ") : "
 							+ exception.getMessage());
-					logger.debug("Error in (" + exception.getLineNumber()
+					Log4jUtil.log("Error in (" + exception.getLineNumber()
 							+ " , " + exception.getColumnNumber() + ") : "
 							+ exception.getMessage());
 				}
@@ -840,16 +845,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				validator.validate(new StreamSource(new StringReader(xml)));
 			} catch (SAXException e) {
-				logger.error(e.getMessage(), e);
+				Assert.fail(e.getMessage(), e);
 				Assert.fail(e.getMessage());
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				Assert.fail(e.getMessage(), e);
 				Assert.fail(e.getMessage());
 			}
 		}
 		allErrors.addAll(fatalErrors);
 		allErrors.addAll(errors);
-		logger.debug("XSD File Path ::"+xsdFilePath+",Error size::"+allErrors.size());
+		Log4jUtil.log("XSD File Path ::"+xsdFilePath+",Error size::"+allErrors.size());
 
 		if (allErrors.size() > 0) {
 			return false;
@@ -880,7 +885,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		boolean isValidxml = false;
 		String xmlWithoutCCD = new StringBuffer(xml.substring(0, xml.indexOf("<CcdXml>")+8)).append(xml.substring(xml.indexOf("</CcdXml>"))).toString();
 		boolean isValidCCDExchange  = validateXML(EhcoreAPIConstants.CCDEXCHANGE_XSD, xmlWithoutCCD);
-		logger.debug("isValidCCDExchange?"+isValidCCDExchange);
+		Log4jUtil.log("isValidCCDExchange?"+isValidCCDExchange);
 		String ccdXml = xml.substring(xml.indexOf("<CcdXml>")+8, xml.indexOf("</CcdXml>"))
 				.replace("&lt;", "<")
 				.replace("&gt;", ">")
@@ -890,9 +895,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 				.replace("<![CDATA[", "").replace("]]>", "");
 
 		boolean isValidCCD  = validateXML(EhcoreAPIConstants.CCD_XSD,ccdXml);
-		logger.debug("isValidCCD?"+isValidCCD);
+		Log4jUtil.log("isValidCCD?"+isValidCCD);
 		isValidxml = isValidCCDExchange && isValidCCD;
-		logger.debug("isValidxml?"+isValidxml);
+		Log4jUtil.log("isValidxml?"+isValidxml);
 		return isValidxml;
 	}
 
@@ -945,13 +950,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(dj, os);
 			os.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 	}
@@ -973,13 +978,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(req, os);
 			os.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 	}
@@ -1001,13 +1006,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			dj = (DataJob) um.unmarshal(is);
 			is.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		Assert.assertNotNull(dj);
@@ -1030,10 +1035,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			Ccd = (CcdExchange) result.getValue();
 		}
 		catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage(), e);
+			Assert.fail(e.getMessage(), e);
 			Assert.fail(e.getMessage());
 		}
 		Assert.assertNotNull(Ccd);
@@ -1059,13 +1064,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			req = (ReprocessRequest) um.unmarshal(is);
 			is.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 		Assert.assertNotNull(req);
@@ -1120,13 +1125,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(ccdExchangeRootElement, os);
 			os.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}				
 	}
@@ -1232,7 +1237,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			dj = (DataJob) um.unmarshal(is);
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		}
 		Assert.assertNotNull(dj);
@@ -1256,7 +1261,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			res = (ProcessingResponse) um.unmarshal(is);
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		}
 		Assert.assertNotNull(res);
@@ -1284,7 +1289,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(envelope.getBytes());
 			res = (AllscriptsMessageEnvelope) um.unmarshal(is);
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		}
 		Assert.assertNotNull(res);
@@ -1329,7 +1334,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		try {
 			Thread.sleep(time * 1000);
 		} catch (InterruptedException ie) {
-			logger.error(ie.getMessage(), ie);
+			Assert.fail(ie.getMessage(), ie);
 			Assert.fail(ie.getMessage());
 		}
 	}
@@ -1349,10 +1354,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ccdMessage = (CCDMessageType) jaxbSimple.getValue();
 		}
 		catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage(), e);
+			Assert.fail(e.getMessage(), e);
 			Assert.fail(e.getMessage());
 		}
 		Assert.assertNotNull(ccdMessage);
@@ -1404,13 +1409,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(rootElement, os);
 			os.close();
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			logger.error(fnfe.getMessage(), fnfe);
+			Assert.fail(fnfe.getMessage(), fnfe);
 			Assert.fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			logger.error(ioe.getMessage(), ioe);
+			Assert.fail(ioe.getMessage(), ioe);
 			Assert.fail(ioe.getMessage());
 		}
 	}
@@ -1432,7 +1437,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			response = (ProcessingResponse) um.unmarshal(is);
 		} catch (JAXBException je) {
-			logger.error(je.getMessage(), je);
+			Assert.fail(je.getMessage(), je);
 			Assert.fail(je.getMessage());
 		}
 		Assert.assertNotNull(response);
@@ -1493,7 +1498,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 		t_end = System.currentTimeMillis();
 
-		logger.debug("Total time taken for processing status to be updated " +
+		Log4jUtil.log("Total time taken for processing status to be updated " +
 				(t_end - t_beg)/1000);
 
 				Assert.assertTrue(isProcStatusAsExpected, "Expected Job_Status_Type " + expectedProcStatus + ", found " + actualStatus +" for DataJob Id " + djId);
@@ -1820,7 +1825,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 		t_end = System.currentTimeMillis();
 
-		logger.debug("Total time taken for processing status to be updated ::" +
+		Log4jUtil.log("Total time taken for processing status to be updated ::" +
 				(t_end - t_beg)/1000);
 
 		Assert.assertTrue(isProcStatusAsExpected, "Expected Message processing_status_type ::"+expectedStatus+ ", found " + actualStatus +" for DataJob Id " + djId);
@@ -1847,7 +1852,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		Log4jUtil.log("PROVIDER ID*********"+testData.getProviderID());
 		
 		Ccd.getPatientDemographics().getPatientIdentifier().setIntuitPatientId(subjectId);
-		Ccd.getPracticeInformation().getPracticeIdentifier().setIntuitPracticeId(subjectId);
+		Ccd.getPracticeInformation().getPracticeIdentifier().setIntuitPracticeId(testData.getPracticeID());
 		Ccd.getPracticeInformation().getProviderList().get(0).getProviderIdentifier().setIntuitProviderId(testData.getProviderID());
 		Ccd.getCcdMessageHeaders().getRoutingMap().getKeyValuePair().get(0).setValue(testData.getProviderID());
 		Ccd.getCcdMessageHeaders().getRoutingMap().getKeyValuePair().get(1).setValue(testData.getProviderID());
@@ -1926,10 +1931,198 @@ public class EhcoreAPIUtil extends IHGUtil {
 	                conn.disconnect();
 	            }
 	        } catch (IOException ioe) {
-	            logger.error(ioe.getMessage(), ioe);
+	            Assert.fail(ioe.getMessage(), ioe);
 	            Assert.fail(ioe.getMessage());
 	        }
 	        return EhcoreAPIUtil.unmarshallAllScriptsCCDImportResponse(xmlResponse);
 	    }
+		
+		
+		
+		
+		/**
+	     * Get Mongo DB Response using API
+	     * @param transStatus
+	     * @return
+	     */
+	    public static void verifyMongoDBResponseUsingAPI(String node,String obj_ref_id,String expected) {
+	    	
+	        String url = null;
+	        
+	    	if(node.equalsIgnoreCase(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.DELTA.toString())){
+	        	 url = getDeltaResponseURL() + obj_ref_id;
+	        }else{
+	        	 url = getNodeResponseURL() + obj_ref_id;
+	        }
+	    	
+	        processMongoResponse(url, EhcoreAPIConstants.GET_REQUEST,null,"Accepted",expected);
+	        
+	    }
+	    
+	    private static void processMongoResponse(String url, String requestType, String requestXml,String expectedCode,String expectedCcd) {
+
+	        HttpURLConnection conn = null;
+	        String protocol = EhcoreAPIConstants.PROTOCOL;
+
+	        if (protocol.equalsIgnoreCase("https")) {
+	            conn = setupHttpsConnection(url, requestType, requestXml,"valid","",false);
+	        } else if (protocol.equalsIgnoreCase("http")) {
+	            conn = setupHttpConnection(url, requestType, requestXml,"valid","",false);
+	        } else {
+	        	// fail("Protocol can only be http or https, found " + protocol);
+	        }
+
+	        //read response from output stream of connection
+	        String SimpleCCD = null;
+	        try {
+	            if (conn != null) {
+	            	if (expectedCode.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED) && conn.getResponseCode() == expectedHttpCodeAccepted ) { // EHCoreTestConsts.expectedResponse_Accepted
+	                	SimpleCCD = readResponse(conn.getInputStream());
+	                	Assert.assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
+	                	//validate the response against xsd
+	                	//assertTrue("Response XML is not valid",validateXML(UtilConsts.PROCESSING_RESPONSE_XSD,xmlResponse));
+	                }
+	                else{
+	                }
+	                conn.disconnect();
+	            }
+	        } catch (IOException ioe) {
+	            Assert.fail(ioe.getMessage(), ioe);
+	         //   fail(ioe.getMessage());
+	        }
+	        Log4jUtil.log(" *** SimpleCCD : ****" + SimpleCCD);
+			
+			// Save actual to a file.
+			String actualCcd = EhcoreAPIConstants.ACTUAL_CCD + "actualMessageADDENTITY.xml";
+			try {
+				FileUtils.writeStringToFile(new File(actualCcd),
+						SimpleCCD, false);
+			}catch (IOException e) {
+				Assert.fail(e.getMessage(), e);
+				Assert.fail("Failed to write actualCcd to file. "
+							+ e.getMessage());
+			}
+			//Compare Actual objStore Message with Expected CCD Message using XMLUnit .
+			EhcoreXmlUnitUtil.assertEqualsXML(expectedCcd, actualCcd);
+	    }
+	    
+	    
+	    /**
+	     * Get the actual CDM List using message_guid from mongoDB.It runs in a loop and polls
+	     * every 10 seconds to check on the status, until it times out.
+	     * @param msg_guid -expected message guid
+	     * @param nodePath - Actual node path to get the node name and node value.
+	     * @param nodeName - node name
+	     */
+	    public static SortedMap<String,String> getActualCDMList(String msg_guid,String nodePath,String nodeName,String type) {
+	        int procTime = Integer.parseInt(EhcoreAPIConstants.CDM_MSG_PROC_TIME);//(EHCoreTestConfigReader.getConfigItemValue(EHCoreTestConsts.UtilConsts.CDM_MSG_PROC_TIME));
+
+	        // check status every 10 seconds until - either the desired status has been found or time-out happened.
+	        SortedMap<String,String> sortedMap= new TreeMap<String,String>();
+	        int pollTimeInSecs = 10;
+	        int i = 0;
+	    
+	        long t_beg, t_end;
+	        t_beg = System.currentTimeMillis();
+	        while (i < procTime/pollTimeInSecs) {
+	            
+	        	sortedMap =  EhcoreMongoDBUtils.checkCDMRetrieve(msg_guid,nodePath,nodeName);
+	            if (sortedMap.size() > 0 || (type.equalsIgnoreCase("NoUpdates")&&(i==1))) {
+	                break;
+	            }
+	            else {
+	                sleepMessage(pollTimeInSecs);
+	            }
+	            i++;
+	        }
+	        t_end = System.currentTimeMillis();
+
+	        Log4jUtil.log("Total time taken to get the actual CDM List from mongoDB ::" +
+	                (t_end - t_beg)/1000);
+	                       
+	        return sortedMap;
+	    }
+	    
+	   
+	    
+	    /**
+	  	 * This Method is used to compare the actual CDM  with expected using XMLUnit .
+	  	 */
+	      public static void compareCDMList(String type,SortedMap<String,String> actualCDM){
+	      	
+	      	List<String> expectedCDM = new ArrayList<String>();
+	      	
+	          //Order the expected Canonical Message into a List based on the value of 'Root' node.
+	      	
+	      	if(type.equalsIgnoreCase(EhcoreAPIConstants.addentityCCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_CCD_RES + "CDM_CCDExchange1_AddEntity.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.addelementCCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ELEMENT_CCD_RES + "CDM_CCDExchange1_AddElement.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateCCD)){
+	          	expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_CCD_RES + "CDM_CCDExchange1_Update.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.deleteCCD)){
+	          	expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_CCD_RES + "delete_Immunization1.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NEW_CCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_CDMLIST + "CDM_CCDExchange1_New.xml");
+	      	}/*else if(type.equalsIgnoreCase("NoUpdates")){
+	      		expectedCDM.add(0,UtilConsts.EXPECTED_CDMLIST + "CDM_CCDExchange1_NoUpdates.xml");
+	      	}*/
+	      	
+	      	//Consolidated CCD
+	      	else if(type.equalsIgnoreCase(EhcoreAPIConstants.addentityC_CCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_AddEntity.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateC_CCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_Update.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.newC_CCD)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_New.xml");
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.noknown_c_ccd)){
+	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_NoKnown.xml");
+	      	}
+	  	    compareXml(expectedCDM,actualCDM);
+	      }
+
+	      
+	      public static void compareXml(List<String> expectedList,SortedMap<String,String> actualList){
+	      int count = 0;
+	      	
+	      //	Assert.assertTrue("Expected CDM size: " + expectedList.size() + ", and Actual CDM size :" + actualList.size()+ "are not equal" , actualList.size()!=0);
+	  		Log4jUtil.log("Sorted Map...");
+	  		for (Map.Entry<String,String> entry : actualList.entrySet()) {
+	          	Log4jUtil.log("Key : " + entry.getKey());
+	          	String actualCdmFileName = null;
+	          	String actualCdm = null;
+	  			// Save actual to a file.
+	          	actualCdm = entry.getValue().toString();
+	  			actualCdmFileName = EhcoreAPIConstants.SAMPLE_CDM_LIST + "actual.xml"; 
+	  			try {
+	  				FileUtils.writeStringToFile(new File(actualCdmFileName),
+	  						actualCdm, false);
+	  				
+	  			} catch (IOException e) {
+	  				Assert.fail(e.getMessage(), e);
+	  				Assert.fail("Failed to write actualCdm to file. "+ e.getMessage());
+	  			}
+	  			String expectedCdmFileName = expectedList.get(count);
+	  			EhcoreXmlUnitUtil.assertEqualsXML(expectedCdmFileName, actualCdmFileName);
+	           	count++;
+	          }
+	      }
+	      
+	      
+	      private static String getDeltaResponseURL() {
+		        return EhcoreAPIConstants.PROTOCOL + "://" +
+		        		EhcoreAPIConstants.HOST + ":" +
+		        		EhcoreAPIConstants.PORT +
+		       EhcoreAPIConstants.WS_URL+
+		     EhcoreAPIConstants.DELTA_RESPONSE;
+		    }
+		    private static String getNodeResponseURL() {
+		    	 return EhcoreAPIConstants.PROTOCOL + "://" +
+			        		EhcoreAPIConstants.HOST + ":" +
+			        		EhcoreAPIConstants.PORT +
+			       EhcoreAPIConstants.WS_URL+
+		        EhcoreAPIConstants.NODE_RESPONSE;
+		    }
+		
 
 }

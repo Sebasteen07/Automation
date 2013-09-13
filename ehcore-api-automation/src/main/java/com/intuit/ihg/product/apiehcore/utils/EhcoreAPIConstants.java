@@ -195,4 +195,107 @@ public class EhcoreAPIConstants {
 	//Allscripts adapter CCD IMPORT/EXPORT Message Details
 	public static final String AS_INVALID_REQ = AS_TEST_DATA +"invalidCCDimport/input/";
 	
+	public static final String CCD_RAW = TEST_DATA + "DEV3/ccdimport/validCCDExchange1/expected/raw/";
+
+	//Processing Time to check CDM Message in Mongo DB
+
+	//# time (in seconds) that the tests should wait to get the CDM Message from mongo DB
+	public static final String CDM_MSG_PROC_TIME ="90";
+
+	public static String NODE_PATH = "Header[1]";
+	public static String NODE_NAME = "Type";
+	public static String NEW_CCD = "NewCCD";//Change Detection for new patient
+		
+	public static final String addentityCCD = "add_entity_CCD";
+	public static final String addelementCCD = "add_element_CCD";
+	public static final String updateCCD = "update_CCD";
+	public static final String deleteCCD = "delete_CCD";
+	public static final String delete2CCD = "delete2_CCD";
+	
+	public static final String ADD_ENTITY_C_CCD_REQ= C_TEST_DATA +"DEV3/changedetectionmessage/input/entity/";
+	public static final String ADD_ELEMENT_C_CCD_REQ = C_TEST_DATA +"DEV3/changedetectionmessage/input/element/";
+	public static final String SNAPSHOT_ENTITY_C_CCD_RES = C_TEST_DATA +"DEV3/snapshotretrieve/expected/entity/";
+	public static final String SNAPSHOT_ELEMENT_C_CCD_RES = C_TEST_DATA +"DEV3/snapshotretrieve/expected/element/";
+	public static final String ADD_ENTITY_C_CCD_RES = C_TEST_DATA +"DEV3/changedetectionmessage/expected/entity/";
+	public static final String ADD_ELEMENT_C_CCD_RES = C_TEST_DATA +"DEV3/changedetectionmessage/expected/element/";
+	public static final String EXPECTED_C_CDMLIST = C_TEST_DATA +"DEV3/ccdimport/validCCDExchange/expected/cdm/";
+	
+	//Snapshot and change Detection Details
+	public static final String ADD_ENTITY_CCD_REQ = TEST_DATA +"changedetectionmessage/input/entity/";
+	public static final String ADD_ELEMENT_CCD_REQ = TEST_DATA +"changedetectionmessage/input/element/";
+	
+	public static final String ADD_ENTITY_CCD_RES = TEST_DATA +"changedetectionmessage/expected/entity/";
+	public static final String ADD_ELEMENT_CCD_RES = TEST_DATA +"changedetectionmessage/expected/element/";
+	
+	public static final String SAMPLE_UPDATE_CCD = SAMPLE_DATA +"changedetectionmessage/input/entity/";
+	
+	public static final String SNAPSHOT_ENTITY_CCD = TEST_DATA +"DEV3/snapshotretrieve/expected/entity/";
+	public static final String SNAPSHOT_ELEMENT_CCD = TEST_DATA +"DEV3/snapshotretrieve/expected/element/";
+	
+	
+	//Actual & EXPECTED CDM Message
+	public static final String ACTUAL_CDMLIST = SAMPLE_DATA +"ccdimport/validCCDExchange1/actual/cdm/";
+	public static final String EXPECTED_CDMLIST = TEST_DATA +"ccdimport/validCCDExchange1/expected/cdm/";
+	
+	//cdm_msg_proc_time = 90
+	public static final String newC_CCD = "New_CCCD";
+	
+	public static final String addentityC_CCD = "add_entity_CCCD";
+	public static final String addelementC_CCD = "add_element_CCCD";
+	public static final String updateC_CCD = "update_CCCD";
+	public static final String deleteC_CCD = "delete_CCCD";
+	public static final String delete2C_CCD = "delete2_CCCD";
+	
+	//EHDC -Consolidated CCD
+	public static final String c_ccd = "ConsolidatedCCD";
+	public static final String noknown_c_ccd = "NoKnownCCCD";
+	public static final String invalidc_ccd = "invalidConsolidatedCCD";
+	public static final String invalidCCCDXMLValidation = "invalidCCCDXMLValidation";
+	public static final String invalidCCCDNotification = "invalidCCCDNotification";
+	public static final String nullCodeCCCDSocialHistory = "nullCodeCCCDSocialHistory";
+	
+	//public static final String TEST_DATA = "src/main/resources/testdata/";
+	
+	public static final String C_CCD_RAW = C_TEST_DATA + "ccdimport/validCCDExchange/expected/raw/";
+	public static final String C_CCD_ERROR = C_TEST_DATA + "ccdimport/invalidCCDExchange/expected/error/";
+	public static final String C_CCD_ENRICHED = C_TEST_DATA + "/dev3/ccdimport/validCCDExchange/expected/enriched/";
+	public static final String C_CCD_SNAPSHOT = C_TEST_DATA + "/dev3/ccdimport/validCCDExchange/expected/snapshot/";
+	public static final String C_CCD_DELTA = C_TEST_DATA + "/dev3/ccdimport/validCCDExchange/expected/delta/";
+	
+	//CCDImport Message Details
+	public static final String CCD_MESSAGE = TEST_DATA + "ccdmessage/";
+	public static final String CCD_ENRICHED = TEST_DATA + "/dev3/ccdimport/validCCDExchange1/expected/enriched/";
+	public static final String CCD_SNAPSHOT = TEST_DATA + "/dev3/ccdimport/validCCDExchange1/expected/snapshot/";
+	public static final String CCD_DELTA = TEST_DATA + "/dev3/ccdimport/validCCDExchange1/expected/delta/";
+	
+	//US3775-Additional nodes in Attributes
+	public static final String CCDIMPORT_ATTRIBUTES = TEST_DATA + "dev3/ccdimport/validCCDExchange1/expected/attributes/";
+	
+	public static final String CCD_ERROR = TEST_DATA + "dev3/ccdimport/invalidCCDExchange1/expected/error/";
+	public static final String SAMPLE_INVALID_CCD = SAMPLE_DATA +"ccdimport/invalidCCDExchange1/input/";
+	//Snapshot and change Detection Details
+	
+	//Reprocess Message Details 
+	
+	public static final String SAMPLE_REPROCESS_DATA = SAMPLE_DATA +"reprocessmessage/";
+	
+	//Actual CCD Message (From RAW,ENRICHED ,SNAPSHOT node)
+	 		 
+	//Actual & EXPECTED CDM Message
+	 
+	/**
+	* CCD Export
+	*/
+	
+	public static final String SAMPLE_CCD_EXPORT_DATA= SAMPLE_DATA +"ccdexport/validCCDMessageType/input/";
+	public static final String CCD_EXPORT_DATA_RAW= TEST_DATA + "ccdexport/validCCDMessageType/expected/raw/";
+	
+	
+	public static final String INVALID_CCD_EXPORT_DATA = TEST_DATA + "ccdexport/invalidCCDMessageType/input/";
+	public static final String CCD_EXPORT_DATA_ERROR= TEST_DATA + "ccdexport/invalidCCDMessageType/expected/error/";
+	public static final String SAMPLE_INVALID_CCD_EXPORT_DATA= SAMPLE_DATA +"ccdexport/invalidCCDMessageType/input/";
+	
+	
+		
+	
 }
