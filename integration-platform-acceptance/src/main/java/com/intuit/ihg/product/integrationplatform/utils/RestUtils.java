@@ -25,6 +25,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.springframework.aop.ThrowsAdvice;
 import org.testng.Assert;
@@ -57,6 +58,8 @@ public class RestUtils {
 		IOAuthTwoLeggedClient oauthClient = new OAuthTwoLeggedClient();
         Log4jUtil.log("Get Request Url: "+ strUrl);
         HttpGet httpGetReq = new HttpGet(strUrl);
+        httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
 
 		
@@ -173,7 +176,7 @@ public class RestUtils {
 		return (new Random()).nextInt(9000) + 1000;
 	}
 	
-	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName) throws ParserConfigurationException, SAXException, IOException, TransformerException{
+	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName, String email) throws ParserConfigurationException, SAXException, IOException, TransformerException{
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		
@@ -189,6 +192,9 @@ public class RestUtils {
 				Node lastNameNode = name.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				firstNameNode.setTextContent(firstName);
 				lastNameNode.setTextContent(lastName);
+			}
+			if(childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals(IntegrationConstants.EMAIL_ADDRESS)){
+				childNodes.item(i).setTextContent(email);
 			}
 		}
 		
@@ -222,6 +228,9 @@ public class RestUtils {
     	IOAuthTwoLeggedClient oauthClient = new OAuthTwoLeggedClient();
         Log4jUtil.log("Post Request Url: "+ strUrl);
         HttpPost httpPostReq = new HttpPost(strUrl);
+        httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        
         StringEntity se = new StringEntity(payload);
         httpPostReq.setEntity(se);
         httpPostReq.addHeader("Accept", "application/xml");
@@ -343,6 +352,25 @@ public class RestUtils {
 			}
 		}
 		Assert.assertTrue(found, "Reply was not found in response XML");
+	}
+
+	public static void isPatientRegistered(String xmlFileName, String practicePatientId) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for(int i = 0; i < patients.getLength(); i++){
+			if(patients.item(i).getTextContent().equals(practicePatientId)){
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
+				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED, "Patient has different status than expected. Status is: " + status.getTextContent());
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
+		
+		
+				
 	}
 	
 		

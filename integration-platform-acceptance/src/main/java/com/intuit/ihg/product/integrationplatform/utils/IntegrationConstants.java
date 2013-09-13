@@ -32,4 +32,7 @@ public class IntegrationConstants {
 	public static final Object NAME = "Name";
 	public static final String FIRST_NAME = "FirstName";
 	public static final String LAST_NAME = "LastName";
+	public static final Object EMAIL_ADDRESS = "EmailAddress";
+	public static final String STATUS = "Status";
+	public static final String REGISTERED = "REGISTERED";
 }

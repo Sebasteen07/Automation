@@ -218,9 +218,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 10: Reply to the message");
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
 		
-		Thread.sleep(15000);
+		log("step 11: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
 		
-		log("step 11: Do a GET and get the message");
+		log("step 12: Do a GET and get the message");
 		// get only messages from last day in epoch time to avoid transferring lot of data
 		Long since = timestamp / 1000L - 60 * 60 * 24;
 
@@ -228,7 +229,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
-		log("step 12: Validate message reply");
+		log("step 13: Validate message reply");
 		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
 		
 	}
@@ -282,7 +283,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String practicePatientId = "Patient" +timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "Surname" + timestamp;
-		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName);
+		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		log("Created Email address: " + email);
+		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, email);
 		
 		log("step 3: Setup Oauth client"); 
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
@@ -319,14 +322,22 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		// Filing the User credentials
 		MyPatientPage myPatientPage = betaSiteCreateAccountPage.fillEmailActivaion("",
 				testData.getBirthDay(), testData.getZipCode(), testData.getSSN(),
-				testData.getEmail(), testData.getPatientPassword(), testData.getSecretQuestion(),
+				email, testData.getPatientPassword(), testData.getSecretQuestion(),
 				testData.getSecretAnswer());
 
 		log("Step 8: Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
 		
-		//TO DO 
+		log("Step 9: Do a GET on PIDC Url to get registered patient");
+		// get only patients from last day in epoch time to avoid transferring lot of data
+		Long since = timestamp / 1000L - 60 * 60 * 24;
+
+		log("Getting patients since timestamp: " + since);
 		
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("Step 10: Find the patient and check if he is registered");
+		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId);
 	}
 	
 	private PIDCTestData loadDataFromExcel() throws Exception{
@@ -341,12 +352,21 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("User Name: " + testData.getUserName());
 		log("Password: " + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
+		log("Patient XML Path: " + testData.getPatientPath());
 		log("Response Path: " + testData.getResponsePath());
 		log("OAuthProperty: " + testData.getOAuthProperty());
 		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("BirthDay: " + testData.getBirthDay());
+		log("ZipCode: " + testData.getZipCode());
+		log("SSN: " + testData.getSSN());
+		log("Email: " + testData.getEmail());
+		log("PatientPassword: " + testData.getPatientPassword());
+		log("SecretQuestion: " + testData.getSecretQuestion());
+		log("SecretAnswer: " + testData.getSecretAnswer());
+		
 		return testData;
 	}
 
