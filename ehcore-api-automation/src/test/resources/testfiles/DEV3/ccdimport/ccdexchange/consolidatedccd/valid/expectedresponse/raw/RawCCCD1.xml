@@ -1,0 +1,1718 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<eh:CcdExchange xmlns:eh="http://schema.intuit.com/health/ccd/v1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://schema.intuit.com/health/ccd/v1 CCDExchange.xsd">
+	<CcdMessageHeaders>
+		<Sender vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>SenderKeyConsolidatedCCD</Key>
+					<Value>SenderValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Sender>
+		<Partner vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>PartnerKey</Key>
+					<Value>PartnerValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Partner>
+		<Destination vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>DestinationKey</Key>
+					<Value>DestinationValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Destination>
+		<LastUpdated>2001-12-31T12:00:00</LastUpdated>
+		<MessageId>messageId</MessageId>
+		<DataJob>
+			<DataJobId>0</DataJobId>
+		</DataJob>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+		</RoutingMap>
+	</CcdMessageHeaders>
+	<PatientDemographics>
+		<PatientIdentifier>
+			<PracticePatientId>28121001</PracticePatientId>
+			<IntuitPatientId>_IGNORE_</IntuitPatientId>
+		</PatientIdentifier>
+		<Name>
+			<Prefix>Mrs</Prefix>
+			<FirstName>Barbara</FirstName>
+			<MiddleName>m</MiddleName>
+			<LastName>Simpson</LastName>
+			<Suffix>x</Suffix>
+		</Name>
+		<Address>
+			<Line1>996 Dalton St</Line1>
+			<Line2>Mailstop 1501172</Line2>
+			<City>Fargo</City>
+			<State>ND</State>
+			<Country>USA</Country>
+			<ZipCode>94043</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<Prefix>Mrs</Prefix>
+				<FirstName>Barbara</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>Simpson</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Barbara.simpson@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1212</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-5555</Number>
+			</Telephone>
+		</Contact>
+		<Gender>F</Gender>
+		<DateOfBirth>_IGNORE_</DateOfBirth>
+	</PatientDemographics>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>00000000000000099930</PracticeId>
+			<IntuitPracticeId>_IGNORE_</IntuitPracticeId>
+		</PracticeIdentifier>
+		<PracticeName>Medfusion CCD Test</PracticeName>
+		<Address>
+			<Line1>25 GREEN MOUNTAIN DR</Line1>
+			<Line2>address2</Line2>
+			<City>BURLINGTON</City>
+			<State>VT</State>
+			<Country>USA</Country>
+			<ZipCode>94620</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<FirstName>Robert</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>James</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Robert_James@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1515</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-7777</Number>
+			</Telephone>
+		</Contact>
+		<Provider>
+			<Role>Prescribing clinician</Role>
+			<ProviderIdentifier>
+				<PracticeProviderId>91171</PracticeProviderId>
+				<IntuitProviderId>_IGNORE_</IntuitProviderId>
+			</ProviderIdentifier>
+			<Demographics>
+				<Contact>
+					<ContactName>
+						<FirstName>Robert</FirstName>
+						<MiddleName>m</MiddleName>
+						<LastName>James</LastName>
+						<Suffix>x</Suffix>
+					</ContactName>
+					<Email>Robert_James@mailinator.com</Email>
+					<Telephone>
+						<Type>HOME</Type>
+						<Number>650-944-1616</Number>
+					</Telephone>
+					<Telephone>
+						<Type>WORK</Type>
+						<Number>650-944-9999</Number>
+					</Telephone>
+				</Contact>
+				<Address>
+					<Line1>25 GREEN MOUNTAIN DR</Line1>
+					<Line2>address2</Line2>
+					<City>BURLINGTON</City>
+					<State>VT</State>
+					<Country>USA</Country>
+					<ZipCode>94620</ZipCode>
+				</Address>
+			</Demographics>
+		</Provider>
+	</PracticeInformation>
+	<Ccd>
+		<CcdXml>
+
+			&lt;!--C-CCD_mockup_AllisonReed.xml(Problems,Medication,Allergy,Procedures,VitalSigns,Results)
+			C-CCD_mockup_SteveReynolds.xml(Immunizations,SocialHistory) --&gt;
+			&lt;?xml-stylesheet type='text/xsl'
+			href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?&gt;
+			&lt;ClinicalDocument xmlns=&quot;urn:hl7-org:v3&quot;
+			xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+			xsi:schemaLocation=&quot;urn:hl7-org:v3 ..\..\ccd.xsd&quot;&gt;
+
+			&lt;!--
+			********************************************************
+			CDA Header
+			********************************************************
+			--&gt;
+			&lt;realmCode code=&quot;US&quot;/&gt;
+			&lt;typeId extension=&quot;POCD_HD000040&quot;
+			root=&quot;2.16.840.1.113883.1.3&quot;/&gt;
+			&lt;!-- US General Header Template --&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.1.1&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.1.2&quot;/&gt;
+			&lt;id extension=&quot;20111107132624&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.1&quot;/&gt;
+			&lt;code code=&quot;34133-9&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;SUMMARIZATION OF EPISODE NOTE&quot;/&gt;
+			&lt;title&gt;HealthMatics Personal Health Record Extract&lt;/title&gt;
+			&lt;effectiveTime value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;confidentialityCode code=&quot;N&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.25&quot;/&gt;
+			&lt;languageCode code=&quot;en-US&quot;/&gt;
+			&lt;recordTarget&gt;
+			&lt;patientRole&gt;
+			&lt;id extension=&quot;35&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;120 Running Man Rd&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC &lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)888-7272&quot; use=&quot;HP&quot;/&gt;
+			&lt;patient&gt;
+			&lt;name&gt;
+			&lt;given&gt;Allison&lt;/given&gt;
+			&lt;family&gt;Reed&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;administrativeGenderCode code=&quot;F&quot; codeSystem=&quot;2.16.840.1.113883.5.1&quot;/&gt;
+			&lt;birthTime value=&quot;19550205&quot;/&gt;
+			&lt;maritalStatusCode codeSystem=&quot;2.16.840.1.113883.5.2&quot; code=&quot;S&quot;
+			displayName=&quot;Never Married&quot;/&gt;
+			&lt;languageCommunication&gt;
+			&lt;languageCode nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/languageCommunication&gt;
+			&lt;/patient&gt;
+			&lt;providerOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0&quot;/&gt;
+			&lt;name&gt;HealthMatics&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/providerOrganization&gt;
+			&lt;/patientRole&gt;
+			&lt;/recordTarget&gt;
+			&lt;author&gt;
+			&lt;time value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;assignedAuthor&gt;
+			&lt;id extension=&quot;10031&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2&quot;/&gt;
+			&lt;code code=&quot;SELF&quot; codeSystem=&quot;2.16.840.1.113883.5.111&quot;
+			displayName=&quot;Self&quot;
+			codeSystemName=&quot;RoleCode&quot;/&gt;
+			&lt;addr nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Phil&lt;/given&gt;
+			&lt;family&gt;McGraw&lt;/family&gt;
+			&lt;suffix&gt;MD&lt;/suffix&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedAuthor&gt;
+			&lt;/author&gt;
+			&lt;author&gt;
+			&lt;time value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;assignedAuthor&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.3&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedAuthoringDevice&gt;
+			&lt;softwareName&gt;Professional EHR 9.3.0.17&lt;/softwareName&gt;
+			&lt;/assignedAuthoringDevice&gt;
+			&lt;representedOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0&quot;/&gt;
+			&lt;name&gt;HealthMatics&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/representedOrganization&gt;
+			&lt;/assignedAuthor&gt;
+			&lt;/author&gt;
+			&lt;custodian&gt;
+			&lt;assignedCustodian&gt;
+			&lt;representedCustodianOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0&quot;/&gt;
+			&lt;name&gt;HealthMatics&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/representedCustodianOrganization&gt;
+			&lt;/assignedCustodian&gt;
+			&lt;/custodian&gt;
+			&lt;informationRecipient&gt;
+			&lt;intendedRecipient&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.1&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;receivedOrganization&gt;
+			&lt;name&gt;HealthMatics&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(888)672-3282&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;5501 Dillard Drive&lt;/streetAddressLine&gt;
+			&lt;city&gt;Cary&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27511&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/receivedOrganization&gt;
+			&lt;/intendedRecipient&gt;
+			&lt;/informationRecipient&gt;
+			&lt;legalAuthenticator&gt;
+			&lt;time value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;signatureCode code=&quot;S&quot;/&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;10022&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2&quot;/&gt;
+			&lt;addr nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;prefix&gt;Dr&lt;/prefix&gt;
+			&lt;given&gt;Jeri&lt;/given&gt;
+			&lt;family&gt;Pullen&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/legalAuthenticator&gt;
+			&lt;authenticator&gt;
+			&lt;time value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;signatureCode code=&quot;S&quot;/&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;10022&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2&quot;/&gt;
+			&lt;addr nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;prefix&gt;Dr&lt;/prefix&gt;
+			&lt;given&gt;Jeri&lt;/given&gt;
+			&lt;family&gt;Pullen&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/authenticator&gt;
+			&lt;participant typeCode=&quot;IND&quot;&gt;
+			&lt;time value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;associatedEntity classCode=&quot;CAREGIVER&quot;&gt;
+			&lt;id root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2.1&quot;/&gt;
+			&lt;code code=&quot;FRND&quot; displayName=&quot; Unrelated Friend&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.111&quot;
+			codeSystemName=&quot;RoleCode&quot;/&gt;
+			&lt;addr nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot; use=&quot;WP&quot;/&gt;
+			&lt;associatedPerson&gt;
+			&lt;name&gt;
+			&lt;prefix&gt;Dr&lt;/prefix&gt;
+			&lt;given&gt;Jeri&lt;/given&gt;
+			&lt;family&gt;Pullen&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/associatedPerson&gt;
+			&lt;/associatedEntity&gt;
+			&lt;/participant&gt;
+			&lt;documentationOf&gt;
+			&lt;serviceEvent classCode=&quot;PCPR&quot;&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20111107132423-0500&quot;/&gt;
+			&lt;high value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;functionCode code=&quot;PP&quot;
+			codeSystem=&quot;2.16.840.1.113883.12.443&quot;/&gt;
+			&lt;time&gt;
+			&lt;low/&gt;
+			&lt;high/&gt;
+			&lt;/time&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;10022&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.2&quot;/&gt;
+			&lt;code code=&quot;260000000X&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.101&quot;
+			codeSystemName=&quot;ProviderCodes&quot; displayName=&quot;Ambulatory
+			Health Care Facilities&quot;/&gt;
+			&lt;addr nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;prefix&gt;Dr&lt;/prefix&gt;
+			&lt;given&gt;Jeri&lt;/given&gt;
+			&lt;family&gt;Pullen&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;/serviceEvent&gt;
+			&lt;/documentationOf&gt;
+			&lt;componentOf&gt;
+			&lt;encompassingEncounter&gt;
+			&lt;id extension=&quot;2187&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.3.4&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20111107132423-0500&quot;/&gt;
+			&lt;high value=&quot;20111107132624-0500&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;/encompassingEncounter&gt;
+			&lt;/componentOf&gt;
+			&lt;!-- ********************************************************
+
+			CDA Body
+
+			******************************************************** --&gt;
+			&lt;component&gt;
+			&lt;structuredBody&gt;
+			&lt;!--
+			********************************************************
+
+			History of Present Illness, Problems, Alerts, Medication, Allergies and
+			Adverse Reactions,
+			Past Medical History, Procedures, Vital Signs, Results, Advance
+			Directives,Insurance
+
+			********************************************************
+			--&gt;
+			&lt;templateId extension=&quot;IMPL_CDAR2_LEVEL1&quot;
+			root=&quot;2.16.840.1.113883.10&quot;/&gt;
+			&lt;!-- Problem--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.5.1&quot;/&gt;
+			&lt;code code=&quot;11450-4&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Problem list&quot;/&gt;
+			&lt;title&gt;Problems&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;&lt;content ID=&quot;pr672&quot;&gt;PEPTIC REFLUX DISEASE
+			(530.11)&lt;/content&gt; (530.11); (&lt;content
+			ID=&quot;pr672-sta&quot;&gt;Active&lt;/content&gt;) &lt;/item&gt;
+			&lt;item&gt;&lt;content ID=&quot;pr679&quot;&gt;Unspecified
+			Diagnosis&lt;/content&gt; (&lt;content ID=&quot;pr679-sta&quot;
+			&gt;Active&lt;/content&gt;) &lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.3&quot;/&gt;
+			&lt;id extension=&quot;672&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code nullFlavor=&quot;NA&quot;/&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.4&quot;/&gt;
+			&lt;id extension=&quot;672&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot;
+			code=&quot;55607006&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#pr672&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;UNK&quot;&gt;
+			&lt;translation xsi:type=&quot;CD&quot; code=&quot;530.11&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.103&quot;
+			codeSystemName=&quot;ICD-9&quot; displayName=&quot;PEPTIC REFLUX
+			DISEASE (530.11)&quot;/&gt;
+			&lt;/value&gt;
+			&lt;entryRelationship typeCode=&quot;REFR&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.6&quot;/&gt;
+			&lt;code code=&quot;33999-4&quot; displayName=&quot;Status&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#pr672-sta&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;value xsi:type=&quot;CE&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot; code=&quot;55561003&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/act&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.3&quot;/&gt;
+			&lt;id extension=&quot;679&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code nullFlavor=&quot;NA&quot;/&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.4&quot;/&gt;
+			&lt;id extension=&quot;679&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot;
+			code=&quot;55607006&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#pr679&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;UNK&quot;&gt;
+			&lt;translation xsi:type=&quot;CD&quot; code=&quot;unknown&quot;
+			codeSystem=&quot;UNK&quot;
+			codeSystemName=&quot;Freetext Item&quot; displayName=&quot;Unspecified Diagnosis&quot;/&gt;
+			&lt;/value&gt;
+			&lt;entryRelationship typeCode=&quot;REFR&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.6&quot;/&gt;
+			&lt;code code=&quot;33999-4&quot; displayName=&quot;Status&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#pr679-sta&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;value xsi:type=&quot;CE&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot; code=&quot;55561003&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/act&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Medication--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.1.1&quot;/&gt;
+			&lt;code code=&quot;10160-0&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;History of medication use&quot;/&gt;
+			&lt;title&gt;Medication&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;me3560&quot;&gt;&lt;content
+			ID=&quot;me3560-entryName&quot;&gt;Reglan&lt;/content&gt;;
+			&lt;content
+			ID=&quot;me3560-sig&quot;&gt;10MG, 1 Tablet daily&lt;/content&gt;; for &lt;content
+			ID=&quot;me3560-days&quot;
+			&gt;30&lt;/content&gt; days; Qty: &lt;content
+			ID=&quot;me3560-qty&quot;&gt;30&lt;/content&gt;; Ref: &lt;content
+			ID=&quot;me3560-fill&quot;&gt;2&lt;/content&gt;; Start Date:
+			07/18/2011 (Active)&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;substanceAdministration classCode=&quot;SBADM&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.16&quot;/&gt;
+			&lt;id extension=&quot;3560&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.4&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#me3560&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime xsi:type=&quot;IVL_TS&quot;&gt;
+			&lt;low value=&quot;20110718000000-0400&quot;/&gt;
+			&lt;high nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;doseQuantity value=&quot;1&quot; unit=&quot;Tablet&quot;/&gt;
+			&lt;consumable typeCode=&quot;CSM&quot;&gt;
+			&lt;manufacturedProduct classCode=&quot;MANU&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.23&quot;/&gt;
+			&lt;manufacturedMaterial&gt;
+			&lt;code code=&quot;311666&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.88&quot;
+			codeSystemName=&quot;RxNorm&quot;
+			displayName=&quot;Reglan&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#me3560-entryName&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;name&gt;Metoclopramide HCl&lt;/name&gt;
+			&lt;/manufacturedMaterial&gt;
+			&lt;/manufacturedProduct&gt;
+			&lt;/consumable&gt;
+			&lt;entryRelationship typeCode=&quot;REFR&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;code code=&quot;33999-4&quot; displayName=&quot;Status&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;value xsi:type=&quot;CE&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot; code=&quot;55561003&quot;
+			displayName=&quot;Active&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/substanceAdministration&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Immunization--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.2&quot;/&gt;
+			&lt;code code=&quot;11369-6&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;History of Immunizations&quot;/&gt;
+			&lt;title&gt;Immunization&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;im10757700059&quot;&gt;&lt;content
+			ID=&quot;im10757700059-entryName&quot;
+			&gt;Td&lt;/content&gt;; # - Administered on: 01/06/2008&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;im10757700071&quot;&gt;&lt;content
+			ID=&quot;im10757700071-entryName&quot;
+			&gt;Influenza&lt;/content&gt;; # - Administered on:
+			10/23/2010&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;substanceAdministration classCode=&quot;SBADM&quot; negationInd=&quot;false&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.52&quot;/&gt;
+			&lt;id extension=&quot;10757700059&quot;
+			root=&quot;1.3.6.1.4.1.22812.3.301.3.4.4&quot;/&gt;
+			&lt;id extension=&quot;10757700061&quot;
+			root=&quot;1.3.6.1.4.1.22812.3.301.3.4.4&quot;/&gt;
+			&lt;code code=&quot;IMMUNIZ&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;
+			codeSystemName=&quot;ActCode&quot;/&gt;
+			&lt;text mediaType=&quot;text/xml&quot;&gt;
+			&lt;reference value=&quot;#im10757700059&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20080106000000+0000&quot;/&gt;
+			&lt;consumable typeCode=&quot;CSM&quot;&gt;
+			&lt;manufacturedProduct classCode=&quot;MANU&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.23&quot;/&gt;
+
+			&lt;manufacturedMaterial&gt;
+			&lt;code code=&quot;113&quot; codeSystem=&quot;2.16.840.1.113883.6.59&quot;
+			codeSystemName=&quot;CVX&quot; displayName=&quot;Td&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#im10757700059-entryName&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;lotNumberText/&gt;
+			&lt;/manufacturedMaterial&gt;
+			&lt;/manufacturedProduct&gt;
+			&lt;/consumable&gt;
+			&lt;/substanceAdministration&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;substanceAdministration classCode=&quot;SBADM&quot; negationInd=&quot;false&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.52&quot;/&gt;
+			&lt;id extension=&quot;10757700071&quot;
+			root=&quot;1.3.6.1.4.1.22812.3.301.3.4.4&quot;/&gt;
+			&lt;id extension=&quot;10757700073&quot;
+			root=&quot;1.3.6.1.4.1.22812.3.301.3.4.4&quot;/&gt;
+			&lt;code code=&quot;IMMUNIZ&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;
+			codeSystemName=&quot;ActCode&quot;/&gt;
+			&lt;text mediaType=&quot;text/xml&quot;&gt;
+			&lt;reference value=&quot;#im10757700071&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20101023000000+0000&quot;/&gt;
+			&lt;consumable typeCode=&quot;CSM&quot;&gt;
+			&lt;manufacturedProduct classCode=&quot;MANU&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.23&quot;/&gt;
+			&lt;manufacturedMaterial&gt;
+			&lt;code code=&quot;88&quot; codeSystem=&quot;2.16.840.1.113883.6.59&quot;
+			codeSystemName=&quot;CVX&quot; displayName=&quot;Influenza&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#im10757700071-entryName&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;lotNumberText/&gt;
+			&lt;/manufacturedMaterial&gt;
+			&lt;/manufacturedProduct&gt;
+			&lt;/consumable&gt;
+			&lt;/substanceAdministration&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Allergies--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.6.1&quot;/&gt;
+			&lt;code code=&quot;48765-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Allergies, adverse reactions, alerts&quot;/&gt;
+			&lt;title&gt;Allergies and Adverse Reactions&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;noAl&quot;&gt;Not Known&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.30&quot;/&gt;
+			&lt;id root=&quot;1.3.6.1.4.1.22812.3.42.3.4.4&quot;/&gt;
+			&lt;code nullFlavor=&quot;NA&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;high nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.7&quot;/&gt;
+			&lt;id root=&quot;1.3.6.1.4.1.22812.3.42.3.4.4.1&quot;/&gt;
+			&lt;code code=&quot;419199007&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#noAl&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;160244002&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;participant typeCode=&quot;CSM&quot;&gt;
+			&lt;participantRole classCode=&quot;MANU&quot;&gt;
+			&lt;playingEntity classCode=&quot;MMAT&quot;&gt;
+			&lt;code nullFlavor=&quot;NA&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#noAl&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;name&gt;Not Known&lt;/name&gt;
+			&lt;/playingEntity&gt;
+			&lt;/participantRole&gt;
+			&lt;/participant&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/act&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Procedures--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.7.1&quot;/&gt;
+			&lt;code code=&quot;47519-4&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;History of Procedures&quot;/&gt;
+			&lt;title&gt;Procedures&lt;/title&gt;
+			&lt;text&gt;
+			&lt;table width=&quot;100%&quot;&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Procedure&lt;/th&gt;
+			&lt;th&gt;Procedure Date&lt;/th&gt;
+			&lt;th&gt;Date Completed&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;prpsh1100&quot;&gt;SPECIMEN HANDLING
+			(99000)&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt; 07/15/2011 &lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt;-&lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt;
+			&lt;content ID=&quot;prpsh1100-sta&quot;&gt;Ordered&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;prpsh1099&quot;&gt;ROUTINE VENIPUNCTURE
+			(36415)&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt; 07/15/2011 &lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt; 07/15/2011 &lt;/td&gt;
+			&lt;td align=&quot;center&quot;&gt;
+			&lt;content ID=&quot;prpsh1099-sta&quot;&gt;Final&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;procedure classCode=&quot;PROC&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.14&quot;/&gt;
+			&lt;id extension=&quot;1100&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code code=&quot;99000&quot; codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot;
+			displayName=&quot;SPECIMEN HANDLING (99000)&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#prpsh1100&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#prpsh1100&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;/procedure&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;procedure classCode=&quot;PROC&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.13&quot;/&gt;
+			&lt;id extension=&quot;1099&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.1&quot;/&gt;
+			&lt;code code=&quot;36415&quot; codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot;
+			displayName=&quot;ROUTINE VENIPUNCTURE (36415)&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#prpsh1099&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#prpsh1099&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;/procedure&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Vital Signs--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.4&quot;/&gt;
+			&lt;code code=&quot;8716-3&quot; codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Vital signs&quot;/&gt;
+			&lt;title&gt;Vital Signs&lt;/title&gt;
+			&lt;text&gt;
+			&lt;table&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Date&lt;/th&gt;
+			&lt;th&gt;Description&lt;/th&gt;
+			&lt;th&gt;Test&lt;/th&gt;
+			&lt;th&gt;Result&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;8&quot; valign=&quot;top&quot;&gt;11/07/2011
+			13:11&lt;/td&gt;
+			&lt;td rowspan=&quot;8&quot; valign=&quot;top&quot;&gt;recorded by:
+			Technical Support&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Temperature&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi168Temperature&quot;&gt;99.8 F&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Systolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi168BPSystolic&quot;&gt;120 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Diastolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi168BPDiastolic&quot;&gt;80 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Weight&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi168Weight&quot;&gt;125.0000 lb&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Height&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi168Height&quot;&gt;65.00 in&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;6&quot; valign=&quot;top&quot;&gt;07/15/2011
+			13:55&lt;/td&gt;
+			&lt;td rowspan=&quot;6&quot; valign=&quot;top&quot;&gt;recorded by: Dr Jeri
+			Pullen&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Temperature&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi166Temperature&quot;&gt;98.6 F&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Systolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi166BPSystolic&quot;&gt;110 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Diastolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi166BPDiastolic&quot;&gt;65 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Weight&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi166Weight&quot;&gt;120.0000 lb&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Height&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi166Height&quot;&gt;65.00 in&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;168&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot; displayName=&quot;Vital
+			signs&quot;
+			codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;168Temperature&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8310-5&quot;
+			displayName=&quot;Temperature&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi168Temperature&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;99.8&quot;
+			unit=&quot;[degF]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;168BPSystolic&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8480-6&quot;
+			displayName=&quot;BP Systolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi168BPSystolic&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;120&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;168BPDiastolic&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8462-4&quot;
+			displayName=&quot;BP Diastolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi168BPDiastolic&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;80&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;168Weight&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;3141-9&quot;
+			displayName=&quot;Weight&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi168Weight&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;125.0000&quot;
+			unit=&quot;[lb_av]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;168Height&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8302-2&quot;
+			displayName=&quot;Height&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi168Height&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131137-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;65.00&quot;
+			unit=&quot;[in_us]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;166&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot; displayName=&quot;Vital
+			signs&quot;
+			codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;166Temperature&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8310-5&quot;
+			displayName=&quot;Temperature&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi166Temperature&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;98.6&quot;
+			unit=&quot;[degF]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;166BPSystolic&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8480-6&quot;
+			displayName=&quot;BP Systolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi166BPSystolic&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;110&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;166BPDiastolic&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8462-4&quot;
+			displayName=&quot;BP Diastolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi166BPDiastolic&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;65&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;166Weight&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;3141-9&quot;
+			displayName=&quot;Weight&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi166Weight&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;120.0000&quot;
+			unit=&quot;[lb_av]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;166Height&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;8302-2&quot;
+			displayName=&quot;Height&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi166Height&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135536-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;65.00&quot;
+			unit=&quot;[in_us]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Results--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.3.1&quot;/&gt;
+			&lt;code code=&quot;30954-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Relevant diagnostic tests and/or laboratory data&quot;/&gt;
+			&lt;title&gt;Results&lt;/title&gt;
+			&lt;text&gt;
+			&lt;table&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Date&lt;/th&gt;
+			&lt;th&gt;Description&lt;/th&gt;
+			&lt;th&gt;Test Name&lt;/th&gt;
+			&lt;th&gt;Value&lt;/th&gt;
+			&lt;th&gt;Reference&lt;/th&gt;
+			&lt;th&gt;Interpretation&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/07/2011
+			13:14&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;BLOOD COUNT,
+			PLATELET, AUTOMATED (85049)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BLOOD COUNT, PLATELET, AUTOMATED&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;rsl3073&quot;&gt;N count &lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;td&gt;Normal&lt;/td&gt;
+			&lt;td&gt;Final, Reviewed&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/07/2011
+			13:14&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;LDL
+			CHOLESTEROL-DIRECT (83721)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;LDL CHOLESTEROL-DIRECT&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;rsl3074&quot;&gt;65 mg/dl &lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td&gt;50.0 - 190.0&lt;/td&gt;
+			&lt;td&gt;Normal&lt;/td&gt;
+			&lt;td&gt;Final, Reviewed&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;07/15/2011
+			14:03&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;MEDICARE:
+			FECAL-OCCULT BLOOD TEST (G0107)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;MEDICARE: FECAL-OCCULT BLOOD TEST&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;rsl3065&quot;&gt;normal count &lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;td&gt;Normal&lt;/td&gt;
+			&lt;td&gt;Final, Reviewed&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;07/15/2011
+			13:56&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;HELICOBACTER PYLORI
+			ANTIBODY (86677)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;HELICOBACTER PYLORI ANTIBODY&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;rsl3066&quot;&gt;normal count &lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;td&gt;Normal&lt;/td&gt;
+			&lt;td&gt;Final, Reviewed&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;BATTERY&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.1&quot;/&gt;
+			&lt;id extension=&quot;998&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot; code=&quot;85049&quot;
+			displayName=&quot;BLOOD COUNT, PLATELET, AUTOMATED (85049)&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131438-0500&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.2&quot;/&gt;
+			&lt;id extension=&quot;3073&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;777-3&quot;
+			displayName=&quot;BLOOD COUNT, PLATELET, AUTOMATED&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#rsl3073&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131438-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;N &lt;/value&gt;
+			&lt;interpretationCode codeSystem=&quot;2.16.840.1.113883.5.83&quot;
+			code=&quot;Normal&quot;/&gt;
+			&lt;referenceRange&gt;
+			&lt;observationRange&gt;
+			&lt;text/&gt;
+			&lt;/observationRange&gt;
+			&lt;/referenceRange&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;BATTERY&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.1&quot;/&gt;
+			&lt;id extension=&quot;997&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot; code=&quot;83721&quot;
+			displayName=&quot;LDL CHOLESTEROL-DIRECT (83721)&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131402-0500&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.2&quot;/&gt;
+			&lt;id extension=&quot;3074&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;18262-6&quot;
+			displayName=&quot;LDL CHOLESTEROL-DIRECT&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#rsl3074&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111107131402-0500&quot;/&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;N &lt;/value&gt;
+			&lt;interpretationCode codeSystem=&quot;2.16.840.1.113883.5.83&quot;
+			code=&quot;Normal&quot;/&gt;
+			&lt;referenceRange&gt;
+			&lt;observationRange&gt;
+			&lt;text/&gt;
+			&lt;/observationRange&gt;
+			&lt;/referenceRange&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;BATTERY&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.1&quot;/&gt;
+			&lt;id extension=&quot;979&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot; code=&quot;G0107&quot;
+			displayName=&quot;MEDICARE: FECAL-OCCULT BLOOD TEST
+			(G0107)&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715140344-0400&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.2&quot;/&gt;
+			&lt;id extension=&quot;3065&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;2335-8&quot;
+			displayName=&quot;MEDICARE: FECAL-OCCULT BLOOD TEST&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#rsl3065&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715140344-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;normal &lt;/value&gt;
+			&lt;interpretationCode codeSystem=&quot;2.16.840.1.113883.5.83&quot;
+			code=&quot;Normal&quot;/&gt;
+			&lt;referenceRange&gt;
+			&lt;observationRange&gt;
+			&lt;text/&gt;
+			&lt;/observationRange&gt;
+			&lt;/referenceRange&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;BATTERY&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.1&quot;/&gt;
+			&lt;id extension=&quot;978&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.12&quot;
+			codeSystemName=&quot;CPT&quot; code=&quot;86677&quot;
+			displayName=&quot;HELICOBACTER PYLORI ANTIBODY (86677)&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135609-0400&quot;/&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.2&quot;/&gt;
+			&lt;id extension=&quot;3066&quot;
+			root=&quot;1.3.6.1.4.1.22812.4.4364.0.4.5&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; code=&quot;6420-4&quot;
+			displayName=&quot;HELICOBACTER PYLORI ANTIBODY&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#rsl3066&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20110715135609-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;normal &lt;/value&gt;
+			&lt;interpretationCode codeSystem=&quot;2.16.840.1.113883.5.83&quot;
+			code=&quot;Normal&quot;/&gt;
+			&lt;referenceRange&gt;
+			&lt;observationRange&gt;
+			&lt;text/&gt;
+			&lt;/observationRange&gt;
+			&lt;/referenceRange&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;component&gt;&lt;!-- [6] Social History templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.17&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.17&quot;/&gt;
+			&lt;code code=&quot;29762-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Social History&quot;/&gt;
+			&lt;title&gt;Social History&lt;/title&gt;
+			&lt;!-- One Smoking Status; one Soc Hist obs type: Tobacco use/exp documents
+			period formerly smoked. --&gt;
+			&lt;text&gt;
+			&lt;table&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Social History Type&lt;/th&gt;
+			&lt;th&gt;Description&lt;/th&gt;
+			&lt;th&gt;Effective Dates&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content&gt;Smoking Status&lt;/content&gt;&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;smstatus&quot;&gt;Former Smoker&lt;/content&gt;&lt;/td&gt;
+			&lt;td&gt;2005/05/01 to 2012/12/01&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistsmoke1&quot;/&gt;Smoking&lt;/td&gt;
+			&lt;td&gt;1 pack per day. &lt;/td&gt;
+			&lt;td&gt;2005/05/01 to 2012/12/01&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Tobacco Use/Exposure&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochisttobacco1&quot;&gt;Passive
+			Smoker&lt;/content&gt;&lt;/td&gt;
+			&lt;td&gt;1991 - 1998&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Pregnancy&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;pregnant1&quot;&gt;Patient is
+			Pregnant&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Alcohol&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistalcohol1&quot;&gt;1
+			drink/day&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Drug Use&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistdrug1&quot;&gt;Marijuana&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Education&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochisteducation1&quot;&gt;Attending graduate
+			school&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Diet/Nutrition&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistnutrition1&quot;&gt;Strict
+			Vegetarian&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Employment&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistemployment1&quot;&gt;Not currently
+			employed&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;!-- 256235009 Exercise Moderate (3-4 times/week) --&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Exercise&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistexercise1&quot;&gt;Moderate (3-4
+			times/week)&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;!-- 425400000 Toxic exposure status Exposed to DES --&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Toxic Exposure&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochisttoxic1&quot;&gt;Exposed to
+			DES&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;!-- 228272008 Health-related behavior Living Situation Lives with
+			parents --&gt;
+			&lt;tr&gt;
+			&lt;td&gt;&lt;content/&gt;Living Situation&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;sochistother-living1&quot;&gt;Lives with
+			parents&lt;/content&gt;&lt;/td&gt;
+			&lt;td/&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;!-- MU2 Smoking status observation template, can only be one. Code is
+			ASSERTION --&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.78&quot; /&gt;
+			&lt;id root=&quot;9ce8e36a-21fb-462e-b9ab-af02bf826198&quot; /&gt;
+			&lt;code code=&quot;ASSERTION&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot; /&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20050501&quot; /&gt;
+			&lt;high value=&quot;20121201&quot; /&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;8517006&quot;
+			displayName=&quot;Former smoker&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#smstatus&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;921ee9b0-dec3-4c00-9899-ccc3c614c02a&quot; /&gt;
+			&lt;code code=&quot;229819007&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Tobacco use and exposure&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#sochistsmoke1&quot; /&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20050501&quot; /&gt;
+			&lt;high value=&quot;20121201&quot; /&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;1 pack per day&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- Passive Smoker as child (example) --&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.85&quot; /&gt;
+			&lt;!-- ******** Tobacco use / Exposure template (code is ASSERTION)
+			(value is coded) ******** --&gt;
+			&lt;id root=&quot;d92c1a28-873c-4980-9b70-8ded1cbd5049&quot; /&gt;
+			&lt;code code=&quot;ASSERTION&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;1991&quot; /&gt;
+			&lt;high value=&quot;1998&quot; /&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;43381005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochisttobacco1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.15.3.8&quot; /&gt;
+			&lt;!-- ******** Pregnancy Observation Template; can only be one.
+			code is ASSERTION ******** --&gt;
+			&lt;id root=&quot;c75a45b0-f05b-49d8-b82c-698e320fe54d&quot; /&gt;
+			&lt;code code=&quot;ASSERTION&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;!-- 12/10: No matter what, Lantana Validator barfs on this; think its a
+			bad schematron rule impl --&gt;
+			&lt;!--&lt;value xsi:type=&quot;CD&quot; code=&quot;77386006&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Pregnant&quot;/&gt;--&gt;
+			&lt;effectiveTime value=&quot;20121205&quot;/&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;77386006&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Patient currently pregnant&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#pregnant1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;57b89bfc-c13b-4057-a3b4-6fcf5505698c&quot; /&gt;
+			&lt;code code=&quot;160573003&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Alcohol intake&quot;/&gt;
+			&lt;text&gt;&lt;reference value=&quot;#sochistalcohol1&quot;/&gt;&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;1&quot;
+			unit=&quot;{drink}/day&quot;&gt;&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;d6f71523-1e96-47e0-b5ac-07efd82c958b&quot; /&gt;
+			&lt;code code=&quot;363908000&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Details of drug misuse behavior&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;398705004&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Cannabis&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochistdrug1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;775578d6-4750-4041-bdbb-8b04733fd39a&quot; /&gt;
+			&lt;code code=&quot;105421008&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Educational Achievement&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;427350009&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Attending graduate school (finding)&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochisteducation1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;e8054602-323b-4a82-84d6-e4dbbf172aa8&quot; /&gt;
+			&lt;code code=&quot;364393001&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Nutritional observable&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;281014009&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Strict vegetarian (finding)&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochistnutrition1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- 364703007 SNOMED CT Employment detail --&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;92fe8862-71d3-4546-8fd7-0d4f012bbaf4&quot; /&gt;
+			&lt;code code=&quot;364703007&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Employment detail&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;73438004&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Unemployed (finding)&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochistemployment1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- 256235009 Exercise --&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;c776e8a2-7bc2-4a1c-b0de-4b06110c81d8&quot; /&gt;
+			&lt;code code=&quot;256235009&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Exercise&quot;/&gt;
+			&lt;text&gt;&lt;reference
+			value=&quot;#sochistexercise1&quot;&gt;&lt;/reference&gt;&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;Moderate (3-4 times/week)&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- 425400000 Toxic exposure status --&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;b3b203c8-fd52-4acd-8f83-33f8ceeafdd2&quot; /&gt;
+			&lt;code code=&quot;425400000&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Toxic exposure status&quot;/&gt;
+			&lt;text&gt;&lt;reference value=&quot;#sochisttoxic1&quot;&gt;&lt;/reference&gt;&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;Exposed to DES&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- 228272008 Health-related behavior --&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.38&quot; /&gt;
+			&lt;!-- ******** Social history observation template (category/type
+			code goes in &lt;code&gt; elem.) ******** --&gt;
+			&lt;id root=&quot;d266d8b3-45e0-42ee-9cfb-5d83aa0bffaa&quot; /&gt;
+			&lt;code code=&quot;228272008&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Health-related behavior&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#sochistother-living1&quot;&gt;&lt;/reference&gt;&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;value xsi:type=&quot;ST&quot;&gt;Lives with parents&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;/structuredBody&gt;
+			&lt;/component&gt;
+			&lt;/ClinicalDocument&gt; </CcdXml>
+	</Ccd>
+</eh:CcdExchange>

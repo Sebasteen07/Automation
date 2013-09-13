@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CCDMessage minorVer="0" majorVer="1"
+	xmlns="http://www.intuit.com/qhg/hub/schemas/Messages">
+	<Header>
+		<Type>CCDExport</Type>
+		<MsgId>40128</MsgId>
+		<Event>Create</Event>
+		<Source>PHR</Source>
+		<Internal>
+			<MajorVer>1</MajorVer>
+			<MinorVer>0</MinorVer>
+			<Status>Ok</Status>
+			<StatusTime>2012-01-25T00:39:06.801-08:00</StatusTime>
+			<Guid>b55676d0-8e07-4fe4-af5a-7dec92677a1d</Guid>
+		</Internal>
+	</Header>
+	<ClinicalExchangeHeader>
+		<Sender deviceVersion="11.4" deviceName="PHR">
+			<deviceArguments />
+		</Sender>
+		<Destination vendorName="Allscripts" deviceVersion=""
+			deviceName="ConnectHub-EEHR">
+			<deviceArguments />
+		</Destination>
+		<LastUpdated>2012-01-25T03:39:02.249-05:00</LastUpdated>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value>0</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value>0</Value>
+			</KeyValuePair>
+		</RoutingMap>
+		<PracticeInformation role="recipient">
+			<practiceIdentifier>
+				<universalPracticeId>50</universalPracticeId>
+				<externalPracticeId>00000000000000099930</externalPracticeId>
+			</practiceIdentifier>
+		</PracticeInformation>
+	</ClinicalExchangeHeader>
+	<CCDDocument>
+		<patientDemographics>
+			<PatientIdentifier>
+				<universalPatientNumber>41404</universalPatientNumber>
+			</PatientIdentifier>
+			<name action="">
+				<FirstName>kk20120124100First</FirstName>
+				<LastName>kk20120124100Last</LastName>
+			</name>
+			<gender>FEMALE</gender>
+			<birthDate>1990-01-01T00:00:00-05:00</birthDate>
+		</patientDemographics>
+		<CCDXML action="">
+			<SimpleCCD>
+				<AllergyList>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47126</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47126</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>227037002</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Fish</DisplayName>
+							<OriginalText> Fish - dietary (substance) </OriginalText>
+						</ProductCode>
+					</Allergy>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47125</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47125</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>53410008</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Beer</DisplayName>
+							<OriginalText>Beer (substance)</OriginalText>
+						</ProductCode>
+					</Allergy>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47127</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47127</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>70813002</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Milk</DisplayName>
+							<OriginalText>Milk (substance)</OriginalText>
+						</ProductCode>
+					</Allergy>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47128</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47128</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>419515007</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Soap/Detergents</DisplayName>
+							<OriginalText>Allergic reaction to detergent (disorder)
+							</OriginalText>
+						</ProductCode>
+					</Allergy>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47129</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47129</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>293857007</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Anticonvulsants</DisplayName>
+							<OriginalText>Antiepileptic allergy (disorder)</OriginalText>
+						</ProductCode>
+					</Allergy>
+					<Allergy action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47130</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47130</Extension>
+						</Id>
+						<ProductCode action="Update">
+							<Code>241954008</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Idiopathic</DisplayName>
+							<OriginalText>Idiopathic anaphylaxis (disorder)</OriginalText>
+						</ProductCode>
+					</Allergy>
+				</AllergyList>
+				<MedicationList />
+				<ImmunizationList>
+					<Immunization action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47131</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47131</Extension>
+						</Id>
+						<ImmunizationCode action="Update">
+							<Code>75</Code>
+							<CodeSystem>2.16.840.1.113883.6.59</CodeSystem>
+							<DisplayName>Smallpox</DisplayName>
+							<OriginalText>vaccinia (smallpox) vaccine</OriginalText>
+						</ImmunizationCode>
+					</Immunization>
+					<Immunization action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47132</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47132</Extension>
+						</Id>
+						<ImmunizationCode action="Update">
+							<Code>26</Code>
+							<CodeSystem>2.16.840.1.113883.6.59</CodeSystem>
+							<DisplayName>Cholera</DisplayName>
+							<OriginalText>cholera vaccine</OriginalText>
+						</ImmunizationCode>
+					</Immunization>
+					<Immunization action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47133</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47133</Extension>
+						</Id>
+						<ImmunizationCode action="Update">
+							<Code>37</Code>
+							<CodeSystem>2.16.840.1.113883.6.59</CodeSystem>
+							<DisplayName>Yellow Fever</DisplayName>
+							<OriginalText>yellow fever vaccine</OriginalText>
+						</ImmunizationCode>
+					</Immunization>
+					<Immunization action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47134</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47134</Extension>
+						</Id>
+						<ImmunizationCode action="Update">
+							<Code>04</Code>
+							<CodeSystem>2.16.840.1.113883.6.59</CodeSystem>
+							<DisplayName>Measles and Rubella</DisplayName>
+							<OriginalText>measles and rubella virus vaccine</OriginalText>
+						</ImmunizationCode>
+					</Immunization>
+				</ImmunizationList>
+				<ProblemList />
+				<TestResultList>
+					<TestResult xsi:type="TestResultType" action=""
+						xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47135</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47135</Extension>
+						</Id>
+						<TestCode action="Update">
+							<Code>404684003</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Clinical finding</DisplayName>
+							<OriginalText>Clinical finding (finding)</OriginalText>
+						</TestCode>
+						<TestDate action="Update">
+							<Value>20000125000000.000-0500</Value>
+						</TestDate>
+						<ResultInterpretation action="">
+							<Code>N</Code>
+							<CodeSystem>2.16.840.1.113883.5.83</CodeSystem>
+							<DisplayName>Normal</DisplayName>
+							<OriginalText>Normal</OriginalText>
+						</ResultInterpretation>
+					</TestResult>
+					<TestResult xsi:type="TestResultType" action=""
+						xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47136</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47136</Extension>
+						</Id>
+						<TestCode action="Update">
+							<Code>404684003</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Clinical finding</DisplayName>
+							<OriginalText>Clinical finding (finding)</OriginalText>
+						</TestCode>
+						<TestDate action="Update">
+							<Value>20010125000000.000-0500</Value>
+						</TestDate>
+						<ResultInterpretation action="">
+							<Code>10828004</Code>
+							<CodeSystem>2.16.840.1.113883.6.96</CodeSystem>
+							<DisplayName>Positive</DisplayName>
+							<OriginalText>Positive (qualifier value)</OriginalText>
+						</ResultInterpretation>
+					</TestResult>
+				</TestResultList>
+				<ProcedureList>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47137</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47137</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>77499</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>Radiation Treatment</DisplayName>
+							<OriginalText>Radiation Treatment</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47138</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47138</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>70450</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>CT Scan</DisplayName>
+							<OriginalText>CT Scan</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47139</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47139</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>22899</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>Back Surgery</DisplayName>
+							<OriginalText>Back Surgery</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47140</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47140</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>93015</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>Stress Test</DisplayName>
+							<OriginalText>Stress Test</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47141</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47141</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>78306</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>Bone Scan</DisplayName>
+							<OriginalText>Bone Scan</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47142</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47142</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>06.39</Code>
+							<CodeSystem>2.16.840.1.113883.6.2</CodeSystem>
+							<DisplayName>Thyroidectomy</DisplayName>
+							<OriginalText>Thyroidectomy</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+					<Procedure action="">
+						<ItemKey>
+							<PatientId>
+								<Type>IHPP</Type>
+								<ID>41404</ID>
+							</PatientId>
+							<ItemId>
+								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Extension>47143</Extension>
+							</ItemId>
+						</ItemKey>
+						<Id>
+							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Extension>47143</Extension>
+						</Id>
+						<ProcedureCode action="Update">
+							<Code>76999</Code>
+							<CodeSystem>2.16.840.1.113883.6.12</CodeSystem>
+							<DisplayName>Ultrasound</DisplayName>
+							<OriginalText>Ultrasound</OriginalText>
+						</ProcedureCode>
+					</Procedure>
+				</ProcedureList>
+			</SimpleCCD>
+		</CCDXML>
+	</CCDDocument>
+</CCDMessage>

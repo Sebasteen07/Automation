@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<eh:CcdExchange xmlns:eh="http://schema.intuit.com/health/ccd/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://schema.intuit.com/health/ccd/v1 ../../../../../../../../core/trunk/reference/schemas/public/ccdExchange.xsd ">
+  <CcdMessageHeaders>
+    <Sender deviceLocalTime="2001-12-31T12:00:00" deviceName="EEHR" deviceVersion="" vendorName="Allscripts">
+      <DeviceArguments>
+        <KeyValuePair>
+          <Key>SenderKeyNoKnownConsolidatedCCD</Key>
+          <Value>SenderValue</Value>
+        </KeyValuePair>
+      </DeviceArguments>
+    </Sender>
+    <Partner deviceLocalTime="2001-12-31T12:00:00" deviceName="EEHR" deviceVersion="" vendorName="Allscripts">
+      <DeviceArguments>
+        <KeyValuePair>
+          <Key>PartnerKey</Key>
+          <Value>PartnerValue</Value>
+        </KeyValuePair>
+      </DeviceArguments>
+    </Partner>
+    <Destination deviceLocalTime="2001-12-31T12:00:00" deviceName="EEHR" deviceVersion="" vendorName="Allscripts">
+      <DeviceArguments>
+        <KeyValuePair>
+          <Key>DestinationKey</Key>
+          <Value>DestinationValue</Value>
+        </KeyValuePair>
+      </DeviceArguments>
+    </Destination>
+    <LastUpdated>2001-12-31T12:00:00</LastUpdated>
+    <MessageId>messageId</MessageId>
+    <DataJob>
+		<DataJobId>0</DataJobId>
+	</DataJob>
+    <RoutingMap>
+      <KeyValuePair>
+          <Key>ProviderID</Key>
+          <Value>57</Value>
+      </KeyValuePair>
+      <KeyValuePair>
+          <Key>StaffID</Key>
+          <Value>57</Value>
+      </KeyValuePair>
+    </RoutingMap>
+  </CcdMessageHeaders>
+  <PatientDemographics>
+    <PatientIdentifier>
+		<PracticePatientId>28121001</PracticePatientId>
+      	<IntuitPatientId>45811</IntuitPatientId>
+    </PatientIdentifier>
+    <Name>
+      <Prefix>Mrs</Prefix>
+      <FirstName>Barbara</FirstName>
+      <MiddleName>m</MiddleName>
+      <LastName>Simpson</LastName>
+      <Suffix>x</Suffix>
+    </Name>
+    <Address>
+      <Line1>996 Dalton St</Line1>
+      <Line2>Mailstop 1501172</Line2>
+      <City>Fargo</City>
+      <State>ND</State>
+      <Country>USA</Country>
+      <ZipCode>94043</ZipCode>
+    </Address>
+    <Contact>
+      <ContactName>
+        <Prefix>Mrs</Prefix>
+        <FirstName>Barbara</FirstName>
+        <MiddleName>m</MiddleName>
+        <LastName>Simpson</LastName>
+        <Suffix>x</Suffix>
+      </ContactName>
+      <Email>Barbara.simpson@mailinator.com</Email>
+      <Telephone>
+          <Type>HOME</Type>
+          <Number>650-944-1212</Number>
+      </Telephone>
+      <Telephone>
+          <Type>WORK</Type>
+          <Number>650-944-5555</Number>
+      </Telephone>
+    </Contact>
+    <Gender>F</Gender>
+    <DateOfBirth>1980-02-01T00:00:00</DateOfBirth>
+  </PatientDemographics>
+  <PracticeInformation>
+    <PracticeIdentifier>
+      <PracticeId>00000000000000099930</PracticeId>
+      <IntuitPracticeId>50</IntuitPracticeId>
+    </PracticeIdentifier>
+    <PracticeName>Medfusion CCD Test</PracticeName>
+    <Address>
+      <Line1>25 GREEN MOUNTAIN DR</Line1>
+      <Line2>address2</Line2>
+      <City>BURLINGTON</City>
+      <State>VT</State>
+      <Country>USA</Country>
+      <ZipCode>94620</ZipCode>
+    </Address>
+    <Contact>
+      <ContactName>
+        <FirstName>Robert</FirstName>
+        <MiddleName>m</MiddleName>
+        <LastName>James</LastName>
+        <Suffix>x</Suffix>
+     </ContactName>
+      <Email>Robert_James@mailinator.com</Email>
+      <Telephone>
+          <Type>HOME</Type>
+          <Number>650-944-1515</Number>
+      </Telephone>
+      <Telephone>
+          <Type>WORK</Type>
+          <Number>650-944-7777</Number>
+      </Telephone>
+    </Contact>
+     <Provider>
+        <Role>Prescribing clinician</Role>
+        <ProviderIdentifier>
+          <PracticeProviderId>91171</PracticeProviderId>
+          <IntuitProviderId>57</IntuitProviderId>
+        </ProviderIdentifier>
+        <Demographics>
+          <Contact>
+            <ContactName>
+              <FirstName>Robert</FirstName>
+              <MiddleName>m</MiddleName>
+              <LastName>James</LastName>
+              <Suffix>x</Suffix>
+            </ContactName>
+            <Email>Robert_James@mailinator.com</Email>
+	      	<Telephone>
+	          <Type>HOME</Type>
+	          <Number>650-944-1616</Number>
+	      	</Telephone>
+	      	<Telephone>
+	          <Type>WORK</Type>
+	          <Number>650-944-9999</Number>
+	      	</Telephone>
+          </Contact>
+          <Address>
+	          <Line1>25 GREEN MOUNTAIN DR</Line1>
+		      <Line2>address2</Line2>
+		      <City>BURLINGTON</City>
+		      <State>VT</State>
+		      <Country>USA</Country>
+		      <ZipCode>94620</ZipCode>
+          </Address>
+        </Demographics>
+      </Provider>
+  </PracticeInformation>
+  <Ccd>
+    <CcdXml>
+    <![CDATA[
+<?xml-stylesheet type='text/xsl' href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:hl7-org:v3  ..\..\CCD\ccd.xsd">
+    <!--
+
+********************************************************
+
+  CDA Header
+
+********************************************************
+
+	-->
+    <realmCode code="US"/>
+    <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+    <templateId root="2.16.840.1.113883.10.20.22.1.1"/>
+    <templateId root="2.16.840.1.113883.10.20.22.1.2"/>
+    <id extension="789624693" root="1.3.6.1.4.1.22812.5.367519059.0.1"/>
+    <code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+        displayName="SUMMARIZATION OF EPISODE NOTE"/>
+    <title>MyWay Practice QA_Test002 Personal Health Record Extract</title>
+    <effectiveTime value="20111101130644-0400"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="en-US"/>
+    <recordTarget>
+        <patientRole>
+            <id extension="1089153679" root="1.3.6.1.4.1.22812.5.367519059.0.3.2"/>
+            <addr>
+                <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>27615</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(919)329-1155" use="HP"/>
+            <patient>
+                <name use="L">
+                    <given>Healthy</given>
+                    <family>Patient</family>
+                </name>
+                <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+                <birthTime value="19610720"/>
+                <maritalStatusCode codeSystem="2.16.840.1.113883.5.2" code="M" displayName="Married"/>
+                <raceCode codeSystem="2.16.840.1.113883.6.238" code="2106-3" displayName="White"/>
+                <ethnicGroupCode codeSystem="2.16.840.1.113883.6.238" code="2186-5"
+                    displayName="Not Hispanic or Latino"/>
+                <languageCommunication>
+                   <!--  <templateId root="2.16.840.1.113883.3.88.11.32.2"/>
+                    <templateId root="2.16.840.1.113883.3.88.11.83.2"/>
+                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.1"/>
+                     -->
+                    <languageCode code="en-US"/>
+                    <preferenceInd value="false"/>
+                </languageCommunication>
+            </patient>
+            <providerOrganization>
+                <id extension="0" root="1.3.6.1.4.1.22812.5.367519059.0"/>
+                <name>MyWay Practice QA_Test002</name>
+                <telecom value="tel:+1-(205)123-4533" use="WP"/>
+                <addr>
+                    <streetAddressLine>1234 That Rd.</streetAddressLine>
+                    <city>RALEIGH</city>
+                    <state>NC</state>
+                    <postalCode>27614</postalCode>
+                    <country>US</country>
+                </addr>
+            </providerOrganization>
+        </patientRole>
+    </recordTarget>
+    <author>
+        <time value="20111101130644-0400"/>
+        <assignedAuthor>
+            <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+            <code code="SELF" codeSystem="2.16.840.1.113883.5.111" displayName="Self"
+                codeSystemName="RoleCode"/>
+            <addr>
+                <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>276151234</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(919)847-8102" use=""/>
+            <assignedPerson>
+                <name>
+                    <given>Janell</given>
+                    <family>Carlson</family>
+                </name>
+            </assignedPerson>
+        </assignedAuthor>
+    </author>
+    
+    <author>
+        <time value="20111101130644-0400"/>
+        <assignedAuthor>
+            <id extension="0" root="1.3.6.1.4.1.22812.5.367519059.0.3.3"/>
+            <addr>
+                <streetAddressLine>1234 That Rd.</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>27614</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(205)123-4533" use="WP"/>
+            <assignedAuthoringDevice>
+                <manufacturerModelName>MyWay 10.x MOCK</manufacturerModelName>
+                <softwareName>Transform 4.x MOCK</softwareName>
+            </assignedAuthoringDevice>
+            <representedOrganization>
+                <id extension="0" root="1.3.6.1.4.1.22812.5.367519059.0"/>
+                <name>MyWay Practice QA_Test002</name>
+                <telecom value="tel:+1-(205)123-4533" use="WP"/>
+                <addr>
+                    <streetAddressLine>1234 That Rd.</streetAddressLine>
+                    <city>RALEIGH</city>
+                    <state>NC</state>
+                    <postalCode>27614</postalCode>
+                    <country>US</country>
+                </addr>
+            </representedOrganization>
+        </assignedAuthor>
+    </author>
+    <custodian>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id extension="0" root="1.3.6.1.4.1.22812.5.367519059.0"/>
+                <name>MyWay Practice QA_Test002</name>
+                <telecom value="tel:+1-(205)123-4533" use="WP"/>
+                <addr>
+                    <streetAddressLine>1234 That Rd.</streetAddressLine>
+                    <city>RALEIGH</city>
+                    <state>NC</state>
+                    <postalCode>27614</postalCode>
+                    <country>US</country>
+                </addr>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <informationRecipient>
+        <intendedRecipient>
+            <id extension="0" root="1.3.6.1.4.1.22812.5.367519059.0.3.1"/>
+            <addr>
+                <streetAddressLine>1234 That Rd.</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>27614</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(205)123-4533" use="WP"/>
+            <receivedOrganization>
+                <name>MyWay Practice QA_Test002</name>
+                <telecom value="tel:+1-(205)123-4533" use="WP"/>
+                <addr>
+                    <streetAddressLine>1234 That Rd.</streetAddressLine>
+                    <city>RALEIGH</city>
+                    <state>NC</state>
+                    <postalCode>27614</postalCode>
+                    <country>US</country>
+                </addr>
+            </receivedOrganization>
+        </intendedRecipient>
+    </informationRecipient>
+    <legalAuthenticator>
+        <time value="20111101130644-0400"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="2062721790" root="1.3.6.1.4.1.22812.5.367519059.0.3.2"/>
+            <addr>
+                <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>276151234</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(919)847-8102" use=""/>
+            <assignedPerson>
+                <name>
+                    <given>Janell</given>
+                    <family>Carlson</family>
+                </name>
+            </assignedPerson>
+        </assignedEntity>
+    </legalAuthenticator>
+    <authenticator>
+        <time value="20111101130644-0400"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="2062721790" root="1.3.6.1.4.1.22812.5.367519059.0.3.2"/>
+            <addr>
+                <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>276151234</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(919)847-8102" use=""/>
+            <assignedPerson>
+                <name>
+                    <given>Janell</given>
+                    <family>Carlson</family>
+                </name>
+            </assignedPerson>
+        </assignedEntity>
+    </authenticator>
+    <participant typeCode="IND">
+        <!-- <templateId root="2.16.840.1.113883.3.88.11.32.3"/>
+        <templateId root="2.16.840.1.113883.3.88.11.83.3"/>
+        <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.4"/>
+         -->
+        <time value="20111101130644-0400"/>
+        <associatedEntity classCode="CAREGIVER">
+            <id root="1.3.6.1.4.1.22812.5.367519059.0.3.2.1"/>
+            <code code="FRND" displayName=" Unrelated Friend" codeSystem="2.16.840.1.113883.5.111"
+                codeSystemName="RoleCode"/>
+            <addr>
+                <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                <city>RALEIGH</city>
+                <state>NC</state>
+                <postalCode>276151234</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="tel:+1-(919)847-8102" use=""/>
+            <associatedPerson>
+                <name>
+                    <given>Janell</given>
+                    <family>Carlson</family>
+                </name>
+            </associatedPerson>
+        </associatedEntity>
+    </participant>
+    <documentationOf>
+        <serviceEvent classCode="PCPR">
+            <id extension="1945050526" root="1.3.6.1.4.1.22812.5.367519059.0.3.8"/>
+            <effectiveTime>
+                <low value="20111101000000-0400"/>
+                <high value="20111101000000-0400"/>
+            </effectiveTime>
+            <performer typeCode="PRF">
+                <!-- <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/>
+                <templateId root="2.16.840.1.113883.3.88.11.32.4"/>
+                 -->
+                <functionCode code="PP" codeSystem="2.16.840.1.113883.12.443"/>
+                <time>
+                    <low/>
+                    <high/>
+                </time>
+                <assignedEntity>
+                    <id extension="2062721790" root="1.3.6.1.4.1.22812.5.367519059.0.3.2"/>
+                    <code codeSystem="2.16.840.1.113883.6.101" codeSystemName="ProviderCodes"
+                        code="260000000X" displayName="Ambulatory Health Care Facilities"/>
+                    <addr>
+                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                        <city>RALEIGH</city>
+                        <state>NC</state>
+                        <postalCode>276151234</postalCode>
+                        <country>US</country>
+                    </addr>
+                    <telecom nullFlavor="UNK"/>
+                    <assignedPerson>
+                        <name>
+                            <given>Janell</given>
+                            <family>Carlson</family>
+                        </name>
+                    </assignedPerson>
+                </assignedEntity>
+            </performer>
+            <performer typeCode="PRF">
+                <!-- <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/>
+                <templateId root="2.16.840.1.113883.3.88.11.32.4"/>
+                <templateId root="2.16.840.1.113883.3.88.11.83.4"/>
+                 -->
+                <functionCode code="PP" codeSystem="2.16.840.1.113883.12.443"/>
+                <time>
+                    <low/>
+                    <high/>
+                </time>
+                <assignedEntity>
+                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                    <code codeSystem="2.16.840.1.113883.6.101" codeSystemName="ProviderCodes"
+                        code="260000000X" displayName="Ambulatory Health Care Facilities"/>
+                    <addr>
+                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                        <city>RALEIGH</city>
+                        <state>NC</state>
+                        <postalCode>27615</postalCode>
+                        <country>US</country>
+                    </addr>
+                    <telecom value="tel:+1-(919)847-8102" use=""/>
+                    <assignedPerson>
+                        <name>
+                            <given>Janell</given>
+                            <family>Carlson</family>
+                        </name>
+                    </assignedPerson>
+                </assignedEntity>
+            </performer>
+        </serviceEvent>
+    </documentationOf>
+    <!-- ********************************************************
+
+     CDA Body
+
+     ******************************************************** -->
+    <componentOf>
+        <encompassingEncounter>
+            <id extension="1945050526" root="1.3.6.1.4.1.22812.5.367519059.0.3.4"/>
+            <effectiveTime>
+                <low value="20111101000000-0400"/>
+                <high value="20111101000000-0400"/>
+            </effectiveTime>
+        </encompassingEncounter>
+    </componentOf>
+    <component>
+        <structuredBody>
+<!-- *********************** -->
+<!--
+
+********************************************************
+
+Allergies, Adverse Reactions, Alerts
+
+********************************************************
+
+-->
+            <templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"/>
+            
+            <component><!-- [1] Problems templateId root="2.16.840.1.113883.10.20.22.2.5.1" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.5.1"/><!-- Required entries for ccd -->   
+                    <code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Problem list"/>
+                    <title>Problems</title>
+                    <text>
+                        <list>
+                            <item>
+                                <content ID="noActiveProb">No current problems or
+                                    disability</content>
+                            </item>
+                        </list>
+                    </text>
+                    <entry typeCode="DRIV">
+                        <act classCode="ACT" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
+                            <id nullFlavor="NA"/>
+                            <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
+                            <statusCode code="active"/>
+                            <effectiveTime>
+                                <low nullFlavor="UNK"/>
+                            </effectiveTime>
+                            <!-- Negation Indicator on observation not act. -->
+                            <entryRelationship typeCode="SUBJ" inversionInd="false">
+                                <observation classCode="OBS" moodCode="EVN" negationInd="true">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+                                    <id nullFlavor="NA"/>
+                                    <code xsi:type="CD" codeSystem="2.16.840.1.113883.6.96"
+                                        code="55607006" displayName="Problem"/>  
+                                    <text>
+                                        <reference value="#noActiveProb"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime>
+                                        <low nullFlavor="UNK"/>
+                                    </effectiveTime>
+                                    <value xsi:type="CD" nullFlavor="NA"/>
+                                </observation>
+                            </entryRelationship>
+                        </act>
+                    </entry>
+                </section>
+            </component>
+            <component><!-- [2] Medications templateId root="2.16.840.1.113883.10.20.22.2.1.1" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.1.1"/><!-- Required entries for ccd -->
+                    <code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of medication use"/>
+                    <title>Medication</title>
+                    <text>
+                        <list>
+                            <item>
+                                <content ID="noMeds">No Active Medications</content>
+                            </item>
+                        </list>
+                    </text>
+                    <entry typeCode="DRIV">
+                        <!-- See Figured 13 example on page 43 (informative) C-CDA 1.1 -->
+                        <substanceAdministration classCode="SBADM" moodCode="EVN" negationInd="true">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.16"/> <!-- Figure 13 is wrong, missing this -->
+                            <id nullFlavor="NA"/><!-- Figure 13 is missing this-->
+                            <!--<code code="182849000" codeSystem="2.16.840.1.113883.6.96"
+                                codeSystemName="SNOMED CT" displayName="No Drug Therapy Prescribed"/>-->
+                            <text>
+                                <reference value="#noMeds"/>
+                            </text>
+                            <statusCode code="completed"/><!-- Figure 13 example is missing this. Is it recommended to have active?-->
+                            <effectiveTime xsi:type="IVL_TS"><!-- Figure 13 missing this; low+high required -->
+                                <low nullFlavor="UNK"/>
+                                <high nullFlavor="NA"/>
+                            </effectiveTime>
+                            <consumable typeCode="CSM">
+                                <manufacturedProduct classCode="MANU">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.23"/><!-- Fig 13 missing this-->
+                                    <!--<manufacturedLabeledDrug>
+                                        <code code="410942007" displayName="drug or medication"
+                                            codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+                                    </manufacturedLabeledDrug>--><!-- Fig 13 example didn't validate! -->
+                                    <manufacturedMaterial><!-- This validates in the Lantana validator -->
+                                        <code nullFlavor="NA">
+                                            <originalText>
+                                                <reference value="#noMeds"/>
+                                            </originalText>
+                                        </code>
+                                        <name/>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </consumable><!-- REFR below is OPTOINAL in C-CDA 1.1 -->
+                            <!--<entryRelationship typeCode="REFR">
+                                <observation classCode="OBS" moodCode="EVN">
+                                   <!-\- 
+                                    <templateId root="2.16.840.1.113883.10.20.1.57"/>
+                                    <templateId root="2.16.840.1.113883.10.20.1.47"/>
+                                    -\-> 
+                                    <code code="33999-4" displayName="Status"
+                                        codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
+                                    <statusCode code="completed"/>
+                                </observation>
+                            </entryRelationship>-->
+                        </substanceAdministration>
+                    </entry>
+                </section>
+            </component>
+            <component><!-- [3] Allergies templateId root="2.16.840.1.113883.10.20.22.2.6.1" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.6.1"/><!-- Required entries for ccd -->
+                    <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Allergies, adverse reactions, alerts"/>
+                    <title>Allergies and Adverse Reactions</title>
+                    <text>
+                        <list>
+                            <item>
+                                <content ID="noAl">Not Known</content>
+                            </item>
+                        </list>
+                    </text>
+                    <entry>
+                        <act classCode="ACT" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
+                            <id root="1.3.6.1.4.1.22812.3.42.3.4.4"/>
+                            <code code="48765-2" codeSystem="2.16.840.1.113883.6.1"/>
+                            <statusCode code="active"/>
+                            <effectiveTime>
+                                <low nullFlavor="UNK"/>
+                                <high nullFlavor="UNK"/>
+                            </effectiveTime>
+                            <entryRelationship typeCode="SUBJ" inversionInd="false">
+                                <observation classCode="OBS" moodCode="EVN" negationInd="true">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
+                                    <id nullFlavor="NA"/>
+                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                                        codeSystemName="ActCode"/>
+                                    <text>
+                                        <reference value="#noAl"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime>
+                                        <low nullFlavor="UNK"/>
+                                        <high nullFlavor="UNK"/>
+                                    </effectiveTime>
+                                    <value xsi:type="CD" code="416098002" displayName="Drug Allergy (disorder)"
+                                        codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+                                    <participant typeCode="CSM">
+                                        <participantRole classCode="MANU">
+                                            <playingEntity classCode="MMAT">
+                                                <code nullFlavor="NA">
+                                                  <originalText>
+                                                  <reference value="#noAl"/>
+                                                  </originalText>
+                                                </code>
+                                                <name>Not Known</name>
+                                            </playingEntity>
+                                        </participantRole>
+                                    </participant>
+                                </observation>
+                            </entryRelationship>
+                        </act>
+                    </entry>
+                </section>
+            </component>
+            
+            <component><!-- [4] Procedures templateId root="2.16.840.1.113883.10.20.22.2.7.1" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.7.1"/><!-- Required entries for ccd -->
+                    <code code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="History of Procedures"/>
+                    <title>Procedures</title>
+                    <text>
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Procedure</th>
+                                    <th>Procedure Date</th>
+                                    <th>Date Completed</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <content ID="prpshNONE">No Relevant Procedures</content>
+                                    </td>
+                                    <td align="center"/>
+                                    <td align="center"/>
+                                    <td align="center"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                    <entry typeCode="DRIV">
+                        <procedure classCode="PROC" moodCode="EVN" negationInd="true">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.14"/>
+                            <id nullFlavor="NA"/>
+                            <code nullFlavor="NA">
+                                <originalText>
+                                    <reference value="#prpshNONE"/>
+                                </originalText>
+                            </code>
+                            <text>
+                                <reference value="#prpshNONE"/>
+                            </text>
+                            <statusCode code="completed"/>
+                            <effectiveTime>
+                                <low nullFlavor="UNK"/>
+                            </effectiveTime>
+                        </procedure>
+                    </entry>
+                </section>
+            </component>
+            <component><!-- [5] Results templateId root="2.16.840.1.113883.10.20.22.2.3.1" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.3.1" />
+                    <code code="30954-2" codeSystem="2.16.840.1.113883.6.1"
+                        codeSystemName="LOINC" displayName="RESULTS" />
+                    <title>Results</title>
+                    <text><content ID="noRESULTS">No relevant results.</content></text>
+                    <entry typeCode="DRIV">
+                        <organizer classCode="BATTERY" moodCode="EVN">
+                            <!-- Result organizer template -->
+                            <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
+                            <id nullFlavor="NA"/>
+                            <code xsi:type="CE" nullFlavor="NA" codeSystem="2.16.840.1.113883.6.1"/>
+                            <statusCode code="completed" />
+                            <component>
+                                <observation classCode="OBS" moodCode="EVN" negationInd="true"><!-- JF TEST: negationInd="false" variation needed to test nullFlavor value (look to obs text) -->
+                                    <!-- Result observation template -->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.2" />
+                                    <id nullFlavor="NA" />
+                                    <code nullFlavor="NA" codeSystem="2.16.840.1.113883.6.1">
+                                        <originalText><reference value="#noRESULTS"/></originalText>
+                                    </code>
+                                    <text>
+                                        <reference value="#noRESULTS" />
+                                    </text>
+                                    <statusCode code="completed" />
+                                    <effectiveTime value="20121128" />
+                                    <value xsi:type="PQ" nullFlavor="NA"/><!-- Need to check for null flavor, look in text -->
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                </section>
+            </component>
+            <component><!-- [6] Vital Signs templateId root="2.16.840.1.113883.10.20.22.2.4" -->
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.4"/><!-- optional entries for ccd -->
+                    <code code="8716-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Vital signs"/>
+                    <title>Vital Signs</title>
+                    <text>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Test</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="2" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>Height</td>
+                                    <td>
+                                        <content ID="vi205128760">66 in</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="2" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>Weight</td>
+                                    <td>
+                                        <content ID="vi2145681282">143.25 lb</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="3" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="3" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>BP Systolic</td>
+                                    <td>
+                                        <content ID="vi1298284802">118 mm[Hg]</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>BP Diastolic</td>
+                                    <td>
+                                        <content ID="vi1298284802_1">82 mm[Hg]</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="2" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>Temperature</td>
+                                    <td>
+                                        <content ID="vi697146250">98.6 F</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="2" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>O2 SAT</td>
+                                    <td>
+                                        <content ID="vi489197409">99 %</content>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" valign="top">11/1/2011 11:59:17 AM</td>
+                                    <td rowspan="2" valign="top">recorded by: Janell Carlson</td>
+                                </tr>
+                                <tr>
+                                    <td>Heart Rate</td>
+                                    <td>
+                                        <content ID="vi1670919196">67 /min</content>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                    <entry typeCode="DRIV">
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component>
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="205128760"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="8302-2" displayName="Height"/>
+                                    <text>
+                                        <reference value="#vi205128760"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="66" unit="[in_us]"/>
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                    <entry typeCode="DRIV"> <!-- entry[2] -->
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component><!-- entry[2] component[1] -->
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="2145681282"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="3141-9" displayName="Weight"/>
+                                    <text>
+                                        <reference value="#vi2145681282"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="143.25" unit="[lb_av]"/>
+                                    <!--<entryRelationship typeCode="SUBJ" inversionInd="true">
+                                        <act classCode="ACT" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.22.4.64"/>
+                                            <code code="48767-8" displayName="Annotation Comment"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/>
+                                            Lantana Validator Consol 1.1 error in rule
+                                                 This text SHALL contain exactly one [1..1] reference/@value (CONF:9431). 
+                                                 Test: cda:reference[@value=''][cda:reference[@value]]
+                                            <text>
+                                                <reference value="#vi2145681282-cmt"/>
+                                            </text>
+                                            <statusCode code="completed"/>
+                                        </act>
+                                    </entryRelationship-->
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                    <entry typeCode="DRIV"><!-- entry[3] -->
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component> <!-- entry[3] component[1] -->
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="1298284802"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="8480-6" displayName="BP Systolic"/>
+                                    <text>
+                                        <reference value="#vi1298284802"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="118" unit="mm[Hg]"/>
+                                    <!--<entryRelationship typeCode="SUBJ" inversionInd="true">
+                                        <act classCode="ACT" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.22.4.64"/>
+                                            <code code="48767-8" displayName="Annotation Comment"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/>
+                                           Lantana Validator Consol 1.1 error in rule
+                                                 This text SHALL contain exactly one [1..1] reference/@value (CONF:9431). 
+                                                 Test: cda:reference[@value=''][cda:reference[@value]]
+                                            <text>
+                                                <reference value="#vi1298284802-cmt"/>
+                                            </text>
+                                            <statusCode code="completed"/>
+                                        </act>
+                                    </entryRelationship-->
+                                </observation>
+                            </component>
+                            <component> <!-- entry[3] component[2] -->
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="1298284802_1"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="8462-4" displayName="BP Diastolic"/>
+                                    <text>
+                                        <reference value="#vi1298284802_1"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="82" unit="mm[Hg]"/>
+                                    <!--<entryRelationship typeCode="SUBJ" inversionInd="true">
+                                        <act classCode="ACT" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.22.4.64"/>
+                                            <code code="48767-8" displayName="Annotation Comment"
+                                                codeSystem="2.16.840.1.113883.6.1"
+                                                codeSystemName="LOINC"/>
+                                          Lantana Validator Consol 1.1 error in rule
+                                                 This text SHALL contain exactly one [1..1] reference/@value (CONF:9431). 
+                                                 Test: cda:reference[@value=''][cda:reference[@value]]
+                                            <text>
+                                                <reference value="#vi1298284802_1-cmt"/>
+                                            </text>
+                                            <statusCode code="completed"/>
+                                        </act>
+                                    </entryRelationship>-->
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                    <entry typeCode="DRIV">
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component>
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="697146250"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="8310-5" displayName="Temperature"/>
+                                    <text>
+                                        <reference value="#vi697146250"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="98.6" unit="[degF]"/>
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                    <entry typeCode="DRIV">
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component>
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="489197409"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="2710-2" displayName="O2 SAT"/>
+                                    <text>
+                                        <reference value="#vi489197409"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="99" unit="%"/>
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                    <entry typeCode="DRIV">
+                        <organizer classCode="CLUSTER" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.26"/>
+                            <id extension="124382741" root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                            <code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+                                displayName="Vital signs" codeSystemName="SNOMED CT"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime value="20111101115917-0400"/>
+                            <performer typeCode="PRF">
+                                <assignedEntity>
+                                    <id extension="1114001559" root="2.16.840.1.113883.4.6"/>
+                                    <addr>
+                                        <streetAddressLine>8529 Six Forks Road</streetAddressLine>
+                                        <city>RALEIGH</city>
+                                        <state>NC</state>
+                                        <postalCode>276151234</postalCode>
+                                        <country>US</country>
+                                    </addr>
+                                    <telecom value="tel:+1-(919)847-8102" use="WP"/>
+                                    <assignedPerson>
+                                        <name>
+                                            <given>Janell</given>
+                                            <family>Carlson</family>
+                                        </name>
+                                    </assignedPerson>
+                                </assignedEntity>
+                            </performer>
+                            <component>
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.27"/>
+                                    <id extension="1670919196"
+                                        root="1.3.6.1.4.1.22812.5.367519059.0.4.6"/>
+                                    <code codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                                        code="8867-4" displayName="Heart Rate"/>
+                                    <text>
+                                        <reference value="#vi1670919196"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20111101115917-0400"/>
+                                    <value xsi:type="PQ" value="67" unit="/min"/>
+                                </observation>
+                            </component>
+                        </organizer>
+                    </entry>
+                </section>
+            </component>
+            <!-- Social History with Social History Observation,Pregnancy Observation and Tobacco Use
+            IHG_DEPOT\trunk\integration-platform\data-channels\eh\services\src\test\resources\data\consolidated\mockups\C-CCD_mockup_SocialHistory-2.xml -->
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.22.2.17"/>
+                    <code code="29762-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+                        displayName="Social History"/>
+                    <title>Social History</title>
+                    <!-- One Smoking Status; one Soc Hist obs type: Tobacco use/exp documents period formerly smoked.  -->
+                    <text>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Social History Type</th>
+                                    <th>Description</th>
+                                    <th>Effective Dates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tobacco Use</td>
+                                    <td><content ID="soc1">Chews Wacky Tobacky</content></td>
+                                    <td>Since 2012/05/01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                    <entry typeCode="DRIV">
+                        <observation classCode="OBS" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.22.4.85" />
+                            <!-- ******** Tobacco use/exposure observation template ******** -->
+                            <id extension="123456789" root="9b56c25d-9104-45ee-9fa4-e0f3afaa01c1" />
+                            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4">
+                            </code>
+                            <statusCode code="completed" />
+                            <effectiveTime>
+                                <low nullFlavor="UNK" />
+                                <high nullFlavor="UNK"/>
+                            </effectiveTime>
+                            <value xsi:type="CD" code="81703003" codeSystem="2.16.840.1.113883.6.96" displayName="Chews Tobacco">
+                                <originalText><reference value="#soc1"/></originalText>
+                            </value>
+                        </observation>
+                    </entry>
+                    <!-- JF TODO: Add a generic tobacco one saying was exposed to passive smoke as a child -->
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>
+]]>
+   </CcdXml>
+  </Ccd>
+</eh:CcdExchange>

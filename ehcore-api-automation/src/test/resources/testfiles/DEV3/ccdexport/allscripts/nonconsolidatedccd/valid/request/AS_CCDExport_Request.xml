@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:CcdExchange xmlns:ns2="http://schema.intuit.com/health/ccd/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://schema.intuit.com/health/ccd/v1 ../../../../../../../../core/trunk/reference/schemas/public/ccdExchange.xsd ">
+	<CcdMessageHeaders>
+		<Sender vendorName="Allscripts" deviceLocalTime="2011-01-12T05:30:50"
+			deviceVersion="" deviceName="EEHR" />
+		<LastUpdated>2011-01-12T05:30:50</LastUpdated>
+		<MessageId>f3a3371d-69a6-49c2-98a9-596a07e61190</MessageId>
+		<DataJob>
+			<DataJobId>0</DataJobId>
+		</DataJob>
+	</CcdMessageHeaders>
+	<PatientDemographics>
+		<PatientIdentifier>
+			<PracticePatientId>448</PracticePatientId>
+			<IntuitPatientId>3782586</IntuitPatientId>
+		</PatientIdentifier>
+		<Name>
+			<FirstName>Travis</FirstName>
+			<MiddleName>M</MiddleName>
+			<LastName>Burnette</LastName>
+		</Name>
+		<Address>
+			<Line1>5501 Dillard Drive</Line1>
+			<Line2></Line2>
+			<City>Cary</City>
+			<State>NC</State>
+			<Country>US</Country>
+			<ZipCode>27518</ZipCode>
+		</Address>
+		<Contact>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>19198822862</Number>
+			</Telephone>
+		</Contact>
+		<Gender>M</Gender>
+		<DateOfBirth>1977-01-30T00:12:00-08:00</DateOfBirth>
+	</PatientDemographics>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>00000000000005840501</PracticeId>
+			<IntuitPracticeId>17681</IntuitPracticeId>
+		</PracticeIdentifier>
+		<PracticeName/>
+		<Provider>
+			<Role>Provider</Role>
+			<ProviderIdentifier>
+				<PracticeProviderId>150</PracticeProviderId>
+				<IntuitProviderId>127189</IntuitProviderId>
+			</ProviderIdentifier>
+		</Provider>
+	</PracticeInformation>
+	<Ccd>
+		<CcdXml><![CDATA[<?xml-stylesheet type='text/xsl'
+			href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?><ClinicalDocument
+			xmlns="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><realmCode
+			code="US" /><typeId extension="POCD_HD000040"
+			root="2.16.840.1.113883.1.3" /><templateId
+			extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"
+			/><templateId extension="Medical Summary"
+			root="1.3.6.1.4.1.19376.1.5.3.1.1.2" /><templateId
+			extension="Referral Summary" root="1.3.6.1.4.1.19376.1.5.3.1.1.3"
+			/><templateId root="2.16.840.1.113883.10.20.1"
+			/><templateId root="2.16.840.1.113883.10.20.3"
+			/><templateId root="2.16.840.1.113883.3.88.11.32.1"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1" /><id
+			extension="51556762" root="1.3.6.1.4.1.22812.3.99930.3.1"
+			/><code code="34133-9" codeSystem="2.16.840.1.113883.6.1"
+			codeSystemName="LOINC" displayName="SUMMARIZATION OF EPISODE NOTE"
+			/><title>TouchWorks Clinic Medical
+			Summary</title><effectiveTime value="20101014063304-0400"
+			/><confidentialityCode code="N"
+			codeSystem="2.16.840.1.113883.5.25" /><languageCode
+			code="en-US" /><recordTarget><patientRole><id
+			extension="101010063116483" root="1.3.6.1.4.1.22812.3.99930.3.3.2"
+			/><addr nullFlavor="UNK" /><telecom nullFlavor="UNK"
+			use="HP" /><patient><name><given>2nd Provider@
+			Org</given><family>Patient</family></name><administrativeGenderCode
+			code="M" codeSystem="2.16.840.1.113883.5.1" /><birthTime
+			value="19750731" /><languageCommunication><templateId
+			root="2.16.840.1.113883.3.88.11.32.2" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.2.1" /><languageCode
+			nullFlavor="UNK"
+			/></languageCommunication></patient><providerOrganization><id
+			extension="3" root="1.3.6.1.4.1.22812.3.99930.3"
+			/><name>TouchWorks Clinic</name><telecom
+			value="tel:+1-(895)98-5963" use="WP"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr></providerOrganization></patientRole></recordTarget><author><time
+			value="20101014063304-0400" /><assignedAuthor><id
+			extension="1234567890" root="2.16.840.1.113883.4.6" /><code
+			code="SELF" codeSystem="2.16.840.1.113883.5.111" displayName="Self"
+			codeSystemName="RoleCode" /><addr nullFlavor="UNK"
+			/><telecom nullFlavor="UNK" use="WP"
+			/><assignedPerson><name><given>Cardiologist</given><family>Allscripts</family></name></assignedPerson></assignedAuthor></author><author><time
+			value="20101014063304-0400" /><assignedAuthor><id
+			extension="3" root="1.3.6.1.4.1.22812.3.99930.3.3.3"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr><telecom
+			value="tel:+1-(895)98-5963" use="WP"
+			/><assignedAuthoringDevice><softwareName>Enterprise
+			EHR
+			11.200.3938.27686</softwareName></assignedAuthoringDevice><representedOrganization><id
+			extension="3" root="1.3.6.1.4.1.22812.3.99930.3"
+			/><name>TouchWorks Clinic</name><telecom
+			value="tel:+1-(895)98-5963" use="WP"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr></representedOrganization></assignedAuthor></author><custodian><assignedCustodian><representedCustodianOrganization><id
+			extension="3" root="1.3.6.1.4.1.22812.3.99930.3"
+			/><name>TouchWorks Clinic</name><telecom
+			value="tel:+1-(895)98-5963" use="WP"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr></representedCustodianOrganization></assignedCustodian></custodian><informationRecipient><intendedRecipient><id
+			extension="3" root="1.3.6.1.4.1.22812.3.99930.3.3.1"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr><telecom
+			value="tel:+1-(895)98-5963" use="WP"
+			/><receivedOrganization><name>TouchWorks
+			Clinic</name><telecom value="tel:+1-(895)98-5963" use="WP"
+			/><addr><streetAddressLine>Maples
+			Drive</streetAddressLine><streetAddressLine>4th Main,5th
+			C
+			Cross</streetAddressLine><city>Chicago</city><state>IL</state><postalCode
+			nullFlavor="UNK"
+			/><country>US</country></addr></receivedOrganization></intendedRecipient></informationRecipient><authenticator><time
+			value="20101014063304-0400" /><signatureCode code="S"
+			/><assignedEntity><id extension="91171"
+			root="1.3.6.1.4.1.22812.3.99930.3.3.2" /><addr nullFlavor="UNK"
+			/><telecom nullFlavor="UNK" use="WP"
+			/><assignedPerson><name><given>Cardiologist</given><family>Allscripts</family></name></assignedPerson></assignedEntity></authenticator><participant
+			typeCode="IND"><templateId
+			root="2.16.840.1.113883.3.88.11.32.3" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.3" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.2.4" /><time
+			value="20101014063304-0400" /><associatedEntity
+			classCode="CAREGIVER"><id
+			root="1.3.6.1.4.1.22812.3.99930.3.3.2.1" /><code code="FRND"
+			displayName=" Unrelated Friend" codeSystem="2.16.840.1.113883.5.111"
+			codeSystemName="RoleCode" /><addr nullFlavor="UNK"
+			/><telecom nullFlavor="UNK" use="WP"
+			/><associatedPerson><name><given>Christine</given><family>Allscripts</family></name></associatedPerson></associatedEntity></participant><documentationOf><serviceEvent
+			classCode="PCPR"><effectiveTime><low
+			value="20101014023304-0400" /><high value="20101014063304-0400"
+			/></effectiveTime><performer
+			typeCode="PRF"><templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"
+			/><templateId root="2.16.840.1.113883.3.88.11.32.4"
+			/><functionCode code="PP" codeSystem="2.16.840.1.113883.12.443"
+			/><time><low /><high
+			/></time><assignedEntity><id extension="91141"
+			root="1.3.6.1.4.1.22812.3.99930.3.3.2" /><code
+			code="260000000X" codeSystem="2.16.840.1.113883.6.101"
+			codeSystemName="ProviderCodes" displayName="Ambulatory Health Care
+			Facilities" /><addr nullFlavor="UNK" /><telecom
+			nullFlavor="UNK" use="WP"
+			/><assignedPerson><name><given>Christine</given><family>Allscripts</family></name></assignedPerson></assignedEntity></performer></serviceEvent></documentationOf><componentOf><encompassingEncounter><id
+			extension="1104891" root="1.3.6.1.4.1.22812.3.99930.3.3.4"
+			/><effectiveTime><low value="20101014023304-0400"
+			/><high value="20101014063304-0400"
+			/></effectiveTime></encompassingEncounter></componentOf><component><structuredBody><templateId
+			extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10"
+			/><component><section><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.1" /><templateId
+			root="2.16.840.1.113883.10.20.4.8" /><code code="42349-1"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="Reason for Referral" /><title>Reason for
+			Referral</title><text>No Reason for Referral was
+			given.</text></section></component><component><section><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.4" /><code code="10164-2"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="HPI" /><title>History of Present
+			Illness</title><text>No HPI
+			available.</text></section></component><component><section><templateId
+			root="2.16.840.1.113883.10.20.1.11" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.6" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.103" /><code code="11450-4"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="Problem list"
+			/><title>Problems</title><text><list><item><content
+			ID="pr515463500000">Normal Routine History And Physical
+			Adult</content>
+			(<content ID="pr515463500000-sta">Active</content>)
+			</item></list></text><entry
+			typeCode="DRIV"><act classCode="ACT"
+			moodCode="EVN"><templateId root="2.16.840.1.113883.10.20.1.27"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"
+			/><templateId root="2.16.840.1.113883.3.88.11.32.7"
+			/><templateId root="2.16.840.1.113883.3.88.11.83.7" /><id
+			extension="515463500000" root="1.3.6.1.4.1.22812.3.99930.3.4.1"
+			/><code nullFlavor="NA" /><statusCode code="active"
+			/><effectiveTime><low nullFlavor="UNK"
+			/></effectiveTime><entryRelationship typeCode="SUBJ"
+			inversionInd="false"><observation classCode="OBS"
+			moodCode="EVN"><templateId root="2.16.840.1.113883.10.20.1.28"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5" /><id
+			extension="515463500000" root="1.3.6.1.4.1.22812.3.99930.3.4.1"
+			/><code codeSystem="2.16.840.1.113883.6.96"
+			codeSystemName="SNOMED CT" code="55607006"
+			/><text><reference value="#pr515463500000"
+			/></text><statusCode code="completed"
+			/><effectiveTime><low nullFlavor="UNK"
+			/></effectiveTime><value xsi:type="CD"
+			nullFlavor="UNK"><translation xsi:type="CD" code="V70.0"
+			codeSystem="2.16.840.1.113883.6.103" codeSystemName="ICD-9"
+			/><translation xsi:type="CD" code="34848"
+			codeSystem="2.16.840.1.113883.6.26" codeSystemName="Medcin"
+			/></value><entryRelationship typeCode="REFR"
+			inversionInd="false"><observation classCode="OBS"
+			moodCode="EVN"><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1" /><templateId
+			root="2.16.840.1.113883.10.20.1.57" /><templateId
+			root="2.16.840.1.113883.10.20.1.50" /><code code="33999-4"
+			displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+			codeSystemName="LOINC" /><text><reference
+			value="#pr515463500000-sta" /></text><statusCode
+			code="completed" /><value xsi:type="CE"
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			code="55561003"
+			/></observation></entryRelationship></observation></entryRelationship></act></entry></section></component><component><section><templateId
+			root="2.16.840.1.113883.10.20.1.8" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.19" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.112" /><code code="10160-0"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="History of medication use"
+			/><title>Medication</title><text><list><item><content
+			ID="noMeds">No Active
+			Medications</content></item></list></text><entry
+			typeCode="DRIV"><substanceAdministration classCode="SBADM"
+			moodCode="INT"><templateId root="2.16.840.1.113883.10.20.1.24"
+			/><templateId extension="medication"
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.7" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1" /><templateId
+			root="2.16.840.1.113883.3.88.11.32.8" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.8" /><id
+			root="1.3.6.1.4.1.22812.3.42.3.4.2" /><code code="182849000"
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			displayName="No Drug Therapy Prescribed"
+			/><text><reference value="#noMeds"
+			/></text><statusCode code="completed"
+			/><effectiveTime xsi:type="IVL_TS"><low nullFlavor="UNK"
+			/></effectiveTime><consumable
+			typeCode="CSM"><manufacturedProduct
+			classCode="MANU"><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2" /><templateId
+			root="2.16.840.1.113883.10.20.1.53" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.8.2"
+			/><manufacturedMaterial><code
+			nullFlavor="UNK"><originalText><reference value="#noMeds"
+			/></originalText></code><name
+			/></manufacturedMaterial></manufacturedProduct></consumable><entryRelationship
+			typeCode="REFR"><observation classCode="OBS"
+			moodCode="EVN"><templateId root="2.16.840.1.113883.10.20.1.57"
+			/><templateId root="2.16.840.1.113883.10.20.1.47" /><code
+			code="33999-4" displayName="Status"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			/><statusCode code="completed"
+			/></observation></entryRelationship></substanceAdministration></entry></section></component><component><section><templateId
+			root="2.16.840.1.113883.10.20.1.2" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.13" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.102" /><code code="48765-2"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="Allergies, adverse reactions, alerts"
+			/><title>Allergies and Adverse
+			Reactions</title><text><list><item><content
+			ID="noAl">Not
+			Known</content></item></list></text><entry><act
+			classCode="ACT" moodCode="EVN"><templateId
+			root="2.16.840.1.113883.10.20.1.27" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.6" /><id
+			root="1.3.6.1.4.1.22812.3.42.3.4.4" /><code nullFlavor="NA"
+			/><statusCode code="completed"
+			/><effectiveTime><low nullFlavor="UNK" /><high
+			nullFlavor="UNK" /></effectiveTime><entryRelationship
+			typeCode="SUBJ" inversionInd="false"><observation
+			classCode="OBS" moodCode="EVN"><templateId
+			root="2.16.840.1.113883.10.20.1.18" /><templateId
+			root="2.16.840.1.113883.10.20.1.28" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.5" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.6" /><id
+			root="1.3.6.1.4.1.22812.3.42.3.4.4.1" /><code code="419199007"
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			/><statusCode code="completed"
+			/><effectiveTime><low nullFlavor="UNK"
+			/></effectiveTime><value xsi:type="CD" code="160244002"
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			/><participant typeCode="CSM"><participantRole
+			classCode="MANU"><playingEntity classCode="MMAT"><code
+			nullFlavor="NA"><originalText><reference value="#noAl"
+			/></originalText></code><name>Not
+			Known</name></playingEntity></participantRole></participant></observation></entryRelationship></act></entry></section></component><component><section><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.8" /><templateId
+			root="2.16.840.1.113883.10.20.4.9" /><code code="11348-0"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="Past Medical History" /><title>Past Medical
+			History</title><text><list><item><content
+			ID="noPastProb">No Significant Medical
+			History</content></item></list></text><entry
+			typeCode="DRIV"><act classCode="ACT"
+			moodCode="EVN"><templateId root="2.16.840.1.113883.10.20.1.27"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"
+			/><templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2"
+			/><templateId root="2.16.840.1.113883.3.88.11.83.7" /><id
+			root="1.3.6.1.4.1.22812.3.42.3.4.1" /><code nullFlavor="NA"
+			/><statusCode code="active" /><effectiveTime><low
+			nullFlavor="UNK" /></effectiveTime><entryRelationship
+			typeCode="SUBJ" inversionInd="false"><observation
+			classCode="OBS" moodCode="EVN"><templateId
+			root="2.16.840.1.113883.10.20.1.28" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.5" /><id
+			root="1.3.6.1.4.1.22812.3.42.3.4.1.2.1" /><code
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			code="282291009" /><text><reference value="#noPastProb"
+			/></text><statusCode code="completed"
+			/><effectiveTime><low nullFlavor="UNK"
+			/></effectiveTime><value xsi:type="CD"
+			codeSystem="2.16.840.1.113883.6.96" code="160243008"
+			/><entryRelationship typeCode="REFR"
+			inversionInd="false"><observation classCode="OBS"
+			moodCode="EVN"><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.1.1" /><templateId
+			root="2.16.840.1.113883.10.20.1.57" /><templateId
+			root="2.16.840.1.113883.10.20.1.50" /><code code="33999-4"
+			displayName="Status" codeSystem="2.16.840.1.113883.6.1"
+			codeSystemName="LOINC" /><text /><statusCode
+			code="completed" /><value xsi:type="CE"
+			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+			code="55561003"
+			/></observation></entryRelationship></observation></entryRelationship></act></entry></section></component><component><section><templateId
+			root="2.16.840.1.113883.10.20.1.1" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.34" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.3.35" /><code code="42348-3"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="Advance Directives" /><title>Advance
+			Directives</title><text><list><item><content
+			ID="noDirectives">No Advance Directives
+			available.</content></item></list></text><entry><observation
+			moodCode="EVN" classCode="OBS"><templateId
+			root="2.16.840.1.113883.10.20.1.17" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.12" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.13" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.13.7" /><id root="1.1"
+			/><code codeSystem="2.16.840.1.113883.6.96"
+			codeSystemName="SNOMED CT"
+			code="78823007"><originalText><reference
+			value="#noDirectives"
+			/></originalText></code><text><reference
+			value="#noDirectives" /></text><statusCode
+			code="completed" /><effectiveTime nullFlavor="UNK"><low
+			nullFlavor="UNK" /><high nullFlavor="UNK"
+			/></effectiveTime><value xsi:type="BL"
+			/><participant typeCode="CST"><participantRole
+			classCode="AGNT"><playingEntity><name>2nd Provider@
+			Org
+			Patient</name></playingEntity></participantRole></participant><entryRelationship
+			typeCode="REFR"><observation classCode="OBS"
+			moodCode="EVN"><templateId root="2.16.840.1.113883.10.20.1.37"
+			/><code code="33999-4" codeSystem="2.16.840.1.113883.6.1"
+			displayName="Status" /><statusCode code="completed"
+			/><value xsi:type="CE" code="15240007"
+			codeSystem="2.16.840.1.113883.6.96" displayName="Current and
+			verified"
+			/></observation></entryRelationship></observation></entry></section></component><component><section><templateId
+			root="2.16.840.1.113883.3.88.11.83.127" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3" /><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.3" /><templateId
+			root="2.16.840.1.113883.10.20.1.3" /><code code="46240-8"
+			codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+			displayName="History of encounters"
+			/><title>Encounters</title><text><list><item><content
+			ID="enc1104891">AUDIT</content> 10/14/2010
+			</item></list></text><entry><encounter
+			classCode="ENC" moodCode="EVN"><templateId
+			root="1.3.6.1.4.1.19376.1.5.3.1.4.14" /><templateId
+			root="2.16.840.1.113883.10.20.1.21" /><templateId
+			root="2.16.840.1.113883.3.88.11.83.16" /><templateId
+			root="2.16.840.1.113883.3.88.11.32.17" /><id
+			extension="1104891" root="1.3.6.1.4.1.22812.3.99930.3.3.4"
+			/><code codeSystem="2.16.840.1.113883.5.4"
+			codeSystemName="ActEncounterCode"><originalText><reference
+			value="#enc1104891"
+			/></originalText></code><text><reference
+			value="#enc1104891" /></text><effectiveTime><low
+			value="20101014023304-0400" /><high value="20101014063304-0400"
+			/></effectiveTime></encounter></entry></section></component></structuredBody></component></ClinicalDocument>
+		]]></CcdXml>
+	</Ccd>
+</ns2:CcdExchange>

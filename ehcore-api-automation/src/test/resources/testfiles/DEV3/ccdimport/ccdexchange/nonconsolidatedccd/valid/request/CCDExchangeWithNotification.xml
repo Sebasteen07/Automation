@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:CcdExchange xmlns:ns2="http://schema.intuit.com/health/ccd/v1">
+	<CcdMessageHeaders>
+		<Sender vendorName="Allscripts" deviceLocalTime="2012-01-02T19:22:21"
+			deviceVersion="0" deviceName="PEHR" />
+		<LastUpdated>2012-01-02T19:22:21</LastUpdated>
+		<MessageId>e62eec43-d091-4d54-a8f9-6c1e03e989dd</MessageId>
+		<DataJob>
+			<DataJobId>9bf9c78b-208d-4e3d-b1f7-3a97af4b9ea6</DataJobId>
+		</DataJob>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">57</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">57</Value>
+			</KeyValuePair>
+		</RoutingMap>
+	</CcdMessageHeaders>
+	<PatientDemographics>
+		<PatientIdentifier>
+			<PracticePatientId>1000001</PracticePatientId>
+			<IntuitPatientId>38939</IntuitPatientId>
+		</PatientIdentifier>
+		<Name>
+			<FirstName>Hermione</FirstName>
+			<MiddleName></MiddleName>
+			<LastName>Granger</LastName>
+		</Name>
+		<Address>
+			<Line1>323 Smart Way</Line1>
+			<Line2></Line2>
+			<City>Cary</City>
+			<State>NC</State>
+			<Country>US</Country>
+			<ZipCode>27518</ZipCode>
+		</Address>
+		<Contact />
+		<Gender>F</Gender>
+		<DateOfBirth>2011-01-14T00:07:00-05:00</DateOfBirth>
+	</PatientDemographics>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>00000000000000099930</PracticeId>
+			<IntuitPracticeId>50</IntuitPracticeId>
+		</PracticeIdentifier>
+		<PracticeName>11121</PracticeName>
+	</PracticeInformation>
+	<Ccd>
+		<CcdXml>
+		 <![CDATA[
+		    <?xml-stylesheet type='text/xsl' href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?>
+			<ClinicalDocument xmlns='urn:hl7-org:v3' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+				<realmCode code="US" />
+				<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+				<templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10" />
+				<templateId extension="Medical Summary" root="1.3.6.1.4.1.19376.1.5.3.1.1.2" />
+				<templateId extension="XPHR Summary" root="1.3.6.1.4.1.19376.1.5.3.1.1.5" />
+				<templateId root="2.16.840.1.113883.10.20.1" />
+				<templateId root="2.16.840.1.113883.10.20.3" />
+				<templateId root="2.16.840.1.113883.3.88.11.32.1" />
+				<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1" />
+				<id extension="20120702152220" root="1.3.6.1.4.1.22812.4.101.0.1" />
+				<code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="SUMMARIZATION OF EPISODE NOTE" />
+				<title>Personal Health Record(Extract)</title>
+				<effectiveTime value="20120702152220-0400" />
+				<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" />
+				<languageCode code="en-US" />
+				<recordTarget>
+					<patientRole>
+						<id extension="HERMIONE" root="1.3.6.1.4.1.22812.4.101.0" />
+						<addr>
+							<streetAddressLine>323 Smart Way</streetAddressLine>
+							<city>Cary</city>
+							<state>NC</state>
+							<postalCode>27518</postalCode>
+							<country>US</country>
+						</addr>
+						<telecom value="tel:+1-(919)565-8989" use="HP" />
+						<patient>
+							<name>
+								<given>Hermione</given>
+								<family>Granger</family>
+							</name>
+							<administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1" />
+							<birthTime value="19610720" />
+							<maritalStatusCode codeSystem="2.16.840.1.113883.5.2" code="S" displayName="Never Married" />
+							<ethnicGroupCode codeSystem="2.16.840.1.113883.6.238" code="2135-2" displayName="Hispanic or Latino" />
+							<languageCommunication>
+								<templateId root="2.16.840.1.113883.3.88.11.32.2" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.1" />
+								<languageCode nullFlavor="UNK" />
+							</languageCommunication>
+						</patient>
+						<providerOrganization>
+							<id extension="0" root="1.3.6.1.4.1.22812.4.101.0" />
+							<name>Healthmatics Specialty Center</name>
+							<telecom value="tel:+1-(919)851-5177" use="WP" />
+							<addr>
+								<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+								<city>Raleigh</city>
+								<state>NC</state>
+								<postalCode>27609</postalCode>
+								<country>US</country>
+							</addr>
+						</providerOrganization>
+					</patientRole>
+				</recordTarget>
+				<author>
+					<time value="20120702152220-0400" />
+					<assignedAuthor>
+						<id extension="5283733686" root="2.16.840.1.113883.4.6" />
+						<code code="SELF" codeSystem="2.16.840.1.113883.5.111" displayName="Self" codeSystemName="RoleCode" />
+						<addr>
+							<streetAddressLine>5555 Waverly Way</streetAddressLine>
+							<city>Cary</city>
+							<state>NC</state>
+							<postalCode>27592</postalCode>
+							<country>US</country>
+						</addr>
+						<telecom nullFlavor="UNK" />
+						<assignedPerson>
+							<name>
+								<prefix>Dr</prefix>
+								<given>Jeri</given>
+								<family>Pullen</family>
+							</name>
+						</assignedPerson>
+					</assignedAuthor>
+				</author>
+				<author>
+					<time value="20120702152220-0400" />
+					<assignedAuthor>
+						<id extension="0" root="1.3.6.1.4.1.22812.4.101.0.3.3" />
+						<addr>
+							<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+							<city>Raleigh</city>
+							<state>NC</state>
+							<postalCode>27609</postalCode>
+							<country>US</country>
+						</addr>
+						<telecom value="tel:+1-(919)851-5177" use="WP" />
+						<assignedAuthoringDevice>
+							<softwareName>Professional EHR 12.0.0.21; Transform 4.0.0.0</softwareName>
+						</assignedAuthoringDevice>
+						<representedOrganization>
+							<id extension="0" root="1.3.6.1.4.1.22812.4.101.0" />
+							<name>Healthmatics Specialty Center</name>
+							<telecom value="tel:+1-(919)851-5177" use="WP" />
+							<addr>
+								<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+								<city>Raleigh</city>
+								<state>NC</state>
+								<postalCode>27609</postalCode>
+								<country>US</country>
+							</addr>
+						</representedOrganization>
+					</assignedAuthor>
+				</author>
+				<informant>
+					<relatedEntity classCode="PROV">
+						<code code="59058001" codeSystem="2.16.840.1.113883.6.96" />
+						<effectiveTime value="20120702152220-0400" />
+						<relatedPerson>
+							<name nullFlavor="NAV" />
+						</relatedPerson>
+					</relatedEntity>
+				</informant>
+				<custodian>
+					<assignedCustodian>
+						<representedCustodianOrganization>
+							<id extension="0" root="1.3.6.1.4.1.22812.4.101.0" />
+							<name>Healthmatics Specialty Center</name>
+							<telecom value="tel:+1-(919)851-5177" use="WP" />
+							<addr>
+								<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+								<city>Raleigh</city>
+								<state>NC</state>
+								<postalCode>27609</postalCode>
+								<country>US</country>
+							</addr>
+						</representedCustodianOrganization>
+					</assignedCustodian>
+				</custodian>
+				<informationRecipient>
+					<intendedRecipient>
+						<id extension="0" root="1.3.6.1.4.1.22812.4.101.0.3.1" />
+						<addr>
+							<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+							<city>Raleigh</city>
+							<state>NC</state>
+							<postalCode>27609</postalCode>
+							<country>US</country>
+						</addr>
+						<telecom value="tel:+1-(919)851-5177" use="WP" />
+						<receivedOrganization>
+							<name>Healthmatics Specialty Center</name>
+							<telecom value="tel:+1-(919)851-5177" use="WP" />
+							<addr>
+								<streetAddressLine>2000 Wake Forest Rd</streetAddressLine>
+								<city>Raleigh</city>
+								<state>NC</state>
+								<postalCode>27609</postalCode>
+								<country>US</country>
+							</addr>
+						</receivedOrganization>
+					</intendedRecipient>
+				</informationRecipient>
+				<legalAuthenticator>
+					<time value="20120702152220-0400" />
+					<signatureCode code="S" />
+					<assignedEntity>
+						<id extension="10030" root="1.3.6.1.4.1.22812.4.101.0" />
+						<addr nullFlavor="UNK" />
+						<telecom nullFlavor="UNK" />
+						<assignedPerson>
+							<name>
+								<given>Doctor</given>
+								<family>Larry</family>
+							</name>
+						</assignedPerson>
+					</assignedEntity>
+				</legalAuthenticator>
+				<authenticator>
+					<time value="20120702152220-0400" />
+					<signatureCode code="S" />
+					<assignedEntity>
+						<id extension="10030" root="1.3.6.1.4.1.22812.4.101.0" />
+						<addr nullFlavor="UNK" />
+						<telecom nullFlavor="UNK" />
+						<assignedPerson>
+							<name>
+								<given>Doctor</given>
+								<family>Larry</family>
+							</name>
+						</assignedPerson>
+					</assignedEntity>
+				</authenticator>
+				<documentationOf>
+					<serviceEvent classCode='PCPR'>
+						<id extension="2391" root="1.3.6.1.4.1.22812.4.101.0.3.8" />
+						<effectiveTime>
+							<low value="20120702145733-0400" />
+							<high value="20120702152218-0400" />
+						</effectiveTime>
+						<performer typeCode="PRF">
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+							<templateId root="2.16.840.1.113883.3.88.11.32.4" />
+							<functionCode code="PP" codeSystem="2.16.840.1.113883.12.443" />
+							<time>
+								<low />
+								<high />
+							</time>
+							<assignedEntity>
+								<id extension="10030" root="1.3.6.1.4.1.22812.4.101.0" />
+								<code codeSystem="2.16.840.1.113883.6.101" codeSystemName="ProviderCodes" code="260000000X" displayName="Ambulatory Health Care Facilities" />
+								<addr nullFlavor="UNK" />
+								<telecom nullFlavor="UNK" />
+								<assignedPerson>
+									<name>
+										<given>Doctor</given>
+										<family>Larry</family>
+									</name>
+								</assignedPerson>
+							</assignedEntity>
+						</performer>
+						<performer typeCode="PRF">
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+							<templateId root="2.16.840.1.113883.3.88.11.32.4" />
+							<templateId root="2.16.840.1.113883.3.88.11.83.4" />
+							<functionCode code="PP" codeSystem="2.16.840.1.113883.12.443" />
+							<time>
+								<low />
+								<high />
+							</time>
+							<assignedEntity>
+								<id extension="5283733686" root="2.16.840.1.113883.4.6" />
+								<code codeSystem="2.16.840.1.113883.6.101" codeSystemName="ProviderCodes" code="260000000X" displayName="Ambulatory Health Care Facilities" />
+								<addr>
+									<streetAddressLine>5555 Waverly Way</streetAddressLine>
+									<city>Cary</city>
+									<state>NC</state>
+									<postalCode>27592</postalCode>
+									<country>US</country>
+								</addr>
+								<telecom nullFlavor="UNK" />
+								<assignedPerson>
+									<name>
+										<prefix>Dr</prefix>
+										<given>Jeri</given>
+										<family>Pullen</family>
+									</name>
+								</assignedPerson>
+							</assignedEntity>
+						</performer>
+					</serviceEvent>
+				</documentationOf>
+				<componentOf>
+					<encompassingEncounter>
+						<id extension="2391" root="1.3.6.1.4.1.22812.4.101.0.3.4" />
+						<effectiveTime>
+							<low value="20120702145733-0400" />
+							<high value="20120702152218-0400" />
+						</effectiveTime>
+					</encompassingEncounter>
+				</componentOf>
+				<component>
+					<structuredBody>
+						<templateId extension="IMPL_CDAR2_LEVEL1" root="2.16.840.1.113883.10" />
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.11" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.6" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.103" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="21" />
+								<code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Problem list" />
+								<title>Problems</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.8" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.19" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.112" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="14" />
+								<code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of medication use" />
+								<title>Medication</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.2" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.13" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.102" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="11" />
+								<code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Allergies, adverse reactions,alerts" />
+								<title>Allergies and Adverse Reactions</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.8" />
+								<templateId root="2.16.840.1.113883.10.20.4.9" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="22" />
+								<code code="11348-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Past Medical History" />
+								<title>Past Medical History</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.12" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.11" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.12" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.108" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="10" />
+								<code code="47519-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of Procedures" />
+								<title>Procedures</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.6" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.23" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.117" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="16" />
+								<code code="11369-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of Immunizations" />
+								<title>Immunization</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.4" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.14" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="12" />
+								<code code="10157-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of family member diseases" />
+								<title>Family History</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.15" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.16" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="13" />
+								<code code="29762-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Social History" />
+								<title>Social History</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.16" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.25" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.2" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.119" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="7" />
+								<code code="8716-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Vital signs" />
+								<title>Vital Signs</title>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.14" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.28" />
+								<templateId root="2.16.840.1.113883.3.88.11.83.122" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="17" />
+								<code code="30954-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Relevant diagnostic tests and/or laboratory data" />
+								<title>Results</title>
+								<text>
+									<content ID="noRsl">No Known Results</content>
+								</text>
+								<entry typeCode='DRIV'>
+									<organizer classCode="BATTERY" moodCode="EVN">
+										<templateId root="2.16.840.1.113883.10.20.1.32" assigningAuthorityName="HL7 CCD" />
+										<id root="1.3.6.1.4.1.22812.3.42.3.4.5" />
+										<code nullFlavor="NI" />
+										<statusCode code="completed" />
+										<component>
+											<procedure classCode="PROC" moodCode="EVN">
+												<templateId root="2.16.840.1.113883.3.88.11.83.17" assigningAuthorityName="HITSP C83" />
+												<templateId root="2.16.840.1.113883.10.20.1.29" assigningAuthorityName="CCD" />
+												<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.19" assigningAuthorityName="IHE PCC" />
+												<id root="1.3.6.1.4.1.22812.3.42.3.4.5" />
+												<code nullFlavor="NI">
+													<originalText>
+														<reference value="#noRsl" />
+													</originalText>
+												</code>
+												<text>
+													<reference value="#noRsl" />
+												</text>
+												<statusCode code="completed" />
+												<effectiveTime nullFlavor="NA" />
+											</procedure>
+										</component>
+										<component>
+											<observation classCode="OBS" moodCode="EVN">
+												<templateId root="2.16.840.1.113883.3.88.11.83.15.1" assigningAuthorityName="HITSP C83" />
+												<templateId root="2.16.840.1.113883.10.20.1.31" assigningAuthorityName="CCD" />
+												<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13" assigningAuthorityName="IHE PCC" />
+												<id root="1.3.6.1.4.1.22812.3.42.3.4.5" />
+												<code code="NI" />
+												<text>
+													<reference value="#noRsl" />
+												</text>
+												<statusCode code="completed" />
+												<effectiveTime nullFlavor="NA" />
+												<value xsi:type="CD">
+													<originalText>
+														<reference value="#noRsl" />
+													</originalText>
+												</value>
+											</observation>
+										</component>
+									</organizer>
+								</entry>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.31" />
+								<templateId root="2.16.840.1.113883.10.20.1.10" />
+								<templateId root="2.16.840.1.113883.10.20.2.7" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="18" />
+								<code code="18776-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="TREATMENT PLAN" />
+								<title>Treatment Plan</title>
+								<text>
+									<list>
+										<item>TSH (THYROID STIMULATING HORMONE) (84443)2-July-2012</item>
+										<item>LIPID PANEL (80061)17-May-2012</item>
+									</list>
+								</text>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.1" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.34" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.35" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="19" />
+								<code code="42348-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Advance Directives" />
+								<title>Advance Directives</title>
+								<text>
+									<content ID="advDir106484">Living Will - Effective on 5/17/2012. Expiration date unspecified</content>
+								</text>
+								<entry>
+									<observation moodCode="EVN" classCode="OBS">
+										<templateId root="2.16.840.1.113883.10.20.1.17" />
+										<templateId root="2.16.840.1.113883.3.88.11.83.12" />
+										<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13" />
+										<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.7" />
+										<id extension="106484" root="1.3.6.1.4.1.22812.4.101.0.4.4" />
+										<code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"
+											code="78823007">
+											<originalText>
+												<reference value="#advDir106484" />
+											</originalText>
+										</code>
+										<text>
+											<reference value="#advDir106484" />
+										</text>
+										<statusCode code="completed" />
+										<effectiveTime value="20120517">
+											<low value="20120517" />
+											<high nullFlavor="UNK" />
+										</effectiveTime>
+										<value xsi:type="BL" />
+										<participant typeCode="CST">
+											<participantRole classCode="AGNT">
+												<playingEntity>
+													<name>Hermione Granger</name>
+												</playingEntity>
+											</participantRole>
+										</participant>
+										<entryRelationship typeCode="REFR">
+											<observation classCode="OBS" moodCode="EVN">
+												<templateId root="2.16.840.1.113883.10.20.1.37" />
+												<code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status" />
+												<statusCode code="completed" />
+												<value xsi:type="CE" code="15240007" codeSystem="2.16.840.1.113883.6.96" displayName="Current and verified" />
+											</observation>
+										</entryRelationship>
+									</observation>
+								</entry>
+							</section>
+						</component>
+						<component>
+							<section>
+								<templateId root="2.16.840.1.113883.10.20.1.9" />
+								<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.7" />
+								<id root="1.3.6.1.4.1.22812.4.101.0.5" extension="9" />
+								<code code="48768-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Payment sources" />
+								<title>Insurance</title>
+								<text>
+									<list>
+										<item>
+											<content ID="ins1">Aetna</content>
+										</item>
+									</list>
+								</text>
+								<entry>
+									<act classCode='ACT' moodCode='DEF'>
+										<templateId root="2.16.840.1.113883.10.20.1.20" />
+										<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.17" />
+										<id />
+										<code code="48768-6" displayName="Payment Sources" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+										<statusCode code="completed" />
+										<entryRelationship typeCode="COMP">
+											<act classCode="ACT" moodCode="EVN">
+												<templateId root="2.16.840.1.113883.10.20.1.26" />
+												<templateId root="2.16.840.1.113883.3.88.11.83.5" />
+												<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.18" />
+												<id extension="FDDE565" />
+												<code code="OT" displayName="Other" codeSystem="2.16.840.1.113883.6.255.1336" codeSystemName="X12N-1336" />
+												<statusCode code="completed" />
+												<performer typeCode="PRF">
+													<assignedEntity>
+														<id />
+														<code codeSystem="2.16.840.1.113883.5.110" codeSystemName="RoleClass" code="PAYOR" />
+														<addr>
+															<streetAddressLine>ATTN: DONNA
+																TIGHE 399 Page
+																Ave.</streetAddressLine>
+															<city>Cary</city>
+															<state>NC</state>
+															<postalCode>27511</postalCode>
+															<country>US</country>
+														</addr>
+														<telecom nullFlavor="UNK" />
+														<representedOrganization>
+															<name></name>
+															<telecom nullFlavor="UNK" />
+															<addr>
+																<streetAddressLine>ATTN:DONNA TIGHE 399 Page Ave.</streetAddressLine>
+																<city>Cary</city>
+																<state>NC</state>
+																<postalCode>27511</postalCode>
+																<country>US</country>
+															</addr>
+														</representedOrganization>
+													</assignedEntity>
+												</performer>
+												<participant typeCode="COV">
+													<time />
+													<participantRole classCode="PAT">
+														<code code="SELF" codeSystem="2.16.840.1.113883.5.111" />
+														<addr nullFlavor="NA" />
+														<telecom nullFlavor="NA" />
+														<playingEntity>
+															<name />
+															<birthTime xmlns="urn:hl7-org:sdtc" />
+														</playingEntity>
+													</participantRole>
+												</participant>
+												<entryRelationship typeCode="REFR">
+													<act classCode="ACT" moodCode="DEF">
+														<id />
+														<code />
+														<text>
+															<reference value="#ins1" />
+														</text>
+													</act>
+												</entryRelationship>
+											</act>
+										</entryRelationship>
+									</act>
+								</entry>
+							</section>
+						</component>
+					</structuredBody>
+				</component>
+			</ClinicalDocument>
+		]]></CcdXml>
+	</Ccd>
+</ns2:CcdExchange>

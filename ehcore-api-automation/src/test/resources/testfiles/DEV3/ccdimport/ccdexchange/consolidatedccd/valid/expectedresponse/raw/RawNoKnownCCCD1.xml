@@ -1,0 +1,1331 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<eh:CcdExchange xmlns:eh="http://schema.intuit.com/health/ccd/v1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://schema.intuit.com/health/ccd/v1 CCDExchange.xsd">
+	<CcdMessageHeaders>
+		<Sender vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>SenderKeyNoKnownConsolidatedCCD</Key>
+					<Value>SenderValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Sender>
+		<Partner vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>PartnerKey</Key>
+					<Value>PartnerValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Partner>
+		<Destination vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00"
+			deviceVersion="" deviceName="EEHR">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>DestinationKey</Key>
+					<Value>DestinationValue</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Destination>
+		<LastUpdated>2001-12-31T12:00:00</LastUpdated>
+		<MessageId>messageId</MessageId>
+		<DataJob>
+			<DataJobId>0</DataJobId>
+		</DataJob>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value xsi:type="xs:string">_IGNORE_</Value>
+			</KeyValuePair>
+		</RoutingMap>
+	</CcdMessageHeaders>
+	<PatientDemographics>
+		<PatientIdentifier>
+			<PracticePatientId>28121001</PracticePatientId>
+			<IntuitPatientId>_IGNORE_</IntuitPatientId>
+		</PatientIdentifier>
+		<Name>
+			<Prefix>Mrs</Prefix>
+			<FirstName>Barbara</FirstName>
+			<MiddleName>m</MiddleName>
+			<LastName>Simpson</LastName>
+			<Suffix>x</Suffix>
+		</Name>
+		<Address>
+			<Line1>996 Dalton St</Line1>
+			<Line2>Mailstop 1501172</Line2>
+			<City>Fargo</City>
+			<State>ND</State>
+			<Country>USA</Country>
+			<ZipCode>94043</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<Prefix>Mrs</Prefix>
+				<FirstName>Barbara</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>Simpson</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Barbara.simpson@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1212</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-5555</Number>
+			</Telephone>
+		</Contact>
+		<Gender>F</Gender>
+		<DateOfBirth>_IGNORE_</DateOfBirth>
+	</PatientDemographics>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>00000000000000099930</PracticeId>
+			<IntuitPracticeId>_IGNORE_</IntuitPracticeId>
+		</PracticeIdentifier>
+		<PracticeName>Medfusion CCD Test</PracticeName>
+		<Address>
+			<Line1>25 GREEN MOUNTAIN DR</Line1>
+			<Line2>address2</Line2>
+			<City>BURLINGTON</City>
+			<State>VT</State>
+			<Country>USA</Country>
+			<ZipCode>94620</ZipCode>
+		</Address>
+		<Contact>
+			<ContactName>
+				<FirstName>Robert</FirstName>
+				<MiddleName>m</MiddleName>
+				<LastName>James</LastName>
+				<Suffix>x</Suffix>
+			</ContactName>
+			<Email>Robert_James@mailinator.com</Email>
+			<Telephone>
+				<Type>HOME</Type>
+				<Number>650-944-1515</Number>
+			</Telephone>
+			<Telephone>
+				<Type>WORK</Type>
+				<Number>650-944-7777</Number>
+			</Telephone>
+		</Contact>
+		<Provider>
+			<Role>Prescribing clinician</Role>
+			<ProviderIdentifier>
+				<PracticeProviderId>91171</PracticeProviderId>
+				<IntuitProviderId>_IGNORE_</IntuitProviderId>
+			</ProviderIdentifier>
+			<Demographics>
+				<Contact>
+					<ContactName>
+						<FirstName>Robert</FirstName>
+						<MiddleName>m</MiddleName>
+						<LastName>James</LastName>
+						<Suffix>x</Suffix>
+					</ContactName>
+					<Email>Robert_James@mailinator.com</Email>
+					<Telephone>
+						<Type>HOME</Type>
+						<Number>650-944-1616</Number>
+					</Telephone>
+					<Telephone>
+						<Type>WORK</Type>
+						<Number>650-944-9999</Number>
+					</Telephone>
+				</Contact>
+				<Address>
+					<Line1>25 GREEN MOUNTAIN DR</Line1>
+					<Line2>address2</Line2>
+					<City>BURLINGTON</City>
+					<State>VT</State>
+					<Country>USA</Country>
+					<ZipCode>94620</ZipCode>
+				</Address>
+			</Demographics>
+		</Provider>
+	</PracticeInformation>
+	<Ccd>
+		<CcdXml>
+
+			&lt;?xml-stylesheet type='text/xsl'
+			href='http://www.allscripts.com/resources/tools/STYLES/ALLSCRIPTS_CED.XSL'?&gt;
+			&lt;ClinicalDocument xmlns=&quot;urn:hl7-org:v3&quot;
+			xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+			xsi:schemaLocation=&quot;urn:hl7-org:v3 ..\..\CCD\ccd.xsd&quot;&gt;
+			&lt;!--
+
+			********************************************************
+
+			CDA Header
+
+			********************************************************
+
+			--&gt;
+			&lt;realmCode code=&quot;US&quot;/&gt;
+			&lt;typeId extension=&quot;POCD_HD000040&quot;
+			root=&quot;2.16.840.1.113883.1.3&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.1.1&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.1.2&quot;/&gt;
+			&lt;id extension=&quot;789624693&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.1&quot;/&gt;
+			&lt;code code=&quot;34133-9&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;SUMMARIZATION OF EPISODE NOTE&quot;/&gt;
+			&lt;title&gt;MyWay Practice QA_Test002 Personal Health Record Extract&lt;/title&gt;
+			&lt;effectiveTime value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;confidentialityCode code=&quot;N&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.25&quot;/&gt;
+			&lt;languageCode code=&quot;en-US&quot;/&gt;
+			&lt;recordTarget&gt;
+			&lt;patientRole&gt;
+			&lt;id extension=&quot;1089153679&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.2&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27615&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)329-1155&quot; use=&quot;HP&quot;/&gt;
+			&lt;patient&gt;
+			&lt;name use=&quot;L&quot;&gt;
+			&lt;given&gt;Healthy&lt;/given&gt;
+			&lt;family&gt;Patient&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;administrativeGenderCode code=&quot;M&quot; codeSystem=&quot;2.16.840.1.113883.5.1&quot;/&gt;
+			&lt;birthTime value=&quot;19610720&quot;/&gt;
+			&lt;maritalStatusCode codeSystem=&quot;2.16.840.1.113883.5.2&quot; code=&quot;M&quot;
+			displayName=&quot;Married&quot;/&gt;
+			&lt;raceCode codeSystem=&quot;2.16.840.1.113883.6.238&quot;
+			code=&quot;2106-3&quot; displayName=&quot;White&quot;/&gt;
+			&lt;ethnicGroupCode codeSystem=&quot;2.16.840.1.113883.6.238&quot;
+			code=&quot;2186-5&quot;
+			displayName=&quot;Not Hispanic or Latino&quot;/&gt;
+			&lt;languageCommunication&gt;
+			&lt;!-- &lt;templateId root=&quot;2.16.840.1.113883.3.88.11.32.2&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.3.88.11.83.2&quot;/&gt;
+			&lt;templateId root=&quot;1.3.6.1.4.1.19376.1.5.3.1.2.1&quot;/&gt;
+			--&gt;
+			&lt;languageCode code=&quot;en-US&quot;/&gt;
+			&lt;preferenceInd value=&quot;false&quot;/&gt;
+			&lt;/languageCommunication&gt;
+			&lt;/patient&gt;
+			&lt;providerOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0&quot;/&gt;
+			&lt;name&gt;MyWay Practice QA_Test002&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/providerOrganization&gt;
+			&lt;/patientRole&gt;
+			&lt;/recordTarget&gt;
+			&lt;author&gt;
+			&lt;time value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;assignedAuthor&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;code code=&quot;SELF&quot; codeSystem=&quot;2.16.840.1.113883.5.111&quot;
+			displayName=&quot;Self&quot;
+			codeSystemName=&quot;RoleCode&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedAuthor&gt;
+			&lt;/author&gt;
+
+			&lt;author&gt;
+			&lt;time value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;assignedAuthor&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.3&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedAuthoringDevice&gt;
+			&lt;manufacturerModelName&gt;MyWay 10.x MOCK&lt;/manufacturerModelName&gt;
+			&lt;softwareName&gt;Transform 4.x MOCK&lt;/softwareName&gt;
+			&lt;/assignedAuthoringDevice&gt;
+			&lt;representedOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0&quot;/&gt;
+			&lt;name&gt;MyWay Practice QA_Test002&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/representedOrganization&gt;
+			&lt;/assignedAuthor&gt;
+			&lt;/author&gt;
+			&lt;custodian&gt;
+			&lt;assignedCustodian&gt;
+			&lt;representedCustodianOrganization&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0&quot;/&gt;
+			&lt;name&gt;MyWay Practice QA_Test002&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/representedCustodianOrganization&gt;
+			&lt;/assignedCustodian&gt;
+			&lt;/custodian&gt;
+			&lt;informationRecipient&gt;
+			&lt;intendedRecipient&gt;
+			&lt;id extension=&quot;0&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.1&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;receivedOrganization&gt;
+			&lt;name&gt;MyWay Practice QA_Test002&lt;/name&gt;
+			&lt;telecom value=&quot;tel:+1-(205)123-4533&quot; use=&quot;WP&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27614&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;/receivedOrganization&gt;
+			&lt;/intendedRecipient&gt;
+			&lt;/informationRecipient&gt;
+			&lt;legalAuthenticator&gt;
+			&lt;time value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;signatureCode code=&quot;S&quot;/&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;2062721790&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.2&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/legalAuthenticator&gt;
+			&lt;authenticator&gt;
+			&lt;time value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;signatureCode code=&quot;S&quot;/&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;2062721790&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.2&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/authenticator&gt;
+			&lt;participant typeCode=&quot;IND&quot;&gt;
+			&lt;!-- &lt;templateId root=&quot;2.16.840.1.113883.3.88.11.32.3&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.3.88.11.83.3&quot;/&gt;
+			&lt;templateId root=&quot;1.3.6.1.4.1.19376.1.5.3.1.2.4&quot;/&gt;
+			--&gt;
+			&lt;time value=&quot;20111101130644-0400&quot;/&gt;
+			&lt;associatedEntity classCode=&quot;CAREGIVER&quot;&gt;
+			&lt;id root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.2.1&quot;/&gt;
+			&lt;code code=&quot;FRND&quot; displayName=&quot; Unrelated Friend&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.111&quot;
+			codeSystemName=&quot;RoleCode&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;&quot;/&gt;
+			&lt;associatedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/associatedPerson&gt;
+			&lt;/associatedEntity&gt;
+			&lt;/participant&gt;
+			&lt;documentationOf&gt;
+			&lt;serviceEvent classCode=&quot;PCPR&quot;&gt;
+			&lt;id extension=&quot;1945050526&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.8&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20111101000000-0400&quot;/&gt;
+			&lt;high value=&quot;20111101000000-0400&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;!-- &lt;templateId root=&quot;1.3.6.1.4.1.19376.1.5.3.1.2.3&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.3.88.11.32.4&quot;/&gt;
+			--&gt;
+			&lt;functionCode code=&quot;PP&quot;
+			codeSystem=&quot;2.16.840.1.113883.12.443&quot;/&gt;
+			&lt;time&gt;
+			&lt;low/&gt;
+			&lt;high/&gt;
+			&lt;/time&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;2062721790&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.2&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.101&quot;
+			codeSystemName=&quot;ProviderCodes&quot;
+			code=&quot;260000000X&quot; displayName=&quot;Ambulatory Health Care Facilities&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;!-- &lt;templateId root=&quot;1.3.6.1.4.1.19376.1.5.3.1.2.3&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.3.88.11.32.4&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.3.88.11.83.4&quot;/&gt;
+			--&gt;
+			&lt;functionCode code=&quot;PP&quot;
+			codeSystem=&quot;2.16.840.1.113883.12.443&quot;/&gt;
+			&lt;time&gt;
+			&lt;low/&gt;
+			&lt;high/&gt;
+			&lt;/time&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.101&quot;
+			codeSystemName=&quot;ProviderCodes&quot;
+			code=&quot;260000000X&quot; displayName=&quot;Ambulatory Health Care Facilities&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;27615&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;/serviceEvent&gt;
+			&lt;/documentationOf&gt;
+			&lt;!-- ********************************************************
+
+			CDA Body
+
+			******************************************************** --&gt;
+			&lt;componentOf&gt;
+			&lt;encompassingEncounter&gt;
+			&lt;id extension=&quot;1945050526&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.3.4&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low value=&quot;20111101000000-0400&quot;/&gt;
+			&lt;high value=&quot;20111101000000-0400&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;/encompassingEncounter&gt;
+			&lt;/componentOf&gt;
+			&lt;component&gt;
+			&lt;structuredBody&gt;
+			&lt;!-- *********************** --&gt;
+			&lt;!--
+
+			********************************************************
+
+			Allergies, Adverse Reactions, Alerts
+
+			********************************************************
+
+			--&gt;
+			&lt;templateId extension=&quot;IMPL_CDAR2_LEVEL1&quot;
+			root=&quot;2.16.840.1.113883.10&quot;/&gt;
+
+			&lt;component&gt;&lt;!-- [1] Problems templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.5.1&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.5.1&quot;/&gt;&lt;!--
+			Required entries for ccd --&gt;
+			&lt;code code=&quot;11450-4&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Problem list&quot;/&gt;
+			&lt;title&gt;Problems&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;noActiveProb&quot;&gt;No current problems or
+			disability&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.3&quot;/&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;
+			&lt;code code=&quot;CONC&quot; codeSystem=&quot;2.16.840.1.113883.5.6&quot;
+			displayName=&quot;Concern&quot;/&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;!-- Negation Indicator on observation not act. --&gt;
+			&lt;entryRelationship typeCode=&quot;SUBJ&quot;
+			inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;
+			negationInd=&quot;true&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.4&quot;/&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;
+			&lt;code xsi:type=&quot;CD&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			code=&quot;55607006&quot; displayName=&quot;Problem&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#noActiveProb&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;NA&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/act&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;component&gt;&lt;!-- [2] Medications templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.1.1&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.1.1&quot;/&gt;&lt;!--
+			Required entries for ccd --&gt;
+			&lt;code code=&quot;10160-0&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;History of medication use&quot;/&gt;
+			&lt;title&gt;Medication&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;noMeds&quot;&gt;No Active Medications&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;!-- See Figured 13 example on page 43 (informative) C-CDA 1.1 --&gt;
+			&lt;substanceAdministration classCode=&quot;SBADM&quot;
+			moodCode=&quot;EVN&quot; negationInd=&quot;true&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.16&quot;/&gt;
+			&lt;!-- Figure 13 is wrong, missing this --&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;&lt;!-- Figure 13 is missing
+			this--&gt;
+			&lt;!--&lt;code code=&quot;182849000&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot; displayName=&quot;No Drug
+			Therapy Prescribed&quot;/&gt;--&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#noMeds&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;&lt;!-- Figure 13 example is missing
+			this. Is it recommended to have active?--&gt;
+			&lt;effectiveTime xsi:type=&quot;IVL_TS&quot;&gt;&lt;!-- Figure 13 missing this;
+			low+high required --&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;high nullFlavor=&quot;NA&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;consumable typeCode=&quot;CSM&quot;&gt;
+			&lt;manufacturedProduct classCode=&quot;MANU&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.23&quot;/&gt;&lt;!-- Fig 13
+			missing this--&gt;
+			&lt;!--&lt;manufacturedLabeledDrug&gt;
+			&lt;code code=&quot;410942007&quot; displayName=&quot;drug or
+			medication&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;/manufacturedLabeledDrug&gt;--&gt;&lt;!-- Fig 13 example didn't
+			validate! --&gt;
+			&lt;manufacturedMaterial&gt;&lt;!-- This validates in the Lantana validator --&gt;
+			&lt;code nullFlavor=&quot;NA&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#noMeds&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;name/&gt;
+			&lt;/manufacturedMaterial&gt;
+			&lt;/manufacturedProduct&gt;
+			&lt;/consumable&gt;&lt;!-- REFR below is OPTOINAL in C-CDA 1.1 --&gt;
+			&lt;!--&lt;entryRelationship typeCode=&quot;REFR&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot;
+			moodCode=&quot;EVN&quot;&gt;
+			&lt;!-\-
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.1.57&quot;/&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.1.47&quot;/&gt;
+			-\-&gt;
+			&lt;code code=&quot;33999-4&quot; displayName=&quot;Status&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;--&gt;
+			&lt;/substanceAdministration&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;component&gt;&lt;!-- [3] Allergies templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.6.1&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.6.1&quot;/&gt;&lt;!--
+			Required entries for ccd --&gt;
+			&lt;code code=&quot;48765-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Allergies, adverse reactions, alerts&quot;/&gt;
+			&lt;title&gt;Allergies and Adverse Reactions&lt;/title&gt;
+			&lt;text&gt;
+			&lt;list&gt;
+			&lt;item&gt;
+			&lt;content ID=&quot;noAl&quot;&gt;Not Known&lt;/content&gt;
+			&lt;/item&gt;
+			&lt;/list&gt;
+			&lt;/text&gt;
+			&lt;entry&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.30&quot;/&gt;
+			&lt;id root=&quot;1.3.6.1.4.1.22812.3.42.3.4.4&quot;/&gt;
+			&lt;code code=&quot;48765-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;/&gt;
+			&lt;statusCode code=&quot;active&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;high nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;false&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;
+			negationInd=&quot;true&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.7&quot;/&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;
+			&lt;code code=&quot;ASSERTION&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;
+			codeSystemName=&quot;ActCode&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#noAl&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;high nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;416098002&quot;
+			displayName=&quot;Drug Allergy (disorder)&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;participant typeCode=&quot;CSM&quot;&gt;
+			&lt;participantRole classCode=&quot;MANU&quot;&gt;
+			&lt;playingEntity classCode=&quot;MMAT&quot;&gt;
+			&lt;code nullFlavor=&quot;NA&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#noAl&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;name&gt;Not Known&lt;/name&gt;
+			&lt;/playingEntity&gt;
+			&lt;/participantRole&gt;
+			&lt;/participant&gt;
+			&lt;/observation&gt;
+			&lt;/entryRelationship&gt;
+			&lt;/act&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+
+			&lt;component&gt;&lt;!-- [4] Procedures templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.7.1&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.7.1&quot;/&gt;&lt;!--
+			Required entries for ccd --&gt;
+			&lt;code code=&quot;47519-4&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;History of Procedures&quot;/&gt;
+			&lt;title&gt;Procedures&lt;/title&gt;
+			&lt;text&gt;
+			&lt;table width=&quot;100%&quot;&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Procedure&lt;/th&gt;
+			&lt;th&gt;Procedure Date&lt;/th&gt;
+			&lt;th&gt;Date Completed&lt;/th&gt;
+			&lt;th&gt;Status&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;prpshNONE&quot;&gt;No Relevant Procedures&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;td align=&quot;center&quot;/&gt;
+			&lt;td align=&quot;center&quot;/&gt;
+			&lt;td align=&quot;center&quot;/&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;procedure classCode=&quot;PROC&quot; moodCode=&quot;EVN&quot;
+			negationInd=&quot;true&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.14&quot;/&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;
+			&lt;code nullFlavor=&quot;NA&quot;&gt;
+			&lt;originalText&gt;
+			&lt;reference value=&quot;#prpshNONE&quot;/&gt;
+			&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#prpshNONE&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;/procedure&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;component&gt;&lt;!-- [5] Results templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.3.1&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.3.1&quot; /&gt;
+			&lt;code code=&quot;30954-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot; displayName=&quot;RESULTS&quot;
+			/&gt;
+			&lt;title&gt;Results&lt;/title&gt;
+			&lt;text&gt;&lt;content ID=&quot;noRESULTS&quot;&gt;No relevant
+			results.&lt;/content&gt;&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;BATTERY&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;!-- Result organizer template --&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.1&quot;/&gt;
+			&lt;id nullFlavor=&quot;NA&quot;/&gt;
+			&lt;code xsi:type=&quot;CE&quot; nullFlavor=&quot;NA&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;
+			negationInd=&quot;true&quot;&gt;&lt;!-- JF TEST:
+			negationInd=&quot;false&quot; variation needed to test nullFlavor
+			value (look to obs text) --&gt;
+			&lt;!-- Result observation template --&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.2&quot; /&gt;
+			&lt;id nullFlavor=&quot;NA&quot; /&gt;
+			&lt;code nullFlavor=&quot;NA&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;&gt;
+			&lt;originalText&gt;&lt;reference
+			value=&quot;#noRESULTS&quot;/&gt;&lt;/originalText&gt;
+			&lt;/code&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#noRESULTS&quot; /&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;effectiveTime value=&quot;20121128&quot; /&gt;
+			&lt;value xsi:type=&quot;PQ&quot; nullFlavor=&quot;NA&quot;/&gt;&lt;!-- Need
+			to check for null flavor, look in text --&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;component&gt;&lt;!-- [6] Vital Signs templateId
+			root=&quot;2.16.840.1.113883.10.20.22.2.4&quot; --&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.4&quot;/&gt;&lt;!-- optional
+			entries for ccd --&gt;
+			&lt;code code=&quot;8716-3&quot; codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Vital signs&quot;/&gt;
+			&lt;title&gt;Vital Signs&lt;/title&gt;
+			&lt;text&gt;
+			&lt;table&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Date&lt;/th&gt;
+			&lt;th&gt;Description&lt;/th&gt;
+			&lt;th&gt;Test&lt;/th&gt;
+			&lt;th&gt;Result&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Height&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi205128760&quot;&gt;66 in&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Weight&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi2145681282&quot;&gt;143.25 lb&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Systolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi1298284802&quot;&gt;118 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;BP Diastolic&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi1298284802_1&quot;&gt;82 mm[Hg]&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Temperature&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi697146250&quot;&gt;98.6 F&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;O2 SAT&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi489197409&quot;&gt;99 %&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;11/1/2011 11:59:17
+			AM&lt;/td&gt;
+			&lt;td rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;recorded by: Janell
+			Carlson&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Heart Rate&lt;/td&gt;
+			&lt;td&gt;
+			&lt;content ID=&quot;vi1670919196&quot;&gt;67 /min&lt;/content&gt;
+			&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;205128760&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;8302-2&quot; displayName=&quot;Height&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi205128760&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;66&quot;
+			unit=&quot;[in_us]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt; &lt;!-- entry[2] --&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt;&lt;!-- entry[2] component[1] --&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;2145681282&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;3141-9&quot; displayName=&quot;Weight&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi2145681282&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;143.25&quot;
+			unit=&quot;[lb_av]&quot;/&gt;
+			&lt;!--&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;true&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.64&quot;/&gt;
+			&lt;code code=&quot;48767-8&quot; displayName=&quot;Annotation
+			Comment&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			Lantana Validator Consol 1.1 error in rule
+			This text SHALL contain exactly one [1..1] reference/@value (CONF:9431).
+			Test: cda:reference[@value=''][cda:reference[@value]]
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi2145681282-cmt&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;/act&gt;
+			&lt;/entryRelationship--&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;&lt;!-- entry[3] --&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt; &lt;!-- entry[3] component[1] --&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;1298284802&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;8480-6&quot; displayName=&quot;BP Systolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi1298284802&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;118&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;!--&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;true&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.64&quot;/&gt;
+			&lt;code code=&quot;48767-8&quot; displayName=&quot;Annotation
+			Comment&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			Lantana Validator Consol 1.1 error in rule
+			This text SHALL contain exactly one [1..1] reference/@value (CONF:9431).
+			Test: cda:reference[@value=''][cda:reference[@value]]
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi1298284802-cmt&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;/act&gt;
+			&lt;/entryRelationship--&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;component&gt; &lt;!-- entry[3] component[2] --&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;1298284802_1&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;8462-4&quot; displayName=&quot;BP Diastolic&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi1298284802_1&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;82&quot;
+			unit=&quot;mm[Hg]&quot;/&gt;
+			&lt;!--&lt;entryRelationship typeCode=&quot;SUBJ&quot; inversionInd=&quot;true&quot;&gt;
+			&lt;act classCode=&quot;ACT&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.64&quot;/&gt;
+			&lt;code code=&quot;48767-8&quot; displayName=&quot;Annotation
+			Comment&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;/&gt;
+			Lantana Validator Consol 1.1 error in rule
+			This text SHALL contain exactly one [1..1] reference/@value (CONF:9431).
+			Test: cda:reference[@value=''][cda:reference[@value]]
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi1298284802_1-cmt&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;/act&gt;
+			&lt;/entryRelationship&gt;--&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;697146250&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;8310-5&quot; displayName=&quot;Temperature&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi697146250&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;98.6&quot;
+			unit=&quot;[degF]&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;489197409&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;2710-2&quot; displayName=&quot;O2 SAT&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi489197409&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;99&quot; unit=&quot;%&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;organizer classCode=&quot;CLUSTER&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.26&quot;/&gt;
+			&lt;id extension=&quot;124382741&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code code=&quot;46680005&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+			displayName=&quot;Vital signs&quot; codeSystemName=&quot;SNOMED CT&quot;/&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;performer typeCode=&quot;PRF&quot;&gt;
+			&lt;assignedEntity&gt;
+			&lt;id extension=&quot;1114001559&quot;
+			root=&quot;2.16.840.1.113883.4.6&quot;/&gt;
+			&lt;addr&gt;
+			&lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
+			&lt;city&gt;RALEIGH&lt;/city&gt;
+			&lt;state&gt;NC&lt;/state&gt;
+			&lt;postalCode&gt;276151234&lt;/postalCode&gt;
+			&lt;country&gt;US&lt;/country&gt;
+			&lt;/addr&gt;
+			&lt;telecom value=&quot;tel:+1-(919)847-8102&quot; use=&quot;WP&quot;/&gt;
+			&lt;assignedPerson&gt;
+			&lt;name&gt;
+			&lt;given&gt;Janell&lt;/given&gt;
+			&lt;family&gt;Carlson&lt;/family&gt;
+			&lt;/name&gt;
+			&lt;/assignedPerson&gt;
+			&lt;/assignedEntity&gt;
+			&lt;/performer&gt;
+			&lt;component&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.27&quot;/&gt;
+			&lt;id extension=&quot;1670919196&quot;
+			root=&quot;1.3.6.1.4.1.22812.5.367519059.0.4.6&quot;/&gt;
+			&lt;code codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			code=&quot;8867-4&quot; displayName=&quot;Heart Rate&quot;/&gt;
+			&lt;text&gt;
+			&lt;reference value=&quot;#vi1670919196&quot;/&gt;
+			&lt;/text&gt;
+			&lt;statusCode code=&quot;completed&quot;/&gt;
+			&lt;effectiveTime value=&quot;20111101115917-0400&quot;/&gt;
+			&lt;value xsi:type=&quot;PQ&quot; value=&quot;67&quot;
+			unit=&quot;/min&quot;/&gt;
+			&lt;/observation&gt;
+			&lt;/component&gt;
+			&lt;/organizer&gt;
+			&lt;/entry&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;!-- Social History with Social History Observation,Pregnancy Observation
+			and Tobacco Use
+			IHG_DEPOT\trunk\integration-platform\data-channels\eh\services\src\test\resources\data\consolidated\mockups\C-CCD_mockup_SocialHistory-2.xml
+			--&gt;
+			&lt;component&gt;
+			&lt;section&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.2.17&quot;/&gt;
+			&lt;code code=&quot;29762-2&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.1&quot;
+			codeSystemName=&quot;LOINC&quot;
+			displayName=&quot;Social History&quot;/&gt;
+			&lt;title&gt;Social History&lt;/title&gt;
+			&lt;!-- One Smoking Status; one Soc Hist obs type: Tobacco use/exp documents
+			period formerly smoked. --&gt;
+			&lt;text&gt;
+			&lt;table&gt;
+			&lt;thead&gt;
+			&lt;tr&gt;
+			&lt;th&gt;Social History Type&lt;/th&gt;
+			&lt;th&gt;Description&lt;/th&gt;
+			&lt;th&gt;Effective Dates&lt;/th&gt;
+			&lt;/tr&gt;
+			&lt;/thead&gt;
+			&lt;tbody&gt;
+			&lt;tr&gt;
+			&lt;td&gt;Tobacco Use&lt;/td&gt;
+			&lt;td&gt;&lt;content ID=&quot;soc1&quot;&gt;Chews Wacky
+			Tobacky&lt;/content&gt;&lt;/td&gt;
+			&lt;td&gt;Since 2012/05/01&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/text&gt;
+			&lt;entry typeCode=&quot;DRIV&quot;&gt;
+			&lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+			&lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.85&quot; /&gt;
+			&lt;!-- ******** Tobacco use/exposure observation template ********
+			--&gt;
+			&lt;id extension=&quot;123456789&quot;
+			root=&quot;9b56c25d-9104-45ee-9fa4-e0f3afaa01c1&quot; /&gt;
+			&lt;code code=&quot;ASSERTION&quot;
+			codeSystem=&quot;2.16.840.1.113883.5.4&quot;&gt;
+			&lt;/code&gt;
+			&lt;statusCode code=&quot;completed&quot; /&gt;
+			&lt;effectiveTime&gt;
+			&lt;low nullFlavor=&quot;UNK&quot; /&gt;
+			&lt;high nullFlavor=&quot;UNK&quot;/&gt;
+			&lt;/effectiveTime&gt;
+			&lt;value xsi:type=&quot;CD&quot; code=&quot;81703003&quot;
+			codeSystem=&quot;2.16.840.1.113883.6.96&quot; displayName=&quot;Chews
+			Tobacco&quot;&gt;
+			&lt;originalText&gt;&lt;reference value=&quot;#soc1&quot;/&gt;&lt;/originalText&gt;
+			&lt;/value&gt;
+			&lt;/observation&gt;
+			&lt;/entry&gt;
+			&lt;!-- JF TODO: Add a generic tobacco one saying was exposed to passive
+			smoke as a child --&gt;
+			&lt;/section&gt;
+			&lt;/component&gt;
+			&lt;/structuredBody&gt;
+			&lt;/component&gt;
+			&lt;/ClinicalDocument&gt; </CcdXml>
+	</Ccd>
+</eh:CcdExchange>
