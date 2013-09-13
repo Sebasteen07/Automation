@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CCDMessageType minorVer="0" majorVer="1"
+	xmlns="http://www.intuit.com/qhg/hub/schemas/Messages">
+	<Header>
+		<Type>CCDImport</Type>
+		<Event>Update</Event>
+		<Source>Electronic Health Data Channel</Source>
+		<Internal>
+			<MajorVer>1</MajorVer>
+			<MinorVer>1</MinorVer>
+		</Internal>
+	</Header>
+	<ClinicalExchangeHeader>
+		<Sender vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00-08:00"
+			deviceVersion="" deviceName="EEHR" />
+		<Destination vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00-08:00"
+			deviceVersion="" deviceName="EEHR" />
+		<LastUpdated>2001-12-31T12:00:00-08:00</LastUpdated>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value>_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value>_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>CDATypeEnum</Key>
+				<Value>CONSOL_CCD</Value>
+			</KeyValuePair>
+		</RoutingMap>
+		<PracticeInformation role="sender">
+			<practiceIdentifier>
+				<universalPracticeId>_IGNORE_</universalPracticeId>
+				<externalPracticeId>00000000000000099930</externalPracticeId>
+			</practiceIdentifier>
+			<practiceName>Medfusion CCD Test</practiceName>
+		</PracticeInformation>
+	</ClinicalExchangeHeader>
+	<CCDDocument>
+		<patientDemographics>
+			<PatientIdentifier>
+				<universalPatientNumber>_IGNORE_</universalPatientNumber>
+				<PatientAccountNumber>28121001</PatientAccountNumber>
+			</PatientIdentifier>
+		</patientDemographics>
+		<Source>
+			<Channel>
+				<ID>EH</ID>
+				<DocumentRef>_IGNORE_</DocumentRef>
+				<ClinicalDocumentType>CONSOL_CCD</ClinicalDocumentType>
+			</Channel>
+		</Source>
+		<CCDXML>
+			<SimpleCCD>
+				<AllergyList />
+				<MedicationList />
+				<ImmunizationList />
+				<ProblemList />
+				<TestResultList />
+				<ProcedureList />
+				<VitalSignList />
+				<SocialHistoryList />
+			</SimpleCCD>
+		</CCDXML>
+	</CCDDocument>
+</CCDMessageType>
