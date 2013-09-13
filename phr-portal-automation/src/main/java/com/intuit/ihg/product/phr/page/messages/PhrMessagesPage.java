@@ -19,8 +19,8 @@ public class PhrMessagesPage  extends BasePageObject{
 	@FindBy(id="inboxtab")
 	private WebElement inboxTab;
 			
-	@FindBy(xpath = "//table[@id='row']/tbody/tr[1]/td[7]/a")
-	private WebElement firstMessageRow;
+	@FindBy(xpath = ".//div[@id='msgInboxList']/div[5]/div[1]/div[1]/div[1]/div[@class='msgMessage']")
+	 private WebElement firstMessageRow;
 	
 	@FindBy(xpath = "//div[@class='testcontent']")
 	private WebElement smHealthContent;
