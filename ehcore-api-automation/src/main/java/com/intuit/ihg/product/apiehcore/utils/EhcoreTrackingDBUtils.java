@@ -104,7 +104,7 @@ public class EhcoreTrackingDBUtils {
 				stmt = dbConnPs.prepareStatement(GET_MESSAGE_DETAILS);
 				stmt.setString(1, Id);
 			}
-			else if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCDImport)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCDExport))){
+			else if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT))){
 				stmt = dbConnPs.prepareStatement(GET_AS_MESSAGE_DETAILS);
 				stmt.setString(1, Id);
 			}
@@ -361,7 +361,7 @@ public class EhcoreTrackingDBUtils {
 		ResultSet rs = null;
 		String str = null;
 		try {
-			if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCDImport)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCDExport))){
+			if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT))){
 				stmt = dbConnPs.prepareStatement(GET_AS_ATTRIBUTES_DETAILS);
 			}
 			else{

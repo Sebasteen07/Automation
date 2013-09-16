@@ -20,6 +20,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.eh.core.dto.DataJob;
+import com.intuit.ihg.eh.core.dto.ProcessingResponse;
 import com.intuit.ihg.product.apiehcore.page.DataJobIDPage;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPI;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIConstants;
@@ -1260,7 +1261,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 		AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(testData,EhcoreAPIConstants.AS_CCD);
-		EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCDImport);
+		EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
 
 	}
 	
@@ -1631,11 +1632,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 								
 			}
 			
-			
-			
-			
-			
-			
 			/**
 			 * @Author:Shanthala
 			 * @Date:-12/Sep/2013
@@ -1688,15 +1684,351 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		        }
 
 		        log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");	
+		}
+			
+
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test-Transmit CCD input and check the message status(Completed) and 
+			 * datajob_status(Transmission_Start) in Tracking DB.
+			 * Expected result -HTTP response 200 & true.
+			 * @throws Exception 
+			 */
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportMessageTransmissionStart() throws Exception {
+				log("Test Case: testASImportMessageTransmissionStart");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+
+		        AllscriptsMessageEnvelope response =EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+		        EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+		        log("Exiting testASImportMessageTransmissionStart test method ... ");	
+		}
+			
+	
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test -Transmit 2 CCD Msgs and check QID's are different. and
+			 * check the message status(Completed) and datajob status(DONE) in Tracking DB. 
+			 * Expected result -HTTP response 200 & true.
+			 * @throws Exception 
+			 */
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportMessageJobStatusDone() throws Exception {
+				log("Test Case: testASImportMessageJobStatusDone");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
 				
+				List<Message> msg = new ArrayList<Message>();
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+				msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(msg.get(0).getDataJob().getDataJobGuid(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+
+		        log("Exiting testASImportMessageJobStatusDone test method ... ");	
+		}
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Raw Message Persistance ' in Tracking DB for ccdexport
+			 * Expected Result :202 
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportRawMessagePersist() throws Exception {
+				log("Test Case: testASImportRawMessagePersist");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
 				
+				List<Message> msgDetails = new ArrayList<Message>();
+				String expectedCcd = EhcoreAPIConstants.AS_RAW+ "AS_RawResponse.xml";
+								
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+		        msgDetails =  EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);//EHCoreTestConsts.EH_REST_API_Consts.AS_CCDImport);
+		        assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.AS_RAWPERSIST));
+		        //Pass nodeType and get the obj_ref_id in Tracking DB
+				String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString());
+				//check the ENRICHED Message in ObjectStore(Mongo DB)and compare with expectedCcd using XMLUnit
+				//checkMsgInMongoDB(obj_ref_id,expectedCcd);
+				//EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString(),obj_ref_id,expectedCcd);
+		        logger.debug("Exiting testASImportRawMessagePersist test method ... ");			
+			
+		}
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'XML Validation' in Tracking DB for CCDExportMessage
+			 * Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportXMLValidation() throws Exception {
+				log("Test Case: testASImportXMLValidation");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+			
+				List<Message> msg = new ArrayList<Message>();
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+				msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(msg.get(0).getDataJob().getDataJobGuid(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msg.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.AS_XMLVALIDATION));
 				
+		        log("Exiting testASImportXMLValidation test method ... ");			
+			
+		}
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Raw Message Retrieval ' in Tracking DB for Questionnaire Export
+			 * Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportRawMessageRetrieval() throws Exception {
+				log("Test Case: testASImportRawMessageRetrieval");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+							
+				List<Message> msg = new ArrayList<Message>();
 				
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+				msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(msg.get(0).getDataJob().getDataJobGuid(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msg.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.RETRIEVE.toString(),EhcoreAPIConstants.AS_RAWRETRIEVAL));
 				
+		        log("Exiting testASImportRawMessageRetrieval test method ... ");			
+			
+		}
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Translate Smooks 2 CCDExchange' in Tracking DB
+			 * Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASTranslationSmooks2CcdExchange() throws Exception {
+				log("Test Case: testASTranslationSmooks2CcdExchange");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+					
+				List<Message> msg = new ArrayList<Message>();
 				
-			}
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+				msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(msg.get(0).getDataJob().getDataJobGuid(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msg.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString(),EhcoreAPIConstants.AS_TRANSLATION));
+				
+		        log("Exiting testASTranslationSmooks2CcdExchange test method ... ");			
+			
+		}
+			
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6779
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'DC publish Activity' in Tracking DB for CCDExportMessage
+			 * Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testASImportDCPublishActivity() throws Exception {
+				log("Test Case: testASImportDCPublishActivity");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+		
+				List<Message> msg = new ArrayList<Message>();
+				
+				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(EhcoreAPIConstants.AS_CCD);
+				msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageDispatchHeader().getID(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.AS_CCD_IMPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(msg.get(0).getDataJob().getDataJobGuid(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msg.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.ROUTE.toString(),EhcoreAPIConstants.AS_PUBLISH));
+				
+		        log("Exiting testASImportDCPublishActivity test method ... ");			
+			
+		}
+		
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6782
+			 * @StepsToReproduce:	
+			 * Test-Transmit valid CCDExport message and 
+			 * check response , message status(Completed) and datajob status(Done)  in Tracking DB.
+			 * Expected result -HTTP response 200 & true.
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testCCDExportMessageJobStatusTypeDone() throws Exception {
+				log("Test Case: testCCDExportMessageJobStatusTypeDone");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+						
+				EhcoreAPI ehcoreApi = new EhcoreAPI();
+				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+								
+				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.AS_CCD_EXPORT);// .EH_REST_API_Consts.AS_CCDExport);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+								
+		        log("Exiting testCCDExportMessageJobStatusTypeDone test method ... ");			
+	}
+
+				
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6782
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Raw Message Retrieval ' in Tracking DB for Questionnaire Export
+			 * Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testRawMessageRetrieveForAllScriptAdapterCCDExportMsg() throws Exception {
+				log("Test Case: testRawMessageRetrieveForAllScriptAdapterCCDExportMsg");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+						
+				EhcoreAPI ehcoreApi = new EhcoreAPI();
+				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+				List<Message> msgDetails = new ArrayList<Message>();
+								
+				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.AS_CCD_EXPORT);// .EH_REST_API_Consts.AS_CCDExport);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.RETRIEVE.toString(),EhcoreAPIConstants.AS_RAWRETRIEVAL));
+								
+		        log("Exiting testRawMessageRetrieveForAllScriptAdapterCCDExportMsg test method ... ");			
+		}
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6782
+			 * @StepsToReproduce:	
+			* Test - check the status of 'Route Message to Practice' in Tracking DB for CCDExportMessage
+			* Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testDCPublish2ConnectHubActivity() throws Exception {
+				log("Test Case: testDCPublish2ConnectHubActivity");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+						
+				EhcoreAPI ehcoreApi = new EhcoreAPI();
+				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+				List<Message> msgDetails = new ArrayList<Message>();
+								
+				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.AS_CCD_EXPORT);// .EH_REST_API_Consts.AS_CCDExport);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+				
+				//TODO KNOWN ISSUE:Retriable Exception @ROUTE Activity
+				//assertTrue(isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.ROUTE.toString(),EHCoreTestConsts.ASEXPORT_PUBLISH));
+		        log("Exiting testDCPublish2ConnectHubActivity test method ... ");			
+		}
+			
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6782
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Translate Simple CCD to CCD' in Tracking DB
+			 * for ccdexport Expected Result :200 OK
+			 * @throws Exception 
+			 */
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testAllScriptAdapterCCDExportTranslateSimpleCCDtoCDA() throws Exception {
+				log("Test Case: testAllScriptAdapterCCDExportTranslateSimpleCCDtoCDA");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+						
+				EhcoreAPI ehcoreApi = new EhcoreAPI();
+				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+				List<Message> msgDetails = new ArrayList<Message>();
+								
+				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString(),EhcoreAPIConstants.ASEXPORT_TRANSLATION));
+		        log("Exiting testAllScriptAdapterCCDExportTranslateSimpleCCDtoCDA test method ... ");			
+	}
+			
+			/**
+			 * @Author:Shanthala
+			 * @Date:-16/Sep/2013
+			 * @User Story ID in Rally : US6782
+			 * @StepsToReproduce:	
+			 * Test - check the status of 'Raw Message Persistance' in Tracking DB for ccdexport
+			 * Expected Result :202 
+			 * @throws Exception 
+			 */
+			@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+			public void testRawMessagePersistForValidMessage() throws Exception {
+				log("Test Case: testRawMessagePersistForValidMessage");
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+				
+				EhcoreAPI ehcoreApi = new EhcoreAPI();
+				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+							    	
+		    	List<Message> msgDetails = new ArrayList<Message>();
+			//	String expectedCcd = EhcoreAPIConstants.AS_CCDEXPORT_RAW+ "AS_Export_Raw.xml";
+				
+				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),EhcoreAPIConstants.AS_CCD_EXPORT);
+				
+				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.AS_CCD_EXPORT);// .EH_REST_API_Consts.AS_CCDExport);
+				
+				assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.AS_RAWPERSIST));
+		        //Pass nodeType and get the obj_ref_id in Tracking DB
+			//	String obj_ref_id  =  EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString()); 
+				//check the RAW Message in ObjectStore(Mongo DB)and compare with expectedXML using XMLUnit
+			//	EhcoreMongoDBUtils.checkMsgInMongoDB(obj_ref_id,expectedCcd);
+
+		        logger.debug("Exiting testRawMessagePersistForValidMessage test method ... ");
+	}
+	
+			
+			
+
+}
 
 	
 		
 
-}
