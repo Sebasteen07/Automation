@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.community.page;
 
+import junit.framework.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +21,7 @@ import com.intuit.ihg.product.community.page.MakeAppointmentRequest.AppointmentR
 import com.intuit.ihg.product.community.page.MyAccount.MyAccountMenuPage;
 import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalChoosePrescription;
 import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
+import com.intuit.ihg.product.community.utils.CommunityUtils;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
@@ -110,9 +113,14 @@ public class CommunityHomePage extends BasePageObject {
 	// Checks if the Messages link appears in Home Page
 	public boolean isViewallmessagesLinkPresent(WebDriver driver)
 			throws InterruptedException {
-		IHGUtil.PrintMethodName();
+		IHGUtil.PrintMethodName();	
+		Assert.assertEquals(
+				"### It seems Community may be down at this moment .... Community Title what we ",
+				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
+						.trim());
 		IHGUtil.waitForElement(driver, 60, link_View_All_Messages);
 		return link_View_All_Messages.isDisplayed();
+		
 	}
 
 	// Clicks on Messages link
