@@ -108,7 +108,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 				apptDate.sendKeys(entity.getApptDate());
 			}
 		}
-		
+		PracticeUtil.setPracticeFrame(driver);
 		// Set Subject
 		subject.sendKeys(entity.getSubject() + " " + createdTs);
 		
