@@ -124,7 +124,7 @@
 			public static final String CCD = TEST_DATA
 					+ "ccdimport/validCCDExchange1/input/";
 			public static final String CCD_EXPORT_DATA = TEST_DATA
-					+ "ccdexport/validCCDMessageType/input/";
+					+"/"+IHGUtil.getEnvironmentType().toString()+"/"+ "ccdexport/validCCDMessageType/input/";
 			/*public static final String AS_REQ = AS_TEST_DATA + "validCCDimport/input/";
 			public static final String AS_CCDEXPORT_REQ = AS_TEST_DATA
 					+ "validCCDexport/input/";*/
@@ -295,7 +295,7 @@
 			* CCD Export
 			*/
 			
-			public static final String SAMPLE_CCD_EXPORT_DATA= SAMPLE_DATA +"ccdexport/validCCDMessageType/input/";
+			public static final String SAMPLE_CCD_EXPORT_DATA= SAMPLE_DATA +"/"+IHGUtil.getEnvironmentType().toString()+"/ccdexport/validCCDMessageType/input/";
 			public static final String CCD_EXPORT_DATA_RAW= TEST_DATA + "ccdexport/validCCDMessageType/expected/raw/";
 			
 			
