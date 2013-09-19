@@ -41,7 +41,7 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 
 	@FindBy (xpath = ".//input[@name = 'tokenWrapper:merchantToken']")
 	private WebElement tokenField;
-
+	
 	@FindBy (xpath = ".//input[@name = 'testTokenWrapper:merchantTestToken']" )
 	private WebElement tokenTestFeild;
 
@@ -58,7 +58,7 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	private WebElement partnerDropDownDEV3;
 
 	@FindBy( xpath = ".//input[@name = 'qbmsFields:tokenWrapper:merchantToken']")
-	private WebElement tokenFieldDEV3;
+	private WebElement tokenFieldDEV3AndP10;
 
 	public MerchantAccountSetUpPage(WebDriver driver) {
 		super(driver);
@@ -96,7 +96,7 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void selectPartnerValue(String value){
 		IHGUtil.PrintMethodName();
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
+		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))) {
 			Select sel = new Select(partnerDropDownDEV3);
 			sel.selectByVisibleText(value);
 		}else{
@@ -112,7 +112,7 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void enterUsername(String userName) throws Exception{
 		IHGUtil.PrintMethodName();
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
+		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))) {
 			userNameFieldDEV3.click();
 			userNameFieldDEV3.sendKeys(userName);
 		}else{
@@ -128,7 +128,7 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void enterPassword(String password) throws Exception{
 		IHGUtil.PrintMethodName();
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
+		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))) {
 			waitForElement(passwordFieldDEV3, 30);
 			passwordFieldDEV3.sendKeys(password);	
 		}else{
@@ -169,10 +169,10 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	public void enterMerchantToken(String token) throws Exception {
 
 
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
-			waitForElement(tokenFieldDEV3, 30);
-			tokenFieldDEV3.clear();
-			this.tokenFieldDEV3.sendKeys(token);
+		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))) {
+			waitForElement(tokenFieldDEV3AndP10, 30);
+			tokenFieldDEV3AndP10.clear();
+			this.tokenFieldDEV3AndP10.sendKeys(token);
 		}else {
 			waitForElement(tokenField, 30);
 			tokenField.clear();
