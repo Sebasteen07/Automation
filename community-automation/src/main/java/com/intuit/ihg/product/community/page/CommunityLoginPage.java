@@ -56,6 +56,8 @@ public class CommunityLoginPage extends BasePageObject {
 	public CommunityHomePage LoginToCommunity(String Suserid, String Spassword)
 			throws InterruptedException {
 
+		log("Waiting for the User Id element max wait time 60 seconds");
+		IHGUtil.waitForElement(driver, 60, User_ID);
 		User_ID.sendKeys(Suserid);
 		User_Password.sendKeys(Spassword);
 		btn_Sign_In.click();
