@@ -375,8 +375,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.clickVirtualCardSwiperTab();
 		Thread.sleep(2000);
 		
-		log("step 4: Click on FileSharingTab");
-		practiceHome.clickVirtualCardSwiperTab();
+		log("step 4: Click on Patient Messaging Tab");
+		practiceHome.clickOnlineBillPayTab();
 		Thread.sleep(2000);
 		
 		log("step 5: Click on Logout");

@@ -219,7 +219,7 @@ public class PracticeHomePage extends BasePageObject {
 	 */
 	public PatientactivationPage clickVirtualCardSwiperTab() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, virtualCardSwiperTab);
+		IHGUtil.waitForElement(driver, 30, virtualCardSwiperTab);
 		
 		try {
 			virtualCardSwiperTab.isDisplayed();
@@ -244,7 +244,7 @@ public class PracticeHomePage extends BasePageObject {
 	 */
 	public PatientactivationPage clickFileSharingTab() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, fileSharingTab);
+		IHGUtil.waitForElement(driver, 30, fileSharingTab);
 		
 		try {
 			fileSharingTab.isDisplayed();
