@@ -5,6 +5,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+
+import com.gargoylesoftware.htmlunit.WaitingRefreshHandler;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 
@@ -99,7 +101,9 @@ public class PortalLoginPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		
-		log( "Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]" );		
+		log( "Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]" );	
+		log("Waiting for Username element, max wait time is 60 seconds");
+		IHGUtil.waitForElement(driver, 60, username);
 		username.sendKeys( sUsername );
 		password.sendKeys( sPassword );
 		login.click();
