@@ -59,9 +59,10 @@ public class PhrProfilePage extends BasePageObject{
 	 * 
 	 * @param secondayCity [the data is from Portal sheet]
 	 * @param secondaryzip [the data is from Portal sheet]
+	 * @throws Exception 
 	 */
 	
-	public void modifyPatientInfoInPhr(String portalCity,String portalZip)
+	public void modifyPatientInfoInPhr(String portalCity,String portalZip) throws Exception
 	{
 		IHGUtil.PrintMethodName();
 		txtCity.clear();
@@ -69,6 +70,7 @@ public class PhrProfilePage extends BasePageObject{
 		txtzipCode.clear();
 		txtzipCode.sendKeys(portalZip);
 		btnSaveChanges.click();
+		Thread.sleep(5000);
 	}
 	
 	
