@@ -85,7 +85,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 3:Logout");
 		loginpage = pPhrHomePage.clickLogout();
 		verifyTrue(loginpage.isSearchPageLoaded(), "Expected the PhrLoginPage to be loaded, but it was not.");
-		assertTrue(loginpage.waitforTXTPassword(driver, 6),
+		assertTrue(loginpage.waitforTXTPassword(driver, 60),
 		"There was an issue reloading the login page upon logout");
 	}
 

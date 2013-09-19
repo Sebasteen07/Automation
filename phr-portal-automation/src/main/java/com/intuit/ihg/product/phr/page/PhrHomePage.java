@@ -87,6 +87,8 @@ public class PhrHomePage extends BasePageObject{
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
+		log("Waiting for the element btnProfile, max wait time is 60 seconds");
+		IHGUtil.waitForElement(driver, 60, btnProfile);
 		boolean result = false;
 		try {
 			result = IHGUtil.waitForElement(driver, 6, btnProfile);

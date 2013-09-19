@@ -71,6 +71,8 @@ public class PhrLoginPage extends BasePageObject {
 	public PhrHomePage login(String sUser, String sPassword ) throws InterruptedException {
 		
 		IHGUtil.PrintMethodName();
+		log("Waiting for the Login Name element, max wait time is 60 seconds");
+		IHGUtil.waitForElement(driver, 60, txtloginName);
 		this.setLoginName( sUser );
 		this.setPassword( sPassword );
 		btnLogin.click();
@@ -122,7 +124,7 @@ public class PhrLoginPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, txtpassword);
+			result = IHGUtil.waitForElement(driver, 60, txtpassword);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
