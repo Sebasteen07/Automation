@@ -70,7 +70,7 @@ public class MobileSmokeTestPlan extends BaseTestNGWebDriver {
         MobileSignInPage mloginpage = new MobileSignInPage(driver, url);
         MobileHomePage pMyPatientPage = mloginpage.login(userName, password);
 
-        pMyPatientPage.waitForlogoutLink(driver, 10);
+        pMyPatientPage.waitForlogoutLink(driver, 60);
 
         log("step 2:Assert Welcome text");
         assertTrue(verifyTextPresent(driver, "Welcome"));

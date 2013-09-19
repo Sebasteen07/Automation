@@ -71,7 +71,9 @@ public class MobileSignInPage extends MobileBasePage {
 
             IHGUtil.PrintMethodName();
             log( "### DEBUG LOGIN: [" + sUsername + "] [" + sPassword + "]" );
-
+            
+            log("Waiting for the Username element, max wait time is 60 seconds");
+            IHGUtil.waitForElement(driver, 60, username);
             username.click();
             username.clear();
             username.sendKeys( sUsername );

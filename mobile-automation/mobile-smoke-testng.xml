@@ -11,10 +11,9 @@
 <test name = "Mobile-Smoke-Automation" >
      <classes>
 		<class name = "com.intuit.ihg.product.mobile.test.MobileSmokeTestPlan" />
-<!--   <methods>
-        <include name="testCCDViewer"/>
-        <include name="testMobileLogin"/>
-        </methods>-->
+<methods>
+				<include name="testMobileLogin" />
+			</methods>
 	</classes>
 </test>
 </suite>
