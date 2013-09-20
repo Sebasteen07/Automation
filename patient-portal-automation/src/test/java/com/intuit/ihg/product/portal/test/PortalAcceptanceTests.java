@@ -1171,9 +1171,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 10: View the Result");
 		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
 
-		log("step 10: assert the Result");
+		log("step 11: Verify the Result");
 
-		verifyEquals(pHealthForm.Patientname.getText().trim(), "Patient Name : ihgqa automation");
+		verifyEquals(pHealthForm.Patientname.getText().trim().equalsIgnoreCase("Patient Name : ihgqa automation"), true);
 		/*
 		 * assertTrue(verifyTextPresent(driver,
 		 * "Patient Name : ihgqa  automation "));
