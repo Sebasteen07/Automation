@@ -2153,71 +2153,104 @@ public class EhcoreAPIUtil extends IHGUtil {
 			 * This Method is used to send the valid Export Message(CCD/Questionnaire) to EDI's rest interface
 		     * @throws Exception 
 			 */
-		    public static ProcessingResponse sendCCDExportMessage(String value,String type) throws Exception {
-		    	String url = null;
-		    	String xmlFile = null;
-		    	String toXML = null;
-		    	
-		    	//EHDC:CCDExport -This Request is to check CCDExport Flow with Valid and Invalid message
-		    	
-		    	if(type.equalsIgnoreCase("validExportMsg")){
-		    		url = getURL() + EhcoreAPIConstants.CCDExport;
-		    		System.out.println("***************VALID EXPORT MESSAGE**************"+url);
-		    		xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
-		    		toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
-		    		
-		    		updateCCDExport_Data(xmlFile,toXML,value,EhcoreAPIConstants.KEYREGISTRY_PATIENTID,EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
-		    	}else if (type == "invalidExportMsg"){
-		    		url = getURL() + EhcoreAPIConstants.CCDExport;
-		    		toXML = EhcoreAPIConstants.INVALID_CCD_EXPORT_DATA + "InvalidCCDMessageType.xml";
-		    	}
-		    	
-		    	//EHDC:QuestionnaireExport -This Request is to check QuestionnaireExport Flow with Valid and Invalid message
-		    	
-		    	else if (type == "validQuestionnaireExportMsg"){
-		    		url = getURL() + EhcoreAPIConstants.CCDExport;
-		    		xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessage.xml";
-		    		toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testQuestionnaireMessage.xml";
-		    		
-		    		EhcoreAPIUtil.updateCCDExport_Data(xmlFile,toXML,"msgId",EhcoreAPIConstants.KEYREGISTRY_PATIENTID,EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
-		    		//Validate Request xml against XSD
-		           //Assert.assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new String(fileToBytes(xmlFile))));
-		            
-		    		
-		    	}else if (type == "invalidKey_QuestionnaireExportMsg"){
-		    		url = getURL() + EhcoreAPIConstants.CCDExport;
-		    		toXML = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY + "QuestionnaireMessageInvalidKey.xml";
-		    		//Validate Request xml against XSD
-		          //  assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new String(fileToBytes(toXML))));
-		    	}else if (type == "invalidQuestionnaireExportMsg"){
-		    		url = getURL() + EhcoreAPIConstants.CCDExport;
-		    		toXML = EhcoreAPIConstants.INVALID_QUESTIONNAIRE_EXPORT_DATA + "InvalidQuestionnaireMessage.xml";
-		    	}
-		    	
-		    	//Allscripts:CCDExport -This Request is to check CCDExport Flow with Valid and Invalid message
-		    	
-		    	else if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)){
-		    		url = getAllScriptsCCDExportURL();
-		    		toXML = EhcoreAPIConstants.AS_CCDEXPORT_REQ + "AS_CCDExport_Request.xml";
-		    	}else if (type == "invalidAllScriptsCCDExportMsg"){
-		    		url = getAllScriptsCCDExportURL();
-				    toXML = EhcoreAPIConstants.AS_CCDEXPORT_INVALID_REQ + "AllScriptsAdapter_CCDExport_InvalidInput.xml";
-				}
-		    	
-		    	//Allscripts:Questionnaire Export -This Request is to check QuestionnaireExport Flow with Valid and Invalid message
-		    	
-		    	else if (type == "validQuestionnaireAllscriptsExportMsg"){
-		    		url = getAllScriptsFormsExportURL();
-		    		toXML = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA + "AllscriptsInput_FormsExport.xml";
-		    	}else if (type == "invalidQuestionnaireAllscriptsExportMsg"){
-		    		url = getAllScriptsFormsExportURL();
-		    		toXML = EhcoreAPIConstants.INVALID_ALLSCRIPTS_EXPORT_DATA + "InvalidAllscriptsInput_FormsExport.xml";
-		    	}
-		    	
-		        ProcessingResponse response = processCCD_CheckResponse(url, EhcoreAPIConstants.POST_REQUEST, toXML,"",EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED,type);
-		        return response;
-		    }
+	public ProcessingResponse sendCCDExportMessage(String value, String type)
+			throws Exception {
 
+		IHGUtil.PrintMethodName();
+
+		String url = null;
+		String xmlFile = null;
+		String toXML = null;
+
+		// EHDC:CCDExport -This Request is to check CCDExport Flow with Valid
+		// and Invalid message
+		if (type.equalsIgnoreCase("validExportMsg")) {
+			log("**********validExportMsg");
+			url = getURL() + EhcoreAPIConstants.CCDExport;
+			log("***************VALID EXPORT MESSAGE**************"	+ url);
+			xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
+			toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA
+					+ "testCCDMessageType.xml";
+			updateCCDExport_Data(xmlFile, toXML, value,
+					EhcoreAPIConstants.KEYREGISTRY_PATIENTID,
+					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
+					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
+		} else if (type == "invalidExportMsg") {
+			log("********** invalidExportMsg");
+			url = getURL() + EhcoreAPIConstants.CCDExport;
+			toXML = EhcoreAPIConstants.INVALID_CCD_EXPORT_DATA
+					+ "InvalidCCDMessageType.xml";
+		}
+
+		// EHDC:QuestionnaireExport -This Request is to check
+		// QuestionnaireExport Flow with Valid and Invalid message
+		else if (type == "validQuestionnaireExportMsg") {
+
+			log("********** validQuestionnaireExportMsg");
+			url = getURL() + EhcoreAPIConstants.CCDExport;
+			xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA
+					+ "QuestionnaireMessage.xml";
+			toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA
+					+ "testQuestionnaireMessage.xml";
+
+			EhcoreAPIUtil.updateCCDExport_Data(xmlFile, toXML, "msgId",
+					EhcoreAPIConstants.KEYREGISTRY_PATIENTID,
+					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
+					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
+			// Validate Request xml against XSD
+			// Assert.assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
+			// String(fileToBytes(xmlFile))));
+
+		} else if (type == "invalidKey_QuestionnaireExportMsg") {
+			log("********** invalidKey_QuestionnaireExportMsg");
+			url = getURL() + EhcoreAPIConstants.CCDExport;
+			toXML = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY
+					+ "QuestionnaireMessageInvalidKey.xml";
+			// Validate Request xml against XSD
+			// assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
+			// String(fileToBytes(toXML))));
+		} else if (type == "invalidQuestionnaireExportMsg") {
+			log("********** invalidQuestionnaireExportMsg");
+			url = getURL() + EhcoreAPIConstants.CCDExport;
+			toXML = EhcoreAPIConstants.INVALID_QUESTIONNAIRE_EXPORT_DATA
+					+ "InvalidQuestionnaireMessage.xml";
+		}
+
+		// Allscripts:CCDExport -This Request is to check CCDExport Flow with
+		// Valid and Invalid message
+
+		else if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)) {
+			log("********** internal/exportccd");
+			url = getAllScriptsCCDExportURL();
+			toXML = EhcoreAPIConstants.AS_CCDEXPORT_REQ
+					+ "AS_CCDExport_Request.xml";
+		} else if (type == "invalidAllScriptsCCDExportMsg") {
+			log("********** invalidAllScriptsCCDExportMsg");
+			url = getAllScriptsCCDExportURL();
+			toXML = EhcoreAPIConstants.AS_CCDEXPORT_INVALID_REQ
+					+ "AllScriptsAdapter_CCDExport_InvalidInput.xml";
+		}
+
+		// Allscripts:Questionnaire Export -This Request is to check
+		// QuestionnaireExport Flow with Valid and Invalid message
+
+		else if (type == "validQuestionnaireAllscriptsExportMsg") {
+			log("********** validQuestionnaireAllscriptsExportMsg");
+			url = getAllScriptsFormsExportURL();
+			toXML = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA
+					+ "AllscriptsInput_FormsExport.xml";
+		} else if (type == "invalidQuestionnaireAllscriptsExportMsg") {
+			log("********** invalidQuestionnaireAllscriptsExportMsg");
+			url = getAllScriptsFormsExportURL();
+			toXML = EhcoreAPIConstants.INVALID_ALLSCRIPTS_EXPORT_DATA
+					+ "InvalidAllscriptsInput_FormsExport.xml";
+		}
+
+		ProcessingResponse response = processCCD_CheckResponse(url,
+				EhcoreAPIConstants.POST_REQUEST, toXML, "",
+				EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED, type);
+		return response;
+	}
 		    
 		    /**
 		     * Get the URL (the common part of it for all messages) from the properties defined in config file
