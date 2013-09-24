@@ -74,7 +74,7 @@ public class CreateCustomForms extends BasePageObject{
 
 		log("Clicking on Custom Forms");
 		driver.switchTo().defaultContent();
-		IHGUtil.waitForElement(driver, 30, lnkManageYourForms);
+		IHGUtil.waitForElement(driver, 50, lnkManageYourForms);
 		try{
 			lnkManageYourForms.click();
 		} catch(Exception e) {

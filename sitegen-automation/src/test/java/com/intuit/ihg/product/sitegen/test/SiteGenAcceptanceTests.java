@@ -477,7 +477,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testCustomFormPublished() throws Exception {
-		log("testIntergationEngAndInterfaceSetUp");
+		log("testCustomFormPublished");
 		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
 
