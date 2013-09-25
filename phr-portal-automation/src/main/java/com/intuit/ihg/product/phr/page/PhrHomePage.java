@@ -91,7 +91,7 @@ public class PhrHomePage extends BasePageObject{
 		IHGUtil.waitForElement(driver, 60, btnProfile);
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, btnProfile);
+			result = IHGUtil.waitForElement(driver, 60, btnProfile);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -109,6 +109,7 @@ public class PhrHomePage extends BasePageObject{
 	public PhrLoginPage clickLogout() {
 		
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, btnLogout);
 		btnLogout.click();
 		return PageFactory.initElements(driver, PhrLoginPage.class);
 	}
