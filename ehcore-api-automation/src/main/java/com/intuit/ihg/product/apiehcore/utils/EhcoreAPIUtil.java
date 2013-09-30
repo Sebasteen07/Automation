@@ -56,6 +56,8 @@ import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
+import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
+import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 import com.intuit.ihg.eh.core.dto.CcdExchange;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.eh.core.dto.ProcessingResponse;
@@ -234,7 +236,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 					xmlResponse = readResponse(conn.getInputStream());
 					Assert.assertEquals(expectedHttpCode, conn.getResponseCode());
 					//validate the response against xsd
-					Assert.assertTrue(validateXML(EhcoreAPIConstants.DATAJOB_XSD,new String(fileToBytes(requestXml))));
+					Assert.assertTrue(validateXML(DataJobConstant.DATAJOB_XSD,new String(fileToBytes(requestXml))));
 
 				} 
 				else{
@@ -1476,7 +1478,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 */
 	public static void verifyExpectedDataJobProcStatus(String djId, String expectedProcStatus) throws Exception {
 
-		int procTime = Integer.parseInt(EhcoreAPIConstants.DJ_MGR_PROC_TIME);
+		int procTime = Integer.parseInt(DataJobConstant.DJ_MGR_PROC_TIME);
 
 		boolean isProcStatusAsExpected = false;
 		String actualStatus = null;
@@ -1513,8 +1515,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void openDJWithTransmissionEnd(String transStatus) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
-		String fromXML = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
+		String fromXML = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
 
 		EhcoreAPIUtil.updateOpenDataJobXml(fromXML, transStatus,toXML);
 
@@ -1579,10 +1581,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 		//Datajob 
 		if(type == "opendatajob"){
 			url = getUrl(EhcoreAPIConstants.DATAJOB) ;
-			xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+			xmlFile = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
 		}else if(type == "closedatajob"){
 			url = getUrl(EhcoreAPIConstants.DATAJOB);
-			xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+			xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
 		}
 
 		//EHDC : CCD Import & Export
@@ -1631,10 +1633,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 		//Datajob
 		if(type == "opendatajob"){
 			url = getUrl(EhcoreAPIConstants.DATAJOB)+ type;
-			xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+			xmlFile = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
 		}else if(type == "closedatajob"){
 			url = getUrl(EhcoreAPIConstants.DATAJOB)+  type;
-			xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+			xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
 		}
 
 		//EHDC : CCD Import , Export & Reprocess Req
@@ -1673,8 +1675,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void openBlankDataJob(String value,String transStatus,String type) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
-		String fromXML = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
+		String fromXML = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
 		if(type == "removeReqNode")
 			EhcoreAPIUtil.removeRequiredNode(fromXML,value,transStatus,toXML);
 		else
@@ -1687,7 +1689,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void openEmptyStringDataJob(String transStatus) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB) ;
-		String xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJobWithEmptyString.xml";
+		String xmlFile = DataJobConstant.DATA_JOB_INPUT + "OpenDataJobWithEmptyString.xml";
 
 		processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST,xmlFile,"","valid",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 	}
@@ -1709,8 +1711,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static DataJob completeDataJob(String djId, String transStatus) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
-		String xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
+		String xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
 
 		updateCompleteDataJobXml(xmlFile, djId, transStatus,toXML);
 
@@ -1733,8 +1735,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 	public static DataJob openDataJob(String transStatus) throws Exception {
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
-		String fromXML = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
+		String fromXML = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
 		//update xml 
 		updateOpenDataJobXml(fromXML, transStatus,toXML);
 
@@ -1752,8 +1754,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void completeDataJobInvalidId(String djId,String transStatus,String expectedResponse) throws Exception {
 
 		String	 url = getUrl(EhcoreAPIConstants.DATAJOB) ;
-		String xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
+		String xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
 
 		updateCompleteDataJobXml(xmlFile, djId, transStatus,toXML);
 
@@ -1764,8 +1766,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void completeDJWithInvalidXml(String djId,String transStatus,String value) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB) ;
-		String xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
+		String xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
 
 		EhcoreAPIUtil.updateDatajob(xmlFile, djId, transStatus,value,toXML);
 
@@ -1775,8 +1777,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	public static void completeDataJobWithInvalid(String djId,String transStatus) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB) ;
-		String fromXML = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
+		String fromXML = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testCompleteDataJob.xml";
 
 		EhcoreAPIUtil.updateDataJobWithInvalidValues(fromXML, djId, transStatus,toXML);
 
@@ -1787,7 +1789,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB) ;
 
-		String xmlFile = EhcoreAPIConstants.DATA_JOB_INPUT + "CompleteDataJobWithEmptyString.xml";
+		String xmlFile = DataJobConstant.DATA_JOB_INPUT + "CompleteDataJobWithEmptyString.xml";
 
 		processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, xmlFile,"","valid",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);	    
 	}
@@ -1801,7 +1803,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 * @throws Exception 
 	 */
 	public static List<Message> verifyExpectedMessageProcStatus(int rowNo,String djId,String expectedStatus,String msg_type) throws Exception {
-		int procTime = Integer.parseInt(EhcoreAPIConstants.DJ_MGR_PROC_TIME);
+		int procTime = Integer.parseInt(DataJobConstant.DJ_MGR_PROC_TIME);
 
 		List<Message> details = new ArrayList<Message>();
 		boolean isProcStatusAsExpected = false;
@@ -2075,9 +2077,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_AddEntity.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateC_CCD)){
 	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_Update.xml");
-	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.newC_CCD)){
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NEW_CCD)){
 	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_New.xml");
-	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.noknown_c_ccd)){
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NOKNOWN_C_CCD)){
 	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_NoKnown.xml");
 	      	}
 	  	    compareXml(expectedCDM,actualCDM);
@@ -2095,7 +2097,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	          	String actualCdm = null;
 	  			// Save actual to a file.
 	          	actualCdm = entry.getValue().toString();
-	  			actualCdmFileName = EhcoreAPIConstants.SAMPLE_CDM_LIST + "actual.xml"; 
+	  			actualCdmFileName = DataJobConstant.SAMPLE_CDM_LIST + "actual.xml"; 
 	  			try {
 	  				FileUtils.writeStringToFile(new File(actualCdmFileName),
 	  						actualCdm, false);

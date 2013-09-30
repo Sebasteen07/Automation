@@ -13,6 +13,7 @@ import com.intuit.dc.framework.tracking.constants.TrackingEnumHolder;
 import com.intuit.dc.framework.tracking.entity.DataJob;
 import com.intuit.dc.framework.tracking.entity.Message;
 import com.intuit.dc.framework.tracking.entity.ProcessingStatusType;
+import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 
 
 public class EhcoreTrackingDBUtils {

@@ -24,10 +24,11 @@ import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.eh.core.dto.ProcessingResponse;
 import com.intuit.ihg.product.apiehcore.page.DataJobIDPage;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPI;
-import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIConstants;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPITestData;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreTrackingDBUtils;
+import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
+import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 import com.mongodb.Mongo;
 
 /**
@@ -51,204 +52,194 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Date :
 	 * @User Strory in Rally :
 	 * @StepsToReproduce:
-	 * 
-	 * 
-	 * =================================================
+	  =================================================
 	 * @AreaImpacted :-
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests", "FuctionalTests"} ) 
+	@Test(enabled = true, groups = { "AcceptanceTests", "FuctionalTests" })
 	public void test_TrackingDBConnection() throws Exception {
 
 		log("Testing 'test_TrackingDBConnection' test case.");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 
-
-		logger.debug("Entering test method ... ");
-		Connection c= EhcoreTrackingDBUtils.getDBConnection();
-		if(c!=null)
-		{
-			logger.debug("connected to DB");
+		log("Entering test method ... ");
+		Connection c = EhcoreTrackingDBUtils.getDBConnection();
+		if (c != null) {
+			log("connected to DB");
 		}
-		logger.debug("Exiting test method ... ");
-
+		log("Exiting test method ... ");
 
 	}
+	
+	/**
+	 * @Author:- bbinisha
+	 * @Date :
+	 * @User Strory in Rally :
+	 * @StepsToReproduce:
+	  =================================================
+	 * @AreaImpacted :-
+	 * @throws Exception
+	 */
 
-	@Test(enabled = true, groups = {"AcceptanceTests", "FuctionalTests"} ) 
+	@Test(enabled = true, groups = { "AcceptanceTests", "FuctionalTests" })
 	public void test_MongoDBConnection() throws Exception {
 		Mongo m;
-		try { 
+		try {
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
-			m = new Mongo(testData.getMongoServerAddress()); 
+			m = new Mongo(testData.getMongoServerAddress());
 
-			//   m.getDatabaseNames();
-			if(m!=null)
-			{
-				logger.debug("connected to mongo DB "+m.toString());
+			// m.getDatabaseNames();
+			if (m != null) {
+				log("connected to mongo DB " + m.toString());
 			}
-			m.close();    
+			m.close();
 
-		}		catch (Exception ex) { 
-			if(ex!=null)
-			{
-				logger.debug("cannot connect to MONGODB");
+		} catch (Exception ex) {
+			if (ex != null) {
+				log("cannot connect to MONGODB");
 			}
-			m = null; 
-		} 
+			m = null;
+		}
 	}
-
 
 	/**
 	 * @Author:-bkrishnankutty
 	 * @Date:-5/Aug/2013
 	 * @User Story ID in Rally : test
 	 * @StepsToReproduce:
-
+	 * 
 	 * Test -Open Data Job with Transmission Status "INIT".
-	 * Check the Response Code and Status in Tracking DB
-	 * Expected result is that it should work fine-200 OK
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+     * Check the Response Code and Status in Tracking DB
+     * Expected result is that it should work fine-200 OK
+       ======================================================
+
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testOpenDataJob() throws Exception {
 
-		log("Test Case: testOpenDataJob");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Entering open_DataJob test method ... ");
-
-		log("Entering test method setup ... ");
+		log("*****Test Case: testOpenDataJob*****");
+		log("*****Execution Environment: *****" + IHGUtil.getEnvironmentType());
+		log("*****Entering open_DataJob test method ... *****");
+		
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+		
+		log(DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+		log(DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
+		log("*****Open Data Job with Transmission Status INIT*****");
 		dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
-
 		String djId = dj.getDataJobId();
 
-		//Check the status in DB
-		EhcoreAPIUtil.verifyExpectedDataJobProcStatus(djId,TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		log("*****Check the Response Code and Status in Tracking DB :- Expected result =200*****");
+		EhcoreAPIUtil.verifyExpectedDataJobProcStatus(djId,
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 
-		log("Exiting open_DataJob test method ... ");
+		log("*****Exiting open_DataJob test method ...*****");
 	}
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-04/Sep/2013
 	 * @User Story ID in Rally : test
 	 * @StepsToReproduce:
-
+	 * 
 	 * Test -Open Data Job with Transmission Status "INIT".
-	 * Test-Open Two Datajob's and Check datajob id's are different.
-	 * Expected result is that it should work fine -200 OK
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * Test-Open Two Datajob's and Check datajob id's are
+	 * different. Expected result is that it should work fine  -200 OK
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openTwoDataJobs() throws Exception {
 
-		log("Test Case: openTwoDataJobs");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Entering open_DataJob test method ... ");
-
-		log("Entering test method setup ... ");
-
+		log("*****Test Case: openTwoDataJobs*****");
+		log("*****Execution Environment: *****" + IHGUtil.getEnvironmentType());
+		log("*****Entering open_DataJob test method ...*****");
 
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+		
+		log(DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+		log(DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
-		dj= DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		log("*****Test -Open Data Job with Transmission Status INIT.*****");
+		dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 		String djId1 = dj.getDataJobId();
 
-		dj= DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		log("*****Test-Open Two Datajob's and Check datajob id's are different.*****");
+		dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 		String djId2 = dj.getDataJobId();
 
-		//verify that the two datajobIds are different
+		log("*****verify that the two datajobIds are different*****");
 		assertFalse(djId1.equalsIgnoreCase(djId2));
 
-		logger.debug("Exiting openTwoDataJobs test method ... ");
+		log("*****Exiting openTwoDataJobs test method ...*****");
 
 	}
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-04/Sep/2013
 	 * @User Story ID in Rally : test
 	 * @StepsToReproduce:
-
-	 * Test -Open Data Job with Transmission Status "INIT".
-	 * Test-Open Two Datajob's and Check datajob id's are different.
-	 * Expected result is that it should work fine -200 OK
+	 * 
+	 * 
+	 * ======================================================
 	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openWithOtherTransmissionStatus() throws Exception {
 
-		log("Test Case: openWithOtherTransmissionStatus");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("*****Test Case: openWithOtherTransmissionStatus*****");
+		log("*****Execution Environment:***** " + IHGUtil.getEnvironmentType());
+		log("*****Entering openWithOtherTransmissionStatus test method ...***** ");
 
-		log("Entering openWithOtherTransmissionStatus test method ... ");
+		EhcoreAPIUtil
+				.openDJWithTransmissionEnd(TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END
+						.toString());
 
-		EhcoreAPIUtil.openDJWithTransmissionEnd(TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
-
-		logger.debug("Exiting openWithOtherTransmissionStatus test method ... ");
-
-
+		log("*****Exiting openWithOtherTransmissionStatus test method ...***** ");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-04/Sep/2013
 	 * @User Story ID in Rally : test
 	 * @StepsToReproduce:
-
-	 * Test-Open Datajob with invalid content-type in Request header
-	 * EDI should return an error.415 -Unsupported Media Type
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * Test-Open Datajob with invalid content-type in Request
+	 * header EDI should return an error.415 -Unsupported Media Type
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithInvalidContentType() throws Exception {
+		
+		log("*****Test Case: openDataJobWithInvalidContentType*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("Entering openDataJobWithInvalidContentType test method ... ");
+		log("*****Open Datajob with invalid content-type in Request, Expected Error - 415 -Unsupported Media Type*****");
+		
+		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob", "", "",
+				"invalid", "UnsuportedType");
 
-
-		logger.debug("Entering openDataJobWithInvalidContentType test method ... ");
-
-		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob","","","invalid","UnsuportedType");
-
-		logger.debug("Exiting openDataJobWithInvalidContentType test method ... ");
+		log("*****Exiting openDataJobWithInvalidContentType test method ...***** ");
 
 	}
 
@@ -256,78 +247,83 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Author:-Kiran_GT
 	 * @Date:-04/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Open Datajob with null content-type in Request header
-	 * EDI should return an error.400- BAD REQUEST
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce: 
+	 * Test-Open Datajob with null content-type in Request
+	 *  header EDI should return an error.400- BAD REQUEST
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithNullContentType() throws Exception {
+		
+		log("*****Test Case: openDataJobWithInvalidContentType*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("*****Entering openDataJobWithInvalidContentType test method ... *****");
 
+		log("*******open Datajob with null content-type in Request header EDI should return an error.400- BAD REQUEST*****");
+		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob", "", "", "null",
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		logger.debug("Entering openDataJobWithInvalidContentType test method ... ");
-
-		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob","","","null",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
-
-		logger.debug("Exiting openDataJobWithInvalidContentType test method ... ");
+		log("Exiting openDataJobWithInvalidContentType test method ... ");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-05/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Open Datajob without content-type in Request header
-	 * EDI should return an error.415 UnsupportedMedia type
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce: 
+	 * Test-Open Datajob without content-type in Request
+	 * header EDI should return an error.415 UnsupportedMedia type
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithoutContentType() throws Exception {
+		
+		log("*****Test Case: openDataJobWithInvalidContentType*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJobWithoutContentType test method ... *****");
+		
+        log("***** Open Datajob without content-type in Request header EDI should return an error.415 *****");
+		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob", "", "", "blank",
+				"UnsuportedType");
 
-
-		logger.debug("Entering openDataJobWithoutContentType test method ... ");
-
-		EhcoreAPIUtil.requestWithInvalidHeader("opendatajob","","","blank","UnsuportedType");
-
-		logger.debug("Exiting openDataJobWithoutContentType test method ... ");
+		log("*****Exiting openDataJobWithoutContentType test method ...***** ");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-05/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Open Datajob with invalid URL
-	 * EDI should return an error.404-Not Found
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 *  Test-Open Datajob with invalid URL EDI should return
+	 *  an error.404-Not Found
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithInvalidURL() throws Exception {
+		
+		log("*****Test Case: openDataJobWithInvalidContentType*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
 
-		logger.debug("Entering openDataJobWithInvalidURL test method ... ");
+		log("*****Entering openDataJobWithInvalidURL test method ...****** ");
+        log("pen Datajob with invalid URL EDI should return an error.404-Not Found********");
+		EhcoreAPIUtil.sendRequestWithInvalidURL(" ", "opendatajob");
 
-		EhcoreAPIUtil.sendRequestWithInvalidURL(" ","opendatajob");
-
-		logger.debug("Exiting openDataJobWithInvalidURL test method ... ");
+		log("Exiting openDataJobWithInvalidURL test method ... ");
 
 	}
 
@@ -335,131 +331,141 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Author:-Kiran_GT
 	 * @Date:-05/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- open a datajob with an invalid xml by removing required element
-	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 *  Test- open a datajob with an invalid xml by removing
+	 *  required element EDI should return an error.400-Bad Request
+	 *======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJob_RemoveRequiredElement() throws Exception {
 
+		log("*****Test Case: openDataJob_RemoveRequiredElement*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJob_RemoveRequiredElement test method ...*****");
 
-		logger.debug("Entering openDataJob_RemoveRequiredElement test method ... ");
+		EhcoreAPIUtil.openBlankDataJob(null,
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(),
+				"removeReqNode");
 
-		EhcoreAPIUtil.openBlankDataJob(null,TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(),"removeReqNode");
-
-		logger.debug("Exiting openDataJob_RemoveRequiredElement test method ... ");
+		log("*****Exiting openDataJob_RemoveRequiredElement test method ...*****");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-05/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-open a datajob with invalid element values.
-	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-open a datajob with invalid element values. EDI
+	 * should return an error.400-Bad Request
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithInvalidValues() throws Exception {
 
+		log("*****Test Case: openDataJobWithInvalidValues*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJobWithInvalidValues test method ...*****");
 
-		logger.debug("Entering openDataJobWithInvalidValues test method ... ");
+		EhcoreAPIUtil.openBlankDataJob("invalid",
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(), "invalid");
 
-		EhcoreAPIUtil.openBlankDataJob("invalid",TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(),"invalid");
-
-		logger.debug("Exiting openDataJobWithInvalidValues test method ... ");
-
+		log("*****Exiting openDataJobWithInvalidValues test method ...*****");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- open a datajob with Blank element values.
-	 * EDI should return an error .400-BAD REQUEST.
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce: 
+	 * Test- open a datajob with Blank element values. EDI
+	 * should return an error .400-BAD REQUEST.
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithBlankValues() throws Exception {
 
-		logger.debug("Entering openDataJobWithBlankValues test method ... ");
+		log("*****Test Case: openDataJobWithBlankValues*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJobWithBlankValues test method ...*****");
 
-		EhcoreAPIUtil.openBlankDataJob("",TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(),"blank");
+		EhcoreAPIUtil.openBlankDataJob("",
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(), "blank");
 
-		logger.debug("Exiting openDataJobWithBlankValues test method ... ");
+		log("*****Exiting openDataJobWithBlankValues test method ...*****");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- open a datajob with null element values.
-	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test- open a datajob with null element values. EDI
+	 * should return an error.400-Bad Request
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithNullValues() throws Exception {
 
-		logger.debug("Entering openDataJobWithNullValues test method ... ");
+		log("*****Test Case: openDataJobWithNullValues*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJobWithNullValues test method ...*****");
 
-		EhcoreAPIUtil.openBlankDataJob("null",TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(),"null");
+		EhcoreAPIUtil.openBlankDataJob("null",
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString(), "null");
 
-		logger.debug("Exiting openDataJobWithNullValues test method ... ");
+		log("*****Exiting openDataJobWithNullValues test method ... *****");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
+	 * @StepsToReproduce:
 	 * Test- open a datajob with emptyString element values.
 	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void openDataJobWithEmptyStringValues() throws Exception {
 
-		logger.debug("Entering openDataJobWithEmptyStringValues test method ... ");
+		log("*****Test Case: openDataJobWithEmptyStringValues*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering openDataJobWithEmptyStringValues test method ...*****");
 
-		EhcoreAPIUtil.openEmptyStringDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		EhcoreAPIUtil
+				.openEmptyStringDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+						.toString());
 
-		logger.debug("Exiting openDataJobWithEmptyStringValues test method ... ");
+		log("*****Exiting openDataJobWithEmptyStringValues test method ...***** ");
 
 	}
 
@@ -467,35 +473,40 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Open a Datajob and close the same
-	 * Expected result is that it should work fine.200-OK
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce: 
+	 * Test-Open a Datajob and close the same Expected result
+	 * is that it should work fine.200-OK
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobValidId() throws Exception {
+		
+		log("*****Test Case: completeDataJobValidId*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering completeDataJobValidId test method ...***** ");
 
-		logger.debug("Entering completeDataJobValidId test method ... ");
-
-		// open datajob and retrieve its datajobId
+		log("*****open datajob and retrieve its datajobId*****");
 		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 		String openDatajobId = dj.getDataJobId();
 
-		// close the same datajob with Transmission Status "TRANSMISSION_END"
-		DataJob dj1= EhcoreAPIUtil.completeDataJob(openDatajobId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+		log("*****close the same datajob with Transmission Status :- TRANSMISSION_END*****");
+		DataJob dj1 = EhcoreAPIUtil.completeDataJob(openDatajobId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
 
-		//check the datajob id's are same.
-		assertTrue(openDatajobId.equalsIgnoreCase(dj1.getDataJobId()),"Open and Complete DataJob Id's are same");
+		log("*****check the datajob id's are same.*****");
+		assertTrue(openDatajobId.equalsIgnoreCase(dj1.getDataJobId()),
+				"Open and Complete DataJob Id's are same");
 
-		//check the status in Trcking DB 
-		EhcoreAPIUtil.verifyExpectedDataJobProcStatus(openDatajobId,TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+		log("*****check the status in Trcking DB*****");
+		EhcoreAPIUtil.verifyExpectedDataJobProcStatus(openDatajobId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
 
-		logger.debug("Exiting completeDataJobValidId test method ... ");
+		log("*****Exiting completeDataJobValidId test method ... *****");
 
 	}
 
@@ -503,54 +514,59 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob with invalid data job id
-	 * EDI should return an error.400 -BAD REQUEST
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-Close Datajob with invalid data job id EDI should
+	 * return an error.400 -BAD REQUEST
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithInvalidId() throws Exception {
-
-		logger.debug("Entering completeDataJobWithInvalidId test method ... ");
+		
+		log("*****Test Case: completeDataJobWithInvalidId*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering completeDataJobWithInvalidId test method ...*****");
 
 		// complete datajob with invalid datajob id
 		String djId = "invalid_djId";
-		EhcoreAPIUtil.completeDataJobInvalidId(djId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		EhcoreAPIUtil.completeDataJobInvalidId(djId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		logger.debug("Exiting completeDataJobWithInvalidId test method ... ");
+		log("*****Exiting completeDataJobWithInvalidId test method ...*****");
 
 	}
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob with null data job id
-	 * EDI should return an error.400-BAD REQUEST
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-Close Datajob with null data job id EDI should
+	 * return an error.400-BAD REQUEST
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithNullDatajobId() throws Exception {
+		
+		log("*****Test Case: completeDataJobWithNullDatajobId*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
 
+		log("*****Entering completeDataJobWithNullDatajobId test method ... *****");
 
-		logger.debug("Entering completeDataJobWithNullDatajobId test method ... ");
+		EhcoreAPIUtil.completeDataJobInvalidId("null",
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		EhcoreAPIUtil.completeDataJobInvalidId("null", TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
-
-		logger.debug("Exiting completeDataJobWithNullDatajobId test method ... ");
+		log("*****Exiting completeDataJobWithNullDatajobId test method ...*****");
 
 	}
 
@@ -558,377 +574,392 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob with blank data job id
-	 * EDI should return an error.400-BAD REQUEST
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce: 
+	 * Test-Close Datajob with blank data job id EDI should
+	 *  return an error.400-BAD REQUEST
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeWithBlankDatajobId() throws Exception {
 
-		logger.debug("Entering completeWithBlankDatajobId test method ... ");
+		log("*****Test Case: completeWithBlankDatajobId*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering completeWithBlankDatajobId test method ...*****");
 
-		EhcoreAPIUtil.completeDataJobInvalidId("", TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		EhcoreAPIUtil.completeDataJobInvalidId("",
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		logger.debug("Exiting completeWithBlankDatajobId test method ... ");
+		log("*****Exiting completeWithBlankDatajobId test method ... *****");
 
 	}
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- close datajob without datajobId element
-	 *  EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test- close datajob without datajobId element EDI
+	 * should return an error.400-Bad Request
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void complete_WithoutDataJobId() throws Exception {
-
-		logger.debug("Entering complete_WithoutDataJobId test method ... ");
+		
+		log("*****Test Case: complete_WithoutDataJobId*****");
+		log("*****Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("*****Entering complete_WithoutDataJobId test method ... *****");
 
 		String djId = null;
 
-		EhcoreAPIUtil.completeDataJobInvalidId(djId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		EhcoreAPIUtil.completeDataJobInvalidId(djId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		logger.debug("Exiting complete_WithoutDataJobId test method ... ");
-
+		log("*****Exiting complete_WithoutDataJobId test method ...***** ");
 	}
-
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Tests close datajob with valid djId and other transmission status-Not TRANSMISSION_END
-	 *  EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Tests close datajob with valid djId and other
+	 * transmission status-Not TRANSMISSION_END EDI should
+	 * return an error.400-Bad Request
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeWithOtherTransmissionStatus() throws Exception {
 
-		logger.debug("Entering CompleteWithOtherTransmissionStatus test method ... ");
+		log("Entering CompleteWithOtherTransmissionStatus test method ... ");
 
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 
-		EhcoreAPIUtil.completeDataJobInvalidId(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString(),EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		EhcoreAPIUtil.completeDataJobInvalidId(dj.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.DONE.toString(),
+				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-		logger.debug("Exiting CompleteWithOtherTransmissionStatus test method ... ");
+		log("Exiting CompleteWithOtherTransmissionStatus test method ... ");
 
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob with invalid content-type in Request header
-	 * EDI should return an error.415-Unsupported Media Type
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-Close Datajob with invalid content-type in
+	 * Request header EDI should return an error.415-Unsupported Media Type
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithInvalidContentType() throws Exception {
 
-		logger.debug("Entering completeDataJobWithInvalidContentType test method ... ");
+		log("Entering completeDataJobWithInvalidContentType test method ... ");
 
 		// open datajob and retrieve its datajobId
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 		String djId = dj.getDataJobId();
 
 		// close the same datajob with Transmission Status "TRANSMISSION_END"
-		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob",djId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),"invalid","UnsuportedType");
+		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob", djId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				"invalid", "UnsuportedType");
 
-		logger.debug("Exiting completeDataJobWithInvalidContentType test method ... ");
+		log("Exiting completeDataJobWithInvalidContentType test method ... ");
 	}
-
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob with null content-type in Request header
-	 * EDI should return an error-Response Code -400-BAD REQUEST
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-Close Datajob with null content-type in Request
+	 * header EDI should return an error-Response Code -400-BAD REQUEST
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithNullContentType() throws Exception {
 
-		logger.debug("Entering completeDataJobWithNullContentType test method ... ");
+		log("Entering completeDataJobWithNullContentType test method ... ");
 
 		// open datajob and retrieve its datajobId
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 		String djId = dj.getDataJobId();
 
 		// close the same datajob with Transmission Status "TRANSMISSION_END"
-		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob",djId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),"null",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob", djId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				"null", EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 
-
-		logger.debug("Exiting completeDataJobWithNullContentType test method ... ");
+		log("Exiting completeDataJobWithNullContentType test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-Close Datajob without content-type in Request header
-	 * EDI should return an error-Response Code -400 BAD REQUEST(sandbox) or 415 -UnsupportedType(Dev2)
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-Close Datajob without content-type in Request
+	 * header EDI should return an error-Response Code -400
+	 * BAD REQUEST(sandbox) or 415 -UnsupportedType(Dev2)
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithoutContentType() throws Exception {
 
-		logger.debug("Entering completeDataJobWithoutContentType test method ... ");
+		log("Entering completeDataJobWithoutContentType test method ... ");
 
 		// open datajob and retrieve its datajobId
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 		String djId = dj.getDataJobId();
 
 		// close the same datajob with Transmission Status "TRANSMISSION_END"
-		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob",djId, TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),"blank","UnsuportedType");
+		EhcoreAPIUtil.requestWithInvalidHeader("closedatajob", djId,
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				"blank", "UnsuportedType");
 
-
-		logger.debug("Exiting completeDataJobWithoutContentType test method ... ");
+		log("Exiting completeDataJobWithoutContentType test method ... ");
 	}
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Tests close datajob with invalid url 
-	 *  EDI should return an error.404 - Not Found
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Tests close datajob with invalid url EDI should return an error.404 - Not Found
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithInvalidURL() throws Exception {
 
-		logger.debug("Entering completeDataJobWithInvalidURL test method ... ");
+		log("Entering completeDataJobWithInvalidURL test method ... ");
 
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 		String djId = dj.getDataJobId();
-		EhcoreAPIUtil.sendRequestWithInvalidURL(djId,"closedatajob");
+		EhcoreAPIUtil.sendRequestWithInvalidURL(djId, "closedatajob");
 
-		logger.debug("Exiting completeDataJobWithInvalidURL test method ... ");
+		log("Exiting completeDataJobWithInvalidURL test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Tests close datajob with valid djId & transStatus and invalidXML by removing required element
-	 *  EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Tests close datajob with valid djId & transStatus and
+	 * invalidXML by removing required element EDI should
+	 * return an error.400-Bad Request
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDatatjob_RemoveRequiredElement() throws Exception {
 
-		logger.debug("Entering completeDatatjob_RemoveRequiredElement test method ... ");
+		log("Entering completeDatatjob_RemoveRequiredElement test method ... ");
 
 		String value = null;
 
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 
-		EhcoreAPIUtil.completeDJWithInvalidXml(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),value);
+		EhcoreAPIUtil.completeDJWithInvalidXml(dj.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				value);
 
-		logger.debug("Exiting completeDatatjob_RemoveRequiredElement test method ... ");
+		log("Exiting completeDatatjob_RemoveRequiredElement test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test-close a datajob with invalid element values.
-	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test-close a datajob with invalid element values. EDI
+	 * should return an error.400-Bad Request
+	 *  ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-	public void completeDataJobWithInvalidValues() throws Exception { 
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
+	public void completeDataJobWithInvalidValues() throws Exception {
 
+		log("Entering completeDataJobWithInvalidValues test method ... ");
 
-		logger.debug("Entering completeDataJobWithInvalidValues test method ... ");
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		EhcoreAPIUtil.completeDataJobWithInvalid(dj.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
 
-		EhcoreAPIUtil.completeDataJobWithInvalid(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
-
-		logger.debug("Exiting completeDataJobWithInvalidValues test method ... ");
+		log("Exiting completeDataJobWithInvalidValues test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- close a datajob with Blank element values.
-	 * EDI should return an error .400-BAD REQUEST.
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test- close a datajob with Blank element values. EDI
+	 * should return an error .400-BAD REQUEST.
+	 * ======================================================
+	  * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-	public void completeDataJobWithBlankValues() throws Exception { 
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
+	public void completeDataJobWithBlankValues() throws Exception {
 
+		log("Entering completeDataJobWithBlankValues test method ... ");
 
-		logger.debug("Entering completeDataJobWithBlankValues test method ... ");
+		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT
+				.toString());
 
-		dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		EhcoreAPIUtil.completeDJWithInvalidXml(dj.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				"");
 
-		EhcoreAPIUtil.completeDJWithInvalidXml(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),"");
-
-
-		logger.debug("Exiting completeDataJobWithBlankValues test method ... ");
+		log("Exiting completeDataJobWithBlankValues test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Tests close datajob with valid djId and other required elements are null
-	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Tests close datajob with valid djId and other required
+	 * elements are null EDI should return an error.400-Bad Request
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
 	public void completeDataJobWithNullValues() throws Exception {
 
-		logger.debug("Entering completeDataJobWithNullValues test method ... ");
+		log("Entering completeDataJobWithNullValues test method ... ");
 
-		DataJob dj1 = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		DataJob dj1 = EhcoreAPIUtil
+				.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 
-		EhcoreAPIUtil.completeDJWithInvalidXml(dj1.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),"null");
+		EhcoreAPIUtil.completeDJWithInvalidXml(dj1.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString(),
+				"null");
 
-		logger.debug("Exiting completeDataJobWithNullValues test method ... ");
+		log("Exiting completeDataJobWithNullValues test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
+	 * @StepsToReproduce:
 	 * Test- close a datajob with emptyString element values.
 	 * EDI should return an error.400-Bad Request
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-	public void completeDataJobWithEmptyStringValues() throws Exception { 
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
+	public void completeDataJobWithEmptyStringValues() throws Exception {
 
+		log("Entering completeDataJobWithEmptyStringValues test method ... ");
+		DataJob dj1 = EhcoreAPIUtil
+				.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 
-		logger.debug("Entering completeDataJobWithEmptyStringValues test method ... ");
-		DataJob dj1 = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		EhcoreAPIUtil.CompleteDJWithEmptyStringValues(dj1.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
 
-		EhcoreAPIUtil.CompleteDJWithEmptyStringValues(dj1.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
-
-		logger.debug("Exiting completeDataJobWithEmptyStringValues test method ... ");
+		log("Exiting completeDataJobWithEmptyStringValues test method ... ");
 	}
-
 
 	/**
 	 * @Author:-Kiran_GT
 	 * @Date:-06/Sep/2013
 	 * @User Story ID in Rally : test
-	 * @StepsToReproduce:	   
-	 * Test- Complete datajob with INIT will create a new DatajobID
-	 * It should work fine and return response 200-OK with new datajobId.
-	 *
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 * @StepsToReproduce:
+	 * Test- Complete datajob with INIT will create a new
+	 * DatajobID It should work fine and return response
+	 * 200-OK with new datajobId.
+	 * ======================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-	public void completeDataJobWithINIT() throws Exception { 
+	@Test(enabled = true, groups = { "Allscripts_Acceptance",
+			"Allscripts_Functional" }, retryAnalyzer = RetryAnalyzer.class)
+	public void completeDataJobWithINIT() throws Exception {
 
+		log("Entering completeDataJobWithINIT test method ... ");
 
-		logger.debug("Entering completeDataJobWithINIT test method ... ");
+		// Open a datajob and update with TRANSMISSION_END.
+		DataJob dj1 = EhcoreAPIUtil
+				.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+		EhcoreAPIUtil.completeDataJob(dj1.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
 
-		//Open a datajob and update with TRANSMISSION_END.
-		DataJob dj1 = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
-		EhcoreAPIUtil.completeDataJob(dj1.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+		// Again update the same datajob with INIT
+		DataJob dj2 = EhcoreAPIUtil.completeDataJob(dj1.getDataJobId(),
+				TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
 
-		//Again update the same datajob with INIT
-		DataJob dj2 = EhcoreAPIUtil.completeDataJob(dj1.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
-
-		//check both datajob id's are different.
+		// check both datajob id's are different.
 		assertFalse(dj1.getDataJobId().equalsIgnoreCase(dj2.getDataJobId()));
 
-		logger.debug("Exiting completeDataJobWithINIT test method ... ");
+		log("Exiting completeDataJobWithINIT test method ... ");
 	}
+	
+	
+	//########################################################################################################################################################################
+	
+	//*******************************End of Data Job Test cases *************************************************************************************************************
+	
+	//*******************************CCD Import Testcases starts here ******************************************************************************************************* 
+	
+	//#######################################################################################################################################################################
 
 	/**
 	 * 
@@ -944,8 +975,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
 		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -976,9 +1005,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1008,9 +1034,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1039,9 +1062,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1072,9 +1092,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1105,9 +1122,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1139,9 +1153,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1172,9 +1183,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1202,9 +1210,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1232,9 +1237,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1285,11 +1287,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 		log("Open DataJob");
@@ -1328,9 +1325,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1380,10 +1374,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1414,9 +1404,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+		
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1448,10 +1436,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-		EhcoreAPI ehcoreApi = new EhcoreAPI();
+     	EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
 		log("Open DataJob");
@@ -1482,11 +1467,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1519,11 +1499,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1567,9 +1542,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1611,9 +1583,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+		
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -1653,9 +1623,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+		
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 		List<Message> msgDetails = new ArrayList<Message>();
@@ -1672,7 +1640,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(1,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),EhcoreAPIConstants.CCDImport);
 
 		status = EhcoreTrackingDBUtils.isSnapshotPreviousVersionPresent(dj.getDataJobId(),msgDetails.get(1).getQid().toString());
-		logger.debug("Previous snapshot status ::"+status);
+		log("Previous snapshot status ::"+status);
 		if(status){
 
 			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(1).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.RETRIEVE.toString(),EhcoreAPIConstants.SNAPSHOTRETRIEVE));
@@ -1765,7 +1733,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		//check the ENRICHED Message in ObjectStore(Mongo DB)and compare with expectedCcd using XMLUnit
 		//checkMsgInMongoDB(obj_ref_id,expectedCcd);
 		//EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString(),obj_ref_id,expectedCcd);
-		logger.debug("Exiting testASImportRawMessagePersist test method ... ");			
+		log("Exiting testASImportRawMessagePersist test method ... ");			
 
 	}
 
@@ -2034,7 +2002,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		//check the RAW Message in ObjectStore(Mongo DB)and compare with expectedXML using XMLUnit
 		//	EhcoreMongoDBUtils.checkMsgInMongoDB(obj_ref_id,expectedCcd);
 
-		logger.debug("Exiting testRawMessagePersistForValidMessage test method ... ");
+		log("Exiting testRawMessagePersistForValidMessage test method ... ");
 	}
 
 	/**
@@ -2054,10 +2022,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
@@ -2092,10 +2056,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
@@ -2143,10 +2103,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
 
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
@@ -2180,12 +2136,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("Entering test method setup ... ");
-
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
-
 		log("Entering checkTranslateSimpleCCDtoCCDForValidCCDMsg test method ... ");
 
 		List<Message> msgDetails = new ArrayList<Message>();
@@ -2218,10 +2168,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
@@ -2258,10 +2204,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-
-		log("Exiting test method setup ... ");	
-		log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
-		log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
