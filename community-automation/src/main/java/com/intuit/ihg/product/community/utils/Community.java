@@ -46,6 +46,8 @@ public class Community {
 	public String practiceRxDoctorPassword= "";
 	public String ccdUserName= "";
 	public String ccdUserPassword= "";
+	public String forgotUserName= "";
+	public String forgotPassword= "";
 	
 	
 	

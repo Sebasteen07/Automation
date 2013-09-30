@@ -7,6 +7,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 
 public class ResetPasswordSummaryPage extends BasePageObject {
 
@@ -18,6 +19,11 @@ public class ResetPasswordSummaryPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 		
 		}
+	public void confirmPasswordReset(){
+		IHGUtil.PrintMethodName();
+		Go_To_Sign_Page.click();
+		//driver.close();
+	}
 }
 
 

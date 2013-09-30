@@ -20,5 +20,11 @@ public class CommunityConstants {
 	
 	//My Account Profile fields
 	public final static String MyAccountSecurityQuestion = "Who was your childhood hero?";
+	
+	
+	//EMAIL Subjects and links
+	public static final String EMAIL_ForgotPassword_SUBJECT ="Your password has been reset" ;
+	public static final String TextInForgotPasswordEmailLink="forgotpasswordsignin?code";
+	public static final String ForgotPassword ="intuit";
 
 }

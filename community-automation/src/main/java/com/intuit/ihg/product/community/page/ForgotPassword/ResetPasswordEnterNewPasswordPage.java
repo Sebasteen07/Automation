@@ -7,6 +7,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 
 public class ResetPasswordEnterNewPasswordPage extends BasePageObject{
 	
@@ -31,6 +32,15 @@ public class ResetPasswordEnterNewPasswordPage extends BasePageObject{
 		PageFactory.initElements(driver, this);
 		
 		}
-	
+	public ResetPasswordSummaryPage resetPassword(String sQuestion, String sNewPassword){
+		IHGUtil.PrintMethodName();
+		Answer.sendKeys(sQuestion);		
+		New_Password_1.sendKeys(sNewPassword);
+		New_Password_2.sendKeys(sNewPassword);
+		Email_Me.click();
+		return PageFactory.initElements(driver, ResetPasswordSummaryPage.class);
+		
+		
+	}
 
 }

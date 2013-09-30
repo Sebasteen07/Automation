@@ -8,6 +8,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordSummaryPage;
 
 public class ForgotUserIdEnterEmailAddressPage extends BasePageObject{
 	
@@ -24,6 +26,12 @@ public class ForgotUserIdEnterEmailAddressPage extends BasePageObject{
 		PageFactory.initElements(driver, this);
 		
 		}
+	ForgotUserIdAnswerQuestionPage enterEmail(String sEmail){
+		IHGUtil.PrintMethodName();
+		EmailAddress.sendKeys(sEmail);
+		btn_Continue.click();
+		return PageFactory.initElements(driver, ForgotUserIdAnswerQuestionPage.class);
+		
+	}
 	
-
 }

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.community.page.CommunityHomePage;
 
 public class ResetPasswordSignInNewPassword extends BasePageObject{
 	
@@ -27,5 +29,14 @@ public class ResetPasswordSignInNewPassword extends BasePageObject{
 		
 		}
 	
+	public CommunityHomePage resetPassword(String sUser,String sPassword){
+		IHGUtil.PrintMethodName();
+		inputUsername.sendKeys(sUser);
+		inputPassword.sendKeys(sPassword);
+		btn_Sign_In.click();
+		return PageFactory.initElements(driver, CommunityHomePage.class);
+		
+		
+	}
 
 }

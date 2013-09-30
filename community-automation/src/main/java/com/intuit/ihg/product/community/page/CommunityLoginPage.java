@@ -9,6 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.community.page.CreateAnAccount.CreateAnAccountHandleIframe;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordEnterUserIDPage;
+import com.intuit.ihg.product.community.page.ForgotUserId.ForgotUserIdEnterEmailAddressPage;
 
 public class CommunityLoginPage extends BasePageObject {
 
@@ -23,10 +25,17 @@ public class CommunityLoginPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "signin_btn")
 	public WebElement btn_Sign_In;
+	
+	@FindBy(how = How.ID, using = "signin_forgot_user_id")
+	private WebElement link_ForgotUserID;
+
+	@FindBy(how = How.ID, using = "signin_forgot_user_password")
+	private WebElement link_ForgotPassword;
+
 
 	// Cant single quote is skipped due the Xpath single quote escape issue
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'t access your account?')]")
-	public WebElement link_Cant_Acces_Your_Account;
+	public WebElement link_Cant_Acces_Your_Account;	
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Sign up now')]")
 	public WebElement btn_Sign_Up_Now;
@@ -82,4 +91,21 @@ public class CommunityLoginPage extends BasePageObject {
 				CreateAnAccountHandleIframe.class);
 
 	}
+	
+	public ResetPasswordEnterUserIDPage clickForgotPassword(){
+		IHGUtil.PrintMethodName();
+		//driver.findElement(By.id("link_ForgotPassword")).click();
+		link_ForgotPassword.click();
+		return PageFactory.initElements(driver, ResetPasswordEnterUserIDPage.class);
+		
+	}
+	
+	public ForgotUserIdEnterEmailAddressPage clickForgotUserID(){
+		IHGUtil.PrintMethodName();
+		link_ForgotUserID.click();
+		return PageFactory.initElements(driver,ForgotUserIdEnterEmailAddressPage.class);
+	}
+	
 }
+
+

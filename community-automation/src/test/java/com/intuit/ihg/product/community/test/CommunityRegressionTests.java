@@ -12,27 +12,21 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.community.page.CommunityHomePage;
 import com.intuit.ihg.product.community.page.CommunityLoginPage;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordEnterNewPasswordPage;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordEnterUserIDPage;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordSignInNewPassword;
+import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordSummaryPage;
 import com.intuit.ihg.product.community.page.MyAccount.MyAccountMenuPage;
 import com.intuit.ihg.product.community.page.MyAccount.MyAccountProfilePage;
 import com.intuit.ihg.product.community.page.MyAccount.MyAccountSecurityQuestionPage;
-import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalChoosePharmacy;
-import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalChoosePrescription;
-import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalSearchDoctor;
-import com.intuit.ihg.product.community.page.solutions.Messages.MessageDetailPage;
-import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
 import com.intuit.ihg.product.community.utils.Community;
 import com.intuit.ihg.product.community.utils.CommunityConstants;
 import com.intuit.ihg.product.community.utils.CommunityTestData;
 import com.intuit.ihg.product.community.utils.CommunityUtils;
-import com.intuit.ihg.product.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalConfirmCommunication;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPageConfirmation;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
 
 public class CommunityRegressionTests extends BaseTestNGWebDriver {
 
@@ -196,4 +190,83 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("Test case passed  End of Test");
 	}
 
+/**
+ * @Author:yvaddavalli
+ * @Date:9/6/2013
+ * @StepsToReproduce: Launch Community. Click on Forgot password link and enter user ID. Create new random password and enter.
+ * Complete flow and check Gmail.Get the link from Gmail and enter User Id and password and login to Community using new password.
+ *  
+ */
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCommunityForgotPassword() throws Exception {
+
+		log("Test Case: testCommunityForgotPassword");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+
+		Community community = new Community();
+		CommunityTestData testcasesData = new CommunityTestData(community);
+		
+		log("step 2: Clean the Gmail Inbox");
+		GmailBot gbot = new GmailBot();
+		String sSubject = String.format(CommunityConstants.EMAIL_ForgotPassword_SUBJECT.trim());
+		gbot.deleteMessagesFromInbox(testcasesData.getGmailUName(), testcasesData.getGmailPassword(), sSubject);
+		
+		log("step 3: Launching Community. URL: " + testcasesData.getUrl());		
+		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
+				testcasesData.getUrl());
+		Assert.assertEquals(
+				"### It seems Community may be down at this moment .... Community Title what we ",
+				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
+						.trim());
+		
+		log("step 4: Click Forgot Password link on Login Page ");
+		ResetPasswordEnterUserIDPage step1 =loginPage.clickForgotPassword();
+		
+		log("step 5: Enter User ID :" +testcasesData.getForgotUserName());
+		ResetPasswordEnterNewPasswordPage step2=step1.enterUserID(testcasesData.getForgotUserName());
+		
+		log("step 6: Enter answer for security question and Create new random password and enter");
+		String answer="a";
+		String randompassword = (CommunityConstants.ForgotPassword + CommunityUtils
+				.createRandomNumber());
+		
+		log("step 7: Entered New Random Passoword :"+randompassword);
+		ResetPasswordSummaryPage step3 = step2.resetPassword(answer, randompassword);
+				
+		log ("step 8: Click on Submit and complete flow");
+		 step3.confirmPasswordReset();		
+		
+		log ("step 9: Checking Gmail");
+		
+		log("step 10: subject of mail is " + sSubject);		
+		String sURL = gbot.findInboxEmailLink(testcasesData.getGmailUName(), testcasesData.getGmailPassword(), sSubject,
+				
+		CommunityConstants.TextInForgotPasswordEmailLink, 20, false, false);
+		
+		if (sURL.isEmpty()) {
+			
+			log("###Couldn't get URL from email");
+			Assert.fail("NO email found in the Gmail Inbox");
+			
+		} else {
+			log("step 11: Got the email and clicking on the link in the email: " + sURL);
+			driver.navigate().to(sURL);
+		}
+				
+		ResetPasswordSignInNewPassword step4= new ResetPasswordSignInNewPassword(driver) ;
+		
+		log ("step 12: Entering the UserID and New Random Password and logging in"); 
+		CommunityHomePage homepage =step4.resetPassword(testcasesData.getForgotUserName(),randompassword);
+		
+		log ("step 13: Checking Messages Icon is there on the Home");		
+		homepage.isViewallmessagesLinkPresent(driver);
+		
+		log("End of Test. Testcase Passed");
+	}
+		
+	
+	
 }

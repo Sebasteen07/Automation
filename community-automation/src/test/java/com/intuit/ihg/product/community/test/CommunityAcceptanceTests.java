@@ -8,7 +8,9 @@ import java.util.Random;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -20,6 +22,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.entities.Patient;
 import com.intuit.ihg.common.entities.TestObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.community.page.CommunityHomePage;
@@ -109,13 +112,14 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getUrl());
 
 		Assert.assertEquals(
-				"### It seems Community may be down at this moment .... Community Title what we ",
+				"### It seems Community may be down at this moment .... Community Home Page Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 
+		
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
@@ -246,27 +250,26 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		// Verifying Gmail for new message from Doctor
-		/*GmailMessage gmailMessage = null;
+		
+		log (" Checking Gmail for new message from Doctor");
+		String sSubject = "New message from";
+		String link = "https://";
+		GmailBot gbot = new GmailBot();
+		String sURL = gbot.findInboxEmailLink(testcasesData.getGmailUName(),
+				testcasesData.getGmailPassword(), testcasesData.getGmailMessage(),
 
-		log("step 17:Access Gmail and check for received email");
+				link, 20, false, false);
 
-		log("Gmail User Name:" + testcasesData.getGmailUName());
-		log("Gmail User password:" + testcasesData.getGmailPassword());
-		log("Email Subject is:" + testcasesData.getGmailMessage());
+		if (sURL.isEmpty()) {
 
-		// Setting up date for Gmail search
+			log("###Couldn't get URL from email");
+			Assert.fail("NO email found in the Gmail Inbox");
 
-		Date startEmailSearchDate1 = new Date();
-		GmailCommunity gmail1 = new GmailCommunity(
-				testcasesData.getGmailUName(), testcasesData.getGmailPassword());
-		;
-		boolean foundEmail1 = CheckMailCommunity.validateForgotPasswordTrash(
-				gmail1, startEmailSearchDate1, testcasesData.getGmailUName(),
-
-				testcasesData.getGmailMessage(), "");
-		verifyTrue(foundEmail1, testcasesData.getGmailMessage());*/
-
-		// Community Message Validation
+		} else {
+			log("step 17: Got the email and clicking on the link in the email: "
+					+ sURL);
+			driver.navigate().to(sURL);
+		}
 
 		log("Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
 
@@ -508,15 +511,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 	/**
 	 * @Author: yvaddavalli
 	 * @Date: 8/16/2013
-	 * @StepsToReproduce: Login to Community. Click on Make a Payment link on Home
-	 *                    Page and start Bill Pay flow. Select a Practice,
-	 *                    Fill out form and complete Bill Pay. Check Success Notification Message in
-	 *                    Home Page. Logout of Community. Login to Practice
-	 *                    Portal and Click on Online Bill Payment Set Details in
+	 * @StepsToReproduce: Login to Community. Click on Make a Payment link on
+	 *                    Home Page and start Bill Pay flow. Select a Practice,
+	 *                    Fill out form and complete Bill Pay. Check Success
+	 *                    Notification Message in Home Page. Logout of
+	 *                    Community. Login to Practice Portal and Click on
+	 *                    Online Bill Payment Set Details in
 	 *                    PaymentCommunicationDetails and Send Message to
-	 *                    Patient.Login to Community and Find message
-	 *                    in Inbox Validate the message loads and is the right
-	 *                    message. Log out of Community
+	 *                    Patient.Login to Community and Find message in Inbox
+	 *                    Validate the message loads and is the right message.
+	 *                    Log out of Community
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
@@ -617,8 +621,26 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 17: Logout of Practice Portal");
 		practiceHome.logOut();
-		
-		
+
+		// Checking Gmail for Bill Pay receipt
+
+		GmailBot gbot = new GmailBot();
+		String sSubject = "Your receipt from";
+		String link = "http://";
+		String sURL = gbot.findInboxEmailLink(testcasesData.getGmailUName(),
+				testcasesData.getGmailPassword(), testcasesData.getGmailBillPayReceipt(),
+
+				link, 20, false, false);
+
+		if (sURL.isEmpty()) {
+
+			Assert.fail("NO email found in the Gmail Inbox");
+
+		} else {
+			log("step 11: Got the email for bill pay receipt");
+			
+		}
+
 		// Community Message Validation
 
 		log("Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
@@ -664,18 +686,20 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test case passed  End of Test");
 
 	}
+
 	/**
 	 * @Author: yvaddavalli
 	 * @Date: 8/16/2013
-	 * @StepsToReproduce: Login to Community. Click on Make a Payment link on Home
-	 *                    Page and start Bill Pay flow. Select a Practice,
-	 *                    Fill out form and complete Bill Pay. Check Success Notification Message in
-	 *                    Home Page. Logout of Community. Login to Practice
-	 *                    Portal and Click on Online Bill Payment Set Details in
+	 * @StepsToReproduce: Login to Community. Click on Make a Payment link on
+	 *                    Home Page and start Bill Pay flow. Select a Practice,
+	 *                    Fill out form and complete Bill Pay. Check Success
+	 *                    Notification Message in Home Page. Logout of
+	 *                    Community. Login to Practice Portal and Click on
+	 *                    Online Bill Payment Set Details in
 	 *                    PaymentCommunicationDetails and Send Message to
-	 *                    Patient.Login to Community and Find message
-	 *                    in Inbox Validate the message loads and is the right
-	 *                    message. Log out of Community
+	 *                    Patient.Login to Community and Find message in Inbox
+	 *                    Validate the message loads and is the right message.
+	 *                    Log out of Community
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
@@ -709,37 +733,41 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
-		
+
 		log("step 4: Click on Rx Renewal link on Home Page");
 		RxRenewalChoosePrescription rxRenewalStep1 = homePage.clickRxRenewal();
-		
+
 		log("step 5: Click on Enter New prescription");
 		rxRenewalStep1.SelectNewPrescription();
-		
+
 		// Creating random number which is used for identification of the
 		// RxRenewal
 		Random randomGenerator = new Random();
 		int randomTestID = 100000 + randomGenerator.nextInt(900000);
-		String randomRxNumber = String.valueOf(100000 + randomGenerator.nextInt(900000));
-		
+		String randomRxNumber = String.valueOf(100000 + randomGenerator
+				.nextInt(900000));
+
 		log("step 6: Fill out prescription Details");
-		rxRenewalStep1.fillPrescription(testcasesData.getMedicine(),CommunityConstants.Dosage,randomRxNumber);
-		
+		rxRenewalStep1.fillPrescription(testcasesData.getMedicine(),
+				CommunityConstants.Dosage, randomRxNumber);
+
 		log("step 7: select Doctor");
-		RxRenewalSearchDoctor renewalSearchDoctor = new RxRenewalSearchDoctor(driver);
+		RxRenewalSearchDoctor renewalSearchDoctor = new RxRenewalSearchDoctor(
+				driver);
 		renewalSearchDoctor.selectDoctor(testcasesData.getRxDoctor());
-		
+
 		log("step 8: search for Pharmacy and complete Rx request");
-		RxRenewalChoosePharmacy rxRenewalChoosePharmacy = new RxRenewalChoosePharmacy(driver);
+		RxRenewalChoosePharmacy rxRenewalChoosePharmacy = new RxRenewalChoosePharmacy(
+				driver);
 		rxRenewalChoosePharmacy.selectPharmacy(testcasesData.getPharmacy());
-		
-		log ("step 9:check for successful notification message on Home Page");
+
+		log("step 9:check for successful notification message on Home Page");
 		assertTrue(
 				homePage.checkSuccesNotification(driver),
 				"There was an issue with Community Rx Renewal  Expected to see 'Successfull Notification Message on Home Page'  but it was not found.");
-				
-		log ("step 10:Succefull Notifcation displayed on Home page");
-		
+
+		log("step 10:Succefull Notifcation displayed on Home page");
+
 		log("step 11: Logout of Community");
 		homePage.logOutCommunity();
 		// Practice Portal Appointment confirmation
@@ -754,37 +782,42 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeHomePage practiceHome = practiceLogin.login(
 				testcasesData.getPracticePortalRxDoctorUserName(),
 				testcasesData.getPracticePortalRxDoctorPassword());
-		
+
 		// Selecting RxRenewal
 		log("step 13: Clicking on RxRenewal");
-		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
-		
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome
+				.clickonRxRenewal();
+
 		// Searching for new Renewals which were created today
 		log("step 14: Searching for Renewals");
 		rxRenewalSearchPage.searchForRxRenewalToday();
 
 		// Filling up the RxRenewal
-		RxRenewalDetailPage rxRenewalDetailPage = rxRenewalSearchPage.getRxRenewalDetails();
+		RxRenewalDetailPage rxRenewalDetailPage = rxRenewalSearchPage
+				.getRxRenewalDetails();
 		rxRenewalDetailPage.setFrame();
-		
+
 		log("step 15: Specifiyng RxRenwal");
 		rxRenewalDetailPage.prescribe("1", "12");
-		rxRenewalDetailPage.setMessageFrom(testcasesData.getPracticePortalRxDoctorUserName());
+		rxRenewalDetailPage.setMessageFrom(testcasesData
+				.getPracticePortalRxDoctorUserName());
 		rxRenewalDetailPage.setSubject("Text RX message " + randomTestID);
 		rxRenewalDetailPage.setMessageBody("Text RX message " + randomTestID);
 
 		// Clicking on continue
 		log("step 16: Clicking on continue");
-		RxRenewalDetailPageConfirmation rxRenewalDetailPageConfirmation = rxRenewalDetailPage.clickCommunicateAndProcessRxRenewal();
-				rxRenewalDetailPageConfirmation.clickCallInTheRx();
+		RxRenewalDetailPageConfirmation rxRenewalDetailPageConfirmation = rxRenewalDetailPage
+				.clickCommunicateAndProcessRxRenewal();
+		rxRenewalDetailPageConfirmation.clickCallInTheRx();
 
 		// Finishing RxRenewal
 		log("step 17: Finishing RxRenewal");
-		RxRenewalConfirmCommunication renewalConfirmCommunication = rxRenewalDetailPageConfirmation.clickContinue();
-		
+		RxRenewalConfirmCommunication renewalConfirmCommunication = rxRenewalDetailPageConfirmation
+				.clickContinue();
+
 		log("step 18: Signing of the Patient Portal");
 		practiceHome.logOut();
-		
+
 		// Community Message Validation
 
 		log("step 19:Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
@@ -810,17 +843,18 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 22: Click on Messages");
 		homePage.clickMessages();
 		MessagePage messagePage = new MessagePage(driver);
-		
+
 		// Searching for the email with correct subject
 		log("Searching for email with subject: Text RX message " + randomTestID);
 		messagePage.clickMessage("Text RX message " + randomTestID);
-		
 
 		// Validating whether the message is the correct one
 		MessageDetailPage messageDetails = new MessageDetailPage(driver);
-		log("Veryfing match of the Message subject: Text RX message " + randomTestID);
-		assertTrue(messageDetails.isSubjectLocated("Text RX message " + randomTestID));
-		
+		log("Veryfing match of the Message subject: Text RX message "
+				+ randomTestID);
+		assertTrue(messageDetails.isSubjectLocated("Text RX message "
+				+ randomTestID));
+
 		log("step 23: Message found");
 
 		log("step  24: Logout of Community");
@@ -828,42 +862,47 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Test case passed  End of Test");
 
-}
+	}
+
 	/**
 	 * @Author: yvaddavalli
 	 * @Date: 8/16/2013
-	 * @StepsToReproduce: Click Sign up now button on Login Page and Fill out all the details and complete Account Creation.Click on Messages and check if there is Welcome Message in the Inbox.
-	 *                    message. Log out of Community
+	 * @StepsToReproduce: Click Sign up now button on Login Page and Fill out
+	 *                    all the details and complete Account Creation.Click on
+	 *                    Messages and check if there is Welcome Message in the
+	 *                    Inbox. message. Log out of Community
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityCreateAccount() throws Exception {
 
-	log("Test Case: testCommunityCreateAccount");
-	log("Execution Environment: " + IHGUtil.getEnvironmentType());
-	log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Test Case: testCommunityCreateAccount");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
 
-			
-	Community community = new Community();		
-	CommunityTestData communityTestData = new CommunityTestData(community);
-	
-	CreatePatientBeta createPatient = new CreatePatientBeta();
-	createPatient.CreatePatientTest(driver, communityTestData);
-	
-}
+		Community community = new Community();
+		CommunityTestData communityTestData = new CommunityTestData(community);
+
+		CreatePatientBeta createPatient = new CreatePatientBeta();
+		createPatient.CreatePatientTest(driver, communityTestData);
+
+	}
+
 	/**
 	 * @Author: yvaddavalli
 	 * @Date: 8/29/2013
-	 * @StepsToReproduce: Login to Community as a user you got CCD Imported already.
-	 * Click on Messages. Click on the message that is for CCD Import and click on Review your helath info and add open the CCD viewer and verify if the CCD Displays info correctly.
-	 * Logout of Commmunity
+	 * @StepsToReproduce: Login to Community as a user you got CCD Imported
+	 *                    already. Click on Messages. Click on the message that
+	 *                    is for CCD Import and click on Review your helath info
+	 *                    and add open the CCD viewer and verify if the CCD
+	 *                    Displays info correctly. Logout of Commmunity
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityCCDViewer() throws Exception {
-		
+
 		log("Test Case: testCommunityCCDViewer");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -887,42 +926,42 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
-				testcasesData.getCCDUserName(), testcasesData.getCCDUserPassword());
+				testcasesData.getCCDUserName(),
+				testcasesData.getCCDUserPassword());
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
-		
+
 		log("step 3: Click on Messages");
 		homePage.clickMessages();
 		MessagePage messagePage = new MessagePage(driver);
-		
-		
+
 		log("step 4: Searching for email with subject: New Health Information Import ");
 		messagePage.clickMessage("New Health Information Import");
-		
-		
-		log ("step 5: Clicking on Review Health Information");
+
+		log("step 5: Clicking on Review Health Information");
 		MessageDetailPage messageDetail = new MessageDetailPage(driver);
 		messageDetail.clickReviewHealthInformation();
-		
+
 		log("step 6: Switching to CCD Viewer  Waiting for Inner frame to load");
-		MessageIframeHandlePage messageIframeHandlePage = new MessageIframeHandlePage(driver);
+		MessageIframeHandlePage messageIframeHandlePage = new MessageIframeHandlePage(
+				driver);
 		messageIframeHandlePage.handleIframe();
-		
-		MessageHealthInformationPage healthInformationPage = new MessageHealthInformationPage(driver);
-		
+
+		MessageHealthInformationPage healthInformationPage = new MessageHealthInformationPage(
+				driver);
+
 		log("step 7: Searching for elements on the CCDViewer site");
-		assertTrue(healthInformationPage.areElementsLocated(), "CCD message was not displayed properly");
-		
+		assertTrue(healthInformationPage.areElementsLocated(),
+				"CCD message was not displayed properly");
+
 		log("step 8: CCDViewer displayed elements correctly");
-		
+
 		driver.switchTo().defaultContent();
-		
+
 		log("step 9: : Logout of Community");
 		loginPage = homePage.logOutCommunity();
 
 		log("Test case passed  End of Test");
 	}
 }
-
-

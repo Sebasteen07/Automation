@@ -199,5 +199,11 @@ public class CommunityTestData {
 	public String getCCDUserPassword() {
 		return communityobj.ccdUserPassword;
 	}
+	public String getForgotUserName() {
+		return communityobj.forgotUserName;
+	}
 
+	public String getForgotPassword() {
+		return communityobj.forgotPassword;
+	}
 }
