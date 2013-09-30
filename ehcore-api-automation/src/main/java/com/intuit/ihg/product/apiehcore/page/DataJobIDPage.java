@@ -4,8 +4,9 @@ package com.intuit.ihg.product.apiehcore.page;
 import java.net.HttpURLConnection;
 import org.apache.log4j.Logger;
 import com.intuit.ihg.eh.core.dto.DataJob;
-import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIConstants;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
+import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
+import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 
 
 
@@ -23,14 +24,14 @@ public class DataJobIDPage {
 
 	public static DataJob openDataJob(String transStatus) throws Exception {
 		
-		String url = EhcoreAPIUtil.getUrl(EhcoreAPIConstants.URL_DATAJOB);
+		String url = EhcoreAPIUtil.getUrl(DataJobConstant.URL_DATAJOB);
 
-		String fromXML = EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml";
-		String toXML = EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
+		String fromXML = DataJobConstant.DATA_JOB_INPUT + "OpenDataJob_template.xml";
+		String toXML = DataJobConstant.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml";
 		//update xml 
 		EhcoreAPIUtil.updateOpenDataJobXml(fromXML, transStatus,toXML);
 
-		DataJob dj = EhcoreAPIUtil.processRequest(url, EhcoreAPIConstants.POST_REQUEST,toXML,EhcoreAPIConstants.EXPECTEDRESPONSEMESSAGE_DATAJOB);
+		DataJob dj = EhcoreAPIUtil.processRequest(url, EhcoreAPIConstants.POST_REQUEST,toXML,DataJobConstant.EXPECTEDRESPONSEMESSAGE_DATAJOB);
 		
 		return dj;
 	}
