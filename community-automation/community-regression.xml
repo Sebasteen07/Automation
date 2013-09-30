@@ -11,7 +11,8 @@
 			<class name="com.intuit.ihg.product.community.test.CommunityRegressionTests" />
 			<methods>
 				<include name="testCommunityMyAccountProfile" />
-				<include name="testCommunityMyAccountSecurityQuestion()" />
+				<include name="testCommunityMyAccountSecurityQuestion" />
+				<include name="testCommunityForgotPassword" />
 			</methods>
 		</classes>
 
