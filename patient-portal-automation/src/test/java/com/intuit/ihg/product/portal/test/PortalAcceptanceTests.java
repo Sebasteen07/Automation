@@ -805,9 +805,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 4: Enter patient email");
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(patientData.getEmail());
-		assertTrue(step2.isPageLoaded(), "There was an error loading the second page in the Forgot UserId workflow");
-		PerformanceReporter.getPageLoadDuration(driver, ForgotUserIdSecretAnswerPage.PAGE_NAME);
 
+		if(IHGUtil.getEnvironmentType().toString().equals("DEMO")) {
+			
+			log("Enter Patient's DOB");
+			step2.selectDOB(patientData.getDob_Day(), patientData.getDob_Month(), patientData.getDob_Year());
+		}
 		log("step 5: Answer patient security question");
 		ForgotUserIdConfirmationPage step3 = step2.answerSecurityQuestion(patientData.getAnswer());
 		assertTrue(step3.confirmationPageLoaded(), "There was an error loading the confirmation page in the Forgot UserId workflow");
@@ -834,6 +837,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			log("The User ID email wasn't received even after Five minutes of wait");
 		}
 	}
+
 
 	/**
 	 * @Author:- shanthala
