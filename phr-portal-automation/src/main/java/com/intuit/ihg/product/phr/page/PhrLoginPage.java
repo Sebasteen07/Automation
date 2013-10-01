@@ -124,7 +124,7 @@ public class PhrLoginPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 60, txtpassword);
+			result = IHGUtil.waitForElement(driver, 160, txtpassword);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
