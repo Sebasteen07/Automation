@@ -258,11 +258,11 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 30, txtLastname);
 
-		txtLastname.sendKeys(sPatientLastName);
+		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
 		txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
-		txtEmail.sendKeys(sEmail);
+		//txtEmail.sendKeys(sEmail);----> commented by Bala
 
 		btnSubmit.click();
 		
