@@ -26,5 +26,6 @@ public class CommunityConstants {
 	public static final String EMAIL_ForgotPassword_SUBJECT ="Your password has been reset" ;
 	public static final String TextInForgotPasswordEmailLink="forgotpasswordsignin?code";
 	public static final String ForgotPassword ="intuit";
+	public static final String EMAIL_ForgotUserName_SUBJECT ="Your User ID" ;
 
 }

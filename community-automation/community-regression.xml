@@ -13,6 +13,7 @@
 				<include name="testCommunityMyAccountProfile" />
 				<include name="testCommunityMyAccountSecurityQuestion" />
 				<include name="testCommunityForgotPassword" />
+				<include name="testCommunityForgotUserID" />
 			</methods>
 		</classes>
 

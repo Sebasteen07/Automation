@@ -18,18 +18,20 @@ public class ForgotUserIdEnterEmailAddressPage extends BasePageObject{
 	@FindBy(how = How.ID, using = "email")
 	public WebElement EmailAddress;
 	
-	@FindBy(how = How.XPATH, using = ".//*[@id='forgot_userid_form']/div/button")
+	//@FindBy(how = How.XPATH, using = ".//*[@id='forgot_userid_form']/div/button")
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	public WebElement btn_Continue;
+	
 
 	public ForgotUserIdEnterEmailAddressPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 		
 		}
-	ForgotUserIdAnswerQuestionPage enterEmail(String sEmail){
+	public ForgotUserIdAnswerQuestionPage enterEmail(String sEmail){
 		IHGUtil.PrintMethodName();
 		EmailAddress.sendKeys(sEmail);
-		btn_Continue.click();
+		btn_Continue.click();		
 		return PageFactory.initElements(driver, ForgotUserIdAnswerQuestionPage.class);
 		
 	}
