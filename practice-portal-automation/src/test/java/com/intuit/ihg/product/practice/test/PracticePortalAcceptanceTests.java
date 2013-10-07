@@ -53,7 +53,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
-	public void testPracticePortal() throws Exception {
+	public void testLoginLogout() throws Exception {
 
 		log("Test Case: TestLoginLogout");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -337,9 +337,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4:Verify the Search Result");
 		IHGUtil.waitForElement(driver,10,pPatientSearchPage.searchResult);
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
-		
-		
+				
 	}
+	
 	/**
 	  * @Author: Gajendran
 	 * @Date: 07/26/2013
@@ -352,10 +352,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	
-	@Test (enabled = true, groups = {"AcceptanceTests"}/*,retryAnalyzer=RetryAnalyzer.class*/)
+	@Test (enabled = false, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
 	public void testClickOnTabs() throws Exception {
 
-		log("Test Case: testAppointmentRequest");
+		log("Test Case: testPatientActivation");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
