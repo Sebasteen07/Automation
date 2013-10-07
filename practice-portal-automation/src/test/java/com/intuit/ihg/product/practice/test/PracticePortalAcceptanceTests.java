@@ -355,7 +355,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test (enabled = false, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
 	public void testClickOnTabs() throws Exception {
 
-		log("Test Case: testPatientActivation");
+		log("Test Case: testClickOnTabs:- SmokeTest");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
