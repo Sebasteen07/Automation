@@ -352,7 +352,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	
-	@Test (enabled = false, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
+	@Test (enabled = true, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
 	public void testClickOnTabs() throws Exception {
 
 		log("Test Case: testClickOnTabs:- SmokeTest");
