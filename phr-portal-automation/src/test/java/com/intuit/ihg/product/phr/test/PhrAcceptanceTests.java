@@ -6,16 +6,13 @@ import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
-import com.intuit.ihg.product.phr.page.PhrAlleryPage;
-import com.intuit.ihg.product.phr.page.phrHealthInformationPage.LaboratoryAndTestResultPage;
-import com.intuit.ihg.product.phr.page.phrHealthInformationPage.PhrHealthInformationPage;
-import com.intuit.ihg.product.phr.page.PhrConditionsAndDiagnosesPage;
 import com.intuit.ihg.product.phr.page.PhrDocumentsPage;
 import com.intuit.ihg.product.phr.page.PhrEmergencyAccessPage;
 import com.intuit.ihg.product.phr.page.PhrEmergencyTermsOfUse;
@@ -23,13 +20,9 @@ import com.intuit.ihg.product.phr.page.PhrHomePage;
 import com.intuit.ihg.product.phr.page.PhrLoginPage;
 import com.intuit.ihg.product.phr.page.PhrManagePermissionsPage;
 import com.intuit.ihg.product.phr.page.PhrSharingPage;
-import com.intuit.ihg.product.phr.page.phrEmergencyContactPage.PhrEmergencyContactPage;
-import com.intuit.ihg.product.phr.page.phrHealthInformationPage.PhrHealthInformationPage;
-import com.intuit.ihg.product.phr.page.phrRegistrationInformationPage.PhrRegistrationInformationPage;
 import com.intuit.ihg.product.phr.page.portaltophr.IntuitAcceptPrivacyPolicy;
 import com.intuit.ihg.product.phr.page.profile.PhrProfilePage;
 import com.intuit.ihg.product.phr.utils.Phr;
-import com.intuit.ihg.product.phr.utils.PhrConstants;
 import com.intuit.ihg.product.phr.utils.PhrTestcasesData;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
@@ -340,9 +333,9 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		pMyAccountPage.modifyCityAndZip(phrTestData.getsecondaryCity(), phrTestData.getsecondaryUserZipCode());
 		log("Step: update communication method");
 		pMyAccountPage.chooseCommunicationMethod("US mail");
-		assertTrue(verifyTextPresent(driver,"Your Profile has been updated"));
-
-
+		assertTrue(verifyTextPresent(driver,"Profile"));
+		
+		
 		log("step 6: logout from patient portal");
 		pMyAccountPage.logout(driver);
 		
