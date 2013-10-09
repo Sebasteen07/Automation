@@ -24,12 +24,6 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	@FindBy(xpath = ".//select[@name='processor']")
 	private WebElement processorDropDown;
 
-	@FindBy(xpath = ".//input[@name='username']") 
-	private WebElement userNameField;
-
-	@FindBy(xpath = ".//input[@name='password']")
-	private WebElement passwordField;
-
 	@FindBy(xpath = ".//select[@name='Partner']")
 	private WebElement partnerDropDown;
 
@@ -49,16 +43,16 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	private WebElement statusField;
 
 	@FindBy(xpath = ".//input[@name='payPalFields:username']")
-	private WebElement userNameFieldDEV3;
+	private WebElement payPalUsername;
 
 	@FindBy(xpath = ".//input[@name='payPalFields:password']")
-	private WebElement passwordFieldDEV3;
+	private WebElement payPalPassword;
 
 	@FindBy(xpath = ".//select[@name='payPalFields:Partner']")
-	private WebElement partnerDropDownDEV3;
+	private WebElement payPalPartner;
 
 	@FindBy( xpath = ".//input[@name = 'qbmsFields:tokenWrapper:merchantToken']")
-	private WebElement tokenFieldDEV3AndP10AndDemo;
+	private WebElement tokenQbmsFields;
 
 	public MerchantAccountSetUpPage(WebDriver driver) {
 		super(driver);
@@ -91,18 +85,13 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	}
 
 	/**
-	 * Selet Partner Dropdown value
+	 * Select Partner Dropdown value
 	 * @param value
 	 */
 	public void selectPartnerValue(String value){
 		IHGUtil.PrintMethodName();
-		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO"))) {
-			Select sel = new Select(partnerDropDownDEV3);
-			sel.selectByVisibleText(value);
-		}else{
-			Select sel = new Select(this.partnerDropDown);
-			sel.selectByVisibleText(value);
-		}
+		Select sel = new Select(payPalPartner);
+		sel.selectByVisibleText(value);		
 	}
 
 	/**
@@ -112,13 +101,9 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void enterUsername(String userName) throws Exception{
 		IHGUtil.PrintMethodName();
-		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO"))) {
-			userNameFieldDEV3.click();
-			userNameFieldDEV3.sendKeys(userName);
-		}else{
-			userNameField.click();
-			userNameField.sendKeys(userName);
-		}
+		payPalUsername.click();
+		payPalUsername.sendKeys(userName);
+		
 	}
 
 	/**
@@ -128,13 +113,8 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void enterPassword(String password) throws Exception{
 		IHGUtil.PrintMethodName();
-		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO"))) {
-			waitForElement(passwordFieldDEV3, 30);
-			passwordFieldDEV3.sendKeys(password);	
-		}else{
-			waitForElement(passwordField, 30);
-			passwordField.sendKeys(password);	
-		}
+		waitForElement(payPalPassword, 30);
+		payPalPassword.sendKeys(password);		
 	}
 
 	/**
@@ -167,19 +147,10 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void enterMerchantToken(String token) throws Exception {
-
-
-		if((IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("P10INT"))||(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO"))) {
-			waitForElement(tokenFieldDEV3AndP10AndDemo, 30);
-			tokenFieldDEV3AndP10AndDemo.clear();
-			this.tokenFieldDEV3AndP10AndDemo.sendKeys(token);
-		}else {
-			waitForElement(tokenField, 30);
-			tokenField.clear();
-			tokenField.sendKeys(token);
+		waitForElement(tokenQbmsFields, 30);
+		tokenQbmsFields.clear();
+		this.tokenQbmsFields.sendKeys(token);
 		}
-
-	}
 
 	/**
 	 * 

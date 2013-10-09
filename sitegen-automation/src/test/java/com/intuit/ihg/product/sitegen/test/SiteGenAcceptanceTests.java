@@ -761,7 +761,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testMerchantAccountSetUpViaQBMS() throws Exception{
 
-		log("testMerchantAccountSetUpViaPaypal");
+		log("testMerchantAccountSetUpViaQBMS");
 		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
 		log("Browser on which Test is running :"+TestConfig.getBrowserType());
 
