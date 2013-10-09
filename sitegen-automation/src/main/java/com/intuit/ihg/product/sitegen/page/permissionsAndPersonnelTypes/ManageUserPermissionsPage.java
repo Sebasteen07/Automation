@@ -95,21 +95,31 @@ public class ManageUserPermissionsPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElementInDefaultFrame(driver,30,dropDownPersonneltypes);
-
+		
+		log("Wait for personnel types to get loaded");
+		Thread.sleep(2000);
 		Select personaltype = new Select(dropDownPersonneltypes);
 		personaltype.selectByVisibleText(personneltype1);
 
+		log("Wait for drop down solutions to get loaded ");
+		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 30, dropDownSolutions);
 		Select solution = new Select(dropDownSolutions);
 		solution.selectByVisibleText(solutions);
 
+		log("Wait for drop down locations to get loaded");
+		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver,30,dropDownLocations);
 		Select location = new Select(dropDownLocations);
 		location.selectByVisibleText(locations);
 
+		log("Wait for user to get loaded");
+		Thread.sleep(2000);
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(presenceOfElementLocated(By.name("user")));
 		
+		log("Wait for drop down users to get loaded");
+		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 30, dropDownUsers);
 		Select user = new Select(dropDownUsers);	
 		user.selectByVisibleText(users); // change
