@@ -18,8 +18,7 @@ public class CreateCustomForms extends BasePageObject{
 	
 	@FindBy( xpath = "//a[contains(@href,'../action/doManageQuestionnaire?method')]")
 	private WebElement lnkManageYourForms;
-	
-	
+		
 
 	public CreateCustomForms(WebDriver driver) {
 		super(driver);
@@ -71,10 +70,12 @@ public class CreateCustomForms extends BasePageObject{
 	 * 
 	 */	
 	public ManageYourFormsPage clicklnkManageCustomForm() throws InterruptedException {
-
-		log("Clicking on Custom Forms");
+		IHGUtil.PrintMethodName();
+		log("Clicking on Manage Custom Forms");
 		driver.switchTo().defaultContent();
+		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 50, lnkManageYourForms);
+		log("Waited for link -> Manage your forms");
 		try{
 			lnkManageYourForms.click();
 		} catch(Exception e) {
