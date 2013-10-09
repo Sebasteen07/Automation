@@ -78,10 +78,13 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void selectProcessorValue(String value) throws InterruptedException, AWTException{
 		IHGUtil.PrintMethodName();	
+		log("Waiting for page to load");
+		Thread.sleep(4000);
 		Select sel = new Select(processorDropDown);
 		sel.selectByVisibleText(value);
 		SitegenlUtil sUtil = new SitegenlUtil(driver);
 		sUtil.pressTabKey();
+		log("After selecting the processor value"+value);
 	}
 
 	/**
