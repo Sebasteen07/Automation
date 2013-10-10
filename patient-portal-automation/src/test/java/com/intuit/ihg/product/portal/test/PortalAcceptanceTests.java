@@ -832,7 +832,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 				count++;
 			}
 
-		} while (count < 5);
+		} while (count < 21);
 		if (!flag) {
 			log("The User ID email wasn't received even after Five minutes of wait");
 		}
