@@ -92,7 +92,7 @@ public class ResetYourPasswordPage extends BasePageObject{
 			{
 				count++;
 			}
-		}while(count<=10);	
+		}while(count<=20);	
 		if(strurl=="")
 		{
 		log("+++++++++++++++URL+++++++++NOT FOUND AFTER 10 MIN");
