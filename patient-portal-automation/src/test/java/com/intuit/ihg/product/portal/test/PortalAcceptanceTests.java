@@ -1314,7 +1314,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRxRenewalEnd2End() throws Exception {
 
-		log("Test Case: testAppointmentRequest");
+		log("Test Case: testRxRenewalEnd2End");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
@@ -1394,7 +1394,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 11: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
-
+		Thread.sleep(6000);
+		
 		log("step 12: Go to Inbox");
 		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
