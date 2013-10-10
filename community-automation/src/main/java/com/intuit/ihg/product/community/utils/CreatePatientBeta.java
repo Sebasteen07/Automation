@@ -42,7 +42,7 @@ public class CreatePatientBeta extends BaseTestNGWebDriver {
 		// Moving to Community Login Page
 		log("step 1: Launching Community Login Page: " + communityTestData.getUrl());
 		driver.get(communityTestData.getUrl());
-
+		Thread.sleep(5000);
 		log("step 2: Checking Page Title");
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
