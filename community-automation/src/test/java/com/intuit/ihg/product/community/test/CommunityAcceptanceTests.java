@@ -166,6 +166,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
