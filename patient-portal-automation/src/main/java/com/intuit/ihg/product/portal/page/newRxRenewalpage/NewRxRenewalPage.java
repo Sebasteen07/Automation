@@ -68,8 +68,9 @@ public class NewRxRenewalPage  extends BasePageObject {
 	/**
 	 * @Description:Choose the provider name from Drop Down
 	 * @param pProvider
+	 * @throws Exception 
 	 */
-	public void chooseProvider(String pProvider)
+	public void chooseProvider(String pProvider) throws Exception
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -80,8 +81,11 @@ public class NewRxRenewalPage  extends BasePageObject {
 			int count=1;
 			if(li.getText().contains(pProvider))
 			{
+				Thread.sleep(3000);
+				PortalUtil.setPortalFrame(driver);
 				Select selectProvider=new Select(chooseProviderDropDrown);
 				selectProvider.selectByIndex(count);
+				Thread.sleep(3000);
 				break;
 			}
 			count++;
