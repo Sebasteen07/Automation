@@ -1,5 +1,0 @@
-TestObject.TestCaseId,TestObject.TestMethod,TestObject.TestTitle,TestObject.TestEnv,PracticeUrl.Practice,Patient.UserName,Patient.Password,Patient.GmailUName,Patient.GmailPassword
-1,LoginTest,Login To Community on DEV3,DEV3,dev3-2prac-allsolutions,com.test.ihg+DEV3@gmail.com,Intuit123,com.test.ihg@gmail.com,Intuit123
-2,LoginTest,Login To Community on DEMO,DEMO,demo-2prac-allsolutions,com.test.ihg+DEMO@gmail.com,Intuit123,com.test.ihg@gmail.com,Intuit123
-3,LoginTest,Login To Community on PROD,PROD,ihg-community-2prac-test,com.test.ihg.prod+communityautomation@gmail.com,Intuit555,com.test.ihg.prod@gmail.com,Intuit123
-4,LoginTest,Login To Community on P10INT,P10INT,p10int-2prac-allsolutions,com.test.ihg+INT@gmail.com,Intuit123,com.test.ihg@gmail.com,Intuit123

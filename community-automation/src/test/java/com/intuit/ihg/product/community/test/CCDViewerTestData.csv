@@ -1,4 +1,0 @@
-TestObject.TestCaseId,TestObject.TestMethod,TestObject.TestTitle,TestObject.TestEnv,PracticeUrl.Practice,Patient.UserName,Patient.Password,Patient.GmailUName,Patient.GmailPassword
-1,CCDViewerTest,CCDViewer Test on DEV3,DEV3,dev3-2prac-allsolutions,rs201301291246,intuit123
-2,CCDViewerTest,CCDViewer Test on DEMO,DEMO,demo-2prac-allsolutions,rs201301231537,intuit123
-3,CCDViewerTest,CCDViewer Test on PROD,PROD,ihg-community-2prac-test,rs201302151129,intuit123
