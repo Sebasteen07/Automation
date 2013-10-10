@@ -245,7 +245,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			clickOnSendToShareWithAnotherDoctor();
 			Thread.sleep(20000);
 			String textBoxResponseMsg = getResponseAfterSending();
-			Assert.assertEquals(myDirectResponsesPortal[i], textBoxResponseMsg);
+			Assert.assertEquals(textBoxResponseMsg,myDirectResponsesPortal[i]);
 			enterDirectAddress().clear();
 		}
 	}
@@ -265,7 +265,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		driver.switchTo().frame(webframe);
        
 		if (util.checkCcdType() == false) {
-			clickOnCloseViewer();
+		  clickOnCloseViewer();
 		}
 
 		else if (util.checkCcdType() == true) {
