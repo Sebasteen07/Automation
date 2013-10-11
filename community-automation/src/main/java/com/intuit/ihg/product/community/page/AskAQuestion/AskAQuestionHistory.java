@@ -25,6 +25,7 @@ public class AskAQuestionHistory extends BasePageObject {
 	
 	public boolean checkAskAQuestionHistory(String sQuestion) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(3000);
 		result = driver.findElement(By.xpath("// * [contains(text(),'"+sQuestion+"')]"));
 		result.click();		
 		return true;
