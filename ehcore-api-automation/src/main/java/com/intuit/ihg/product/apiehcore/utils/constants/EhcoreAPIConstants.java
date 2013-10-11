@@ -169,7 +169,7 @@ public class EhcoreAPIConstants {
 	public static final String CCDImport = "ccd";
 	public static final String CCDExport = "internal/ccd";
 	public static final String REPROCESS = "internal/reprocess.request";
-
+	
 	// Kavithas UtilConsts Interface
 	// Actual CCD Message (From RAW,ENRICHED ,SNAPSHOT node)
 	public static final String ACTUAL_CCD = SAMPLE_DATA + "ccd_actual/";
@@ -433,6 +433,27 @@ public class EhcoreAPIConstants {
 			+ "export/allscripts_ehr/invalidQuestionnaireMessage/input/";
 	public static final String INVALID_ALLSCRIPTS_EXPORT_EXPECTED = QUESTIONNAIRE_TEST_DATA
 			+ "export/allscripts_ehr/invalidQuestionnaireMessage/expected/error/";
+
+	//
+	
+	
+	// Data job
+			public static final String URL_DATAJOB = "data.job";
+			public static final String EXPECTEDRESPONSEMESSAGE_DATAJOB = "OK";
+			public static final String DATA_JOB_INPUT = TEST_DATA + "/datajob/";
+			public static final String SAMPLE_DATA_JOB_INPUT = SAMPLE_DATA
+					+ "/datajob/";
+			public static final String DJ_MGR_PROC_TIME = "60";
+
+			// EHDC -Consolidated CCD
+			public static final String c_ccd = "ConsolidatedCCD";
+			public static final String noknown_c_ccd = "NoKnownCCCD";
+			public static final String invalidc_ccd = "invalidConsolidatedCCD";
+			public static final String invalidCCCDXMLValidation = "invalidCCCDXMLValidation";
+			public static final String invalidCCCDNotification = "invalidCCCDNotification";
+			public static final String nullCodeCCCDSocialHistory = "nullCodeCCCDSocialHistory";
+
+			// public static final String TEST_DATA = "src/main/resources/testdata/";
 
 	
 }

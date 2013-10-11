@@ -1250,7 +1250,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 
 
-	/**
+	/** 
 	 * Test-Transmit CCD input and check the message status(Completed) and 
 	 * datajob_status(Transmission_Start) in Tracking DB.
 	 * Expected result -HTTP response 200 & true.
@@ -1271,7 +1271,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 
-	/**
+	/** 
 	 * @Author:Shanthala
 	 * @Date:-13/Sep/2013
 	 * @User Story ID in Rally : 6774
@@ -1317,7 +1317,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testChangeDetectionForNewPatient() throws Exception {
 		log("Test Case: testChangeDetectionForNewPatient");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1575,7 +1575,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersistForNewPatient() throws Exception {
 		log("Test Case: testDeltaMsgPersistForNewPatient");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1971,7 +1971,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/**
-	 * @Author:Shanthala
+	 * @Author:Shanthala 
 	 * @Date:-16/Sep/2013
 	 * @User Story ID in Rally : US6782
 	 * @StepsToReproduce:	
@@ -2006,7 +2006,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/**
-	 * @Author: bbinisha
+	 * @Author: bbinisha 
 	 * @Date:-16/Sep/2013
 	 * @User Story ID in Rally : US6780
 	 * @StepsToReproduce:	
@@ -2121,7 +2121,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/**
-	 * @Author: bbinisha
+	 * @Author: bbinisha 
 	 * @Date:-17/Sep/2013
 	 * @User Story ID in Rally : US6785
 	 * @StepsToReproduce:	
@@ -2221,9 +2221,1154 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		log("Exiting checkRouteMsgToPractice test method ... ");
 
 	}
+	
+	/** @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send invalid export message ccd.
+		 * Expected Result : Processing_Status_Type::ERROR
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDExportJobStatusType_Error() throws Exception {
 
-}
+			log("Test Case: testCCDExportJobStatusType_Error");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send CCD  export message");
+			ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(UUID.randomUUID().toString(),"invalidExportMsg");
+
+			log("Verify the Message procesing status");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDExport_MSG_TYPE);
+
+			log("Verify the Data processing status");
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+
+		}
+
+		/** @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send Invalid CCD message
+		 * Expected Result :  HTTP response message: Bad Request;HTTP response code: 400
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDExportSendMessageWithBlankUPN() throws Exception {
+
+			log("Test Case: testCCDExportSendMessageWithBlankUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Exiting test method setup ... ");	
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Send Invalid CCD message and verify the processing status");		
+			EhcoreAPIUtil.sendInvalidCCDMessage("",UUID.randomUUID().toString(),"InvalidCCDExport");
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send Invalid CCD message with ***NULL UPN
+		 * Expected Result : HTTP response message: Bad Request;HTTP response code: 400
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendMessageWithNullUPN() throws Exception {
+
+			log("Test Case: testSendMessageWithNullUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send Invalid CCD message with ***NULL UPN and verify the processing status");
+			EhcoreAPIUtil.sendInvalidCCDMessage("null",UUID.randomUUID().toString(),"InvalidCCDExport");
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send Invalid CCD message with Blank Message ID
+		 * Expected Result : HTTP response message: Bad Request,HTTP response code: 400.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendMessageWithBlankMsgId() throws Exception {
+
+			log("Test Case: testSendMessageWithBlankMsgId");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send Invalid CCD message with Blank Message ID and verify the processing status");
+			EhcoreAPIUtil.sendInvalidCCDMessage(UUID.randomUUID().toString(),"","InvalidCCDExport");
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send Invalid CCD message with NULL Message ID
+		 * Expected Result : HTTP response message: Bad Request,HTTP response code: 400.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendMessageWithNullMsgId() throws Exception {
+
+			log("Test Case: testSendMessageWithNullMsgId");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send Invalid CCD message with NULL Message ID and verify the processing status");
+			EhcoreAPIUtil.sendInvalidCCDMessage(UUID.randomUUID().toString(),"null","InvalidCCDExport");
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Verify the processing status after sending CCD message with empty string UPN
+		 * Expected Result : Processing_Status_Type::COMPLETED.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendMessageWithEmptyStringUPN() throws Exception {
+
+			log("Test Case: testSendMessageWithEmptyStringUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send CCD message with empty string UPN");
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage_EmptyStringValues("","export");
+
+			log("Verify the processing status after sending CCD message with empty string UPN");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDExport_MSG_TYPE);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send CCD with INVALID Content type and verify the status.
+		 * Expected Result : HTTP response message: Unsupported Media Type, HTTP response code: 415.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendValidMsgWithInvalidContentType() throws Exception {
+
+			log("Test Case: testSendValidMsgWithInvalidContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send CCD with INVALID Content type and verify the status.");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdexport","","","invalid","UnsuportedType");		
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send CCD with NULL contant ype and verify the processing status.
+		 * Expected Result : HTTP response code: 400, HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendValidMsgWithNullContentType() throws Exception {
+
+			log("Test Case: testSendValidMsgWithNullContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send CCD with NULL contant ype and verify the processing status");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdexport","","","null","BadRequest");		
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send valid message without content type and verify the processing status.
+		 * Expected Result : HTTP response code: 400, HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendValidMsgWithoutContentType() throws Exception {
+
+			log("Test Case: testSendValidMsgWithoutContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send valid message without content type and verify the processing status.");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdexport","","","null","BadRequest");		
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6795
+		 * @StepsToReproduce:	
+		 * Test - Send CCD message with invalid URL and verify the processing status.
+		 * Expected Result : HTTP response code: 400, HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testSendMsgWithInvalidURL() throws Exception {
+
+			log("Test Case: testSendMsgWithInvalidURL");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Send CCD message with invalid URL and verify the processing status.");
+			EhcoreAPIUtil.sendRequestWithInvalidURL("","ccdexport");		
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-20/Sep/2013
+		 * @User Story ID in Rally : US6796
+		 * @StepsToReproduce:	
+		 * Test - Test Raw Message Persisitance For InvalidCCDMessage
+		 * Expected Result :
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testRawMessagePersisitanceForInvalidCCDMessage() throws Exception {
+
+			log("Test Case: testRawMessagePersisitanceForInvalidCCDMessage");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			List<Message> msgDetails = new ArrayList<Message>();
+
+			log("Setting the expected CCD");
+			String expectedCcd = EhcoreAPIConstants.CCD_EXPORT_DATA_ERROR + "ErrorCCDMessageType.xml";
+
+			log("Send invalid ccd export message.");
+			ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(UUID.randomUUID().toString(),"invalidExportMsg");
+
+			log("Verify the message processing status.");
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDExport_MSG_TYPE);
+
+			log("Pass nodeType and get the obj_ref_id in Tracking DB");
+			String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString());
+
+			log("check the ERROR Message in ObjectStore(Mongo DB)and compare with expectedCcd using XMLUnit");
+			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString(),obj_ref_id,expectedCcd);
+
+		}
+
+	
+		/**
+		 * @Author: bbinisha
+		 * @Date:-23/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test -Transmit 2 CCD Msgs and check QID's are different. and
+		 * 		  Check the message status(Completed) and datajob status(DONE) in Tracking DB.
+		 * Expected Result : HTTP response 200 & true.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testTwoValidCCDJobStatusDone() throws Exception {
+
+			log("Test Case: testTwoValidCCDJobStatusDone");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+
+			log("Exiting test method setup ... ");	
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			List<Message> msg = new ArrayList<Message>();
+
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			log("Step 1: open data job");
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+
+			log("Step 2: Send the CCD message");
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.VALID_CCD);
+			msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.VALID_CCD);
+			msg = EhcoreAPIUtil.verifyExpectedMessageProcStatus(1,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+
+			assertFalse(msg.get(0).getQid().equals(msg.get(1).getQid()));
+
+			log("Verify the CCD message status is 'Completed'");
+			EhcoreAPIUtil.completeDataJob(dj.getDataJobId(), TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+			
+			log("Verify the Data job message status is 'Done' in Tracking DB");
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha 
+		 * @Date:-23/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test -Transmit 2 CCD Msgs(valid & invalid) and
+		 * 		  Check the message status(Completed,Error) and datajob status(Partially Done) in Tracking DB. 
+		 * Expected Result : HTTP response 200 & true.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testTwoCCDsValidAndInvalidStatusPartiallyDone() throws Exception {
+
+			log("Test Case: testTwoCCDsValidAndInvalidStatusPartiallyDone");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			log("Step 1: open data job");
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+
+			log("Step 2: Send the CCD message1");
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.VALID_CCD);
+			
+			log("Verify the CCD message status is 'Completed'");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+
+			log("Step 2: Send the invalid CCD message");
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.INVALIDCCD);
+			
+			log("Verify the CCD message status is 'ERROR'");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(1,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			
+			log("Verify the CCD message status is 'Completed'");
+			EhcoreAPIUtil.completeDataJob(dj.getDataJobId(), TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+			
+			log("Verify the Data job message status is 'Partially Done' in Tracking DB");
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.PARTIALLY_DONE.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha 
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test -Transmit invalid CCD and check the message status(Error)
+		 * 		  and datajob status(Error) in Tracking DB.
+		 * Expected Result : HTTP response code: 400; HTTP response message: Bad Request & true.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testInvalidCCDStatusTypeError() throws Exception {
+
+			log("Test Case: testInvalidCCDStatusTypeError");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Exiting test method setup ... ");	
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			log("Send invalid CCD message");
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",testData.getPatientID(),EhcoreAPIConstants.INVALIDCCD);
+			
+			log("Verify the ccd message status 'ERROR'");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			
+			log("Verify the data job status 'ERROR'");
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Transmit valid ccd with invalid Content type in Header
+		 * EDI should return an error-Response Code:415 Unsupported Media Type
+		 * Expected Result : HTTP response code: 415; HTTP response message: Unsupported Media Type.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithInvalidContentType() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithInvalidContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Transmit valid ccd with invalid Content type in Header and Verify error response:415");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdimport","","","invalid","UnsuportedType");
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Transmit valid ccd data with null Content type in Header
+		 * 		  EDI should return an error-Response Code:400 Bad Request
+		 * Expected Result : HTTP response code: 400; HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithNullContentType() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithNullContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Transmit valid ccd data with null Content type in Header and Verify error response:400");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdimport","","","null","BadRequest");
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Open Datajob without content-type in Request header
+		 * 		  EDI should return an error.415 UnsupportedMedia type.
+		 * Expected Result : HTTP response code: 415; HTTP response message: UnsupportedMedia type.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithoutContentType() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithoutContentType");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Open Datajob without content-type in Request header and Verify error response:415");
+			EhcoreAPIUtil.requestWithInvalidHeader("ccdimport","","","blank","UnsuportedType");
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Transmit valid ccd data with invalid datajobId
+		 * 		  EDI should return an error-Response Code:400 Bad Request
+		 * Expected Result : HTTP response code: 400; HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithInvalidDataJobID() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithInvalidDataJobID");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Transmit valid ccd data with invalid datajobId and verify error-Response Code:400 Bad Request");
+			String invalid_djId = "invalid_djId";
+			EhcoreAPIUtil.sendWithInvalidDetails(invalid_djId);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Transmit valid ccd data with null datajobId
+		 * 		  EDI should return an error-Response Code:400 Bad Request
+		 * Expected Result : HTTP response code: 400; HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithNullDataJobID() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithNullDataJobID");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			String null_djId = "null";
+			log("Transmit valid ccd data with null datajobId and verify error-Response Code:400 Bad Request.");
+			EhcoreAPIUtil.sendWithInvalidDetails(null_djId);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test-Transmit valid ccd with invalid URL
+		 * 		  EDI should return an error-Response Code:404 Not Found
+		 * Expected Result : HTTP response code: 404; HTTP response message: Not Found.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithInvalidURL() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithInvalidURL");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			log("Open the data job");
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			
+			String djId = dj.getDataJobId();
+			
+			log("Transmit valid ccd with invalid URL and verify error-Response Code:404 Not Found.");
+			EhcoreAPIUtil.sendRequestWithInvalidURL(djId,"ccdimport");
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test - Transmit invalidCCDExchange( with blank UPN )
+		 * 		  EDI shoul return an error -Response 400 BAD REQUEST
+		 * Expected Result : HTTP response code: 400; HTTP response message: Bad Request.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithBlankUPN() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithBlankUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+		
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 
+			//Open a datajob and get the datajob id
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			String djId = dj.getDataJobId();
+
+			//Transmit valid CCD with null UPN       
+			EhcoreAPIUtil.sendMessage_InvalidUPN(djId,"","BadRequest");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test - Valid CCD with null UniversalPatientNumber(UPN) 
+		 * Expected Result :: 202 with ERROR@Actor ID validation
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithNullUPN() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithNullUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			//Open a datajob and get the datajob id
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			String djId = dj.getDataJobId();
+
+			//Transmit valid CCD with null UPN       
+			EhcoreAPIUtil.sendMessage_InvalidUPN(djId,"null","Accepted");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test - Test - valid CCD with empty string UniversalPatientNumber(UPN) 
+		 * Expected Result :: 202 with ERROR@Actor ID validation.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportsendValidMsgWithEmptyStringUPN() throws Exception {
+
+			log("Test Case: testCCDImportsendValidMsgWithEmptyStringUPN");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
 
 
+			//Open a datajob and get the datajob id
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			//Transmit valid CCD without UPN        
+			EhcoreAPIUtil.sendMessage_EmptyStringValues(dj.getDataJobId(),"import");
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Close an already closed datajob.
+		 * Expected Result :200 OK.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportCompleteInActiveDatajob() throws Exception {
+
+			log("Test Case: testCCDImportCompleteInActiveDatajob");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			//Open a datajob and transmit input and update with TRANSMISSION_END.
+
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.VALID_CCD);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+
+			EhcoreAPIUtil.completeDataJob(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+
+			log("check the transmission status in Tracking DB");
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+
+			log("Again update datajob with TRANSMISSION_END");
+			EhcoreAPIUtil.completeDataJob(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Social History Additional Scenarios
+		 * NullSocialHistory_CCDSample1:CDExchange+Null Code in Social History
+		 * Expected Result : 202 Accepted,Error@CCD XSD Validation
+		 * 					 <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" code=""/>.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportNullCodeSocialHistory() throws Exception {
+
+			log("Test Case: testCCDImportNullCodeSocialHistory");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+
+			List<Message> msgDetails = new ArrayList<Message>();
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.NULL_CODE_SOCIAL_HISTORY);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.CCDXSDVALIDATION));
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Datajob Status :TRANSMISSION_START.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportTransStartConsolidatedCCD() throws Exception {
+
+			log("Test Case: testCCDImportTransStartConsolidatedCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.c_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_START.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Datajob Status : DONE.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportJobStatusTypeDoneConsolidatedCCD() throws Exception {
+
+			log("Test Case: testCCDImportJobStatusTypeDoneConsolidatedCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.c_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Datajob Status : Partially-Done.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportJobStatusPartiallyDoneConsolidatedCCD() throws Exception {
+
+			log("Test Case: testCCDImportJobStatusPartiallyDoneConsolidatedCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			dj = EhcoreAPIUtil.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.c_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),"",EhcoreAPIConstants.invalidc_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(1,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+
+			EhcoreAPIUtil.completeDataJob(dj.getDataJobId(), TrackingEnumHolder.DATAJOB_STATUS.TRANSMISSION_END.toString());
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(dj.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.PARTIALLY_DONE.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test- Datajob Status : Error.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportJobStatusErrorConsolidatedCCD() throws Exception {
+
+			log("Test Case: testCCDImportJobStatusErrorConsolidatedCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("","",EhcoreAPIConstants.invalidc_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test-NullSocialHistory_CCDSample1:CDExchange+Null Code in Social History
+		 * Expected Result :202 Accepted,Error@CCD XSD Validation
+		 * <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" code=""/>.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportNullCodeSocialHistory_CCCD() throws Exception {
+
+			log("Test Case: testCCDImportNullCodeSocialHistory_CCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			List<Message> msgDetails = new ArrayList<Message>();
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.nullCodeCCCDSocialHistory);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.CCDXSDVALIDATION));
+
+		}
+
+		/**
+		 * @Author: bbinisha
+		 * @Date:-24/Sep/2013
+		 * @User Story ID in Rally : US6802
+		 * @StepsToReproduce:	
+		 * Test-US4990-NoKnown items in Allery,Medication,Problems,Procedures,Results
+		 * Expected:202 and No response @PHR and Change Detection.
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportNoKnownC_CCD() throws Exception {
+
+			log("Test Case: testCCDImportNullCodeSocialHistory_CCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log(EhcoreAPIConstants.DATA_JOB_INPUT + "OpenDataJob_template.xml");
+			log(EhcoreAPIConstants.SAMPLE_DATA_JOB_INPUT + "testOpenDataJob.xml");
+
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_NOKNOWN_CCCD,EhcoreAPIConstants.noknown_c_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.DONE.toString());
+
+		}
+		
+	/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally : US6799
+		 * @StepsToReproduce:	   
+		  * Test - check the status of 'Raw Data XSD Validation' in Tracking DB for invalidCCD( invalid 'DateOfBirth')
+		 * Expected Result :400 BAD REQUEST
+		 ** =============================================================
+		 * @throws Exception
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportRawDataXSDValidationForInvalidCCD() throws Exception {
+
+			log("Test Case: testCCDImportRawDataXSDValidationForInvalidCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.INVALIDCCD);
+			List<Message> msgDetails = new ArrayList<Message>();
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.RAWXSDVALIDATION));
+		}
+
+		
+		/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally : US6799
+		 * @StepsToReproduce:	   
+		 * C-CCD(Consolidated CCD) Request to check "Raw Data XSD Validation"
+    	 ** =============================================================
+		 * @throws Exception
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportRawDataXSDValidationForvalid_C_CCD() throws Exception {
+
+			log("Test Case: testCCDImportRawDataXSDValidationForInvalid_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.C_CCD);
+			List<Message> msgDetails = new ArrayList<Message>();
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.RAWXSDVALIDATION));
+		}
+		
+	
+		/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally : US6799
+		 * @StepsToReproduce:	   
+		 * Test - check the status of 'Raw Data XSD Validation' in Tracking DB for invalidCCD( invalid 'DateOfBirth')
+		 * Expected Result :400 BAD REQUEST
+     
+		 ** =============================================================
+		 * @throws Exception
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testCCDImportRawDataXSDValidationForInvalid_C_CCD() throws Exception {
+
+			log("Test Case: testCCDImportRawDataXSDValidationForInvalid_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			dj = DataJobIDPage.openDataJob(TrackingEnumHolder.DATAJOB_STATUS.INIT.toString());
+			EhcoreAPIUtil.sendMessage(dj.getDataJobId(),testData.getPatientID(),EhcoreAPIConstants.C_CCD);
+			List<Message> msgDetails = new ArrayList<Message>();
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.RAWXSDVALIDATION));
+		}
+		
+	/** 
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally :US6799
+		 *	Test - check the status of 'Error Message Persist' in Tracking DB for invalidCCD
+		 *  check the DeadLetterQ status in ActiveMQ.
+		 * 	Expected Result :200 OK with Error Status
+		 * @throws Exception 
+		 */		
+		@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testErrorRawMsgPersistForCCD() throws Exception {
+			log("Test Case: testErrorRawMsgPersistForCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+
+			List<Message> msgDetails = new ArrayList<Message>();
+			String expectedCcd = EhcoreAPIConstants.CCD_ERROR + "ErrorCCDExchange1.xml";
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",testData.getPatientID(),EhcoreAPIConstants.INVALID_CCD);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.CCDXSDVALIDATION));
+
+			log("Check mongoDB response using API");
+			String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.ERROR.toString());
+			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.ERROR.toString(),obj_ref_id,expectedCcd);
+		}
+		
+		
+		/** @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally :US6799
+		 * Test - check the status of 'Raw Message Persistance' in Tracking DB for valid consolidatedCCD
+		 * Expected Result :200 OK with Completed Status
+		 * @throws Exception 
+		 */		
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testRawMsgPersistFor_C_CCD() throws Exception {
+			log("Test Case: testRawMsgPersistFor_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+			log("Open DataJob");
+	
+			List<Message> msgDetails = new ArrayList<Message>();
+			String expectedCcd = EhcoreAPIConstants.CCD_RAW + "RawCCCD1.xml";
+			log("Check tracking DB message_status as completed");
+
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.C_CCD);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.CCDXSDVALIDATION));
+
+			log("Check mongoDB response using API");
+			String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString());
+			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString(),obj_ref_id,expectedCcd);
+		}
+			
+		/** * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally :US6799
+		  * C-CCD(Consolidated CCD) Invalid Request to check "Error Message Persist"
+		 * @throws Exception 
+		 */		
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testErrorRawMsgPersistFor_C_CCD() throws Exception {
+			log("Test Case: testErrorRawMsgPersistFor_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+			log("Open DataJob");
+	
+			List<Message> msgDetails = new ArrayList<Message>();
+			String expectedCcd = EhcoreAPIConstants.C_CCD_ERROR + "ErrorCCCD1.xml";
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("","",EhcoreAPIConstants.invalidc_ccd);
+			EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
+
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.ERRORPERSISTANCE));
+			
+			log("Check mongoDB response using API");
+			String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.ERROR.toString());
+			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.ERROR.toString(),obj_ref_id,expectedCcd);			
+		}
+	    
+	    
+	    /** 
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally :US6799
+		 * US4990-NoKnown Consolidated CCD items in Allery,Medication,Problems,Procedures,Results
+	     * Expected:202 
+		 * @throws Exception 
+		 */		
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testRawMsgPersistForNoKnownC_CCD() throws Exception {
+			log("Test Case: testRawMsgPersistForNoKnownC_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			List<Message> msgDetails = new ArrayList<Message>();
+			String expectedCcd = EhcoreAPIConstants.C_CCD_RAW + "RawNoKnownCCCD1.xml";
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_NOKNOWN_CCCD,EhcoreAPIConstants.noknown_c_ccd);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.RAWPERSISTANCE));
+
+			log("Check mongoDB response using API");
+			String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString());
+			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.ERROR.toString(),obj_ref_id,expectedCcd);
+		}
+		
+		
+		
+		/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally:US6799
+		 * @StepsToReproduce:	
+		 * Test - check the status of 'XML Validation ' in Tracking DB for invalidCCD
+		 * Expected Result :400 OK,Error @ "XML Validation " Activity,COMPLETED @'Error Message Persist'
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testXMLValidationForInValidCCD() throws Exception {
+			log("Test Case: testXMLValidationForInValidCCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			DataJob dj = new DataJob();
+			EhcoreAPI ehcoreApi = new EhcoreAPI();
+			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+			
+			List<Message> msgDetails = new ArrayList<Message>();
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("","",EhcoreAPIConstants.INVALID_XML_VALIDATION);
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,dj.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.XMLVALIDATION));
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.ERRORPERSISTANCE));
+		}
+		
+		
+		
+		/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally:US6799
+		 * @StepsToReproduce:	
+		  * C-CCD(Consolidated CCD) Request to check "XML Validation "
+		 * Expected Result :200 OK
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testXMLValidationForValid_C_CCD() throws Exception {
+			log("Test Case: testXMLValidationForValid_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("",EhcoreAPIConstants.INTUITPATIENTID_CCCD,EhcoreAPIConstants.C_CCD);
+			List<Message> msgDetails = new ArrayList<Message>();
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.XMLVALIDATION));
+		}			
+		
+		
+		
+		/**
+		 * @Author:Shanthala
+		 * @Date:-11/Oct/2013
+		 * @User Story ID in Rally:US6799
+		 * @StepsToReproduce:	
+		 * C-CCD(Consolidated CCD) invalid Request to check "XML Validation "
+		 * Expected Result :200 OK
+		 * @throws Exception 
+		 */
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		public void testXMLValidationForInValid_C_CCD() throws Exception {
+			log("Test Case: testXMLValidationForInValid_C_CCD");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			log("Entering test method setup ... ");
+			
+			ProcessingResponse response = EhcoreAPIUtil.sendMessage("","",EhcoreAPIConstants.INVALID_C_CCD_XML_VALIDATION);
+			List<Message> msgDetails = new ArrayList<Message>();
+			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDIMPORT_MSG_TYPE);
+			
+			assertFalse(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.VALIDATE.toString(),EhcoreAPIConstants.XMLVALIDATION));
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),EhcoreAPIConstants.ERRORPERSISTANCE));
+			
+		
+		}				
+		
+}	
+		

@@ -2155,7 +2155,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			 * This Method is used to send the valid Export Message(CCD/Questionnaire) to EDI's rest interface
 		     * @throws Exception 
 			 */
-	public ProcessingResponse sendCCDExportMessage(String value, String type)
+	public static ProcessingResponse sendCCDExportMessage(String value, String type)
 			throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -2167,9 +2167,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 		// EHDC:CCDExport -This Request is to check CCDExport Flow with Valid
 		// and Invalid message
 		if (type.equalsIgnoreCase("validExportMsg")) {
-			log("**********validExportMsg");
+			Log4jUtil.log("**********validExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
-			log("***************VALID EXPORT MESSAGE**************"	+ url);
+			Log4jUtil.log("***************VALID EXPORT MESSAGE**************"	+ url);
 			xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
 			toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA
 					+ "testCCDMessageType.xml";
@@ -2178,7 +2178,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
 					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
 		} else if (type == "invalidExportMsg") {
-			log("********** invalidExportMsg");
+			Log4jUtil.log("********** invalidExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
 			toXML = EhcoreAPIConstants.INVALID_CCD_EXPORT_DATA
 					+ "InvalidCCDMessageType.xml";
@@ -2188,7 +2188,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		// QuestionnaireExport Flow with Valid and Invalid message
 		else if (type == "validQuestionnaireExportMsg") {
 
-			log("********** validQuestionnaireExportMsg");
+			Log4jUtil.log("********** validQuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
 			xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA
 					+ "QuestionnaireMessage.xml";
@@ -2204,7 +2204,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			// String(fileToBytes(xmlFile))));
 
 		} else if (type == "invalidKey_QuestionnaireExportMsg") {
-			log("********** invalidKey_QuestionnaireExportMsg");
+			Log4jUtil.log("********** invalidKey_QuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
 			toXML = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY
 					+ "QuestionnaireMessageInvalidKey.xml";
@@ -2212,7 +2212,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			// assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
 			// String(fileToBytes(toXML))));
 		} else if (type == "invalidQuestionnaireExportMsg") {
-			log("********** invalidQuestionnaireExportMsg");
+			Log4jUtil.log("********** invalidQuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
 			toXML = EhcoreAPIConstants.INVALID_QUESTIONNAIRE_EXPORT_DATA
 					+ "InvalidQuestionnaireMessage.xml";
@@ -2222,12 +2222,12 @@ public class EhcoreAPIUtil extends IHGUtil {
 		// Valid and Invalid message
 
 		else if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)) {
-			log("********** internal/exportccd");
+			Log4jUtil.log("********** internal/exportccd");
 			url = getAllScriptsCCDExportURL();
 			toXML = EhcoreAPIConstants.AS_CCDEXPORT_REQ
 					+ "AS_CCDExport_Request.xml";
 		} else if (type == "invalidAllScriptsCCDExportMsg") {
-			log("********** invalidAllScriptsCCDExportMsg");
+			Log4jUtil.log("********** invalidAllScriptsCCDExportMsg");
 			url = getAllScriptsCCDExportURL();
 			toXML = EhcoreAPIConstants.AS_CCDEXPORT_INVALID_REQ
 					+ "AllScriptsAdapter_CCDExport_InvalidInput.xml";
@@ -2237,12 +2237,12 @@ public class EhcoreAPIUtil extends IHGUtil {
 		// QuestionnaireExport Flow with Valid and Invalid message
 
 		else if (type == "validQuestionnaireAllscriptsExportMsg") {
-			log("********** validQuestionnaireAllscriptsExportMsg");
+			Log4jUtil.log("********** validQuestionnaireAllscriptsExportMsg");
 			url = getAllScriptsFormsExportURL();
 			toXML = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA
 					+ "AllscriptsInput_FormsExport.xml";
 		} else if (type == "invalidQuestionnaireAllscriptsExportMsg") {
-			log("********** invalidQuestionnaireAllscriptsExportMsg");
+			Log4jUtil.log("********** invalidQuestionnaireAllscriptsExportMsg");
 			url = getAllScriptsFormsExportURL();
 			toXML = EhcoreAPIConstants.INVALID_ALLSCRIPTS_EXPORT_DATA
 					+ "InvalidAllscriptsInput_FormsExport.xml";
@@ -2264,6 +2264,79 @@ public class EhcoreAPIUtil extends IHGUtil {
 		    
 		    
 		    
+		    public static ProcessingResponse sendMessage_EmptyStringValues(String djId,String type) throws Exception {
+
+				String url = null;
+				String xmlFile = null;
+				if(type == "import"){
+					url = getURL() + EhcoreAPIConstants.CCDImport;
+					xmlFile = EhcoreAPIConstants.CCD + "CCDExchangeWithEmptyStringUPN.xml";
+				}else if(type == "export"){
+					url = getURL() + EhcoreAPIConstants.CCDExport;
+					xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageTypeWithEmptyStringValues.xml";
+				}
+				/**
+				 * The below code is to check Response for 
+				 * valid Questionnaire Export message with Empty String UPN and MsgId
+				 */
+				else if(type == "questionnaire_export"){
+					url = getURL() + EhcoreAPIConstants.CCDExport;
+					xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessageWithEmptyStringValues.xml";
+				}
+				ProcessingResponse response =  processCCD_CheckResponse(url, EhcoreAPIConstants.POST_REQUEST, xmlFile,djId,EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED,type);
+				return response;
+			}
+
+			public static void sendWithInvalidDetails(String djId) throws Exception {
+		    	
+		        String url = getURL() + EhcoreAPIConstants.CCDImport ;
+		        String xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
+		        String toXML = EhcoreAPIConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
+		        
+		        updateCCD_Data(xmlFile,toXML,"valid");
+		                              
+		        processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, toXML,djId,"valid",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+		    }
+
+			public static void sendMessage_InvalidUPN(String djId,String UPN,String expectedResponse) throws Exception {
+		    	
+		        String url = getURL() + EhcoreAPIConstants.CCDImport;
+		        String xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
+		        String toXML = EhcoreAPIConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
+		        
+		        updateCCD_Data(xmlFile,toXML,UPN);
+		        processRequestCCDMessage(url, EhcoreAPIConstants.POST_REQUEST, toXML,djId,expectedResponse);
+		    }
+		    
+			
+			
+			/**
+			 * This Method is used to send the invalidCCDMessage to check OUTBOUND flow(with null UPN,null MsgId)
+			 * @throws Exception 
+			 */
+			public static void sendInvalidCCDMessage(String UPN,String msgId,String type) throws Exception {
+
+				String url = null;
+				String xmlFile = null;
+				String toXML = null;
+				//EHDC:CCDExport -To check with invalid message
+				if(type.equalsIgnoreCase("InvalidCCDExport")){
+					url = getURL() + EhcoreAPIConstants.CCDExport;
+					xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
+					toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
+				}
+
+				//EHDC:QuestionnaireExport -To check with invalid message
+				else if(type.equalsIgnoreCase("InvalidQuestionnaireExport")){
+					url = getURL() + EhcoreAPIConstants.CCDExport;
+					xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessage.xml";
+					toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
+				}
+
+				EhcoreAPIUtil.updateCCDExport_Data(xmlFile,toXML,msgId,UPN,"samplePracticeId","sampleProviderId");
+				processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, toXML,"","valid",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
+			}
+    
 		 
 		    
 }
