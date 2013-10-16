@@ -29,7 +29,7 @@ public class PhrDocumentsPage extends BasePageObject {
 	@FindBy(xpath = "id('id0')")
 	private WebElement btnNewHealthInformation;
 
-	@FindBy(linkText = "View Health Information")
+	@FindBy(xpath = ".//a[@class = 'green_button']")
 	private WebElement btnViewHealthInformation;
 
 	@FindBy(linkText = "Send my information")
@@ -189,6 +189,10 @@ public class PhrDocumentsPage extends BasePageObject {
 	public String getPstTimings() {
 		Date now = new Date();
 		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM d, yyyy");
+		SimpleDateFormat dateFormatGmtNew = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		System.out.println("*********************CHECK TIME*********************"+dateFormatGmtNew.format(now));
+		int presentTime = DateFormat.HOUR0_FIELD;
+		System.out.println("*************************************CHECKING PRESENT TIME****HOUR FIELD**********"+presentTime);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
