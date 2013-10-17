@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.practice.test;
 
-import java.util.concurrent.TimeUnit;
 
 import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -20,6 +19,7 @@ import com.intuit.ihg.product.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.practice.page.patientactivation.PatientactivationPage;
 import com.intuit.ihg.product.practice.page.treatmentplanpage.TreatmentPlansPage;
 import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
+import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
 import com.intuit.ihg.product.practice.utils.Practice;
@@ -330,60 +330,60 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
-		
+
 		log("step 3:Set Patient Search Fields");
 		pPatientSearchPage.setPatientSearchFields();
-		
+
 		log("step 4:Verify the Search Result");
-		IHGUtil.waitForElement(driver,10,pPatientSearchPage.searchResult);
+		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
-				
+
 	}
-	
+
 	/**
-	  * @Author: Gajendran
+	 * @Author: Gajendran
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce:
 	 * Patient login
 	 * 
-	 
+
 	 * =============================================================
 	 * @AreaImpacted : 
 	 * @throws Exception
 	 */
-	
+
 	@Test (enabled = true, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
 	public void testClickOnTabs() throws Exception {
 
 		log("Test Case: testClickOnTabs:- SmokeTest");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		
+
 		log("step 1: Login to Practice Portal");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData =new PracticeTestData(practice);
-		
+
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-		
+
 		log("step 2: Click on Patientactivationtab");
 		practiceHome.clickPatientactivationTab();
 		Thread.sleep(2000);
-		
+
 		log("step 3: Click on VirtualCardSwiperTab");
 		practiceHome.clickVirtualCardSwiperTab();
 		Thread.sleep(2000);
-		
+
 		log("step 4: Click on Patient Messaging Tab");
 		practiceHome.clickOnlineBillPayTab();
 		Thread.sleep(2000);
-		
+
 		log("step 5: Click on Logout");
 		practiceHome.logOut();
-		
-		
-		
+
+
+
 	}	
 
 
@@ -415,24 +415,24 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Click on Patient Search Link");
 		PatientMessagingPage pPatientMessagingPage= pPracticeHomePage.clickPatientMessagingTab();
-		
+
 		log("Step 3: Getting the document to upload from filepath");
 		PracticeUtil pUtil = new PracticeUtil(driver);
 		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.pdfname);
-		
+
 		log("Step 4:Set Quick Send Fields");
 		pPatientMessagingPage.setQuickSendFields(value);
-		
+
 		log("step 5:Verify the Published Message Succesfully text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPatientMessagingPage.publishedSuccessfullyMessage);
 		verifyEquals(pPatientMessagingPage.publishedSuccessfullyMessage.getText(),"Message Published Successfully");
-		
-		
-		}
-	
 
-	
+
+	}
+
+
+
 	/**
 	 * @Author: Kiran_GT
 	 * @Date: 07/29/2013
@@ -460,22 +460,22 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2:Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
-		
+
 		log("step 3:Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient();
-		
+
 		log("step 4:Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setPatientTransactionFields();
-		
+
 		log("step 5:Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
 		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
-		
-		
+
+
 	}
 
-	
+
 	/**
 	 * @Author: bbinisha
 	 * User Story : US6487
@@ -510,39 +510,39 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Enter credentials and login");
 		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-		
+
 		log("Step 4 : Navigate to OnlineBillPay. ");
 		OnlineBillPaySearchPage billPaySearch = practiceHome.clickOnlineBillPayTab();
-		
+
 		log(" Step 5 : Click on 'e-StatementUpload' link");
 		eStatementUploadPage eStatementPage = billPaySearch.clickOnEStatementUploadLink();
-		
+
 		log(" Step 6 : Search for the patient");
 		eStatementPage.enterPatientDetails(PracticeConstants.fName, PracticeConstants.lName, PracticeConstants.patienID);
-				
+
 		log("Step 7 : Select the particular account.");
 		eStatementPage.selectTheRecords(PracticeConstants.fName, PracticeConstants.lName);
-		
+
 		log("Step 8 : enter the e-statement info.");
 		String sUniqueId = IHGUtil.createRandomNumericString().substring(0, 5);
 		String sAmount = IHGUtil.createRandomNumericString().substring(0, 3);
 		eStatementPage.enterEStatementInfo(PracticeConstants.location, sUniqueId, sAmount);
-		
+
 		log("Get the filepath of the e-statement file.");
 		PracticeUtil pUtil = new PracticeUtil(driver);
 		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.eStatementFile);
-		
+
 		log("Step 9 : Browse the file.");
 		eStatementPage.browseFile(value);
-		
+
 		log("Step 10 : Click on 'Upload Statement' button.");
 		eStatementPage.clickOnUploadStatementButton();
-		
+
 		log("Verify whether the EStatement is uploaded successfully.");
 		verifyTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
 	}
-	
-	
+
+
 	/**
 	 * @Author: bbinisha
 	 * User Story : US6488
@@ -602,7 +602,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
 		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
-		
+
 		log("Step 7 : Navigate to Patient Search Page.");
 		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
 		PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
@@ -618,7 +618,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 11 : Click on Void Payment Link and void the transaction.");
 		String errorText = pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
-		
+
 		log("Step 12 :verify the Error displayed while voiding the payment");
 		verifyTrue(errorText.contains(PracticeConstants.errorForVoidPayment), "Error is not displayed while voiding the payment.");
 
@@ -628,5 +628,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		//Checking email needs to be completed
 	}
-	
+
+
 }
