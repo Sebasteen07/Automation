@@ -60,6 +60,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
+		driver.manage().deleteAllCookies();
+		
 		log("step 1: Get Data from Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData testcasesData = new PhrTestcasesData(phr);
