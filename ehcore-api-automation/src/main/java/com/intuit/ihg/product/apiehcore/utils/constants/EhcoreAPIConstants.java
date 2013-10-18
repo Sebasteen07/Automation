@@ -60,12 +60,8 @@ public class EhcoreAPIConstants {
 	public static final String INVALID_C_CCD_NOTIFICATION = "invalidCCCDNotification";
 	public static final String NULL_CODE_C_CCD_SOCIALHISTORY = "nullCodeCCCDSocialHistory";
 		
-	// Allscripts-CCD Import
-	public static final String AS_CCD = "ASCCDImport";
-	// public static final String AS_CCD_EXPORT = "ASCCDExport";
-	// AS_CCDExport
-	public static final String AS_CCD_IMPORT = "importccd";
-	public static final String AS_CCD_EXPORT = "internal/exportccd";
+	
+	
 	public static final String DELTA_RESPONSE = "deltaresponse";
 	public static final String NODE_RESPONSE = "noderesponse";
 
@@ -87,10 +83,7 @@ public class EhcoreAPIConstants {
 	public final static String INTUITPATIENTID_INVALIDCCDNOTIFICATION = "47921";
 	
 
-// move it to ccd import n ccd export
-	public static final String ALLSCRIPTS_ADAPTER_FORMEXPORT_WS_URL = "allscripts_formsexport_ws_url";
-	public static final String ALLSCRIPTS_ADAPTER_CCDEXPORT_WS_URL = "allscripts_ccdexport_ws_url";
-	public static final String ALLSCRIPTS_ADAPTER_CCDIMPORT_WS_URL = "allscripts_ccdimport_ws_url";
+	
 	public static final String PORTAL_REST_URI_FOR_TEST = "PortalRestUrl";
 	public static final String QUESTIONNAIRE_SAMPLE_DATA = "target/test-classes/questionnaire/test_data/";
 	public static final String SAMPLE_DATA = "target/test-classes/testfiles/";
@@ -100,7 +93,8 @@ public class EhcoreAPIConstants {
 	 */
 	
 	public static final String TEST_DATA = "src/test/resources/testfiles/";
-	public static final String C_TEST_DATA = "src/main/resources/c_ccd/testdata/";
+//	public static final String C_TEST_DATA = "src/main/resources/c_ccd/testdata/";
+	public static final String C_TEST_DATA = "src/test/resources/testfiles/";
 	// Actual CCD Message (From RAW,ENRICHED ,SNAPSHOT node)
 	public static final String MARSHAL_CCD = SAMPLE_DATA + "marshal_ccd/";
 
@@ -112,53 +106,25 @@ public class EhcoreAPIConstants {
 	public static final String deleteC_CCD = "delete_CCCD";
 	public static final String delete2C_CCD = "delete2_CCCD";
 	
+	 public static final String newC_CCD = "New_CCCD";
 
 	// Expected Response
 	public static final String EXPECTEDRESPONSE_ACCEPTED = "Accepted";
 	public static final String EXPECTEDRESPONSE_BADREQUEST = "BadRequest";
 
-	
 	// CCDImport Message Details
 	public static final String QUESTIONNAIRE_TEST_DATA = "src/main/resources/questionnaire/test_data/";
 
-	// public static final String AS_TEST_DATA =
-	// "src/test/resources/testfiles/adapters/allscripts/";
-
-	public static final String AS_CCDIMPORT_TEST_DATA = "src/test/resources/testfiles/ccdimport/allscripts/nonconsolidatedccd/";
-	public static final String AS_CCDEXPORT_TEST_DATA = "src/test/resources/testfiles/ccdexport/allscripts/nonconsolidatedccd/";
-
-	public static final String CCD = TEST_DATA
-			+ "ccdimport/validCCDExchange1/input/";
-	public static final String CCD_EXPORT_DATA = TEST_DATA + "/"
-			+ "ccdexport/validCCDMessageType/input/";
-	/*
+	
+		/*
 	 * public static final String AS_REQ = AS_TEST_DATA +
 	 * "validCCDimport/input/"; public static final String AS_CCDEXPORT_REQ =
 	 * AS_TEST_DATA + "validCCDexport/input/";
 	 */
-	public static final String SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA = QUESTIONNAIRE_TEST_DATA
-			+ "export/allscripts_ehr/validQuestionnaireMessage/input/";
+	
 	public static final String REPROCESS_DATA = TEST_DATA + "reprocessmessage/";
 	public static final String REPROCESSREQ_PORT = "reprocessReq_port";
-	// Test Import CCD
-	public static final String SAMPLE_CCD = SAMPLE_DATA
-
-	+ "/ccdimport/validCCDExchange1/input/";
-	// CCDImport Message Details
-	public static final String CCD1 = TEST_DATA 
-			+ "/ccdimport/validCCDExchange1/input/";
-	public static final String C_CCD = C_TEST_DATA
-
-	+ "ccdimport/validCCDExchange/input/";
-	public static final String INVALID_C_CCD = C_TEST_DATA
-
-	+ "ccdimport/invalidCCDExchange/input/";
-	public static final String SAMPLE_C_CCD = SAMPLE_DATA
-
-	+ "c_ccd/ccdimport/validCCDExchange/input/";
-	public static final String INVALID_CCD = TEST_DATA
-			+ "ccdimport/invalidCCDExchange1/input/";
-
+	
 	public static final String CCDEXCHANGE_XSD = "src/test/resources/testfiles/xsd/CCDExchange.xsd";
 	public static final String CCD_XSD = "src/test/resources/testfiles/xsd/CCD.xsd";
 	public static final String PROCESSING_RESPONSE_XSD = "src/test/resources/testfiles/xsd/ProcessingResponse.xsd";
@@ -207,18 +173,11 @@ public class EhcoreAPIConstants {
 		
 		// Allscripts Adapter CCD Export Activity Details
 
-		public static final String ASEXPORT_TRANSLATION = "TranslationSmooks2ASMessageEnvelope";
-		public static final String ASEXPORT_PUBLISH = "DCPublish2ConnectHubActivity";
+				public static final String ASEXPORT_TRANSLATION = "TranslationSmooks2ASMessageEnvelope";
+				public static final String ASEXPORT_PUBLISH = "DCPublish2ConnectHubActivity";
 
 
-	// Allscripts adapter CCD IMPORT/EXPORT Message Details
-	// public static final String AS_INVALID_REQ = AS_TEST_DATA
-	// +"invalidCCDimport/input/";
-
-	public static final String CCD_RAW = TEST_DATA
-			+ " ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/raw/";
-
-	// Processing Time to check CDM Message in Mongo DB
+		// Processing Time to check CDM Message in Mongo DB
 
 	// # time (in seconds) that the tests should wait to get the CDM Message
 	// from mongo DB
@@ -247,8 +206,7 @@ public class EhcoreAPIConstants {
 			+ "changedetectionmessage/expected/entity/";
 	public static final String ADD_ELEMENT_C_CCD_RES = C_TEST_DATA
 			+ "changedetectionmessage/expected/element/";
-	public static final String EXPECTED_C_CDMLIST = C_TEST_DATA
-			+ "ccdimport/validCCDExchange/expected/cdm/";
+
 
 	// Snapshot and change Detection Details
 	public static final String ADD_ENTITY_CCD_REQ = TEST_DATA
@@ -269,41 +227,7 @@ public class EhcoreAPIConstants {
 	public static final String SNAPSHOT_ELEMENT_CCD = TEST_DATA
 			+ "snapshotretrieve/expected/element/";
 
-	// Actual & EXPECTED CDM Message
-	public static final String ACTUAL_CDMLIST = SAMPLE_DATA
-			+ "ccdimport/validCCDExchange1/actual/cdm/";
-	public static final String EXPECTED_CDMLIST = TEST_DATA
-			+ "ccdimport/validCCDExchange1/expected/cdm/";
-
-
 	
-	// public static final String TEST_DATA = "src/main/resources/testdata/";
-
-	public static final String C_CCD_RAW = C_TEST_DATA
-			+ "ccdimport/validCCDExchange/expected/raw/";
-	public static final String C_CCD_ERROR = C_TEST_DATA
-			+ "ccdimport/invalidCCDExchange/expected/error/";
-	public static final String C_CCD_ENRICHED = C_TEST_DATA
-			+ "/dev3/ccdimport/validCCDExchange/expected/enriched/";
-	public static final String C_CCD_SNAPSHOT = C_TEST_DATA
-			+ "/dev3/ccdimport/validCCDExchange/expected/snapshot/";
-	public static final String C_CCD_DELTA = C_TEST_DATA
-			+ "/dev3/ccdimport/validCCDExchange/expected/delta/";
-
-	// CCDImport Message Details
-	public static final String CCD_MESSAGE = TEST_DATA + "ccdmessage/";
-	public static final String CCD_ENRICHED = TEST_DATA
-			+ "/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/enriched/";
-	public static final String CCD_SNAPSHOT = TEST_DATA
-			+ "/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/snapshot/";
-	public static final String CCD_DELTA = TEST_DATA
-			+ "/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/delta/";
-
-	public static final String CCD_ERROR = TEST_DATA
-			+ "dev3/ccdimport/invalidCCDExchange1/expected/error/";
-	public static final String SAMPLE_INVALID_CCD = SAMPLE_DATA
-			+ "ccdimport/invalidCCDExchange1/input/";
-	// Snapshot and change Detection Details
 
 	// Reprocess Message Details
 
@@ -314,63 +238,7 @@ public class EhcoreAPIConstants {
 
 	// Actual & EXPECTED CDM Message
 
-	/**
-	 * CCD Export
-	 */
-
-	public static final String SAMPLE_CCD_EXPORT_DATA = SAMPLE_DATA
-			+ "/ccdexport/validCCDMessageType/input/";
-	public static final String CCD_EXPORT_DATA_RAW = TEST_DATA
-			+ "ccdexport/validCCDMessageType/expected/raw/";
-
-	public static final String INVALID_CCD_EXPORT_DATA = TEST_DATA
-			+ "ccdexport/invalidCCDMessageType/input/";
-	public static final String CCD_EXPORT_DATA_ERROR = TEST_DATA
-			+ "ccdexport/invalidCCDMessageType/expected/error/";
-	public static final String SAMPLE_INVALID_CCD_EXPORT_DATA = SAMPLE_DATA
-			+ "ccdexport/invalidCCDMessageType/input/";
-
-	/*
-	 * //Allscripts-CCD Import public static final String as_ccd =
-	 * "ASCCDImport"; public static final String as_ccdexport = "ASCCDExport";
-	 */
-
-	// Expected Response
-	/*
-	 * public static final String expectedResponse_Accepted = "Accepted"; public
-	 * static final String expectedResponse_BadRequest = "BadRequest";
-	 */
-
-	public static final String AS_RAW = AS_CCDIMPORT_TEST_DATA
-			+ "valid/expectedresponse/";
-
-	// Allscripts adapter CCD IMPORT/EXPORT Message Details
-	public static final String AS_CCDEXPORT_RAW = AS_CCDEXPORT_TEST_DATA
-			+ "valid/request/";
-	public static final String AS_CCDEXPORT_REQ = AS_CCDEXPORT_TEST_DATA
-			+ "valid/request/";
-	public static final String AS_CCDEXPORT_INVALID_REQ = AS_CCDEXPORT_TEST_DATA
-			+ "invalid/request/";
-	public static final String AS_CCDEXPORT_INVALID_ERROR = AS_CCDEXPORT_TEST_DATA
-			+ "invalid/expectedresponse/";
-
-	// public static final String AS_RAW = AS_TEST_DATA
-	// +"validCCDimport/expected/raw/";
-	public static final String AS_REQ = AS_CCDIMPORT_TEST_DATA
-			+ "valid/request/";
-	public static final String AS_INVALID_REQ = AS_CCDIMPORT_TEST_DATA
-			+ "invalid/request/";
-	public static final String AS_INVALID_ERROR = AS_CCDIMPORT_TEST_DATA
-			+ "invalid/expectedresponse/";
-
 	
-
-	// KeyRegistry Enrichment Response
-	public static final String QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY = QUESTIONNAIRE_TEST_DATA
-			+ "export/validQuestionnaireMessage/input/invalidkey/";
-	public static final String QUESTIONNAIRE_EXPORT_DATA_ENRICHED_INVALIDKEY = QUESTIONNAIRE_TEST_DATA
-			+ "export/validQuestionnaireMessage/expected/enriched/invalidkey/";
-
 	public static final String KEYREGISTRY_ENRICHMENT_RESPONSE = SAMPLE_DATA
 			+ "keyregistry_enrichment/";
 	// Request xml updates
@@ -392,49 +260,11 @@ public class EhcoreAPIConstants {
 	public static final String PORTALKEY_ENRICHMENT_RESPONSE = SAMPLE_DATA
 			+ "portalkey_enrichment/";
 
-	// Allscripts Request
-	public static final String AS_REQ1 = AS_REQ
-			+ "Professional_AllisonReed_1.xml";
-	public static final String AS_REQ2 = AS_REQ
-			+ "C-CCD_mockup_Allscripts_AllisonReed.xml";
-	public static final String AS_REQ3 = AS_REQ
-			+ "C-CCD_mockup_Allscripts_HealthyPatient.xml";
-
-	// QuestionnaireExport Message Details
-	public static final String QUESTIONNAIRE_EXPORT_DATA = QUESTIONNAIRE_TEST_DATA
-			+ "export/validQuestionnaireMessage/input/";
-	public static final String SAMPLE_QUESTIONNAIRE_EXPORT_DATA = QUESTIONNAIRE_SAMPLE_DATA
-			+ "export/validQuestionnaireMessage/input/";
-	public static final String QUESTIONNAIRE_EXPORT_DATA_RAW = QUESTIONNAIRE_TEST_DATA
-			+ "export/validQuestionnaireMessage/expected/raw/";
-	public static final String QUESTIONNAIRE_EXPORT_DATA_ENRICHED = QUESTIONNAIRE_TEST_DATA
-			+ "export/validQuestionnaireMessage/expected/enriched/";
-
+	
 	// CCDMessageType XSD -to validate request xml
 	public static final String CCDMESSAGETYPE_XSD = "src/main/resources/questionnaire/xsd/messages/CCDMessageType.xsd";
 
-	// invalid Questionnaire Message Details
-	public static final String INVALID_QUESTIONNAIRE_EXPORT_DATA = QUESTIONNAIRE_TEST_DATA
-			+ "export/invalidQuestionnaireMessage/input/";
-	public static final String QUESTIONNAIRE_EXPORT_DATA_ERROR = QUESTIONNAIRE_TEST_DATA
-			+ "export/invalidQuestionnaireMessage/expected/error/";
-	public static final String SAMPLE_INVALID_QUESTIONNAIRE_EXPORT_DATA = QUESTIONNAIRE_SAMPLE_DATA
-			+ "export/invalidQuestionnaireMessage/input/";
 
-	/**
-	 * Questionnaire Message - Outbound Flow details(Questionnaire
-	 * ==>Allscripts)
-	 */
-
-	// Allscripts adapter QuestionnaireExport Message Details
-	public static final String SAMPLE_ALLSCRIPTS_FORMS_EXPORT_EXPECTED = QUESTIONNAIRE_TEST_DATA
-			+ "export/allscripts_ehr/validQuestionnaireMessage/expected/";
-	public static final String INVALID_ALLSCRIPTS_EXPORT_DATA = QUESTIONNAIRE_TEST_DATA
-			+ "export/allscripts_ehr/invalidQuestionnaireMessage/input/";
-	public static final String INVALID_ALLSCRIPTS_EXPORT_EXPECTED = QUESTIONNAIRE_TEST_DATA
-			+ "export/allscripts_ehr/invalidQuestionnaireMessage/expected/error/";
-
-	//
 	
 	
 	// Data job
@@ -454,6 +284,11 @@ public class EhcoreAPIConstants {
 			public static final String nullCodeCCCDSocialHistory = "nullCodeCCCDSocialHistory";
 
 			// public static final String TEST_DATA = "src/main/resources/testdata/";
+			
+			 //Expected Response
+		    public static final String expectedResponse_Accepted = "Accepted";
+		    public static final String expectedResponse_BadRequest = "BadRequest";
 
-	
+		    //EHDC -Consolidated CCD CHANGING small to caps
+		    public static final String C_CCD = "ConsolidatedCCD";
 }

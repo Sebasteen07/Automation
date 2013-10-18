@@ -1,6 +1,10 @@
 package com.intuit.ihg.product.apiehcore.utils;
 
 
+//import static com.intuit.ihg.eh.app.util.EHCoreTestUtil.updateCCD_Data;
+
+//import static com.intuit.ihg.eh.app.util.EHCoreTestUtil.updateCCD_Data;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -56,8 +60,11 @@ import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
+import com.intuit.ihg.product.apiehcore.utils.constants.CCDExportConstants;
+import com.intuit.ihg.product.apiehcore.utils.constants.CCDImportConstants;
 import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
 import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
+
 import com.intuit.ihg.eh.core.dto.CcdExchange;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.eh.core.dto.ProcessingResponse;
@@ -696,8 +703,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			xmlFile = EhcoreAPIConstants.CCD1 + "CCDExchange1.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD + "testCCDExchange1.xml";
+			xmlFile = CCDImportConstants.CCD1 + "CCDExchange1.xml";
+			toXML = CCDImportConstants.SAMPLE_CCD + "testCCDExchange1.xml";
 			updateCCD_Data(xmlFile,toXML,UPN);
 			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))),"Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
@@ -709,7 +716,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
 			xmlFile = EhcoreAPIConstants.C_CCD + "ConsolidatedCCD1.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD + "testConsolidatedCCD1.xml";
+			toXML = CCDImportConstants.SAMPLE_CCD + "testConsolidatedCCD1.xml";
 			updateCCD_Data(xmlFile,toXML,UPN);
 			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))),"Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
@@ -720,7 +727,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
 			xmlFile = EhcoreAPIConstants.C_CCD + "NoKnownC_CCD1.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD + "testNoKnownC_CCD1.xml";
+			toXML = CCDImportConstants.SAMPLE_CCD + "testNoKnownC_CCD1.xml";
 			updateCCD_Data(xmlFile,toXML,UPN);
 			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))),"Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
@@ -731,48 +738,48 @@ public class EhcoreAPIUtil extends IHGUtil {
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl()+ EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_CCD + "InvalidCCDExchange1.xml";
+			toXML = CCDImportConstants.INVALID_CCD + "InvalidCCDExchange1.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 		}else if(type.equalsIgnoreCase(EhcoreAPIConstants.INVALID_XML_VALIDATION)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_CCD + "InvalidXML_CCDExchange1.xml";
+			toXML = CCDImportConstants.INVALID_CCD + "InvalidXML_CCDExchange1.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 		}else if(type.equalsIgnoreCase(EhcoreAPIConstants.INVALID_CCD_NOTIFICATION)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			xmlFile = EhcoreAPIConstants.INVALID_CCD + "NullSocialHistory_CCDExchange1.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD + "testNullSocialHistory_CCDExchange1.xml";
+			xmlFile = CCDImportConstants.INVALID_CCD + "NullSocialHistory_CCDExchange1.xml";
+			toXML = CCDImportConstants.SAMPLE_CCD + "testNullSocialHistory_CCDExchange1.xml";
 			updateCCD_Data(xmlFile,toXML,UPN);
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NULL_CODE_SOCIAL_HISTORY)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_CCD + "NullSocialHistory_CCDExchange1.xml";
+			toXML = CCDImportConstants.INVALID_CCD + "NullSocialHistory_CCDExchange1.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}
 		//Invalid Consolidated CCD
-		else if(type.equalsIgnoreCase(EhcoreAPIConstants.INVALID_C_CCD)){
+		else if(type.equalsIgnoreCase(CCDImportConstants.INVALID_C_CCD)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_C_CCD + "InvalidCCCD1.xml";
+			toXML = CCDImportConstants.INVALID_C_CCD + "InvalidCCCD1.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 		}else if(type.equalsIgnoreCase(EhcoreAPIConstants.INVALID_C_CCD_XML_VALIDATION)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_C_CCD + "InvalidCCCD1_XMLValidate.xml";
+			toXML = CCDImportConstants.INVALID_C_CCD + "InvalidCCCD1_XMLValidate.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 		}else if(type.equalsIgnoreCase(EhcoreAPIConstants.INVALID_C_CCD_NOTIFICATION)){
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			xmlFile = EhcoreAPIConstants.INVALID_C_CCD + "NullSocialHistoryCCCD1.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD + "testNullSocialHistoryCCCD1.xml";
+			xmlFile = CCDImportConstants.INVALID_C_CCD + "NullSocialHistoryCCCD1.xml";
+			toXML = CCDImportConstants.SAMPLE_CCD + "testNullSocialHistoryCCCD1.xml";
 			updateCCD_Data(xmlFile,toXML,UPN);
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}
@@ -780,7 +787,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			url = testData.getUrl() + EhcoreAPIConstants.CCDImport;
-			toXML = EhcoreAPIConstants.INVALID_C_CCD + "NullSocialHistoryCCCD1.xml";
+			toXML = CCDImportConstants.INVALID_C_CCD + "NullSocialHistoryCCCD1.xml";
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}
 		ProcessingResponse response = processCCD_CheckResponse(url, EhcoreAPIConstants.POST_REQUEST, toXML,djId,expectedResponse,type);
@@ -1590,27 +1597,27 @@ public class EhcoreAPIUtil extends IHGUtil {
 		//EHDC : CCD Import & Export
 		else if(type == "ccdimport"){
 			url = getUrl(EhcoreAPIConstants.CCDImport);
-			xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
+			xmlFile = CCDImportConstants.CCD + "CCDExchange1.xml";
 		}else if(type == "ccdexport"){
 			url = getUrl(EhcoreAPIConstants.CCDExport) ;
-			xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
+			xmlFile = CCDExportConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
 		}
 
 		//Allscripts: CCDI mport & Export
-		else if(type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD)){
-			url = getAllScriptsCCDExportURL();
+		else if(type.equalsIgnoreCase(CCDImportConstants.AS_CCD)){ 
+			url = getAllScriptsCCDExportURL(); //if you get a failure, plz check it is for import or export
 			//xmlFile = UtilConsts.SAMPLE_ALLSCRIPTS_ADAPTER_CDDIMPORT_INPUT_DATA + "AllScriptsAdapter_CCDImport_Input.xml";
-			xmlFile = EhcoreAPIConstants.AS_REQ + "MyWay_HealthyPatient1.xml";
+			xmlFile = CCDImportConstants.AS_REQ + "MyWay_HealthyPatient1.xml";
 		}
-		else if(type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)){
+		else if(type.equalsIgnoreCase(CCDExportConstants.AS_CCD_EXPORT)){
 			url = getAllScriptsCCDExportURL();
-			xmlFile = EhcoreAPIConstants.AS_CCDEXPORT_REQ + "AS_CCDExport_Request.xml";
+			xmlFile = CCDExportConstants.AS_CCDEXPORT_REQ + "AS_CCDExport_Request.xml";
 		}
 
 		//Allscripts :Questionnaire Export
 		else if(type == "questionnaireAllscriptsexport"){
 			url = getAllScriptsFormsExportURL();
-			xmlFile = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA + "AllscriptsInput_FormsExport.xml";
+			xmlFile = CCDExportConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA + "AllscriptsInput_FormsExport.xml";
 		}
 		processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, xmlFile,"",contentType,expectedResponse);
 	}
@@ -1642,29 +1649,29 @@ public class EhcoreAPIUtil extends IHGUtil {
 		//EHDC : CCD Import , Export & Reprocess Req
 		else if(type == "ccdimport"){
 			url = getUrl(EhcoreAPIConstants.CCDImport)+ type;
-			xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
+			xmlFile = CCDImportConstants.CCD + "CCDExchange1.xml";
 		}else if(type == "ccdexport"){
 			url = getUrl( EhcoreAPIConstants.CCDExport)+type;
-			xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA+ "CCDMessageType.xml";
+			xmlFile = CCDExportConstants.CCD_EXPORT_DATA+ "CCDMessageType.xml";
 		}else if(type == "reprocessReq"){
 			url = getURL_ERROR() + EhcoreAPIConstants.REPROCESS +  type;
 			xmlFile = EhcoreAPIConstants.REPROCESS_DATA + "ReprocessMessage_template.xml";
 		}
 
 		//Allscripts: CCDImport and Export
-		else if(type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD)){
+		else if(type.equalsIgnoreCase(CCDImportConstants.AS_CCD)){
 			url = getAllScriptsCCDImportURL()+ type;
-			xmlFile = EhcoreAPIConstants.AS_REQ + "MyWay_HealthyPatient1.xml";
+			xmlFile = CCDImportConstants.AS_REQ + "MyWay_HealthyPatient1.xml";
 		}
-		else if(type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)){
+		else if(type.equalsIgnoreCase(CCDExportConstants.AS_CCD_EXPORT)){
 			url = getAllScriptsCCDExportURL()+ type;
-			xmlFile = EhcoreAPIConstants.AS_CCDEXPORT_REQ + "AS_CCDExport_Request.xml";
+			xmlFile = CCDExportConstants.AS_CCDEXPORT_REQ + "AS_CCDExport_Request.xml";
 		}
 
 		//Allscripts:Questionnaire Export
 		else if(type == "questionnaireAllscriptsexport"){
 			url = getAllScriptsFormsExportURL()+ type;
-			xmlFile = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA + "AllscriptsInput_FormsExport.xml";
+			xmlFile = CCDExportConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA + "AllscriptsInput_FormsExport.xml";
 		}
 
 
@@ -1869,18 +1876,18 @@ public class EhcoreAPIUtil extends IHGUtil {
 	    	String url = null;
 	        String toXML = null;
 	        String expectedResponse = null;
-	    	if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD)){
+	    	if (type.equalsIgnoreCase(CCDImportConstants.AS_CCD)){
 	    		
 	    		//url =testData.getUrl()+testData.getAllscriptsccdimporturl();
 	    		url="http://dev3vip-eh-core-svc.qhg.local:80/asehr/service/hub";
 	    		//toXML = UtilConsts.SAMPLE_ALLSCRIPTS_ADAPTER_CDDIMPORT_INPUT_DATA + "AllScriptsAdapter_CCDImport_Input.xml";
-	    		toXML = EhcoreAPIConstants.AS_REQ + "Professional_AllisonReed_1.xml";
+	    		toXML = CCDImportConstants.AS_REQ + "Professional_AllisonReed_1.xml";
 	    		expectedResponse = "OK";
 	    		
 	    	}else if (type == "invalidAllscriptsCCDImportMsg"){
 	    		//url =testData.getUrl()+testData.getAllscriptsccdimporturl();
 	    		url="http://dev3vip-eh-core-svc.qhg.local:80/asehr/service/hub";
-	    		toXML = EhcoreAPIConstants.AS_INVALID_REQ + "AllScriptsAdapter_CCDImport_InvalidInput.xml";
+	    		toXML = CCDImportConstants.AS_INVALID_REQ + "AllScriptsAdapter_CCDImport_InvalidInput.xml";
 	    		expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 	    	}
 	    	AllscriptsMessageEnvelope response = processAS_CCD(url, EhcoreAPIConstants.POST_REQUEST, toXML,expectedResponse);
@@ -2067,7 +2074,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.deleteCCD)){
 	          	expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_CCD_RES + "delete_Immunization1.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NEW_CCD)){
-	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_CDMLIST + "CDM_CCDExchange1_New.xml");
+	      		expectedCDM.add(0,CCDImportConstants.EXPECTED_CDMLIST + "CDM_CCDExchange1_New.xml");
 	      	}/*else if(type.equalsIgnoreCase("NoUpdates")){
 	      		expectedCDM.add(0,UtilConsts.EXPECTED_CDMLIST + "CDM_CCDExchange1_NoUpdates.xml");
 	      	}*/
@@ -2078,9 +2085,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateC_CCD)){
 	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_Update.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NEW_CCD)){
-	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_New.xml");
+	      		expectedCDM.add(0,CCDImportConstants.EXPECTED_C_CDMLIST + "C_CDM_New.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NOKNOWN_C_CCD)){
-	      		expectedCDM.add(0,EhcoreAPIConstants.EXPECTED_C_CDMLIST + "C_CDM_NoKnown.xml");
+	      		expectedCDM.add(0,CCDImportConstants.EXPECTED_C_CDMLIST + "C_CDM_NoKnown.xml");
 	      	}
 	  	    compareXml(expectedCDM,actualCDM);
 	      }
@@ -2133,16 +2140,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 		    	String url = null;
 		        String toXML = null;
 		        String expectedResponse = null;
-		    	if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD)){
+		    	if (type.equalsIgnoreCase(CCDImportConstants.AS_CCD)){
 		    		
 		    		url = getAllScriptsCCDImportURL();
 		    		//toXML = UtilConsts.SAMPLE_ALLSCRIPTS_ADAPTER_CDDIMPORT_INPUT_DATA + "AllScriptsAdapter_CCDImport_Input.xml";
-		    		toXML = EhcoreAPIConstants.AS_REQ + "Professional_AllisonReed_1.xml";
+		    		toXML = CCDImportConstants.AS_REQ + "Professional_AllisonReed_1.xml";
 		    		expectedResponse = "OK";
 		    		
 		    	}else if (type == "invalidAllscriptsCCDImportMsg"){
 		    		url = getAllScriptsCCDImportURL();
-		    		toXML = EhcoreAPIConstants.AS_INVALID_REQ + "AllScriptsAdapter_CCDImport_InvalidInput.xml";
+		    		toXML = CCDImportConstants.AS_INVALID_REQ + "AllScriptsAdapter_CCDImport_InvalidInput.xml";
 		    		expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
 		    	}
 		    	AllscriptsMessageEnvelope response = processAS_CCD(url, EhcoreAPIConstants.POST_REQUEST, toXML,expectedResponse);
@@ -2170,8 +2177,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			Log4jUtil.log("**********validExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
 			Log4jUtil.log("***************VALID EXPORT MESSAGE**************"	+ url);
-			xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA
+			xmlFile = CCDExportConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
+			toXML = CCDExportConstants.SAMPLE_CCD_EXPORT_DATA
 					+ "testCCDMessageType.xml";
 			updateCCDExport_Data(xmlFile, toXML, value,
 					EhcoreAPIConstants.KEYREGISTRY_PATIENTID,
@@ -2180,7 +2187,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (type == "invalidExportMsg") {
 			Log4jUtil.log("********** invalidExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
-			toXML = EhcoreAPIConstants.INVALID_CCD_EXPORT_DATA
+			toXML = CCDExportConstants.INVALID_CCD_EXPORT_DATA
 					+ "InvalidCCDMessageType.xml";
 		}
 
@@ -2190,9 +2197,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 			Log4jUtil.log("********** validQuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
-			xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA
+			xmlFile = CCDExportConstants.QUESTIONNAIRE_EXPORT_DATA
 					+ "QuestionnaireMessage.xml";
-			toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA
+			toXML = CCDExportConstants.SAMPLE_CCD_EXPORT_DATA
 					+ "testQuestionnaireMessage.xml";
 
 			EhcoreAPIUtil.updateCCDExport_Data(xmlFile, toXML, "msgId",
@@ -2206,7 +2213,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (type == "invalidKey_QuestionnaireExportMsg") {
 			Log4jUtil.log("********** invalidKey_QuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
-			toXML = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY
+			toXML = CCDExportConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY
 					+ "QuestionnaireMessageInvalidKey.xml";
 			// Validate Request xml against XSD
 			// assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
@@ -2214,22 +2221,22 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (type == "invalidQuestionnaireExportMsg") {
 			Log4jUtil.log("********** invalidQuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDExport;
-			toXML = EhcoreAPIConstants.INVALID_QUESTIONNAIRE_EXPORT_DATA
+			toXML = CCDExportConstants.INVALID_QUESTIONNAIRE_EXPORT_DATA
 					+ "InvalidQuestionnaireMessage.xml";
 		}
 
 		// Allscripts:CCDExport -This Request is to check CCDExport Flow with
 		// Valid and Invalid message
 
-		else if (type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT)) {
+		else if (type.equalsIgnoreCase(CCDExportConstants.AS_CCD_EXPORT)) {
 			Log4jUtil.log("********** internal/exportccd");
 			url = getAllScriptsCCDExportURL();
-			toXML = EhcoreAPIConstants.AS_CCDEXPORT_REQ
+			toXML = CCDExportConstants.AS_CCDEXPORT_REQ
 					+ "AS_CCDExport_Request.xml";
 		} else if (type == "invalidAllScriptsCCDExportMsg") {
 			Log4jUtil.log("********** invalidAllScriptsCCDExportMsg");
 			url = getAllScriptsCCDExportURL();
-			toXML = EhcoreAPIConstants.AS_CCDEXPORT_INVALID_REQ
+			toXML = CCDExportConstants.AS_CCDEXPORT_INVALID_REQ
 					+ "AllScriptsAdapter_CCDExport_InvalidInput.xml";
 		}
 
@@ -2239,12 +2246,12 @@ public class EhcoreAPIUtil extends IHGUtil {
 		else if (type == "validQuestionnaireAllscriptsExportMsg") {
 			Log4jUtil.log("********** validQuestionnaireAllscriptsExportMsg");
 			url = getAllScriptsFormsExportURL();
-			toXML = EhcoreAPIConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA
+			toXML = CCDExportConstants.SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA
 					+ "AllscriptsInput_FormsExport.xml";
 		} else if (type == "invalidQuestionnaireAllscriptsExportMsg") {
 			Log4jUtil.log("********** invalidQuestionnaireAllscriptsExportMsg");
 			url = getAllScriptsFormsExportURL();
-			toXML = EhcoreAPIConstants.INVALID_ALLSCRIPTS_EXPORT_DATA
+			toXML = CCDExportConstants.INVALID_ALLSCRIPTS_EXPORT_DATA
 					+ "InvalidAllscriptsInput_FormsExport.xml";
 		}
 
@@ -2270,10 +2277,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 				String xmlFile = null;
 				if(type == "import"){
 					url = getURL() + EhcoreAPIConstants.CCDImport;
-					xmlFile = EhcoreAPIConstants.CCD + "CCDExchangeWithEmptyStringUPN.xml";
+					xmlFile = CCDImportConstants.CCD + "CCDExchangeWithEmptyStringUPN.xml";
 				}else if(type == "export"){
 					url = getURL() + EhcoreAPIConstants.CCDExport;
-					xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageTypeWithEmptyStringValues.xml";
+					xmlFile = CCDExportConstants.CCD_EXPORT_DATA + "CCDMessageTypeWithEmptyStringValues.xml";
 				}
 				/**
 				 * The below code is to check Response for 
@@ -2281,7 +2288,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				 */
 				else if(type == "questionnaire_export"){
 					url = getURL() + EhcoreAPIConstants.CCDExport;
-					xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessageWithEmptyStringValues.xml";
+					xmlFile = CCDExportConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessageWithEmptyStringValues.xml";
 				}
 				ProcessingResponse response =  processCCD_CheckResponse(url, EhcoreAPIConstants.POST_REQUEST, xmlFile,djId,EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED,type);
 				return response;
@@ -2290,8 +2297,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			public static void sendWithInvalidDetails(String djId) throws Exception {
 		    	
 		        String url = getURL() + EhcoreAPIConstants.CCDImport ;
-		        String xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
-		        String toXML = EhcoreAPIConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
+		        String xmlFile = CCDImportConstants.CCD + "CCDExchange1.xml";
+		        String toXML = CCDImportConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
 		        
 		        updateCCD_Data(xmlFile,toXML,"valid");
 		                              
@@ -2301,8 +2308,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			public static void sendMessage_InvalidUPN(String djId,String UPN,String expectedResponse) throws Exception {
 		    	
 		        String url = getURL() + EhcoreAPIConstants.CCDImport;
-		        String xmlFile = EhcoreAPIConstants.CCD + "CCDExchange1.xml";
-		        String toXML = EhcoreAPIConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
+		        String xmlFile = CCDImportConstants.CCD + "CCDExchange1.xml";
+		        String toXML = CCDImportConstants.SAMPLE_CCD + "inputCCDExchange1.xml";
 		        
 		        updateCCD_Data(xmlFile,toXML,UPN);
 		        processRequestCCDMessage(url, EhcoreAPIConstants.POST_REQUEST, toXML,djId,expectedResponse);
@@ -2322,21 +2329,59 @@ public class EhcoreAPIUtil extends IHGUtil {
 				//EHDC:CCDExport -To check with invalid message
 				if(type.equalsIgnoreCase("InvalidCCDExport")){
 					url = getURL() + EhcoreAPIConstants.CCDExport;
-					xmlFile = EhcoreAPIConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
-					toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
+					xmlFile = CCDExportConstants.CCD_EXPORT_DATA + "CCDMessageType.xml";
+					toXML = CCDExportConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
 				}
 
 				//EHDC:QuestionnaireExport -To check with invalid message
 				else if(type.equalsIgnoreCase("InvalidQuestionnaireExport")){
 					url = getURL() + EhcoreAPIConstants.CCDExport;
-					xmlFile = EhcoreAPIConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessage.xml";
-					toXML = EhcoreAPIConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
+					xmlFile = CCDExportConstants.QUESTIONNAIRE_EXPORT_DATA + "QuestionnaireMessage.xml";
+					toXML = CCDExportConstants.SAMPLE_CCD_EXPORT_DATA + "testCCDMessageType.xml";
 				}
 
 				EhcoreAPIUtil.updateCCDExport_Data(xmlFile,toXML,msgId,UPN,"samplePracticeId","sampleProviderId");
 				processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, toXML,"","valid",EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 			}
-    
+    	   
+		    /**
+		     * Use this method to send the updated version of CCDEXchange.
+		     * @throws Exception 
+		     */
+		    public static ProcessingResponse sendUpdatedMessage(String djId,String UPN,String type) throws Exception {
+		    	
+		        String url = getURL() + EhcoreAPIConstants.CCDImport;
+		        String toXML = EhcoreAPIConstants.SAMPLE_UPDATE_CCD + "update_ValidCCD.xml";
+		        String xmlFile = null;
+		        if(type.equalsIgnoreCase(EhcoreAPIConstants.addentityCCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_CCD_REQ + "add_entity_CCDExchange1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.addelementCCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ELEMENT_CCD_REQ + "add_element_CCDExchange1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateCCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_CCD_REQ + "update_CCDExchange1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.deleteCCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_CCD_REQ + "delete_entity_CCDExchange1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.delete2CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_CCD_REQ + "delete2_entity_CCDExchange1.xml";
+		        else if(type == "NoUpdates")
+		        	xmlFile = CCDImportConstants.CCD + "CCDExchange1.xml";
+		        //Consolidated CCD
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.addentityC_CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_C_CCD_REQ + "add_entity_CCCD1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.addelementC_CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ELEMENT_C_CCD_REQ + "add_element_CCCD1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateC_CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_C_CCD_REQ + "update_CCCD1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.deleteC_CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_C_CCD_REQ + "delete_entity_CCCD1.xml";
+		        else if(type.equalsIgnoreCase(EhcoreAPIConstants.delete2C_CCD))
+		        	xmlFile = EhcoreAPIConstants.ADD_ENTITY_C_CCD_REQ + "delete2_entity_CCCD1.xml";
+		        updateCCD_Data(xmlFile,toXML,UPN);
+		     
+		        ProcessingResponse response = processCCD_CheckResponse(url, EhcoreAPIConstants.POST_REQUEST, toXML,djId,EhcoreAPIConstants.expectedResponse_Accepted,type);
+		        return response;
+
+		    }
 		 
 		    
 }

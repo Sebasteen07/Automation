@@ -13,6 +13,8 @@ import com.intuit.dc.framework.tracking.constants.TrackingEnumHolder;
 import com.intuit.dc.framework.tracking.entity.DataJob;
 import com.intuit.dc.framework.tracking.entity.Message;
 import com.intuit.dc.framework.tracking.entity.ProcessingStatusType;
+import com.intuit.ihg.product.apiehcore.utils.constants.CCDExportConstants;
+import com.intuit.ihg.product.apiehcore.utils.constants.CCDImportConstants;
 import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 
 
@@ -105,7 +107,7 @@ public class EhcoreTrackingDBUtils {
 				stmt = dbConnPs.prepareStatement(GET_MESSAGE_DETAILS);
 				stmt.setString(1, Id);
 			}
-			else if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT))){
+			else if(msg_type.equalsIgnoreCase(CCDImportConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(CCDExportConstants.AS_CCD_EXPORT))){
 				stmt = dbConnPs.prepareStatement(GET_AS_MESSAGE_DETAILS);
 				stmt.setString(1, Id);
 			}
@@ -362,7 +364,7 @@ public class EhcoreTrackingDBUtils {
 		ResultSet rs = null;
 		String str = null;
 		try {
-			if(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.AS_CCD_EXPORT))){
+			if(msg_type.equalsIgnoreCase(CCDImportConstants.AS_CCD_IMPORT)||(msg_type.equalsIgnoreCase(CCDExportConstants.AS_CCD_EXPORT))){
 				stmt = dbConnPs.prepareStatement(GET_AS_ATTRIBUTES_DETAILS);
 			}
 			else{
