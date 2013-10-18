@@ -110,6 +110,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Home Page Title what we ",
@@ -277,6 +278,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 18: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -354,6 +356,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -468,6 +471,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 22: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -544,6 +548,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -649,6 +654,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 19: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -723,6 +729,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -826,6 +833,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 20: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -920,6 +928,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
