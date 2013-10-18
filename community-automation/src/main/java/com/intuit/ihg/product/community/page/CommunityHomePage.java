@@ -164,6 +164,7 @@ public class CommunityHomePage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		link_Question_History.click();
+		Thread.sleep(5000);
 		return PageFactory.initElements(driver, AskAQuestionHistory.class);
 	}
 	
