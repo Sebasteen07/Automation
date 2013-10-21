@@ -89,7 +89,6 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    Out from Community
 	 * @throws Exception
 	 */
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityLoginLogout() throws Exception {
 
@@ -111,17 +110,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-
-		Assert.assertEquals(
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Home Page Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
+		Thread.sleep(3000);
 		
-		assertTrue(
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -168,7 +166,8 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -176,7 +175,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -200,7 +201,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		homePage = apptRequestStep3.filloutAppoitmentDetails(apptreason);
 
 		log("step 8: Check for successfull appointment notification on Home page ");
-		assertTrue(
+		verifyTrue(
 				homePage.checkSuccesNotification(driver),
 				"There was an issue with Community Appointment. Expected to see 'Successfull Notification Message on Home Page '  but it was not found.");
 
@@ -242,7 +243,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 15:Confirm response details to patient");
 		apptSearch = detailStep2.processApptRequest();
-		assertTrue(apptSearch.isSearchPageLoaded(),
+		verifyTrue(apptSearch.isSearchPageLoaded(),
 				"Expected the Appt Search Page to be loaded, but it was not.");
 
 		// Logging of the Practice Portal
@@ -288,7 +289,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 
-		assertTrue(
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -308,7 +309,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		MessageDetailPage messageDetails = new MessageDetailPage(driver);
 
 		log("step 24: Veryfing match of the Message subject: " + apptreason);
-		assertTrue(messageDetails.isSubjectLocated(apptreason),
+		verifyTrue(messageDetails.isSubjectLocated(apptreason),
 				"Message with correct Subject was not found");
 
 		log("step 25: Message found");
@@ -357,7 +358,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -365,8 +366,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -394,7 +396,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				askaquestion);
 
 		log("step 9: Check for successfull notification Message on Home page ");
-		assertTrue(
+		verifyTrue(
 				homePage.checkSuccesNotification(driver),
 				"There was an issue with Community Ask A Question. Expected to see 'Successfull Notification Message on Home Page '  but it was not found.");
 
@@ -404,7 +406,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 11 : Check  Ask a Question History got the above request");
 		AskAQuestionHistory askAQuestionHistory = new AskAQuestionHistory(
 				driver);
-		assertTrue(askAQuestionHistory.checkAskAQuestionHistory(askaquestion));
+	
+//		driver.navigate().refresh();
+		verifyTrue(askAQuestionHistory.checkAskAQuestionHistory(askaquestion));
 
 		log("Question found in History");
 
@@ -472,7 +476,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -480,7 +484,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 23: LogIn to Community");
 		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-		assertTrue(
+		Thread.sleep(3000);
+
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -500,7 +506,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		MessageDetailPage messageDetails = new MessageDetailPage(driver);
 
 		log("step 26: Veryfing match of the Message subject: " + askaquestion);
-		assertTrue(messageDetails.isSubjectLocated(askaquestion),
+		verifyTrue(messageDetails.isSubjectLocated(askaquestion),
 				"Message with correct Subject was not found");
 
 		log(" Message found");
@@ -549,15 +555,19 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
+		
 
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -580,7 +590,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				randomAmount)));
 
 		log("step 9: Check for successfull Payment  notification on Home page ");
-		assertTrue(
+		verifyTrue(
 				homePage.checkSuccesNotification(driver),
 				"There was an issue with Community Bill Pay  Expected to see 'Successfull Notification Message on Home Page '  but it was not found.");
 
@@ -622,7 +632,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		OnlineBillPayVerifyPage onlineBillPayVerifyPage = new OnlineBillPayVerifyPage(
 				driver);
-		assertTrue(onlineBillPayVerifyPage.MessageSentNotification(),
+		verifyTrue(onlineBillPayVerifyPage.MessageSentNotification(),
 				"Success notification is not displayed after the payment email sent");
 
 		log("step 17: Logout of Practice Portal");
@@ -654,8 +664,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 19: Load the Community URL and Check the Page Title");
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
-		Thread.sleep(5000);
-		Assert.assertEquals(
+		Thread.sleep(3000);
+		
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -664,7 +675,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 
-		assertTrue(
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -680,7 +691,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		MessageDetailPage messageDetails = new MessageDetailPage(driver);
 
 		log(" step 23: Validating whether the message is the correct one");
-		assertTrue(
+		verifyTrue(
 				messageDetails.isSubjectLocated("Test Bill Pay message "
 						+ randomTestID),
 				"Message with correct Subject was not found");
@@ -730,7 +741,8 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -738,7 +750,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -770,7 +784,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		rxRenewalChoosePharmacy.selectPharmacy(testcasesData.getPharmacy());
 
 		log("step 9:check for successful notification message on Home Page");
-		assertTrue(
+		verifyTrue(
 				homePage.checkSuccesNotification(driver),
 				"There was an issue with Community Rx Renewal  Expected to see 'Successfull Notification Message on Home Page'  but it was not found.");
 
@@ -834,7 +848,8 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -842,8 +857,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 21 : LogIn to Community");
 		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -861,7 +877,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		MessageDetailPage messageDetails = new MessageDetailPage(driver);
 		log("Veryfing match of the Message subject: Text RX message "
 				+ randomTestID);
-		assertTrue(messageDetails.isSubjectLocated("Text RX message "
+		verifyTrue(messageDetails.isSubjectLocated("Text RX message "
 				+ randomTestID));
 
 		log("step 23: Message found");
@@ -929,7 +945,8 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
-		Assert.assertEquals(
+		
+		verifyEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 						.trim());
@@ -938,7 +955,9 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getCCDUserName(),
 				testcasesData.getCCDUserPassword());
-		assertTrue(
+		Thread.sleep(3000);
+		
+		verifyTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
@@ -962,7 +981,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				driver);
 
 		log("step 7: Searching for elements on the CCDViewer site");
-		assertTrue(healthInformationPage.areElementsLocated(),
+		verifyTrue(healthInformationPage.areElementsLocated(),
 				"CCD message was not displayed properly");
 
 		log("step 8: CCDViewer displayed elements correctly");
