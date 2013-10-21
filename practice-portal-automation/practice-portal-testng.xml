@@ -24,9 +24,6 @@
           <include name="testPracticePortal"/>
           <include name="testQuickSendPatientPDF"/>
           <include name="testLoginLogout"/>
-          <include name="testMakePaymentForPatient"/>
-          <include name="testVirtualCardSwiper"/>
-          <include name="testOnlineBillPayProcess"/>
           
       </methods>   
 </classes>     
