@@ -332,11 +332,12 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
 
 		log("step 3:Set Patient Search Fields");
-		pPatientSearchPage.setPatientSearchFields();
-
+//		pPatientSearchPage.setPatientSearchFields();
+		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.fName, PracticeConstants.lName);
+	
 		log("step 4:Verify the Search Result");
 		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
-		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
+		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.fName));
 
 	}
 
