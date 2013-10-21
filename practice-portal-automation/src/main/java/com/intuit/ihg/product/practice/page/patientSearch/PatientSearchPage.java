@@ -107,6 +107,20 @@ public class PatientSearchPage extends BasePageObject{
 		firstNameField.sendKeys(fName);
 		lastNameField.sendKeys(lName);
 		searchButton.click();
+		
+	}
+	
+	public void searchForPatientInPatientSearch(String fName, String lName) throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 15, firstName);
+		firstName.clear();
+		firstName.sendKeys(fName);
+		IHGUtil.waitForElement(driver, 15, lastName);
+		lastName.clear();
+		lastName.sendKeys(lName);
+		IHGUtil.waitForElement(driver, 10, searchForPatient);
+		searchForPatient.click();
+		Thread.sleep(5000);
 	}
 	
 
