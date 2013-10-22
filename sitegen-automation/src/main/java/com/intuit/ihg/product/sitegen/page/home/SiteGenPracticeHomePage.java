@@ -191,12 +191,16 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	 * 
 	 */
 
-	public CreateCustomForms clickCustomForms() throws InterruptedException {
+	public CreateCustomForms clickCustomForms() throws Exception {
 
 		log("Clicking on Custom Forms");
-		IHGUtil.waitForElement(driver, 30, lnkCustomForms);
-		lnkCustomForms.click();
-
+		IHGUtil.waitForElement(driver, 50, lnkCustomForms);
+		try {
+			lnkCustomForms.click();
+		}catch(Exception e) {
+			lnkCustomForms.click();
+		}
+		Thread.sleep(2000);
 		for(String winHandle : driver.getWindowHandles()){
 			driver.switchTo().window(winHandle);
 		}
