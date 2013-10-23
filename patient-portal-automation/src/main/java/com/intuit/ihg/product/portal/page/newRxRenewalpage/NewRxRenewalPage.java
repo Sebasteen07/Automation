@@ -92,6 +92,7 @@ public class NewRxRenewalPage  extends BasePageObject {
 		}
 		IHGUtil.waitForElement(driver,10,clickContinuebtn);
 		clickContinuebtn.click();
+		Thread.sleep(8000);
 	}
 
 	/**
