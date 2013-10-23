@@ -1,0 +1,15 @@
+TestObject.TestCaseId,TestObject.TestMethod,TestObject.TestTitle,TestObject.TestEnv,url,username,password
+1,testMobileLogin,Dev3 Login test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+2,testTabAsk,Dev3 AAQTab test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+3,testTabMyMessages,Dev3 MyMessagesTab test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+4,testTabAppointmentRequest,Dev3 ARRequestTab test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+5,testTabRxRenewal,Dev3 RxRenewalTab test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+6,testTabMakeAPayment,Dev3 MakeAPayment test,DEV3,https://dev3.dev.medfusion.net/mobile/,auto001,intuit123
+7,testMobileLogin,Prod Login test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+8,testTabMyMessages,Prod MyMessagesTab test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+9,testTabAppointmentRequest,Prod ARRequestTab test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+10,testTabRxRenewal,Prod RxRenewalTab test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+11,testTabAsk,Prod AAQTab test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+12,testTabMakeAPayment,Prod MakeAPayment test,PROD,https://www.medfusion.net/mobile/,autoprod001,intuit123
+13,testCCDViewer,Dev3 CCDViewer test,DEV3,https://dev3.dev.medfusion.net/mobile/,devccduser999,intuit123
+14,testCCDViewer,Prod CCDViewer test,PROD,https://www.medfusion.net/mobile/,prodccd001,intuit123
