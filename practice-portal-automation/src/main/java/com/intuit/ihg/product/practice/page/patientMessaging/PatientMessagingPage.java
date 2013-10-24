@@ -130,6 +130,7 @@ public class PatientMessagingPage extends BasePageObject{
 	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver, 10, recipientType);
 		Select sel=new Select(recipientType);
 		sel.selectByVisibleText(PracticeConstants.RecipientType);
 
@@ -176,6 +177,7 @@ public class PatientMessagingPage extends BasePageObject{
      public void setQuickSendFields(String filePath) throws Exception
      {
             IHGUtil.PrintMethodName();
+            Thread.sleep(5000);
             setDeliveryMode();
             setMessageType();
             setTemplate();
@@ -186,7 +188,7 @@ public class PatientMessagingPage extends BasePageObject{
 
                    PracticeUtil pUtil = new PracticeUtil(driver);
                    messageAttachment.click();
-                   String[] args={"UploadFile","FF" ,filePath,"20000"};
+                   String[] args={"UploadFile","FF" ,filePath,"23000"};
                    pUtil.setExeArg(args);
                    pUtil.run();
                    Thread.sleep(20000);
@@ -200,7 +202,7 @@ public class PatientMessagingPage extends BasePageObject{
             IHGUtil.setFrame(driver,PracticeConstants.frameName);
             IHGUtil.waitForElement(driver,30,searchResult);
             searchResult.click();
-            Thread.sleep(10000);
+            Thread.sleep(12000);
             IHGUtil.setFrame(driver,PracticeConstants.frameName);
             email.click();
             publishMessage.click();
