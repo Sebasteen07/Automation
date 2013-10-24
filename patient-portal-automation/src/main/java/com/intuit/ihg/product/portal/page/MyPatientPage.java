@@ -294,9 +294,10 @@ public class MyPatientPage  extends BasePageObject{
 			 */
 			public void verifyRegistrationConfirmationText() throws Exception
 			{
-				Thread.sleep(10000);
+				Thread.sleep(12000);
 				IHGUtil.PrintMethodName();
 				PortalUtil.setPortalFrame(driver);
+				log("Confirmation Text :"+registrationConfirmationtext.getText());
 				BaseTestSoftAssert.verifyEquals(true,registrationConfirmationtext.getText().contains("Thank you for filling out your registration and health history information!"));
 			}
 			 public ConsolidatedInboxPage clickMymessages() {
