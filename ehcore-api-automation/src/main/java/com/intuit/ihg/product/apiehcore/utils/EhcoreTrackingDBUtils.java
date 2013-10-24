@@ -103,7 +103,7 @@ public class EhcoreTrackingDBUtils {
 
 		try {
 
-			if((msg_type.equalsIgnoreCase(EhcoreAPIConstants.CCDImport))||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.CCDExport))){
+			if((msg_type.equalsIgnoreCase(EhcoreAPIConstants.CCDImport))||(msg_type.equalsIgnoreCase(EhcoreAPIConstants.CCDEXPORT))){
 				stmt = dbConnPs.prepareStatement(GET_MESSAGE_DETAILS);
 				stmt.setString(1, Id);
 			}

@@ -7,6 +7,7 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 		 * CCD Message -Inbound and Outbound Flow Details (Phr <==>Allscripts)
 		 */
 		public static final String SAMPLE_DATA = "target/test-classes/testfiles/";
+		
 		// Allscripts-CCD Import
 		public static final String AS_CCD = "ASCCDImport";
 		// public static final String AS_CCD_EXPORT = "ASCCDExport";
@@ -19,11 +20,9 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 		// public static final String AS_TEST_DATA =
 		// "src/test/resources/testfiles/adapters/allscripts/";
 		
-		//public static final String AS_CCDIMPORT_TEST_DATA = "src/test/resources/testfiles/ccdimport/allscripts/nonconsolidatedccd/";
-		//D:\PerforceWorkspace\sb5New\IHG_DEPOT\trunk\qa-automation\ehcore-api-automation\src\test\resources\testfiles\ccdimport\ccdexchange\consolidatedccd\valid\request
-		
 		public static final String CCD = "src/test/resources/testfiles/ccdimport/validCCDExchange1/input/";
-				
+		
+			
 		public static final String AS_RAW = "src/test/resources/testfiles/ccdimport/allscripts/nonconsolidatedccd/valid/expectedresponse/";
 					
 		// public static final String AS_RAW = AS_TEST_DATA
@@ -41,25 +40,30 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 				+ "C-CCD_mockup_Allscripts_HealthyPatient.xml";
 		
 		public static final String SAMPLE_CCD = SAMPLE_DATA	+ "/ccdimport/validCCDExchange1/input/";
+		
 		// CCDImport Message Details
 		
 		//public static final String C_TEST_DATA = "src/test/resources/testfiles/";
 		
-		public static final String CCD1 = "src/test/resources/testfiles/ccdimport/validCCDExchange1/input/";
+		public static final String CCD1 = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/request/";
+		
 		//public static final String C_CCD = C_TEST_DATA + "ccdimport/validCCDExchange/input/";           CHECK with further configuration
+		 //Consolidated CCD Details
+		 public static final String C_CCD = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/request/";
+		
 		
 		// Test Import CCD
-		public static final String INVALID_C_CCD = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/invalid/request" ; // C_TEST_DATA	+ "ccdimport/invalidCCDExchange/input/";
-		//D:\PerforceWorkspace\sb5New\IHG_DEPOT\trunk\qa-automation\ehcore-api-automation\src\test\resources\testfiles\ccdimport\ccdexchange\consolidatedccd\invalid\request
-		
+		public static final String INVALID_C_CCD = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/invalid/request/" ; 
+				
 		public static final String SAMPLE_C_CCD = SAMPLE_DATA	+ "c_ccd/ccdimport/validCCDExchange/input/";
 		
-		public static final String INVALID_CCD = "src/test/resources/testfiles/ccdimport/invalidCCDExchange1/input/";
+		public static final String INVALID_CCD = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/invalid/request/";
+		
 		// Allscripts adapter CCD IMPORT/EXPORT Message Details
 		
 		public static final String CCD_RAW = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/raw/";
 		
-		public static final String EXPECTED_C_CDMLIST = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/cdm"; //C_TEST_DATA		+ "ccdimport/validCCDExchange/expected/cdm/";
+		public static final String EXPECTED_C_CDMLIST = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/cdm/"; 
 		
 		// Actual & EXPECTED CDM Message
 		public static final String ACTUAL_CDMLIST = SAMPLE_DATA
@@ -68,7 +72,7 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 
 		
 		public static final String C_CCD_RAW = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/raw/";
-		public static final String C_CCD_ERROR = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/invalid/expectedresponse";//C_TEST_DATA+ "ccdimport/invalidCCDExchange/expected/error/";
+		public static final String C_CCD_ERROR = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/invalid/expectedresponse";
 		public static final String C_CCD_ENRICHED ="src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/enriched/";
 		public static final String C_CCD_SNAPSHOT = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/snapshot/";
 		public static final String C_CCD_DELTA = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/delta/";
@@ -79,7 +83,8 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 		public static final String CCD_SNAPSHOT = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/snapshot/";
 		public static final String CCD_DELTA = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/delta/";
 
-		public static final String CCD_ERROR = "src/test/resources/testfiles/ccdimport/invalidCCDExchange1/expected/error/";
+		public static final String CCD_ERROR = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/invalid/expectedresponse/";
+		
 		public static final String SAMPLE_INVALID_CCD = SAMPLE_DATA
 				+ "ccdimport/invalidCCDExchange1/input/";			
 

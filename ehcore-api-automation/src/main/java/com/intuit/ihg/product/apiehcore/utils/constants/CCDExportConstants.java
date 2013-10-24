@@ -19,7 +19,7 @@ public class CCDExportConstants {
 
 	public static final String QUESTIONNAIRE_SAMPLE_DATA = "target/test-classes/questionnaire/test_data/";
 	
-	public static final String AS_CCD_EXPORT = "internal/exportccd";
+	public static final String AS_CCD_EXPORT = "internal/exportccd/";
 	
 	public static final String ALLSCRIPTS_ADAPTER_FORMEXPORT_WS_URL = "allscripts_formsexport_ws_url";
 	public static final String ALLSCRIPTS_ADAPTER_CCDEXPORT_WS_URL = "allscripts_ccdexport_ws_url";
@@ -36,12 +36,11 @@ public class CCDExportConstants {
 	/**
 	 * CCD Export
 	 */
-
-	 public static final String CCD_EXPORT_DATA = "src/test/resources/testfiles/ccdexport/validCCDMessageType/input";
+	public static final String CCD_EXPORT_DATA ="src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/valid/request/"; 
 	public static final String SAMPLE_CCD_EXPORT_DATA = SAMPLE_DATA	+ "/ccdexport/validCCDMessageType/input/";
-	public static final String CCD_EXPORT_DATA_RAW =  "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/valid/expectedresponse"  ;  
-	public static final String INVALID_CCD_EXPORT_DATA = "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/invalid/request";
-	public static final String CCD_EXPORT_DATA_ERROR =  "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/invalid/expectedresponse";
+	public static final String CCD_EXPORT_DATA_RAW =  "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/valid/expectedresponse/"  ;  
+	public static final String INVALID_CCD_EXPORT_DATA = "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/invalid/request/";
+	public static final String CCD_EXPORT_DATA_ERROR =  "src/test/resources/testfiles/ccdexport/ccdmessage/nonconsolidatedccd/invalid/expectedresponse/";
 	public static final String SAMPLE_INVALID_CCD_EXPORT_DATA = SAMPLE_DATA	+ "ccdexport/invalidCCDMessageType/input/";
 	
 	// QuestionnaireExport Message Details
