@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "IHG-AUTOMATION-Suite" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "Patient-Portal-Appt-Req" >
+	<classes>
+	    <class name="com.intuit.ihg.product.portal.test.PortalAcceptanceTests" />
+	    	<methods>
+	    	    <include name="testAppointmentRequestEnd2End" />
+      		</methods>
+  </classes>
+</test>
+</suite>
