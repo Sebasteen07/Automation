@@ -75,6 +75,12 @@ public class PatientMessagingPage extends BasePageObject{
 	public void setDeliveryMode()
 	{
 		IHGUtil.PrintMethodName();
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		Select sel=new Select(deliveryMode);
 		sel.selectByVisibleText(PracticeConstants.DeliveryMode);
