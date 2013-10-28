@@ -206,7 +206,7 @@ public class PatientMessagingPage extends BasePageObject{
             searchForPatients.click();
             Thread.sleep(5000);
             IHGUtil.setFrame(driver,PracticeConstants.frameName);
-            IHGUtil.waitForElement(driver,30,searchResult);
+            IHGUtil.waitForElement(driver,60,searchResult);
             searchResult.click();
             Thread.sleep(12000);
             IHGUtil.setFrame(driver,PracticeConstants.frameName);
