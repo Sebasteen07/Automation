@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.phr.page.profile;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -71,6 +72,8 @@ public class PhrProfilePage extends BasePageObject{
 		txtzipCode.sendKeys(portalZip);
 		btnSaveChanges.click();
 		Thread.sleep(5000);
+		WebElement msg = driver.findElement(By.xpath(".//*[@class='info']"));
+		IHGUtil.waitForElement(driver, 30, msg);
 	}
 	
 	
