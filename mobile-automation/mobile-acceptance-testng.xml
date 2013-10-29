@@ -9,8 +9,8 @@
 <test name = "Mobile-Smoke-Automation" >
  <groups>
     <run>
-      <exclude name="AcceptanceTests"  />
-      <include name="SmokeTests"  />
+      <include name="AcceptanceTests"  />
+      <exclude name="SmokeTests"  />
     </run>
 </groups>
 <classes>

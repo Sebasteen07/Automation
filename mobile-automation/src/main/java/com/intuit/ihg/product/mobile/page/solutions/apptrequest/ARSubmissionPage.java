@@ -4,6 +4,8 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.entities.AppointmentRequest;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SubmissionConfirmationPage;
+import com.intuit.ihg.product.mobile.utils.MobileConstants;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
@@ -89,13 +91,13 @@ public class ARSubmissionPage extends MobileBasePage {
 			IHGUtil.waitForElement(driver,n, reasonForVisit);
 		}
 
-     public MobileBasePage fillWithDataAndSubmit(AppointmentRequest appointmentRequest) throws InterruptedException {
+     public MobileBasePage fillWithDataAndSubmit(String apptDate,String apptReason,String apptTime) throws InterruptedException {
         waitForARSubmissionText(driver, 10);
         selApptDate = new Select( driver.findElement(By.cssSelector("select[id='selApptDate']")));
         selApptTime = new Select( driver.findElement(By.cssSelector("select[id='apptTime']")));
-        selApptDate.selectByVisibleText(appointmentRequest.getApptDate());
-        selApptTime.selectByVisibleText(appointmentRequest.getApptTime());
-        reasonForVisit.sendKeys(appointmentRequest.getReason());
+        selApptDate.selectByVisibleText(apptDate);
+        selApptTime.selectByVisibleText(apptTime);
+        reasonForVisit.sendKeys(apptReason);
         btnSubmit.click();
          if (isErrorMsgPresent())
         return new ARSubmissionPage(driver);
