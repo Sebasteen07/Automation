@@ -806,7 +806,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4: Enter patient email");
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(patientData.getEmail());
 
-		if(IHGUtil.getEnvironmentType().toString().equals("DEMO")) {
+		if(IHGUtil.getEnvironmentType().toString().equals("PROD")||IHGUtil.getEnvironmentType().toString().equals("DEMO")) {
 			
 			log("Enter Patient's DOB");
 			step2.selectDOB(patientData.getDob_Day(), patientData.getDob_Month(), patientData.getDob_Year());
@@ -1179,7 +1179,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		String actualPatientName = pHealthForm.Patientname.getText().trim();
 		
 		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm.Patientname.getText().trim().equalsIgnoreCase("Patient Name : Ihgqa QAQA Automation"), true);
+		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa QAQA Automation"), true);
 		/*
 		 * assertTrue(verifyTextPresent(driver,
 		 * "Patient Name : ihgqa  automation "));
@@ -1498,6 +1498,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())+PracticeConstants.BillPaymentSubject;
+		
 		log("step 13: Find message in Inbox");
 		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
 
