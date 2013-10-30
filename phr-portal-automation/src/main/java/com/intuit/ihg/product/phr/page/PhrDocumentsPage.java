@@ -81,10 +81,12 @@ public class PhrDocumentsPage extends BasePageObject {
 
 	/**
 	 * Click on first date in the table list
+	 * @throws Exception 
 	 */
-	public void clickFirstCcdInTheList() {
+	public void clickFirstCcdInTheList() throws Exception {
 		IHGUtil.PrintMethodName();
 		btnNewHealthInformation.click();
+		Thread.sleep(5000);
 	}
 
 	/**
