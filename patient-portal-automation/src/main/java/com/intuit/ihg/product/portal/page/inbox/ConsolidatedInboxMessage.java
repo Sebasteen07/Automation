@@ -3,11 +3,13 @@ package com.intuit.ihg.product.portal.page.inbox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class ConsolidatedInboxMessage extends BasePageObject {
@@ -59,6 +61,15 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 
 	@FindBy(id = "closeCcd")
 	private WebElement btnCloseViewer;
+	
+	@FindBy(linkText = "My Patient Page")
+	private WebElement lnkMyPatientPage;
+	
+	@FindBy(id = "basicInfo")
+	private WebElement ccdBasicInfo;
+	
+	@FindBy(css = "#lightbox > iframe:nth-child(1)")
+	public WebElement CCDViewFrame;
 
 	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
 			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
@@ -74,6 +85,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"Your health information was sent to ihg_qa@direct.healthvault.com!"};
+
 
 	public ConsolidatedInboxMessage(WebDriver driver) {
 		super(driver);
@@ -148,6 +160,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		 return practiceResponseSubject.getText().toString().trim();
 	 }
 	 
+	 
 	/**
 	 * Click on the link Review Health Information
 	 */
@@ -158,7 +171,8 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		btnReviewHealthInformation.click();
 		Thread.sleep(2000);
 	}
-	 
+	
+
 	/**
 	 * Click on the link 'ShareWithADoctor'
 	 */
@@ -220,6 +234,22 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			log("### PhrDocumentsPage.btnCloseViewer --- Could not find Close Viewer");
 		}
 	}
+	
+	/**
+	 * verify CCD Viewer and click on button 'CloseViewer'
+	 */
+	public void verifyCCDViewerAndClose() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(webframe);
+		if (ccdBasicInfo.isDisplayed() && btnCloseViewer.isDisplayed()) {
+			btnCloseViewer.click();
+		} else {
+			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
+		}
+	}
+	
+
 
 	/**
 	 * Enter direct Address and validate the response
@@ -276,5 +306,12 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			clickOnCloseViewer();
 		}
 	}
+	
+	public MyPatientPage clickMyPatientPage() {
+	 	IHGUtil.PrintMethodName();
+		PortalUtil.setDefaultFrame(driver);
+		lnkMyPatientPage.click();
+		return PageFactory.initElements(driver, MyPatientPage.class);
+}
 
 }
