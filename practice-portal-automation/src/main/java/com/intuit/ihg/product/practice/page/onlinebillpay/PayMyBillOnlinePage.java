@@ -47,9 +47,12 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	
 	@FindBy(xpath = "//input[@name='paymentComment']")
 	private WebElement paymentComment;
-	
-	@FindBy(xpath = "//input[@value='radio7']")
+
+	@FindBy(xpath = "//*/tr/td[2][contains(.,'t save card post transaction')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
 	private WebElement donotSaveTransaction;
+	
+	@FindBy(xpath = "//*/tr/td[2][contains(.,'Pay with New Card')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
+	private WebElement newCardPay;
 	
 	@FindBy(xpath = "//input[@name='creditCardPanel:newccdetails:nameOnCreditCard']")
 	private WebElement cardHolder;
@@ -222,7 +225,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,30,donotSaveTransaction);
+		IHGUtil.waitForElement(driver,30,donotSaveTransaction);	
 		donotSaveTransaction.click();
 		Thread.sleep(4000);
 	}
@@ -238,7 +241,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.waitForElement(driver,30,cardHolder);
 		cardHolder.clear();
 		cardHolder.sendKeys(PracticeConstants.CardHolderName);
-		Thread.sleep(4000);
+		//Thread.sleep(4000);
 		
 	}
 	
@@ -253,7 +256,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.waitForElement(driver,30,cardNumber);
 		cardNumber.clear();
 		cardNumber.sendKeys(PracticeConstants.CardNumber);
-		Thread.sleep(4000);
+		//Thread.sleep(4000);
 		
 	}
 	
@@ -363,6 +366,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver,30,submitPaymentButton);
 		submitPaymentButton.click();
 		
 	}
@@ -448,13 +452,16 @@ public class PayMyBillOnlinePage extends BasePageObject{
 //		driver.switchTo().frame("_wicket_window_3");
 		driver.switchTo().frame(iFrameRefundWindow);
 		commentForVoid.sendKeys(voidComment);
+
 		voidButton.click();
-		Thread.sleep(5000);
+		Thread.sleep(8000);
 		
-		String errorText =driver.findElement(By.xpath(".//form[@id='voidRefund']//div[@class='warn']//span")).getText();
+		//String errorText =driver.findElement(By.xpath(".//form[@id='voidRefund']//div[@class='warn']//span")).getText();
+		String errorText =driver.findElement(By.xpath(".//span[@class='feedbackPanelERROR']")).getText();
 		log("Error*******" +errorText);
 		
 		
+
 		PracticeUtil pUtil = new PracticeUtil(driver);
 		log("active****"+driver.switchTo().activeElement().getAttribute("name"));
 		driver.switchTo().defaultContent();
