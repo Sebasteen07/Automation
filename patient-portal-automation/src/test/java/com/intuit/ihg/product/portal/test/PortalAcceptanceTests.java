@@ -417,7 +417,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestEnd2End() throws Exception {
 
-		log("Test Case: testAppointmentRequest");
+		log("Test Case: testAppointmentRequestEnd2End");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
@@ -1179,7 +1179,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		String actualPatientName = pHealthForm.Patientname.getText().trim();
 		
 		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa QAQA Automation"), true);
+		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : ihgqa automation"), true);
 		/*
 		 * assertTrue(verifyTextPresent(driver,
 		 * "Patient Name : ihgqa  automation "));
