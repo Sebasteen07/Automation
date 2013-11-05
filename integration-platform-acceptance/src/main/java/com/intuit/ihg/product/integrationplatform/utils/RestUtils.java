@@ -314,6 +314,9 @@ public class RestUtils {
 				Assert.assertEquals(line2.getTextContent(), secondLine, "The actual value of Line 2 address doesnt equal the updated value");
 				break;
 			}
+			if(i == nodes.getLength() - 1){
+				Assert.fail("Patient was not found");
+			}
 		}
 		
 	}
@@ -371,6 +374,12 @@ public class RestUtils {
 		
 		
 				
+	}
+
+	public static String prepareCCD(String ccdPath) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Document doc = buildDOMXML(ccdPath);
+		return domToString(doc);
+		
 	}
 	
 		

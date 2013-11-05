@@ -3,7 +3,6 @@ package com.intuit.ihg.product.phr.page;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -69,6 +68,9 @@ public class PhrHomePage extends BasePageObject{
 	
 	@FindBy(linkText = "View all messages")
 	private WebElement viewAllMessageslnktext;
+	
+	@FindBy(xpath="//em[starts-with(text(), 'Messages')]")
+	private WebElement btnMessages;
 	
 	
 /*	<a class="clickable1" href="/phr/ui/action/taskmanager.do">View all messages</a>*/
@@ -341,5 +343,10 @@ public class PhrHomePage extends BasePageObject{
 		return PageFactory.initElements(driver, PhrMessagesPage.class );
 	}
 	
+	public PhrMessagesPage clickOnMyMessages() {
+		IHGUtil.PrintMethodName();
+		btnMessages.click();
+		return PageFactory.initElements(driver, PhrMessagesPage.class );
+	}
 	
 }

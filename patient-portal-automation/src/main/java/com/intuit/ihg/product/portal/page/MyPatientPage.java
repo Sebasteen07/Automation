@@ -317,4 +317,14 @@ public class MyPatientPage  extends BasePageObject{
 				phrLink.click();
 				return PageFactory.initElements(pdriver,PHRPage.class);
 			}
+		
+		/**
+		 * @Description:Click On PHR Link
+		 */
+	public void clickPHRWithoutInit(WebDriver pdriver)
+		{
+			IHGUtil.PrintMethodName();
+			PortalUtil.setPortalFrame(driver);
+			phrLink.click();
+		}
 }
