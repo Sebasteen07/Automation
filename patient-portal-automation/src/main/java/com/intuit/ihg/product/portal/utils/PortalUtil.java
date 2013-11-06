@@ -133,7 +133,7 @@ public class PortalUtil extends IHGUtil {
 
 		String[] tmp = email.split("@");
 
-		System.out.println("dynamic Email address" + tmp[0] + "+" + rnd + "@"
+		System.out.println("dynamic Email address" + tmp[0] + rnd + "@"
 				+ tmp[1]);
 
 		return tmp[0] + "+" + rnd + "@" + tmp[1];
