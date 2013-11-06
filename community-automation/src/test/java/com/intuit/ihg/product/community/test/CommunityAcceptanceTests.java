@@ -110,8 +110,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
+		
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
-				.trim(),"### It seems Community may be down at this moment .... Community Home Page Title what we ");
+				.trim(),
+				"### It seems Community may be down at this moment .... Community Title what we ");
+		}
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
@@ -165,10 +173,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
+		
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
 				.trim(),
 				"### It seems Community may be down at this moment .... Community Title what we ");
-
+		}
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
@@ -355,9 +369,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
+		
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
-				.trim(), 
+				.trim(),
 				"### It seems Community may be down at this moment .... Community Title what we ");
+		}
 
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
@@ -550,9 +571,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 
-		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle().trim(),
-				"### It seems Community may be down at this moment .... Community Title what we ");
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
 		
+		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
+				.trim(),
+				"### It seems Community may be down at this moment .... Community Title what we ");
+		}
 
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
@@ -732,9 +760,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
+		
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
-				.trim(), "### It seems Community may be down at this moment .... Community Title what we ");
-
+				.trim(),
+				"### It seems Community may be down at this moment .... Community Title what we ");
+		}
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
@@ -933,8 +968,16 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		
+		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
+					.trim(),
+					"### It seems Community may be down at this moment .... Community Title what we ");
+		}else {
+		
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
-				.trim(),"### It seems Community may be down at this moment .... Community Title what we ");
+				.trim(),
+				"### It seems Community may be down at this moment .... Community Title what we ");
+		}
 
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
