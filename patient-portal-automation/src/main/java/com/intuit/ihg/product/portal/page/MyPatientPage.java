@@ -95,7 +95,7 @@ public class MyPatientPage  extends BasePageObject{
 		@FindBy(xpath = "//a[@title='Make Payment']")
 	    private WebElement makePaymentlnk;
 		
-		@FindBy(xpath = "//a[@class='launch_questionnaire pop' and @title='Pre-registration Forms']")
+		@FindBy(xpath = ".//a[contains(@href , '/consumer/index.php/forms/start/pre-reg')]")
 	    private WebElement startRegistrationlnk;
 		
 		@FindBy(xpath = "//a[@id='formsComplete']/big")
