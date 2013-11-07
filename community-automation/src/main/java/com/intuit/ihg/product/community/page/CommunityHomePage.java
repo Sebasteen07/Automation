@@ -114,23 +114,13 @@ public class CommunityHomePage extends BasePageObject {
 	public boolean isViewallmessagesLinkPresent(WebDriver driver)
 			throws InterruptedException {
 		IHGUtil.PrintMethodName();	
-		if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
-
-			Assert.assertEquals(
-					"### It seems Community may be down at this moment .... Community Title what we ",
-					CommunityUtils.PAGE_TITLE_INTUIT_HEALTH_DEV3, driver.getTitle()
-					.trim());
-		}else {
-
-			Assert.assertEquals(
-					"### It seems Community may be down at this moment .... Community Title what we ",
-					CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
-					.trim());
-		}
-
+		Assert.assertEquals(
+				"### It seems Community may be down at this moment .... Community Title what we ",
+				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
+						.trim());
 		IHGUtil.waitForElement(driver, 60, link_View_All_Messages);
 		return link_View_All_Messages.isDisplayed();
-
+		
 	}
 
 	// Clicks on Messages link
@@ -167,7 +157,7 @@ public class CommunityHomePage extends BasePageObject {
 		link_Ask_New_Question.click();
 		return PageFactory.initElements(driver, AskAQuestionQuestionType.class);
 	}
-
+	
 	// Clicks on Ask a Question History link in Home Page
 	public AskAQuestionHistory clickAskAQuestionHistorylink()
 			throws InterruptedException {
@@ -177,7 +167,7 @@ public class CommunityHomePage extends BasePageObject {
 		Thread.sleep(5000);
 		return PageFactory.initElements(driver, AskAQuestionHistory.class);
 	}
-
+	
 	// Clicks on New Question link in Home Page
 	public BillPayChooseYourPractice clickBillPay()
 			throws InterruptedException {
@@ -186,7 +176,7 @@ public class CommunityHomePage extends BasePageObject {
 		link_Make_A_Payment.click();
 		return PageFactory.initElements(driver, BillPayChooseYourPractice.class);
 	}
-
+	
 	// Clicks on Renewal Request link in Home Page
 	public RxRenewalChoosePrescription  clickRxRenewal()
 			throws InterruptedException {
@@ -194,7 +184,7 @@ public class CommunityHomePage extends BasePageObject {
 		link_Renewal_Request.click();
 		return PageFactory.initElements(driver, RxRenewalChoosePrescription.class);
 	}
-
+	
 	// Clicks on My Account link in Home Page
 	public MyAccountMenuPage  clickMyAccount()
 			throws InterruptedException {
