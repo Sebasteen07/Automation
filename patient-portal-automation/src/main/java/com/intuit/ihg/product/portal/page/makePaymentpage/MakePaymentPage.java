@@ -103,7 +103,7 @@ public class MakePaymentPage extends BasePageObject {
 		catch(Exception e)
 		{
 			selectcreditCard.selectByVisibleText(PortalConstants.NewCardType);
-			IHGUtil.waitForElement(driver,20,nameOnCrediCard);
+			IHGUtil.waitForElement(driver,40,nameOnCrediCard);
 			nameOnCrediCard.sendKeys("Test Card");
 			crediCardNumber.sendKeys("4111111111111111");
 			Select selectcreditCardType=new Select(creditCardType);
