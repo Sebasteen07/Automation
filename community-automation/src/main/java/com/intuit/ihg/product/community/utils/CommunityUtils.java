@@ -37,9 +37,7 @@ public class CommunityUtils extends BaseTestNGWebDriver{
 			
 	}	
 
-	public static final String PAGE_TITLE_INTUIT_HEALTH = new String("Intuit Health");
-	
-	public static final String PAGE_TITLE_INTUIT_HEALTH_DEV3 = new String("Medfusion");
+	public static final String PAGE_TITLE_INTUIT_HEALTH = new String("Medfusion");
 	
 	public static final String PAGE_TITLE_PRACTICE_PORTAL =  new String("Medfusion Secure Practice Portal");
 	
