@@ -184,7 +184,7 @@ public class eStatementUploadPage extends BasePageObject {
 			String[] args={"UploadFile.exe","FF",filePath,"35000"};
 			pUtil.setExeArg(args);
 			pUtil.run();
-			Thread.sleep(20000);
+			Thread.sleep(35000);
 		}
 
 	}
