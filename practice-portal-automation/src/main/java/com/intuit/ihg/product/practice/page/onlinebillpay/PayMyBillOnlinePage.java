@@ -47,7 +47,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	
 	@FindBy(xpath = "//input[@name='paymentComment']")
 	private WebElement paymentComment;
-
+	
 	@FindBy(xpath = "//*/tr/td[2][contains(.,'t save card post transaction')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
 	private WebElement donotSaveTransaction;
 	
@@ -56,7 +56,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	
 	@FindBy(xpath = "//input[@name='creditCardPanel:newccdetails:nameOnCreditCard']")
 	private WebElement cardHolder;
-	
+		
 	@FindBy(xpath = "//input[@name='creditCardPanel:newccdetails:creditCardNumber']")
 	private WebElement cardNumber;
 	
@@ -84,7 +84,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy(xpath = "//div[@id='content']/div[2]/strong/div/p")
 	public WebElement paymentConfirmationText;
 	
-	@FindBy( xpath = ".//input[@name='voidPayment']")
+	@FindBy( xpath = ".//form/input[@name = 'voidPayment' and @value ='Void Payment']")
 	private WebElement voidPaymentButton;
 
 	@FindBy( xpath = ".//textarea[@name='comment']")
@@ -97,7 +97,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy( xpath = ".//*[@id='_wicket_window_1']//div[@class='w_caption']/a")
 	private WebElement closeVoidPopUp;
 	
-	@FindBy( xpath = ".//input[@value='Refund Payment']")
+	@FindBy( xpath = ".//input[@name = 'refundPayment' and @value='Refund Payment']")
 	private WebElement refundPayment;
 	
 	@FindBy( xpath = ".//input[@name ='amount']")
@@ -225,7 +225,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,30,donotSaveTransaction);	
+		IHGUtil.waitForElement(driver,30,donotSaveTransaction);
 		donotSaveTransaction.click();
 		Thread.sleep(4000);
 	}
@@ -241,7 +241,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.waitForElement(driver,30,cardHolder);
 		cardHolder.clear();
 		cardHolder.sendKeys(PracticeConstants.CardHolderName);
-		//Thread.sleep(4000);
+		Thread.sleep(4000);
 		
 	}
 	
@@ -256,7 +256,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.waitForElement(driver,30,cardNumber);
 		cardNumber.clear();
 		cardNumber.sendKeys(PracticeConstants.CardNumber);
-		//Thread.sleep(4000);
+		Thread.sleep(4000);
 		
 	}
 	
@@ -366,7 +366,6 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,30,submitPaymentButton);
 		submitPaymentButton.click();
 		
 	}
@@ -452,16 +451,13 @@ public class PayMyBillOnlinePage extends BasePageObject{
 //		driver.switchTo().frame("_wicket_window_3");
 		driver.switchTo().frame(iFrameRefundWindow);
 		commentForVoid.sendKeys(voidComment);
-
 		voidButton.click();
 		Thread.sleep(8000);
-		
-		//String errorText =driver.findElement(By.xpath(".//form[@id='voidRefund']//div[@class='warn']//span")).getText();
-		String errorText =driver.findElement(By.xpath(".//span[@class='feedbackPanelERROR']")).getText();
+		driver.switchTo().frame("iframe");
+		String errorText =driver.findElement(By.xpath(".//form//div/ul/li[@class='feedbackPanelERROR']/span")).getText();
 		log("Error*******" +errorText);
 		
 		
-
 		PracticeUtil pUtil = new PracticeUtil(driver);
 		log("active****"+driver.switchTo().activeElement().getAttribute("name"));
 		driver.switchTo().defaultContent();
