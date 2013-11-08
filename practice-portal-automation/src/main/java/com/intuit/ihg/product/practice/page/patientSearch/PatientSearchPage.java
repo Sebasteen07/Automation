@@ -126,12 +126,17 @@ public class PatientSearchPage extends BasePageObject{
 
 	public boolean isTransactionPresent(String amount, String fName, String lName) {
 		IHGUtil.PrintMethodName();
-		return driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amount+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).isDisplayed();
+		StringBuilder amont = new StringBuilder(amount);
+		amont = amont.insert(1, ",");
+		log("Ammmmmmountttt*******:"+amont);
+		return driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amont+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).isDisplayed();
 	}
 	
 	public PayMyBillOnlinePage selectTheTransaction(String amount,  String fName, String lName) {
 		IHGUtil.PrintMethodName();
-		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amount+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).click();
+		StringBuilder amont = new StringBuilder(amount);
+		amont = amont.insert(1, ",");
+		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amont+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
 	}
 	
