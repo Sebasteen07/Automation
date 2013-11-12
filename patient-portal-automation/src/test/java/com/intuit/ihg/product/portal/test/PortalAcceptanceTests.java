@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.portal.test;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultP
 import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.AssertJUnit;
@@ -420,7 +422,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: testAppointmentRequestEnd2End");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-
+			
+		 
 		log("step 1: Get Data from Excel");
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
@@ -471,6 +474,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 
+		log("SUBJECT*******"+Long.toString(apptRequestStep2.getCreatedTs()));
 		log("step 12: Search for appt requests");
 		apptSearch.searchForApptRequests();
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(Long.toString(apptRequestStep2.getCreatedTs()));
@@ -706,7 +710,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffHistoryPage.PAGE_NAME);
 		assertTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())),
 				"Expected to see a subject containing " + askStaff1.getCreatedTimeStamp()
-						+ " on the Ask A Staff History page. None were found.");
+				+ " on the Ask A Staff History page. None were found.");
 
 		log("step 7: Logout of Patient Portal");
 		myPatientPage.logout(driver);
@@ -807,7 +811,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(patientData.getEmail());
 
 		if(IHGUtil.getEnvironmentType().toString().equals("PROD")||IHGUtil.getEnvironmentType().toString().equals("DEMO")) {
-			
+
 			log("Enter Patient's DOB");
 			step2.selectDOB(patientData.getDob_Day(), patientData.getDob_Month(), patientData.getDob_Year());
 		}
@@ -1104,6 +1108,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 		pMyPatientPage.logout(driver);
 
+
 	}
 
 	/**
@@ -1177,7 +1182,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 11: Verify the Result");
 		String actualPatientName = pHealthForm.Patientname.getText().trim();
-		
+
 		log("Displayed patient name is :"+actualPatientName);
 		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : ihgqa automation"), true);
 		/*
@@ -1397,13 +1402,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 		Thread.sleep(6000);
-		
+
 		log("step 12: Go to Inbox");
 		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())+PortalConstants.RxRenewalSubject;
-		
+
 		log("step 13: Find message in Inbox And Validate Message Subject");
 		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
 
@@ -1498,7 +1503,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())+PracticeConstants.BillPaymentSubject;
-		
+
 		log("step 13: Find message in Inbox");
 		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
 
@@ -1701,7 +1706,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientSearch() throws Exception {
 
 		PatientActivationTest patientActivationTest = new PatientActivationTest();
@@ -1742,7 +1747,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientActivation() throws Exception {
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
