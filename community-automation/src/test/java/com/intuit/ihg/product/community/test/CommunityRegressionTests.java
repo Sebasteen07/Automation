@@ -67,7 +67,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
-
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -75,7 +75,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
+		Thread.sleep(5000);
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
@@ -104,7 +104,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 
 		homePage = loginPage.LoginToCommunity(testcasesData.getUserName(),
 				testcasesData.getPassword());
-
+		Thread.sleep(5000);
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
@@ -155,7 +155,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
-
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -163,7 +163,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 3: LogIn to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
+		Thread.sleep(5000);
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
@@ -224,6 +224,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 3: Launching Community. URL: " + testcasesData.getUrl());
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -274,7 +275,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 12: Entering the UserID and New Random Password and logging in");
 		CommunityHomePage homepage = step4.resetPassword(
 				testcasesData.getForgotUserName(), randompassword);
-
+		Thread.sleep(5000);
 		log("step 13: Checking Messages Icon is there on the Home");
 		homepage.isViewallmessagesLinkPresent(driver);
 
@@ -313,6 +314,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 3: Launching Community. URL: " + testcasesData.getUrl());
 		CommunityLoginPage loginPage = new CommunityLoginPage(driver,
 				testcasesData.getUrl());
+		Thread.sleep(5000);
 		Assert.assertEquals(
 				"### It seems Community may be down at this moment .... Community Title what we ",
 				CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle()
@@ -355,7 +357,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 10 : Login to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-
+		Thread.sleep(5000);
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
