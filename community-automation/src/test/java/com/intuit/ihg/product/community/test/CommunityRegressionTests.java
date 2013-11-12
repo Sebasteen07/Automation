@@ -202,7 +202,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 	 *                    using new password.
 	 * 
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityForgotPassword() throws Exception {
 
 		log("Test Case: testCommunityForgotPassword");
@@ -291,7 +291,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 	 *                    Community .
 	 * 
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityForgotUserID() throws Exception {
 
 		log("Test Case: testCommunityForgotUserID");
