@@ -2,6 +2,7 @@ package com.intuit.ihg.product.practice.page.apptrequest;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -96,9 +97,11 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	public void processApptAndSubmit(ApptRequestEntity entity) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		
+//		List<WebElement> processOptionsList = driver.findElements(By.name("processAppointment:action"));
 		// Select process option
 		for (WebElement action : processOptions) {
+//			log("WEBELEMENT****"+action.getText().toString());
+//			log("WEBELEMENT VALUE****"+action.getAttribute("value"));
 			int actionValue = Integer.parseInt(action.getAttribute("value"));
 			if (entity.getProcessOption() == actionValue) {
 				action.click();
