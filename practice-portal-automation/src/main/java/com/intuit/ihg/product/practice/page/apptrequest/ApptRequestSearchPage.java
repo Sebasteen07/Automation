@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.practice.page.apptrequest;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -43,6 +45,16 @@ public class ApptRequestSearchPage extends BasePageObject {
     @FindBy(name="searchParams:0:input:Date End:month")
     private WebElement endMonth;
 
+    @FindBy( xpath = ".//select[@name = 'searchParams:0:input:Date End:day']")
+	public WebElement endDateDropDwn;
+	
+    @FindBy( xpath = "searchParams:0:input:Date Begin:month")
+    public WebElement startMonthDropDwn;
+    
+    @FindBy( xpath = ".//select[@name= 'searchParams:0:input:Date Begin:day']")
+    public WebElement startDateDropDwn;
+      
+    
 	public ApptRequestSearchPage(WebDriver driver) {
 		super(driver);
 	}
@@ -117,11 +129,33 @@ public class ApptRequestSearchPage extends BasePageObject {
 			}
 		}
 		Thread.sleep(5000);
+	        
+	    SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy");
+		Date now = new Date();
+		String strDate = sdfDate.format(now);
+		String date = strDate.substring(0, 2);
+		
+		String month = strDate.substring(3, 5);
+		int startMnthValue = Integer.parseInt(month)-1;
+		
+		log("Select the Start Month in search filter options");		
+		Select startMonthSelect = new Select(startMonth);
+		startMonthSelect.selectByValue(String.valueOf(startMnthValue));
+		
+		log("Select the Start date in search filter options");		
+		Select startDate = new Select(startDateDropDwn);
+		startDate.selectByValue(date);
+		Thread.sleep(5000);
+		
+		log("Select end date in search filter options");
+		Select endDate = new Select(endDateDropDwn);
+		endDate.selectByValue(date);
+		Thread.sleep(5000);
+		
+		log("Select end Month in search filter options");
 		Select endMonthSelect = new Select(endMonth);
-	    Select startMonthSelect = new Select(startMonth);
-
-	    String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
-	    startMonthSelect.selectByIndex(Integer.parseInt(index));
+		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index");
+		
 		// Set provider if supplied
 		if (providerText != null) {
 			Select questionTypeSelect = new Select(provider);
@@ -133,8 +167,9 @@ public class ApptRequestSearchPage extends BasePageObject {
 			Select locationSelect = new Select(location);
 			locationSelect.selectByVisibleText(locationText);
 		}		
-
+		
 		filterApptRequests.click();
+		Thread.sleep(8000);
 	}
 	
 	/**
