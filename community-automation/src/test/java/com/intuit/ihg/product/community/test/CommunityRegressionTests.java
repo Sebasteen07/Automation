@@ -46,7 +46,6 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 	 *                    the savings are there.
 	 * @throws Exception
 	 */
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityMyAccountProfile() throws Exception {
 
@@ -105,6 +104,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		homePage = loginPage.LoginToCommunity(testcasesData.getUserName(),
 				testcasesData.getPassword());
 		Thread.sleep(5000);
+
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
@@ -134,7 +134,6 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 	 *                    Question and answer and save. Assert successful
 	 *                    message. Log out of Community
 	 */
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCommunityMyAccountSecurityQuestion() throws Exception {
 
@@ -276,6 +275,7 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		CommunityHomePage homepage = step4.resetPassword(
 				testcasesData.getForgotUserName(), randompassword);
 		Thread.sleep(5000);
+		
 		log("step 13: Checking Messages Icon is there on the Home");
 		homepage.isViewallmessagesLinkPresent(driver);
 
@@ -357,7 +357,8 @@ public class CommunityRegressionTests extends BaseTestNGWebDriver {
 		log("step 10 : Login to Community");
 		CommunityHomePage homePage = loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
-		Thread.sleep(5000);
+		Thread.sleep(50000);
+		
 		assertTrue(
 				homePage.isViewallmessagesLinkPresent(driver),
 				"There was an issue with Community login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
