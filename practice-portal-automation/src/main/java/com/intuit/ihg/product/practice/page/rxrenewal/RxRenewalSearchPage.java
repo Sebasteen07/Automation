@@ -121,6 +121,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 		startDaySelect.selectByIndex(Integer.parseInt(index2));
 
 		getPayments.click();
+		Thread.sleep(8000);
 
 	}
 
