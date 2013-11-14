@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -137,6 +138,10 @@ public void updateProfile(String streetaddress)throws Exception {
 		streetAddress.clear();
 		log ("Clearing  street address and the value is now :" +streetAddress.getAttribute("value"));
 		streetAddress.sendKeys(streetaddress);
+		Select maritalStatusDrp = new Select(maritalStatus);
+		maritalStatusDrp.selectByValue("MARRIED");
+		Select preferredCmmn = new Select(preferredCommunication);
+		preferredCmmn.selectByValue("MOBILE_PHONE");
 		log ("Entering Street adrress and saving the value :" +streetAddress.getAttribute("value"));
 		log("Clicking on Save button");
 		btnSaveChanges.click();
@@ -155,6 +160,8 @@ public void updateProfile(String streetaddress)throws Exception {
 			
 		}
 
+	
+	
 	
 	}
 	
