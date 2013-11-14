@@ -1076,7 +1076,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
 
 		log("**INFO:: TestForgotPassword");
@@ -1087,10 +1087,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
 
-//		log("step 2: Clean the Gmail Inbox");
-//		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(), PortalConstants.PORTAL_TITLE.trim());
-//		PortalUtil pPortalUtil = new PortalUtil(driver);
-//		pPortalUtil.emailMessageRemover(testcasesData.getUsername(), testcasesData.getPassword(), sSubject);
+		log("step 2: Clean the Gmail Inbox");
+		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(), PortalConstants.PORTAL_TITLE.trim());
+		PortalUtil pPortalUtil = new PortalUtil(driver);
+		pPortalUtil.emailMessageRemover(testcasesData.getUsername(), testcasesData.getPassword(), sSubject);
 
 		log("URL++++++++++++++++" + testcasesData.geturl());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
