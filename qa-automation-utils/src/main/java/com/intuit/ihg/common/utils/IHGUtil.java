@@ -880,7 +880,7 @@ public class IHGUtil extends BasePageObject {
 			//suppress numberformat exception
 			System.out.println("NumberFormat Exception "+ e);
 		}
-		return 5;          //arbitrary default number of tries
+		return 15;          //arbitrary default number of tries
 	}
 	/**
 	 *author:-bkrishnankutty

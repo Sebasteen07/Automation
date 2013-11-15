@@ -98,7 +98,9 @@ public class MobileHomePage extends MobileBasePage {
     public MessageInboxPage clickMyMessages() throws InterruptedException {
         waitForCount(driver, 20);
         IHGUtil.PrintMethodName();
+        Thread.sleep(2000);
         myMessages.click();
+        Thread.sleep(2000);
         return PageFactory.initElements(driver, MessageInboxPage.class);
     }
 

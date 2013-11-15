@@ -35,9 +35,15 @@ public class SelectAMedicationPage extends MobileBasePage {
     }
 
     public MobileBasePage selectMedication(String rxName){
-        medication = driver.findElement(By.xpath("//a[contains(text(),'" + rxName + "']")); //Claritin D
+        medication = driver.findElement(By.xpath("//a[contains(text(),'" + rxName + "')]")); //Claritin D
         medication.click();
         return PageFactory.initElements(driver, MobileBasePage.class);
+    }
+    
+    public RequestRenewalPage selMedication(String rxName){
+        medication = driver.findElement(By.xpath("//a[contains(text(),'" + rxName + "')]")); //Claritin D
+        medication.click();
+        return PageFactory.initElements(driver, RequestRenewalPage.class);
     }
 
     public SelectADoctorPage selectDiffMed(){

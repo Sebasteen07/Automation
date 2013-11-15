@@ -32,8 +32,8 @@ public class GmailBot implements MailBot {
 	private static final String GMAIL_FOLDER_INBOX = "Inbox";
 	private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
 	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
-	private static final String GMAIL_FOLDER_TRASH = "[Gmail]/Trash"; // UK =
-																		// [Google
+	//private static final String GMAIL_FOLDER_TRASH = "[Gmail]/Trash"; // UK =
+	private static final String GMAIL_FOLDER_TRASH = "Inbox";																	// [Google
 																		// Mail]/Bin
 
 	private static final String GMAIL_AUTH_USER = "com.test.ihg@gmail.com";
@@ -1046,6 +1046,142 @@ public class GmailBot implements MailBot {
 	}
     
     
+    public String findTrashEmailID(String sUser,
+			String sSubjectContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen ) throws Exception {
+
+		IHGUtil.PrintMethodName();
+
+		Set<String> urlList = new HashSet<String>();
+
+		// /////////////////////////
+		// Use GmailBot to parse email;
+
+		// GmailBot gBot = gbotConnect();
+
+		this.connect( MailSessionType.IMAP, userId,
+				password);
+
+		// Poll for email.
+
+		List<HashMap<String, String>> messageList = null;
+
+		int mailTries = IHGUtil.getTestMailLoop(); // Can be set
+																// from command
+																// lime:
+																// -Dtest.mail.loop=10
+
+		Log4jUtil.log("### DEBUG: MAIL TRIES: " + mailTries);
+
+		int iSleep = 10000;
+
+		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
+
+		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+
+		boolean bSubjectFound = false;
+
+		for (int safetyValve = 0; safetyValve < mailTries; safetyValve++) {
+
+			Log4jUtil.log("Sleeping waiting for email man ...");
+
+			Thread.sleep(iSleep); // TODO - get from properties file
+
+			messageList = findTrashMessageTo(sUser, sSubjectContains, null, minutesAgo, bFindSeen, bMarkSeen);
+
+			if (messageList == null)
+				continue;
+
+			for (HashMap<String, String> message : messageList) {
+
+				Log4jUtil.log("########## SUBJECT: "
+						+ message.get("SUBJECT"));
+
+				/*
+				if (!message
+						.get("SUBJECT")
+						.contains(sSubjectContains))
+					continue;
+				*/
+
+				bSubjectFound = true;
+
+				// TODO - mark messages as seen (via bot?).
+
+				// TODO verify is recent - may have to account for time zones!
+				sDate = message.get("DATE");
+
+				sFrom = message.get("FROM"); // TODO verify expected FROM
+												// address
+				sTo = message.get("TO"); // Format is (sans []):
+											// ["com.test.igh+FOO@gmail.com"
+											// <com.test.igh+FOO@gmail.com>]
+				sSubject = message.get("SUBJECT"); // TODO verify expected
+													// subject
+				sContent = message.get("CONTENT");
+				sPlainText = message.get("PLAIN_TEXT");
+				sHTML = message.get("HTML");
+				sContentType = message.get("CONTENT-TYPE");
+
+				break;
+			}
+
+			if (bSubjectFound)
+				break;
+		}
+
+		this.close();
+
+		if (messageList == null) {
+
+			throw new Exception(
+					"### Message list null - no messages found in trash folder for: "
+							+ sUser);
+		}
+
+		if (messageList.size() <= 0) {
+
+			throw new Exception(
+					"### No messages found in trash folder for: " + sUser
+							+ ", retries: " + mailTries + ", sleep(ms): "
+							+ iSleep);
+		}
+
+		// Parse message list.
+
+		// HashMap<String, String> message = messageList.get(0);
+
+		if (!bSubjectFound) {
+			throw new Exception(
+					"### ERROR: Message with matching subject not found.");
+		}
+
+		if (!sTo.toLowerCase().contains(
+				sUser.toLowerCase() )) {
+			throw new Exception("### ERROR: Recipient retrieved doesn't match. [" + sTo
+					+ "] vs. [" + sUser + "] ");
+		}
+
+		Log4jUtil.log("DEBUG: CONTENT: " + sContent);
+		Log4jUtil.log("DEBUG: PLAIN TEXT: " + sPlainText);
+		Log4jUtil.log("DEBUG: HTML: " + sHTML);
+
+		// Find URL
+
+		String secCode="";
+        Pattern pattern = Pattern.compile("Your user ID is: ^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher matcher = pattern.matcher(sPlainText);
+
+        if(matcher.find()) {
+             secCode =   matcher.group(1);
+    }
+        else
+          Log4jUtil.log("code Not found ");
+		return secCode;
+
+	}
+    
+    
     /**
 	 * findTrashEmailLink will return the URL which contains String "sLinkContains".
 	 * It does this operation with help of another method findInboxEmailLinks
@@ -1478,5 +1614,67 @@ public class GmailBot implements MailBot {
 	    }
      
 
+     
+     /**
+      * bkrishnankutty
+      * Deletes all e-mail messages From inbox
+    
+      * @param userName
+      * @param password
+      * @param subjectToDelete delete if the message's subject contains this value.
+      */
+      public void deleteAllMessagesFromInbox(String userName, String password, String subjectToDelete)
+          {
+ 	    IHGUtil.PrintMethodName();
+ 	    int j=0;
+ 	    try
+ 	      {
+ 	    	
+ 	    Log4jUtil.log( "#############Connect to the Gmail########");
+ 		this.connect( MailSessionType.IMAP,userName,password);
+ 		
+ 		Log4jUtil.log( "#######Open the inbox folder in READ_WRITE mode.#######");
+ 		Folder folderInbox = store.getFolder("INBOX");
+ 	    folderInbox.open(Folder.READ_WRITE);
+ 	    
+ 	    Log4jUtil.log( "#######Add messages into array and filter with subject.#######");
+ 	    Message[] arrayMessages = folderInbox.getMessages();
+ 	    for (int i = 0; i < arrayMessages.length; i++)
+ 	    {
+ 	    Message message = arrayMessages[i];
+ 	    String subject = message.getSubject();
+ 	  /*  if (subject.contains(subjectToDelete)) 
+ 	    {*/
+ 	    Log4jUtil.log( "#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
+ 	    message.setFlag(Flags.Flag.DELETED, true);
+ 	    System.out.println("Marked DELETE for message: " + subject);
+ 	    j=j+1;
+ 	    }
+ 	 //   }
+ 	    Log4jUtil.log("######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
+        /* boolean expunge = true;
+         folderInbox.close(expunge);*/
+         // another way:
+         folderInbox.expunge();
+         
+         folderInbox.close(false);
+
+         store.close(); 
+         if(j==0)
+         {
+         	 Log4jUtil.log("######## No messages with given subject to delete########");
+         }
+      }
+ 	     catch (NoSuchProviderException ex) 
+             {
+ 	        System.out.println("No provider.");
+ 	        ex.printStackTrace();
+ 	        } 
+ 	     catch (MessagingException ex) 
+          {
+            System.out.println("Could not connect to the message store.");
+            ex.printStackTrace();
+            }
+ 	    }
 
 }

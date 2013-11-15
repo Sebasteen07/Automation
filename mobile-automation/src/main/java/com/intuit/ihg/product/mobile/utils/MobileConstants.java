@@ -12,8 +12,8 @@ public class MobileConstants {
 	public static final String PRACTICE_DOCPASSWORD = "intuit123";
 
 	
-	
-	
+	public static final String RXRENEWAL_MEDICATION = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";
+	public static final String RXRENEWAL_PHARMACY = "CVS";
 	
 	
 	
