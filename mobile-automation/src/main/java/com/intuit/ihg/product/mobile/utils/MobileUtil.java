@@ -38,12 +38,11 @@ public class MobileUtil extends IHGUtil {
 	 * @param sSubject
 	 * @throws Exception
 	 */
-	public void cleanInbox(String userId, String password, String sSubject)
+	public void cleanInbox(String userId, String password)
 			throws Exception {
 
 		GmailBot gbot = new GmailBot();
-		log("subject of mail is " + sSubject);
-		gbot.deleteAllMessagesFromInbox(userId, password, sSubject);
+		gbot.deleteAllMessagesFromInbox(userId, password);
 
 	}
 

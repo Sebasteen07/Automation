@@ -1106,7 +1106,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 2: Clean the Gmail Inbox");
 		String sSubject = String.format("Your password has been reset");
 		MobileUtil util = new MobileUtil(driver);
-		util.cleanInbox(testcasesData.getUserName(),
+		util.emailMessageRemover(testcasesData.getUserName(),
 		 testcasesData.getPassword(), sSubject);
 
 		logTestInfo(testcasesData);
@@ -1145,6 +1145,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		MobileSignInPage pMobileSignInPage = pMobileHomePage.clickLogout();
 
 	}
+	
 	
 	
 	

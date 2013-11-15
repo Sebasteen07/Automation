@@ -275,5 +275,19 @@ public class PortalUtil extends IHGUtil {
             return nums.substring(0,length);
         }
     }
+    
+	/**
+	 * REMOVE ALL EMAILS FROM INBOX
+	 * @param userId
+	 * @param password
+	 * @param sSubject
+	 * @throws Exception
+	 */
+	public void cleanInbox(String userId, String password)
+			throws Exception {
+		GmailBot gbot = new GmailBot();
+		gbot.deleteAllMessagesFromInbox(userId, password);
+
+	}
 
 }
