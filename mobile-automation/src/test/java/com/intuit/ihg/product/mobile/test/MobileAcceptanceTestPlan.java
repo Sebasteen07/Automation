@@ -361,7 +361,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
      * @param prac         - Practice
      * @throws Exception
      */
-    @Test(enabled = true, groups = {"DeploymentAcceptanceTests", "AcceptanceTests", "Positive", "AppointmentRequest"},retryAnalyzer = RetryAnalyzer.class)
+    @Test(enabled = true, groups = {"AcceptanceTests", "Positive", "AppointmentRequest"},retryAnalyzer = RetryAnalyzer.class)
     public void testMobileARPreferredDocMultiLocation() throws Exception {
 
     	log("step 1: Get Data from Excel");
@@ -417,7 +417,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
      * @param prac         - Practice
      * @throws Exception
      */
-	@Test(enabled = true, groups = { "AcceptanceTests", "Positive",
+	@Test(enabled = true, groups = { "DeploymentAcceptanceTests","AcceptanceTests", "Positive",
 			"AppointmentRequest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMobileARSelectDocOneLocation() throws Exception {
 
