@@ -1623,7 +1623,7 @@ public class GmailBot implements MailBot {
       * @param password
       * @param subjectToDelete delete if the message's subject contains this value.
       */
-      public void deleteAllMessagesFromInbox(String userName, String password, String subjectToDelete)
+      public void deleteAllMessagesFromInbox(String userName, String password)
           {
  	    IHGUtil.PrintMethodName();
  	    int j=0;
