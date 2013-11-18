@@ -2,17 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-    <parent>
+	
+	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
         <version>ihg-depot-trunk-SNAPSHOT</version>
     </parent>
-
-    <artifactId>qa-automation-utils</artifactId>
+	
+	<groupId>com.intuit.ihg</groupId>
+	<artifactId>qa-automation-utils</artifactId>
     <name>qa-automation-utils</name>
     <packaging>jar</packaging>
-
+	
+	<repositories>
+        <repository>
+            <id>IHG-nexus</id>
+            <name>IHG-nexus</name>
+            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+        </repository>
+    </repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.intuit.ifs.csscat.core</groupId>
