@@ -104,9 +104,10 @@ public class SearchPatientFormsPage extends BasePageObject{
 		
 		Select end_m = new Select(dropDownEndMonth);
 		end_m.selectByVisibleText(IHGUtil.getDate_Month());
+		log("DATE"+IHGUtil.getDate_d());
 		
-		Select end_d = new Select(dropDownEndDay);
-		end_d.selectByVisibleText(IHGUtil.getDate_d());
+//		Select end_d = new Select(dropDownEndDay);
+//		end_d.selectByVisibleText(IHGUtil.getDate_d());
 		
 		Select end_y = new Select(dropDownEndYear);
 		end_y.selectByVisibleText(IHGUtil.getDate_y());
