@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding:1px; border: thin solid #CCCCCC;">
+  <table cellspacing="0" style="width:100%;">
+    <tr>
+      <td class="labheader labdescription" colspan="2">Basic Metabolic Panel</td>
+      <td class="labheader labdescription" style="text-align:right;">11/6/2013 9:16 AM</td>
+    </tr>
+  </table>
+  <table cellspacing="0" style="width:100%;">
+    <tr>
+      <td class="labheader" style="width:1%;">  </td>
+      <td class="labheader labdescription">Panel/Test</td>
+      <td class="labheader labvalue ">Value</td>
+      <td class="labheader labunit">Unit</td>
+      <td class="labheader labrange" style="white-space : nowrap;">Normal Range</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">Patient Type</td>
+      <td class="labvalue black">Outpatient</td>
+      <td class="labunit black">
+      </td>
+      <td style="white-space : nowrap;" class="labrange black">
+      </td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription red">GLUCOSE</td>
+      <td class="labvalue red">148</td>
+      <td class="labunit red">mg/dL</td>
+      <td style="white-space : nowrap;" class="labrange red">70-120</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">SODIUM</td>
+      <td class="labvalue black">145</td>
+      <td class="labunit black">mmol/L</td>
+      <td style="white-space : nowrap;" class="labrange black">136-146</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">POTASSIUM</td>
+      <td class="labvalue black">4.9</td>
+      <td class="labunit black">mmol/L</td>
+      <td style="white-space : nowrap;" class="labrange black">3.5-5.0</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">CHLORIDE</td>
+      <td class="labvalue black">101</td>
+      <td class="labunit black">mmol/L</td>
+      <td style="white-space : nowrap;" class="labrange black">100-112</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">TOTAL CO2</td>
+      <td class="labvalue black">27</td>
+      <td class="labunit black">mmol/L</td>
+      <td style="white-space : nowrap;" class="labrange black">24-32</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription red">BUN</td>
+      <td class="labvalue red">45</td>
+      <td class="labunit red">mg/dL</td>
+      <td style="white-space : nowrap;" class="labrange red">8-22</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription red">CREATININE</td>
+      <td class="labvalue red">1.63</td>
+      <td class="labunit red">mg/dL</td>
+      <td style="white-space : nowrap;" class="labrange red">0.70-1.30</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription red">ANION GAP</td>
+      <td class="labvalue red">17</td>
+      <td class="labunit red">
+      </td>
+      <td style="white-space : nowrap;" class="labrange red">4-12</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription red">CALCIUM</td>
+      <td class="labvalue red">10.8</td>
+      <td class="labunit red">mg/dL</td>
+      <td style="white-space : nowrap;" class="labrange red">8.4-10.3</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">Issuing Facility:</td>
+      <td class="labvalue black">
+      </td>
+      <td class="labunit black">
+      </td>
+      <td style="white-space : nowrap;" class="labrange black">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <table>
+          <tr>
+            <td valign="top" style="font-weight:bold;">   Note:</td>
+            <td valign="top" style="font-family:courier;">Issuing Facility:
+Lab Services at Christiana Hospital Campus
+</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

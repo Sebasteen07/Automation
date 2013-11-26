@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding:1px; border: thin solid #CCCCCC;">
+  <table cellspacing="0" style="width:100%;">
+    <tr>
+      <td class="labheader labdescription" colspan="2">TSH</td>
+      <td class="labheader labdescription" style="text-align:right;">11/6/2013 9:16 AM</td>
+    </tr>
+  </table>
+  <table cellspacing="0" style="width:100%;">
+    <tr>
+      <td class="labheader" style="width:1%;">  </td>
+      <td class="labheader labdescription">Panel/Test</td>
+      <td class="labheader labvalue ">Value</td>
+      <td class="labheader labunit">Unit</td>
+      <td class="labheader labrange" style="white-space : nowrap;">Normal Range</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">Patient Type</td>
+      <td class="labvalue black">Outpatient</td>
+      <td class="labunit black">
+      </td>
+      <td style="white-space : nowrap;" class="labrange black">
+      </td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">TSH</td>
+      <td class="labvalue black">0.34</td>
+      <td class="labunit black">mIU/L</td>
+      <td style="white-space : nowrap;" class="labrange black">0.27-4.20</td>
+    </tr>
+    <tr style="border:.01cm silver solid;">
+      <td style="width:1%;">  </td>
+      <td class="labdescription black">Issuing Facility:</td>
+      <td class="labvalue black">
+      </td>
+      <td class="labunit black">
+      </td>
+      <td style="white-space : nowrap;" class="labrange black">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <table>
+          <tr>
+            <td valign="top" style="font-weight:bold;">   Note:</td>
+            <td valign="top" style="font-family:courier;">Issuing Facility:
+Lab Services at Christiana Hospital Campus</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
