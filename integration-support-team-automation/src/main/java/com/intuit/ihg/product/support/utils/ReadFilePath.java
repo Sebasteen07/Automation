@@ -30,7 +30,7 @@ public class ReadFilePath {
 	 * @throws Exception
 	 */
 
-	public String getExcelSheetFilepath (String Filename ) throws Exception {
+	public  String getExcelSheetFilepath (String Filename ) throws Exception {
 		String filePath="";
 		File targetDataDrivenFile = null;
 		targetDataDrivenFile = new File(TestConfig.getTestRoot() 
@@ -46,7 +46,8 @@ public class ReadFilePath {
 			filePath = String.valueOf(targetDataDrivenFile.toString()).trim();
 		} else {
 			InputStream reader = null;
-			reader = getClass().getResourceAsStream("/data-driven/"+Filename);
+			reader = this.getClass().getResourceAsStream("/data-driven/"+Filename);
+			
 			// + Filename
 			if (reader.available() > 0) {
 

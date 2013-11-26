@@ -3,14 +3,14 @@ package com.intuit.ihg.product.support.utils;
 import java.net.URL;
 import com.intuit.ihg.common.utils.ExcelSheetReader;
 import com.intuit.ihg.common.utils.IHGUtil;
-
+import com.intuit.ihg.product.support.utils.Support;
 public class SupportTestcasesData {
 
-	Support phrobj = null;
+	Support supportObj = null;
 	ExcelSheetReader excelReader = null;
 	
 
-	public SupportTestcasesData(Support phr) throws Exception {
+	public SupportTestcasesData(Support support) throws Exception {
 		// which enviroment data need to picked
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
@@ -18,86 +18,98 @@ public class SupportTestcasesData {
 		// reading the entire file
 		excelReader = new ExcelSheetReader(url.getFile());
 		// filtering the entire file
-		phrobj = (Support) excelReader.getSingleExcelRow(phr, temp);
+		supportObj = (Support) excelReader.getSingleExcelRow(support, temp);
 	}
 
+	
 	/**
-	 * Returns PHR url from excel sheet
+	 * Returns Patient url from excel sheet
 	 */
-	public String geturl() {
-		return phrobj.url;
+	public String getPatientUrl() {
+		return supportObj.patientUrl;
 	}
 
 	/**
-	 * Returns UserName from excel sheet
+	 * Returns Url from excel sheet
+	 */
+	public String getUrl() {
+		return supportObj.url;
+	}
+	
+	/**
+	 *  Returns AllScriptAdaptorUrl from excel sheet
+	 */
+	public String getAllScriptAdaptorUrl() {
+		return supportObj.allScriptUrl;
+	}
+	
+	/**
+	 * Returns username from excel sheet
 	 */
 	public String getUsername() {
-		return phrobj.username;
+		return supportObj.username;
 	}
-
+	
 	/**
-	 * Returns Password from excel sheet
+	 * Returns username from excel sheet
 	 */
 	public String getPassword() {
-		return phrobj.password;
+		return supportObj.password;
+	}
+	
+	/**
+	 * Returns Physician Name from excel sheet
+	 */
+	public String getPhysicianName() {
+		return supportObj.physicianName;
 	}
 
 	/**
-	 * Returns secondaryUser from phr excel sheet
+	 * Returns Medfusion StaffId from excel sheet
 	 */
-	public String getsecondaryUser() {
-		return phrobj.secondaryUser;
+	public String getMedStaffID() {
+		return supportObj.medfusionStaffId;
+	}
+
+	/**
+	 * Returns external Id from phr excel sheet
+	 */
+	public String getExternalID() {
+		return supportObj.externalId;
 	}
 	
 	/**
-	 * Returns secondaryUserPwd from phr excel sheet
+	 * Returns external system Id from phr excel sheet
 	 */
-	public String getsecondaryUserPwd() {
-		return phrobj.secondaryUserPwd;
+	public String getExternalSysID() {
+		return supportObj.externalSystemID;
 	}
 	
 	/**
-	 * Returns secondaryUserPhone from phr excel sheet
+	 * Returns external System Name from phr excel sheet
 	 */
-	public String getsecondaryUserPhone() {
-		return phrobj.secondaryUserPhone;
+	public String getExternalSysName() {
+		return supportObj.externalSystemName;
 	}
 	
 	/**
-	 * Returns secondaryUserZipCode from phr excel sheet
+	 * Returns WebsSrvice UserName from phr excel sheet
 	 */
-	public String getsecondaryUserZipCode() {
-		return phrobj.secondaryUserZipCode;
+	public String getWebServiceUserName() {
+		return supportObj.webserviceUserName;
 	}
 	
 	/**
-	 * Returns secondaryUserZipCode from phr excel sheet
+	 * Returns WebsSrvice Password from phr excel sheet
 	 */
 	public String getsecondaryCity() {
-		return phrobj.secondaryCity;
+		return supportObj.webservicePassword;
 	}
 	
-	
 	/**
-	 * Returns allScriptAdapterURL from phr excel sheet
+	 * Returns PracticeID from phr excel sheet
 	 */
-	public String getallScriptAdapterURL() {
-		return phrobj.allScriptAdapterURL;
-	}
-	
-
-	/**
-	 * Returns secondaryUserZipCode from phr excel sheet
-	 */
-	public String getccdUserName() {
-		return phrobj.ccdUserName;
-	}
-	
-	
-	/**
-	 * Returns allScriptAdapterURL from phr excel sheet
-	 */
-	public String getccdUserPassword() {
-		return phrobj.ccdUserPassword;
+	public String getPracticeID() {
+		return supportObj.practiceId;
 	}
 }
