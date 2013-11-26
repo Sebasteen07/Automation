@@ -50,6 +50,14 @@ public class RequestRenewalPage extends MobileBasePage{
     	
         return PageFactory.initElements(driver, MobileBasePage.class);
     }
+    
+    public MobileBasePage selectFirstPharmacy(){
+    	pharmacy = driver.findElement(By.xpath("//fieldset[@id='rxreqPharmacies']/div/div[1]/label/span"));
+    	if(pharmacy.isDisplayed()){
+    		pharmacy.click();
+    	}    	
+        return PageFactory.initElements(driver, MobileBasePage.class);
+    }
 
     public MobileBasePage clickButtonSubmit(){
     	rbsubmit.click();

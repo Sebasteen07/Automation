@@ -96,7 +96,7 @@ public class MobileSignInPage extends MobileBasePage {
          public ResetPasswordEnterUserIdPage clickCantAccessLink() {
 
             IHGUtil.PrintMethodName();
-
+            IHGUtil.waitForElement(driver, 2, cantAccessLink);
             cantAccessLink.click();
 
             return PageFactory.initElements(driver, ResetPasswordEnterUserIdPage.class);

@@ -62,6 +62,14 @@ public class MessageInboxPage extends MobileBasePage {
 		return messageFind;
 
 	}
+	
+	public CCDMessageDetailsPage clickMessageHealthInfo(String sSubject) throws InterruptedException {
+		Thread.sleep(2000);
+		message = driver.findElement(By.xpath("//a[contains(@href,'msgDetail')]/h4[text()='" + sSubject + "']")); // 40205
+		message.click();
+		Thread.sleep(3000);
+		return PageFactory.initElements(driver, CCDMessageDetailsPage.class);
+	}
 
 	// Looking for the message with specific subject in inbox, returns true
 	// when finds message with the CSS selector unread.

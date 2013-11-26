@@ -21,8 +21,9 @@ public class SelectALocationPage extends MobileBasePage {
 
     private WebElement location;
 
-    public MobileBasePage selectLocation(int locId) throws InterruptedException {
-        location = driver.findElement(By.xpath("//a[@locid='"+locId+"']")); //40205
+    public MobileBasePage selectFirstLocation() throws InterruptedException {
+    	location = driver.findElement(By.xpath("//ul[@class='insetList']/li[1]/a[@*[contains(name(), 'locationname')]]"));
+    	log(location.getText());
         location.click();
         Thread.sleep(2000);
         if (null!=this.getHeaderText() && getHeaderText().contains("Appointment")) {

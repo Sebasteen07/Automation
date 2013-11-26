@@ -1,9 +1,13 @@
 package com.intuit.ihg.product.mobile.test;
 
 import static org.testng.Assert.assertNotNull;
+
 import java.util.Date;
+
 import javax.mail.Message;
+
 import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -23,6 +27,9 @@ import com.intuit.ihg.product.mobile.page.resetpassword.ResetPasswordEnterNewPas
 import com.intuit.ihg.product.mobile.page.resetpassword.ResetPasswordEnterSecurityCodePage;
 import com.intuit.ihg.product.mobile.page.resetpassword.ResetPasswordEnterUserIdPage;
 import com.intuit.ihg.product.mobile.page.solutions.apptrequest.ARSubmissionPage;
+import com.intuit.ihg.product.mobile.page.solutions.ccdviewer.CCDMessageDetailsPage;
+import com.intuit.ihg.product.mobile.page.solutions.ccdviewer.CCDViewerDetailPage;
+import com.intuit.ihg.product.mobile.page.solutions.ccdviewer.CCDViewerListPage;
 import com.intuit.ihg.product.mobile.page.solutions.common.AllDoctorsPage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SelectADoctorPage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SelectALocationPage;
@@ -71,9 +78,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
         
 				
 		log("step 1: Get Data from Excel ##########");
-        String testcaseName = "testMobileLoginLogout";
 		Mobile mobile=new Mobile();
-		MobileTestCaseData testcasesData=new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData=new MobileTestCaseData(mobile);
 
 		log("URL: "+testcasesData.getUrl());
 		log("USER NAME: "+testcasesData.getUserName());
@@ -119,9 +125,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testTabAppointmentRequest";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
@@ -172,9 +177,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testTabRxRenewal";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
@@ -221,9 +225,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testTabAsk";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
@@ -271,9 +274,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testTabMakeAPayment";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
@@ -319,31 +321,89 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
     	        
         log("step 1: Get Data from Excel");
-        String testcaseName = "testMobileARPreferredDocOneLocation";
+        
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
         
 		logTestInfo(testcasesData);
 		
-		log("step 1:LogIn");
+		log("step 2:LogIn");
 		MobileSignInPage mloginpage = new MobileSignInPage(driver,testcasesData.getUrl());
 		MobileHomePage pMyPatientPage = mloginpage.login(testcasesData.getUserName(),testcasesData.getPassword());
 	
-        log("step 2:click AR link");
+        log("step 3:click AR link");
         SelectADoctorPage pSelPage = (SelectADoctorPage) pMyPatientPage.clickARLink();
 
-        log("step 3:Select preferred doc");
-        ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelPage.selectDoctor(testcasesData.getPractice_DocSearchString());
+        log("step 4:Select preferred doc");
+        log("doctor: "+testcasesData.getAppointmentDoctorSingleLoc());
+        ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelPage.selectDoctor(testcasesData.getAppointmentDoctorSingleLoc());
 
 
-        log("step 4:Fill data and submit");
-        SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,MobileConstants.APPOINTMENT_REASON,MobileConstants.APPOINTMENT_TIME);
+        String reason = Long.toString(System.currentTimeMillis());
+		log("step 5:Fill data and submit");
+		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit
+				.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,
+						reason, MobileConstants.APPOINTMENT_TIME);
 
-        log("Step 5:clickClose");
-        pSubconfirm.clickClose();
+		pMyPatientPage = pSubconfirm.clickClose();
+		pMyPatientPage.clickLogout();
+		Thread.sleep(2000);
 
+		// Load up practice test data
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-        //TODO Add prac side and mail and secure message verification
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
+				practiceTestData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(
+				practiceTestData.getUsername(), practiceTestData.getPassword());
+
+		log("step 6: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("step 7: Search for appt requests");
+		apptSearch.searchForApptRequestsForToday();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch
+				.getRequestDetails(reason);
+		assertNotNull(detailStep1,
+				"The submitted patient request was not found in the practice");
+		
+		Thread.sleep(3000);
+		log("step 8: Choose process option and respond to patient");
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
+
+		log("step 9: Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(),
+				"Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("step 10: Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		/*
+		 *  TODO uncomment when emails are working on demo
+		log("step 11: Verify Gmail");
+		Gmail gmail = new Gmail(testcasesData.getGmailUName(),testcasesData.getGmailPassword());
+		Message[] msgs = gmail.findInNewMessages(testcasesData.getUserName(), "Appointment", currDate);
+
+		log("step 12: Access Gmail and check for received email");
+		boolean foundEmail = CheckEmail.validateEmail(gmail, currDate,
+				testcasesData.getUserName(), "appointment",
+				testcasesData.getUserName());
+		assertTrue(foundEmail, "Appointment Request email wasn't received.");
+		*/
+
+		log("step 12: LogIn to verify secure message in mobile");
+		log("step 1:LogIn");
+		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+
+		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
+		MessageDetailsPage mDetails = mInbox.clickMessage("Approved "
+				+ detailStep1.getCreatedTs());
+
+		assertTrue(mDetails.getSubject().equalsIgnoreCase(
+				"Approved " + detailStep1.getCreatedTs()));
     }
     
 
@@ -365,9 +425,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
     public void testMobileARPreferredDocMultiLocation() throws Exception {
 
     	log("step 1: Get Data from Excel");
-        String testcaseName = "testMobileARPreferredDocMultiLocation";
+    	
  		Mobile mobile = new Mobile();
- 		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile, testcaseName);
+ 		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
          
  		logTestInfo(testcasesData);
  		
@@ -379,10 +439,10 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
         SelectADoctorPage pSelPage = (SelectADoctorPage) pMyPatientPage.clickARLink();
 
         log("step 3:Select preferred doc");
-        SelectALocationPage pSelLoc = (SelectALocationPage) pSelPage.selectDoctor(testcasesData.getPractice_DocSearchString());
+        SelectALocationPage pSelLoc = (SelectALocationPage) pSelPage.selectDoctor(testcasesData.getAppointmentDoctor());
 
         log("step 4:Select Location");
-        ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc.selectLocation(Integer.parseInt(MobileConstants.PRACTICE_LOCATIONID));
+        ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc.selectFirstLocation();
 
         log("step 5:Fill data and submit");
         SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,MobileConstants.APPOINTMENT_REASON,MobileConstants.APPOINTMENT_TIME);
@@ -422,11 +482,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileARSelectDocOneLocation() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		Date currDate = new Date();
-		String testcaseName = "testMobileARSelectDocOneLocation";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -445,7 +502,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		log("step 4:Select Doc from List");
 		ARSubmissionPage pARSubmit = (ARSubmissionPage) pAllDocs
-				.selectDocFromList(testcasesData.getPractice_DocSearchString());
+				.selectDocFromList(testcasesData.getAppointmentDoctorSingleLoc());
 
 		String reason = Long.toString(System.currentTimeMillis());
 		log("step 5:Fill data and submit");
@@ -457,63 +514,6 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		pMyPatientPage.clickLogout();
 		Thread.sleep(2000);
 
-		// Load up practice test data
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice,
-				testcaseName);
-
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
-				practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(
-				practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("step 6: Click Appt Request tab");
-		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
-
-		log("step 7: Search for appt requests");
-		apptSearch.searchForApptRequestsForToday();
-		ApptRequestDetailStep1Page detailStep1 = apptSearch
-				.getRequestDetails(reason);
-		assertNotNull(detailStep1,
-				"The submitted patient request was not found in the practice");
-
-		log("step 8: Choose process option and respond to patient");
-		ApptRequestDetailStep2Page detailStep2 = detailStep1
-				.chooseApproveAndSubmit();
-
-		log("step 9: Confirm response details to patient");
-		apptSearch = detailStep2.processApptRequest();
-		assertTrue(apptSearch.isSearchPageLoaded(),
-				"Expected the Appt Search Page to be loaded, but it was not.");
-
-		log("step 10: Logout of Practice Portal");
-		practiceHome.logOut();
-
-		log("step 11: Verify Gmail");
-		Gmail gmail = new Gmail(MobileConstants.PATIENT_GMAILUNAME,
-				MobileConstants.PATIENT_GMAILPASSWORD);
-		Message[] msgs = gmail.findInNewMessages(
-				MobileConstants.PATIENT_GMAILUNAME, "Appointment", currDate);
-
-		log("step 12: Access Gmail and check for received email");
-		boolean foundEmail = CheckEmail.validateEmail(gmail, currDate,
-				MobileConstants.PATIENT_GMAILUNAME, "appointment",
-				MobileConstants.PATIENT_GMAILUNAME);
-		assertTrue(foundEmail, "Appointment Request email wasn't received.");
-
-		log("step 12: LogIn to verify secure message in mobile");
-		log("step 1:LogIn");
-		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
-		pMyPatientPage = mloginpage.login(testcasesData.getUserName(),
-				testcasesData.getPassword());
-
-		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
-		MessageDetailsPage mDetails = mInbox.clickMessage("Approved "
-				+ detailStep1.getCreatedTs());
-
-		assertTrue(mDetails.getSubject().equalsIgnoreCase(
-				"Approved " + detailStep1.getCreatedTs()));
 	}
    
    
@@ -537,10 +537,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileARSelectDocMultiLocation() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileARSelectDocMultiLocation";
+		Date currDate = new Date();
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -559,32 +558,76 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		log("step 4:Select Doc From List");
 		SelectALocationPage pSelLoc = (SelectALocationPage) pAllDocs
-				.selectDocFromList(testcasesData.getPractice_DocSearchString());
+				.selectDocFromList(testcasesData.getAppointmentDoctor());
 
 		log("step 5:Select Location");
-		ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc
-				.selectLocation(Integer
-						.parseInt(MobileConstants.PRACTICE_LOCATIONID));
+		ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc.selectFirstLocation();
 
-		log("step 6:Fill data and submit");
+		String reason = Long.toString(System.currentTimeMillis());
+		log("step 5:Fill data and submit");
 		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit
 				.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,
-						MobileConstants.APPOINTMENT_REASON,
-						MobileConstants.APPOINTMENT_TIME);
+						reason, MobileConstants.APPOINTMENT_TIME);
 
-		log("Step 5:clickClose");
-		pSubconfirm.clickClose();
+		pMyPatientPage = pSubconfirm.clickClose();
+		pMyPatientPage.clickLogout();
+		Thread.sleep(2000);
 
-		// TODO Add prac side and mail and secure message verification
+		// Load up practice test data
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
+				practiceTestData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(
+				practiceTestData.getUsername(), practiceTestData.getPassword());
+
+		log("step 6: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("step 7: Search for appt requests");
+		apptSearch.searchForApptRequestsForToday();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch
+				.getRequestDetails(reason);
+		assertNotNull(detailStep1,
+				"The submitted patient request was not found in the practice");
+		
+		Thread.sleep(3000);
+		log("step 8: Choose process option and respond to patient");
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
+
+		log("step 9: Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(),
+				"Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("step 10: Logout of Practice Portal");
+		practiceHome.logOut();
+		
 		/*
-		 * Gmail gmail = new Gmail(pat.getGmailUName(), pat.getGmailPassword());
-		 * 
-		 * Message[] msgs =
-		 * gmail.findInNewMessages(pat.getEmailId(),"Appointment",currDate);
-		 * 
-		 * System.out.println("test");
-		 */
+		 *  TODO uncomment when emails are working on demo
+		log("step 11: Verify Gmail");
+		Gmail gmail = new Gmail(testcasesData.getGmailUName(),testcasesData.getGmailPassword());
+		Message[] msgs = gmail.findInNewMessages(testcasesData.getUserName(), "Appointment", currDate);
+
+		log("step 12: Access Gmail and check for received email");
+		boolean foundEmail = CheckEmail.validateEmail(gmail, currDate,
+				testcasesData.getUserName(), "appointment",
+				testcasesData.getUserName());
+		assertTrue(foundEmail, "Appointment Request email wasn't received.");
+		*/
+
+		log("step 12: LogIn to verify secure message in mobile");
+		log("step 1:LogIn");
+		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+
+		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
+		MessageDetailsPage mDetails = mInbox.clickMessage("Approved "
+				+ detailStep1.getCreatedTs());
+
+		assertTrue(mDetails.getSubject().equalsIgnoreCase(
+				"Approved " + detailStep1.getCreatedTs()));
 	}
 	
 
@@ -607,10 +650,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileARSearchDocOneLocation() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileARSearchDocOneLocation";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -627,10 +668,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 3:Select different doc");
 		AllDoctorsPage pAllDocs = pSelPage.selectDiffDoc();
 
-		log("step 4:Select Doc from List");
+		log("step 4:Select Doc from List" + testcasesData.getAppointmentDoctorSingleLoc());
 		ARSubmissionPage pARSubmit = (ARSubmissionPage) pAllDocs
-				.searchForAndSelectDoc(testcasesData
-						.getPractice_DocSearchString());
+				.searchForAndSelectDoc(testcasesData.getAppointmentDoctorSingleLoc());
 
 		log("step 5:Fill data and submit");
 		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit
@@ -675,10 +715,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileARSearchDocMultiLocation() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileARSearchDocMultiLocation";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -697,13 +735,10 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		log("step 4:Select Doc From List");
 		SelectALocationPage pSelLoc = (SelectALocationPage) pAllDocs
-				.searchForAndSelectDoc(testcasesData
-						.getPractice_DocSearchString());
+				.searchForAndSelectDoc(testcasesData.getAppointmentDoctor());
 
 		log("step 5:Select Location");
-		ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc
-				.selectLocation(Integer
-						.parseInt(MobileConstants.PRACTICE_LOCATIONID));
+		ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelLoc.selectFirstLocation();
 
 		log("step 6:Fill data and submit");
 		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pARSubmit
@@ -748,10 +783,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileARNegative() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileARNegative";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -767,7 +800,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		log("step 3:Select preferred doc");
 		ARSubmissionPage pARSubmit = (ARSubmissionPage) pSelPage
-				.selectDoctor(testcasesData.getPractice_DocSearchString());
+				.selectDoctor(testcasesData.getAppointmentDoctor());
 
 		log("step 4:Fill data and submit");
 		MobileBasePage mbPage = (MobileBasePage) pARSubmit
@@ -775,8 +808,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 						MobileConstants.APPOINTMENT_REASON,
 						MobileConstants.APPOINTMENT_TIME);
 
-		assertEquals(mbPage.getErrorMsg(),
-				testcasesData.getTest_ErrorMessage(),
+		assertEquals(mbPage.getErrorMsg(),"Please enter the reason for your visit.",
 				"Verify Error Message is present as expected");
 
 	}
@@ -806,10 +838,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileRxRenewal() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileRxRenewal";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -826,7 +856,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 4: select Medication");
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage
 				.selMedication(MobileConstants.RXRENEWAL_MEDICATION);
-		pRequestRenewalPage.selectPharmacy(MobileConstants.RXRENEWAL_PHARMACY);
+		pRequestRenewalPage.selectFirstPharmacy();
 
 		pRequestRenewalPage.clickButtonSubmit();
 
@@ -836,8 +866,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		// Load up practice test data
 		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice,
-				testcaseName);
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
@@ -904,10 +933,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileAsk() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileAsk";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		logTestInfo(testcasesData);
 
@@ -921,6 +948,68 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		pMyPatientPage.clickAAQLink();
 	}
 	
+	
+	/**
+     * @Author:-Prokop Rehacek
+	 * @Date:-11/18/2013
+	 * @User Story ID in Rally : NA 
+	 * 
+	 * @StepsToReproduce:
+	 * Login to Medfusion Mobile App
+	 * Go to My Patient Page
+	 * Click on My Messages
+	 * Select Any "New Health Information Import" message
+	 * Verify the contents and each of the links
+	 * 
+	 * @throws Exception
+	 */
+	@Test(enabled = true, groups = { "DeploymentAcceptanceTests",
+			"AcceptanceTests", "Positive", "CCDViewer" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCCDViewer() throws Exception {
+
+		log("Test Case: testCCDViewer");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+		
+		Mobile mobile = new Mobile();
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
+
+		log("URL: " + testcasesData.getUrl());
+		log("USER NAME: " + testcasesData.getCCDUserName());
+		log("Password: " + testcasesData.getCCDUserPassword());
+
+		log("step 2: Load the Mobile  URL and Check the Page Title");
+		MobileSignInPage mloginpage = new MobileSignInPage(driver,
+				testcasesData.getUrl());
+		MobileHomePage pMyPatientPage = mloginpage.login(
+				testcasesData.getCCDUserName(), testcasesData.getCCDUserPassword());
+
+		pMyPatientPage.waitForlogoutLink(driver, 60);
+
+		log("step 3: Click My Messages");
+		MessageInboxPage messageInboxPage = pMyPatientPage.clickMyMessages();
+		
+		String sHealthInfo = "New Health Information Import";
+		log("step 4: Select Any \"New Health Information Import\" message");
+		CCDMessageDetailsPage ccdMessageDetailsPage = messageInboxPage.clickMessageHealthInfo(sHealthInfo);
+		
+		log("step 5: Verify the contents and each of the links");
+		CCDViewerListPage ccdViewerListPage = ccdMessageDetailsPage.clickReviewHealthInfo();
+		
+		log("step 5.1: Verify Basic Info");
+		CCDViewerDetailPage ccdViewerDetailPage	= ccdViewerListPage.clicBasicInfo();
+
+		verifyTrue(ccdViewerDetailPage.verifyBasicInfo(),
+				"Informations about blood pressure and BMI are missing");
+			
+		log("step 6: Go Home and Logout");
+		ccdViewerDetailPage.clickHome();
+
+		pMyPatientPage.clickLogout();
+
+}
 	
 	
 	/**
@@ -947,10 +1036,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileMakeAPayment() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileMakeAPayment";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 		logTestInfo(testcasesData);
 
 		log("step 2:LogIn");
@@ -1018,10 +1105,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileForgotUserID() throws Exception {
 		
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileForgotUserID";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 		MobileUtil util = new MobileUtil(driver);
 		logTestInfo(testcasesData);
 		
@@ -1098,16 +1183,14 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	public void testMobileForgotPassword() throws Exception {
 
 		log("step 1: Get Data from Excel");
-		String testcaseName = "testMobileForgotPassword";
 		Mobile mobile = new Mobile();
-		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile,
-				testcaseName);
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
 
 		log("step 2: Clean the Gmail Inbox");
 		String sSubject = String.format("Your password has been reset");
 		MobileUtil util = new MobileUtil(driver);
-		util.emailMessageRemover(testcasesData.getUserName(),
-		 testcasesData.getPassword(), sSubject);
+		util.emailMessageRemover(testcasesData.getGmailUName(),
+				testcasesData.getGmailPassword(), sSubject);
 
 		logTestInfo(testcasesData);
 
@@ -1121,16 +1204,15 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		log("step 3:Enter user Id and submit");
 		ResetPasswordEnterNewPasswordPage pResetPasswordEnterNewPasswordPage = (ResetPasswordEnterNewPasswordPage) pResetPasswordEnterUserIdPage
-				.enterUserIdAndSubmit(testcasesData.getUserName());
+				.enterUserIdAndSubmit(testcasesData.getForgotUserName());
 		
 		log("step 4:Enter new password and submit");
 		ResetPasswordEnterSecurityCodePage pResetPasswordEnterSecurityCodePage = (ResetPasswordEnterSecurityCodePage) pResetPasswordEnterNewPasswordPage
-				.enterNewPasswordAndSubmit("Luke", testcasesData.getPassword(),
-						testcasesData.getPassword());
+				.enterNewPasswordAndSubmit("Luke", testcasesData.getForgotPassword(), testcasesData.getForgotPassword());
 		
 		log("step 5: Fecth Security code from the gmail");
 		String secCode = util.getSecurityCodeFromGmail(
-				testcasesData.getUserName(), testcasesData.getPassword(),
+				testcasesData.getForgotUserName(), testcasesData.getForgotPassword(),
 				"Your password has been reset");
 		
 		log("step 6: Enter the security code and submit");
@@ -1142,7 +1224,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				"Your password has been updated.");*/
          
 		log("step 7: logout");
-		MobileSignInPage pMobileSignInPage = pMobileHomePage.clickLogout();
+		pMobileHomePage.clickLogout();
 
 	}
 	
@@ -1151,12 +1233,12 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	
     private void logTestInfo(MobileTestCaseData testObject) {
     
-        log("INFO:: TESTCASE DETAILS - TestMethod : " + testObject.getTestMethodName() + "| Environment : " + IHGUtil.getEnvironmentType() + " | Browser : " + TestConfig.getBrowserType());
+        //log("INFO:: TESTCASE DETAILS - TestMethod : " + testObject.getTestMethodName() + "| Environment : " + IHGUtil.getEnvironmentType() + " | Browser : " + TestConfig.getBrowserType());
         log("URL: " + testObject.getUrl());
 		log("USER NAME: " + testObject.getUserName());
 		log("Password: " + testObject.getPassword());
-		log ("practice_docsearchstring:"+testObject.getPractice_DocSearchString());
-		log ("test_errormessage:"+testObject.getTest_ErrorMessage());
+		//log ("practice_docsearchstring:"+testObject.getPractice_DocSearchString());
+		//log ("test_errormessage:"+testObject.getTest_ErrorMessage());
 			
     }
 

@@ -21,11 +21,17 @@ public class CCDViewerDetailPage extends MobileBasePage{
         super(driver);
     }
 
+    
     @FindBy(xpath="//div[@class='blood_pressure item']")
     private WebElement bloodPressure;
 
     @FindBy(xpath="//div[@class='height_weight item']")
     private WebElement heightWeight;
+    
+    @FindBy(xpath="//ul[@class='listing']")
+    private WebElement basicInfo;
+    
+  
 
     public boolean assertHealthOverview(String verifyTextInBP,String verifyTextInHtWt){
         log("bloodPressure Text : " + bloodPressure.getText());
@@ -35,6 +41,16 @@ public class CCDViewerDetailPage extends MobileBasePage{
                 return true;
         }
         return false;
+    }
+    
+    public boolean verifyBasicInfo(){
+    	String[] infos = {"Name", "Date Of Birth", "Street Address", "City", "State"};
+    	String infoWeb = basicInfo.getText();
+    	for (String info : infos) {
+    		if (!infoWeb.contains(info))
+    			return false;
+   		}
+        return true;
     }
 
 

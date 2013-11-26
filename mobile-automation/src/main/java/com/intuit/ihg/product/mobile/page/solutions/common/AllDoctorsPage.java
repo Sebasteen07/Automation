@@ -33,7 +33,7 @@ public class AllDoctorsPage extends MobileBasePage {
         }catch (TimeoutException e){
             log("WARN : Searchbox not found. Confirm if due to lesser number of doc or page didnot load");
         }
-
+        
         WebElement element = driver.findElement( By.partialLinkText(docName) );
         element.click();
         Thread.sleep(3000);
