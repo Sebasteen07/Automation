@@ -10,7 +10,7 @@ import com.intuit.ihg.product.mobile.page.MobileBasePage;
 
 public class MakeAPayment extends MobileBasePage{
 	
-	@FindBy(linkText = "Add new card")
+	@FindBy(xpath = "//div[@id='listCards']//a[contains(.,'Add new card')]")
 	private WebElement lnkAddNewCard;
 	
 	@FindBy(id = "payAmount" )
@@ -19,7 +19,7 @@ public class MakeAPayment extends MobileBasePage{
 	@FindBy(id = "payAccount" )
 	private WebElement txtpayAccount;
 	
-	@FindBy(css = "#makePaymentSubmit > span.ui-btn-inner.ui-btn-corner-all > span.ui-btn-text")
+	@FindBy(id = "makePaymentSubmit")
 	private WebElement btnSubmit;
 
 public MakeAPayment(WebDriver driver) {
@@ -27,8 +27,10 @@ public MakeAPayment(WebDriver driver) {
 		// TODO Auto-generated constructor stub
 	}
 
-public NewCard clicklnkAddNewCard(){
+public NewCard clicklnkAddNewCard() throws InterruptedException{
 	IHGUtil.PrintMethodName();
+	IHGUtil.waitForElement(driver, 10, lnkAddNewCard);
+	Thread.sleep(2000);
 	lnkAddNewCard.click();
 	return PageFactory.initElements(driver, NewCard.class);
 }
@@ -51,6 +53,12 @@ public void setAccount(String account)
 public void clickbtnSubmit()
 {
 	IHGUtil.PrintMethodName();
+	IHGUtil.waitForElement(driver, 10, btnSubmit);
+	try {
+		Thread.sleep(1000);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
 	btnSubmit.click();
 }
 

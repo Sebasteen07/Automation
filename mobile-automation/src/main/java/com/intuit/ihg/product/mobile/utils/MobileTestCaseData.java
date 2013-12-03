@@ -134,6 +134,10 @@ public class MobileTestCaseData {
 		public String getGmailMessage() {
 			return mobileobj.gmailMessage;
 		}
+		
+		public String getAskAQuestionPractice() {
+			return mobileobj.askAQuestionPractice;
+		}
 
 		public String getAskAQuestionType() {
 			return mobileobj.askAQuestionType;

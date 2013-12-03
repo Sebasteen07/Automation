@@ -21,14 +21,16 @@ public class AllDoctorsPage extends MobileBasePage {
 
     @FindBy(xpath = "//a[@id='moreDoctors']")
     private WebElement moreDoctors;
+        
 
     public AllDoctorsPage(WebDriver driver) {
         super(driver);
     }
 
-    public MobileBasePage searchForAndSelectDoc(String docName) throws InterruptedException {    //Bot, Doc      //Always AR submission page or select loc page ?
-        try{
-            waitForSearchBox(driver,10);
+    public MobileBasePage searchForAndSelectDoc(String docName) throws InterruptedException {  //Bot, Doc      //Always AR submission page or select loc page ?
+    	Thread.sleep(1000);
+    	try{
+        	IHGUtil.waitForElement(driver,10, txtSearchDoctors);
             txtSearchDoctors.sendKeys(docName);
         }catch (TimeoutException e){
             log("WARN : Searchbox not found. Confirm if due to lesser number of doc or page didnot load");
@@ -47,7 +49,7 @@ public class AllDoctorsPage extends MobileBasePage {
 
     public MobileBasePage selectDocFromList(String docName) throws InterruptedException {    //Bot, Doc      //Always AR submission page or select loc page ?
         Thread.sleep(1000);
-        waitForSearchBox(driver,10);
+        IHGUtil.waitForElement(driver,10, txtSearchDoctors);
         try{
             WebElement element = driver.findElement( By.partialLinkText(docName) );
             element.click();
@@ -62,10 +64,6 @@ public class AllDoctorsPage extends MobileBasePage {
     }
         return PageFactory.initElements(driver, ARSubmissionPage.class);
     }
-
-    public void waitForSearchBox(WebDriver driver,int n) throws InterruptedException{
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,n, txtSearchDoctors);
-	}
+	
 
 }

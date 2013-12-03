@@ -45,6 +45,12 @@ public class SelectAMedicationPage extends MobileBasePage {
         medication.click();
         return PageFactory.initElements(driver, RequestRenewalPage.class);
     }
+    
+    public RequestRenewalPage selFirstMedication(){
+        medication = driver.findElement(By.xpath("(//a[@class='rxRequest1RxLink ui-link'])[1]"));
+        medication.click();
+        return PageFactory.initElements(driver, RequestRenewalPage.class);
+    }
 
     public SelectADoctorPage selectDiffMed(){
        btnDiffMedication.click();

@@ -3,6 +3,7 @@ package com.intuit.ihg.product.mobile.page.solutions.common;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.makepayment.MakeAPayment;
 import com.intuit.ihg.product.mobile.page.makepayment.NewCard;
+import com.intuit.ihg.product.mobile.page.solutions.askaquestion.SelectAQuestionPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -27,10 +28,10 @@ public class SelectAPracticePage extends MobileBasePage {
   
 
     //a[contains(text(),'66215')]
-    public MobileBasePage selectPractice(String pracId){
+    public SelectAQuestionPage selectPractice(String pracId){
         practice = driver.findElement(By.xpath("//a[contains(text(),'"+pracId+"')]"));
         practice.click();
-        return PageFactory.initElements(driver, MobileBasePage.class);
+        return PageFactory.initElements(driver, SelectAQuestionPage.class);
     }
     
     //a[contains(text(),'IHGQA Automation NonIntegrated')]

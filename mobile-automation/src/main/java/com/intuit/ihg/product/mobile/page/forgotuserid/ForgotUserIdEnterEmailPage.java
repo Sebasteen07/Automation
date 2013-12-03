@@ -2,6 +2,7 @@ package com.intuit.ihg.product.mobile.page.forgotuserid;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,8 +20,8 @@ public class ForgotUserIdEnterEmailPage extends MobileBasePage {
 
     @FindBy( how = How.ID, using="forgotUsrIdEmail")
 	private WebElement email;
-
-    @FindBy( how = How.ID, using="acctForgotUserIDSubmit")
+  
+    @FindBy( how = How.XPATH, using="//a[@id='acctForgotUserIDSubmit']")
 	private WebElement submit;
 
     public ForgotUserIdEnterEmailPage(WebDriver driver) {
@@ -28,17 +29,13 @@ public class ForgotUserIdEnterEmailPage extends MobileBasePage {
     }
 
     public MobileBasePage enterEmailAndSubmit(String emailId) throws InterruptedException {
-        waitForSubmit(driver,10);
+        IHGUtil.waitForElement(driver, 6, email);
         email.sendKeys(emailId);
+        Thread.sleep(1000);
         submit.click();
         if (isErrorMsgPresent())
         return PageFactory.initElements(driver, ForgotUserIdEnterEmailPage.class);
         else return PageFactory.initElements(driver, ForgotUserIdEnterSecretAnswerPage.class);
 
-    }
-
-    public void waitForSubmit(WebDriver driver, int n) throws InterruptedException {
-        IHGUtil.PrintMethodName();
-        IHGUtil.waitForElement(driver, n, submit);
     }
 }

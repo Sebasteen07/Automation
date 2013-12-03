@@ -23,8 +23,8 @@ public class ForgotUserIdEnterSecretAnswerPage extends MobileBasePage {
 
     @FindBy(how = How.ID, using = "forgotUsrSecurityAnswer")
     private WebElement securityAnswer;
-
-    @FindBy(how = How.ID, using = "forgotUserID2Submit")
+    
+    @FindBy(how = How.XPATH, using = "//a[@id='forgotUserID2Submit']")
     private WebElement submit;
 
     public ForgotUserIdEnterSecretAnswerPage(WebDriver driver) {
@@ -32,17 +32,14 @@ public class ForgotUserIdEnterSecretAnswerPage extends MobileBasePage {
     }
 
     public MobileBasePage enterSecretAnsSubmit(String secAnswer) throws InterruptedException {
-        waitForSecAnswer(driver, 10);
+    	IHGUtil.waitForElement(driver, 6, securityAnswer);
         securityAnswer.sendKeys(secAnswer);
+        Thread.sleep(1000);
         submit.click();
+        Thread.sleep(1000);
         if (isErrorMsgPresent())
             return PageFactory.initElements(driver, ForgotUserIdEnterSecretAnswerPage.class);
         else return PageFactory.initElements(driver, SubmissionConfirmationPage.class);
 
-    }
-
-    public void waitForSecAnswer(WebDriver driver, int n) throws InterruptedException {
-        IHGUtil.PrintMethodName();
-        IHGUtil.waitForElement(driver, n, securityAnswer);
     }
 }

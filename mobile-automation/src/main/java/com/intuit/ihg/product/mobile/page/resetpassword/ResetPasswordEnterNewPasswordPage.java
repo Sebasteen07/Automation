@@ -37,10 +37,10 @@ public class ResetPasswordEnterNewPasswordPage extends MobileBasePage {
     }
 
     public MobileBasePage enterNewPasswordAndSubmit(String secAns, String pwd, String newpwd) throws InterruptedException {
-        waitForSubmit(driver,10);
         securityAnswer.sendKeys(secAns);
         newPassword.sendKeys(pwd);
         newPasswordConfirm.sendKeys(newpwd);
+        waitForSubmit(driver,10);
         submit.click();
         if (isErrorMsgPresent())
         return PageFactory.initElements(driver, ResetPasswordEnterNewPasswordPage.class);

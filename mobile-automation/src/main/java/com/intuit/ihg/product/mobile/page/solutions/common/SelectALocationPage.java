@@ -1,7 +1,10 @@
 package com.intuit.ihg.product.mobile.page.solutions.common;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.apptrequest.ARSubmissionPage;
+import com.intuit.ihg.product.mobile.page.solutions.askaquestion.AskAQuestionPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,7 +26,6 @@ public class SelectALocationPage extends MobileBasePage {
 
     public MobileBasePage selectFirstLocation() throws InterruptedException {
     	location = driver.findElement(By.xpath("//ul[@class='insetList']/li[1]/a[@*[contains(name(), 'locationname')]]"));
-    	log(location.getText());
         location.click();
         Thread.sleep(2000);
         if (null!=this.getHeaderText() && getHeaderText().contains("Appointment")) {
@@ -31,5 +33,13 @@ public class SelectALocationPage extends MobileBasePage {
         }
 
         return PageFactory.initElements(driver, MobileBasePage.class);
+    }
+    
+    public MobileBasePage selectLocation(String sLocation) throws InterruptedException {
+    	location = driver.findElement(By.xpath("//ul[@class='insetList']/li/a[@locationname='"+sLocation+"']"));
+    	IHGUtil.waitForElement(driver, 10, location);
+        location.click();
+        Thread.sleep(6000);
+        return PageFactory.initElements(driver, AskAQuestionPage.class);
     }
 }

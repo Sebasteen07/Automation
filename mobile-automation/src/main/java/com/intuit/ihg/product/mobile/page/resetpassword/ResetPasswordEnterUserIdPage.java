@@ -21,7 +21,7 @@ public class ResetPasswordEnterUserIdPage extends MobileBasePage {
     @FindBy( how = How.ID, using="resetPwdUserId")
 	private WebElement userId;
 
-	@FindBy( how = How.CSS, using="a[href*='acctForgotUserID']")
+    @FindBy( how = How.LINK_TEXT, using="Forgot your user ID?")
 	private WebElement forgotUserID;
 
     @FindBy( how = How.ID, using="acctResetPswrdSubmit")
@@ -32,7 +32,8 @@ public class ResetPasswordEnterUserIdPage extends MobileBasePage {
     }
 
     public MobileBasePage enterUserIdAndSubmit(String userName) throws InterruptedException {
-        waitForUserId(driver, 10);
+    	IHGUtil.waitForElement(driver,6,userId);
+    	Thread.sleep(2000);
         userId.sendKeys(userName);
         submit.click();
         if (isErrorMsgPresent())
@@ -41,19 +42,10 @@ public class ResetPasswordEnterUserIdPage extends MobileBasePage {
 
     }
 
-    public void waitForUserId(WebDriver driver, int n) throws InterruptedException {
-        IHGUtil.PrintMethodName();
-        IHGUtil.waitForElement(driver, n, userId);
-    }
-
     public ForgotUserIdEnterEmailPage clickForgotUserId() throws InterruptedException {
-        waitForSubmit(driver,10);
+    	IHGUtil.waitForElement(driver,6,forgotUserID);
+        Thread.sleep(2000);
         forgotUserID.click();
         return PageFactory.initElements(driver, ForgotUserIdEnterEmailPage.class);
-    }
-
-    public void waitForSubmit(WebDriver driver, int n) throws InterruptedException {
-        IHGUtil.PrintMethodName();
-        IHGUtil.waitForElement(driver, n, submit);
     }
 }

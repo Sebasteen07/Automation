@@ -1,6 +1,9 @@
 package com.intuit.ihg.product.mobile.page.solutions.askaquestion;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
+import com.intuit.ihg.product.mobile.page.solutions.common.SelectALocationPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,10 +28,13 @@ public class SelectAQuestionPage extends MobileBasePage {
     public SelectAQuestionPage(WebDriver driver) {
         super(driver);
     }
-
-    public MobileBasePage selectQuestion(int questionId){
-        question = driver.findElement(By.xpath("//a[@questionid='urn:vnd:ihg:portal:other:aas:" + questionId + "']")); //18027
+    
+    public SelectALocationPage selectQuestion(String questionName) throws InterruptedException{
+    	Thread.sleep(2000);
+        question = driver.findElement(By.xpath("//a[contains(.,'"+questionName+"')]"));
+        IHGUtil.waitForElement(driver, 10, question);
         question.click();
-        return PageFactory.initElements(driver, MobileBasePage.class);
+        Thread.sleep(2000);
+        return PageFactory.initElements(driver, SelectALocationPage.class);
     }
 }

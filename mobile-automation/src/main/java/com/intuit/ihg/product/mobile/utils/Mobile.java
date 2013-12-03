@@ -36,6 +36,7 @@ public class Mobile {
 	public String gmailUName="";
 	public String gmailPassword="";
 	public String gmailMessage="";
+	public String askAQuestionPractice="";
 	public String askAQuestionType="";
 	public String askAQuestionDoctor="";
 	public String askAQuestionLocation="";
