@@ -66,6 +66,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	 */
 	public SiteGenPracticeHomePage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -129,7 +130,11 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkPhysicians);
+		try{
 		lnkPhysicians.click();
+		}catch(Exception e) {
+			lnkPhysicians.click();
+		}
 		return PageFactory.initElements(driver, ManageYourPhysiciansPage.class);
 
 	}
