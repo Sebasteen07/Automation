@@ -16,7 +16,10 @@ import java.net.URLConnection;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -227,4 +230,21 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 		}
 	}
 
+	/**
+	 * Will return true if Element exist else false
+	 * @param element :- WebElement
+	 * @return boolean
+	 */
+
+	public static boolean isExistsElement(WebDriver driver, WebElement element) {
+		try {
+			Actions builder = new Actions(driver);
+			builder.moveToElement(element).build().perform();
+			Point p = element.getLocation();
+			System.out.println("Where on the page is the top left-hand corner of the rendered element"+p);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

@@ -55,6 +55,8 @@ public class ApptRequestSearchPage extends BasePageObject {
 	@FindBy( xpath = ".//select[@name= 'searchParams:0:input:Date Begin:day']")
 	public WebElement startDateDropDwn;
 
+	@FindBy( xpath = ".//span/a[@title='Go to last page']")
+	public WebElement gotoLastPage;
 
 	public ApptRequestSearchPage(WebDriver driver) {
 		super(driver);
@@ -135,6 +137,9 @@ public class ApptRequestSearchPage extends BasePageObject {
 		Date now = new Date();
 		String strDate = sdfDate.format(now);
 		String date = strDate.substring(0, 2);
+		if (date.startsWith("0")) {
+			date = strDate.substring(1,2) ;
+		}
 
 		String month = strDate.substring(3, 5);
 		int startMnthValue = Integer.parseInt(month)-1;
@@ -142,7 +147,8 @@ public class ApptRequestSearchPage extends BasePageObject {
 		log("Select the Start Month in search filter options");		
 		Select startMonthSelect = new Select(startMonth);
 		startMonthSelect.selectByValue(String.valueOf(startMnthValue));
-
+		Thread.sleep(5000);
+		
 		log("Select the Start date in search filter options");		
 		Select startDate = new Select(startDateDropDwn);
 		startDate.selectByValue(date);
@@ -193,27 +199,33 @@ public class ApptRequestSearchPage extends BasePageObject {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
 		int i =0;
+		if(!PracticeUtil.isExistsElement(driver,gotoLastPage)){
+			for (WebElement complaint : searchResultReason) {	
+				i++;
+				if(complaint.getText().contains(subjectSubString)) {
+					complaint.click();	
+					log("Value :"+i);
+				}
+			}
+		}else{
 
-		for (WebElement complaint : searchResultReason) {	
-			i++;
-			if(complaint.getText().contains(subjectSubString)) {
-				complaint.click();								
-			}else if(i==searchResultReason.size()){
-				PracticeUtil.setPracticeFrame(driver);
-				driver.findElement(By.xpath(".//span/a[@title='Go to last page']")).click();
-				PracticeUtil.setPracticeFrame(driver);
-				Thread.sleep(3000);
-				List<WebElement> lastPageElements = driver.findElements(By.xpath(".//table/tbody/tr/td[3]/span"));
-				log("Size :"+lastPageElements.size());
-				for (WebElement complaint1 : lastPageElements) {
-					if(complaint1.getText().contains(subjectSubString)) {
-						complaint1.click();				
-						return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
-					}
+			PracticeUtil.setPracticeFrame(driver);
+			driver.findElement(By.xpath(".//span/a[@title='Go to last page']")).click();
+
+			PracticeUtil.setPracticeFrame(driver);
+			Thread.sleep(3000);
+			List<WebElement> lastPageElements = driver.findElements(By.xpath(".//table/tbody/tr/td[3]/span"));
+			log("Size :"+lastPageElements.size());
+			for (WebElement complaint1 : lastPageElements) {
+				if(complaint1.getText().contains(subjectSubString)) {
+					complaint1.click();				
+					return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
 				}
 			}
 		}
+
 		return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
 	}
+
 
 }
