@@ -53,17 +53,17 @@ public class CCDViewerListPage extends MobileBasePage{
     @FindBy(linkText="Past Medical History")
     private WebElement pastMedical;
 
-    public CCDViewerDetailPage clickHealthOverview() throws InterruptedException {
+    public CCDViewerDetailPage clicBasicInfo() throws InterruptedException {
         waitForBtn(driver, 20);
         IHGUtil.PrintMethodName();
-        btnHealthOverview.click();
+        basicInfo.click();
         return PageFactory.initElements(driver, CCDViewerDetailPage.class);
     }
 
     public void waitForBtn(WebDriver driver, int n) throws InterruptedException {
         IHGUtil.PrintMethodName();
         try{
-            IHGUtil.waitForElement(driver, n, btnHealthOverview);
+            IHGUtil.waitForElement(driver, n, basicInfo);
         }catch (TimeoutException e){
           log("WARN : Timeout occurred waiting for CCD Viewer button");
         }
