@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.Locale;
 
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
@@ -932,7 +933,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public static String getDate_MMM_d_yyyy(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM d, yyyy");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
@@ -947,7 +948,7 @@ public class IHGUtil extends BasePageObject {
 
 	public static String getDate_Month(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		System.out.println("expectedPST"+expectedPST);
@@ -962,7 +963,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public static String getDate_d(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("d");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("d", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		System.out.println("expectedPST"+expectedPST);
@@ -978,7 +979,7 @@ public class IHGUtil extends BasePageObject {
 
 	public static String getDate_y(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
@@ -994,7 +995,7 @@ public class IHGUtil extends BasePageObject {
 
 	public static String getEstTiming(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("M/d/yyyy");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("M/d/yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("EST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
