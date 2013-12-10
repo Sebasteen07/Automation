@@ -21,5 +21,6 @@ public class EhcoreAPI {
 	public String protocol = "";
 	public String allscriptsccdexporturl = "";
 	public String allscriptsccdimporturl = "";
+	public String mongoproperty = "";
 	
 }

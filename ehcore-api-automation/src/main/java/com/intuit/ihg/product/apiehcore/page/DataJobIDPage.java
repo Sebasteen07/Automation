@@ -11,7 +11,7 @@ import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 
 
 public class DataJobIDPage {
-	private static final Logger logger = Logger.getLogger(DataJobIDPage.class);
+	
 	private static DataJob dj = null;
 	public static boolean isProcStatusAsExpected = false;
 	public static String actualStatus = null;

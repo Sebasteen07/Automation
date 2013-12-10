@@ -37,9 +37,9 @@ public class EhcoreMongoDBUtils {
 		DCPropertyManager.loadFromEnvVariable("EH_CORE_API_CONFIG");
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData ehcoreTestData = new EhcoreAPITestData(ehcoreApi);
-		String serverAddress = ehcoreTestData.getMongoServerAddress(); //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_SERVERADDRESS);
-		String dbPattern = EhcoreAPIConstants.MONGO_DBPATTERN; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_DBPATTERN);
-		String collPattern = EhcoreAPIConstants.MONGO_COLLECTIONPATTERN; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_COLLECTIONPATTERN);
+		String serverAddress = ehcoreTestData.getMongoServerAddress();
+		String dbPattern = EhcoreAPIConstants.MONGO_DBPATTERN; 
+		String collPattern = EhcoreAPIConstants.MONGO_COLLECTIONPATTERN;
 		@SuppressWarnings("rawtypes")
 		RepositoryBuilder builder = new RepositoryBuilder();
 		MongoContext context = new MongoContext(serverAddress,dbPattern,collPattern,builder);
@@ -75,17 +75,21 @@ public class EhcoreMongoDBUtils {
     /**
      * CDM Message Verification:Pass the valid MessageGUID to check the 
      * canonical message list in mongoDB
+     * @throws Exception 
      */
-    public static SortedMap<String,String> checkCDMRetrieve(String msg_guid,String nodePath,String nodeName){
+    public static SortedMap<String,String> checkCDMRetrieve(String msg_guid,String nodePath,String nodeName) throws Exception{
     	
     	logger.debug("Entering checkCDMRetrieve ... "); 
-        DCPropertyManager.loadFromEnvVariable("EH_CORE_API_CONFIG");
+    	EhcoreAPI ehcoreApi = new EhcoreAPI();
+		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+		System.out.println("mongo path from excel***************************************"+testData.getmongoproperty());
+        DCPropertyManager.loadFromFilePath(testData.getmongoproperty()); 
     	IMongoStoreService objectService;
-        String dbName = EhcoreAPIConstants.MONGO_DBNAME; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_DBNAME);
-        String collectionName = EhcoreAPIConstants.MONGO_COLLECTIONNAME; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_COLLECTIONNAME);
-        String attrib = EhcoreAPIConstants.MONGO_ATTRIBUTE; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_ATTRIBUTE);
-        String node_Name = EhcoreAPIConstants.MONGO_NODENAME; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.MONGO_NODENAME);
-        
+        String dbName = EhcoreAPIConstants.MONGO_DBNAME; 
+        String collectionName = EhcoreAPIConstants.MONGO_COLLECTIONNAME;
+        String attrib = EhcoreAPIConstants.MONGO_ATTRIBUTE;
+        String node_Name = EhcoreAPIConstants.MONGO_NODENAME;
+       
 		List<DBObject> cdmList;
 		Map<String, String> unsortedMap = new HashMap<String, String>();
 		SortedMap<String,String> sortedMap = new TreeMap<String,String>();

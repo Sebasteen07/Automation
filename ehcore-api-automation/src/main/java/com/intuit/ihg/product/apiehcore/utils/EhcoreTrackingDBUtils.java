@@ -27,6 +27,7 @@ public class EhcoreTrackingDBUtils {
 	//List of DB Queries to check Data Channel details -Messages,Activities and object store details
 	private static String GET_DATAJOB_DETAILS = "SELECT * FROM data_job WHERE data_job_guid = ? ";
 	private static String GET_MESSAGE_DETAILS = "SELECT * FROM msg WHERE data_job_guid = ? ORDER BY msg_id ASC";
+		
 	private static String GET_AS_MESSAGE_DETAILS = "SELECT * FROM msg WHERE message_guid=?";
 	private static String GET_ACTIVITY_STATUS = "SELECT * FROM activity WHERE msg_id = ?  AND activity_type = ? AND activity_name = ?";
 	private static String GET_OBJ_REF_DETAILS = "SELECT * FROM object_ref WHERE msg_id = ? AND  node_type = ?";
@@ -35,13 +36,7 @@ public class EhcoreTrackingDBUtils {
 					"SELECT subject_id FROM msg WHERE data_job_guid = ? and msg_id= ?)" +
 					"and PROCESSING_STATUS_TYPE= 'COMPLETED' ORDER BY msg_id ASC";
 	private static String GET_DATAJOBID = "SELECT * FROM msg WHERE msg_id = ?";
-	//DB Queries to check AS adapter details - Messages,Activities and object store details 
-	/*private static String GET_AS_MESSAGE_DETAILS = 
-		"SELECT * FROM msg WHERE logsession_id = (" +
-		"SELECT logsession_id FROM msg WHERE data_job_guid = ? )AND msg_type = ? ORDER BY msg_id ASC";*/
-	//US3775 - Enhancement in datajob attributes 
-	/*private static String GET_ATTRIBUTES_DETAILS = 
-		"SELECT attributes FROM msg WHERE data_job_guid = ?";*/
+	
 	private static String GET_ATTRIBUTES_DETAILS = 
 			"SELECT m.ATTRIBUTES.getStringVal() FROM msg m WHERE data_job_guid =?";
 	private static String GET_AS_ATTRIBUTES_DETAILS = 
@@ -66,11 +61,11 @@ public class EhcoreTrackingDBUtils {
 				String driverName = "oracle.jdbc.driver.OracleDriver";
 				EhcoreAPI ehcoreApi = new EhcoreAPI();
 				EhcoreAPITestData ehcoreTestData = new EhcoreAPITestData(ehcoreApi);
-				String serverName = ehcoreTestData.getDBCCDHost(); //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.DB_CCD_HOST);
-				String portNumber = EhcoreAPIConstants.DB_CCD_PORT; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.DB_CCD_PORT);
-				String sid = ehcoreTestData.getDBCCDSID(); //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.DB_CCD_SID);
-				String username = EhcoreAPIConstants.DB_CCD_USER; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.DB_CCD_USER);
-				String password = EhcoreAPIConstants.DB_CCD_PASS; //EhcoreTestConfigReader.getConfigItemValue(EhcoreTestConsts.UtilConsts.DB_CCD_PASS);
+				String serverName = ehcoreTestData.getDBCCDHost(); 
+				String portNumber = EhcoreAPIConstants.DB_CCD_PORT; 
+				String sid = ehcoreTestData.getDBCCDSID(); 
+				String username = EhcoreAPIConstants.DB_CCD_USER; 
+				String password = EhcoreAPIConstants.DB_CCD_PASS; 
 				String connStr = "jdbc:oracle:thin:@"+serverName+":"+portNumber+":"+sid;
 				Class.forName(driverName);
 				dbConnPs = DriverManager.getConnection(connStr, username, password);
@@ -136,40 +131,7 @@ public class EhcoreTrackingDBUtils {
 				Assert.assertNotNull(rs.getLong("MSG_ID"));
 				Assert.assertNotNull(rs.getString("MESSAGE_GUID"));
 				Assert.assertNotNull(rs.getString("MSG_TYPE"));
-
-				//US3775 - Additional nodes in Attributes
-				attributes = getAttributesDetails(Id,msg_type);
-				Assert.assertNotNull(attributes);
-				msg.setAttributes(attributes);
-				logger.debug("ActualXML:"+attributes);
-				if(attributes != null){
-					if(attributes.contains("IntuitPracticeId")) {
-						String intuitPracticeId =  attributes.substring(attributes.indexOf("<IntuitPracticeId>")+18,attributes.indexOf("</IntuitPracticeId>"));
-						logger.debug("intuitPracticeId ::"+intuitPracticeId);
-						Assert.assertNotNull(intuitPracticeId );																			
-					}
-				}
-				/*//CCDImport : Check Additional nodes :CCDMessageLength  and IntuitPracticeId - not null
-            	if(rs.getString("MSG_TYPE").equalsIgnoreCase(EhcoreTestConsts.EH_REST_API_Consts.CCDImport)||
-            			rs.getString("MSG_TYPE").equalsIgnoreCase(EhcoreTestConsts.EH_REST_API_Consts.AS_CCDImport)){
-            		String ccdMessageLength =  attributes.substring(attributes.indexOf("<CCDMessageLength>")+18,attributes.indexOf("</CCDMessageLength>"));
-            		logger.debug("CCDMessageLength ::"+ccdMessageLength);
-            		assertNotNull(ccdMessageLength);
-
-            		if(attributes.contains("IntuitPracticeId")) {
-                		String intuitPracticeId =  attributes.substring(attributes.indexOf("<IntuitPracticeId>")+18,attributes.indexOf("</IntuitPracticeId>"));
-                		logger.debug("intuitPracticeId ::"+intuitPracticeId);
-            			Assert.assertEquals(EhcoreTestConsts.intuitPracticeID,intuitPracticeId );																			
-            		}
-            	}
-            	//CCDExport : Check Additional nodes :IntuitPracticeId not null
-            	else if(rs.getString("MSG_TYPE").equalsIgnoreCase(EhcoreTestConsts.EH_REST_API_Consts.CCDExport)){
-            		if(attributes.contains("IntuitPracticeId")) {
-            			String intuitPracticeId =  attributes.substring(attributes.indexOf("<IntuitPracticeId>")+18,attributes.indexOf("</IntuitPracticeId>"));
-                		logger.debug("intuitPracticeId ::"+intuitPracticeId);
-            			Assert.assertNotNull(intuitPracticeId);																			
-            		}
-            	}*/
+			
 				details.add(msg);
 			}
 			stmt.close();

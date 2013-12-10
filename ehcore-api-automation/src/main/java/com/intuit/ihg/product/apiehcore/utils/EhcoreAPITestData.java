@@ -129,5 +129,13 @@ public class EhcoreAPITestData {
 	public String getAllscriptsccdimporturl() {
 		return ehcoreapiObj.allscriptsccdimporturl;
 	}
+	
+	/**
+	 * 
+	 * @return : Returns mongo properties from excel sheet.
+	 */
+	public String getmongoproperty() {
+		return ehcoreapiObj.mongoproperty;
+	}
 
 }

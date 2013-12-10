@@ -85,7 +85,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	private static final String SOAP_BODY_END = "</soap:Body>";
 	private static final String SOAP_BODY_START = "<soap:Body>";
 	public static int expectedHttpCodeAccepted= HttpURLConnection.HTTP_ACCEPTED;
-	//private static final Logger logger = Logger.getLogger(EhcoreAPIUtil.class);
 	public static String schemaSource = null;
 	public static int expectedHttpCode= HttpURLConnection.HTTP_OK;
 	public static int expectedHttpCode_InternalError = HttpURLConnection.HTTP_INTERNAL_ERROR;
@@ -207,8 +206,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	}
 
 
-
-	//**************************************************************************************************************
 
 	/**
 	 * This method publishes a request (an xml message) to EDI's rest interface. It gets an HTTP/HTTPS
@@ -600,15 +597,15 @@ public class EhcoreAPIUtil extends IHGUtil {
 		HttpURLConnection conn = null;
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
-		String protocol = testData.getProtocol(); //getConfigItemValue(UtilConsts.PROTOCOL);
+		String protocol = testData.getProtocol(); 
 
 		if (protocol.equalsIgnoreCase("https")&& djId !="") {
 			conn = setupHttpsConnection(url, requestType, requestXml,"valid",djId,true);
 		} else if (protocol.equalsIgnoreCase("http")&& djId !="") {
 			conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml,"valid",djId,true);
-		}/*else if (protocol.equalsIgnoreCase("http")&& "".equals(djId)) {
-        	conn = setupHttpConnection(url, UtilConsts.POST_REQUEST, requestXml,"validAllscriptsCCDImport",djId,false);
-        }*/else if (protocol.equalsIgnoreCase("https")&& djId =="") {
+		}
+        	
+      else if (protocol.equalsIgnoreCase("https")&& djId =="") {
         	conn = setupHttpsConnection(url, requestType, requestXml,"valid",djId,false);
         } else if (protocol.equalsIgnoreCase("http")&& djId =="") {
         	conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml,"valid",djId,false);
@@ -1878,14 +1875,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 	        String expectedResponse = null;
 	    	if (type.equalsIgnoreCase(CCDImportConstants.AS_CCD)){
 	    		
-	    		//url =testData.getUrl()+testData.getAllscriptsccdimporturl();
 	    		url="http://dev3vip-eh-core-svc.qhg.local:80/asehr/service/hub";
-	    		//toXML = UtilConsts.SAMPLE_ALLSCRIPTS_ADAPTER_CDDIMPORT_INPUT_DATA + "AllScriptsAdapter_CCDImport_Input.xml";
-	    		toXML = CCDImportConstants.AS_REQ + "Professional_AllisonReed_1.xml";
+	       		toXML = CCDImportConstants.AS_REQ + "Professional_AllisonReed_1.xml";
 	    		expectedResponse = "OK";
 	    		
 	    	}else if (type == "invalidAllscriptsCCDImportMsg"){
-	    		//url =testData.getUrl()+testData.getAllscriptsccdimporturl();
 	    		url="http://dev3vip-eh-core-svc.qhg.local:80/asehr/service/hub";
 	    		toXML = CCDImportConstants.AS_INVALID_REQ + "AllScriptsAdapter_CCDImport_InvalidInput.xml";
 	    		expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST;
@@ -1913,7 +1907,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	        HttpURLConnection conn = null;
 	        EhcoreAPI ehcoreApi = new EhcoreAPI();
 			EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
-			String protocol = testData.getProtocol(); //getgetConfigItemValue(UtilConsts.PROTOCOL);
+			String protocol = testData.getProtocol(); 
 			Log4jUtil.log("Protocol************"+protocol);
 			
 	        if  (protocol.equalsIgnoreCase("http")) {
@@ -1930,7 +1924,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	                	xmlResponse = readResponse(conn.getInputStream());
 	                	Assert.assertEquals(expectedHttpCode, conn.getResponseCode());
 	                	//validate the response against xsd
-	                	//assertTrue("Response XML is not valid",validateXML(UtilConsts.ALLSCRIPTS_MESSAGE_ENVELOPE_XSD,xmlResponse));
+	                	
 	                }else if(expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST)&& conn.getResponseCode() == expectedHttpCode_BadRequest){
 	                	Assert.assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
 	                	xmlResponse = readResponse(conn.getErrorStream());
@@ -2024,8 +2018,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 	     * @param msg_guid -expected message guid
 	     * @param nodePath - Actual node path to get the node name and node value.
 	     * @param nodeName - node name
+	     * @throws Exception 
 	     */
-	    public static SortedMap<String,String> getActualCDMList(String msg_guid,String nodePath,String nodeName,String type) {
+	    public static SortedMap<String,String> getActualCDMList(String msg_guid,String nodePath,String nodeName,String type) throws Exception {
 	        int procTime = Integer.parseInt(EhcoreAPIConstants.CDM_MSG_PROC_TIME);//(EHCoreTestConfigReader.getConfigItemValue(EHCoreTestConsts.UtilConsts.CDM_MSG_PROC_TIME));
 
 	        // check status every 10 seconds until - either the desired status has been found or time-out happened.
@@ -2084,7 +2079,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_AddEntity.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.updateC_CCD)){
 	      		expectedCDM.add(0,EhcoreAPIConstants.ADD_ENTITY_C_CCD_RES + "C_CDM_Update.xml");
-	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NEW_CCD)){
+	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.newC_CCD)){
 	      		expectedCDM.add(0,CCDImportConstants.EXPECTED_C_CDMLIST + "C_CDM_New.xml");
 	      	}else if(type.equalsIgnoreCase(EhcoreAPIConstants.NOKNOWN_C_CCD)){
 	      		expectedCDM.add(0,CCDImportConstants.EXPECTED_C_CDMLIST + "C_CDM_NoKnown.xml");
@@ -2096,8 +2091,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 	      public static void compareXml(List<String> expectedList,SortedMap<String,String> actualList){
 	      int count = 0;
 	      	
-	      //	Assert.assertTrue("Expected CDM size: " + expectedList.size() + ", and Actual CDM size :" + actualList.size()+ "are not equal" , actualList.size()!=0);
-	  		Log4jUtil.log("Sorted Map...");
+	      	Log4jUtil.log("Sorted Map...");
 	  		for (Map.Entry<String,String> entry : actualList.entrySet()) {
 	          	Log4jUtil.log("Key : " + entry.getKey());
 	          	String actualCdmFileName = null;
@@ -2207,8 +2201,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
 					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
 			// Validate Request xml against XSD
-			// Assert.assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
-			// String(fileToBytes(xmlFile))));
+			
 
 		} else if (type == "invalidKey_QuestionnaireExportMsg") {
 			Log4jUtil.log("********** invalidKey_QuestionnaireExportMsg");
@@ -2216,8 +2209,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			toXML = CCDExportConstants.QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY
 					+ "QuestionnaireMessageInvalidKey.xml";
 			// Validate Request xml against XSD
-			// assertTrue("Request XML is not valid",validateXML(EhcoreAPIConstants.CCDMESSAGETYPE_XSD,new
-			// String(fileToBytes(toXML))));
+		
 		} else if (type == "invalidQuestionnaireExportMsg") {
 			Log4jUtil.log("********** invalidQuestionnaireExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDEXPORT;
