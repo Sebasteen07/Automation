@@ -100,7 +100,8 @@ public class RxRenewalSearchPage extends BasePageObject {
 
 	public RxRenewalSearchPage(WebDriver driver) {
 		super(driver);
-		createdTs = System.currentTimeMillis();
+		PageFactory.initElements(driver, this);
+		createdTs = System.currentTimeMillis();	
 	}
 
 	public void searchForRxRenewalToday() throws InterruptedException {

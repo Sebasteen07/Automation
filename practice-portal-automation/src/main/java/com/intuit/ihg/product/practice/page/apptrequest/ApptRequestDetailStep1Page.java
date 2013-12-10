@@ -62,6 +62,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	
 	public ApptRequestDetailStep1Page(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 		createdTs = System.currentTimeMillis();
 	}
 	
@@ -97,11 +98,10 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	public void processApptAndSubmit(ApptRequestEntity entity) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-//		List<WebElement> processOptionsList = driver.findElements(By.name("processAppointment:action"));
+
 		// Select process option
 		for (WebElement action : processOptions) {
-//			log("WEBELEMENT****"+action.getText().toString());
-//			log("WEBELEMENT VALUE****"+action.getAttribute("value"));
+
 			int actionValue = Integer.parseInt(action.getAttribute("value"));
 			if (entity.getProcessOption() == actionValue) {
 				action.click();
