@@ -81,5 +81,23 @@ public class SitegenConstants {
 	public final static String FILEIMPORTSTATUS = "Finished";
 	public final static String FILEPATH ="testfiles/FileImportStaff.csv";
 
-
+	//Custom Forms item types
+	public final static String CUSTOMFORM_ITEM_TYPE1 = "Question";
+	public final static String CUSTOMFORM_ITEM_TYPE2 = "Heading";
+	public final static String QUESTION_TYPE1 = "Single-Line Text";
+	public final static String QUESTION_TYPE2 = "Multi-Line Text";
+	public final static String QUESTION_TYPE3 = "Multi-Select";
+	public final static String QUESTION_TYPE4 = "Single Select";
+	public final static String OPTION1 = "Yes";
+	public final static String OPTION2 = "No";
+	public final static String HEADINGTITLE = "A Custom Form";
+	public final static String AVAILABLE_ANSWERS = "1,2,3,4";
+	public final static String QUESTIONTITLE1 = "How do you feel?";
+	public final static String QUESTIONTITLE2 = "How do you feel on a scale from 1 to 4?";
+	public final static String CUSTOMFORMNAME = "Auto Form";
+	public final static String PATIENT_FIRSTNAME = "AutoPatient";	
+	public final static String PATIENT_LASTTNAME = "medfusion";	
+	public final static String PATIENT_DOBMONTH = "January";	
+	public final static String PATIENT_DOBDAY = "1";
+	public final static String PATIENT_DOBYEAR = "1987";
 }
