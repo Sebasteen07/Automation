@@ -107,10 +107,16 @@ public class SitegenTestData {
 	}
 
 	/**
-	 * Returns site gen QBMS test user password from excel sheet
+	 * Returns password for Form scenario
 	 */
-	public String getQBMSPassword() {
-		return sitegenobj.qbmsPassword;
+	public String getFormUser() {
+		return sitegenobj.formUser;
 	}
-
+	
+	/**
+	 * Returns the username for Form scenario
+	 */
+	public String getFormPassword() {
+		return sitegenobj.formPassword;
+	}
 }

@@ -18,6 +18,7 @@ import com.intuit.ihg.product.sitegen.page.InterfaceSetUp.InterfaceAdministratio
 import com.intuit.ihg.product.sitegen.page.MerchantAccount.MerchantAccountPage;
 import com.intuit.ihg.product.sitegen.page.customforms.CreateCustomForms;
 import com.intuit.ihg.product.sitegen.page.customforms.ManageYourFormsPage;
+import com.intuit.ihg.product.sitegen.page.discreteforms.DiscreteFormsPage;
 import com.intuit.ihg.product.sitegen.page.location.ManageYourLocationsPage;
 import com.intuit.ihg.product.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
 import com.intuit.ihg.product.sitegen.page.personnel.ManageYourPersonnelPage;
@@ -59,6 +60,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	@FindBy(linkText = "Personnel (Non-Physicians)")
 	private WebElement lnkPersonnelNonPhysicians;
 
+	@FindBy (xpath = ".//a[@href = '/configurator/forms/']")
+	private WebElement discreteFormsLink;
+	
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- constructor for this Page
@@ -248,7 +252,16 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	}
 
-
+	/**
+	 * @author bkrishnankutty
+	 * Description : Navigate to DiscreteFormPage
+	 */
+	public DiscreteFormsPage clickOnDiscreteForms() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, discreteFormsLink);
+		discreteFormsLink.click();
+		return PageFactory.initElements(driver,DiscreteFormsPage.class);
+	}
 
 
 }

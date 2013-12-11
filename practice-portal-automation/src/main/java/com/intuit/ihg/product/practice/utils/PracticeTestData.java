@@ -13,22 +13,13 @@ public class PracticeTestData {
 	public PracticeTestData(Practice practice) throws Exception {
 		// Find the environment
 		String temp= IHGUtil.getEnvironmentType().toString();
+		
 		// Pull data based upon environment
 		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls"); 	// data file location
 		excelReader = new ExcelSheetReader(url.getFile());						// read data file
 		practiceData = (Practice) excelReader.getSingleExcelRow(practice,temp);	//filtering the entire file
 	}
 
-
-	public PracticeTestData(Practice practice,String m) throws Exception {
-		String temp= IHGUtil.getEnvironmentType().toString();// which enviroment data need to picked
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls"); // file name
-		excelReader=new ExcelSheetReader(url.getFile());//reading the entire file
-		temp = m+ "-" +temp;
-		System.out.println("Key value for this Testcase ###########:- "+temp);
-		practiceData = (Practice) excelReader.getSingleExcelRow(practice,temp);//filtering the entire file
-	}
-	
 	public String getUrl() {
 		return practiceData.url;
 	}
@@ -39,5 +30,13 @@ public class PracticeTestData {
 
 	public String getPassword() {
 		return practiceData.password;
+	}	
+	
+	public String getFormUser() {
+		return practiceData.formUser;
+	}
+	
+	public String getFormPassword() {
+		return practiceData.formPassword;
 	}
 }

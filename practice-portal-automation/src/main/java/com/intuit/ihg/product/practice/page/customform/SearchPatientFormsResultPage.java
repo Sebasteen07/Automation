@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.practice.page.customform;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +17,7 @@ public class SearchPatientFormsResultPage extends BasePageObject {
 	
 	public SearchPatientFormsResultPage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 	}
 	
 	/**
@@ -34,6 +36,33 @@ public class SearchPatientFormsResultPage extends BasePageObject {
 					"the staff member is not permissioned for 'CustomForm' solution," +
 					" or there was an error on login");	}
 		lnkViewDetails.click();
+		return PageFactory.initElements(driver, ViewPatientFormPage.class);
+	}
+	
+	public ViewPatientFormPage clickOnAutomationCustomForm() {
+		IHGUtil.PrintMethodName();
+		log("Finding the custom form in the search page");
+		String xpath = ".//form[@id='searchForm']//table[@id='table-1']/tbody/tr/td[contains(text() ,'automation,')]";
+		try{
+			driver.findElement(By.xpath(xpath)).click();
+		}catch(Exception e) {
+			driver.findElement(By.xpath(xpath)).click();
+			log("Custom form details not found");
+		}
+		
+		return PageFactory.initElements(driver, ViewPatientFormPage.class);
+	}
+	
+	public ViewPatientFormPage clickOnSitegenCustomForm(String formName) {
+		IHGUtil.PrintMethodName();
+		log("Finding the custom form in the search page");
+		String xpath = ".//form[@id='searchForm']//table[@id='table-1']/tbody/tr/td[text()='"+formName+"']";
+		try{
+			driver.findElement(By.xpath(xpath)).click();
+		}catch(Exception e) {
+			driver.findElement(By.xpath(xpath)).click();
+			log("Custom form details not found");
+		}
 		return PageFactory.initElements(driver, ViewPatientFormPage.class);
 	}
 	
