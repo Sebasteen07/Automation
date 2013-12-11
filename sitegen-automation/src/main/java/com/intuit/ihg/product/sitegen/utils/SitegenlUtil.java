@@ -183,7 +183,7 @@ public class SitegenlUtil extends IHGUtil {
  	 * Description: This method switches the driver control to the print pop up window
  	 * @throws InterruptedException
  	 */
- 	public void switchToNewWindow() throws InterruptedException {
+ 	public static void switchToNewWindow(WebDriver driver) throws InterruptedException {
  	 	Thread.sleep(2000);
  		Set<String> availableWindows = driver.getWindowHandles();
  		Object[] ls = availableWindows.toArray();
@@ -219,6 +219,4 @@ public class SitegenlUtil extends IHGUtil {
 		Thread.sleep(2000);
  		rb.keyRelease(KeyEvent.VK_TAB);
  	}
-	
-	
 }
