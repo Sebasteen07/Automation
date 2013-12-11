@@ -3,6 +3,7 @@ package com.intuit.ihg.product.portal.page.healthform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,8 +36,10 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(xpath="//div[@id='formcontainer']//table/tbody/tr[5]/td")
 	public WebElement Patientname;
 	
+	
 	public HealthFormPage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 	}
 
 	/**
@@ -105,6 +108,16 @@ public class HealthFormPage extends BasePageObject {
 	    urlChecker.mimicWebDriverCookieState(true);
 	    
 	    return urlChecker.getHTTPStatusCode();
+	}
+	
+	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
+		IHGUtil.PrintMethodName();
+		Thread.sleep(3000);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("iframe");
+		driver.findElement(By.xpath(".//ul/li/a[@title='"+formName+"']")).click();
+		Thread.sleep(5000);	
+		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
 	}
 
 }
