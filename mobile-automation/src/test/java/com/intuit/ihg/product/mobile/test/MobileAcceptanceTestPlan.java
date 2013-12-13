@@ -861,7 +861,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 	 */
     
 	@Test(enabled = true, groups = { "DeploymentAcceptanceTests",
-			"AcceptanceTests", "Positive", "RxRenewal" }, retryAnalyzer = RetryAnalyzer.class)
+			"AcceptanceTests", "Positive", "mobileAsk" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMobileAsk() throws Exception {
 
 		log("step 1: Get Data from Excel");
@@ -1083,16 +1083,16 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		assertEquals(pSubmissionConfirmationPage.getForgotUserIdTitle(),
 				"Check Your Email", "Assertion for title failed");
 		assertEquals(pSubmissionConfirmationPage.getForgotUserIdEmailText(),
-				testcasesData.getUserName(), "Assertion for email failed");
+				testcasesData.getForgotUserName(), "Assertion for email failed");
 		
 		log("step 7:Close the app");
 		pSubmissionConfirmationPage.clickClose();
 
 		log("step 8:Get UserID from the email");
-		String userID = util.getUserEmailFromGmail(testcasesData.getUserName(),
-				testcasesData.getPassword(), "Your User ID");
+		String userID = util.getUserEmailFromGmail(testcasesData.getForgotUserName(),
+				testcasesData.getForgotPassword(), "Your User ID");
 		log("userID :=================" + userID);
-		assertEquals(userID, testcasesData.getUserName(),
+		assertEquals(userID, testcasesData.getForgotUserName(),
 				"UserId is not matching");
 		
 		log("step 9:Login with userId");
@@ -1136,7 +1136,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 2: Clean the Gmail Inbox");
 		String sSubject = String.format("Your password has been reset");
 		MobileUtil util = new MobileUtil(driver);
-		util.emailMessageRemover(testcasesData.getGmailUName(),
+		util.emailMessageRemover(testcasesData.getForgotUserName(),
 				testcasesData.getGmailPassword(), sSubject);
 
 		logTestInfo(testcasesData);

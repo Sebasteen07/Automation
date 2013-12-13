@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "MOBILE-SMOKE-AUTOMATION-SUITE" verbose = "2" >
+<suite name = "IHG-AUTOMATION-Suite" verbose = "2" >
 <listeners>
   <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
@@ -7,14 +7,11 @@
 </listeners>
 
 <test name = "Mobile-Smoke-Automation" >
- <groups>
-    <run>
-      <exclude name="AcceptanceTests"  />
-      <include name="SmokeTests"  />
-    </run>
-</groups>
-<classes>
-    <class name="com.intuit.ihg.product.mobile.test.MobileAcceptanceTestPlan"/>
-  </classes>
+	<classes>
+			<class name="com.intuit.ihg.product.mobile.test.MobileAcceptanceTestPlan" />
+			<methods>
+				<include name="testMobileLoginLogout" />
+			</methods>
+	</classes>
 </test>
 </suite>
