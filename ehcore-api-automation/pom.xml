@@ -22,7 +22,7 @@
 		<messages-version>ihg-depot-trunk-SNAPSHOT</messages-version>
 		<keyreg-client-version>ihg-depot-trunk-SNAPSHOT</keyreg-client-version>
 		<resteasy-version>2.2.2.GA</resteasy-version>
-		<codification-version>12.2.0.4</codification-version>
+		<codification-version>13.6.0.5</codification-version>
 	</properties>
 	
 	<repositories>
