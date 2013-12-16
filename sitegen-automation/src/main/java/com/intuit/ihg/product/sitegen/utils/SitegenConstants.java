@@ -100,4 +100,12 @@ public class SitegenConstants {
 	public final static String PATIENT_DOBMONTH = "January";	
 	public final static String PATIENT_DOBDAY = "1";
 	public final static String PATIENT_DOBYEAR = "1987";
+	public final static String DISCRETEFORMNAME = "Automaton Discrete Form";
+	public final static String DISCRETEFORM_PATIENT_FIRSTNAME = "";	
+	public final static String DISCRETEFORM_PATIENT_LASTTNAME = "";	
+	public final static String DISCRETEFORM_PATIENT_DOBMONTH = "January";	
+	public final static String DISCRETEFORM_PATIENT_DOBDAY = "1";
+	public final static String DISCRETEFORM_PATIENT_DOBYEAR = "1987";
+	
 }
+

@@ -262,6 +262,40 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		discreteFormsLink.click();
 		return PageFactory.initElements(driver,DiscreteFormsPage.class);
 	}
+	
+	
+	/**
+	 * * @author Shanthala
+	 * @Desc:- click on Link Custom Form
+	 * @return ViewIntegrationsPage
+	 * @throws InterruptedException
+	 * 
+	 */
+
+	//public DiscreteFormConfigurationUtilityPage clickLnkDiscreteForms() throws Exception {
+	public DiscreteFormsPage clickLnkDiscreteForms() throws Exception {
+
+		log("Clicking on Discrete forms");
+		IHGUtil.waitForElement(driver, 50, discreteFormsLink);
+		try {
+			discreteFormsLink.click();
+		}catch(Exception e) {
+			discreteFormsLink.click();
+		}
+		Thread.sleep(2000);
+		for(String winHandle : driver.getWindowHandles()){
+			driver.switchTo().window(winHandle);
+		}
+		if(TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
+			driver.manage().window().maximize();
+		}
+
+		return PageFactory.initElements(driver, DiscreteFormsPage.class);
+
+	}
+
+
+
 
 
 }
