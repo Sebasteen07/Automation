@@ -19,7 +19,7 @@ public class EhcoreAPIConstants {
 	public static final String WS_URL = "/eh/v1/";
 	
 	// # port = 80
-	public static final String PORT = "80";
+	public static final String PORT = "8080";
 
 	// # to check the reprocess flow - retriable exception
 	// # reprocessReq_port = 8680
@@ -67,19 +67,19 @@ public class EhcoreAPIConstants {
 
 
 	//   %%%%%%%%%%%%% TO EXCEL
-	public static final String HOST = "dev3vip-eh-core-svc.qhg.local";
+	public static final String HOST =  "dev3aapp13.qhg.local" ;             //"dev3vip-eh-core-svc.qhg.local";
 	// dev3vip-eh-core-svc.qhg.local
 	
 
 	// INTUITPATIENTID Details  %%%%%%%%%%%%% TO EXCEL
-	public final static String INTUITPATIENTID_ADD_ENTITY = "47910";
-	public final static String INTUITPATIENTID_ADD_ELEMENT = "47913";
-	public final static String INTUITPATIENTID_UPDATE = "47914";
-	public final static String INTUITPATIENTID_CCCD = "47915";
-	public final static String INTUITPATIENTID_NOKNOWN_CCCD = "47916";
-	public final static String INTUITPATIENTID_ADD_ENTITY_CCCD = "47917";
-	public final static String INTUITPATIENTID_ADD_ELEMENT_CCCD = "47919";
-	public final static String INTUITPATIENTID_UPDATE_CCCD = "47920";
+	public final static String INTUITPATIENTID_ADD_ENTITY = "51911"; //51911 47910
+	public final static String INTUITPATIENTID_ADD_ELEMENT = "51884" ;//"47913";51840 ;51884
+	public final static String INTUITPATIENTID_UPDATE = "51910"; //47914
+	public final static String INTUITPATIENTID_CCCD = "51914"; //47915
+	public final static String INTUITPATIENTID_NOKNOWN_CCCD = "51920"; //47916
+	public final static String INTUITPATIENTID_ADD_ENTITY_CCCD = "51921"; //51921 47917
+	public final static String INTUITPATIENTID_ADD_ELEMENT_CCCD = "47919"; 
+	public final static String INTUITPATIENTID_UPDATE_CCCD = "51923"; //51923 - 47920
 	public final static String INTUITPATIENTID_INVALIDCCDNOTIFICATION = "47921";
 	
 
@@ -92,9 +92,9 @@ public class EhcoreAPIConstants {
 	 * CCD Message -Inbound and Outbound Flow Details (Phr <==>Allscripts)
 	 */
 	
-	public static final String TEST_DATA = "src/test/resources/testfiles/";
+//	public static final String TEST_DATA = "src/test/resources/testfiles/";
 
-	public static final String C_TEST_DATA = "src/test/resources/testfiles/";
+	//public static final String C_TEST_DATA = "src/test/resources/testfiles/";
 	// Actual CCD Message (From RAW,ENRICHED ,SNAPSHOT node)
 	public static final String MARSHAL_CCD = SAMPLE_DATA + "marshal_ccd/";
 
@@ -122,7 +122,8 @@ public class EhcoreAPIConstants {
 	 * AS_TEST_DATA + "validCCDexport/input/";
 	 */
 	
-	public static final String REPROCESS_DATA = TEST_DATA + "reprocessmessage/";
+//	public static final String REPROCESS_DATA = TEST_DATA + "reprocessmessage/";
+	public static final String REPROCESS_DATA = "src/test/resources/testfiles/reprocessmessage/";
 	public static final String REPROCESSREQ_PORT = "reprocessReq_port";
 	
 	public static final String CCDEXCHANGE_XSD = "src/test/resources/testfiles/xsd/CCDExchange.xsd";
@@ -148,7 +149,7 @@ public class EhcoreAPIConstants {
 	public static final String KEYREGISTRY = "Keyregistry Enrichment of SimpleCDA";
 	public static final String ACTOR_ID = "Actor ID Validation";
 	public static final String PUBLISHNOTIFICATION = "Publish CCD Notification to Hub";
-	public static final String CCDXSDVALIDATION = "CCD XSD Validation";
+	public static final String CCDXSDVALIDATION = "CCD XSD Validation"; //Raw Data XSD Validation
 	public static final String CCD2SIMPLE = "ccd2simpleTranslation";
 	public static final String ENRICHED = "Enriched Message Persist";
 	public static final String SNAPSHOTCREATION = "Snapshot Creation Activity";
@@ -200,35 +201,53 @@ public class EhcoreAPIConstants {
 	public static final String delete2CCD = "delete2_CCD";
 
 	
-	public static final String ADD_ENTITY_C_CCD_REQ = C_TEST_DATA + "ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/entity/"; 
-	public static final String ADD_ELEMENT_C_CCD_REQ = C_TEST_DATA	+ "ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/element/";    
+	public static final String ADD_ENTITY_C_CCD_REQ ="src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/entity/"; 
+	public static final String ADD_ELEMENT_C_CCD_REQ = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/element/";    
 	
 	
-	public static final String SNAPSHOT_ENTITY_C_CCD_RES = C_TEST_DATA+"ccdimport/ccdexchange/consolidatedccd/valid/snapshotretrieve/expectedresponse/entity/"; 
-	public static final String SNAPSHOT_ELEMENT_C_CCD_RES = C_TEST_DATA+"ccdimport/ccdexchange/consolidatedccd/valid/snapshotretrieve/expectedresponse/element/";
+	public static final String SNAPSHOT_ENTITY_C_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/snapshotretrieve/expectedresponse/entity/"; 
+	public static final String SNAPSHOT_ELEMENT_C_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/snapshotretrieve/expectedresponse/element/";
 	
 	
 	
-	public static final String ADD_ENTITY_C_CCD_RES = C_TEST_DATA +"ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/expectedresponse/entity/";  
-	public static final String ADD_ELEMENT_C_CCD_RES = C_TEST_DATA +"ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/expectedresponse/element/"; 
+	public static final String ADD_ENTITY_C_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/expectedresponse/entity/";  
+	public static final String ADD_ELEMENT_C_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/expectedresponse/element/"; 
 
 
-	// Snapshot and change Detection Details
+	/*// Snapshot and change Detection Details
 	
 	public static final String ADD_ENTITY_CCD_REQ = TEST_DATA + "ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/request/entity/"; 
 	public static final String ADD_ELEMENT_CCD_REQ = TEST_DATA + "ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/request/element/";
 
 	
 	public static final String ADD_ENTITY_CCD_RES = TEST_DATA + "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/entity/"; 
-	public static final String ADD_ELEMENT_CCD_RES = TEST_DATA + "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/element/"; 
+	//public static final String ADD_ELEMENT_CCD_RES = TEST_DATA + "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/element/";
+	public static final String ADD_ELEMENT_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/element/";
 
 	public static final String SAMPLE_UPDATE_CCD = SAMPLE_DATA +"ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/entity/";
 
 	
 	public static final String SNAPSHOT_ENTITY_CCD = TEST_DATA + "ccdimport/ccdexchange/nonconsolidatedccd/valid/snapshotretrieve/expected/entity/"; 
 	public static final String SNAPSHOT_ELEMENT_CCD = TEST_DATA	+ "ccdimport/ccdexchange/nonconsolidatedccd/valid/snapshotretrieve/expected/element/"; 
-
+*/
 	// Reprocess Message Details
+	
+	// Snapshot and change Detection Details
+	
+		public static final String ADD_ENTITY_CCD_REQ = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/request/entity/"; 
+		public static final String ADD_ELEMENT_CCD_REQ ="src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/request/element/";
+
+		
+		public static final String ADD_ENTITY_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/entity/"; 
+		//public static final String ADD_ELEMENT_CCD_RES = TEST_DATA + "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/element/";
+		public static final String ADD_ELEMENT_CCD_RES = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/changedetectionmessage/expected/element/";
+
+		public static final String SAMPLE_UPDATE_CCD = SAMPLE_DATA +"ccdimport/ccdexchange/consolidatedccd/valid/changedetectionmessage/request/entity/";
+
+		
+		public static final String SNAPSHOT_ENTITY_CCD = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/snapshotretrieve/expected/entity/"; 
+		public static final String SNAPSHOT_ELEMENT_CCD =  "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/snapshotretrieve/expected/element/"; 
+
 
 	public static final String SAMPLE_REPROCESS_DATA = SAMPLE_DATA 	+ "reprocessmessage/";
 
@@ -268,7 +287,8 @@ public class EhcoreAPIConstants {
 	// Data job
 			public static final String URL_DATAJOB = "data.job";
 			public static final String EXPECTEDRESPONSEMESSAGE_DATAJOB = "OK";
-			public static final String DATA_JOB_INPUT = TEST_DATA + "/datajob/";
+			//public static final String DATA_JOB_INPUT = TEST_DATA + "/datajob/";
+			public static final String DATA_JOB_INPUT = "src/test/resources/testfiles/datajob/";
 			public static final String SAMPLE_DATA_JOB_INPUT = SAMPLE_DATA
 					+ "/datajob/";
 			public static final String DJ_MGR_PROC_TIME = "60";
