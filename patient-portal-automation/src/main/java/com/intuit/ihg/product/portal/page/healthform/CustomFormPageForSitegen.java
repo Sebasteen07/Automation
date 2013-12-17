@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -18,7 +19,7 @@ import com.intuit.ihg.product.practice.utils.PracticeUtil;
 public class CustomFormPageForSitegen extends BasePageObject {
 
 	@FindBy( id = "custom_question_customsecond_section_0")
-	private WebElement howDoYouFeelField;
+	private WebElement secondSectionFirstField;
 	
 	@FindBy(id = "nextPageButton")
 	private WebElement saveAndContinue;
@@ -27,7 +28,7 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	private WebElement scalingRadioButton;
 	
 	@FindBy( id = "custom_question_customthird_section_0")
-	private WebElement howDoYouFeelTextArea;
+	private WebElement thirdSectionFirstTextArea;
 	
 	@FindBy( xpath = ".//a[contains(text(),'Submit')]")
 	private WebElement submitButton;
@@ -52,14 +53,14 @@ public class CustomFormPageForSitegen extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, saveAndContinue);
 		saveAndContinue.click();
 		PortalUtil.setquestionnarieFrame(driver);
-		IHGUtil.waitForElement(driver, 10, howDoYouFeelField);
-		howDoYouFeelField.sendKeys("Better");
+		IHGUtil.waitForElement(driver, 10, secondSectionFirstField);
+		secondSectionFirstField.sendKeys("Better");
 		PortalUtil.setquestionnarieFrame(driver);
 		scalingRadioButton.click();
 		IHGUtil.waitForElement(driver, 10, saveAndContinue);
 		saveAndContinue.click();
-		IHGUtil.waitForElement(driver, 10, howDoYouFeelTextArea);
-		howDoYouFeelTextArea.sendKeys("Better");
+		IHGUtil.waitForElement(driver, 10, thirdSectionFirstTextArea);
+		thirdSectionFirstTextArea.sendKeys("Better");
 		PortalUtil.setquestionnarieFrame(driver);
 		IHGUtil.waitForElement(driver, 10, saveAndContinue);
 		PortalUtil.setquestionnarieFrame(driver);
@@ -67,6 +68,45 @@ public class CustomFormPageForSitegen extends BasePageObject {
 		Thread.sleep(3000);
 		
 	}
+	
+
+	
+	/**
+	 * Description : Fill out the custom form in patient portal.
+	 * @param formName
+	 * @throws Exception
+	 */
+	public void fillOutCustomForm2(String formName) throws Exception {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setquestionnarieFrame(driver);
+		IHGUtil.waitForElement(driver, 10, saveAndContinue);
+		saveAndContinue.click();
+		Thread.sleep(3000);
+		saveAndContinue.click();
+		String errorText = driver.findElement(By.xpath(".//div[@id='errorContainer']/p")).getText();
+		Assert.assertEquals(errorText.contains("Please fill in the following fields to continue: "),true, "Error text for filling all mandatory fields is not displayed.");
+		PortalUtil.setquestionnarieFrame(driver);
+		IHGUtil.waitForElement(driver, 10, secondSectionFirstField);
+		secondSectionFirstField.sendKeys("White");
+		PortalUtil.setquestionnarieFrame(driver);
+		driver.findElement(By.id("custom_question_customsecond_section_1")).sendKeys("Testing");
+		driver.findElement(By.id("custom_question_customsecond_section_2_0")).click();
+		driver.findElement(By.id("custom_question_customsecond_section_3_1")).click();
+		IHGUtil.waitForElement(driver, 10, saveAndContinue);
+		saveAndContinue.click();
+		IHGUtil.waitForElement(driver, 10, thirdSectionFirstTextArea);
+		thirdSectionFirstTextArea.sendKeys("White");
+		PortalUtil.setquestionnarieFrame(driver);
+		driver.findElement(By.id("custom_question_customthird_section_1")).sendKeys("Testing Form");
+		driver.findElement(By.id("custom_question_customthird_section_2_0")).click();
+		driver.findElement(By.id("custom_question_customthird_section_3_0")).click();
+		IHGUtil.waitForElement(driver, 10, saveAndContinue);
+		PortalUtil.setquestionnarieFrame(driver);
+		saveAndContinue.click();
+		Thread.sleep(3000);
+		
+	}
+	
 	
 	/**
 	 * Description : Verify whether the form is displayed in the Health forms page.

@@ -76,7 +76,7 @@ public class SitegenConstants {
 	public final static String statusValue1 = "Production";
 	public final static String statusValue2 = "Test";
 
-   //Import Staff and Export Staff
+	//Import Staff and Export Staff
 	public final static String IMPORTSTAFFFILENAME = "FileImportStaff.csv";
 	public final static String FILEIMPORTSTATUS = "Finished";
 	public final static String FILEPATH ="testfiles/FileImportStaff.csv";
@@ -92,20 +92,31 @@ public class SitegenConstants {
 	public final static String OPTION2 = "No";
 	public final static String HEADINGTITLE = "A Custom Form";
 	public final static String AVAILABLE_ANSWERS = "1,2,3,4";
+	public final static String AVAILABLE_ANSWERS2 = "Happy, Anxious, Depressed, Tired, Something else";
+	public final static String AVAILABLE_ANSWERS3 = "Fever, Fatigue,Cough";
+	public final static String AVAILABLE_ANSWERS4 = "1,2,3,4,5,6,7,8,9,10";
+	public final static String AVAILABLE_ANSWERS5 = "Mild, Moderate, Severe";
 	public final static String QUESTIONTITLE1 = "How do you feel?";
 	public final static String QUESTIONTITLE2 = "How do you feel on a scale from 1 to 4?";
+	public final static String QUESTIONTITLE3 = "What is your favorite color?";
+	public final static String QUESTIONTITLE4 = "Describe your problem:";
+	public final static String QUESTIONTITLE5 = "Your Favourite Color";
+	public final static String QUESTIONTITLE6 = "Why do you like that color?";
+	public final static String QUESTIONTITLE7 = "Do you have any of these symptoms?";
+	public final static String QUESTIONTITLE8 = "If yes, choose its severity?.";
 	public final static String CUSTOMFORMNAME = "Auto Form";
 	public final static String PATIENT_FIRSTNAME = "AutoPatient";	
 	public final static String PATIENT_LASTTNAME = "medfusion";	
 	public final static String PATIENT_DOBMONTH = "January";	
 	public final static String PATIENT_DOBDAY = "1";
 	public final static String PATIENT_DOBYEAR = "1987";
+
 	public final static String DISCRETEFORMNAME = "Automaton Discrete Form";
 	public final static String DISCRETEFORM_PATIENT_FIRSTNAME = "";	
 	public final static String DISCRETEFORM_PATIENT_LASTTNAME = "";	
 	public final static String DISCRETEFORM_PATIENT_DOBMONTH = "January";	
 	public final static String DISCRETEFORM_PATIENT_DOBDAY = "1";
 	public final static String DISCRETEFORM_PATIENT_DOBYEAR = "1987";
-	
+
 }
 
