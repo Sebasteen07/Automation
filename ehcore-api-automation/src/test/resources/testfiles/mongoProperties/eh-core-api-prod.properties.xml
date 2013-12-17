@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="message.broker.url">failover:(tcp://localhost:61616)?startupMaxReconnectAttempts=5</entry>
+	<entry key="loghub.appComponent.constituentType">Electronic Health</entry> 
+	<entry key="loghub.appComponent.name">Electronic Health Data Channel</entry>
+	<entry key="hub.hostname">dev3vip-messagehub-svc.qhg.local</entry>
+	<entry key="message.claimchecksize.ccdimport">51200</entry>
+	<entry key="message.url.ccdimport">http://dev3vip-eh-core-svc.qhg.local/eh/v1/ccd</entry>
+	<entry key="message.url.ccdexport">http://dev3vip-eh-core-svc.qhg.local/eh/v1/internal/ccd</entry>
+	<entry key="mongo.serverAddress">dev3mongodb01.qhg.local:27017,dev3mongodb02.qhg.local:27017</entry>
+	<entry key="mongo.dbkey">2:\w+(-*_*\w)*</entry>
+	<entry key="mongo.collectionkey">2:\w+(-*_*\w)*</entry>
+	
+	
+	<entry key="partner1">http://dev3vip-allscripts-ehr-container-svc.qhg.local/asehr/v1/internal/exportccd</entry>
+	<entry key="partnerAsFormsUrl">http://dev3vip-allscripts-ehr-container-svc.qhg.local/asehr/v1/internal/exportforms</entry>
+	<entry key="cdm.persist">true</entry>
+	<entry key="mongo.encryption.key">tqVPVKoBPkwzJXZzQ2Uj/oQQw+P9y3NL</entry>
+    <entry key="mongo.encryption.flag">true</entry>
+    <entry key="mongo.compression.flag">true</entry>
+    <entry key="mongo.checksum">true</entry>   
+	<entry key="mongo.username">IhgMongoUser</entry>
+	<entry key="mongo.password">Intuit1234</entry>
+	<entry key="portal.rest.url">http://dev3-portal-ejb-int01.mf.qhg.local:8080/practice/rest/internal/integration</entry>
+	
+	<entry key="ecomm.attachment.serviceUrl">${ecomm.attachment.serviceUrl}</entry>
+ 	<entry key="codification.hostname">http://dev3vip-codification-svc.qhg.local</entry>
+    <entry key="kr.serverAddress">http://dev3vip-keyregistry-svc.qhg.local</entry>
+    <entry key="ProviderView.XSL.Location">http://50-17-83-158.s3-website-us-east-1.amazonaws.com/cda/registration.xsl</entry>
+    <entry key="resource.owner.baseurl">http://resource.owner.com</entry>
+    <entry key="oauth.validation.url">https://oauthws.e2e.qdc.ep.intuit.net/iam/oauth_utils/v1/messages/validation/</entry>
+    <entry key="oauth.enabled">false</entry>
+    
+    <entry key="comp.nativelib">/jboss-as-7.1.1.Final/standalone/lib</entry>	
+    <!--<entry key="comp.nativelib">D:/Kavitha/Softwares/jboss-as-7.1.1.Final/standalone/lib</entry>-->
+    
+</properties>
