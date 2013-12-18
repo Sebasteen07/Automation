@@ -66,9 +66,10 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 		public static final String EXPECTED_C_CDMLIST = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/cdm/"; 
 		
 		// Actual & EXPECTED CDM Message
-		public static final String ACTUAL_CDMLIST = SAMPLE_DATA
-				+ "ccdimport/validCCDExchange1/actual/cdm/";
-		public static final String EXPECTED_CDMLIST = "src/test/resources/testfiles/ccdimport/validCCDExchange1/expected/cdm/";
+		public static final String ACTUAL_CDMLIST = SAMPLE_DATA	+ "ccdimport/validCCDExchange1/actual/cdm/";
+		//public static final String EXPECTED_CDMLIST = "src/test/resources/testfiles/ccdimport/validCCDExchange1/expected/cdm/";
+		public static final String EXPECTED_CDMLIST = "src/test/resources/testfiles/ccdimport/ccdexchange/nonconsolidatedccd/valid/expectedresponse/cdm/";
+		//\src\test\resources\testfiles\ccdimport\ccdexchange\nonconsolidatedccd\valid\expectedresponse\cdm
 
 		
 		public static final String C_CCD_RAW = "src/test/resources/testfiles/ccdimport/ccdexchange/consolidatedccd/valid/expectedresponse/raw/";
