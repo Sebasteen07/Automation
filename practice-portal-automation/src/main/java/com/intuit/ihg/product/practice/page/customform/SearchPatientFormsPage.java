@@ -56,7 +56,9 @@ public class SearchPatientFormsPage extends BasePageObject{
 	@FindBy(css="td.searchResultsDetails > a")
 	private WebElement lnkViewDetails;
 
-	
+	@FindBy(name="qnaireType")
+	private WebElement dropDownForm;
+		
 	public SearchPatientFormsPage(WebDriver driver) {
 		super(driver);
 	}
@@ -118,5 +120,23 @@ public class SearchPatientFormsPage extends BasePageObject{
 	}
 	
 
+	
+	/**Search for discrete form
+	 * 
+	 * @param discreteFormName
+	 * @return
+	 */
+	
+	public SearchPatientFormsResultPage SearchDiscreteFormsWithOpenStatus(String discreteFormName)
+	{
+		
+		Select start_m = new Select(dropDownForm);
+		start_m.selectByVisibleText(discreteFormName);
+		btnSearch.click();
+		
+		return PageFactory.initElements(driver, SearchPatientFormsResultPage.class);
+	}
+	
+	
 	
 }
