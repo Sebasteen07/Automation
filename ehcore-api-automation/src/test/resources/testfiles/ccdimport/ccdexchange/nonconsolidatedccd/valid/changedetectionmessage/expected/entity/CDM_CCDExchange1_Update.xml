@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CCDMessageType minorVer="0" majorVer="1"
+	xmlns="http://www.intuit.com/qhg/hub/schemas/Messages">
+	<Header>
+		<Type>CCDImport</Type>
+		<Event>Update</Event>
+		<Source>Electronic Health Data Channel</Source>
+		<Internal>
+			<MajorVer>1</MajorVer>
+			<MinorVer>1</MinorVer>
+		</Internal>
+	</Header>
+	<ClinicalExchangeHeader>
+		<Sender vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00Z"
+			deviceVersion="" deviceName="EEHR" />
+		<Partner vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00Z"
+			deviceVersion="" deviceName="EEHR" />
+		<Destination vendorName="Allscripts" deviceLocalTime="2001-12-31T12:00:00Z"
+			deviceVersion="" deviceName="EEHR" />
+		<LastUpdated>2001-12-31T12:00:00Z</LastUpdated>
+		<RoutingMap>
+			<KeyValuePair>
+				<Key>ProviderID</Key>
+				<Value>_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>StaffID</Key>
+				<Value>_IGNORE_</Value>
+			</KeyValuePair>
+			<KeyValuePair>
+				<Key>CDATypeEnum</Key>
+				<Value>C32_CCD</Value>
+			</KeyValuePair>
+		</RoutingMap>
+		<PracticeInformation role="sender">
+			<practiceIdentifier>
+				<universalPracticeId>_IGNORE_</universalPracticeId>
+				<externalPracticeId>00000000000000099930</externalPracticeId>
+			</practiceIdentifier>
+			<practiceName>Medfusion CCD Test</practiceName>
+		</PracticeInformation>
+	</ClinicalExchangeHeader>
+	<CCDDocument>
+		<patientDemographics>
+			<PatientIdentifier>
+				<universalPatientNumber>_IGNORE_</universalPatientNumber>
+				<PatientAccountNumber>28121001</PatientAccountNumber>
+			</PatientIdentifier>
+		</patientDemographics>
+		<Source>
+			<Channel>
+				<ID>EH</ID>
+				<DocumentRef>_IGNORE_</DocumentRef>
+				<ClinicalDocumentType>C32_CCD</ClinicalDocumentType>
+			</Channel>
+			<Informant>
+				<Id>
+					<Root>2.16.840.1.113883.4.6</Root>
+					<Extension>1114001559</Extension>
+				</Id>
+				<Name>
+					<FirstName>Janell</FirstName>
+					<LastName>Carlson</LastName>
+				</Name>
+				<OrganizationName>MyWay Practice QA_Test002</OrganizationName>
+			</Informant>
+			<OtherSourceInformation>Janell Carlson at MyWay Practice QA_Test002
+			</OtherSourceInformation>
+		</Source>
+		<CCDXML>
+			<SimpleCCD>
+				<AllergyList />
+				<MedicationList>
+					<Medication>
+						<ItemKey>
+							<PatientId>
+								<Type>PHR</Type>
+								<ID>_IGNORE_</ID>
+							</PatientId>
+							<ItemId>
+								<Root>cdbd33f0-6cde-11db-9fe1-0800200c9a66</Root>
+							</ItemId>
+						</ItemKey>
+						<Source>
+							<Channel>
+								<ID>EH</ID>
+								<DocumentRef>_IGNORE_</DocumentRef>
+								<ClinicalDocumentType>C32_CCD</ClinicalDocumentType>
+							</Channel>
+							<Informant>
+								<Id>
+									<Root>2.16.840.1.113883.4.6</Root>
+									<Extension>1114001559</Extension>
+								</Id>
+								<Name>
+									<FirstName>Janell</FirstName>
+									<LastName>Carlson</LastName>
+								</Name>
+								<OrganizationName>MyWay Practice QA_Test002</OrganizationName>
+							</Informant>
+							<OtherSourceInformation>Janell Carlson at MyWay Practice
+								QA_Test002</OtherSourceInformation>
+						</Source>
+						<Patient>
+							<PatientIdentifier>
+								<universalPatientNumber>_IGNORE_</universalPatientNumber>
+								<PatientAccountNumber>28121001</PatientAccountNumber>
+							</PatientIdentifier>
+						</Patient>
+						<Id>
+							<Root>cdbd33f0-6cde-11db-9fe1-0800200c9a66</Root>
+						</Id>
+						<DrugProduct>
+							<DrugCode>
+								<Code>307782</Code>
+								<CodeSystem>2.16.840.1.113883.6.88</CodeSystem>
+								<DisplayName>Albuterol 0.09 MG/ACTUAT inhalant solution
+								</DisplayName>
+								<OriginalText>Albuterol inhalant</OriginalText>
+							</DrugCode>
+							<DoseForm>
+								<Route>
+									<Code>IPINHL</Code>
+									<CodeSystem>2.16.840.1.113883.5.112</CodeSystem>
+									<CodeSystemName>RouteOfAdministration</CodeSystemName>
+									<DisplayName>Inhalation, oral,updated</DisplayName>
+								</Route>
+							</DoseForm>
+						</DrugProduct>
+						<Prescription>
+							<Dosage>
+								<Value>2</Value>
+								<Unit>1</Unit>
+								<FreetextQuantity>2</FreetextQuantity>
+							</Dosage>
+							<Frequency>
+								<Value>6</Value>
+								<Unit>h</Unit>
+								<FreetextQuantity>6 h</FreetextQuantity>
+							</Frequency>
+						</Prescription>
+					</Medication>
+				</MedicationList>
+				<ImmunizationList />
+				<ProblemList />
+				<TestResultList />
+				<ProcedureList />
+				<VitalSignList />
+				<SocialHistoryList />
+			</SimpleCCD>
+		</CCDXML>
+	</CCDDocument>
+</CCDMessageType>
