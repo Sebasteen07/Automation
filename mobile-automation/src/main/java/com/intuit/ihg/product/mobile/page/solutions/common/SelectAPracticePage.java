@@ -35,9 +35,15 @@ public class SelectAPracticePage extends MobileBasePage {
     }
     
     //a[contains(text(),'IHGQA Automation NonIntegrated')]
-    public MakeAPayment selectPracticeUsingString(String pracId){
+    public MobileBasePage selectPracticeUsingString(String pracId) throws InterruptedException{
         practice = driver.findElement(By.xpath("//a[contains(text(),'"+pracId+"')]"));
         practice.click();
+        Thread.sleep(2000);
+        System.out.println(this.getHeaderText());
+        if (null!=this.getHeaderText() && getHeaderText().contains("Make A Payment")) {
+        	
+            return PageFactory.initElements(driver, SelectALocationPage.class);        
+        }
         return PageFactory.initElements(driver, MakeAPayment.class);
     }
 }

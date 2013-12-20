@@ -1000,8 +1000,11 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.clickBillPayLink();
 
 		log("step 4: Select practice");
-		MakeAPayment pMakeAPayment = pSelectAPracticePage
+		SelectALocationPage pSelectALocation = (SelectALocationPage) pSelectAPracticePage
 				.selectPracticeUsingString(testcasesData.getBillPayPracticeName());
+		
+		log("step 5: Select location");
+		MakeAPayment pMakeAPayment  = (MakeAPayment) pSelectALocation.selectLocationPayment(testcasesData.getBillPayPracticeLocation());
 
 		log("step 5: Add a new credit card");
 		NewCard pNewCard = pMakeAPayment.clicklnkAddNewCard();

@@ -2,6 +2,7 @@ package com.intuit.ihg.product.mobile.page.solutions.common;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
+import com.intuit.ihg.product.mobile.page.makepayment.MakeAPayment;
 import com.intuit.ihg.product.mobile.page.solutions.apptrequest.ARSubmissionPage;
 import com.intuit.ihg.product.mobile.page.solutions.askaquestion.AskAQuestionPage;
 
@@ -35,11 +36,19 @@ public class SelectALocationPage extends MobileBasePage {
         return PageFactory.initElements(driver, MobileBasePage.class);
     }
     
-    public MobileBasePage selectLocation(String sLocation) throws InterruptedException {
+    public AskAQuestionPage selectLocation(String sLocation) throws InterruptedException {
     	location = driver.findElement(By.xpath("//ul[@class='insetList']/li/a[@locationname='"+sLocation+"']"));
     	IHGUtil.waitForElement(driver, 10, location);
         location.click();
-        Thread.sleep(6000);
+        Thread.sleep(2000);
         return PageFactory.initElements(driver, AskAQuestionPage.class);
+    }
+    
+    public MakeAPayment selectLocationPayment(String sLocation) throws InterruptedException {
+    	location = driver.findElement(By.xpath("//ul[@class='insetList']/li//a//span[@class='paymentPracticeName'][contains(text(),'"+sLocation+"')]"));
+    	IHGUtil.waitForElement(driver, 10, location);
+        location.click();
+        Thread.sleep(2000);
+        return PageFactory.initElements(driver, MakeAPayment.class);
     }
 }
