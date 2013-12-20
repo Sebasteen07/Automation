@@ -1624,7 +1624,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		 * @throws Exception 
 		 */
 
-		@Test(enabled = false, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 		public void testDeltaMsgPersistForNewPatient() throws Exception {
 			log("Test Case: testDeltaMsgPersistForNewPatient");
 			log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -2263,9 +2263,11 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 				List<Message> msgDetails = new ArrayList<Message>();
 			
 				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(UUID.randomUUID().toString(),"validExportMsg");
-				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),EhcoreAPIConstants.CCDEXPORT);
+				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString
+
+		(),EhcoreAPIConstants.CCDEXPORT);
 				
-			
+				log("Verify the DB Status.");
 				log("Exiting testRouteMsgToPractice test method ... ");
 
 			}
@@ -2287,7 +2289,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 					log("Send CCD  export message");
 					ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(UUID.randomUUID().toString(),"invalidExportMsg");
-
+ 
 					log("Verify the Message procesing status");
 					EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString
 
@@ -5038,7 +5040,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersistWithNoUpdates() throws Exception {
 		log("Test Case: testDeltaMsgPersistWithNoUpdates");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5095,7 +5097,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_AddEntity() throws Exception {
 		log("Test Case: testDeltaMsgPersist_AddEntity");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5145,7 +5147,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_AddElement() throws Exception {
 		log("Test Case: testDeltaMsgPersist_AddElement");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5192,7 +5194,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_UpdateDetails() throws Exception {
 		log("Test Case: testDeltaMsgPersist_UpdateDetails");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5243,7 +5245,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_DeleteDetails() throws Exception {
 		log("Test Case: testDeltaMsgPersist_DeleteDetails");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5297,7 +5299,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersistForNewPatient_CCCD() throws Exception {
 		log("Test Case: testDeltaMsgPersistForNewPatient_CCCD");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5352,7 +5354,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersistWithNoUpdates_C_CCD() throws Exception {
 		log("Test Case: testDeltaMsgPersistWithNoUpdates_C_CCD");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5409,7 +5411,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_AddEntity_CCCD() throws Exception {
 		log("Test Case: testDeltaMsgPersist_AddEntity_CCCD");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5466,7 +5468,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_Update_CCCD() throws Exception {
 		log("Test Case: testDeltaMsgPersist_Update_CCCD");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5525,7 +5527,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	 * @throws Exception 
 	 */
 
-	@Test(enabled = false, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testDeltaMsgPersist_Delete_CCCD() throws Exception {
 		log("Test Case: testDeltaMsgPersist_Delete_CCCD");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5714,7 +5716,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
 		List<Message> msgDetails = new ArrayList<Message>();
-		EhcoreAPIUtil util =new EhcoreAPIUtil(driver); 
+		EhcoreAPIUtil util =new EhcoreAPIUtil(driver);
 		String expectedCcd = CCDExportConstants.AS_CCDEXPORT_INVALID_ERROR+ "AllScriptsAdapter_CCDExport_ErrorResponse.xml";
 
 		ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),"invalidAllScriptsCCDExportMsg");;
