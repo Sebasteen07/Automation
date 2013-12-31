@@ -112,8 +112,8 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				PortalConstants.PreferredDay, PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason,
 				PortalConstants.WhichIsMoreImportant,"9847562145");
 
-		log("Reason for visist is ************** :"+appointmentReason);
-
+		log("Reason for visit is ************** :"+appointmentReason);
+				
 		AppointmentReqtStep3Page apptRequestStep3 = new AppointmentReqtStep3Page(driver);
 
 		log("step 6: Complete Appointment Request Step3 Page  ");
@@ -131,26 +131,30 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				//				Thread.sleep(400000);
 			}
 			if(IHGUtil.getEnvironmentType().toString().equals("DEMO") )
-			{
-
-				log("DEMO - Waiting for DB to get update.");
-				Thread.sleep(1200000);
-
+			{				
+				String vAppointmentReason=appointmentReason.toString();
+				
+				log(" Step 7 : Getting the Appointment request id from pgDB");
+				String appointment_request_id= SmIntegrationUtil.getAppointmentRequestid(vAppointmentReason, testData.getPGDBName(),  testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+				
+				log("DEMO - Waiting for DB (integrationStatus) to get update.");
+				Thread.sleep(540000);
+				
 				int integrationId = Integer.parseInt(testData.getIntegrationID().toString());
-
-				log(" Step 7 : Getting the integration status id from pgDB");
+				
+				log(" Step 8 : Getting the integration status id from pgDB");
 				String integrationStatus = SmIntegrationUtil.getintegrationStatusIDFromDB(integrationId,testData.getPGDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 
-				log("Step 8 : Verify whether the integration status id");
+				log("Step 9 : Verify whether the integration status id");
 				BaseTestSoftAssert.verifyEquals(integrationStatus, SmIntegrationConstants.INTEGRATIONSTATUS_ID, "Failure***Integration Status ID is not as expected");
 
-				log(" Step 9 : Getting the ppia status and state value from pgDB");
-				HashMap<String , String> dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+				log(" Step 10 : Getting the ppia status and state value from pgDB");
+				HashMap<String , String> dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 
-				log("Step 10 : Verify whether the ppia status id");
+				log("Step 11 : Verify whether the ppia status id");
 				BaseTestSoftAssert.verifyEquals(dataMap.get("Status"), SmIntegrationConstants.PPIASTATUS_VALUE, "Failure***PPIA Status ID is not as expected");
 
-				log("Step 11 : Verify whether the ppia state id");
+				log("Step 12 : Verify whether the ppia state id");
 
 				if(dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE1)||dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE2))
 				{
@@ -166,7 +170,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			String appointmentReq_xml = appointmentReq.get("ppia_request_xml");
 			SmIntegrationUtil util = new SmIntegrationUtil(driver);
 
-			log("Step 12 : Write the DB xml to below path");
+			log("Step 13 : Write the DB xml to below path");
 			util.writeStringToXml(SmIntegrationConstants.APPOINTMENT_REQUEST_PATH+"dbresponse.xml",appointmentReq_xml);
 
 			String reasonForVisit = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_REQUEST+"dbresponse.xml", "appointmentRequest", "reasonForVisit");
@@ -695,7 +699,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo()
 				.frame(driver.findElement(By
 						.xpath("//div[@id='iframewrapper']/iframe[@id='externalframe']")));
-
+		
 		pPhrMessagesPage.clickOnFirstMessage();
 		log("Step 5:Verify PHR Inbox message opened successfully");
 
