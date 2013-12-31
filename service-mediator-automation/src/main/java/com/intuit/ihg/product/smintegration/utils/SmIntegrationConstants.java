@@ -133,7 +133,7 @@ public class SmIntegrationConstants {
 	public static final String TAG_ALLSCRIPT_ID = "mombt:Mrn";
 	public static final	String ALLSCRIPT_OLD_VALUE = "?20130801276?";
 	public final static int APPOINTTMENT_REQUEST_OUTBOUND_PPIA_PPI_ID = 3002;
-
+	public final static String APPOINTTMENT_REQUEST_ID = "apptreqid";
 
 	
 	
