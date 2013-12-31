@@ -205,7 +205,38 @@ public class SmIntegrationUtil extends IHGUtil {
 		return connection;
 
 	}
-
+	
+	/**
+	 * @author Vasudeo Parab
+	 * @Descrption:- - This method retrieves Appointment request ID.
+	 * 
+	 */
+	public static String  getAppointmentRequestid(String vAppointmentReason,String dbName, String qaRegion, String dbusername, String dbPassword) throws Exception{
+	 	String appointmentrequestid= null;
+	 	Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
+				dbPassword);
+	 	try {
+			PreparedStatement stmt = conn
+					.prepareStatement("select * from apptreq where reason=? order by apptreqid desc limit 1;");
+			Log4jUtil.log("PASSING APPOINTMENT REASON: " + vAppointmentReason);
+			stmt.setString(1, vAppointmentReason);
+			ResultSet rs = stmt.executeQuery();
+			Thread.sleep(10000);
+			while (rs.next()) {
+				appointmentrequestid = rs
+						.getString(SmIntegrationConstants.APPOINTTMENT_REQUEST_ID);
+				
+				Log4jUtil.log("APPOINTMENT REQUEST ID ---->" + appointmentrequestid);
+			
+			}
+			stmt.close();
+		} catch (SQLException se) {
+			Log4jUtil.log(se.getMessage());
+		}
+		Log4jUtil.log("APPOINTMENT REQUEST ID returned " + appointmentrequestid);
+		return appointmentrequestid;
+	
+ 		}
 	/**
 	 * @author Kiran_GT
 	 * @Descrption:- - This method retrieves intchangeintegration status.
@@ -242,7 +273,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		} catch (SQLException se) {
 			Log4jUtil.log(se.getMessage());
 		}
-		Log4jUtil.log("INTEGRATION STATUS returned" + integrationStatusId);
+		Log4jUtil.log("INTEGRATION STATUS returned " + integrationStatusId);
 		return integrationStatusId;
 	}
 
@@ -260,18 +291,18 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HashMap<String, String> getPartnerIntegrationIDFromDB(
+	public static HashMap<String, String> getPartnerIntegrationIDFromDB(String app_req_id,
 			String dbName, String qaRegion, String dbusername, String dbPassword)
 			throws Exception {
 		String ppia_status = null;
 		String ppia_state = null;
-		String ppia_id = null;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
 		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
 				dbPassword);
 		try {
 			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 order by ppia_id desc limit 1;");
+					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 and ppia_request_id=? order by ppia_id desc limit 1;");
+			stmt.setString(1, app_req_id);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(10000);
 			while (rs.next()) {
@@ -279,19 +310,15 @@ public class SmIntegrationUtil extends IHGUtil {
 						.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
 				ppia_state = rs
 						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
-				ppia_id = rs
-						.getString(SmIntegrationConstants.PPIA_ID_COLUMN);
-				hashMap.put("Status", ppia_status);
-				hashMap.put("State", ppia_state);
-				hashMap.put("id", ppia_id);
+				hashMap.put("Status ", ppia_status);
+				hashMap.put("State ", ppia_state);
 			}
 			stmt.close();
 		} catch (SQLException se) {
 			Log4jUtil.log(se.getMessage());
 		}
-		Log4jUtil.log("PPIA ID" + ppia_id);
-		Log4jUtil.log("PPIA STATUS" + ppia_status);
-		Log4jUtil.log("PPIA STATE" + ppia_state);
+		Log4jUtil.log("PPIA STATUS " + ppia_status);
+		Log4jUtil.log("PPIA STATE " + ppia_state);
 		return hashMap;
 	}
 
