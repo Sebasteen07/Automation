@@ -294,6 +294,7 @@ public class SmIntegrationUtil extends IHGUtil {
 	public static HashMap<String, String> getPartnerIntegrationIDFromDB(String app_req_id,
 			String dbName, String qaRegion, String dbusername, String dbPassword)
 			throws Exception {
+		Thread.sleep(180000);
 		String ppia_status = null;
 		String ppia_state = null;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
@@ -301,7 +302,7 @@ public class SmIntegrationUtil extends IHGUtil {
 				dbPassword);
 		try {
 			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 and ppia_request_id=? order by ppia_id desc limit 1;");
+					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 and ppia_request_id=? ;");
 			stmt.setString(1, app_req_id);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(10000);
@@ -310,8 +311,8 @@ public class SmIntegrationUtil extends IHGUtil {
 						.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
 				ppia_state = rs
 						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
-				hashMap.put("Status ", ppia_status);
-				hashMap.put("State ", ppia_state);
+				hashMap.put("Status", ppia_status);
+				hashMap.put("State", ppia_state);
 			}
 			stmt.close();
 		} catch (SQLException se) {
