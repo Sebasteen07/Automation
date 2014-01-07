@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.phr.page.messages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,7 +21,7 @@ public class PhrMessagesPage  extends BasePageObject{
 	@FindBy(id="inboxTab")
 	private WebElement inboxTab;
 
-	@FindBy(xpath = ".//div[@id='msgInboxList']/div[5]/div[1]/div[1]/div[1]/div[@class='msgMessage']")
+	@FindBy(xpath = ".//*[@id='row']/tbody/tr[1]/td[6]/a")
 	private WebElement firstMessageRow;
 		
 	
@@ -46,14 +47,16 @@ public class PhrMessagesPage  extends BasePageObject{
 
 	
 	/**
+	 *  
 	 * @Descripton:Click on first row
 	 */
 	public PhrInboxMessage clickOnFirstMessage() {
 		PhrUtil.PrintMethodName();
+		driver.navigate().refresh();
+		driver.findElement(By.xpath(".//*[@id='inboxtab']")).click();
 		firstMessageRow.click();
 		return PageFactory.initElements(driver, PhrInboxMessage.class);
-		
-	}
+		}
 
 }
 	

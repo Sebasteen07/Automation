@@ -693,12 +693,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		
 		Thread.sleep(40000);
 		log("step 5:Click on first message in PHR Inbox");
+		
+		//As a fixes of DE7482 commented  below two lines
+		//driver.switchTo().defaultContent();
 
-		driver.switchTo().defaultContent();
-
-		driver.switchTo()
-				.frame(driver.findElement(By
-						.xpath("//div[@id='iframewrapper']/iframe[@id='externalframe']")));
+		//driver.switchTo()
+				//.frame(driver.findElement(By
+						//.xpath("//div[@id='iframewrapper']/iframe[@id='externalframe']")));
 		
 		pPhrMessagesPage.clickOnFirstMessage();
 		log("Step 5:Verify PHR Inbox message opened successfully");
