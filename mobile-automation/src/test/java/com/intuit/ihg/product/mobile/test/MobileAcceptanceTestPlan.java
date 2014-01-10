@@ -790,10 +790,11 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 4: select Medication");
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
 		
+		log("step 5: select first Pharmacy");
 		pRequestRenewalPage.selectFirstPharmacy();
-
 		pRequestRenewalPage.clickButtonSubmit();
-
+		
+		
 		pMyPatientPage = pRequestRenewalPage.clickClose();
 		pMyPatientPage.clickLogout();
 		Thread.sleep(2000);
@@ -802,7 +803,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-		// Now start login with practice data
+		log("step 7: LogIn to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
 				practiceTestData.getUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(

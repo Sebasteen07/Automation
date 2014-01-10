@@ -19,8 +19,11 @@ public class RequestRenewalPage extends MobileBasePage{
 	@FindBy(xpath = "//a[@id='rxReqSubmit']/span")
 	private WebElement rbsubmit;
 	
-	 @FindBy(linkText="Close")
-	 private WebElement closeBtn;
+	@FindBy(xpath = "//fieldset[@id='rxreqPharmacies']/div/div[1]/label/span")
+	private WebElement firstPharmacy;
+	
+	@FindBy(linkText="Close")
+	private WebElement closeBtn;
 
 	public RequestRenewalPage(WebDriver driver) {
 		super(driver);
@@ -52,14 +55,15 @@ public class RequestRenewalPage extends MobileBasePage{
     }
     
     public MobileBasePage selectFirstPharmacy(){
-    	pharmacy = driver.findElement(By.xpath("//fieldset[@id='rxreqPharmacies']/div/div[1]/label/span"));
-    	if(pharmacy.isDisplayed()){
-    		pharmacy.click();
+    	IHGUtil.waitForElement(driver,6, firstPharmacy);
+    	if(firstPharmacy.isDisplayed()){
+    		firstPharmacy.click();
     	}    	
         return PageFactory.initElements(driver, MobileBasePage.class);
     }
 
     public MobileBasePage clickButtonSubmit(){
+    	IHGUtil.waitForElement(driver,6, rbsubmit);
     	rbsubmit.click();
     	return PageFactory.initElements(driver, MobileBasePage.class);
     }

@@ -1,7 +1,9 @@
 package com.intuit.ihg.product.mobile.page.solutions.rxrenewal;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SelectADoctorPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,7 +25,10 @@ public class SelectAMedicationPage extends MobileBasePage {
 
     @FindBy(xpath="//a[text()='A different medication']")
     private WebElement btnDiffMedication;
-
+    
+    @FindBy(xpath="(//a[@class='rxRequest1RxLink ui-link'])[1]")
+    private WebElement firstMedication;
+  
     public SelectAMedicationPage(WebDriver driver) {
         super(driver);
     }
@@ -46,9 +51,9 @@ public class SelectAMedicationPage extends MobileBasePage {
         return PageFactory.initElements(driver, RequestRenewalPage.class);
     }
     
-    public RequestRenewalPage selFirstMedication(){
-        medication = driver.findElement(By.xpath("(//a[@class='rxRequest1RxLink ui-link'])[1]"));
-        medication.click();
+    public RequestRenewalPage selFirstMedication() throws InterruptedException{
+    	IHGUtil.waitForElement(driver,6, firstMedication);
+    	firstMedication.click();
         return PageFactory.initElements(driver, RequestRenewalPage.class);
     }
 

@@ -38,6 +38,12 @@ public class RxRenewalSearchPage extends BasePageObject {
 
 	@FindBy(name="searchParams:0:input:Date End:day")
 	private WebElement endDay;
+	
+	@FindBy(name="searchParams:0:input:Date Begin:year")
+	private WebElement startYear;
+	
+	@FindBy(name="searchParams:0:input:Date End:year")
+	private WebElement endYear;
 
 	@FindBy(xpath=".//table/tbody/tr/td[4]/span")
 	private List<WebElement> searchResultReason;
@@ -107,19 +113,26 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void searchForRxRenewalToday() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
+		
 		Select endMonthSelect = new Select(endMonth);
 		Select startMonthSelect = new Select(startMonth);
 		Select endDaySelect = new Select(endDay);
 		Select startDaySelect = new Select(startDay);
-
-		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
+		Select endYearSelect = new Select(endYear);
+		Select startYearSelect = new Select(startYear);
+		
+		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index");
 		startMonthSelect.selectByIndex(Integer.parseInt(index));
 
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 
-		String index2= endDaySelect.getFirstSelectedOption().getAttribute("index")  ;
+		String index2= endDaySelect.getFirstSelectedOption().getAttribute("index");
 		startDaySelect.selectByIndex(Integer.parseInt(index2));
+		Thread.sleep(2000);
+		
+		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+		startYearSelect.selectByIndex(Integer.parseInt(index3));
+		Thread.sleep(2000);
 
 		getPayments.click();
 		Thread.sleep(8000);
