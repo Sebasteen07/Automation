@@ -5,12 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
@@ -137,10 +140,17 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 			String currentEstTiming) throws ParseException {
 
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat();// 7/10/13 2:21 AM
-		sdf.setTimeZone(TimeZone.getTimeZone("EST"));
-		Date d1 = sdf.parse(importStaffCreateDate);
-		Date d2 = sdf.parse(currentEstTiming);
+		
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.US);
+		SimpleDateFormat sdf2 = new SimpleDateFormat();
+		
+		sdf1.setTimeZone(TimeZone.getTimeZone("EST"));
+		sdf2.setTimeZone(TimeZone.getTimeZone("EST"));
+		
+		Date d1 = sdf1.parse(importStaffCreateDate);
+		Date d2 = sdf2.parse(currentEstTiming);
+		
+		
 		cal.setTime(d1);
 		cal.getTime();
 		int diff =IHGUtil.calculate_Date_Difference_in_Hours(d1, d2);
