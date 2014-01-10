@@ -48,9 +48,15 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 	@FindBy(name="searchParams:0:input:Date Begin:month")
     private WebElement startMonth;
 
-@FindBy(name="searchParams:0:input:Date End:month")
-private WebElement endMonth;
+	@FindBy(name="searchParams:0:input:Date End:month")
+	private WebElement endMonth;
 	
+	@FindBy(name="searchParams:0:input:Date Begin:year")
+	private WebElement startYear;
+	
+	@FindBy(name="searchParams:0:input:Date End:year")
+	private WebElement endYear;
+		
 	
 	public PracticeMessagesSearchPage(WebDriver driver) {
 		super(driver);
@@ -114,10 +120,17 @@ private WebElement endMonth;
 		}
 		Thread.sleep(5000);
 		Select endMonthSelect = new Select(endMonth);
-	     Select startMonthSelect = new Select(startMonth);
+	    Select startMonthSelect = new Select(startMonth);
+	    Select endYearSelect = new Select(endYear);
+		Select startYearSelect = new Select(startYear);
 
 	        String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
 	        startMonthSelect.selectByIndex(Integer.parseInt(index));
+	        Thread.sleep(2000);
+	        
+	        String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+			startYearSelect.selectByIndex(Integer.parseInt(index3));
+			Thread.sleep(2000);
 		
 		if (firstNameText != null && !firstNameText.isEmpty()) {
 			firstName.sendKeys(firstNameText);

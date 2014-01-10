@@ -54,6 +54,12 @@ public class ApptRequestSearchPage extends BasePageObject {
 
 	@FindBy( xpath = ".//select[@name= 'searchParams:0:input:Date Begin:day']")
 	public WebElement startDateDropDwn;
+	
+	@FindBy(name="searchParams:0:input:Date Begin:year")
+	private WebElement startYear;
+	
+	@FindBy(name="searchParams:0:input:Date End:year")
+	private WebElement endYear;
 
 	@FindBy( xpath = ".//span/a[@title='Go to last page']")
 	public WebElement gotoLastPage;
@@ -105,9 +111,16 @@ public class ApptRequestSearchPage extends BasePageObject {
 
 		Select endMonthSelect = new Select(endMonth);
 		Select startMonthSelect = new Select(startMonth);
+		Select endYearSelect = new Select(endYear);
+		Select startYearSelect = new Select(startYear);
 
 		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
 		startMonthSelect.selectByIndex(Integer.parseInt(index));
+		Thread.sleep(2000);
+		
+		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+		startYearSelect.selectByIndex(Integer.parseInt(index3));
+		Thread.sleep(2000);
 
 		searchForApptRequests(ApptRequestStatus.OPEN, null, null);
 	}
