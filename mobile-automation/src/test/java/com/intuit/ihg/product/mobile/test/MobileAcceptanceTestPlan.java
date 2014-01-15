@@ -1140,9 +1140,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 2: Clean the Gmail Inbox");
 		String sSubject = String.format("Your password has been reset");
 		MobileUtil util = new MobileUtil(driver);
-		util.emailMessageRemover(testcasesData.getForgotUserName(),
-				testcasesData.getGmailPassword(), sSubject);
-
+		//util.emailMessageRemover(testcasesData.getForgotUserName(),
+		//		testcasesData.getGmailPassword(), sSubject);
+		
 		logTestInfo(testcasesData);
 
 		log("step 1:open Browser");
@@ -1164,7 +1164,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 5: Fecth Security code from the gmail");
 		String secCode = util.getSecurityCodeFromGmail(
 				testcasesData.getForgotUserName(), testcasesData.getForgotPassword(),
-				"Your password has been reset");
+				sSubject);
 		
 		log("step 6: Enter the security code and submit");
 		MobileHomePage pMobileHomePage = (MobileHomePage) pResetPasswordEnterSecurityCodePage

@@ -113,14 +113,14 @@ public class ApptRequestSearchPage extends BasePageObject {
 		Select startMonthSelect = new Select(startMonth);
 		Select endYearSelect = new Select(endYear);
 		Select startYearSelect = new Select(startYear);
-
+		
+		IHGUtil.waitForElement(driver, 6, startMonth);
 		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
 		startMonthSelect.selectByIndex(Integer.parseInt(index));
-		Thread.sleep(2000);
 		
+		IHGUtil.waitForElement(driver, 6, startYear);
 		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
-		Thread.sleep(2000);
 
 		searchForApptRequests(ApptRequestStatus.OPEN, null, null);
 	}
@@ -157,24 +157,32 @@ public class ApptRequestSearchPage extends BasePageObject {
 		String month = strDate.substring(3, 5);
 		int startMnthValue = Integer.parseInt(month)-1;
 
-		log("Select the Start Month in search filter options");		
+		log("Select the Start Month in search filter options");	
+		IHGUtil.waitForElement(driver, 6, startMonth);
 		Select startMonthSelect = new Select(startMonth);
 		startMonthSelect.selectByValue(String.valueOf(startMnthValue));
-		Thread.sleep(5000);
 		
-		log("Select the Start date in search filter options");		
+		log("Select the Start date in search filter options");	
+		IHGUtil.waitForElement(driver, 6, startDateDropDwn);
 		Select startDate = new Select(startDateDropDwn);
 		startDate.selectByValue(date);
-		Thread.sleep(5000);
 
 		log("Select end date in search filter options");
+		IHGUtil.waitForElement(driver, 6, endDateDropDwn);
 		Select endDate = new Select(endDateDropDwn);
 		endDate.selectByValue(date);
-		Thread.sleep(5000);
 
 		log("Select end Month in search filter options");
+		IHGUtil.waitForElement(driver, 6, endMonth);
 		Select endMonthSelect = new Select(endMonth);
 		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index");
+		
+		log("Select end Year in search filter options");
+		IHGUtil.waitForElement(driver, 6, startYear);
+		Select endYearSelect = new Select(endYear);
+		Select startYearSelect = new Select(startYear);
+		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+		startYearSelect.selectByIndex(Integer.parseInt(index3));
 
 		// Set provider if supplied
 		if (providerText != null) {
@@ -189,7 +197,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 		}		
 
 		filterApptRequests.click();
-		Thread.sleep(8000);
+		IHGUtil.waitForElement(driver, 10, searchResults);
 	}
 
 	/**

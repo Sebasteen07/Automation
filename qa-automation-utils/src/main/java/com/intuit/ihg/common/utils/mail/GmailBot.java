@@ -1033,10 +1033,11 @@ public class GmailBot implements MailBot {
 		// Find URL
 
 		String secCode="";
-        Pattern pattern = Pattern.compile("Security Code:\\s<.*>(\\d+)");
+        Pattern pattern = Pattern.compile("Security Code:\\s<.*>(\\w+)");
         Matcher matcher = pattern.matcher(sPlainText);
 
         if(matcher.find()) {
+        	Log4jUtil.log("code found");
              secCode =   matcher.group(1);
     }
         else
@@ -1560,7 +1561,7 @@ public class GmailBot implements MailBot {
      * @param subjectToDelete delete if the message's subject contains this value.
      */
      public void deleteMessagesFromInbox(String userName, String password, String subjectToDelete)
-         {
+	     {
 	    IHGUtil.PrintMethodName();
 	    int j=0;
 	    try
@@ -1588,30 +1589,31 @@ public class GmailBot implements MailBot {
 	    }
 	    }
 	    Log4jUtil.log("######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
-       /* boolean expunge = true;
-        folderInbox.close(expunge);*/
-        // another way:
-        folderInbox.expunge();
-        
-        folderInbox.close(false);
-
-        store.close(); 
-        if(j==0)
-        {
-        	 Log4jUtil.log("######## No messages with given subject to delete########");
-        }
-     }
+	   /* boolean expunge = true;
+	    folderInbox.close(expunge);*/
+	    // another way:
+	    folderInbox.expunge();
+	    
+	    folderInbox.close(false);
+	
+	    store.close(); 
+	    if(j==0)
+	    {
+	    	 Log4jUtil.log("######## No messages with given subject to delete########");
+	    }
+	 }
 	     catch (NoSuchProviderException ex) 
-            {
+	        {
 	        System.out.println("No provider.");
 	        ex.printStackTrace();
 	        } 
 	     catch (MessagingException ex) 
-         {
-           System.out.println("Could not connect to the message store.");
-           ex.printStackTrace();
-           }
+	     {
+	       System.out.println("Could not connect to the message store.");
+	       ex.printStackTrace();
+	       }
 	    }
+ 
      
 
      
