@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.apptrequest.ARSubmissionPage;
 import com.intuit.ihg.product.mobile.page.solutions.ccdviewer.CCDMessageDetailsPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -65,7 +67,24 @@ public class MessageInboxPage extends MobileBasePage {
 	
 	public CCDMessageDetailsPage clickMessageHealthInfo(String sSubject) throws InterruptedException {
 		Thread.sleep(2000);
-		message = driver.findElement(By.xpath("//a[contains(@href,'msgDetail')]/h4[text()='" + sSubject + "']")); // 40205
+		int iteration = 0;
+		boolean gotCorrect = false;
+		while(!gotCorrect && iteration < 10){
+			iteration++;
+			try{
+				message = driver.findElement(By.xpath("(//*[text()[contains(.,'" + sSubject + "')]])[1]/..")); // 40205
+				
+				gotCorrect = true;		
+				//return PageFactory.initElements(driver, CCDMessageDetailsPage.class);
+			} catch(Exception e){
+				loadMoreMessages.click();
+				Thread.sleep(3000);
+				continue;
+			}		
+		}
+		IHGUtil.waitForElement(driver,6, message);
+		System.out.println("cekam "+message.getText());
+		Thread.sleep(3000);
 		message.click();
 		Thread.sleep(3000);
 		return PageFactory.initElements(driver, CCDMessageDetailsPage.class);

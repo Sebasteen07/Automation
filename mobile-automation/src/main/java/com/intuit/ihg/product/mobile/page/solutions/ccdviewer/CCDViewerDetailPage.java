@@ -1,9 +1,13 @@
 package com.intuit.ihg.product.mobile.page.solutions.ccdviewer;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
+import com.intuit.ihg.product.mobile.page.MobileHomePage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Logger;
 
@@ -31,6 +35,9 @@ public class CCDViewerDetailPage extends MobileBasePage{
     @FindBy(xpath="//ul[@class='listing']")
     private WebElement basicInfo;
     
+    @FindBy(linkText="Home")
+	 private WebElement homeBtn;
+    
   
 
     public boolean assertHealthOverview(String verifyTextInBP,String verifyTextInHtWt){
@@ -51,6 +58,14 @@ public class CCDViewerDetailPage extends MobileBasePage{
     			return false;
    		}
         return true;
+    }
+    
+    public MobileHomePage clickHome() throws InterruptedException {
+        Thread.sleep(2000);
+        IHGUtil.waitForElement(driver, 10, homeBtn);
+        IHGUtil.PrintMethodName();
+        homeBtn.click();
+        return PageFactory.initElements(driver, MobileHomePage.class);
     }
 
 

@@ -1169,12 +1169,13 @@ public class GmailBot implements MailBot {
 		// Find URL
 
 		String secCode="";
-        Pattern pattern = Pattern.compile("Your user ID is: ^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		
+        Pattern pattern = Pattern.compile("Your user ID is:\\s<.*>(.+)</.*>"); //Should be "Your user ID is:\\s<.*>([^<]+)</.*>" but not working
         Matcher matcher = pattern.matcher(sPlainText);
 
         if(matcher.find()) {
-             secCode =   matcher.group(1);
+        	Log4jUtil.log("code found " + matcher.group(1));
+            secCode =   matcher.group(1).substring(0, matcher.group(1).indexOf("<"));
     }
         else
           Log4jUtil.log("code Not found ");
@@ -1561,12 +1562,11 @@ public class GmailBot implements MailBot {
      * @param subjectToDelete delete if the message's subject contains this value.
      */
      public void deleteMessagesFromInbox(String userName, String password, String subjectToDelete)
-	     {
+     {
 	    IHGUtil.PrintMethodName();
 	    int j=0;
-	    try
-	      {
-	    	
+	    try {
+	    	 
 	    Log4jUtil.log( "#############Connect to the Gmail########");
 		this.connect( MailSessionType.IMAP,userName,password);
 		
@@ -1576,43 +1576,47 @@ public class GmailBot implements MailBot {
 	    
 	    Log4jUtil.log( "#######Add messages into array and filter with subject.#######");
 	    Message[] arrayMessages = folderInbox.getMessages();
-	    for (int i = 0; i < arrayMessages.length; i++)
-	    {
+	    Date today = new Date();
+	    int i = arrayMessages.length-1;
 	    Message message = arrayMessages[i];
-	    String subject = message.getSubject();
-	    if (subject.contains(subjectToDelete)) 
-	    {
-	    Log4jUtil.log( "#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
-	    message.setFlag(Flags.Flag.DELETED, true);
-	    System.out.println("Marked DELETE for message: " + subject);
-	    j=j+1;
-	    }
-	    }
-	    Log4jUtil.log("######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
-	   /* boolean expunge = true;
-	    folderInbox.close(expunge);*/
-	    // another way:
-	    folderInbox.expunge();
+	    do {
+		    message = arrayMessages[i];
+		    Date receivedDate = message.getReceivedDate();
+		    
+		    if(receivedDate.after(today)){
+		    	break;
+		    }
+		    String subject = message.getSubject();
+		    if (subject.contains(subjectToDelete)) 
+		    {
+			    Log4jUtil.log( "#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
+			    message.setFlag(Flags.Flag.DELETED, true);
+			    System.out.println("Marked DELETE for message: " + subject);
+			    j=j+1;
+		    }
+		    i--;
+	    } while (message.getReceivedDate().equals(today) && i > 0);
 	    
-	    folderInbox.close(false);
-	
-	    store.close(); 
-	    if(j==0)
-	    {
-	    	 Log4jUtil.log("######## No messages with given subject to delete########");
-	    }
-	 }
-	     catch (NoSuchProviderException ex) 
-	        {
+	    Log4jUtil.log("######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
+       /* boolean expunge = true;
+        folderInbox.close(expunge);*/
+        // another way:
+        folderInbox.expunge();
+        
+        folderInbox.close(false);
+
+        store.close(); 
+        if(j == 0) {
+        	 Log4jUtil.log("######## No messages with given subject to delete########");
+        }
+     } catch (NoSuchProviderException ex) {
 	        System.out.println("No provider.");
 	        ex.printStackTrace();
-	        } 
-	     catch (MessagingException ex) 
-	     {
-	       System.out.println("Could not connect to the message store.");
-	       ex.printStackTrace();
-	       }
-	    }
+	 } catch (MessagingException ex) {
+           System.out.println("Could not connect to the message store.");
+           ex.printStackTrace();
+	 }
+}
  
      
 

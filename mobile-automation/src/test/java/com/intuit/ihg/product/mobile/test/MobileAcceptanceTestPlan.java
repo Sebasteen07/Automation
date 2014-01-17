@@ -954,9 +954,10 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		verifyTrue(ccdViewerDetailPage.verifyBasicInfo(),
 				"Informations about blood pressure and BMI are missing");
 			
-		log("step 6: Go Home and Logout");
-		ccdViewerDetailPage.clickHome();
-
+		log("step 6: Click Home");
+		pMyPatientPage = ccdViewerDetailPage.clickHome();
+		
+		log("step 6: Click Logout");
 		pMyPatientPage.clickLogout();
 
 }
