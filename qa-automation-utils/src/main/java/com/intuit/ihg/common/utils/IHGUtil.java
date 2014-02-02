@@ -1,5 +1,6 @@
 package com.intuit.ihg.common.utils;
 
+import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -1304,5 +1305,21 @@ public class IHGUtil extends BasePageObject {
 		return found;
 	}
 
-
+	/**
+	 * @Description:Handling print dialog by pressing ESC key
+	 */
+	public static void hadlePrintDialog() {
+		
+		Robot r;
+		
+		try {
+			r = new Robot();
+			r.keyPress(KeyEvent.VK_ESCAPE);
+			r.keyRelease(KeyEvent.VK_ESCAPE);
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

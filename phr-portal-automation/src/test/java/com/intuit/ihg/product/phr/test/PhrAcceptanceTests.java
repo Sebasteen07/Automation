@@ -732,15 +732,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 8: accept alert");
 			driver.switchTo().alert().accept();
 
-			PhrUtil phrUtil=new PhrUtil(driver);
-			String[] args={"ClickCancel.exe","FF","20000"};
-			phrUtil.setExeArg(args);
-			phrUtil.run();
-			Thread.sleep(20000);
+			IHGUtil.hadlePrintDialog();
 			
-//			log("step 9: load the autoIt file");
-//			Runtime.getRuntime().exec("D:\\IHG\\autoit\\ClickCancel.exe");
-
 			log("step 10: switch to active window");
 			for(String windowHandle : driver.getWindowHandles() )
 			{

@@ -1,5 +1,8 @@
 package com.intuit.ihg.product.phr.utils;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -8,6 +11,7 @@ import java.net.URLConnection;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.intuit.ihg.common.entities.CcdType;
@@ -199,26 +203,6 @@ public class PhrUtil extends IHGUtil {
 		}
 		return false;
 	}
-	
-	
-	/**
-	 * @author bbinisha
-	 * @Description : Set the Arguments
-	 * @param args
-	 */
-	public void setExeArg(String[] args)
-	{
-		PracticeUtil.exeArg=null;
-		PracticeUtil.exeArg=args;
-		try
-		{
-			timeout=Integer.parseInt(PracticeUtil.exeArg[PracticeUtil.exeArg.length-1]);
-		}
-		catch(NumberFormatException nfe)
-		{
-			timeout=15000;
-		}
-	}
 
 	/**
 	 * @author bbinisha
@@ -229,46 +213,8 @@ public class PhrUtil extends IHGUtil {
 	{
 		return exeArg;
 	}
-
 	
-	/**
-	 * @description : Used to run the Autoit IT command in the command prompt.
-	 * @return void
-	 */ 
-	public void run() {
-		// TODO Auto-generated method stub
-		String command="";
-		for(int i=0;i<PracticeUtil.exeArg.length;i++)
-		{
-			if(i<PracticeUtil.exeArg.length)
-			{
-				if(PracticeUtil.exeArg[i].contains(" "))
-				{
-					PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\"";
-				}
-				command+=PracticeUtil.exeArg[i]+" ";
-			}
-			else
-			{
-				if(PracticeUtil.exeArg[i].contains(" "))
-				{
-					PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\"";
-				}
-				command+=PracticeUtil.exeArg[i];
-			}
-		}   
-		try {
-			Thread.sleep(timeout);
-			ReadFilePath path=new ReadFilePath();
-
-			Runtime.getRuntime().exec(path.getFilepath("AutoIT")+File.separator+command);
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
-	}
+	
 	
 	
 }
