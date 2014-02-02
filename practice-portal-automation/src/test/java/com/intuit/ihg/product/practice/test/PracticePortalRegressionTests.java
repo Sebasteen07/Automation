@@ -65,7 +65,7 @@ public class PracticePortalRegressionTests extends BaseTestNGWebDriver {
 		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.filename);
 
 		log("Step 7 : Uploading the document.");
-		docManagement.browseFile(value);
+		docManagement.browseFile();
 		docManagement.uploadDocument();
 
 		log("verify whether the document uploaded successfully.");

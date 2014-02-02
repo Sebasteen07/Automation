@@ -3,6 +3,7 @@ package com.intuit.ihg.product.practice.page.documentManagement;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -121,23 +122,14 @@ public class documentManagementpage  extends BasePageObject {
 	 * @throws Exception 
 	 * @Desc : To browse the file and upload. Dependency on BrowserType.
 	 */
-	public void browseFile(String filePath) throws Exception {
+	public void browseFile() throws Exception {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		IHGUtil.waitForElement(driver, 30, browseButton);
 
-		if (TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
-			browseButton.sendKeys(filePath);
-		} else  {
-
-			PracticeUtil pUtil = new PracticeUtil(driver);
-			browseButton.click();
-			String[] args={"UploadFile","FF" ,filePath,"20000"};
-			pUtil.setExeArg(args);
-			pUtil.run();
-			Thread.sleep(20000);
-		}
+		URL textFilePath = ClassLoader.getSystemResource(PracticeConstants.textFilePath);
+		browseButton.sendKeys(textFilePath.getPath());
 
 	}
 

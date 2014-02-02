@@ -120,11 +120,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		docManagement.addNewPatient(PracticeConstants.firstName, PracticeConstants.lastName, PracticeConstants.patientID, PracticeConstants.email,PracticeConstants.value, PracticeConstants.year, PracticeConstants.zipCode);
 
 		log("Step 6 : Getting the document to upload from filepath");
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.filename);
 
 		log("Step 7 : Uploading the document.");
-		docManagement.browseFile(value);
+		docManagement.browseFile();
 		docManagement.uploadDocument();
 
 		log("verify whether the document uploaded successfully.");
