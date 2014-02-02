@@ -88,6 +88,7 @@ public class PracticeConstants {
 	public final static String location = "Automation-Location-1";
 	public final static String eStatementFile = "eStatementTest.pdf";	
 	public final static String eStatementUploadSuccessMsg = "eStatement successfully uploaded";
+	public final static String eStatementFilePath = "documents/eStatementTest.pdf";
 
 	//OnlineBillpay Process
 	public final static String ProcessCardHolderName = "batchopen";

@@ -530,11 +530,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		eStatementPage.enterEStatementInfo(PracticeConstants.location, sUniqueId, sAmount);
 
 		log("Get the filepath of the e-statement file.");
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.eStatementFile);
 
 		log("Step 9 : Browse the file.");
-		eStatementPage.browseFile(value);
+		eStatementPage.browseFile();
 
 		log("Step 10 : Click on 'Upload Statement' button.");
 		eStatementPage.clickOnUploadStatementButton();

@@ -2,6 +2,7 @@ package com.intuit.ihg.product.practice.page.onlinebillpay;
 
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class eStatementUploadPage extends BasePageObject {
@@ -110,7 +112,7 @@ public class eStatementUploadPage extends BasePageObject {
 	public void enterEStatementInfo(String location, String uniqueID, String dueAmt) throws Exception {
 
 		IHGUtil.PrintMethodName();
-		Thread.sleep(5000);
+		
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		
@@ -118,74 +120,56 @@ public class eStatementUploadPage extends BasePageObject {
 		Select selLoc = new Select(locationIDDropDwn);
 		selLoc.selectByIndex(1);
 		
-		Thread.sleep(3000);
+		
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		log("Enter Unique ID and Due amout.");
 		uniqueIDField.sendKeys(uniqueID);
 		dueAmountField.sendKeys(dueAmt);
 		
-		Thread.sleep(3000);
+		
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		log("Enter the eStatement  date");
 		Select selDate = new Select(statementDateDropDwn);
 		selDate.selectByValue("1");
 		
-		Thread.sleep(3000);
+		
 		Select selMonth = new Select(statementMonthDropDwn);
 		selMonth.selectByValue("1");
 		
-		Thread.sleep(3000);
+		
 		Select selYear = new Select(statementYearDropDwn);
 		selYear.selectByValue("2013");
 		
-		Thread.sleep(3000);
+		
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		log("Enter the payment due date");
 		Select selDueDate = new Select(paymentDueMonthDropDwn);
 		selDueDate.selectByIndex(5);
 		
-		Thread.sleep(3000);
+		
 		Select selDueMonth = new Select(paymentDueDateDropDwn);
 		selDueMonth.selectByIndex(1);
 		
-		Thread.sleep(3000);
+		
 		Select selDueYear = new Select(paymentDueYearDropDwn);
 		selDueYear.selectByValue("2013");
-		Thread.sleep(3000);
+		Thread.sleep(2000);
+		
 	}
 	
-	public void browseFile(String filePath) throws Exception {
+	public void browseFile() throws Exception {
 
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		IHGUtil.waitForElement(driver, 10, browseButton);
-		Robot robot = new Robot();
-
-		if (TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
-			log("Attaching the file.");
-			browseButton.sendKeys(filePath);
-		} else  {
-			Thread.sleep(3000);
-			log("Clicking on Browse button");
-			try {
-				browseButton.click();
-			}catch(Exception e) {
-				browseButton.click();
-				
-			}
-			robot.keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(5000);
-			PracticeUtil pUtil = new PracticeUtil(driver);
-			log("Attaching the file.");
-			String[] args={"UploadFile.exe","FF",filePath,"35000"};
-			pUtil.setExeArg(args);
-			pUtil.run();
-			Thread.sleep(38000);
-		}
+		
+		URL eStatementPath = ClassLoader.getSystemResource(PracticeConstants.eStatementFilePath);
+		//Providing FullPath to the eStatementPDF
+		browseButton.sendKeys(eStatementPath.getPath());
 
 	}
 	
@@ -194,12 +178,12 @@ public class eStatementUploadPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		uploadStatementButton.click();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 	}
 	
 	public boolean isEStatementUploadedSuccessfully() throws Exception {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		log("Success Message :"+successMsg.getText());
