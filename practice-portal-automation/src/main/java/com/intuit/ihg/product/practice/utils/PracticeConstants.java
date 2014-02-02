@@ -64,6 +64,7 @@ public class PracticeConstants {
 	public final static String Template2 = "Appointment Reminder";
 	public final static String MessageType = "Appointment Reminder";
 	public final static String DeliveryMode = "E-mail";
+	public final static String QuickSendPdfFilePath = "documents/QuickSend.pdf";
 
 
 	//MakePayment

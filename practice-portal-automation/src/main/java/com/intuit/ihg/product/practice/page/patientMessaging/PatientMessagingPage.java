@@ -2,6 +2,7 @@ package com.intuit.ihg.product.practice.page.patientMessaging;
 
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -188,17 +189,10 @@ public class PatientMessagingPage extends BasePageObject{
             setMessageType();
             setTemplate();
             setSubject();
-            if (TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
-                   messageAttachment.sendKeys(filePath);
-            } else  {
-
-                   PracticeUtil pUtil = new PracticeUtil(driver);
-                   messageAttachment.click();
-                   String[] args={"UploadFile","FF" ,filePath,"23000"};
-                   pUtil.setExeArg(args);
-                   pUtil.run();
-                   Thread.sleep(20000);
-            }
+            
+            URL QuickSendPDFUrl = ClassLoader.getSystemResource(PracticeConstants.QuickSendPdfFilePath);
+            messageAttachment.sendKeys(QuickSendPDFUrl.getPath());
+            
             Thread.sleep(2000);
             setRecipientType();
             setFirstName();
