@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.practice.page.fileSharing;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -13,6 +14,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 /**
@@ -61,7 +63,7 @@ public class FileSharingUploadPage extends BasePageObject {
 	 * @throws Exception 
 	 * @Desc : Selects the file and Click on the Upload button in the pload page
 	 */
-	public void browseAndUpload(String filePath) throws Exception {
+	public void browseAndUpload() throws Exception {
 		IHGUtil.PrintMethodName();
 
 		Thread.sleep(6000);
@@ -69,19 +71,10 @@ public class FileSharingUploadPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		//		driver.switchTo().frame("iframe");
 		IHGUtil.waitForElement(driver, 30, browseButton);
-
-		if (TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
-			browseButton.sendKeys(filePath);
-		} else  {
-
-			PracticeUtil pUtil = new PracticeUtil(driver);
-			browseButton.click();
-			String[] args={"UploadFile","FF" ,filePath,"20000"};
-			pUtil.setExeArg(args);
-			pUtil.run();
-			Thread.sleep(20000);
-		}
-
+		
+		URL textFilePath = ClassLoader.getSystemResource(PracticeConstants.textFilePath);
+		browseButton.sendKeys(textFilePath.getPath());
+		
 		IHGUtil.waitForElement(driver, 30, uploadButton);
 		uploadButton.click();
 
@@ -103,7 +96,7 @@ public class FileSharingUploadPage extends BasePageObject {
 	 */
 	public void addFile() {
 		IHGUtil.PrintMethodName();
-		driver.findElement(By.xpath(".//*[@id='content']//table/tbody/tr[@class='fs_altrow1']/td/a[text()='Add']")).click();
+		driver.findElement(By.xpath(".//*[@id='content']/table/tbody/tr/td/table[3]/tbody/tr[4]/td[3]/a")).click();
 
 	}
 

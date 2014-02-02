@@ -17,6 +17,7 @@ public class PracticeConstants {
 	public final static String patientNameForDocUpload = "Sample, tester1";
 	public final static String filename = "fileUploadTest";
 	public final static String fileDirectory = "documents";
+	public final static String textFilePath = "documents/fileUploadTest.txt";
 
 	//Add a new Patient
 	public final static String firstName = "test";

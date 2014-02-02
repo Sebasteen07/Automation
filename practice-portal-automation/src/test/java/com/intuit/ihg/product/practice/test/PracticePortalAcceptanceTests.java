@@ -143,7 +143,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * Verify whether document is uploaded successfully.
 	 * @deprecated
 	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"} )
+	@Test(enabled = true, groups = {"AcceptanceTests"} )
 	public void testFileSharing() throws Exception {
 
 		log("Test Case: TestLoginLogout");
@@ -168,11 +168,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 5: Browse and upload the file ");
 		fileShare.clickOnUploadFileButton();
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.filename);
 
 		log("Step 6 : Uploading the file.");
-		fileShare.browseAndUpload(value);
+		fileShare.browseAndUpload();
 
 		fileShare.clickOnFileCheckBox();
 		fileShare.addFile();
@@ -181,25 +179,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		verifyEquals(verifyTextPresent(driver,PracticeConstants.filename), true, "File is not uploaded properly.");
 	}
 
-	/**
-	 * @Author: Gajendran
-	 * @Date: 07/10/2013
-	 * @StepsToReproduce:
-	 * Patient login
-	 * Click on Make Payment 
-	 * Give Payment Details
-	 * Submit Payment Details
-	 * Logout of Patient Portal
-	 * Login to Practice Portal and Click on Online Bill Payment
-	 * Set Details in PaymentCommunicationDetails and Sent Message to Patient
-	 * Logout from the Practice Portal
-	 * Login to Patient Portal
-	 * Go to Inbox and Find message
-	 * Validate message 
-	 * =============================================================
-	 * @AreaImpacted : 
-	 * @throws Exception
-	 */
 
 	/**
 	 * @Author: bbinisha
