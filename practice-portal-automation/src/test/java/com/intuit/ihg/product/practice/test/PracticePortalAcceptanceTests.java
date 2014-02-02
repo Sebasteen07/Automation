@@ -143,7 +143,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * Verify whether document is uploaded successfully.
 	 * @deprecated
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"} )
+	@Test(enabled = false, groups = {"AcceptanceTests"} )
 	public void testFileSharing() throws Exception {
 
 		log("Test Case: TestLoginLogout");
