@@ -3,7 +3,6 @@ package com.intuit.ihg.product.mobile.page.solutions.common;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.MobileHomePage;
-import com.intuit.ihg.product.mobile.page.solutions.inbox.MessageInboxPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

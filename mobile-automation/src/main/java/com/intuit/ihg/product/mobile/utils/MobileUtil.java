@@ -3,7 +3,6 @@ package com.intuit.ihg.product.mobile.utils;
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ihg.common.utils.IHGUtil.*;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 
 import com.intuit.ihg.common.utils.IHGUtil;

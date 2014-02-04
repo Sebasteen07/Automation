@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.MobileHomePage;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class PaymentConfirmationPage extends MobileBasePage{
 	

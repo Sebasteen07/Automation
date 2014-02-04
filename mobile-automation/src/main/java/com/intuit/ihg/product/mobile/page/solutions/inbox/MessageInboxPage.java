@@ -3,10 +3,8 @@ package com.intuit.ihg.product.mobile.page.solutions.inbox;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
-import com.intuit.ihg.product.mobile.page.solutions.apptrequest.ARSubmissionPage;
 import com.intuit.ihg.product.mobile.page.solutions.ccdviewer.CCDMessageDetailsPage;
 
 import org.openqa.selenium.By;

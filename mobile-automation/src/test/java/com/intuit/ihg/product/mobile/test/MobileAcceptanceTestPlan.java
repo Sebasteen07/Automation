@@ -2,18 +2,12 @@ package com.intuit.ihg.product.mobile.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import java.util.Date;
-
-import javax.mail.Message;
-
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.mail.CheckEmail;
-import com.intuit.ihg.common.utils.mail.Gmail;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.MobileHomePage;
 import com.intuit.ihg.product.mobile.page.MobileSignInPage;
@@ -327,8 +321,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
     	        
         log("step 1: Get Data from Excel");
-        
-        Date currDate = new Date();
+      
 		Mobile mobile = new Mobile();
 		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
         
@@ -830,8 +823,6 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		rxRenewalSearchPage.clickProcessRxRenewal();
 
 		String subject = rxRenewalSearchPage.getSubject();
-		log("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
 
 		log("Set Action Radio Button in Practice Portal");
 		rxRenewalSearchPage.setActionRadioButton();

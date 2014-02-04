@@ -1,10 +1,8 @@
 package com.intuit.ihg.product.mobile.page.solutions.apptrequest;
 
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.entities.AppointmentRequest;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SubmissionConfirmationPage;
-import com.intuit.ihg.product.mobile.utils.MobileConstants;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
@@ -13,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 /**
  * Created by IntelliJ IDEA.

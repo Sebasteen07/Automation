@@ -1,7 +1,6 @@
 package com.intuit.ihg.product.mobile.page.solutions.ccdviewer;
 
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.solutions.inbox.MessageDetailsPage;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;

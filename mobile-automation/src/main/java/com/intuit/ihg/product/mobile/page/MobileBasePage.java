@@ -20,8 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class MobileBasePage extends BasePageObject {
 
-    private static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<WebDriver>();
-
     @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div/h1")
     private WebElement heading;
 

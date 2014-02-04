@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.mobile.page.solutions.inbox;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
