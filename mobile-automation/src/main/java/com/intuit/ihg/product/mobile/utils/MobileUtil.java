@@ -64,7 +64,7 @@ public class MobileUtil extends IHGUtil {
 				20, false, true); // MUST MARK SEEN - so don't get wrong invalid
 									// link on next pass.
 
-		BaseTestNGWebDriver.verifyTrue(sCode.length() <= 0,
+		BaseTestNGWebDriver.verifyTrue(sCode.length() > 0,
 				"### Code not found in email");
 		System.out.println("### Code: " + sCode);
 		return sCode;
@@ -86,7 +86,7 @@ public class MobileUtil extends IHGUtil {
 		String sCode = gBot.findTrashEmailID(userName.trim(), Subject, // TODO -// Subject:get from properties file
 			         		20, false, true); // MUST MARK SEEN - so don't get wrong invalid
 									// link on next pass.
-		BaseTestNGWebDriver.verifyTrue(sCode.length() <= 0,
+		BaseTestNGWebDriver.verifyTrue(sCode.length() > 0,
 				"### Code not found in email");
 		System.out.println("### Code: " + sCode);
 		return sCode;
