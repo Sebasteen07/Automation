@@ -27,8 +27,8 @@ public class SelectALocationPage extends MobileBasePage {
 
     public MobileBasePage selectFirstLocation() throws InterruptedException {
     	location = driver.findElement(By.xpath("//ul[@class='insetList']/li[1]/a[@*[contains(name(), 'locationname')]]"));
-        location.click();
         Thread.sleep(2000);
+        location.click();
         if (null!=this.getHeaderText() && getHeaderText().contains("Appointment")) {
             return PageFactory.initElements(driver, ARSubmissionPage.class);
         }
@@ -39,16 +39,16 @@ public class SelectALocationPage extends MobileBasePage {
     public AskAQuestionPage selectLocation(String sLocation) throws InterruptedException {
     	location = driver.findElement(By.xpath("//ul[@class='insetList']/li/a[@locationname='"+sLocation+"']"));
     	IHGUtil.waitForElement(driver, 10, location);
+    	Thread.sleep(2000);
         location.click();
-        Thread.sleep(2000);
         return PageFactory.initElements(driver, AskAQuestionPage.class);
     }
     
     public MakeAPayment selectLocationPayment(String sLocation) throws InterruptedException {
     	location = driver.findElement(By.xpath("//ul[@class='insetList']/li//a//span[@class='paymentPracticeName'][contains(text(),'"+sLocation+"')]"));
     	IHGUtil.waitForElement(driver, 10, location);
+    	Thread.sleep(2000);
         location.click();
-        Thread.sleep(2000);
         return PageFactory.initElements(driver, MakeAPayment.class);
     }
 }

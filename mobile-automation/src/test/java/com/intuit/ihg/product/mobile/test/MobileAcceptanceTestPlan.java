@@ -39,6 +39,10 @@ import com.intuit.ihg.product.mobile.page.solutions.common.SelectAPracticePage;
 import com.intuit.ihg.product.mobile.page.solutions.common.SubmissionConfirmationPage;
 import com.intuit.ihg.product.mobile.page.solutions.inbox.MessageDetailsPage;
 import com.intuit.ihg.product.mobile.page.solutions.inbox.MessageInboxPage;
+import com.intuit.ihg.product.mobile.page.solutions.pharmacy.AddPharmacyPage;
+import com.intuit.ihg.product.mobile.page.solutions.pharmacy.ChooseLocationPage;
+import com.intuit.ihg.product.mobile.page.solutions.pharmacy.PharmaciesListPage;
+import com.intuit.ihg.product.mobile.page.solutions.pharmacy.PharmacyDetailsPage;
 import com.intuit.ihg.product.mobile.page.solutions.rxrenewal.RequestRenewalPage;
 import com.intuit.ihg.product.mobile.page.solutions.rxrenewal.SelectAMedicationPage;
 import com.intuit.ihg.product.mobile.utils.Mobile;
@@ -847,6 +851,72 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		MessageDetailsPage mDetails = mInbox.clickMessage(subject);
 
 		assertTrue(mDetails.getSubject().equalsIgnoreCase(subject));
+
+	}
+	
+    /**
+     * @Type :-Deployment Acceptance [DEV3, DEMO, PROD]
+     * @Author:-prehacek
+	 * @Date:-2/03/2014
+	 * @User Story ID in Rally : NA
+	 * 
+	 * @StepsToReproduce:
+     * Login to Medfusion mobile site
+     * Go to mypatient page
+     * Click on Prescription renewal
+     * Selct an Rx
+     * Add a New pharmacy and  submit
+     * Log into practice portal and approve the Rx renewal
+     * Login to Medfusion mobile site
+     * Click on my message and verify the message 
+     * 
+  	 * @AreaImpacted :- 
+	 * @Description
+	 * @throws Exception
+     */
+	@Test(enabled = true, groups = { "DeploymentAcceptanceTests",
+			"AcceptanceTests", "Positive", "PharmacyLookup" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMobilePharmacyLookup() throws Exception {
+
+		log("step 1: Get Data from Excel");
+		Mobile mobile = new Mobile();
+		MobileTestCaseData testcasesData = new MobileTestCaseData(mobile);
+
+		logTestInfo(testcasesData);
+
+		log("step 1:LogIn");
+		MobileSignInPage mloginpage = new MobileSignInPage(driver,
+				testcasesData.getUrl());
+		MobileHomePage pMyPatientPage = mloginpage.login(
+				testcasesData.getUserName(), testcasesData.getPassword());
+
+		log("step 3: Click RxRenewalTab");
+		SelectAMedicationPage pSelectAMedicationPage = (SelectAMedicationPage) pMyPatientPage
+				.clickRXLink();
+
+		log("step 4: select Medication");
+		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
+		
+		log("step 5: Click Add New Pharmacy");
+		AddPharmacyPage pAddPharmacyPage = (AddPharmacyPage) pRequestRenewalPage.addNewPharmacy();
+		
+		log("step 6: Click Change current location");
+		ChooseLocationPage pChooseLocationPage = pAddPharmacyPage.selectLocation();
+		
+		log("step 7: Search for location");
+		pAddPharmacyPage = pChooseLocationPage.selectLocation("Cupertino 95014");
+		
+		log("step 8: Search for Pharmacies");
+		PharmaciesListPage pPharmaciesListPage = pAddPharmacyPage.searchPharmacies();
+		
+		log("step 9: Select first Pharmacy");
+		PharmacyDetailsPage pPharmacyDetailsPage = pPharmaciesListPage.selectFirstPharmacy();
+		
+		verifyTrue(pPharmacyDetailsPage.verifyPharmacyDetails(),
+				"Informations about adress or telephone are missing");
+		
+		//pRequestRenewalPage.clickButtonSubmit();
+		
 
 	}
 	

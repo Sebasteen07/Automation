@@ -156,7 +156,9 @@ public class MobileHomePage extends MobileBasePage {
         String instruction = this.getInstruction();
         if (instruction != null) {
             if (instruction.contains("If you are experiencing an emergency, please dial 911")) {   //TODO add other options here - vvalsan
-                return PageFactory.initElements(driver, SelectAQuestionPage.class);
+                Thread.sleep(2000);
+            	return PageFactory.initElements(driver, SelectAQuestionPage.class);
+                
             }else if (instruction.contains("Select a practice")) {
                 return PageFactory.initElements(driver, SelectAPracticePage.class);
             }

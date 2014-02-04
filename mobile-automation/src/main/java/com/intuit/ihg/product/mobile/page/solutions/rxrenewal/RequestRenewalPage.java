@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mobile.page.MobileBasePage;
 import com.intuit.ihg.product.mobile.page.MobileHomePage;
+import com.intuit.ihg.product.mobile.page.solutions.pharmacy.AddPharmacyPage;
 
 
 
@@ -18,6 +19,9 @@ public class RequestRenewalPage extends MobileBasePage{
 	
 	@FindBy(xpath = "//a[@id='rxReqSubmit']/span")
 	private WebElement rbsubmit;
+	
+	@FindBy(id = "addPharmacyLink")
+	private WebElement addPharmacy;
 	
 	@FindBy(xpath = "//fieldset[@id='rxreqPharmacies']/div/div[1]/label/span")
 	private WebElement firstPharmacy;
@@ -60,6 +64,14 @@ public class RequestRenewalPage extends MobileBasePage{
     		firstPharmacy.click();
     	}    	
         return PageFactory.initElements(driver, MobileBasePage.class);
+    }
+    
+    public AddPharmacyPage addNewPharmacy(){
+    	IHGUtil.waitForElement(driver,6, addPharmacy);
+    	if(addPharmacy.isDisplayed()){
+    		addPharmacy.click();
+    	}    	
+        return PageFactory.initElements(driver, AddPharmacyPage.class);
     }
 
     public MobileBasePage clickButtonSubmit(){
