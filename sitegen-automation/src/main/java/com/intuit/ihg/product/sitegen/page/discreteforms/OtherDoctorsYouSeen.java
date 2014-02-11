@@ -13,11 +13,47 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 	
 	public class OtherDoctorsYouSeen extends BasePageObject{
 		
-		@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[4]/a/em")
+		@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[1]/a")
 		private WebElement lnkOtherDoctorsYouSeen;
 
 		@FindBy(id="save_config_form")              
 		private WebElement btnSave;
+		
+		@FindBy(id = "hide_currentproviders_check")
+		public WebElement hideCurrentprovidersCheck;	
+
+		@FindBy(id = "referring_physician_firstname")
+		public WebElement referringPhysicianFirstname;	
+
+		@FindBy(id = "referring_physician_phone_number")
+		public WebElement referringPhysicianPhoneNumber;	
+
+		@FindBy(id = "referring_physician_address")
+		public WebElement referringPhysicianAddress;	
+
+		@FindBy(id = "referring_physician_city")
+		public WebElement referringPhysicianCity;	
+
+		@FindBy(id = "referring_physician_state")
+		public WebElement referringPhysicianState;	
+
+		@FindBy(id = "referring_physician_zipcode")
+		public WebElement referringPhysicianZipcode;	
+
+		@FindBy(id = "referring_physician_speciality")
+		public WebElement referringPhysicianSpeciality;	
+
+		@FindBy(id = "referring_physician_speciality_is_primary")
+		public WebElement referringPhysicianSpecialityIsPrimary;	
+
+		@FindBy(id = "doctors_seen")
+		public WebElement doctorsSeen;	
+
+		@FindBy(id = "pharmacy_name")
+		public WebElement pharmacyName;	
+
+		@FindBy(id = "pharmacy_phone")
+		public WebElement pharmacyPhone;
 	
 	
 	public OtherDoctorsYouSeen(WebDriver driver) {

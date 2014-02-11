@@ -14,9 +14,54 @@ public class ExamsTestsAndProceduresPage extends BasePageObject{
 	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[10]/a/em")
 	private WebElement lnkExamsTestsAndProcedures;
 	
-	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
+	
+	@FindBy(id = "hide_procedures_section_check")
+	public WebElement hideProceduresSection;	
+
+	@FindBy(id = "sigmoidoscopy_line")
+	public WebElement sigmoidoscopy;	
+
+	@FindBy(id = "eyeexam_line")
+	public WebElement eyeexam;	
+
+	@FindBy(id = "dentalexam_line")
+	public WebElement dentalexam;	
+
+	@FindBy(id = "cholestrolexam_line")
+	public WebElement cholestrolexam;	
+
+	@FindBy(id = "diabetesexam_line")
+	public WebElement diabetesexam;	
+
+	@FindBy(id = "colonoscopyexam_line")
+	public WebElement colonoscopyexam;	
+
+	@FindBy(id = "mammogramexam_line")
+	public WebElement mammogramexam;	
+
+	@FindBy(id = "papsmearexam_line")
+	public WebElement papsmearexam;	
+
+	@FindBy(id = "bonedensityscanexam_line")
+	public WebElement bonedensityscanexam;	
+
+	@FindBy(id = "psaexam_line")
+	public WebElement psaexam;	
+
+	@FindBy(id = "prostateultrasoundexam_line")
+	public WebElement prostateultrasoundexam;	
+
+	@FindBy(id = "digitalrtectalexam_line")
+	public WebElement digitalrtectalexam;	
+
+	@FindBy(id = "procedures_other_line")
+	public WebElement proceduresOther;	
+
+	@FindBy(id = "procedures_anythingelse_line")
+	public WebElement proceduresComments;
+	
 
 	public ExamsTestsAndProceduresPage(WebDriver driver) {
 		super(driver);

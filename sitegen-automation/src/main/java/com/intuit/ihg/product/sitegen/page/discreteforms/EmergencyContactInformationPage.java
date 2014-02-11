@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class EmergencyContactInformationPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[2]/a/em")
+	@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[2]")
 	private WebElement lnkEmergencyContactInformation;
 	
 	@FindBy(name="contactfirstname")               

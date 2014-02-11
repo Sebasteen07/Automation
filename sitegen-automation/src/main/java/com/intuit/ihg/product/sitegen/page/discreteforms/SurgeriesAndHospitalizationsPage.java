@@ -17,6 +17,12 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
 	
+	@FindBy(id = "hide_surgerieshospitalizations_section_check")
+	public WebElement hideSurgerieshospitalizationsSectionCheck;	
+
+	@FindBy(id = "surgerieshospitalizations_anythingelse_line")
+	public WebElement surgerieshospitalizationsCommentsCheck;
+	
 	
 	public SurgeriesAndHospitalizationsPage(WebDriver driver) {
 		super(driver);

@@ -14,17 +14,62 @@ public class SocialHistoryPage extends BasePageObject{
 	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[13]/a/em")
 	private WebElement lnkSocialHistory;
 	
-	@FindBy(name="occupation_field")               
-	private WebElement chckOccupationField;
-	
-	@FindBy(name="education_field")              
-	private WebElement chckEducationField;
-	
-	@FindBy(name="firearms_personalsafety")               
-	private WebElement chckFireArmsPersonalSafety;
-	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
+	
+	@FindBy(id = "hide_socialhistory_section_check")
+	public WebElement hideSocialhistorySectionCheck;	
+
+	@FindBy(id = "culturalbelief_field")
+	public WebElement culturalbeliefField;	
+
+	@FindBy(id = "occupation_field")
+	public WebElement occupationField;	
+
+	@FindBy(id = "education_field")
+	public WebElement educationField;	
+
+	@FindBy(id = "smokealarms_personalsafety")
+	public WebElement smokealarmsPersonalsafety;	
+
+	@FindBy(id = "firearms_personalsafety")
+	public WebElement firearmsPersonalsafety;	
+
+	@FindBy(id = "seatbelt_personalsafety")
+	public WebElement seatbeltPersonalsafety;	
+
+	@FindBy(id = "recreationaldrugs_personalsafety")
+	public WebElement recreationaldrugsPersonalsafety;	
+
+	@FindBy(id = "violenceconcerns_personalsafety")
+	public WebElement violenceconcernsPersonalsafety;	
+
+	@FindBy(id = "traveledoutsidecountry_personalsafety")
+	public WebElement traveledoutsidecountryPersonalsafety;	
+
+	@FindBy(id = "livingwith_field")
+	public WebElement livingwithField;	
+
+	@FindBy(id = "exercise_healthhabits")
+	public WebElement exerciseHealthhabits;	
+
+	@FindBy(id = "alcohol_healthhabits")
+	public WebElement alcoholHealthhabits;	
+
+	@FindBy(id = "teacoffee_healthhabits")
+	public WebElement teacoffeeHealthhabits;	
+
+	@FindBy(id = "sodaenergydrinks_healthhabits")
+	public WebElement sodaenergydrinksHealthhabits;	
+
+	@FindBy(id = "cigarettes_healthhabits")
+	public WebElement cigarettesHealthhabits;	
+
+	@FindBy(id = "tobacco_healthhabits")
+	public WebElement tobaccoHealthhabits;	
+
+	@FindBy(id = "socialhistory_anythingelse_line")
+	public WebElement socialhistoryComments;
 	
 
 	public SocialHistoryPage(WebDriver driver) {
