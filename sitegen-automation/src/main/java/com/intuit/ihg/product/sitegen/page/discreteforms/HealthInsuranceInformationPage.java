@@ -49,7 +49,7 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 	 * @return
 	 */
 	
-	public OtherDoctorsYouSeen clicklnkHealthInsuranceInfo()
+	public SecondaryHealthInsurancePage clicklnkHealthInsuranceInfo()
 	{	
 		//SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkHealthInsuranceInfoPage);
@@ -58,7 +58,7 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 		IHGUtil.waitForElement(driver, 30, btnSave);
 			btnSave.click();
 		// Close the browser window
-		return PageFactory.initElements(driver,OtherDoctorsYouSeen.class);
+		return PageFactory.initElements(driver,SecondaryHealthInsurancePage.class);
 	}
 	
 	

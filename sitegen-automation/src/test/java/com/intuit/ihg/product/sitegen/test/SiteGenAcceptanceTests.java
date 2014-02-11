@@ -10,6 +10,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -88,6 +89,7 @@ import com.intuit.ihg.product.sitegen.page.discreteforms.HealthInsuranceInformat
 import com.intuit.ihg.product.sitegen.page.discreteforms.IllnessesAndConditionsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.MedicationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.OtherDoctorsYouSeen;
+import com.intuit.ihg.product.sitegen.page.discreteforms.SecondaryHealthInsurancePage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.SocialHistoryPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.SurgeriesAndHospitalizationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.VaccinationsPage;
@@ -1046,7 +1048,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-@Test(enabled = false, groups = {"AcceptanceTests"})
+@Test(enabled = true, groups = {"AcceptanceTests"})
 public void testDiscreteForm() throws Exception {
 	log("testDiscreteForm");
 	log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
@@ -1089,8 +1091,12 @@ public void testDiscreteForm() throws Exception {
 	HealthInsuranceInformationPage pHealthInsuranceInfoPage =pEmergencyContactInfoPage.clicklnkEmergencyContactInfo();
 	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
 		
-	log("step 7: Click on Health Insurance Information");
-	OtherDoctorsYouSeen pOtherDoctorsYouSeen=pHealthInsuranceInfoPage.clicklnkHealthInsuranceInfo() ;
+	log("step 7a: Click on Health Insurance Information");
+	SecondaryHealthInsurancePage pSecondaryHealthInsurancePage=pHealthInsuranceInfoPage.clicklnkHealthInsuranceInfo() ;
+	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	
+	log("step 7b: Click on Secondary Health Insurance Information");
+	OtherDoctorsYouSeen pOtherDoctorsYouSeen=pSecondaryHealthInsurancePage.clicklnkSecondaryHealthInsuranceInfo() ;
 	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
 	
 	log("step 8: Click on Other Doctors You Have Seen");
