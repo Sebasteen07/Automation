@@ -35,6 +35,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.intuit.api.security.client.IOAuthTwoLeggedClient;
+import com.intuit.api.security.client.OAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.TokenManager;
