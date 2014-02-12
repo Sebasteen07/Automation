@@ -123,21 +123,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		driver.close();
 
 		if(IHGUtil.getEnvironmentType().toString().equals("DEMO") || IHGUtil.getEnvironmentType().toString().equals("DEV3") ) {
-
-			if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
-
-				log("DEV3-*****Cannot check the ppia_status, integration status id , ppia_state and ppia_id in Outbound.");
-				Thread.sleep(770000);
-				//				Thread.sleep(400000);
-			}
-			if(IHGUtil.getEnvironmentType().toString().equals("DEMO") )
-			{				
+		{				
 				String vAppointmentReason=appointmentReason.toString();
 				
 				log(" Step 7 : Getting the Appointment request id from pgDB");
 				String appointment_request_id= SmIntegrationUtil.getAppointmentRequestid(vAppointmentReason, testData.getPGDBName(),  testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 				
-				log("DEMO - Waiting for DB (integrationStatus) to get update.");
+				log("Waiting for DB (integrationStatus) to get update.");
 				Thread.sleep(540000);
 				
 				int integrationId = Integer.parseInt(testData.getIntegrationID().toString());
@@ -148,6 +140,43 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				log("Step 9 : Verify whether the integration status id");
 				BaseTestSoftAssert.verifyEquals(integrationStatus, SmIntegrationConstants.INTEGRATIONSTATUS_ID, "Failure***Integration Status ID is not as expected");
 
+				if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+					
+					log(" Step 10 : Getting the ppia status and state value from pgDB");
+					HashMap<String , String> dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+
+					log("Step 11 : Verify whether the ppia status id");
+					BaseTestSoftAssert.verifyEquals(dataMap.get("Status"), SmIntegrationConstants.PPIA_STATUS_VALUE1, "Failure***PPIA Status ID is not as expected");
+
+					log("Step 12 : Verify whether the ppia state id");
+
+					if(dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE1)||dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE2))
+					{
+						BaseTestSoftAssert.verifyTrue(true);
+					}
+					else
+					{
+						verifyTrue(false,"Failure*** State Value is not as expected");
+					}
+					
+					ppia_id =dataMap.get(SmIntegrationConstants.PPIA_ID_COLUMN);
+					
+					String PPIAL_RESPONSE = "";
+					PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+					log("Step 13 : Verify whether the ppia_id with error message");
+					if(PPIAL_RESPONSE.contains(SmIntegrationConstants.PPIAL_RESPONSE_VALUE))
+					{
+						BaseTestSoftAssert.verifyTrue(true);
+					}
+					else
+					{
+						verifyTrue(false,"Expected Error Not Found");
+						
+					}
+				}
+				if(IHGUtil.getEnvironmentType().toString().equals("DEMO") )
+				{		
+				
 				log(" Step 10 : Getting the ppia status and state value from pgDB");
 				HashMap<String , String> dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 
@@ -295,7 +324,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 23: Logout of Patient Portal");
 			home.logout(driver2);
 
-
+		}
 		} else if (IHGUtil.getEnvironmentType().toString().equals("PROD")) {
 
 			log("PROD- No Access to DB.");
@@ -388,29 +417,79 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8:Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 	
-	actualMemberID = SmIntegrationUtil.getMemberIDFromDB(email, testcasesData.getPGDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
-			log("MEMBER ID*****************"+actualMemberID);
+		actualMemberID = SmIntegrationUtil.getMemberIDFromDB(email, testcasesData.getPGDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
 		
-		if(IHGUtil.getEnvironmentType().toString().equals("DEV3"))
-		{
-			log("DB Verification is not possible in DEV3 since there is no physical systems (EEHR) to receive requests");
-			
-		}
-		if(IHGUtil.getEnvironmentType().toString().equals("DEMO"))
-		{
-			
-			log("Step 9: Verify the member ID from DB");
-			BaseTestSoftAssert.verifyFalse(actualMemberID.equals(null), "Member id is not retrieved from DB");
+		log("MEMBER ID*****************"+actualMemberID);
+		
+		log("Step 9: Verify the member ID from DB");
+		BaseTestSoftAssert.verifyFalse(actualMemberID.equals(null), "Member id is not retrieved from DB");
 
-			int integrationId = Integer.parseInt(testcasesData.getIntegrationID().toString());
-			String integrationStatusID = SmIntegrationUtil.getintegrationStatusIDFromDB(integrationId, testcasesData.getPGDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
+		int integrationId = Integer.parseInt(testcasesData.getIntegrationID().toString());
+		Thread.sleep(600000);
+		
+		String integrationStatusID = SmIntegrationUtil.getintegrationStatusIDFromDB(integrationId, testcasesData.getPGDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
 
+			
 			log("Step 10 : Verify whether the integration status id");
-			if(integrationStatusID.contains(SmIntegrationConstants.INTEGRATIONSTATUS_INITIAL_VALUE)) {
-				Thread.sleep(30000);
+			if(integrationStatusID.contains(SmIntegrationConstants.INTEGRATIONSTATUS_ID)) {
 			}
-			BaseTestSoftAssert.verifyEquals(integrationStatusID, SmIntegrationConstants.INTEGRATIONSTATUS_INITIAL_VALUE, "Failure***Integration Status ID is not as expected");
+			BaseTestSoftAssert.verifyEquals(integrationStatusID, SmIntegrationConstants.INTEGRATIONSTATUS_ID, "Failure***Integration Status ID is not as expected");
 
+			if(IHGUtil.getEnvironmentType().toString().equals("DEV3"))
+			{
+				
+				log(" Step 11 : Getting the ppia status and state value from pgDB");
+				HashMap<String , String> dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.PPIA_PPI_ID_OUTBOUND, testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
+
+				log("Step 12 : Verify whether the ppia status id");
+				BaseTestSoftAssert.verifyEquals(dataMap.get(SmIntegrationConstants.PPIA_STATUS), SmIntegrationConstants.PPIA_STATUS_VALUE1, "Failure***Integration Status ID is not as expected");
+
+				log("Step 13 : Verify whether the ppia state id");
+				if(dataMap.get(SmIntegrationConstants.PPIA_STATUS).contains(SmIntegrationConstants.PPIA_STATUS_VALUE1)&& dataMap.get(SmIntegrationConstants.PPIA_STATE).contains( SmIntegrationConstants.PPIASTATE_VALUE1 ))
+				{
+					//BaseTestSoftAssert.verifyTrue(true);
+					BaseTestSoftAssert.verifyEquals(dataMap.get(SmIntegrationConstants.PPIA_STATE), SmIntegrationConstants.PPIASTATE_VALUE1, "Failure***Integration Status ID is not as expected");
+				}
+				else
+				{
+					verifyTrue(false,"Failure*** State Value is not as expected");
+				}
+				
+				String ppia_id =dataMap.get(SmIntegrationConstants.PPIA_ID_COLUMN);
+								
+				String PPIAL_RESPONSE = "";
+				
+				PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
+				
+				log("Step 15 : Verify whether the ppia_id with error message");
+				if(PPIAL_RESPONSE.contains(SmIntegrationConstants.PPIAL_RESPONSE_VALUE))
+				{
+					BaseTestSoftAssert.verifyTrue(true);
+				}
+				else
+				{
+					verifyTrue(false,"Expected Error Not Found");
+					
+				}
+				
+				log("Step 16 : Verify the memberid value in PPIA_Request_Xml");  
+			    if(dataMap.get(SmIntegrationConstants.PPIA_REQUEST_XML).contains(actualMemberID))
+			    	{
+			         	BaseTestSoftAssert.verifyTrue(true);
+			    	}
+			    	else
+			    	{
+			    		verifyTrue(false,"Member id not Found");
+			    	}
+				
+				//log("Step 15 : Verify the email value in PPIA_Request_Xml");		
+				//String request_xml = dataMap.get(SmIntegrationConstants.PPIA_REQUEST_XML);
+			}
+			
+			if(IHGUtil.getEnvironmentType().toString().equals("DEMO"))
+			{
+				
+			
 			log(" Step 11 : Getting the ppia status and state value from pgDB");
 			HashMap<String , String> dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.PPIA_PPI_ID_OUTBOUND, testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
 
@@ -427,11 +506,22 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				verifyTrue(false,"Failure*** State Value is not as expected");
 			}
 
-			log("Step 14 : Verify the email value in PPIA_Request_Xml");		
-			String request_xml = dataMap.get(SmIntegrationConstants.PPIA_REQUEST_XML);
+			//log("Step 14 : Verify the email value in PPIA_Request_Xml");		
+			//String request_xml = dataMap.get(SmIntegrationConstants.PPIA_REQUEST_XML);
 			//String response = SmIntegrationUtil.getPPIAXMLvalue(request_xml, question);
 			//verifyTrue(request_xml.contains(email),  "The email value in 'ppia_request_xml' is not as expected");
+			
+			log("Step 14 : Verify the memberid value in PPIA_Request_Xml");  
+		    if(dataMap.get(SmIntegrationConstants.PPIA_REQUEST_XML).contains(actualMemberID))
+		    	{
+		         	BaseTestSoftAssert.verifyTrue(true);
+		    	}
+		    	else
+		    	{
+		    		verifyTrue(false,"Member id not Found");
+		    	}
 		}
+	
 		
 		if(IHGUtil.getEnvironmentType().toString().equals("P10INT"))
 		{
