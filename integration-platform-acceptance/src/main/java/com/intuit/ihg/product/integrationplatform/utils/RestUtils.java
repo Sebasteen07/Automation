@@ -35,8 +35,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.intuit.api.security.client.IOAuthTwoLeggedClient;
-import com.intuit.api.security.client.OAuthTwoLeggedClient;
+import com.intuit.api.security.client.OAuth20TokenManager;
+import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.TokenManager;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -55,7 +55,7 @@ public class RestUtils {
 			throws IOException {
 		IHGUtil.PrintMethodName();
 
-		IOAuthTwoLeggedClient oauthClient = new OAuthTwoLeggedClient();
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
         Log4jUtil.log("Get Request Url: "+ strUrl);
         HttpGet httpGetReq = new HttpGet(strUrl);
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
@@ -225,7 +225,7 @@ public class RestUtils {
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException{
 		IHGUtil.PrintMethodName();
     	
-    	IOAuthTwoLeggedClient oauthClient = new OAuthTwoLeggedClient();
+    	IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
         Log4jUtil.log("Post Request Url: "+ strUrl);
         HttpPost httpPostReq = new HttpPost(strUrl);
         httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
@@ -263,7 +263,11 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);		
 		OAuthPropertyManager.init(oAuthProperty);
-		TokenManager.initializeTokenStore(appToken, username, password);
+		OAuth20TokenManager.initializeTokenStore(appToken, username, password);
+		//System.out.println("appToken: " +appToken);
+		//System.out.println("username: " +username);
+		//System.out.println("password: " +password);
+		
 		//emptyFile(responsePath);
 	} 
 	
