@@ -297,6 +297,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		Thread.sleep(180000);
 		String ppia_status = null;
 		String ppia_state = null;
+		long ppia_id = 0;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
 		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
 				dbPassword);
@@ -311,8 +312,10 @@ public class SmIntegrationUtil extends IHGUtil {
 						.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
 				ppia_state = rs
 						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
+				ppia_id = rs.getLong(SmIntegrationConstants.PPIA_ID_COLUMN);				
 				hashMap.put("Status", ppia_status);
 				hashMap.put("State", ppia_state);
+				hashMap.put("ppia_id", Long.toString(ppia_id));
 			}
 			stmt.close();
 		} catch (SQLException se) {
@@ -320,6 +323,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		}
 		Log4jUtil.log("PPIA STATUS " + ppia_status);
 		Log4jUtil.log("PPIA STATE " + ppia_state);
+		Log4jUtil.log("PPIA ID" + ppia_id);
 		return hashMap;
 	}
 
@@ -380,6 +384,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		String ppia_status = null;
 		String ppia_state = null;
 		String ppia_request_xml = null;
+		long ppia_id = 0;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
 		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
 				dbPassword);
@@ -396,10 +401,12 @@ public class SmIntegrationUtil extends IHGUtil {
 						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
 				ppia_request_xml = rs
 						.getString(SmIntegrationConstants.PPIA_REQUEST_XML_COLUMN);
+				ppia_id = rs.getLong(SmIntegrationConstants.PPIA_ID_COLUMN);
 
 				hashMap.put("Status", ppia_status);
 				hashMap.put("State", ppia_state);
 				hashMap.put("ppia_request_xml", ppia_request_xml);
+				hashMap.put("ppia_id", Long.toString(ppia_id));
 			}
 			stmt.close();
 		} catch (SQLException se) {
@@ -408,6 +415,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		Log4jUtil.log("PPIA STATUS" + ppia_status);
 		Log4jUtil.log("PPIA STATE" + ppia_state);
 		Log4jUtil.log("PPIA REQUEST XML" + ppia_request_xml);
+		Log4jUtil.log("PPIA ID" + ppia_id);
 		return hashMap;
 	}
 
@@ -740,5 +748,28 @@ public class SmIntegrationUtil extends IHGUtil {
 		return requiredTag;
 	}
 	
+	public static String getPPIAReqXMLFromActivityLog(String ppia_id, String dbName, String qaRegion, String dbusername,
+			String dbPassword) throws Exception {
+		String ppial_response = null;
+		Long l=Long.parseLong(ppia_id);
+		HashMap<String, String> hashMap = new HashMap<String, String>();
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,dbPassword);
+		try {
+			PreparedStatement stmt = conn
+					.prepareStatement("select * from practice_partner_integration_activity_log where ppial_ppia_id=? ");
+			stmt.setLong(1,l);
+			ResultSet rs = stmt.executeQuery();
+			Thread.sleep(30000);
+			while (rs.next()) {
+				ppial_response = rs.getString(SmIntegrationConstants.PPIAL_RESPONSE_COLUMN);
+				hashMap.put("PPIAL_RESPONSE", ppial_response);
+			}
+			stmt.close();
+		} catch (SQLException se) {
+			Log4jUtil.log(se.getMessage());
+		}
+		Log4jUtil.log("PPIAL_RESPONSE" + ppial_response);
+		return ppial_response;
+	}
 	
 }
