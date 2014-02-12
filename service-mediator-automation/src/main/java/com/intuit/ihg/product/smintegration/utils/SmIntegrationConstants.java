@@ -22,9 +22,12 @@ public class SmIntegrationConstants {
 	public final static String PPIA_STATUS_COLUMN = "ppia_status";
 	public final static String PPIA_STATE_COLUMN = "ppia_state";
 	public final static String PPIASTATUS_VALUE = "2";
+	public final static String PPIA_STATUS_VALUE1 = "1";
 	public final static String PPIASTATE_VALUE1 = "2";
 	public final static String PPIASTATE_VALUE2 = "5";
 	public final static String PPIA_ID_COLUMN = "ppia_id";
+	public final static String PPIAL_RESPONSE_COLUMN = "ppial_response";
+	public final static String PPIAL_RESPONSE_VALUE= "CONNECTHUB_ENDPOINT_DOWN";
 
 	public final static String PPIA_REQUEST_XML_COLUMN = "ppia_request_xml";
 	public final static String INTEGRATIONSTATUS_INITIAL_VALUE = "2";
