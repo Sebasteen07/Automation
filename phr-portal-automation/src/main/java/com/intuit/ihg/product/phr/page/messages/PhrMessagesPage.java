@@ -52,10 +52,10 @@ public class PhrMessagesPage  extends BasePageObject{
 	 */
 	public PhrInboxMessage clickOnFirstMessage() {
 		PhrUtil.PrintMethodName();
-		driver.navigate().refresh();
-		driver.findElement(By.xpath(".//*[@id='inboxtab']")).click();
-		firstMessageRow.click();
-		return PageFactory.initElements(driver, PhrInboxMessage.class);
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame(0);
+        driver.findElement(By.xpath(".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")).click();
+        return PageFactory.initElements(driver, PhrInboxMessage.class);
 		}
 
 }
