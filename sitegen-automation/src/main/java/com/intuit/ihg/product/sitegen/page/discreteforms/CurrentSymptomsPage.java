@@ -18,28 +18,28 @@ public class CurrentSymptomsPage extends BasePageObject{
 	private WebElement chckGeneralHealth;
 	
 	@FindBy(id = "fever_symptom_general")
-	public WebElement feverSymptomGeneral;
+	private WebElement feverSymptomGeneral;
 	
 	@FindBy(id = "weakness_symptom_general")
-	public WebElement weaknessSymptomGeneral;
+	private WebElement weaknessSymptomGeneral;
 	
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[6]/h5[2]/span/input")              
 	private WebElement chckBlood;
 	
 	@FindBy(id = "bleeding_symptom_blood")
-	public WebElement bleedingSymptomBlood;	
+	private WebElement bleedingSymptomBlood;	
 
 	@FindBy(id = "bruising_symptom_blood")
-	public WebElement bruisingSymptomBlood;
+	private WebElement bruisingSymptomBlood;
 	
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[6]/h5[4]/span/input")
 	private WebElement chckEyesEarsNoseThroat;
 	
 	@FindBy(id = "bleedinggums_symptom_ent")
-	public WebElement bleedinggumsSymptomEnt;	
+	private WebElement bleedinggumsSymptomEnt;	
 
 	@FindBy(id = "difficultyswallowing_symptom_ent")
-	public WebElement difficultyswallowingSymptomEnt;
+	private WebElement difficultyswallowingSymptomEnt;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;

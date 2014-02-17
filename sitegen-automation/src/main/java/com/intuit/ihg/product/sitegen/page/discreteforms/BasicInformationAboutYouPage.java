@@ -19,6 +19,45 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li/a/em")
 	private WebElement lnkBasicInformationAboutYou;
 
+	@FindBy(id = "streetaddr1")
+	private WebElement streetaddr1;	
+
+	@FindBy(id = "city")
+	private WebElement city;	
+
+	@FindBy(id = "state")
+	private WebElement state;	
+
+	@FindBy(id = "postalcode")
+	private WebElement postalcode;	
+
+	@FindBy(id = "primaryphone")
+	private WebElement primaryphone;	
+
+	@FindBy(id = "altphone")
+	private WebElement altphone;	
+
+	@FindBy(id = "gender")
+	private WebElement gender;	
+
+	@FindBy(id = "maritalstatus")
+	private WebElement maritalstatus;	
+
+	@FindBy(id = "preferredcontact")
+	private WebElement preferredcontact;	
+
+	@FindBy(id = "language")
+	private WebElement language;	
+
+	@FindBy(id = "race")
+	private WebElement race;	
+
+	@FindBy(id = "ethnicity")
+	private WebElement ethnicity;	
+
+	@FindBy(id = "formeditor")
+	private WebElement formeditor;	
+	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
 	

@@ -15,61 +15,61 @@ public class SecondaryHealthInsurancePage extends BasePageObject{
 	private WebElement lnkSecondaryHealthInsurance;
 	
 	@FindBy(id = "hide_secondary_insurance_check")
-	public WebElement hideSecondaryInsuranceCheck;	
+	private WebElement hideSecondaryInsuranceCheck;	
 
 	@FindBy(id = "secondary_insurance_company")
-	public WebElement secondaryInsuranceCompany;	
+	private WebElement secondaryInsuranceCompany;	
 
 	@FindBy(id = "secondary_insurance_company_phone")
-	public WebElement secondaryInsuranceCompanyPhone;	
+	private WebElement secondaryInsuranceCompanyPhone;	
 
 	@FindBy(id = "secondary_insurance_claims_address")
-	public WebElement secondaryInsuranceClaimsAddress;	
+	private WebElement secondaryInsuranceClaimsAddress;	
 
 	@FindBy(id = "secondary_insurance_claims_city")
-	public WebElement secondaryInsuranceClaimsCity;	
+	private WebElement secondaryInsuranceClaimsCity;	
 
 	@FindBy(id = "secondary_insurance_claims_state")
-	public WebElement secondaryInsuranceClaimsState;	
+	private WebElement secondaryInsuranceClaimsState;	
 
 	@FindBy(id = "secondary_insurance_claims_zipcode")
-	public WebElement secondaryInsuranceClaimsZipcode;	
+	private WebElement secondaryInsuranceClaimsZipcode;	
 
 	@FindBy(id = "secondary_policy_holder_firstname")
-	public WebElement secondaryPolicyHolderFirstname;	
+	private WebElement secondaryPolicyHolderFirstname;	
 
 	@FindBy(id = "secondary_policy_holder_lastname")
-	public WebElement secondaryPolicyHolderLastname;	
+	private WebElement secondaryPolicyHolderLastname;	
 
 	@FindBy(id = "secondary_policy_holder_memberid")
-	public WebElement secondaryPolicyHolderMemberid;	
+	private WebElement secondaryPolicyHolderMemberid;	
 
 	@FindBy(id = "secondary_group_or_plan_number")
-	public WebElement secondaryGroupOrPlanNumber;	
+	private WebElement secondaryGroupOrPlanNumber;	
 
 	@FindBy(id = "secondary_policy_holder_employer")
-	public WebElement secondaryPolicyHolderEmployer;	
+	private WebElement secondaryPolicyHolderEmployer;	
 
 	@FindBy(id = "secondary_policy_holder_dob")
-	public WebElement secondaryPolicyHolderDob;	
+	private WebElement secondaryPolicyHolderDob;	
 
 	@FindBy(id = "secondary_policy_holder_ssn")
-	public WebElement secondaryPolicyHolderSsn;	
+	private WebElement secondaryPolicyHolderSsn;	
 
 	@FindBy(id = "secondary_policy_holder_phone")
-	public WebElement secondaryPolicyHolderPhone;	
+	private WebElement secondaryPolicyHolderPhone;	
 
 	@FindBy(id = "secondary_policy_holder_streetaddress")
-	public WebElement secondaryPolicyHolderStreetaddress;	
+	private WebElement secondaryPolicyHolderStreetaddress;	
 
 	@FindBy(id = "secondary_policy_holder_city")
-	public WebElement secondaryPolicyHolderCity;	
+	private WebElement secondaryPolicyHolderCity;	
 
 	@FindBy(id = "secondary_policy_holder_state")
-	public WebElement secondaryPolicyHolderState;	
+	private WebElement secondaryPolicyHolderState;	
 
 	@FindBy(id = "secondary_policy_holder_zipcode")
-	public WebElement secondaryPolicyHolderZipcode;	
+	private WebElement secondaryPolicyHolderZipcode;	
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;

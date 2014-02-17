@@ -18,292 +18,292 @@ public class IllnessesAndConditionsPage extends BasePageObject{
 	private WebElement btnSave;
 	
 	@FindBy(id = "hide_conditions_section_check")
-	public WebElement hideConditionsSectionCheck;	
+	private WebElement hideConditionsSectionCheck;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[1]/span/input")
-	public WebElement rheumatologicEntireGroup;	
+	private WebElement rheumatologicEntireGroup;	
 
 	@FindBy(id = "arthritis_condition_rheumatologic")
-	public WebElement arthritisConditionRheumatologic;	
+	private WebElement arthritisConditionRheumatologic;	
 
 	@FindBy(id = "gout_condition_rheumatologic")
-	public WebElement goutConditionRheumatologic;	
+	private WebElement goutConditionRheumatologic;	
 
 	@FindBy(id = "osteoporosis_condition_rheumatologic")
-	public WebElement osteoporosisConditionRheumatologic;	
+	private WebElement osteoporosisConditionRheumatologic;	
 
 	@FindBy(id = "lupus_condition_rheumatologic")
-	public WebElement lupusConditionRheumatologic;	
+	private WebElement lupusConditionRheumatologic;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[2]/span/input")
-	public WebElement neurologicalEntireGroup;	
+	private WebElement neurologicalEntireGroup;	
 
 	@FindBy(id = "alzheimers_condition_neurological")
-	public WebElement alzheimersConditionNeurological;	
+	private WebElement alzheimersConditionNeurological;	
 
 	@FindBy(id = "migraines_condition_neurological")
-	public WebElement migrainesConditionNeurological;	
+	private WebElement migrainesConditionNeurological;	
 
 	@FindBy(id = "multiplesclerosis_condition_neurological")
-	public WebElement multiplesclerosisConditionNeurological;	
+	private WebElement multiplesclerosisConditionNeurological;	
 
 	@FindBy(id = "parkinsons_condition_neurological")
-	public WebElement parkinsonsConditionNeurological;	
+	private WebElement parkinsonsConditionNeurological;	
 
 	@FindBy(id = "stroke_condition_neurological")
-	public WebElement strokeConditionNeurological;	
+	private WebElement strokeConditionNeurological;	
 
 	@FindBy(id = "seizures_condition_neurological")
-	public WebElement seizuresConditionNeurological;	
+	private WebElement seizuresConditionNeurological;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[3]/span/input")
-	public WebElement mentalHealthEntireGroup;	
+	private WebElement mentalHealthEntireGroup;	
 
 	@FindBy(id = "adhd_condition_mental")
-	public WebElement adhdConditionMental;	
+	private WebElement adhdConditionMental;	
 
 	@FindBy(id = "bipolar_condition_mental")
-	public WebElement bipolarConditionMental;	
+	private WebElement bipolarConditionMental;	
 
 	@FindBy(id = "depression_condition_mental")
-	public WebElement depressionConditionMental;	
+	private WebElement depressionConditionMental;	
 
 	@FindBy(id = "anxiety_condition_mental")
-	public WebElement anxietyConditionMental;	
+	private WebElement anxietyConditionMental;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[4]/span/input")
-	public WebElement diabetesEntireGroup;	
+	private WebElement diabetesEntireGroup;	
 
 	@FindBy(id = "diabetestype1_condition_thyroiddiabetes")
-	public WebElement diabetestype1ConditionThyroiddiabetes;	
+	private WebElement diabetestype1ConditionThyroiddiabetes;	
 
 	@FindBy(id = "diabetestype2_condition_thyroiddiabetes")
-	public WebElement diabetestype2ConditionThyroiddiabetes;	
+	private WebElement diabetestype2ConditionThyroiddiabetes;	
 
 	@FindBy(id = "goiter_condition_thyroiddiabetes")
-	public WebElement goiterConditionThyroiddiabetes;	
+	private WebElement goiterConditionThyroiddiabetes;	
 
 	@FindBy(id = "graves_condition_thyroiddiabetes")
-	public WebElement gravesConditionThyroiddiabetes;	
+	private WebElement gravesConditionThyroiddiabetes;	
 
 	@FindBy(id = "hashimoto_condition_thyroiddiabetes")
-	public WebElement hashimotoConditionThyroiddiabetes;	
+	private WebElement hashimotoConditionThyroiddiabetes;	
 
 	@FindBy(id = "hypothyroidism_condition_thyroiddiabetes")
-	public WebElement hypothyroidismConditionThyroiddiabetes;	
+	private WebElement hypothyroidismConditionThyroiddiabetes;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[5]/span/input")
-	public WebElement cancerEntireGroup;	
+	private WebElement cancerEntireGroup;	
 
 	@FindBy(id = "bladder_condition_cancer")
-	public WebElement bladderConditionCancer;	
+	private WebElement bladderConditionCancer;	
 
 	@FindBy(id = "breast_condition_cancer")
-	public WebElement breastConditionCancer;	
+	private WebElement breastConditionCancer;	
 
 	@FindBy(id = "colorectal_condition_cancer")
-	public WebElement colorectalConditionCancer;	
+	private WebElement colorectalConditionCancer;	
 
 	@FindBy(id = "endometrial_condition_cancer")
-	public WebElement endometrialConditionCancer;	
+	private WebElement endometrialConditionCancer;	
 
 	@FindBy(id = "kidney_condition_cancer")
-	public WebElement kidneyConditionCancer;	
+	private WebElement kidneyConditionCancer;	
 
 	@FindBy(id = "leukemia_condition_cancer")
-	public WebElement leukemiaConditionCancer;	
+	private WebElement leukemiaConditionCancer;	
 
 	@FindBy(id = "lung_condition_cancer")
-	public WebElement lungConditionCancer;	
+	private WebElement lungConditionCancer;	
 
 	@FindBy(id = "skin_condition_cancer")
-	public WebElement skinConditionCancer;	
+	private WebElement skinConditionCancer;	
 
 	@FindBy(id = "nonhodgkin_condition_cancer")
-	public WebElement nonhodgkinConditionCancer;	
+	private WebElement nonhodgkinConditionCancer;	
 
 	@FindBy(id = "pancreatic_condition_cancer")
-	public WebElement pancreaticConditionCancer;	
+	private WebElement pancreaticConditionCancer;	
 
 	@FindBy(id = "prostate_condition_cancer")
-	public WebElement prostateConditionCancer;	
+	private WebElement prostateConditionCancer;	
 
 	@FindBy(id = "thyroid_condition_cancer")
-	public WebElement thyroidConditionCancer;	
+	private WebElement thyroidConditionCancer;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[6]/span/input")
-	public WebElement lungsEntireGroup;	
+	private WebElement lungsEntireGroup;	
 
 	@FindBy(id = "asthma_condition_lungs")
-	public WebElement asthmaConditionLungs;	
+	private WebElement asthmaConditionLungs;	
 
 	@FindBy(id = "copd_condition_lungs")
-	public WebElement copdConditionLungs;	
+	private WebElement copdConditionLungs;	
 
 	@FindBy(id = "emphysema_condition_lungs")
-	public WebElement emphysemaConditionLungs;	
+	private WebElement emphysemaConditionLungs;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[7]/span/input")
-	public WebElement hematologicalEntireGroup;	
+	private WebElement hematologicalEntireGroup;	
 
 	@FindBy(id = "anemia_condition_hematological")
-	public WebElement anemiaConditionHematological;	
+	private WebElement anemiaConditionHematological;	
 
 	@FindBy(id = "bloodclottingdisorder_condition_hematological")
-	public WebElement bloodclottingdisorderConditionHematological;	
+	private WebElement bloodclottingdisorderConditionHematological;	
 
 	@FindBy(id = "sicklecellanemia_condition_hematological")
-	public WebElement sicklecellanemiaConditionHematological;	
+	private WebElement sicklecellanemiaConditionHematological;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[8]/span/input")
-	public WebElement skinEntireGroup;	
+	private WebElement skinEntireGroup;	
 
 	@FindBy(id = "eczema_condition_skin")
-	public WebElement eczemaConditionSkin;	
+	private WebElement eczemaConditionSkin;	
 
 	@FindBy(id = "psoriasis_condition_skin")
-	public WebElement psoriasisConditionSkin;	
+	private WebElement psoriasisConditionSkin;	
 
 	@FindBy(id = "rosacea_condition_skin")
-	public WebElement rosaceaConditionSkin;	
+	private WebElement rosaceaConditionSkin;	
 
 	@FindBy(id = "shingles_condition_skin")
-	public WebElement shinglesConditionSkin;	
+	private WebElement shinglesConditionSkin;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[9]/span/input")
-	public WebElement heartEntireGroup;	
+	private WebElement heartEntireGroup;	
 
 	@FindBy(id = "arrythmias_condition_heart")
-	public WebElement arrythmiasConditionHeart;	
+	private WebElement arrythmiasConditionHeart;	
 
 	@FindBy(id = "heartattack_condition_heart")
-	public WebElement heartattackConditionHeart;	
+	private WebElement heartattackConditionHeart;	
 
 	@FindBy(id = "heartmurmur_condition_heart")
-	public WebElement heartmurmurConditionHeart;	
+	private WebElement heartmurmurConditionHeart;	
 
 	@FindBy(id = "highbloodpressure_condition_heart")
-	public WebElement highbloodpressureConditionHeart;	
+	private WebElement highbloodpressureConditionHeart;	
 
 	@FindBy(id = "highcholestrol_condition_heart")
-	public WebElement highcholestrolConditionHeart;	
+	private WebElement highcholestrolConditionHeart;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[10]/span/input")
-	public WebElement gastrointestinalEntireGroup;	
+	private WebElement gastrointestinalEntireGroup;	
 
 	@FindBy(id = "crohnsdisease_condition_gastrointestinal")
-	public WebElement crohnsdiseaseConditionGastrointestinal;	
+	private WebElement crohnsdiseaseConditionGastrointestinal;	
 
 	@FindBy(id = "colitis_condition_gastrointestinal")
-	public WebElement colitisConditionGastrointestinal;	
+	private WebElement colitisConditionGastrointestinal;	
 
 	@FindBy(id = "gerd_condition_gastrointestinal")
-	public WebElement gerdConditionGastrointestinal;	
+	private WebElement gerdConditionGastrointestinal;	
 
 	@FindBy(id = "heartburn_condition_gastrointestinal")
-	public WebElement heartburnConditionGastrointestinal;	
+	private WebElement heartburnConditionGastrointestinal;	
 
 	@FindBy(id = "ibs_condition_gastrointestinal")
-	public WebElement ibsConditionGastrointestinal;	
+	private WebElement ibsConditionGastrointestinal;	
 
 	@FindBy(id = "stomachulcers_condition_gastrointestinal")
-	public WebElement stomachulcersConditionGastrointestinal;	
+	private WebElement stomachulcersConditionGastrointestinal;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[11]/span/input")
-	public WebElement liverEntireGroup;	
+	private WebElement liverEntireGroup;	
 
 	@FindBy(id = "hepatitisa_condition_liver")
-	public WebElement hepatitisaConditionLiver;	
+	private WebElement hepatitisaConditionLiver;	
 
 	@FindBy(id = "hepatitisb_condition_liver")
-	public WebElement hepatitisbConditionLiver;	
+	private WebElement hepatitisbConditionLiver;	
 
 	@FindBy(id = "hepatitisc_condition_liver")
-	public WebElement hepatitiscConditionLiver;	
+	private WebElement hepatitiscConditionLiver;	
 
 	@FindBy(id = "cirrhosis_condition_liver")
-	public WebElement cirrhosisConditionLiver;	
+	private WebElement cirrhosisConditionLiver;	
 
 	@FindBy(id = "fattyliver_condition_liver")
-	public WebElement fattyliverConditionLiver;	
+	private WebElement fattyliverConditionLiver;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[12]/span/input")
-	public WebElement kidneyEntireGroup;	
+	private WebElement kidneyEntireGroup;	
 
 	@FindBy(id = "kidneystones_condition_kidneybladder")
-	public WebElement kidneystonesConditionKidneybladder;	
+	private WebElement kidneystonesConditionKidneybladder;	
 
 	@FindBy(id = "kidneyinfection_condition_kidneybladder")
-	public WebElement kidneyinfectionConditionKidneybladder;	
+	private WebElement kidneyinfectionConditionKidneybladder;	
 
 	@FindBy(id = "urinarytractinfection_condition_kidneybladder")
-	public WebElement urinarytractinfectionConditionKidneybladder;	
+	private WebElement urinarytractinfectionConditionKidneybladder;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[13]/span/input")
-	public WebElement otherEntireGroup;	
+	private WebElement otherEntireGroup;	
 
 	@FindBy(id = "alcoholabuse_condition_other")
-	public WebElement alcoholabuseConditionOther;	
+	private WebElement alcoholabuseConditionOther;	
 
 	@FindBy(id = "brokenbones_condition_other")
-	public WebElement brokenbonesConditionOther;	
+	private WebElement brokenbonesConditionOther;	
 
 	@FindBy(id = "chronicpain_condition_other")
-	public WebElement chronicpainConditionOther;	
+	private WebElement chronicpainConditionOther;	
 
 	@FindBy(id = "glaucoma_condition_other")
-	public WebElement glaucomaConditionOther;	
+	private WebElement glaucomaConditionOther;	
 
 	@FindBy(id = "hearingproblems_condition_other")
-	public WebElement hearingproblemsConditionOther;	
+	private WebElement hearingproblemsConditionOther;	
 
 	@FindBy(id = "hernia_condition_other")
-	public WebElement herniaConditionOther;	
+	private WebElement herniaConditionOther;	
 
 	@FindBy(id = "mononucleosis_condition_other")
-	public WebElement mononucleosisConditionOther;	
+	private WebElement mononucleosisConditionOther;	
 
 	@FindBy(id = "readingproblems_condition_other")
-	public WebElement readingproblemsConditionOther;	
+	private WebElement readingproblemsConditionOther;	
 
 	@FindBy(id = "sexuallytransmitteddiseases_condition_other")
-	public WebElement sexuallytransmitteddiseasesConditionOther;	
+	private WebElement sexuallytransmitteddiseasesConditionOther;	
 
 	@FindBy(id = "tuberculosis_condition_other")
-	public WebElement tuberculosisConditionOther;	
+	private WebElement tuberculosisConditionOther;	
 
 	@FindBy(id = "visionproblems_condition_other")
-	public WebElement visionproblemsConditionOther;	
+	private WebElement visionproblemsConditionOther;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[12]/h5[14]/span/input")
-	public WebElement femaleEntireGroup;	
+	private WebElement femaleEntireGroup;	
 
 	@FindBy(id = "howmanypregnancies_condition_femalespecific")
-	public WebElement howmanypregnanciesConditionFemalespecific;	
+	private WebElement howmanypregnanciesConditionFemalespecific;	
 
 	@FindBy(id = "miscarriages_condition_femalespecific")
-	public WebElement miscarriagesConditionFemalespecific;	
+	private WebElement miscarriagesConditionFemalespecific;	
 
 	@FindBy(id = "vaginaldeliveries_condition_femalespecific")
-	public WebElement vaginaldeliveriesConditionFemalespecific;	
+	private WebElement vaginaldeliveriesConditionFemalespecific;	
 
 	@FindBy(id = "caesareandeliveries_condition_femalespecific")
-	public WebElement caesareandeliveriesConditionFemalespecific;	
+	private WebElement caesareandeliveriesConditionFemalespecific;	
 
 	@FindBy(id = "firstpregnancyage_condition_femalespecific")
-	public WebElement firstpregnancyageConditionFemalespecific;	
+	private WebElement firstpregnancyageConditionFemalespecific;	
 
 	@FindBy(id = "livingchildren_condition_femalespecific")
-	public WebElement livingchildrenConditionFemalespecific;	
+	private WebElement livingchildrenConditionFemalespecific;	
 
 	@FindBy(id = "regularperiods_condition_femalespecific")
-	public WebElement regularperiodsConditionFemalespecific;	
+	private WebElement regularperiodsConditionFemalespecific;	
 
 	@FindBy(id = "conditions_other_line")
-	public WebElement conditionsOtherCheck;	
+	private WebElement conditionsOtherCheck;	
 
 	@FindBy(id = "conditions_anythingelse_line")
-	public WebElement conditionsCommentsCheck;
+	private WebElement conditionsCommentsCheck;
 	
 
 	public IllnessesAndConditionsPage(WebDriver driver) {

@@ -18,52 +18,52 @@ public class VaccinationsPage extends BasePageObject{
 	private WebElement btnSave;
 	
 	@FindBy(id = "hide_immunizations_check")
-	public WebElement hideImmunizationsCheck;	
+	private WebElement hideImmunizationsCheck;	
 
 	@FindBy(id = "tetanusvaccination")
-	public WebElement tetanusvaccination;	
+	private WebElement tetanusvaccination;	
 
 	@FindBy(id = "hpvvaccination")
-	public WebElement hpvvaccination;	
+	private WebElement hpvvaccination;	
 
 	@FindBy(id = "influeenzavaccination")
-	public WebElement influeenzavaccination;	
+	private WebElement influeenzavaccination;	
 
 	@FindBy(id = "pneumoniavaccination")
-	public WebElement pneumoniavaccination;	
+	private WebElement pneumoniavaccination;	
 
 	@FindBy(id = "meningitis_immunization")
-	public WebElement meningitisImmunization;	
+	private WebElement meningitisImmunization;	
 
 	@FindBy(id = "pertussis_immunization")
-	public WebElement pertussisImmunization;	
+	private WebElement pertussisImmunization;	
 
 	@FindBy(id = "shingles_immunization")
-	public WebElement shinglesImmunization;	
+	private WebElement shinglesImmunization;	
 
 	@FindBy(id = "chickenpoxorvaricella_immunization")
-	public WebElement chickenpoxorvaricellaImmunization;	
+	private WebElement chickenpoxorvaricellaImmunization;	
 
 	@FindBy(id = "tdap_immunization")
-	public WebElement tdapImmunization;	
+	private WebElement tdapImmunization;	
 
 	@FindBy(id = "hipatitisa_immunization")
-	public WebElement hipatitisaImmunization;	
+	private WebElement hipatitisaImmunization;	
 
 	@FindBy(id = "hipatitisb_immunization")
-	public WebElement hipatitisbImmunization;	
+	private WebElement hipatitisbImmunization;	
 
 	@FindBy(id = "mmr_immunization")
-	public WebElement mmrImmunization;	
+	private WebElement mmrImmunization;	
 
 	@FindBy(id = "polio_immunization")
-	public WebElement polioImmunization;	
+	private WebElement polioImmunization;	
 
 	@FindBy(id = "immunizations_other")
-	public WebElement immunizationsOther;	
+	private WebElement immunizationsOther;	
 
 	@FindBy(id = "immunizations_anythingelse")
-	public WebElement immunizationsComments;
+	private WebElement immunizationsComments;
 	
 	
 	public VaccinationsPage(WebDriver driver) {

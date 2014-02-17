@@ -18,10 +18,10 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	private WebElement btnSave;
 	
 	@FindBy(id = "hide_surgerieshospitalizations_section_check")
-	public WebElement hideSurgerieshospitalizationsSectionCheck;	
+	private WebElement hideSurgerieshospitalizationsSectionCheck;	
 
 	@FindBy(id = "surgerieshospitalizations_anythingelse_line")
-	public WebElement surgerieshospitalizationsCommentsCheck;
+	private WebElement surgerieshospitalizationsCommentsCheck;
 	
 	
 	public SurgeriesAndHospitalizationsPage(WebDriver driver) {

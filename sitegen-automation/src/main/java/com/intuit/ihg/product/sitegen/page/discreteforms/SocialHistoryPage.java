@@ -18,58 +18,58 @@ public class SocialHistoryPage extends BasePageObject{
 	private WebElement btnSave;
 	
 	@FindBy(id = "hide_socialhistory_section_check")
-	public WebElement hideSocialhistorySectionCheck;	
+	private WebElement hideSocialhistorySectionCheck;	
 
 	@FindBy(id = "culturalbelief_field")
-	public WebElement culturalbeliefField;	
+	private WebElement culturalbeliefField;	
 
 	@FindBy(id = "occupation_field")
-	public WebElement occupationField;	
+	private WebElement occupationField;	
 
 	@FindBy(id = "education_field")
-	public WebElement educationField;	
+	private WebElement educationField;	
 
 	@FindBy(id = "smokealarms_personalsafety")
-	public WebElement smokealarmsPersonalsafety;	
+	private WebElement smokealarmsPersonalsafety;	
 
 	@FindBy(id = "firearms_personalsafety")
-	public WebElement firearmsPersonalsafety;	
+	private WebElement firearmsPersonalsafety;	
 
 	@FindBy(id = "seatbelt_personalsafety")
-	public WebElement seatbeltPersonalsafety;	
+	private WebElement seatbeltPersonalsafety;	
 
 	@FindBy(id = "recreationaldrugs_personalsafety")
-	public WebElement recreationaldrugsPersonalsafety;	
+	private WebElement recreationaldrugsPersonalsafety;	
 
 	@FindBy(id = "violenceconcerns_personalsafety")
-	public WebElement violenceconcernsPersonalsafety;	
+	private WebElement violenceconcernsPersonalsafety;	
 
 	@FindBy(id = "traveledoutsidecountry_personalsafety")
-	public WebElement traveledoutsidecountryPersonalsafety;	
+	private WebElement traveledoutsidecountryPersonalsafety;	
 
 	@FindBy(id = "livingwith_field")
-	public WebElement livingwithField;	
+	private WebElement livingwithField;	
 
 	@FindBy(id = "exercise_healthhabits")
-	public WebElement exerciseHealthhabits;	
+	private WebElement exerciseHealthhabits;	
 
 	@FindBy(id = "alcohol_healthhabits")
-	public WebElement alcoholHealthhabits;	
+	private WebElement alcoholHealthhabits;	
 
 	@FindBy(id = "teacoffee_healthhabits")
-	public WebElement teacoffeeHealthhabits;	
+	private WebElement teacoffeeHealthhabits;	
 
 	@FindBy(id = "sodaenergydrinks_healthhabits")
-	public WebElement sodaenergydrinksHealthhabits;	
+	private WebElement sodaenergydrinksHealthhabits;	
 
 	@FindBy(id = "cigarettes_healthhabits")
-	public WebElement cigarettesHealthhabits;	
+	private WebElement cigarettesHealthhabits;	
 
 	@FindBy(id = "tobacco_healthhabits")
-	public WebElement tobaccoHealthhabits;	
+	private WebElement tobaccoHealthhabits;	
 
 	@FindBy(id = "socialhistory_anythingelse_line")
-	public WebElement socialhistoryComments;
+	private WebElement socialhistoryComments;
 	
 
 	public SocialHistoryPage(WebDriver driver) {

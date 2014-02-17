@@ -18,106 +18,106 @@ public class Allergiespage extends BasePageObject{
 	private WebElement btnSave;
 	
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[8]/h5[1]/span/input")
-	public WebElement drugAllergiesEntireGroup;	
+	private WebElement drugAllergiesEntireGroup;	
 
 	@FindBy(id = "idonot_drug_allergies")
-	public WebElement idonotDrugAllergies;
+	private WebElement idonotDrugAllergies;
 
 	@FindBy(id = "generalanesthetic_allergy_drug")
-	public WebElement generalanestheticAllergyDrug;	
+	private WebElement generalanestheticAllergyDrug;	
 
 	@FindBy(id = "localanesthetic_allergy_drug")
-	public WebElement localanestheticAllergyDrug;	
+	private WebElement localanestheticAllergyDrug;	
 
 	@FindBy(id = "carbamazepine_allergy_drug")
-	public WebElement carbamazepineAllergyDrug;	
+	private WebElement carbamazepineAllergyDrug;	
 
 	@FindBy(id = "codeine_allergy_drug")
-	public WebElement codeineAllergyDrug;	
+	private WebElement codeineAllergyDrug;	
 
 	@FindBy(id = "insulin_allergy_drug")
-	public WebElement insulinAllergyDrug;	
+	private WebElement insulinAllergyDrug;	
 
 	@FindBy(id = "iodine_allergy_drug")
-	public WebElement iodineAllergyDrug;	
+	private WebElement iodineAllergyDrug;	
 
 	@FindBy(id = "nsaids_allergy_drug")
-	public WebElement nsaidsAllergyDrug;	
+	private WebElement nsaidsAllergyDrug;	
 
 	@FindBy(id = "penicillin_allergy_drug")
-	public WebElement penicillinAllergyDrug;	
+	private WebElement penicillinAllergyDrug;	
 
 	@FindBy(id = "phenytoin_allergy_drug")
-	public WebElement phenytoinAllergyDrug;	
+	private WebElement phenytoinAllergyDrug;	
 
 	@FindBy(id = "sulfa_allergy_drug")
-	public WebElement sulfaAllergyDrug;	
+	private WebElement sulfaAllergyDrug;	
 
 	@FindBy(id = "tetracycline_allergy_drug")
-	public WebElement tetracyclineAllergyDrug;	
+	private WebElement tetracyclineAllergyDrug;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[8]/h5[2]/span/input")
-	public WebElement foodAllergiesEntireGroup;	
+	private WebElement foodAllergiesEntireGroup;	
 
 	@FindBy(id = "idonot_food_allergies")
-	public WebElement idonotFoodAllergies;	
+	private WebElement idonotFoodAllergies;	
 
 	@FindBy(id = "peanuts_allergy_food")
-	public WebElement peanutsAllergyFood;	
+	private WebElement peanutsAllergyFood;	
 
 	@FindBy(id = "eggs_allergy_food")
-	public WebElement eggsAllergyFood;	
+	private WebElement eggsAllergyFood;	
 
 	@FindBy(id = "seafood_allergy_food")
-	public WebElement seafoodAllergyFood;	
+	private WebElement seafoodAllergyFood;	
 
 	@FindBy(id = "wheat_allergy_food")
-	public WebElement wheatAllergyFood;	
+	private WebElement wheatAllergyFood;	
 
 	@FindBy(id = "shellfish_allergy_food")
-	public WebElement shellfishAllergyFood;	
+	private WebElement shellfishAllergyFood;	
 
 	@FindBy(id = "corn_allergy_food")
-	public WebElement cornAllergyFood;	
+	private WebElement cornAllergyFood;	
 
 	@FindBy(id = "dairy_allergy_food")
-	public WebElement dairyAllergyFood;	
+	private WebElement dairyAllergyFood;	
 
 	@FindBy(id = "soy_allergy_food")
-	public WebElement soyAllergyFood;	
+	private WebElement soyAllergyFood;	
 
 	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[8]/h5[3]/span/input")
-	public WebElement environmentAllergiesEntireGroup;	
+	private WebElement environmentAllergiesEntireGroup;	
 
 	@FindBy(id = "idonot_environmental_allergies")
-	public WebElement idonotEnvironmentalAllergies;	
+	private WebElement idonotEnvironmentalAllergies;	
 
 	@FindBy(id = "animals_allergy_environmental")
-	public WebElement animalsAllergyEnvironmental;	
+	private WebElement animalsAllergyEnvironmental;	
 
 	@FindBy(id = "dustmites_allergy_environmental")
-	public WebElement dustmitesAllergyEnvironmental;	
+	private WebElement dustmitesAllergyEnvironmental;	
 
 	@FindBy(id = "latex_allergy_environmental")
-	public WebElement latexAllergyEnvironmental;	
+	private WebElement latexAllergyEnvironmental;	
 
 	@FindBy(id = "bees_allergy_environmental")
-	public WebElement beesAllergyEnvironmental;	
+	private WebElement beesAllergyEnvironmental;	
 
 	@FindBy(id = "mold_allergy_environmental")
-	public WebElement moldAllergyEnvironmental;	
+	private WebElement moldAllergyEnvironmental;	
 
 	@FindBy(id = "wool_allergy_environmental")
-	public WebElement woolAllergyEnvironmental;	
+	private WebElement woolAllergyEnvironmental;	
 
 	@FindBy(id = "hayfever_allergy_environmental")
-	public WebElement hayfeverAllergyEnvironmental;	
+	private WebElement hayfeverAllergyEnvironmental;	
 
 	@FindBy(id = "allergies_other")
-	public WebElement allergiesOther;	
+	private WebElement allergiesOther;	
 
 	@FindBy(id = "allergies_anythingelse")
-	public WebElement allergiesComments;
+	private WebElement allergiesComments;
 
 	public Allergiespage(WebDriver driver) {
 		super(driver);

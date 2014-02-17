@@ -14,17 +14,23 @@ public class EmergencyContactInformationPage extends BasePageObject{
 	@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[2]")
 	private WebElement lnkEmergencyContactInformation;
 	
-	@FindBy(name="contactfirstname")               
-	private WebElement chckfirstName;
-	
-	@FindBy(name="contactlastname")               
-	private WebElement chckLastname;
-	
-	@FindBy(name="relation")               
-	private WebElement chckRelationToYou;
-	
-	@FindBy(name="contactprimaryphone")               
-	private WebElement chckPrimaryPhone;
+	@FindBy(id = "contactfirstname")
+	private WebElement contactfirstname;	
+
+	@FindBy(id = "contactlastname")
+	private WebElement contactlastname;	
+
+	@FindBy(id = "relation")
+	private WebElement relation;	
+
+	@FindBy(id = "contactprimaryphone")
+	private WebElement contactprimaryphone;	
+
+	@FindBy(id = "contactaltphone")
+	private WebElement contactaltphone;	
+
+	@FindBy(id = "contactemail")
+	private WebElement contactemail;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;

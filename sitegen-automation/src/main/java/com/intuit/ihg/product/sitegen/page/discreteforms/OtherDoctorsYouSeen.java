@@ -20,40 +20,40 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 		private WebElement btnSave;
 		
 		@FindBy(id = "hide_currentproviders_check")
-		public WebElement hideCurrentprovidersCheck;	
+		private WebElement hideCurrentprovidersCheck;	
 
 		@FindBy(id = "referring_physician_firstname")
-		public WebElement referringPhysicianFirstname;	
+		private WebElement referringPhysicianFirstname;	
 
 		@FindBy(id = "referring_physician_phone_number")
-		public WebElement referringPhysicianPhoneNumber;	
+		private WebElement referringPhysicianPhoneNumber;	
 
 		@FindBy(id = "referring_physician_address")
-		public WebElement referringPhysicianAddress;	
+		private WebElement referringPhysicianAddress;	
 
 		@FindBy(id = "referring_physician_city")
-		public WebElement referringPhysicianCity;	
+		private WebElement referringPhysicianCity;	
 
 		@FindBy(id = "referring_physician_state")
-		public WebElement referringPhysicianState;	
+		private WebElement referringPhysicianState;	
 
 		@FindBy(id = "referring_physician_zipcode")
-		public WebElement referringPhysicianZipcode;	
+		private WebElement referringPhysicianZipcode;	
 
 		@FindBy(id = "referring_physician_speciality")
-		public WebElement referringPhysicianSpeciality;	
+		private WebElement referringPhysicianSpeciality;	
 
 		@FindBy(id = "referring_physician_speciality_is_primary")
-		public WebElement referringPhysicianSpecialityIsPrimary;	
+		private WebElement referringPhysicianSpecialityIsPrimary;	
 
 		@FindBy(id = "doctors_seen")
-		public WebElement doctorsSeen;	
+		private WebElement doctorsSeen;	
 
 		@FindBy(id = "pharmacy_name")
-		public WebElement pharmacyName;	
+		private WebElement pharmacyName;	
 
 		@FindBy(id = "pharmacy_phone")
-		public WebElement pharmacyPhone;
+		private WebElement pharmacyPhone;
 	
 	
 	public OtherDoctorsYouSeen(WebDriver driver) {
