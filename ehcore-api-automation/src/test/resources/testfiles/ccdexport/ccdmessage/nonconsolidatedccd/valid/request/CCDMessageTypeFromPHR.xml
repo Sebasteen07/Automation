@@ -68,7 +68,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -79,7 +79,7 @@
 							<Root>eb936011-7b17-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46757</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -106,7 +106,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -117,7 +117,7 @@
 							<Root>c3df3b60-7b18-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46758</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -144,7 +144,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -155,7 +155,7 @@
 							<Root>4adc1020-7b14-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46754</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -184,7 +184,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -195,7 +195,7 @@
 							<Root>cdbd5b01-6cde-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46741</Extension>
 						</Id>
 						<Status>Active</Status>
@@ -233,7 +233,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -244,7 +244,7 @@
 							<Root>cdbd5b07-6cde-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46743</Extension>
 						</Id>
 						<Status>Active</Status>
@@ -288,7 +288,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -299,7 +299,7 @@
 							<Root>cdbd5b03-6cde-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46742</Extension>
 						</Id>
 						<Status>Active</Status>
@@ -340,7 +340,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -351,7 +351,7 @@
 							<Root>cdbd33f0-6cde-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46744</Extension>
 						</Id>
 						<Status>Active</Status>
@@ -392,7 +392,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -403,7 +403,7 @@
 							<Root>78598407-9f16-42d5-8ffd-09281a60fe33</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46746</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -430,7 +430,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -441,7 +441,7 @@
 							<Root>261e94a0-95fb-4975-b5a5-c8e12c01c1bc</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46747</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -468,7 +468,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -479,7 +479,7 @@
 							<Root>e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46748</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -504,7 +504,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -515,7 +515,7 @@
 							<Root>115f0f70-1343-4938-b62f-631de9749a0a</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46745</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -542,7 +542,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -553,7 +553,7 @@
 							<Root>ab1791b0-5c71-11db-b0de-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46760</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -579,7 +579,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -591,7 +591,7 @@
 							<Extension>25015913</Extension>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46762</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -628,7 +628,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -639,7 +639,7 @@
 							<Root>9d3d416d-45ab-4da1-912f-4583e0632000</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46751</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -664,7 +664,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -675,7 +675,7 @@
 							<Root>d11275e7-67ae-11db-bd13-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46759</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -701,7 +701,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -713,7 +713,7 @@
 							<Extension>765772171</Extension>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46761</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -752,7 +752,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -763,7 +763,7 @@
 							<Root>5a2c903c-bd77-4bd1-ad9d-452383fbfefa</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46755</Extension>
 						</Id>
 						<ProblemCode action="Update">
@@ -785,14 +785,14 @@
 								<ID>41359</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>46753</Extension>
 							</ItemId>
 						</ItemKey>
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -800,7 +800,7 @@
 							</Informant>
 						</Source>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46753</Extension>
 						</Id>
 						<TestCode action="Update">
@@ -822,14 +822,14 @@
 								<ID>41359</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>46750</Extension>
 							</ItemId>
 						</ItemKey>
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -837,7 +837,7 @@
 							</Informant>
 						</Source>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46750</Extension>
 						</Id>
 						<TestCode action="Update">
@@ -864,7 +864,7 @@
 						<Source>
 							<Informant>
 								<Id>
-									<Root>1.3.6.1.4.1.3692.107.2.30</Root>
+									<Root>1.3.6.1.4.1.12045.2.30</Root>
 									<Extension>40034</Extension>
 								</Id>
 								<Name action="Update">Intuit Health Practice (QA)</Name>
@@ -875,7 +875,7 @@
 							<Root>e401f340-7be2-11db-9fe1-0800200c9a66</Root>
 						</Id>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>46756</Extension>
 						</Id>
 						<ProcedureCode action="Update">

@@ -62,12 +62,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47126</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47126</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -84,12 +84,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47125</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47125</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -106,12 +106,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47127</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47127</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -128,12 +128,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47128</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47128</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -151,12 +151,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47129</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47129</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -173,12 +173,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47130</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47130</Extension>
 						</Id>
 						<ProductCode action="Update">
@@ -198,12 +198,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47131</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47131</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -220,12 +220,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47132</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47132</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -242,12 +242,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47133</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47133</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -264,12 +264,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47134</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47134</Extension>
 						</Id>
 						<ImmunizationCode action="Update">
@@ -290,12 +290,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47135</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47135</Extension>
 						</Id>
 						<TestCode action="Update">
@@ -322,12 +322,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47136</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47136</Extension>
 						</Id>
 						<TestCode action="Update">
@@ -355,12 +355,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47137</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47137</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -377,12 +377,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47138</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47138</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -399,12 +399,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47139</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47139</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -421,12 +421,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47140</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47140</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -443,12 +443,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47141</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47141</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -465,12 +465,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47142</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47142</Extension>
 						</Id>
 						<ProcedureCode action="Update">
@@ -487,12 +487,12 @@
 								<ID>41404</ID>
 							</PatientId>
 							<ItemId>
-								<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+								<Root>1.3.6.1.4.1.12045.2.20</Root>
 								<Extension>47143</Extension>
 							</ItemId>
 						</ItemKey>
 						<Id>
-							<Root>1.3.6.1.4.1.3692.107.2.20</Root>
+							<Root>1.3.6.1.4.1.12045.2.20</Root>
 							<Extension>47143</Extension>
 						</Id>
 						<ProcedureCode action="Update">

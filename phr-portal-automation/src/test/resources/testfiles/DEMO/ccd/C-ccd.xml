@@ -93,7 +93,7 @@
     &lt;typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/&gt;
     &lt;templateId root="2.16.840.1.113883.10.20.22.1.1"/&gt;
     &lt;templateId root="2.16.840.1.113883.10.20.22.1.2"/&gt;
-    &lt;id extension="201212121314" root="1.3.6.1.4.1.3692.107.1.19"/&gt;
+    &lt;id extension="201212121314" root="1.3.6.1.4.1.12045.1.19"/&gt;
     &lt;code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
         displayName="SUMMARIZATION OF EPISODE NOTE"/&gt;
     &lt;title&gt;Consolidated CCD Mockup for Smoking Status&lt;/title&gt;
@@ -102,7 +102,7 @@
     &lt;languageCode code="en-US"/&gt;
     &lt;recordTarget&gt;
         &lt;patientRole&gt;
-            &lt;id extension="170-314-A-11" root="1.3.6.1.4.1.3692.107.1.19.50"/&gt;
+            &lt;id extension="170-314-A-11" root="1.3.6.1.4.1.12045.1.19.50"/&gt;
             &lt;addr&gt;
                 &lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
                 &lt;city&gt;RALEIGH&lt;/city&gt;
@@ -128,7 +128,7 @@
                 &lt;/languageCommunication&gt;
             &lt;/patient&gt;
             &lt;providerOrganization&gt;
-                &lt;id extension="82" root="1.3.6.1.4.1.3692.107.19.50"/&gt;
+                &lt;id extension="82" root="1.3.6.1.4.1.12045.19.50"/&gt;
                 &lt;name&gt;Intuit Test Practice (QA)&lt;/name&gt;
                 &lt;telecom value="tel:+1-(205)123-4533" use="WP"/&gt;
                 &lt;addr&gt;
@@ -167,7 +167,7 @@
     &lt;author&gt;
         &lt;time value="20121212131400-0800"/&gt;
         &lt;assignedAuthor&gt;
-            &lt;id extension="0" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.3"/&gt;
+            &lt;id extension="0" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.3"/&gt;
             &lt;addr&gt;
                 &lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
                 &lt;city&gt;RALEIGH&lt;/city&gt;
@@ -181,7 +181,7 @@
                 &lt;softwareName&gt;oXygen XML Editor v13.2&lt;/softwareName&gt;
             &lt;/assignedAuthoringDevice&gt;
             &lt;representedOrganization&gt;
-                &lt;id extension="0" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0"/&gt;
+                &lt;id extension="0" root="1.3.6.1.4.1.12045.19.9.5.367519059.0"/&gt;
                 &lt;name&gt;NoWay Practice QA-Test 002&lt;/name&gt;
                 &lt;telecom value="tel:+1-(205)123-4533" use="WP"/&gt;
                 &lt;addr&gt;
@@ -197,7 +197,7 @@
     &lt;custodian&gt;
         &lt;assignedCustodian&gt;
             &lt;representedCustodianOrganization&gt;
-                &lt;id extension="0" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0"/&gt;
+                &lt;id extension="0" root="1.3.6.1.4.1.12045.19.9.5.367519059.0"/&gt;
                 &lt;name&gt;Intuit Test Practice (QA)&lt;/name&gt;
                 &lt;telecom value="tel:+1-(205)123-4533" use="WP"/&gt;
                 &lt;addr&gt;
@@ -212,7 +212,7 @@
     &lt;/custodian&gt;
     &lt;informationRecipient&gt;
         &lt;intendedRecipient&gt;
-            &lt;id extension="82" root="1.3.6.1.4.1.3692.107.1.19.50"/&gt;
+            &lt;id extension="82" root="1.3.6.1.4.1.12045.1.19.50"/&gt;
             &lt;addr&gt;
                 &lt;streetAddressLine&gt;1234 That Rd.&lt;/streetAddressLine&gt;
                 &lt;city&gt;RALEIGH&lt;/city&gt;
@@ -238,7 +238,7 @@
         &lt;time value="20121212131400-0800"/&gt;
         &lt;signatureCode code="S"/&gt;
         &lt;assignedEntity&gt;
-            &lt;id extension="2062721790" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.2"/&gt;
+            &lt;id extension="2062721790" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.2"/&gt;
             &lt;addr&gt;
                 &lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
                 &lt;city&gt;RALEIGH&lt;/city&gt;
@@ -259,7 +259,7 @@
         &lt;time value="20121212131400-0800"/&gt;
         &lt;signatureCode code="S"/&gt;
         &lt;assignedEntity&gt;
-            &lt;id extension="2062721790" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.2"/&gt;
+            &lt;id extension="2062721790" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.2"/&gt;
             &lt;addr&gt;
                 &lt;streetAddressLine&gt;8529 Six Forks Road&lt;/streetAddressLine&gt;
                 &lt;city&gt;RALEIGH&lt;/city&gt;
@@ -283,7 +283,7 @@
          --&gt;
         &lt;time value="20121212131400-0800"/&gt;
         &lt;associatedEntity classCode="CAREGIVER"&gt;
-            &lt;id root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.2.1"/&gt;
+            &lt;id root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.2.1"/&gt;
             &lt;code code="FRND" displayName=" Unrelated Friend" codeSystem="2.16.840.1.113883.5.111"
                 codeSystemName="RoleCode"/&gt;
             &lt;addr&gt;
@@ -304,7 +304,7 @@
     &lt;/participant&gt;
     &lt;documentationOf&gt;
         &lt;serviceEvent classCode="PCPR"&gt;
-            &lt;id extension="1999050582" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.8"/&gt;
+            &lt;id extension="1999050582" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.8"/&gt;
             &lt;effectiveTime&gt;
                 &lt;low value="20121212140000-0800"/&gt;
                 &lt;high value="20121212131400-0800"/&gt;
@@ -316,7 +316,7 @@
                     &lt;high/&gt;
                 &lt;/time&gt;
                 &lt;assignedEntity&gt;
-                    &lt;id extension="2062721790" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.2"/&gt;
+                    &lt;id extension="2062721790" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.2"/&gt;
                     &lt;code codeSystem="2.16.840.1.113883.6.101" codeSystemName="ProviderCodes"
                         code="260000000X" displayName="Ambulatory Health Care Facilities"/&gt;
                     &lt;addr&gt;
@@ -365,7 +365,7 @@
     &lt;/documentationOf&gt;
     &lt;componentOf&gt;
         &lt;encompassingEncounter&gt;
-            &lt;id extension="1999050582" root="1.3.6.1.4.1.3692.107.19.9.5.367519059.0.3.4"/&gt;
+            &lt;id extension="1999050582" root="1.3.6.1.4.1.12045.19.9.5.367519059.0.3.4"/&gt;
             &lt;effectiveTime&gt;
                 &lt;low value="20121212130000-0800"/&gt;
                 &lt;high value="20121212131400-0800"/&gt;
@@ -654,7 +654,7 @@
                         &lt;observation classCode="OBS" moodCode="EVN"&gt;
                             &lt;!-- MU2 Smoking status observation template --&gt;
                             &lt;templateId root="2.16.840.1.113883.10.20.22.4.78" /&gt;
-                            &lt;id extension="170314A11" root="1.3.6.1.4.1.3692.107.1.19" /&gt;
+                            &lt;id extension="170314A11" root="1.3.6.1.4.1.12045.1.19" /&gt;
                             &lt;code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" /&gt;
                             &lt;statusCode code="completed" /&gt;
                             &lt;effectiveTime value="201212121314"&gt;
