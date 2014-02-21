@@ -84,5 +84,8 @@ public class PortalConstants {
 	public final static String NewPatientActivationMessage = "You're invited to create a Patient Portal";
 	public final static String NewPatientActivationMessageLink = "fuseaction=home.unlock";
 	public final static String DateOfBirtSlashFormat = "12/31/1980";
-
+	public final static String DateOfBirthMonth = "December";
+	public final static String DateOfBirthDay = "31";
+	public final static String DateOfBirthYear = "1980";
+	
 }

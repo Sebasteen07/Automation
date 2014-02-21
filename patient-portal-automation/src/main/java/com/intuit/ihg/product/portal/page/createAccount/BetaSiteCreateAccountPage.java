@@ -126,6 +126,15 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 
 	@FindBy(className = "iframecontainer")
 	private WebElement pageContent;
+	
+	@FindBy(name = "birthday:month")
+	private WebElement birthdayMonth;
+	
+	@FindBy(name = "birthday:day")
+	private WebElement birthdayDay;
+	
+	@FindBy(name = "birthday:year")
+	private WebElement birthdayYear;
 
 	public BetaSiteCreateAccountPage(WebDriver driver) {
 		super(driver);
@@ -153,7 +162,7 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 	 * @return
 	 */
 	public MyPatientPage BetaSiteCreateAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
-					String patientDob_Month, String patientDob_Day, String patientDob_Year, String patientZip, String patientSSN,
+					 String patientZip, String patientSSN,
 					String address, String password, String Question, String answer, String state, String city) {
 
 		IHGUtil.PrintMethodName();
@@ -165,8 +174,12 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 		patientLastName = patientLastName + PortalUtil.createRandomNumber();
 		log("patientLastName" + patientLastName);
 		txtLastname.sendKeys(patientLastName);
-		String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
-		txtbirthday.sendKeys(birthday);
+		
+		//Setting Date of birth
+		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
+		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		
 		txtPatientFirstname.click();// This a fix given for chrome browser
 						// for dealing date drop down
 		log("patientZip" + patientZip);
@@ -182,8 +195,6 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 		txtFirstName.sendKeys(patientFirstName);
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
-		txtDoB.clear();
-		txtDoB.sendKeys(birthday);
 		txtLastName.click();// This a fix given for chrome browser for
 					// dealing date drop down
 		txtSSN.clear();

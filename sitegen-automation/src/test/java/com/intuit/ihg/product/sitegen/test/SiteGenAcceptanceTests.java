@@ -1157,8 +1157,7 @@ public void testDiscreteForm() throws Exception {
 	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 	log("email:-" + email);
 	MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(portalTestcasesData.getFirstName(),
-			portalTestcasesData.getLastName(), email, portalTestcasesData.getPhoneNumber(), portalTestcasesData.getDob_Month(),
-			portalTestcasesData.getDob_Day(), portalTestcasesData.getDob_Year(), portalTestcasesData.getZip(), portalTestcasesData.getSSN(),
+			portalTestcasesData.getLastName(), email, portalTestcasesData.getPhoneNumber(), portalTestcasesData.getZip(), portalTestcasesData.getSSN(),
 			portalTestcasesData.getAddress(), portalTestcasesData.getPassword(), portalTestcasesData.getSecretQuestion(), portalTestcasesData.getAnswer(),
 			portalTestcasesData.getAddressState(), portalTestcasesData.getAddressCity());
 

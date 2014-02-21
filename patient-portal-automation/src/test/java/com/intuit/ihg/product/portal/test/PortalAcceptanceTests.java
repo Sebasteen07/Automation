@@ -318,7 +318,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
 
 		log("Test Case: testCreatePatient");
@@ -1076,7 +1076,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
 
 		log("**INFO:: TestForgotPassword");
@@ -1559,8 +1559,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		log("email:-" + email);
 		MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(testcasesData.getFirstName(),
-				testcasesData.getLastName(), email, testcasesData.getPhoneNumber(), testcasesData.getDob_Month(),
-				testcasesData.getDob_Day(), testcasesData.getDob_Year(), testcasesData.getZip(), testcasesData.getSSN(),
+				testcasesData.getLastName(), email, testcasesData.getPhoneNumber(), testcasesData.getZip(), testcasesData.getSSN(),
 				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(), testcasesData.getAnswer(),
 				testcasesData.getAddressState(), testcasesData.getAddressCity());
 
@@ -1754,7 +1753,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientActivation() throws Exception {
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();

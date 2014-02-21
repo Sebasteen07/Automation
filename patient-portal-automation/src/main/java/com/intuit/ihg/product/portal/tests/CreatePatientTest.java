@@ -49,8 +49,8 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		password=testcasesData.getPassword();
 		log("email:-" + email);
 		MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(testcasesData.getFirstName(),
-						testcasesData.getLastName(), email, testcasesData.getPhoneNumber(), testcasesData.getDob_Month(),
-						testcasesData.getDob_Day(), testcasesData.getDob_Year(), testcasesData.getZip(), testcasesData.getSSN(),
+						testcasesData.getLastName(), email, testcasesData.getPhoneNumber(),
+						testcasesData.getZip(), testcasesData.getSSN(),
 						testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
 						testcasesData.getAnswer(), testcasesData.getAddressState(), testcasesData.getAddressCity());
 
