@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -17,7 +19,7 @@ public class FormInsurancePage extends BasePageObject
 		// TODO Auto-generated constructor stub
 	}
 
-	@FindBy(id="idonot_insurance")
+	@FindBy(id="idonot_primary_insurance")
 	WebElement selfPay;
 
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
@@ -31,7 +33,7 @@ public class FormInsurancePage extends BasePageObject
 
 	public void setSelfPay() throws Exception 
 	{
-		Thread.sleep(20000);
+		Thread.sleep(2000);
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		selfPay.click();
@@ -47,6 +49,8 @@ public class FormInsurancePage extends BasePageObject
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormOtherProvidersPage.class);
 	}

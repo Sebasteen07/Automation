@@ -16,51 +16,29 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li/a/em")
+	@FindBy(xpath="//li[@data-section='demographics']/a")
 	private WebElement lnkBasicInformationAboutYou;
 
-	@FindBy(id = "streetaddr1")
-	private WebElement streetaddr1;	
-
-	@FindBy(id = "city")
-	private WebElement city;	
-
-	@FindBy(id = "state")
-	private WebElement state;	
-
-	@FindBy(id = "postalcode")
-	private WebElement postalcode;	
-
-	@FindBy(id = "primaryphone")
-	private WebElement primaryphone;	
-
-	@FindBy(id = "altphone")
-	private WebElement altphone;	
-
-	@FindBy(id = "gender")
-	private WebElement gender;	
-
-	@FindBy(id = "maritalstatus")
-	private WebElement maritalstatus;	
-
-	@FindBy(id = "preferredcontact")
-	private WebElement preferredcontact;	
-
-	@FindBy(id = "language")
-	private WebElement language;	
-
-	@FindBy(id = "race")
-	private WebElement race;	
-
-	@FindBy(id = "ethnicity")
-	private WebElement ethnicity;	
-
-	@FindBy(id = "formeditor")
-	private WebElement formeditor;	
-	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
 	
+	@FindBy(id="streetaddr1")
+	private WebElement chckAddress;
+	
+	@FindBy(id="city")
+	private WebElement chckCity;
+	
+	@FindBy(id="state")
+	private WebElement chckState;
+	
+	@FindBy(id="postalcode")
+	private WebElement chckZIP;
+	
+	@FindBy(id="primaryphone")
+	private WebElement chckPhoneNumber;
+	
+	@FindBy(id="gender")
+	private WebElement chckGender; // sex
 	
 	/**
 	 * Indicates if the search page is loaded
@@ -93,14 +71,27 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 		IHGUtil.waitForElement(driver, 30, lnkBasicInformationAboutYou);
 		lnkBasicInformationAboutYou.click();
 		
-		IHGUtil.waitForElement(driver, 30, btnSave);
+		selectBasicInfo();
 		btnSave.click();
 		
 		return PageFactory.initElements(driver,EmergencyContactInformationPage.class);
 	}
 	
+	/**
+	 *	Select basic info about the patient to appear
+	 *	Address items, phone number, gender
+	 */
 	
-	
-	
+	public void selectBasicInfo() {
+		// wait for the element to load
+		IHGUtil.waitForElement(driver, 30, chckAddress);
+		
+		chckAddress.click();
+		chckCity.click();
+		chckState.click();
+		chckZIP.click();
+		chckPhoneNumber.click();
+		chckGender.click();
+	}
 
 }

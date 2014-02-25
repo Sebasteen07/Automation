@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class Allergiespage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[7]/a/em")
+	@FindBy(xpath="//li[@data-section='allergies']/a")
 	private WebElement lnkAllergies;
 	
 	@FindBy(id="save_config_form")              

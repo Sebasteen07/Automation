@@ -283,7 +283,7 @@ public class MyPatientPage  extends BasePageObject{
 			{
 				Thread.sleep(5000);
 				PortalUtil.setPortalFrame(pdriver);
-				IHGUtil.waitForElement(pdriver,10,startRegistrationlnk);
+				IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
 				startRegistrationlnk.click();
 				return PageFactory.initElements(pdriver,FormWelcomePage.class);
 			}

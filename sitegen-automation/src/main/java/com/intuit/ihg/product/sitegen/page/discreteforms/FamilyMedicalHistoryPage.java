@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class FamilyMedicalHistoryPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[12]/a/em")
+	@FindBy(xpath="//li[@data-section='familymedicalhistory_section']/a")
 	private WebElement lnkFamilyMedicalHistory;
 	
 	@FindBy(id="save_config_form")              

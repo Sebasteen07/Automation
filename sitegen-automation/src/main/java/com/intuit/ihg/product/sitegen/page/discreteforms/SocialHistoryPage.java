@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class SocialHistoryPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[13]/a/em")
+	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
 	
 	@FindBy(id="save_config_form")              

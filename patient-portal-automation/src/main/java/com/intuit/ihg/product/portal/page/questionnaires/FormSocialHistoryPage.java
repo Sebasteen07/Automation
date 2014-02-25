@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FormSocialHistoryPage extends BasePageObject
 {
@@ -31,6 +33,8 @@ public class FormSocialHistoryPage extends BasePageObject
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
 	}
 

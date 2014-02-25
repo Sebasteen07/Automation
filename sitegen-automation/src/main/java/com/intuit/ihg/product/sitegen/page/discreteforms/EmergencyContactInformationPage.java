@@ -11,26 +11,26 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class EmergencyContactInformationPage extends BasePageObject{
 	
-	@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[2]")
+	@FindBy(xpath="//li[@data-section='emergencycontact']/a")
 	private WebElement lnkEmergencyContactInformation;
 	
-	@FindBy(id = "contactfirstname")
-	private WebElement contactfirstname;	
-
-	@FindBy(id = "contactlastname")
-	private WebElement contactlastname;	
-
-	@FindBy(id = "relation")
-	private WebElement relation;	
-
-	@FindBy(id = "contactprimaryphone")
-	private WebElement contactprimaryphone;	
-
-	@FindBy(id = "contactaltphone")
-	private WebElement contactaltphone;	
-
-	@FindBy(id = "contactemail")
-	private WebElement contactemail;
+	@FindBy(xpath="//input[@id='hide_emergencycontact_check']")
+	private WebElement chckHideEmergencyContact;
+			
+	@FindBy(name="contactfirstname")               
+	private WebElement chckFirstName;
+	
+	@FindBy(name="contactlastname")               
+	private WebElement chckLastName;
+	
+	@FindBy(name="relation")               
+	private WebElement chckRelationToYou;
+	
+	@FindBy(name="contactprimaryphone")               
+	private WebElement chckPrimaryPhone;
+	
+	@FindBy(name="contactemail")
+	private WebElement chckContactEmail;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -61,19 +61,23 @@ public class EmergencyContactInformationPage extends BasePageObject{
 		return result;
 	}
 	
-	
 	/**
 	 * Click on link - Emergency Contact Information	
 	 * @return
 	 */
 	
-	public HealthInsuranceInformationPage clicklnkEmergencyContactInfo()
-	{	
+	public HealthInsuranceInformationPage clicklnkEmergencyContactInfo() {	
 		
 		//SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkEmergencyContactInformation);
 		lnkEmergencyContactInformation.click();
 		
+		// click on the checkbox for showing and hiding the page for patients
+		IHGUtil.waitForElement(driver, 30, chckHideEmergencyContact);
+		if (chckHideEmergencyContact.isSelected())
+			chckHideEmergencyContact.click();
+		
+		selectBasicInfo();
 		
 		IHGUtil.waitForElement(driver, 30, btnSave);
 		btnSave.click();
@@ -82,7 +86,17 @@ public class EmergencyContactInformationPage extends BasePageObject{
 		return PageFactory.initElements(driver,HealthInsuranceInformationPage.class);
 	}
 	
+	/**
+	 * Clicks on First name, Last name and phone number checkboxes to appear on the page
+	 */
 	
+	public void selectBasicInfo(){
+		if (chckFirstName.isSelected() == false)
+			chckFirstName.click();
+		if (chckLastName.isSelected() == false)
+			chckLastName.click();
+		if (chckPrimaryPhone.isSelected() == false)
+			chckPrimaryPhone.click();
+	}
 	
-
 }

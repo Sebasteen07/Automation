@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class HealthInsuranceInformationPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[3]/a/em")
+	@FindBy(xpath="//li[@data-section='insurance']/a")
 	private WebElement lnkHealthInsuranceInfoPage;
 	
 	@FindBy(id = "hide_insurance_check")
@@ -91,9 +91,16 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 
 	@FindBy(id = "primary_guarantor_zipcode")
 	private WebElement primaryGuarantorZipcode;	
+
+	@FindBy(id="hide_insurance_check")
+	private WebElement chckHideInsurance;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
+	
+	
+	@FindBy(xpath = "//li[input[@id='primary_insurance_company']]/a")
+	private WebElement primaryInsuranceCompanyAsterisk;
 	
 	
 	public HealthInsuranceInformationPage(WebDriver driver) {
@@ -132,14 +139,32 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 		//SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkHealthInsuranceInfoPage);
 		lnkHealthInsuranceInfoPage.click();
-			
+		
+		IHGUtil.waitForElement(driver, 30, chckHideInsurance);
+		if (chckHideInsurance.isSelected())
+			chckHideInsurance.click();
+		
+		selectInsuranceCompanyAppearance();
+		
 		IHGUtil.waitForElement(driver, 30, btnSave);
 			btnSave.click();
 		// Close the browser window
 		return PageFactory.initElements(driver,SecondaryHealthInsurancePage.class);
 	}
 	
+	/**
+	 * Click on Insurance company name checkbox and makes it optional to fill
+	 */
 	
+	public void selectInsuranceCompanyAppearance()
+	{
+		IHGUtil.waitForElement(driver, 30, primaryInsuranceCompany);
+		if (primaryInsuranceCompany.isSelected() == false)
+			primaryInsuranceCompany.click();
+		if (primaryInsuranceCompany.isSelected() == false)
+			
+			primaryInsuranceCompanyAsterisk.click();
+	}
 	
 
 }

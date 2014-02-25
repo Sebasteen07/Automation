@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class VaccinationsPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[8]/a/em")
+	@FindBy(xpath="//li[@data-section='immunizations']/a")
 	private WebElement lnkVaccination;
 	
 	@FindBy(id="save_config_form")              

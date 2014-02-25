@@ -21,10 +21,10 @@ public class SiteGenLoginPage extends BasePageObject {
 	@FindBy(how = How.NAME, using = "btn_login")
 	private WebElement login;
 
-	@FindBy(how = How.NAME, using = "password")
+	@FindBy(how = How.ID, using = "password")
 	private WebElement txtpassword;
 
-	@FindBy(how = How.NAME, using = "userid")
+	@FindBy(how = How.ID, using = "userid")
 	private WebElement txtusername;
 
 	/**

@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class ExamsTestsAndProceduresPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[10]/a/em")
+	@FindBy(xpath="//li[@data-section='procedures_section']/a")
 	private WebElement lnkExamsTestsAndProcedures;
 	
 	@FindBy(id="save_config_form")              

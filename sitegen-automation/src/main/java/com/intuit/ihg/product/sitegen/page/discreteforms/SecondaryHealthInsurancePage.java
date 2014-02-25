@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class SecondaryHealthInsurancePage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div[1]/ul/li[4]/a/em")
+	@FindBy(xpath="//li[@data-section='secondary_insurance']/a")
 	private WebElement lnkSecondaryHealthInsurance;
 	
 	@FindBy(id = "hide_secondary_insurance_check")
@@ -91,7 +91,13 @@ public OtherDoctorsYouSeen clicklnkSecondaryHealthInsuranceInfo()
 	//SitegenlUtil.setDefaultFrame(driver);
 	IHGUtil.waitForElement(driver, 30, lnkSecondaryHealthInsurance);
 	lnkSecondaryHealthInsurance.click();
+	
+	IHGUtil.waitForElement(driver, 30, hideSecondaryInsuranceCheck);
+	if (hideSecondaryInsuranceCheck.isSelected())
+		hideSecondaryInsuranceCheck.click();
 		
+	secondaryInsuranceCompany.click();
+	
 	IHGUtil.waitForElement(driver, 30, btnSave);
 		btnSave.click();
 	// Close the browser window

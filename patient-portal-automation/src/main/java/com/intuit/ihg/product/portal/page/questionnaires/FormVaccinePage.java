@@ -5,9 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
+//import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class FormVaccinePage extends BasePageObject 
@@ -110,6 +112,8 @@ public class FormVaccinePage extends BasePageObject
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver,FormSurgeriesHospitalizationsPage.class);
 	}
@@ -121,15 +125,15 @@ public class FormVaccinePage extends BasePageObject
 	 */
 	public FormSurgeriesHospitalizationsPage setVaccineFormFields() throws Exception
 	{
-		setTetanus(PortalConstants.Tetanus);
+		//setTetanus(PortalConstants.Tetanus);
 
-		setHPV(PortalConstants.HPV);
+		//setHPV(PortalConstants.HPV);
 
-		setInfluenza(PortalConstants.Influenza);
+		//setInfluenza(PortalConstants.Influenza);
 
-		setPneumonia(PortalConstants.Pneumonia);
+		//setPneumonia(PortalConstants.Pneumonia);
 
-		clickTetanus();
+		//clickTetanus();
 
 		clickSaveAndContinueButton();
 		return PageFactory.initElements(driver,FormSurgeriesHospitalizationsPage.class);

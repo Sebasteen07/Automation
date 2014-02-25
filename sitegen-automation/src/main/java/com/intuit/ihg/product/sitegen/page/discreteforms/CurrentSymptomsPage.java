@@ -11,10 +11,10 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class CurrentSymptomsPage extends BasePageObject{
 	
-	@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[6]/a")
+	@FindBy(xpath="//li[@data-section='currentsymptoms']/a")
 	private WebElement lnkCurrentSymptoms;
 	
-	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[6]/h5[1]/span/input")               
+	@FindBy(xpath = "//h5[contains(text(), 'General Health')]/span/input")               
 	private WebElement chckGeneralHealth;
 	
 	@FindBy(id = "fever_symptom_general")
@@ -23,7 +23,7 @@ public class CurrentSymptomsPage extends BasePageObject{
 	@FindBy(id = "weakness_symptom_general")
 	private WebElement weaknessSymptomGeneral;
 	
-	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[6]/h5[2]/span/input")              
+	@FindBy(xpath = "//h5[contains(text(), 'Blood')]/span/input")              
 	private WebElement chckBlood;
 	
 	@FindBy(id = "bleeding_symptom_blood")
@@ -32,7 +32,7 @@ public class CurrentSymptomsPage extends BasePageObject{
 	@FindBy(id = "bruising_symptom_blood")
 	private WebElement bruisingSymptomBlood;
 	
-	@FindBy(xpath = "//*[@id='form_form']/div[2]/div[2]/div[6]/h5[4]/span/input")
+	@FindBy(xpath = "//h5[contains(text(), 'Ears, Nose & Throat')]/span/input")
 	private WebElement chckEyesEarsNoseThroat;
 	
 	@FindBy(id = "bleedinggums_symptom_ent")
@@ -84,9 +84,9 @@ public class CurrentSymptomsPage extends BasePageObject{
 		lnkCurrentSymptoms.click();
 				
 		log("Check General Health");
+		IHGUtil.waitForElement(driver, 30, chckGeneralHealth);
 		chckGeneralHealth.click();
 		
-		Thread.sleep(2000);
 		log("Check Blood");
 		chckBlood.click();
 		

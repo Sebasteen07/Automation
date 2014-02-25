@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[9]/a/em")
+	@FindBy(xpath="//li[@data-section='surgerieshospitalizations_section']/a")
 	private WebElement lnkSurgeriesAndHospitalizationPage;
 	
 	@FindBy(id="save_config_form")              

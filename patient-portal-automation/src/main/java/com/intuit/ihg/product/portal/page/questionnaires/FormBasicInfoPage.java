@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -245,6 +247,8 @@ public class FormBasicInfoPage extends BasePageObject
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver,FormEmergencyContactPage.class);
 	}
@@ -257,36 +261,14 @@ public class FormBasicInfoPage extends BasePageObject
 	 */
 	public FormEmergencyContactPage setBasicInfoFromFields() throws Exception
 	{ 
-		setStreetAddress();
-		
-		setCity();
-		
-		setState(PortalConstants.State);
-		
-		setZip();
-		
-		setPrimaryPhoneNumber();
-		
+		setStreetAddress();		
+		setCity();		
+		setState(PortalConstants.State);		
+		setZip();	
+		setPrimaryPhoneNumber();		
 		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
-		
 		setSex(PortalConstants.Sex);
-		
-		if(IHGUtil.getEnvironmentType().equals("DEV3")|| IHGUtil.getEnvironmentType().equals("PROD") ){
-
-		setMaritalStatus(PortalConstants.MaritalStatus);
-		
-		}
-
-		setPreferredCommunication(PortalConstants.PreferredCommunication);
-
-		setPreferredLanguage(PortalConstants.PreferredLanguage);
-
-		setRace(PortalConstants.Race);
-
-		setEthnicity(PortalConstants.Ethnicity);
-
-		setWhoIsFillingOutForm(PortalConstants.WhoIsFillingOutForm);
-
+				
 		clickSaveAndContinueButton();
 
 		return PageFactory.initElements(driver,FormEmergencyContactPage.class);

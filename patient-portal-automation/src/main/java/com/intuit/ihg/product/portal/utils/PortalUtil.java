@@ -246,7 +246,7 @@ public class PortalUtil extends IHGUtil {
 	
 	public static void setquestionnarieFrame(WebDriver pDriver) throws Exception {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(10000);
+		Thread.sleep(1000);
 		pDriver.switchTo().defaultContent();
 		pDriver.switchTo().frame(pDriver.findElement(By.xpath("//div[@id='lightbox']/iframe[@title='Forms']"))); 
 	}

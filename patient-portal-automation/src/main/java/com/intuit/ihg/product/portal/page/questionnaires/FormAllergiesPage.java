@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -76,6 +78,8 @@ public class FormAllergiesPage extends BasePageObject
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormVaccinePage.class);
 	}
@@ -88,12 +92,13 @@ public class FormAllergiesPage extends BasePageObject
 	 */
 	public FormVaccinePage setAllergiesFormFields() throws Exception
 	{
-		setNoDrugAllergies();
+		//setNoDrugAllergies();
 
-		setNoFoodAllergies();
+		//setNoFoodAllergies();
 
-		setNoEnvironmentalAllergies();
+		//setNoEnvironmentalAllergies();
 
+		
 		clickSaveAndContinueButton();
 
 		return PageFactory.initElements(driver, FormVaccinePage.class);

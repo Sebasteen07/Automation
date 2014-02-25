@@ -134,4 +134,8 @@ public class TestcasesData {
 	public String getHealthKeyPracticeUrl(){
 		return portalobj.healthKeyPracticeUrl;
 	}
+	
+	public String getFormsUrl(){
+		return portalobj.formsUrl;
+	}
 }

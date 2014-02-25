@@ -3,6 +3,7 @@ package com.intuit.ihg.product.sitegen.page.discreteforms;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,9 +28,9 @@ public class DiscreteFormsPage extends BasePageObject{
 	@FindBy ( xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/a[text() = 'Custom Form']")
 	private WebElement customFormButton;
 
-
 	/*@FindBy ( xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/a[@class ='button blue']")
 	private WebElement registrationHealthHistoryFormButton;*/
+	
 	@FindBy(xpath = "//a[contains(text(),'Registration & Health History Form')]")
 	private WebElement registrationHealthHistoryFormButton;
 	
@@ -53,7 +54,7 @@ public class DiscreteFormsPage extends BasePageObject{
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-
+	
 	/**
 	 * Description : Deletes all the unpublished forms present in the Discrete Forms page.
 	 * @throws Exception
@@ -178,10 +179,11 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	public BasicInformationAboutYouPage openDiscreteForm() throws Exception {
+	public BasicInformationAboutYouPage openDiscreteForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
-		driver.findElement(By.xpath(".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")).click();
+		// Find the form by name
+		driver.findElement(By.xpath("//a[contains(text(), '" + formName + "')]")).click();
 		Thread.sleep(5000);
 		SitegenlUtil.switchToNewWindow(driver);
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
@@ -248,7 +250,18 @@ public class DiscreteFormsPage extends BasePageObject{
 		return PageFactory.initElements(driver,BasicInformationAboutYouPage.class);
 	}
 	
-
-
+	/**
+	 * Checks if the Patient Forms page is loaded by checking if crucial element of it is present
+	 * @return True if the button is present, false otherwise
+	 */
+	public boolean isPageLoaded(){
+		boolean result = false;
+		try {
+			result = registrationHealthHistoryFormButton.isDisplayed();
+		} catch (NoSuchElementException e){
+			log("Basic element of the Discrete Forms page not found page is probably not loaded");
+		}
+		return result;
+	}
 
 }

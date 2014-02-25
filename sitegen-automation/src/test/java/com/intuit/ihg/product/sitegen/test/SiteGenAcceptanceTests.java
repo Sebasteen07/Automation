@@ -1048,7 +1048,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-@Test(enabled = true, groups = {"AcceptanceTests"})
+@Test(enabled = false, groups = {"AcceptanceTests"})
 public void testDiscreteForm() throws Exception {
 	log("testDiscreteForm");
 	log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
@@ -1071,28 +1071,33 @@ public void testDiscreteForm() throws Exception {
 	assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 	
 	String discreteFormName = SitegenConstants.DISCRETEFORMNAME +IHGUtil.createRandomNumericString().substring(0, 4);
-	log("@@discrete form name@@"+discreteFormName);
+	log("@@discrete form name@@" + discreteFormName);
 	
+	String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+			
 	log("step 4: Click on Discrete Forms");
 	DiscreteFormsPage pManageDiscreteForms=pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+	
+	assertTrue(pManageDiscreteForms.isPageLoaded());
+	
 	pManageDiscreteForms.deleteAllPublishedForms();
 	pManageDiscreteForms.deleteAllUnPublishedForms();
 	pManageDiscreteForms.createNewDiscreteForm();
 	pManageDiscreteForms.renameDiscreteForm(discreteFormName);
 				
-	BasicInformationAboutYouPage pBasicInfoAboutYou = pManageDiscreteForms.openDiscreteForm();
+	BasicInformationAboutYouPage pBasicInfoAboutYou = pManageDiscreteForms.openDiscreteForm(discreteFormName);
 	
 	log("step 5:Click on Basic Information About You");
-	EmergencyContactInformationPage pEmergencyContactInfoPage=pBasicInfoAboutYou.clicklnkBasicInfoAboutYourPage();
+	EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clicklnkBasicInfoAboutYourPage();
 
 	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
 
 	log("step 6:Click on Emergency Contact Information");
-	HealthInsuranceInformationPage pHealthInsuranceInfoPage =pEmergencyContactInfoPage.clicklnkEmergencyContactInfo();
+	HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkEmergencyContactInfo();
 	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
 		
 	log("step 7a: Click on Health Insurance Information");
-	SecondaryHealthInsurancePage pSecondaryHealthInsurancePage=pHealthInsuranceInfoPage.clicklnkHealthInsuranceInfo() ;
+	SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkHealthInsuranceInfo() ;
 	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
 	
 	log("step 7b: Click on Secondary Health Insurance Information");
@@ -1138,18 +1143,19 @@ public void testDiscreteForm() throws Exception {
 	log("step 17: Click on Social History the last page of discrete form");
 	pSocialHistoryPage.clicklnkSocialHistoryPage();
 		
-	log("Step 18 : Publish the saved Discrete Form");
+	log("step 18 : Publish the saved Discrete Form");
 	pManageDiscreteForms.publishTheSavedForm(discreteFormName);
+	
+	log("step 1 : Go to Patient Portal using the original window");
+	// Switching back to original window using previously saved handle descriptor
+	driver.close();
+	driver.switchTo().window(parentHandle);
 					
 	Portal portal = new Portal();
 	TestcasesData portalTestcasesData = new TestcasesData(portal);
+	log("URL: " + portalTestcasesData.getFormsUrl());
 
-	log("URL: " + portalTestcasesData.geturl());
-	log("USER NAME: " + portalTestcasesData.getUsername());
-	log("Password: " + portalTestcasesData.getPassword());
-	log("URL: " + portalTestcasesData.geturl());
-
-	PortalLoginPage loginpage = new PortalLoginPage(driver, "https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424");
+	PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl()/*"https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424"*/);
 	log("step 2:Click Sign-UP");
 	BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage.signUpIntoBetaSite();
 
@@ -1164,6 +1170,9 @@ public void testDiscreteForm() throws Exception {
 	log("step 4:Click On Start Registration Button");
 	FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 
+	log("Verify if the forms element is loaded");
+	assertTrue(pFormWelcomePage.isWelcomePageLoaded());
+	
 	log("Click On Continue Button");
 	FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
 
@@ -1173,9 +1182,10 @@ public void testDiscreteForm() throws Exception {
 	log("step 6:Set Emergency Contact Form Fields");
 	FormInsurancePage pFormInsurancePage = pFormEmergencyContactPage.setEmergencyContactFormFields(portalTestcasesData.getEmail());
 
+	// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
 	log("step 7:Set Insurance Form Fields");
 	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setInsuranceFormFields();
-
+	
 	log("step 8:Set Providers Form Fields");
 	FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setProvidersFormFields();
 
@@ -1211,11 +1221,11 @@ public void testDiscreteForm() throws Exception {
 	pMyPatientPage.verifyRegistrationConfirmationText(); 
 	
 	log("Step 19 : Click on 'Fill Out' link under 'Custom Form' section");
-	HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
-				
-	/*log("Step 20 : Select "+discreteFormName+" discrete form");
+	/*HealthFormPage pHealthForm = */pMyPatientPage.clickFillOutFormsLink();
+	
+	log("Step 20 : Select " + discreteFormName + " discrete form");
 	CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
-	pCustomForm.isDiscreteFormDisplayedAsPDF(discreteFormName);*/
+	verifyTrue(pCustomForm.isDiscreteFormDisplayedAsPDF(discreteFormName));
 		
 	log("Step 21 : Logout of patient portal");
 	pMyPatientPage.logout(driver);
@@ -1239,11 +1249,11 @@ public void testDiscreteForm() throws Exception {
 	verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
 
 	/*log("step 25 : Search for PatientForms With Status Open");
-	SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+	SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);*/
 
-	log("step 26: View the Result");
-	ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(discreteFormName);
-	*/		
+	//log("step 26: View the Result");
+	//ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(discreteFormName);
+			
 	
 	driver.close();
 	

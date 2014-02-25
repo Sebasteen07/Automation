@@ -11,7 +11,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class IllnessesAndConditionsPage extends BasePageObject{
 	
-	@FindBy(xpath="//form[@id='form_form']/div[2]/div/ul/li[10]/a/em")
+	@FindBy(xpath="//li[@data-section='conditions_section']/a")
 	private WebElement lnkIllnessesAndConditions;
 	
 	@FindBy(id="save_config_form")              

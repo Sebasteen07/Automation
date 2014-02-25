@@ -28,5 +28,6 @@ public class Portal {
 	public String Family_Password="";
 	public String Relationship="";
 	public String healthKeyPracticeUrl="";
+	public String formsUrl="";
 		
 }
