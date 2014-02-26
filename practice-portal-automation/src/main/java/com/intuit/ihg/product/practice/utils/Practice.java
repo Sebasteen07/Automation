@@ -7,4 +7,7 @@ public class Practice {
 	public String password = "";
 	public String formUser = "";
 	public String formPassword = "";
+	public String patientUser = "";
+	public String patientEmail = "";
+	public String patientPassword = "";
 }

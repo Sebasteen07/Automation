@@ -39,4 +39,16 @@ public class PracticeTestData {
 	public String getFormPassword() {
 		return practiceData.formPassword;
 	}
+	
+	public String getPatientUser() {
+		return practiceData.patientUser;
+	}
+	
+	public String getPatientEmail() {
+		return practiceData.patientEmail;
+	}
+	
+	public String getPatientPassword() {
+		return practiceData.patientPassword;
+	}
 }
