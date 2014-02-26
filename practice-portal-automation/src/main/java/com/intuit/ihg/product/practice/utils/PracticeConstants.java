@@ -91,6 +91,11 @@ public class PracticeConstants {
 	public final static String eStatementFile = "eStatementTest.pdf";	
 	public final static String eStatementUploadSuccessMsg = "eStatement successfully uploaded";
 	public final static String eStatementFilePath = "documents/eStatementTest.pdf";
+	
+	//reminder user ID
+	public final static String frgtFName = "Forgot";
+	public final static String frgtLName = "UserID";
+
 
 	//OnlineBillpay Process
 	public final static String ProcessCardHolderName = "batchopen";

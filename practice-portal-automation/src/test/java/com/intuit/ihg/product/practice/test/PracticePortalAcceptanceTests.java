@@ -1,11 +1,16 @@
 package com.intuit.ihg.product.practice.test;
 
 
+import java.util.Date;
+
 import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.CheckEmail;
+import com.intuit.ihg.common.utils.mail.Gmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.practice.page.PracticeLoginPage;
@@ -16,6 +21,7 @@ import com.intuit.ihg.product.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.practice.page.onlinebillpay.eStatementUploadPage;
 import com.intuit.ihg.product.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.practice.page.patientSearch.PatientSearchPage;
+import com.intuit.ihg.product.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.practice.page.patientactivation.PatientactivationPage;
 import com.intuit.ihg.product.practice.page.treatmentplanpage.TreatmentPlansPage;
 import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
@@ -317,7 +323,78 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.fName));
 
 	}
+	
+	/**
+	 * @Author: Prokop Rehacek
+	 * @Date: 07/26/2013
+	 * @StepsToReproduce: 
+	 *                   
+	 *                    ====================================
+	 *                    =========================
+	 * @AreaImpacted :
+	 * @throws Exception
+	 */
+	@Test (enabled = true, groups = {"AcceptanceTests"},retryAnalyzer=RetryAnalyzer.class)
+	public void testSendUserIdEmail() throws Exception {
 
+		log("Test Case: testPatientSearchLink");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		Date startEmailSearchDate = new Date();
+		
+		
+		log("step 1: Login to Practice Portal");
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData =new PracticeTestData(practice);
+		
+		Gmail gmail = new Gmail(practiceTestData.getPatientEmail(), practiceTestData.getPatientPassword());
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+
+		log("step 2: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
+
+		log("step 3:Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.frgtFName, PracticeConstants.frgtLName);
+		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(PracticeConstants.frgtFName, PracticeConstants.frgtLName);
+	
+		log("step 4: Send Email reminder with User ID");
+		pPatientSearchPage = pPatientDashboardPage.sendEmailUserID();
+		
+		log("step 5: click Send Email");
+		pPatientDashboardPage = pPatientSearchPage.sendUserNameEmail();
+		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Username email sent to patient"));
+		
+		log("step 6: Access Gmail and check for received email");
+		log("patient userID: " + practiceTestData.getPatientUser());
+		log("email: " + practiceTestData.getPatientEmail());
+		log("pass: " + practiceTestData.getPatientPassword());
+		
+		int count = 1;
+		boolean flag = false;
+		do {
+			boolean foundEmail = CheckEmail.validateForgotUserID(gmail, startEmailSearchDate, practiceTestData.getPatientEmail(), "Your User ID for",
+					practiceTestData.getPatientUser());
+			if (foundEmail) {
+				assertTrue(foundEmail, "The Forgot User ID email wasn't received.");
+				System.out.println("The User ID email receiced In between :" + count * 60 + "seconds");
+				flag = true;
+				break;
+			} else {
+				Thread.sleep(60000);
+				count++;
+			}
+
+		} while (count < 21);
+		if (!flag) {
+			log("The User ID email wasn't received even after Five minutes of wait");
+		}
+		
+	}
+	
+	
 	/**
 	 * @Author: Gajendran
 	 * @Date: 07/26/2013
@@ -330,7 +407,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test (enabled = true, groups = {"SmokeTest"}/*,retryAnalyzer=RetryAnalyzer.class*/)
+	@Test (enabled = true, groups = {"SmokeTest"} ,retryAnalyzer=RetryAnalyzer.class)
 	public void testClickOnTabs() throws Exception {
 
 		log("Test Case: testClickOnTabs:- SmokeTest");

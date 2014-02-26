@@ -784,7 +784,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserId() throws Exception {
 		log("Test Case: testPatientForgotUserId");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -824,7 +824,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		int count = 1;
 		boolean flag = false;
 		do {
-			boolean foundEmail = CheckEmail.validateForgotPassword(gmail, startEmailSearchDate, patientData.getEmail(), "Your User ID for",
+			boolean foundEmail = CheckEmail.validateForgotUserID(gmail, startEmailSearchDate, patientData.getEmail(), "Your User ID for",
 					patientData.getUsername());
 			if (foundEmail) {
 				assertTrue(foundEmail, "The Forgot User ID email wasn't received.");

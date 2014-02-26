@@ -46,6 +46,10 @@ public class PatientSearchPage extends BasePageObject{
 	@FindBy( xpath = ".//input[@name='buttons:submit']")
 	private WebElement searchButton;
 	
+	@FindBy( xpath = "//input[@value='Email Username']")
+	private WebElement	emailUserName;
+	
+	private WebElement patient;
 	
 	/**
 	 * @Description:Set Patient First Name
@@ -119,10 +123,9 @@ public class PatientSearchPage extends BasePageObject{
 		lastName.clear();
 		lastName.sendKeys(lName);
 		IHGUtil.waitForElement(driver, 10, searchForPatient);
-		searchForPatient.click();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
+		searchForPatient.click();	
 	}
-	
 
 	public boolean isTransactionPresent(String amount, String fName, String lName) {
 		IHGUtil.PrintMethodName();
@@ -138,6 +141,24 @@ public class PatientSearchPage extends BasePageObject{
 		amont = amont.insert(1, ",");
 		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amont+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
+	}
+	
+	public PatientDashboardPage clickOnPatient(String frstNm, String lstNm) throws InterruptedException
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver,30,searchResult);
+		patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit "+lstNm+", "+frstNm+"']"));
+		IHGUtil.waitForElement(driver, 10, patient);
+		patient.click();
+		return PageFactory.initElements(driver, PatientDashboardPage.class);
+	}
+	
+	public PatientDashboardPage sendUserNameEmail() throws InterruptedException
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver,10,emailUserName);
+		emailUserName.click();
+		return PageFactory.initElements(driver, PatientDashboardPage.class);
 	}
 	
 
