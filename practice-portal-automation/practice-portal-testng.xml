@@ -24,7 +24,7 @@
           <include name="testPracticePortal"/>
           <include name="testQuickSendPatientPDF"/>
           <include name="testLoginLogout"/>
-          
+          <include name="testSendUserIdEmail"/>      
       </methods>   
 </classes>     
 </test>
