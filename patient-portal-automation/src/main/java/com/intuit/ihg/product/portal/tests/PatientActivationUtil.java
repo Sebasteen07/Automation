@@ -5,7 +5,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
@@ -17,10 +17,10 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 	public void ActivatePatient(WebDriver driver, TestcasesData testcasesData, PatientActivationTest patientActivationTest,
 			PracticeTestData practiceTestData, String sUnlockLink) throws Exception {
 
-		BetaSiteCreateAccountPage betaSiteCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(sUnlockLink);
+		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(sUnlockLink);
 
 		log("Filing in short user registration");
-		betaSiteCreateAccountPage.fillInShortPatientCreation(patientActivationTest.getFirstNameString(),
+		pCreateAccountPage.fillInShortPatientCreation(patientActivationTest.getFirstNameString(),
 				patientActivationTest.getLastNameString(), PortalConstants.DateOfBirtSlashFormat, patientActivationTest.getZipCodeString(),
 				testcasesData.getSSN(), patientActivationTest.getEmailAddressString());
 
@@ -40,7 +40,7 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 
 		log("Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = betaSiteCreateAccountPage.fillEmailActivaion(patientActivationTest.getLastNameString(),
+		MyPatientPage myPatientPage = pCreateAccountPage.fillEmailActivaion(patientActivationTest.getLastNameString(),
 				PortalConstants.DateOfBirtSlashFormat, patientActivationTest.getZipCodeString(), testcasesData.getSSN(),
 				patientActivationTest.getEmailAddressString(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
 				testcasesData.getAnswer());
@@ -53,9 +53,9 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 	public void ActivatePatient(WebDriver driver, TestcasesData testcasesData, PatientActivationSearchTest patientActivationSearchTest,
 			PracticeTestData practiceTestData, String sUnlockLink) throws Exception {
 
-		BetaSiteCreateAccountPage betaSiteCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(sUnlockLink);
+		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(sUnlockLink);
 		log("Filing in short user registration");
-		betaSiteCreateAccountPage
+		pCreateAccountPage
 				.fillInShortPatientCreation(patientActivationSearchTest.getFirstNameString(),
 						patientActivationSearchTest.getLastNameString(), PortalConstants.DateOfBirtSlashFormat,
 						patientActivationSearchTest.getZipCodeString(), testcasesData.getSSN(),
@@ -77,7 +77,7 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 
 		log("Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = betaSiteCreateAccountPage.fillEmailActivaion(patientActivationSearchTest.getLastNameString(),
+		MyPatientPage myPatientPage = pCreateAccountPage.fillEmailActivaion(patientActivationSearchTest.getLastNameString(),
 				PortalConstants.DateOfBirtSlashFormat, patientActivationSearchTest.getZipCodeString(), testcasesData.getSSN(),
 				patientActivationSearchTest.getEmailAddressString(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
 				testcasesData.getAnswer());

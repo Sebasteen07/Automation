@@ -27,7 +27,7 @@ import com.intuit.ihg.product.phr.utils.PhrTestcasesData;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
@@ -209,15 +209,15 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver,
 				testcasesData.geturl());
-		BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage
-		.signUpIntoBetaSite();
+		CreateAccountPage pCreateAccountPage = loginpage
+		.signUp();
 
 		log("step 3:Fill detials in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(testcasesData
 				.getEmail());
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage
-		.BetaSiteCreateAccountPage(testcasesData.getFirstName(),
+		MyPatientPage pMyPatientPage = pCreateAccountPage
+		.createAccountPage(testcasesData.getFirstName(),
 				testcasesData.getLastName(), email,
 				testcasesData.getPhoneNumber(),
 				testcasesData.getZip(),

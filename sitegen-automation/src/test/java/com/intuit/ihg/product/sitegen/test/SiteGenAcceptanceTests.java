@@ -18,7 +18,7 @@ import com.intuit.ifs.csscat.core.WebDriverFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.healthform.CustomFormPageForSitegen;
 import com.intuit.ihg.product.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.page.questionnaires.FormAllergiesPage;
@@ -1157,12 +1157,12 @@ public void testDiscreteForm() throws Exception {
 
 	PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl()/*"https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424"*/);
 	log("step 2:Click Sign-UP");
-	BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage.signUpIntoBetaSite();
+	CreateAccountPage pCreateAccountPage = loginpage.signUp();
 
 	log("step 3:Fill detials in Create Account Page");
 	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 	log("email:-" + email);
-	MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(portalTestcasesData.getFirstName(),
+	MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(portalTestcasesData.getFirstName(),
 			portalTestcasesData.getLastName(), email, portalTestcasesData.getPhoneNumber(), portalTestcasesData.getZip(), portalTestcasesData.getSSN(),
 			portalTestcasesData.getAddress(), portalTestcasesData.getPassword(), portalTestcasesData.getSecretQuestion(), portalTestcasesData.getAnswer(),
 			portalTestcasesData.getAddressState(), portalTestcasesData.getAddressCity());
@@ -1184,7 +1184,7 @@ public void testDiscreteForm() throws Exception {
 
 	// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
 	log("step 7:Set Insurance Form Fields");
-	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
+	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setInsuranceFormFields();
 	
 	log("step 8:Set Providers Form Fields");
 	FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setProvidersFormFields();

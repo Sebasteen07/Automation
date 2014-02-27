@@ -10,8 +10,8 @@ import com.gargoylesoftware.htmlunit.WaitingRefreshHandler;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
 import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPageOnBetaSite;
 import com.intuit.ihg.product.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.portal.page.forgotuserid.ForgotUserIdEnterEmailPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -125,7 +125,7 @@ public class PortalLoginPage extends BasePageObject {
 	}
 	
 
-	public CreateAccountPage signUp() {
+	public CreateAccountPageOnBetaSite signUpToBetaSite() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 	
@@ -139,7 +139,7 @@ public class PortalLoginPage extends BasePageObject {
 			log("Create Account or Sign Up button not found on the log in Page ");
 		}
 		
-		return PageFactory.initElements(driver, CreateAccountPage.class);
+		return PageFactory.initElements(driver, CreateAccountPageOnBetaSite.class);
 	}
 	
 	public ResetYourPasswordPage clickForgotYourPasswordLink() {
@@ -149,17 +149,17 @@ public class PortalLoginPage extends BasePageObject {
 		return PageFactory.initElements(driver, ResetYourPasswordPage.class);
 	}
 	
-	public BetaSiteCreateAccountPage signUpIntoBetaSite() {
+	public CreateAccountPage signUp() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		butCreateAccount.click();
-	   return PageFactory.initElements(driver, BetaSiteCreateAccountPage.class);
+	   return PageFactory.initElements(driver, CreateAccountPage.class);
 	}
 	
-	public BetaSiteCreateAccountPage loadUnlockLink(String sLink) {
+	public CreateAccountPage loadUnlockLink(String sLink) {
 		driver.get(sLink);
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		return PageFactory.initElements(driver, BetaSiteCreateAccountPage.class);
+		return PageFactory.initElements(driver, CreateAccountPage.class);
 	}
 }

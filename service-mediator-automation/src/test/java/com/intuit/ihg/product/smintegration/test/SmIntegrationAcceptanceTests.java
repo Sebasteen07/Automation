@@ -17,7 +17,7 @@ import com.intuit.ihg.product.phr.page.PhrLoginPage;
 import com.intuit.ihg.product.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
@@ -381,8 +381,8 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver,
 				testcasesData.getUrl());
-		BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage
-				.signUpIntoBetaSite();
+		CreateAccountPage pBetaSiteCreateAccountPage = loginpage
+				.signUp();
 
 		BetaCreateNewPatientPage createNewPatientPage = new BetaCreateNewPatientPage(
 				driver);

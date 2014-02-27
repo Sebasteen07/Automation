@@ -7,7 +7,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 
@@ -41,14 +41,14 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage.signUpIntoBetaSite();
+		CreateAccountPage pCreateAccountPage = loginpage.signUp();
 
 		log("step 3:Fill detials in Create Account Page");
 		//Setting the variables for user in other tests
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		password=testcasesData.getPassword();
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(testcasesData.getFirstName(),
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(testcasesData.getFirstName(),
 						testcasesData.getLastName(), email, testcasesData.getPhoneNumber(),
 						testcasesData.getZip(), testcasesData.getSSN(),
 						testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),

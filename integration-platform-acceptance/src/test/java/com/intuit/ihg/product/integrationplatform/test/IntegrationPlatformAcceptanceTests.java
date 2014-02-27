@@ -25,7 +25,7 @@ import com.intuit.ihg.product.phr.page.messages.PhrInboxMessage;
 import com.intuit.ihg.product.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
@@ -312,11 +312,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 6: Moving to the link obtained from the email message");
 		// Moving to the Link from email
 		//driver.get(activationUrl);
-		BetaSiteCreateAccountPage betaSiteCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(activationUrl);
+		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(activationUrl);
 
 		log("Step 7: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = betaSiteCreateAccountPage.fillEmailActivaion("",
+		MyPatientPage myPatientPage = pCreateAccountPage.fillEmailActivaion("",
 				testData.getBirthDay(), testData.getZipCode(), testData.getSSN(),
 				email, testData.getPatientPassword(), testData.getSecretQuestion(),
 				testData.getSecretAnswer());

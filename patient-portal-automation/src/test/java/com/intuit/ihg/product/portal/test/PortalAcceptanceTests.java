@@ -27,8 +27,8 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.portal.page.myAccount.insurance.InsurancePage;
-import com.intuit.ihg.product.portal.page.createAccount.BetaSiteCreateAccountPage;
 import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
+import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPageOnBetaSite;
 import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPasswordPage;
 import com.intuit.ihg.product.portal.page.forgotPassword.ActivatePasswordChangePage;
 import com.intuit.ihg.product.portal.page.forgotPassword.ResetYourPasswordPage;
@@ -319,7 +319,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCreatePatient() throws Exception {
+	public void testCreatePatientOnBetaSite() throws Exception {
 
 		log("Test Case: testCreatePatient");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -333,7 +333,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("URL: " + testcasesData.geturl());
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		CreateAccountPage pCreateAccountPage = loginpage.signUp();
+		CreateAccountPageOnBetaSite pCreateAccountPage = loginpage.signUpToBetaSite();
 
 		log("step 3:Fill detials in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
@@ -382,7 +382,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCreatePatientOnBetaSite() throws Exception {
+	public void testCreatePatient() throws Exception {
 
 		// Instancing CreatePatientTest
 		CreatePatientTest createPatientTest = new CreatePatientTest();
@@ -1553,12 +1553,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		BetaSiteCreateAccountPage pBetaSiteCreateAccountPage = loginpage.signUpIntoBetaSite();
+		CreateAccountPage pCreateAccountPage = loginpage.signUp();
 
 		log("step 3:Fill detials in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pBetaSiteCreateAccountPage.BetaSiteCreateAccountPage(testcasesData.getFirstName(),
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(testcasesData.getFirstName(),
 				testcasesData.getLastName(), email, testcasesData.getPhoneNumber(), testcasesData.getZip(), testcasesData.getSSN(),
 				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(), testcasesData.getAnswer(),
 				testcasesData.getAddressState(), testcasesData.getAddressCity());

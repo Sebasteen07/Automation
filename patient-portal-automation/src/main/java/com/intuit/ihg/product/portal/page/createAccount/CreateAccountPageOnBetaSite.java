@@ -11,7 +11,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
-public class CreateAccountPage extends BasePageObject {
+public class CreateAccountPageOnBetaSite extends BasePageObject {
 	
 	public static final String PAGE_NAME = "Create Account Page";
 	
@@ -53,7 +53,7 @@ public class CreateAccountPage extends BasePageObject {
 	
 	public String emailAddress=null;
 	
-	public CreateAccountPage(WebDriver driver)
+	public CreateAccountPageOnBetaSite(WebDriver driver)
 	{
 		super(driver);
 	}
