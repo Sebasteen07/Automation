@@ -14,7 +14,7 @@ import com.intuit.ihg.product.portal.utils.TestcasesData;
 public class CleanGmailInboxTest extends BaseTestNGWebDriver {
 	
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCleanGmailInbox() throws Exception {
 		
 		log("Test Case: testCleanGmailInbox");
