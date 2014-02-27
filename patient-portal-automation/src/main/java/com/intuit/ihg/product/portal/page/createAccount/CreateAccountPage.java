@@ -16,7 +16,7 @@ import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
-public class BetaSiteCreateAccountPage extends BasePageObject {
+public class CreateAccountPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Beta site Create Account Page";
 
@@ -136,7 +136,7 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 	@FindBy(name = "birthday:year")
 	private WebElement birthdayYear;
 
-	public BetaSiteCreateAccountPage(WebDriver driver) {
+	public CreateAccountPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -161,7 +161,7 @@ public class BetaSiteCreateAccountPage extends BasePageObject {
 	 * @param city
 	 * @return
 	 */
-	public MyPatientPage BetaSiteCreateAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
+	public MyPatientPage createAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
 					 String patientZip, String patientSSN,
 					String address, String password, String Question, String answer, String state, String city) {
 
