@@ -20,7 +20,7 @@ public class FormInsurancePage extends BasePageObject
 	}
 
 	@FindBy(id="idonot_primary_insurance")
-	WebElement selfPay;
+	private WebElement selfPay;
 
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
@@ -42,34 +42,37 @@ public class FormInsurancePage extends BasePageObject
 
 	/**
 	 * @Description:Click on Save and Continue Button
-	 * @return FormOtherProvidersPage
+	 * @return FormOtherProvidersPage, if not selected Self pay retuns FormSecondaryInsurancePage
 	 * @throws Exception
 	 */
-	public FormOtherProvidersPage clickSaveAndContinueButton() throws Exception
+	public BasePageObject clickSaveAndContinueButton(boolean selfPayTrue) throws Exception
 	{
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver, FormOtherProvidersPage.class);
+		if(selfPayTrue)
+			return PageFactory.initElements(driver, FormOtherProvidersPage.class);
+		else
+			return PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
 	}
 
 	/**
-	 * @Description:Set Insurance Form Fields
+	 * @Description:Set no insurance (self pay)
 	 * @return FormOtherProvidersPage
 	 * @throws Exception
 	 */
-	public FormOtherProvidersPage setInsuranceFormFields() throws Exception
+	public FormOtherProvidersPage setSelfPayInsurance() throws Exception
 	{
 		setSelfPay();
 
-		clickSaveAndContinueButton();
+		clickSaveAndContinueButton(true);
 
 		return PageFactory.initElements(driver, FormOtherProvidersPage.class);
 
-
 	}
 
+	
 
 }
