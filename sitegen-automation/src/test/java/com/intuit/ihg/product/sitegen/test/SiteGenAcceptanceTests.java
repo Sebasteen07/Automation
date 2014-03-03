@@ -1184,7 +1184,7 @@ public void testDiscreteForm() throws Exception {
 
 	// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
 	log("step 7:Set Insurance Form Fields");
-	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setInsuranceFormFields();
+	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
 	
 	log("step 8:Set Providers Form Fields");
 	FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setProvidersFormFields();
