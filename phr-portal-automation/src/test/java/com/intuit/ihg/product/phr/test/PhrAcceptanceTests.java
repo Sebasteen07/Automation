@@ -33,6 +33,7 @@ import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.portal.page.portaltophr.AcceptPhrTermsandConditions;
+import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -205,43 +206,17 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: " + testcasesData.getUsername());
 		log("Password: " + testcasesData.getPassword());
 		log("URL: " + testcasesData.geturl());
+		
+		// Instancing CreatePatientTest
+		CreatePatientTest createPatientTest = new CreatePatientTest();
 
-		log("step 2:Click Sign-UP");
-		PortalLoginPage loginpage = new PortalLoginPage(driver,
-				testcasesData.geturl());
-		CreateAccountPage pCreateAccountPage = loginpage
-		.signUp();
-
-		log("step 3:Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(testcasesData
-				.getEmail());
-		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pCreateAccountPage
-		.createAccountPage(testcasesData.getFirstName(),
-				testcasesData.getLastName(), email,
-				testcasesData.getPhoneNumber(),
-				testcasesData.getZip(),
-				testcasesData.getSSN(), testcasesData.getAddress(),
-				testcasesData.getPassword(),
-				testcasesData.getSecretQuestion(),
-				testcasesData.getAnswer(),
-				testcasesData.getAddressState(),
-				testcasesData.getAddressCity());
-
-		log("step 5:Assert Webelements in MyPatientPage");
-		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
-		log("step 6:Logout");
-		pMyPatientPage.clickLogout(driver);
+		// Executing Test
+		MyPatientPage pMyPatientPage = createPatientTest.createPatient(driver, testcasesData);
 
 		//need to include a piece of code here for deleting sookieso that script works in IE works 
 		/*log("Clearing Browser cache");
 		PhrUtil.DeleteAllBrowsingDataIE(driver);*/
-
-		log("step 7:Login as new user");
-		loginpage.navigateTo(driver, testcasesData.geturl());
-		pMyPatientPage = loginpage.login(email, testcasesData.getPassword());
-
+		
 		log("step 8:Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 
