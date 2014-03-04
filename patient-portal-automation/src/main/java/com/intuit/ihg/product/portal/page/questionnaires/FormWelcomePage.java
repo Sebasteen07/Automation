@@ -47,9 +47,9 @@ public class FormWelcomePage extends BasePageObject
 	public boolean isWelcomePageLoaded() {
 		boolean result = false;
 		try {
-			result = btnContinue.isDisplayed();
+			result = btnContinue.isEnabled();
 		} catch (NoSuchElementException e) {
-			log("Welcome page of forms not loaded");
+			log("Welcome page of forms is not loaded");
 		}
 		return result;
 	}

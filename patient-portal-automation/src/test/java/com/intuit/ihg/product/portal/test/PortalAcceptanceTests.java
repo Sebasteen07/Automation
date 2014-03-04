@@ -392,7 +392,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		TestcasesData testcasesData = new TestcasesData(portal);
 
 		// Executing Test
-		createPatientTest.CreatePatient(driver, testcasesData);
+		createPatientTest.createPatient(driver, testcasesData);
 
 	}
 

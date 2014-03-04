@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
+import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -93,7 +94,6 @@ import com.intuit.ihg.product.sitegen.page.discreteforms.SecondaryHealthInsuranc
 import com.intuit.ihg.product.sitegen.page.discreteforms.SocialHistoryPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.SurgeriesAndHospitalizationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.VaccinationsPage;
-
 
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
@@ -1048,15 +1048,15 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-@Test(enabled = false, groups = {"AcceptanceTests"})
+@Test(enabled = true, groups = {"AcceptanceTests"})
 public void testDiscreteForm() throws Exception {
 	log("testDiscreteForm");
 	log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
 	log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
 
 	log("step 1: Get Data from Excel ##########");
-	Sitegen sitegen=new Sitegen();
-	SitegenTestData testcasesData=new SitegenTestData(sitegen);
+	Sitegen sitegen = new Sitegen();
+	SitegenTestData testcasesData = new SitegenTestData(sitegen);
 
 	log("URL: "+testcasesData.getSiteGenUrl());
 	log("USER NAME: "+testcasesData.getAutomationUser());
@@ -1146,32 +1146,31 @@ public void testDiscreteForm() throws Exception {
 	log("step 18 : Publish the saved Discrete Form");
 	pManageDiscreteForms.publishTheSavedForm(discreteFormName);
 	
-	log("step 1 : Go to Patient Portal using the original window");
+	log("step 19 : Close the window and logout from SiteGenerator");
 	// Switching back to original window using previously saved handle descriptor
 	driver.close();
 	driver.switchTo().window(parentHandle);
+	pSiteGenPracticeHomePage.clicklogout();
+	
+	log("step 1 : Go to Patient Portal using the original window");
 					
 	Portal portal = new Portal();
 	TestcasesData portalTestcasesData = new TestcasesData(portal);
 	log("URL: " + portalTestcasesData.getFormsUrl());
 
-	PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl()/*"https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424"*/);
-	log("step 2:Click Sign-UP");
-	CreateAccountPage pCreateAccountPage = loginpage.signUp();
-
-	log("step 3:Fill detials in Create Account Page");
+	log("step 2 and 3: Click on Sign Up Fill detials in Create Account Page");
 	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 	log("email:-" + email);
-	MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(portalTestcasesData.getFirstName(),
-			portalTestcasesData.getLastName(), email, portalTestcasesData.getPhoneNumber(), portalTestcasesData.getZip(), portalTestcasesData.getSSN(),
-			portalTestcasesData.getAddress(), portalTestcasesData.getPassword(), portalTestcasesData.getSecretQuestion(), portalTestcasesData.getAnswer(),
-			portalTestcasesData.getAddressState(), portalTestcasesData.getAddressCity());
+	
+	CreatePatientTest createPatient = new CreatePatientTest();
+	createPatient.setUrl(portalTestcasesData.getFormsUrl());
+	MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
 
 	log("step 4:Click On Start Registration Button");
 	FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 
-	log("Verify if the forms element is loaded");
-	assertTrue(pFormWelcomePage.isWelcomePageLoaded());
+	//log("Verify if the Welcome page is loaded");
+	//assertTrue(pFormWelcomePage.isWelcomePageLoaded());
 	
 	log("Click On Continue Button");
 	FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
