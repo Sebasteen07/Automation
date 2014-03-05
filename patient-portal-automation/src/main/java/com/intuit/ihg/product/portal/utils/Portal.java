@@ -29,5 +29,8 @@ public class Portal {
 	public String Relationship="";
 	public String healthKeyPracticeUrl="";
 	public String formsUrl="";
+	public String betaUrl="";
+	public String preferredDoctorBeta="";
+	public String preferredLocationBeta="";
 		
 }

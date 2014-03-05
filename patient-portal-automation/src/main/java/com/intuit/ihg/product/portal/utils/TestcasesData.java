@@ -1,12 +1,8 @@
 package com.intuit.ihg.product.portal.utils;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import com.intuit.ihg.common.utils.ExcelSheetReader;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 
@@ -137,5 +133,19 @@ public class TestcasesData {
 	
 	public String getFormsUrl(){
 		return portalobj.formsUrl;
+	}
+	
+	public String getBetaUrl() {
+		
+		return portalobj.betaUrl;
+	}
+	
+	public String getPreferredDoctorBeta() {
+		
+		return portalobj.preferredDoctorBeta;
+	}
+	
+	public String getPreferredLocationBeta() {		
+		return portalobj.preferredLocationBeta;
 	}
 }

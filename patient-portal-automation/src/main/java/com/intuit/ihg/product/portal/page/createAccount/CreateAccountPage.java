@@ -169,10 +169,10 @@ public class CreateAccountPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 
 		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
-		log("patientFirstName" + patientFirstName);
+		log("patientFirstName: " + patientFirstName);
 		txtPatientFirstname.sendKeys(patientFirstName);
 		patientLastName = patientLastName + PortalUtil.createRandomNumber();
-		log("patientLastName" + patientLastName);
+		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
 		
 		//Setting Date of birth
@@ -182,11 +182,11 @@ public class CreateAccountPage extends BasePageObject {
 		
 		txtPatientFirstname.click();// This a fix given for chrome browser
 						// for dealing date drop down
-		log("patientZip" + patientZip);
+		log("PatientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("patientSSN" + patientSSN);
+		log("PatientSSN: " + patientSSN);
 		txtssn.sendKeys(patientSSN);
-		log("email" + email);
+		log("Email: " + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
 
@@ -211,6 +211,8 @@ public class CreateAccountPage extends BasePageObject {
 		txtEmailPage2.sendKeys(email);
 		txtConfirmEmailPage2.clear();
 		txtConfirmEmailPage2.sendKeys(email);
+		log("User ID: " + email);
+		log("Password: " + password);
 		txtUserID.sendKeys(email);
 		txtPassword.sendKeys(password);
 		txtConfirmpassword.sendKeys(password);
@@ -232,7 +234,6 @@ public class CreateAccountPage extends BasePageObject {
 		List<WebElement> list = driver.findElements(By.xpath("//select[@name='editLoginInfo:border:editForm:inputs:6:input:input']/option"));
 		for (WebElement li : list) {
 			int count = 1;
-			System.out.println("@@@@@@" + li.getText());
 			if (li.getText().contains(pProvider)) {
 				Select secretQuestion = new Select(dropDownSecretQuestion);
 				secretQuestion.selectByIndex(count);

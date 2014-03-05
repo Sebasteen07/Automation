@@ -1,24 +1,16 @@
 package com.intuit.ihg.product.portal.test;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.mail.SendFailedException;
-import javax.print.attribute.standard.Finishings;
 
-import bsh.TokenMgrError;
-
-import com.google.inject.ProvidedBy;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsPage;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
 import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
 import org.testng.ITestResult;
 
 import static org.testng.Assert.*;
@@ -39,9 +31,6 @@ import com.intuit.ihg.product.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.*;
-import com.intuit.ihg.product.portal.page.myAccount.familyAccount.CreatefamilymemberPage;
-import com.intuit.ihg.product.portal.page.myAccount.familyAccount.PatientsOnThisAccountPage;
-import com.intuit.ihg.product.portal.page.myAccount.familyAccount.UnlinkPatientFromFamilyPage;
 import com.intuit.ihg.product.portal.page.myAccount.manageHealthInfo.ManageHealthInfoPage;
 import com.intuit.ihg.product.portal.page.myAccount.preferences.PreferencesPage;
 import com.intuit.ihg.product.portal.page.myAccount.wallet.WalletPage;
@@ -307,7 +296,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @Author:- bkrishnankutty
+	 * @Author:- bkrishnankutty, refactored by Prokop Rehacek
 	 * @Date:-2/6/2013
 	 * @User Story ID in Rally
 	 * @StepsToReproduce: Click Sign-UP Fill detials in Create Account Page
@@ -320,49 +309,16 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientOnBetaSite() throws Exception {
-
-		log("Test Case: testCreatePatient");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");
-
+		
+		// Instancing CreatePatientTest
+		CreatePatientTest createPatientTest = new CreatePatientTest();
+		
+		// Setting data provider
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
-
-		log("URL: " + testcasesData.geturl());
-		log("step 2:Click Sign-UP");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		CreateAccountPageOnBetaSite pCreateAccountPage = loginpage.signUpToBetaSite();
-
-		log("step 3:Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
-		log("email:-" + email);
-		CreateAccountPasswordPage pCreateAccountPasswordPage = pCreateAccountPage.createAccount(testcasesData.getFirstName(),
-				testcasesData.getLastName(), email, testcasesData.getEmail(), testcasesData.getPhoneNumber(), testcasesData.getPhoneType(),
-				testcasesData.getDob_Month(), testcasesData.getDob_Day(), testcasesData.getDob_Year(), testcasesData.getZip(),
-				testcasesData.getSSN());
-
-		log("step 4:Fill security detials in Create Account  Page 2");
-		MyPatientPage pMyPatientPage = pCreateAccountPasswordPage.createPasswordSecurity(email, testcasesData.getPassword(),
-				testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getPreferredLocation(),
-				testcasesData.getPreferredDoctor());
-
-		log("step 5:Assert Webelements in MyPatientPage");
-		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
-		log("step 6:Logout");
-		pMyPatientPage.clickLogout(driver);
-
-		log("step 7:Login as new user");
-		loginpage.navigateTo(driver, testcasesData.geturl());
-		pMyPatientPage = loginpage.login(email, testcasesData.getPassword());
-
-		log("step 8:Assert Webelements in MyPatientPage");
-		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
-		log("step 9: Logout ");
-		pMyPatientPage.clickLogout(driver);
+		
+		// Executing Test
+		createPatientTest.createPatientOnBetaSite(driver, testcasesData);
 
 	}
 
