@@ -744,7 +744,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testImportAndExportStaff() throws Exception {
 
 		log("testImportAndExportStaff");
