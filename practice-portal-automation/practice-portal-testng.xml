@@ -20,11 +20,13 @@
       <methods>
           <include name="testClickOnTabs"/>
           <include name="testCreateTreatmentPlan"/>
+          <include name="testMakePaymentForPatient"/>
           <include name="testPatientSearchLink"/>
           <include name="testPracticePortal"/>
           <include name="testQuickSendPatientPDF"/>
           <include name="testLoginLogout"/>
-          <include name="testSendUserIdEmail"/>      
+          <include name="testSendUserIdEmail"/> 
+          <include name="testVirtualCardSwiper"/>       
       </methods>   
 </classes>     
 </test>
