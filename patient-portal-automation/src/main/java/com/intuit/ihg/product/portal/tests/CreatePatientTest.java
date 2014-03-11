@@ -121,7 +121,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		
 		log("step 4:Fill security detials in Create Account  Page 2");
 		MyPatientPage pMyPatientPage = pCreateAccountPasswordPage.createPasswordSecurityOnBeta(email, testcasesData.getPassword(),
-				testcasesData.getSecretQuestion()+"?", testcasesData.getAnswer(), testcasesData.getPreferredLocationBeta(), testcasesData.getPreferredDoctorBeta());
+				testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getPreferredLocationBeta(), testcasesData.getPreferredDoctorBeta());
 
 
 		log("step 5:Assert Webelements in MyPatientPage");

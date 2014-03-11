@@ -176,7 +176,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtLastname.sendKeys(patientLastName);
 		
 		//Setting Date of birth
-		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		Select birthdaySelect = new Select(birthdayMonth);
+		birthdaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
+		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
 		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
 		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
 		
@@ -255,7 +257,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtLastname.sendKeys(sPatientLastName);
 		
 		//Setting Date of birth
-		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		Select birthDaySelect = new Select(birthdayMonth);
+		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
+		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
 		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
 		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
 		//txtbirthday.sendKeys(sBirthDay);
@@ -273,11 +277,13 @@ public class CreateAccountPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 30, txtLastname);
+		IHGUtil.waitForElement(driver, 30, birthdayDay);
 
 		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
 		//Setting Date of birth
-		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		Select birthDaySelect = new Select(birthdayMonth);
+		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
+		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
 		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
 		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
 		//txtbirthday.sendKeys(sBirthDay);
@@ -293,7 +299,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtUserIdActivation.sendKeys(sEmail);
 		txtUserPasswordActivation.sendKeys(sPassword);
 		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
-		txtSecretQuestionActivation.sendKeys(sSecretQuestion);
+		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
+		Select questionSelect = new Select(txtSecretQuestionActivation);
+		questionSelect.selectByVisibleText(sSecretQuestion);
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
 		//Accepting license agreements
