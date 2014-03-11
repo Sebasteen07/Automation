@@ -253,7 +253,12 @@ public class CreateAccountPage extends BasePageObject {
 
 		txtPatientFirstname.sendKeys(sPatientFirstName);
 		txtLastname.sendKeys(sPatientLastName);
-		txtbirthday.sendKeys(sBirthDay);
+		
+		//Setting Date of birth
+		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
+		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
 		txtEmail.sendKeys(sEmail);
@@ -271,7 +276,11 @@ public class CreateAccountPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, txtLastname);
 
 		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
-		txtbirthday.sendKeys(sBirthDay);
+		//Setting Date of birth
+		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
+		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
