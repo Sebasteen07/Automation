@@ -26,7 +26,8 @@
           <include name="testQuickSendPatientPDF"/>
           <include name="testLoginLogout"/>
           <include name="testSendUserIdEmail"/> 
-          <include name="testVirtualCardSwiper"/>       
+          <include name="testVirtualCardSwiper"/>  
+          <include name="testVirtualCardSwiperPayPal"/>      
       </methods>   
 </classes>     
 </test>

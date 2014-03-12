@@ -50,6 +50,12 @@ public class PracticeConstants {
 	public final static String cvv = "111";
 	public final static String zip = "12345";
 	public final static String comment = "Testing card Payment.";
+	
+	//card PayPal  MasterCard payment
+	public final static String ccNumMasterCard = "5105105105105100";
+	public final static String cardTypeMaster = "MasterCard";
+	public final static String swipeStringMaster = ";5105105105105100=15121011000012345678?";
+
 
 	//Patient Search
 	public final static String PatientFirstName = "ihgqa";

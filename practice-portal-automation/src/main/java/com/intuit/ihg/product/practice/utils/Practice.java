@@ -10,4 +10,6 @@ public class Practice {
 	public String patientUser = "";
 	public String patientEmail = "";
 	public String patientPassword = "";
+	public String payPalDoctor = "";
+	public String payPalPassword = "";
 }

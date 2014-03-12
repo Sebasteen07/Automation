@@ -51,4 +51,12 @@ public class PracticeTestData {
 	public String getPatientPassword() {
 		return practiceData.patientPassword;
 	}
+	
+	public String getPayPalDoctor() {
+		return practiceData.payPalDoctor;
+	}
+	
+	public String getPayPalPassword() {
+		return practiceData.payPalPassword;
+	}
 }

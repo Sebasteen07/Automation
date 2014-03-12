@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.practice.page.virtualCardSwiper;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -62,7 +64,7 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String comment) throws Exception {
 		IHGUtil.PrintMethodName();	
-		Thread.sleep(4000);
+		//Thread.sleep(4000);
 		driver.switchTo().frame("iframe");
 		cardHolderName.sendKeys(ccName);
 		
@@ -84,6 +86,40 @@ public class VirtualCardSwiperPage extends BasePageObject {
 			paymentCommentField.sendKeys(comment);
 		}
 			
+		clickHereToChargeCard.click();
+	}
+	
+	public void addCreditCardMandatoryInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String zip, String swipe) throws Exception {
+		IHGUtil.PrintMethodName();	
+		//Thread.sleep(4000);
+		
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		
+		driver.switchTo().frame("iframe");
+		cardHolderName.sendKeys(ccName);
+		
+		Select sel = new Select(creditCardType);
+		sel.selectByVisibleText(cardType);
+		
+		creditCardNum.sendKeys(ccNum);
+		
+		Select selMonth = new Select(expiryMonthDropDwn);
+		selMonth.selectByValue(expMonth);
+		
+		Select selYear = new Select(expiryYearDropDwn);
+		selYear.selectByVisibleText(expYear);
+		
+		amountToChargeField.sendKeys(amt);
+		zipField.sendKeys(zip);
+		
+		jse.executeScript("document.getElementsByName('track2')[0].value = '"+swipe+"';");
+		
+		WebElement hiddenVal = driver.findElement(By.name("track2") );
+		IHGUtil.waitForElement(driver, 10, hiddenVal);
+		if (hiddenVal.getAttribute("value").contains(swipe)){
+			log("Swipe code set in HTML - OK");
+		}
+		
 		clickHereToChargeCard.click();
 	}
 

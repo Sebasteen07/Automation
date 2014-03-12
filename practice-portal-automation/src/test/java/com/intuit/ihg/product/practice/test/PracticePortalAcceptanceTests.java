@@ -22,12 +22,9 @@ import com.intuit.ihg.product.practice.page.onlinebillpay.eStatementUploadPage;
 import com.intuit.ihg.product.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.practice.page.patientSearch.PatientDashboardPage;
-import com.intuit.ihg.product.practice.page.patientactivation.PatientactivationPage;
 import com.intuit.ihg.product.practice.page.treatmentplanpage.TreatmentPlansPage;
 import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
-import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
-import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
-import com.intuit.ihg.product.practice.tests.PatientActivationTest;
+import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
@@ -236,7 +233,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @Author: bbinisha
+	 * @Author: bbinisha refactored by Prokop Rehacek
 	 * User Story : US6579
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce:
@@ -251,38 +248,47 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test (enabled = true, groups = {"AcceptanceTests"})
 	public void testVirtualCardSwiper() throws Exception {
-
-		log("Test Case: TestLoginLogout");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");	
-
-		// Load up practice test data
+		
+		
+		// Instancing virtualCardSwiperTest
+		VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
+		
+		// Setting data provider
 		Practice practice = new Practice();
-		PracticeTestData practiceTestData =new PracticeTestData(practice);
-
-		log("step 2: Navigate to Login page"); 
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-		log("step 3: Enter credentials and login");
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("Step 4 : Navigate to Virtual Card Swiper page.");
-		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
-
-		log("verify whether Virtual Card Swiper page is displayed.");
-		verifyTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");
-
-		String Amount = IHGUtil.createRandomNumericString().substring(0,2);
-
-		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
-		virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth, PracticeConstants.expYear, 
-				Amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
-
-		log("Verify whether the payment is completed successfully.");
-		verifyEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
-				true, "The payment is completed properly.");
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		// Executing Test
+		virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData,"Visa");
+		
+	}
+	
+	/**
+	 * @Author: Prokop Rehacek
+	 * User Story : US6579
+	 * @Date: 3/11/2014
+	 * @StepsToReproduce:
+	 * Practice portal login
+	 * Click on 'Virtual Card Swiper' 
+	 * Enter the card info
+	 * Click on 'Click Here To Charge The Card' button.
+	 * Verify the Success Message.
+	 * =============================================================
+	 * @AreaImpacted : 
+	 * @throws Exception
+	 */
+	@Test (enabled = true, groups = {"AcceptanceTests"})
+	public void testVirtualCardSwiperPayPal() throws Exception {
+		
+		// Instancing virtualCardSwiperTest
+		VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
+		
+		// Setting data provider
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		// Executing Test
+		virtualCardSwiperTest.setSwipeString(PracticeConstants.swipeStringMaster);
+		virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "MasterCard");
 
 	}
 
@@ -647,6 +653,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
 		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("amount: "+amount);
 
 		log("Step 6 : Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess ( PracticeConstants.processCardNum, amount, PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum , PracticeConstants.processCardType);
