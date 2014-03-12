@@ -1535,7 +1535,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
 
 		log("step 8:Set Providers Form Fields");
-		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setProvidersFormFields();
+		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
 
 		log("step 9:Set Current Symptoms Form Fields");
 		FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
