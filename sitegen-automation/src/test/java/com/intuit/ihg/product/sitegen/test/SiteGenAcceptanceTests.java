@@ -937,7 +937,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		SitegenlUtil.switchToNewWindow(driver);
 		
 		log("Step 5 : Delete All Published Forms.'");
-		discreteForm.deleteAllPublishedForms();	
+		discreteForm.unpublishAllForms();	
 		discreteForm.deleteAllUnPublishedForms();
 
 		log("Step 6 : Add a new Custom Form");
@@ -1076,11 +1076,11 @@ public void testDiscreteForm() throws Exception {
 	String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 			
 	log("step 4: Click on Discrete Forms");
-	DiscreteFormsPage pManageDiscreteForms=pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+	DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 	
 	assertTrue(pManageDiscreteForms.isPageLoaded());
 	
-	pManageDiscreteForms.deleteAllPublishedForms();
+	pManageDiscreteForms.unpublishAllForms();
 	pManageDiscreteForms.deleteAllUnPublishedForms();
 	pManageDiscreteForms.createNewDiscreteForm();
 	pManageDiscreteForms.renameDiscreteForm(discreteFormName);
@@ -1088,61 +1088,54 @@ public void testDiscreteForm() throws Exception {
 	BasicInformationAboutYouPage pBasicInfoAboutYou = pManageDiscreteForms.openDiscreteForm(discreteFormName);
 	
 	log("step 5:Click on Basic Information About You");
-	EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clicklnkBasicInfoAboutYourPage();
-
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
-
-	log("step 6:Click on Emergency Contact Information");
-	HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkEmergencyContactInfo();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
-		
-	log("step 7a: Click on Health Insurance Information");
-	SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkHealthInsuranceInfo() ;
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	pBasicInfoAboutYou.clicklnkBasicInfoAboutYourPage();
+	log("select some basic questions to appear in the form");
+	pBasicInfoAboutYou.selectBasicInfo();
 	
-	log("step 7b: Click on Secondary Health Insurance Information");
-	OtherDoctorsYouSeen pOtherDoctorsYouSeen=pSecondaryHealthInsurancePage.clicklnkSecondaryHealthInsuranceInfo() ;
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	log("step 6:Click on Emergency Contact Information");
+	EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clickLnkEmergency();
+	pEmergencyContactInfoPage.selectBasicInfo();
+	
+	log("step 7a: Click on Health Insurance Information");
+	HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkInsurance();
+	pHealthInsuranceInfoPage.selectInsuranceCompanyQuestion();
+	
+	log("step 7b: Click on Secondary Health Insurance Information");	
+	SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkSecondaryInsurance() ;
+	pSecondaryHealthInsurancePage.selectInsuranceCompanyQuestion();
 	
 	log("step 8: Click on Other Doctors You Have Seen");
-	CurrentSymptomsPage pCurrentSymptomsPage = pOtherDoctorsYouSeen.clicklnkOtherDoctorsYouSeen();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	OtherDoctorsYouSeen pOtherDoctorsYouSeen = pSecondaryHealthInsurancePage.clicklnkOtherDoctors();
 	
 	log("step 9: Click on Current Symptoms");
-	MedicationsPage pMedicationPage = pCurrentSymptomsPage.clicklnkCurrentSymptoms();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
-			
+	CurrentSymptomsPage pCurrentSymptomsPage = pOtherDoctorsYouSeen.clicklnkCurrentSymptoms();
+	pCurrentSymptomsPage.selectBasicSymptoms();
+	
 	log("step 10: Click on Medications link");
-	Allergiespage pAllergiesPage = pMedicationPage.clicklnkMedications();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
-			
+	MedicationsPage pMedicationPage = pCurrentSymptomsPage.clicklnkMedications();
+
 	log("step 11: Click on Allergies link");
-	VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkAllergies();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	Allergiespage pAllergiesPage = pMedicationPage.clicklnkAllergies();
 			
 	log("step 12: Click on Vaccinations");
-	SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkVaccinaion();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
-	
+	VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkVaccinations();
+			
 	log("step 13: Click on SurgeriesAndHospitalizationsPage");
-	ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnklnkSurgeriesAndHospitalization();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkSurgsHosps();
 	
 	log("step 14: Click on Exam Test and  Procedures");
-	IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkExamsTestsAndProcedures();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
 	
 	log("step 15: Click on Illness and Conditions");
-	FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkIllnessesAndConditions();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
 	
 	log("step 16: Click on Family Medical History");
-	SocialHistoryPage pSocialHistoryPage = pFamilyMedicalHistoryPage.clicklnkFamilyMedicalHistory();
-	pManageDiscreteForms.clicklnkAutomationPracticeDiscreteForm();
+	FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
 	
 	log("step 17: Click on Social History the last page of discrete form");
-	pSocialHistoryPage.clicklnkSocialHistoryPage();
-		
+	SocialHistoryPage pSocialHistoryPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
+	pSocialHistoryPage.clickSave();
+	
 	log("step 18 : Publish the saved Discrete Form");
 	pManageDiscreteForms.publishTheSavedForm(discreteFormName);
 	
@@ -1168,9 +1161,6 @@ public void testDiscreteForm() throws Exception {
 
 	log("step 4:Click On Start Registration Button");
 	FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-
-	//log("Verify if the Welcome page is loaded");
-	//assertTrue(pFormWelcomePage.isWelcomePageLoaded());
 	
 	log("Click On Continue Button");
 	FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
@@ -1186,7 +1176,7 @@ public void testDiscreteForm() throws Exception {
 	FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
 	
 	log("step 8:Set Providers Form Fields");
-	FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setProvidersFormFields();
+	FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
 
 	log("step 9:Set Current Symptoms Form Fields");
 	FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
@@ -1220,7 +1210,7 @@ public void testDiscreteForm() throws Exception {
 	pMyPatientPage.verifyRegistrationConfirmationText(); 
 	
 	log("Step 19 : Click on 'Fill Out' link under 'Custom Form' section");
-	/*HealthFormPage pHealthForm = */pMyPatientPage.clickFillOutFormsLink();
+	pMyPatientPage.clickFillOutFormsLink();
 	
 	log("Step 20 : Select " + discreteFormName + " discrete form");
 	CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
@@ -1254,9 +1244,7 @@ public void testDiscreteForm() throws Exception {
 	//ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(discreteFormName);
 			
 	
-	driver.close();
-	
-	
+	driver.close();	
 }
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
@@ -1289,7 +1277,7 @@ public void testDiscreteForm() throws Exception {
 		SitegenlUtil.switchToNewWindow(driver);
 		
 		log("Step 5 : Delete All Published Forms.'");
-		discreteForm.deleteAllPublishedForms();	
+		discreteForm.unpublishAllForms();	
 		discreteForm.deleteAllUnPublishedForms();
 
 		log("Step 6 : Add a new Custom Form");

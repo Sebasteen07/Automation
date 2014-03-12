@@ -11,14 +11,17 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class SecondaryHealthInsurancePage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='secondary_insurance']/a")
-	private WebElement lnkSecondaryHealthInsurance;
+	@FindBy(xpath="//li[@data-section='currentproviders']/a")
+	private WebElement lnkOtherDoctors;
 	
 	@FindBy(id = "hide_secondary_insurance_check")
 	private WebElement hideSecondaryInsuranceCheck;	
 
 	@FindBy(id = "secondary_insurance_company")
-	private WebElement secondaryInsuranceCompany;	
+	private WebElement secondaryInsuranceCompany;
+	
+	@FindBy(xpath = "//li[input[@id='secondary_insurance_company']]/a")
+	private WebElement secondaryInsuranceCompanyAsterisk;
 
 	@FindBy(id = "secondary_insurance_company_phone")
 	private WebElement secondaryInsuranceCompanyPhone;	
@@ -75,34 +78,46 @@ public class SecondaryHealthInsurancePage extends BasePageObject{
 	private WebElement btnSave;
 		
 	
-	public SecondaryHealthInsurancePage(WebDriver driver) {
+	public SecondaryHealthInsurancePage(WebDriver driver)
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
 
-/**
- * Click on link - Health Insurance Information	
- * @return
- */
-
-public OtherDoctorsYouSeen clicklnkSecondaryHealthInsuranceInfo()
-{	
-	//SitegenlUtil.setDefaultFrame(driver);
-	IHGUtil.waitForElement(driver, 30, lnkSecondaryHealthInsurance);
-	lnkSecondaryHealthInsurance.click();
+	/**
+	 * Click on link - Other Doctors
+	 * @return
+	 */
 	
-	IHGUtil.waitForElement(driver, 30, hideSecondaryInsuranceCheck);
-	if (hideSecondaryInsuranceCheck.isSelected())
-		hideSecondaryInsuranceCheck.click();
-		
-	secondaryInsuranceCompany.click();
+	public OtherDoctorsYouSeen clicklnkOtherDoctors()
+	{	
+		lnkOtherDoctors.click();
+		return PageFactory.initElements(driver,OtherDoctorsYouSeen.class);
+	}
 	
-	IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-	// Close the browser window
-	return PageFactory.initElements(driver,OtherDoctorsYouSeen.class);
-}
-
+	/**
+	 * Click on Insurance company name checkbox and makes it optional to fill
+	 */
+	
+	public void selectInsuranceCompanyQuestion() 
+	{
+		makeSecondaryInsuranceAppear();
+		if (secondaryInsuranceCompany.isSelected() == false)
+			secondaryInsuranceCompany.click();
+		if (secondaryInsuranceCompany.isSelected())
+			secondaryInsuranceCompanyAsterisk.click();
+	}
+	
+	/**
+	 * Unselects the hide this page checkbox
+	 */
+	
+	public void makeSecondaryInsuranceAppear() 
+	{
+		IHGUtil.waitForElement(driver, 30, hideSecondaryInsuranceCheck);
+		if (hideSecondaryInsuranceCheck.isSelected())
+			hideSecondaryInsuranceCheck.click();
+	}
 
 }

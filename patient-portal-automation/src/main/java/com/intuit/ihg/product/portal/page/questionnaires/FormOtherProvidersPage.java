@@ -57,7 +57,7 @@ public class FormOtherProvidersPage extends BasePageObject
 	 * @return FormCurrentSymptomsPage
 	 * @throws Exception
 	 */
-	public FormCurrentSymptomsPage setProvidersFormFields() throws Exception
+	public FormCurrentSymptomsPage setNoProvidersOnPage() throws Exception
 	{
 		setNoProviders();
 

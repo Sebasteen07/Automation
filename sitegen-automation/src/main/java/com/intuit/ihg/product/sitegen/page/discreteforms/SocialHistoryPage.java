@@ -72,7 +72,8 @@ public class SocialHistoryPage extends BasePageObject{
 	private WebElement socialhistoryComments;
 	
 
-	public SocialHistoryPage(WebDriver driver) {
+	public SocialHistoryPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -84,7 +85,8 @@ public class SocialHistoryPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -100,21 +102,12 @@ public class SocialHistoryPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link -Social History	
-	 * @return
+	 * Click on save button and close the form editor
 	 */
 	
-	public SocialHistoryPage clicklnkSocialHistoryPage()
-	{	
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkSocialHistory);
-		lnkSocialHistory.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
+	public void clickSave() 
+	{
 		btnSave.click();
-		
-		// Close the browser window
-		return PageFactory.initElements(driver,SocialHistoryPage.class);
 	}
 
 }

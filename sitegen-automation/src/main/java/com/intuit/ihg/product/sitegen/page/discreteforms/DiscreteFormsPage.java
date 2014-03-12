@@ -65,27 +65,18 @@ public class DiscreteFormsPage extends BasePageObject{
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :"+count);
-		for( int i = 0; i<count; i++) {
-
-			List<WebElement> deleteButtonList = driver.findElements(By.xpath(xpath));
-			for(WebElement deleteButton : deleteButtonList) {
-				deleteButton.click();
-				Thread.sleep(3000);
-				yesDeleteButton.click();
-			}	
-			Thread.sleep(6000);
-			if (driver.findElements(By.xpath(xpath)).size()==0) {
-				break;
-			}
-		}	
-
+		List<WebElement> deleteButtonList = driver.findElements(By.xpath(xpath));
+		for(WebElement deleteButton : deleteButtonList) {
+			deleteButton.click();
+			yesDeleteButton.click();
+		}
 	}
 
 	/**
-	 * Description : Deletes all the published forms present in the Discrete Forms page.
+	 * Description : Unpublishes all the published forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
-	public void deleteAllPublishedForms() throws Exception {
+	public void unpublishAllForms() throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(3000);
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
@@ -133,9 +124,9 @@ public class DiscreteFormsPage extends BasePageObject{
 	public void createNewDiscreteForm() throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
-		System.out.println("CLICK ON DISCRETE FORM");
-		System.out.println("CHECKING CURRENT URL"+driver.getCurrentUrl());
-		System.out.println("CHECKING CURRENT url source code"+driver.getPageSource());
+		//System.out.println("CLICK ON DISCRETE FORM");
+		//System.out.println("CHECKING CURRENT URL"+driver.getCurrentUrl());
+		//System.out.println("CHECKING CURRENT url source code"+driver.getPageSource());
 		registrationHealthHistoryFormButton.click();
 		Thread.sleep(5000);
 	}
@@ -150,14 +141,13 @@ public class DiscreteFormsPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 	
 		lnkGeneralRegAndHealthHistory.click();
-		System.out.println("@@@@@@@after clicking on gen reg and health history link");
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		
 		lnkCustomForm.clear();
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
 		
 		lnkCustomForm.sendKeys(uniqueDiscreteFormName);
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
 		btnSaveForms.click();	
 	}
 	
@@ -181,10 +171,10 @@ public class DiscreteFormsPage extends BasePageObject{
 	 */
 	public BasicInformationAboutYouPage openDiscreteForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(5000);
+		Thread.sleep(1000);
 		// Find the form by name
 		driver.findElement(By.xpath("//a[contains(text(), '" + formName + "')]")).click();
-		Thread.sleep(5000);
+		Thread.sleep(1000);
 		SitegenlUtil.switchToNewWindow(driver);
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
 	}

@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='surgerieshospitalizations_section']/a")
-	private WebElement lnkSurgeriesAndHospitalizationPage;
+	@FindBy(xpath="//li[@data-section='procedures_section']/a")
+	private WebElement lnkProcedures;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -24,7 +24,8 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	private WebElement surgerieshospitalizationsCommentsCheck;
 	
 	
-	public SurgeriesAndHospitalizationsPage(WebDriver driver) {
+	public SurgeriesAndHospitalizationsPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -36,14 +37,15 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkSurgeriesAndHospitalizationPage);
+			result = IHGUtil.waitForElement(driver, 6, lnkProcedures);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -52,21 +54,16 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Surgeries and Hospitalization
+	 * Click on link - Exams and Procedures
 	 * @return
 	 */
 	
-	public ExamsTestsAndProceduresPage clicklnklnkSurgeriesAndHospitalization()
+	public ExamsTestsAndProceduresPage clicklnkProcedures()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkSurgeriesAndHospitalizationPage);
-		lnkSurgeriesAndHospitalizationPage.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		
-		// Close the browser window
-		return PageFactory.initElements(driver,ExamsTestsAndProceduresPage.class);
+		IHGUtil.waitForElement(driver, 30, lnkProcedures);
+		lnkProcedures.click();
+		return PageFactory.initElements(driver, ExamsTestsAndProceduresPage.class);
 	}
 }
 

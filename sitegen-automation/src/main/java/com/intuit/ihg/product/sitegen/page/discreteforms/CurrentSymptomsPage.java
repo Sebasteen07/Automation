@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class CurrentSymptomsPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='currentsymptoms']/a")
-	private WebElement lnkCurrentSymptoms;
+	@FindBy(xpath="//li[@data-section='medications_section']/a")
+	private WebElement lnkMedications;
 	
 	@FindBy(xpath = "//h5[contains(text(), 'General Health')]/span/input")               
 	private WebElement chckGeneralHealth;
@@ -44,45 +44,33 @@ public class CurrentSymptomsPage extends BasePageObject{
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
 
-	public CurrentSymptomsPage(WebDriver driver) {
+	public CurrentSymptomsPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-	
-	
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkCurrentSymptoms);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
 	}
 	
 	/**
 	 * Click on link -  Current Symptoms
-	 * @return
-	 * @throws InterruptedException 
+	 * @return PageFactory initialization for Medications Page
 	 */
 	
-	public MedicationsPage clicklnkCurrentSymptoms() throws InterruptedException
+	public MedicationsPage clicklnkMedications() 
 	{	
+		
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkCurrentSymptoms);
-		lnkCurrentSymptoms.click();
-				
+		IHGUtil.waitForElement(driver, 30, lnkMedications);
+		lnkMedications.click();
+		
+		return PageFactory.initElements(driver,MedicationsPage.class);
+	}
+	
+	/**
+	 * Select basic symptoms to appear in the form
+	 */
+	
+	public void selectBasicSymptoms() 
+	{
 		log("Check General Health");
 		IHGUtil.waitForElement(driver, 30, chckGeneralHealth);
 		chckGeneralHealth.click();
@@ -90,14 +78,8 @@ public class CurrentSymptomsPage extends BasePageObject{
 		log("Check Blood");
 		chckBlood.click();
 		
-		Thread.sleep(2000);
 		log("Check Eyes, Ears,Nose and Throat");
 		chckEyesEarsNoseThroat.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		// Close the browser window
-		return PageFactory.initElements(driver,MedicationsPage.class);
 	}
 	
-	}
+}

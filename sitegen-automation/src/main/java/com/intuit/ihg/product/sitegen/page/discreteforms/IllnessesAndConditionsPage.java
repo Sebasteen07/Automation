@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class IllnessesAndConditionsPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='conditions_section']/a")
-	private WebElement lnkIllnessesAndConditions;
+	@FindBy(xpath="//li[@data-section='familymedicalhistory_section']/a")
+	private WebElement lnkFamilyHistory;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -306,7 +306,8 @@ public class IllnessesAndConditionsPage extends BasePageObject{
 	private WebElement conditionsCommentsCheck;
 	
 
-	public IllnessesAndConditionsPage(WebDriver driver) {
+	public IllnessesAndConditionsPage(WebDriver driver)
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -318,14 +319,15 @@ public class IllnessesAndConditionsPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded()
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkIllnessesAndConditions);
+			result = IHGUtil.waitForElement(driver, 6, lnkFamilyHistory);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -334,20 +336,15 @@ public class IllnessesAndConditionsPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Illness and Conditions
+	 * Click on link - Family Medical History
 	 * @return
 	 */
 	
-	public FamilyMedicalHistoryPage clicklnkIllnessesAndConditions()
+	public FamilyMedicalHistoryPage clicklnkFamilyHistory()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkIllnessesAndConditions);
-		lnkIllnessesAndConditions.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		
-		// Close the browser window
+		IHGUtil.waitForElement(driver, 30, lnkFamilyHistory);
+		lnkFamilyHistory.click();
 		return PageFactory.initElements(driver,FamilyMedicalHistoryPage.class);
 	}
 }

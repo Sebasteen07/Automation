@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class HealthInsuranceInformationPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='insurance']/a")
-	private WebElement lnkHealthInsuranceInfoPage;
+	@FindBy(xpath="//li[@data-section='secondary_insurance']/a")
+	private WebElement lnkSecondaryInsurance;
 	
 	@FindBy(id = "hide_insurance_check")
 	private WebElement hideInsuranceCheck;	
@@ -97,36 +97,15 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
-	
-	
+		
 	@FindBy(xpath = "//li[input[@id='primary_insurance_company']]/a")
 	private WebElement primaryInsuranceCompanyAsterisk;
 	
 	
-	public HealthInsuranceInformationPage(WebDriver driver) {
+	public HealthInsuranceInformationPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-	
-	
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkHealthInsuranceInfoPage);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
 	}
 	
 	/**
@@ -134,37 +113,34 @@ public class HealthInsuranceInformationPage extends BasePageObject{
 	 * @return
 	 */
 	
-	public SecondaryHealthInsurancePage clicklnkHealthInsuranceInfo()
+	public SecondaryHealthInsurancePage clicklnkSecondaryInsurance() 
 	{	
-		//SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkHealthInsuranceInfoPage);
-		lnkHealthInsuranceInfoPage.click();
-		
-		IHGUtil.waitForElement(driver, 30, chckHideInsurance);
-		if (chckHideInsurance.isSelected())
-			chckHideInsurance.click();
-		
-		selectInsuranceCompanyAppearance();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-			btnSave.click();
-		// Close the browser window
+		lnkSecondaryInsurance.click();
 		return PageFactory.initElements(driver,SecondaryHealthInsurancePage.class);
 	}
 	
 	/**
-	 * Click on Insurance company name checkbox and makes it optional to fill
+	 * Click on Insurance company name checkbox and make it optional to fill
 	 */
 	
-	public void selectInsuranceCompanyAppearance()
+	public void selectInsuranceCompanyQuestion() 
 	{
-		IHGUtil.waitForElement(driver, 30, primaryInsuranceCompany);
+		makeInsurancePageAppear();
 		if (primaryInsuranceCompany.isSelected() == false)
 			primaryInsuranceCompany.click();
-		if (primaryInsuranceCompany.isSelected() == false)
-			
+		if (primaryInsuranceCompanyAsterisk.isSelected())
 			primaryInsuranceCompanyAsterisk.click();
 	}
 	
+	/**
+	 * Unselects the hide this page checkbox
+	 */
+	
+	public void makeInsurancePageAppear() 
+	{
+		IHGUtil.waitForElement(driver, 30, hideInsuranceCheck);
+		if (hideInsuranceCheck.isSelected())
+			hideInsuranceCheck.click();
+	}
 
 }

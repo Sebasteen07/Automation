@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class FamilyMedicalHistoryPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='familymedicalhistory_section']/a")
-	private WebElement lnkFamilyMedicalHistory;
+	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
+	private WebElement lnkSocialHistory;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -99,7 +99,8 @@ public class FamilyMedicalHistoryPage extends BasePageObject{
 	private WebElement familymedicalhistoryComments;
 	
 	
-	public FamilyMedicalHistoryPage(WebDriver driver) {
+	public FamilyMedicalHistoryPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -111,14 +112,15 @@ public class FamilyMedicalHistoryPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkFamilyMedicalHistory);
+			result = IHGUtil.waitForElement(driver, 6, lnkSocialHistory);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -127,20 +129,15 @@ public class FamilyMedicalHistoryPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Family Medical History	
+	 * Click on link - Social History	
 	 * @return
 	 */
 	
-	public SocialHistoryPage clicklnkFamilyMedicalHistory()
+	public SocialHistoryPage clicklnkSocialHistory()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkFamilyMedicalHistory);
-		lnkFamilyMedicalHistory.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		
-		// Close the browser window
+		IHGUtil.waitForElement(driver, 30, lnkSocialHistory);
+		lnkSocialHistory.click();
 		return PageFactory.initElements(driver,SocialHistoryPage.class);
 	}
 }

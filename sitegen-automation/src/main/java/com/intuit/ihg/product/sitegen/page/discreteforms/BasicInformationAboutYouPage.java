@@ -18,6 +18,9 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	
 	@FindBy(xpath="//li[@data-section='demographics']/a")
 	private WebElement lnkBasicInformationAboutYou;
+	
+	@FindBy(xpath="//li[@data-section='emergencycontact']/a")
+	private WebElement lnkEmergencyContactInformation;
 
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -45,7 +48,8 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -62,19 +66,13 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	
 	/**
 	 * Click on link - Basic Information About You
-	 * @return
 	 */
 	
-	public EmergencyContactInformationPage clicklnkBasicInfoAboutYourPage()
-	{	
+	public void clicklnkBasicInfoAboutYourPage() 
+	{			
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkBasicInformationAboutYou);
 		lnkBasicInformationAboutYou.click();
-		
-		selectBasicInfo();
-		btnSave.click();
-		
-		return PageFactory.initElements(driver,EmergencyContactInformationPage.class);
 	}
 	
 	/**
@@ -82,7 +80,8 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	 *	Address items, phone number, gender
 	 */
 	
-	public void selectBasicInfo() {
+	public void selectBasicInfo() 
+	{
 		// wait for the element to load
 		IHGUtil.waitForElement(driver, 30, chckAddress);
 		
@@ -92,6 +91,17 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 		chckZIP.click();
 		chckPhoneNumber.click();
 		chckGender.click();
+	}
+	
+	/**
+	 * Click on next page, which is Emergency contact page
+	 * @return PageFactory initialization of EmergencyContactPage class
+	 */
+	
+	public EmergencyContactInformationPage clickLnkEmergency() 
+	{
+		lnkEmergencyContactInformation.click();
+		return PageFactory.initElements(driver, EmergencyContactInformationPage.class);
 	}
 
 }

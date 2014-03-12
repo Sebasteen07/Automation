@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class ExamsTestsAndProceduresPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='procedures_section']/a")
-	private WebElement lnkExamsTestsAndProcedures;
+	@FindBy(xpath="//li[@data-section='conditions_section']/a")
+	private WebElement lnkConditions;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -63,7 +63,8 @@ public class ExamsTestsAndProceduresPage extends BasePageObject{
 	private WebElement proceduresComments;
 	
 
-	public ExamsTestsAndProceduresPage(WebDriver driver) {
+	public ExamsTestsAndProceduresPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -75,14 +76,15 @@ public class ExamsTestsAndProceduresPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkExamsTestsAndProcedures);
+			result = IHGUtil.waitForElement(driver, 6, lnkConditions);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -91,19 +93,15 @@ public class ExamsTestsAndProceduresPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Exam Tests and Procedures
+	 * Click on link - Illnesses and Conditions
 	 * @return
 	 */
 	
-	public IllnessesAndConditionsPage clicklnkExamsTestsAndProcedures()
+	public IllnessesAndConditionsPage clicklnkConditions()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkExamsTestsAndProcedures);
-		lnkExamsTestsAndProcedures.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		// Close the browser window
+		IHGUtil.waitForElement(driver, 30, lnkConditions);
+		lnkConditions.click();
 		return PageFactory.initElements(driver,IllnessesAndConditionsPage.class);
 	}
 }

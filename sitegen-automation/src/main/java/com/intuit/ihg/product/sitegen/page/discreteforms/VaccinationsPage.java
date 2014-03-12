@@ -11,8 +11,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class VaccinationsPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='immunizations']/a")
-	private WebElement lnkVaccination;
+	@FindBy(xpath="//li[@data-section='surgerieshospitalizations_section']/a")
+	private WebElement lnkSurgsHosps;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
@@ -66,7 +66,8 @@ public class VaccinationsPage extends BasePageObject{
 	private WebElement immunizationsComments;
 	
 	
-	public VaccinationsPage(WebDriver driver) {
+	public VaccinationsPage(WebDriver driver)
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -78,14 +79,15 @@ public class VaccinationsPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded()
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkVaccination);
+			result = IHGUtil.waitForElement(driver, 6, lnkSurgsHosps);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -94,22 +96,16 @@ public class VaccinationsPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Vaccination
+	 * Click on link - Surgeries and Hospitalizations
 	 * @return
 	 */
 	
-	public SurgeriesAndHospitalizationsPage clicklnkVaccinaion()
+	public SurgeriesAndHospitalizationsPage clicklnkSurgsHosps()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkVaccination);
-		lnkVaccination.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		
-		
-		// Close the browser window
-		return PageFactory.initElements(driver,SurgeriesAndHospitalizationsPage.class);
+		IHGUtil.waitForElement(driver, 30, lnkSurgsHosps);
+		lnkSurgsHosps.click();
+		return PageFactory.initElements(driver, SurgeriesAndHospitalizationsPage.class);
 	}
 }
 

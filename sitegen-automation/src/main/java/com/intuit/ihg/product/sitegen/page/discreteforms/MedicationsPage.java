@@ -11,13 +11,14 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class MedicationsPage extends BasePageObject{
 	
-	@FindBy(xpath="//li[@data-section='medications_section']/a")
-	private WebElement lnkMedications;
+	@FindBy(xpath="//li[@data-section='allergies']/a")
+	private WebElement lnkAllergies;
 	
 	@FindBy(id="save_config_form")              
 	private WebElement btnSave;
 	
-	public MedicationsPage(WebDriver driver) {
+	public MedicationsPage(WebDriver driver) 
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -29,14 +30,15 @@ public class MedicationsPage extends BasePageObject{
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() {
+	public boolean isSearchPageLoaded() 
+	{
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkMedications);
+			result = IHGUtil.waitForElement(driver, 6, lnkAllergies);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -45,21 +47,16 @@ public class MedicationsPage extends BasePageObject{
 	}
 	
 	/**
-	 * Click on link - Medications	
+	 * Click on link - Allergies	
 	 * @return
 	 */
 	
-	public Allergiespage clicklnkMedications()
+	public Allergiespage clicklnkAllergies()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkMedications);
-		lnkMedications.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		// Close the browser window
+		IHGUtil.waitForElement(driver, 30, lnkAllergies);
+		lnkAllergies.click();
 		return PageFactory.initElements(driver,Allergiespage.class);
 	}
-	
 	
 }

@@ -13,8 +13,8 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 	
 	public class OtherDoctorsYouSeen extends BasePageObject{
 		
-		@FindBy(xpath="//*[@id='form_form']/div[2]/div[1]/ul/li[1]/a")
-		private WebElement lnkOtherDoctorsYouSeen;
+		@FindBy(xpath="//li[@data-section='currentsymptoms']/a")
+		private WebElement lnkCurrentSymptoms;
 
 		@FindBy(id="save_config_form")              
 		private WebElement btnSave;
@@ -56,30 +56,10 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 		private WebElement pharmacyPhone;
 	
 	
-	public OtherDoctorsYouSeen(WebDriver driver) {
+	public OtherDoctorsYouSeen(WebDriver driver)
+	{
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-	
-	
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-	
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-	
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkOtherDoctorsYouSeen);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-	
-		return result;
 	}
 	
 	
@@ -88,18 +68,11 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 	 * @return
 	 */
 	
-	public CurrentSymptomsPage clicklnkOtherDoctorsYouSeen() 
+	public CurrentSymptomsPage clicklnkCurrentSymptoms() 
 	{	
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkOtherDoctorsYouSeen);
-		lnkOtherDoctorsYouSeen.click();
-		
-		IHGUtil.waitForElement(driver, 30, btnSave);
-		btnSave.click();
-		// Close the browser window
-		return PageFactory.initElements(driver,CurrentSymptomsPage.class);
+		lnkCurrentSymptoms.click();
+		return PageFactory.initElements(driver, CurrentSymptomsPage.class);
 	}
 
-	
 }
 	
