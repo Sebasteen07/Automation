@@ -89,7 +89,7 @@ public class SiteGenHomePage extends BasePageObject {
 		searchPratciceField.sendKeys(practiceName);
 		searchPratciceButton.click();
 		Thread.sleep(4000);
-		String xpath = ".//table[@class= 'sg_admin_table']/tbody/tr[4]/td/li/strong/a[text()='"+practiceName+"']";
+		String xpath = "//*[contains(text(),'"+practiceName+"')]";
 		driver.findElement(By.xpath(xpath)).click();
 		Thread.sleep(10000);
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
