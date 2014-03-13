@@ -18,7 +18,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class MerchantAccountSetUpPage extends BasePageObject{
 
-	@FindBy(xpath = ".//input[@value='radio8']")
+	@FindBy(xpath = "//*[@name='merchAcctTypeWrapper:radioFilter'][1]")
 	private WebElement practiceRadioButton;
 
 	@FindBy(xpath = ".//select[@name='processor']")
