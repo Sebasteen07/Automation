@@ -6,8 +6,8 @@
 
     <entry key="oauth.keystore.file.path">./src/test/resources/config/prd</entry>
     <entry key="oauth.keystore.file.name">oauth2.keystore</entry>	    
-    <entry key="oauth.consumer.keysecret.url">http://localhost:8085/identity/v1/oauth2/oauthapplication/</entry>
-    <entry key="oauth.token.access.userpass.url">http://localhost:8085/identity/v1/oauth2/token</entry>
+    <entry key="oauth.consumer.keysecret.url">https://integration.health.intuit.com/v1/oauth2/oauthapplication/</entry>
+    <entry key="oauth.token.access.userpass.url">https://integration.health.intuit.com/v1/oauth2/token</entry>
         
     <entry key="ihg.host.patient">https://integration.health.intuit.com</entry>
     <entry key="ihg.host.amdc">https://integration.health.intuit.com</entry>
