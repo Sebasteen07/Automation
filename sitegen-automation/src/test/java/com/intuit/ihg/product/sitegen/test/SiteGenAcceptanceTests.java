@@ -908,7 +908,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * ====================================================================================================================
 	 * 
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomForms() throws Exception{
 
 		log("testCustomForms");
@@ -1049,7 +1049,10 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 @Test(enabled = true, groups = {"AcceptanceTests"})
-public void testDiscreteForm() throws Exception {
+public void testDiscreteForm() throws Exception 
+{
+	String date = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Date that will be used to validate forms update date
+	
 	log("testDiscreteForm");
 	log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
 	log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
@@ -1194,7 +1197,6 @@ public void testDiscreteForm() throws Exception {
 	FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
 
 	log("step 14:Set Previous Exams Form Fields");
-	Thread.sleep(2000);
 	FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
 
 	log("step 15:Set IllnessCondition Form Fields");
@@ -1218,9 +1220,7 @@ public void testDiscreteForm() throws Exception {
 		
 	log("Step 21 : Logout of patient portal");
 	pMyPatientPage.logout(driver);
-	driver.close();
-	WebDriver driver = WebDriverFactory.getWebDriver();
-	
+
 	Practice practice = new Practice();
 	PracticeTestData practiceTestData = new PracticeTestData(practice);
 	
@@ -1228,26 +1228,24 @@ public void testDiscreteForm() throws Exception {
 	
 	PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
 	PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
-
 	
-	log("Step 23 : Verify whether the practice home page is loaded.");
-	verifyTrue(practiceHome.isHomePageLoaded(), "Expected to see 'Recent Activity' on home page, but it was not found");
-	
-	log("step 24: On Practice Portal Home page Click CustomFormTab");
+	log("step 23: On Practice Portal Home page Click CustomFormTab");
 	SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
 	verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
 
-	/*log("step 25 : Search for PatientForms With Status Open");
-	SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);*/
-
-	//log("step 26: View the Result");
-	//ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(discreteFormName);
-			
+	log("step 24 : Search for PatientForms With Status Open");
+	SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
 	
-	driver.close();	
+	log("step 25: View the Result");
+	ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
+	
+	log("step 26: Verify date");
+	// if the method returns -1 then todays date was not found
+	int positionOfTodaysDate = pViewPatientFormPage.getLastUpdatedDate().getText().indexOf(date);
+	assertTrue(positionOfTodaysDate != -1, "Form submitted today not found");
 }
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomFormsEndToEnd() throws Exception{
 
 		log("testCustomForms");
@@ -1350,8 +1348,6 @@ public void testDiscreteForm() throws Exception {
 
 		log("Displayed patient name is :"+actualPatientName);
 		verifyEquals(pHealthForm1.Patientname.getText().trim().contains("Patient Name : AutoPatient Medfusion"), true);
-		
-		driver.close();
 	}
 	
 

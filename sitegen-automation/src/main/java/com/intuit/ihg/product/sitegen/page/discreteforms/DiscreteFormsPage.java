@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -60,15 +62,20 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void deleteAllUnPublishedForms() throws Exception {
+		List<WebElement> deleteButtons;
+		WebDriverWait wait = new WebDriverWait(driver, 4); // object that would make the webdriver wait until deleted item disappears
+		
 		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :"+count);
-		List<WebElement> deleteButtonList = driver.findElements(By.xpath(xpath));
-		for(WebElement deleteButton : deleteButtonList) {
-			deleteButton.click();
+		while (count > 0) {
+			deleteButtons = driver.findElements(By.xpath(xpath));
+			deleteButtons.get(0).click();
 			yesDeleteButton.click();
+			// wait until the deleted form disappears
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+			count--;
 		}
 	}
 
@@ -77,8 +84,9 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void unpublishAllForms() throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 4); // object that would make the webdriver wait until deleted item disappears
+		
 		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of Published rows is :"+count);
@@ -86,13 +94,15 @@ public class DiscreteFormsPage extends BasePageObject{
 
 		for (WebElement unpublishButton : unpublishButtonList) {		
 			unpublishButton.click();	
-			Thread.sleep(5000);
+			// wait until the unpublished form disappears from published section
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+			count--;
 		}
 
 	}
 
 	/**
-	 *  Description : Creates new custom form
+	 * Description : Creates new custom form
 	 * @throws Exception
 	 */
 	public void createANewCustomForm () throws Exception {

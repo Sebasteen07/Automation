@@ -8,12 +8,20 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
 public class ViewPatientFormPage extends BasePageObject {
 	
-	@FindBy(css="td.searchResultsDetails > a")
+	@FindBy(css = "td.searchResultsDetails > a")
 	private WebElement lnkViewDetails;
-
 	
-	public ViewPatientFormPage(WebDriver driver) {
+	@FindBy(xpath = "//td[strong[contains(text(), 'Last updated on: ')]]")
+	private WebElement lastUpdatedDate;
+	
+	public ViewPatientFormPage(WebDriver driver)
+	{
 		super(driver);
+	}
+	
+	public WebElement getLastUpdatedDate()
+	{
+		return lastUpdatedDate;
 	}
 
 }
