@@ -1240,9 +1240,9 @@ public void testDiscreteForm() throws Exception
 	ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
 	
 	log("step 26: Verify date");
-	// if the method returns -1 then todays date was not found
-	int positionOfTodaysDate = pViewPatientFormPage.getLastUpdatedDate().getText().indexOf(date);
-	assertTrue(positionOfTodaysDate != -1, "Form submitted today not found");
+	// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
+	String submittedDate = pViewPatientFormPage.getLastUpdatedDate().getText().substring(17, 27);
+	assertEquals(submittedDate, date, "Form submitted today not found");
 }
 	
 	@Test(enabled = false, groups = {"AcceptanceTests"})
