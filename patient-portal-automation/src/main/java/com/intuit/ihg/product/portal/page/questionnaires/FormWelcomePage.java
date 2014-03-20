@@ -24,7 +24,10 @@ public class FormWelcomePage extends BasePageObject
 	@FindBy(id="continueWelcomePageButton")
 	private WebElement btnContinue;
 
-
+	
+	@FindBy(xpath = "//section[@class='content indented']/p[1]")
+	private WebElement welcomeMessage;
+	
 	/**
 	 * @Description:Click on Continue Button
 	 * @return
@@ -52,6 +55,11 @@ public class FormWelcomePage extends BasePageObject
 			log("Welcome page of forms is not loaded");
 		}
 		return result;
+	}
+	
+	public boolean welcomeMessageContent(String message)
+	{
+		return message.equals(welcomeMessage.getText());
 	}
 	
 }

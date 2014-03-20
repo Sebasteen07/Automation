@@ -94,6 +94,17 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	}
 	
 	/**
+	 * Selects more attributes for patient information
+	 */
+	public void selectAdditionalInfo() 
+	{
+		selectBasicInfo();
+		
+		
+	}
+	
+	
+	/**
 	 * Click on next page, which is Emergency contact page
 	 * @return PageFactory initialization of EmergencyContactPage class
 	 */
@@ -103,5 +114,11 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 		lnkEmergencyContactInformation.click();
 		return PageFactory.initElements(driver, EmergencyContactInformationPage.class);
 	}
+	
+	public void clickSave() 
+	{
+		btnSave.click();
+	}
+
 
 }

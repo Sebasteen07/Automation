@@ -179,14 +179,14 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	public BasicInformationAboutYouPage openDiscreteForm(String formName) throws Exception {
+	public WelcomeScreenPage openDiscreteForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(1000);
 		// Find the form by name
 		driver.findElement(By.xpath("//a[contains(text(), '" + formName + "')]")).click();
 		Thread.sleep(1000);
 		SitegenlUtil.switchToNewWindow(driver);
-		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
+		return PageFactory.initElements(driver, WelcomeScreenPage.class);
 	}
 	
 

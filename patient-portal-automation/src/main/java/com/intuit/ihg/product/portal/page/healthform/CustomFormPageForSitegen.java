@@ -139,6 +139,19 @@ public class CustomFormPageForSitegen extends BasePageObject {
 		return PracticeUtil.isExistsElement(driver, discreteFormInPDF);
 	}
 	
+	/*
+	 * Last saved on
+	 */
+	public boolean isLastSaveDate(String formName) throws Exception
+	{
+		IHGUtil.PrintMethodName();
+		Thread.sleep(3000);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("iframe");
+		WebElement lastSaveDate = driver.findElement(By.className("completedDate"));
+		return PracticeUtil.isExistsElement(driver, lastSaveDate);
+		
+	}
 	
 	/**
 	 * Description : Submit the completed form.
