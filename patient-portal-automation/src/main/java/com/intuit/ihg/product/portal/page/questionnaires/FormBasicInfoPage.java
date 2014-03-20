@@ -62,6 +62,9 @@ public class FormBasicInfoPage extends BasePageObject
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 	
+	@FindBy(className = "save")
+	private WebElement save;
+	
 	/**
 	 * @Description:Set street Address 
 	 * @param type
@@ -274,7 +277,20 @@ public class FormBasicInfoPage extends BasePageObject
 		return PageFactory.initElements(driver,FormEmergencyContactPage.class);
 
 	}
-
-
+	
+	public void saveAndFinishAnotherTime() throws Exception
+	{
+		setStreetAddress();		
+		setCity();		
+		setState(PortalConstants.State);		
+		setZip();	
+		setPrimaryPhoneNumber();		
+		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
+		setSex(PortalConstants.Sex);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(save));
+		
+		save.click();
+	}
 
 }
