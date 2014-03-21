@@ -49,6 +49,7 @@ import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep1Pa
 import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.intuit.ihg.product.practice.tests.BillPaymentTest;
 import com.intuit.ihg.product.practice.utils.*;
 
 public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
@@ -1082,8 +1083,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 						"123 XYZ Ave", "Mountain View", "94043");
 
 		log("step 8: Enter the amount and account details");
+		String accountNumber = IHGUtil.createRandomNumericString().substring(0,5);
 		PaymentConfirmationPage pPaymentConfirmationPage = pMakeAPayment
-				.makePayment("30", "12345");
+				.makePayment("30", accountNumber);
 
 		log("step 9: Assert confirm message");
 		assertTrue(pPaymentConfirmationPage.isPageLoaded(),
@@ -1095,6 +1097,25 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 10: Close the project and log out");
 		MobileHomePage pMobileHomePage = pPaymentConfirmationPage.clickClose();
 		pMobileHomePage.clickLogout();
+		
+		// Instancing virtualCardSwiperTest
+		BillPaymentTest billPaymentTest = new BillPaymentTest();
+		
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		// Executing Test
+		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData, accountNumber);
+		
+		log("step 11: LogIn to verify secure message in mobile");
+		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+
+		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
+		MessageDetailsPage mDetails = mInbox.clickMessage(uniquePracticeResponse);
+
+		assertTrue(mDetails.getSubject().equalsIgnoreCase(uniquePracticeResponse));
+		
+		
 	}
 	
 	

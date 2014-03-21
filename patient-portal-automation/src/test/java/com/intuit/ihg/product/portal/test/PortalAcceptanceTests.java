@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 
+
+
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsPage;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
 import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
@@ -85,8 +87,10 @@ import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisi
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSummaryPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitTakeActionPage;
+import com.intuit.ihg.product.practice.tests.BillPaymentTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
+import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
@@ -1432,45 +1436,27 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Load up practice test data
 		log("step 7: Login to Practice Portal");
+		// Instancing virtualCardSwiperTest
+		BillPaymentTest billPaymentTest = new BillPaymentTest();
+		
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		// Executing Test
+		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData, PortalConstants.PatientAccountNumber);
 
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("step 8:Click On Online BillPayment Tab in Practice Portal");
-		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
-
-		log("step 9:Search Paid Bills By Current Date");
-		onlineBillPaySearchPage.searchForBillPayToday();
-
-		log("Search For Today's Paid Bill By Account Number");
-		onlineBillPaySearchPage.searchForBillPayment(PortalConstants.PatientAccountNumber);
-
-		log("Get Bill Details");
-		onlineBillPaySearchPage.getBillPayDetails();
-
-		log("Set Payment Communication Details");
-		onlineBillPaySearchPage.setPaymentCommunicationDetails();
-
-		log("step 10: Logout of Practice Portal");
-		practiceHome.logOut();
-
-		log("step 11: Login to Patient Portal");
+		log("step 8: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
-		log("step 12: Go to Inbox");
+		log("step 9: Go to Inbox");
 		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
-		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())+PracticeConstants.BillPaymentSubject;
-
-		log("step 13: Find message in Inbox");
+		log("step 10: Find message in Inbox");
 		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
 
-		log("step 14: Validate message loads and is the right message");
+		log("step 11: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
 		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
 				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
