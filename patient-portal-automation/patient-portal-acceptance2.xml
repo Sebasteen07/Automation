@@ -21,7 +21,7 @@
         		<include name="testAddandChangeCreditCard" />
         		<include name="testPatientForgotUserId" />
         		<include name="testForgotPassword" />
-        		
+        		<include name="testMyMessagesRefreshButton" />
       		</methods>
   </classes>
 	
