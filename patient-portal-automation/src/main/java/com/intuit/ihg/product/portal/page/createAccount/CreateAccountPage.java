@@ -257,7 +257,6 @@ public class CreateAccountPage extends BasePageObject {
 		txtLastname.sendKeys(sPatientLastName);
 		
 		//Setting Date of birth
-		//To support 14.2 Create An Account - Patient Birthdate improvements
 		Select birthDaySelect = new Select(birthdayMonth);
 		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
 		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
@@ -283,9 +282,9 @@ public class CreateAccountPage extends BasePageObject {
 		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
 		//Setting Date of birth
 		//To support 14.2 Create An Account - Patient Birthdate improvements
-		/*Select birthDaySelect = new Select(birthdayMonth);
-		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);*/
-		birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
+		Select birthDaySelect = new Select(birthdayMonth);
+		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
+		/*birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);*/
 		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
 		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
 		//txtbirthday.sendKeys(sBirthDay);
@@ -301,9 +300,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtUserIdActivation.sendKeys(sEmail);
 		txtUserPasswordActivation.sendKeys(sPassword);
 		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
-		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
-		Select questionSelect = new Select(txtSecretQuestionActivation);
-		questionSelect.selectByVisibleText(sSecretQuestion);
+		txtSecretQuestionActivation.sendKeys(sSecretQuestion);
+	/*	Select questionSelect = new Select(txtSecretQuestionActivation);
+		questionSelect.selectByVisibleText(sSecretQuestion);*/
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
 		//Accepting license agreements
