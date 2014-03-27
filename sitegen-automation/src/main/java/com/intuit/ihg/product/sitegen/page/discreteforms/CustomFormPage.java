@@ -29,6 +29,9 @@ public class CustomFormPage extends BasePageObject {
 	@FindBy ( xpath = ".//select[@id='custom_itemtype_customfirst_section_0']")
 	private WebElement firstSectionItemTypeDropDwn;
 	
+	@FindBy ( xpath = ".//ul/li[@data-section='customfirst_section']/a")
+	private WebElement firstSection;
+	
 	@FindBy ( xpath = ".//ul/li[@data-section='customsecond_section']/a")
 	private WebElement secondSection;
 	
@@ -418,14 +421,21 @@ public class CustomFormPage extends BasePageObject {
 	}
 	
 	/**
+	 * Description: Move to the first section of items
+	 */
+	public void clickFirstSection() {
+		IHGUtil.PrintMethodName();
+		firstSection.click();
+	}
+	
+	/**
 	 *  Description : Navigate to Second Section.
 	 * @throws Exception
 	 */
 	public void clickOnSecondSection() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, secondSection);
+		//IHGUtil.waitForElement(driver, 30, secondSection);
 		secondSection.click();
-		Thread.sleep(5000);
 	}
 	
 	/**
@@ -434,7 +444,7 @@ public class CustomFormPage extends BasePageObject {
 	 */
 	public void clickOnThirdSection() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, thirdSection);
+		//IHGUtil.waitForElement(driver, 30, thirdSection);
 		thirdSection.click();
 	}
 	
@@ -472,16 +482,16 @@ public class CustomFormPage extends BasePageObject {
 		
 		log("Filling third section");
 		clickOnThirdSection();
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		selectThirdSection1ItemType(SitegenConstants.CUSTOMFORM_ITEM_TYPE1);
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		driver.findElement(By.id("custom_questiontitle_customthird_section_0")).sendKeys(questionTitle1);
 		selectThirdSection1QuestionType(SitegenConstants.QUESTION_TYPE2);
 		setThirdSection1ReuiredDropdwn(SitegenConstants.OPTION2);
 		setThirdSection1PreFillDropdwn(SitegenConstants.OPTION2);
 		
 		saveFormButton.click();
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
 		
 	}
 	

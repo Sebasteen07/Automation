@@ -882,7 +882,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception 
 	 * @Author:-bbinisha
 	 * @Date :- 07-03-2013
-	 *  @UserStrory ID in Rally : US7093
+	 * @UserStrory ID in Rally : US7093
 	 * @StepsToReproduce:
 	 * Login to Sitegen platform
 	 * Select 'Medfusion Site Administration' Practice
@@ -906,11 +906,11 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * Click on the custom forms tab
 	 * Find the previously submitted form
 	 * ====================================================================================================================
-	 * ********** Invalid for PROD and DEMO environment since both requirements is only for DEV3. ***************
+	 * ********** Invalid for PROD since both requirements is only for DEV3. ***************
 	 * ====================================================================================================================
 	 * 
 	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"})
+	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testCustomForms() throws Exception{
 
 		log("testCustomForms");
@@ -949,18 +949,19 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		CustomFormPage customFormPage = discreteForm.openCustomForm();
 		
 		String formName = SitegenConstants.CUSTOMFORMNAME+IHGUtil.createRandomNumericString().substring(0, 4);
-		log("Form Name *****"+formName);
+		log("Form Name *****" + formName);
 		
 		log("Step 8 : Change the custom form name to a uniquename");
 		customFormPage.renameCustomForm(formName);
 		
 		log("Step 9 : Fill the Custom Form details ");
+		customFormPage.clickFirstSection();
 		customFormPage.fillCustomFormDetails(SitegenConstants.HEADINGTITLE, SitegenConstants.QUESTIONTITLE1, SitegenConstants.QUESTIONTITLE2, SitegenConstants.AVAILABLE_ANSWERS);
 		
 		log("Step 10 : Publish the saved Custom Form");
 		customFormPage.publishTheSavedForm(formName);
 	
-		driver.switchTo().defaultContent();
+		driver.close();
 		driver.switchTo().window(parent_window);
 	
 		log("Step 11 : Login to Patient portal");
@@ -1015,15 +1016,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Displayed patient name is :"+actualPatientName);
 		verifyEquals(pHealthForm1.Patientname.getText().trim().contains(" Patient Name : AutoPatient  Medfusion "), true);
-		
-		driver.close();
 	}
 	
 	
 	
 	
 	/**
-	 * @Author:-Shanthala
+	 * @Author:-Shanthala, AdamW
 	 * @Date:- Nov-26-2013
 	 * @User Story ID in Rally : US7083
 	 * @StepsToReproduce: 1. Log in to the Site Generator as SG user: fdrebin /
@@ -1045,7 +1044,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * custom forms tab 18. Find the previously submitted form
 	 * === Prerequisite for the test case to run=========
 	 * Practice configured
-	 * ===Dicrete form should be created before.
+	 * Practices configured on: DEV3, DEMO
 	 * ============================================================
 	 * @AreaImpacted :- Description
 	 * @throws Exception
@@ -1075,9 +1074,6 @@ public void testDiscreteForm() throws Exception
 	SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
 	assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 	
-	String discreteFormName = SitegenConstants.DISCRETEFORMNAME +IHGUtil.createRandomNumericString().substring(0, 4);
-	log("@@discrete form name@@" + discreteFormName);
-	
 	String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 			
 	log("step 4: Click on Patient Forms");
@@ -1085,10 +1081,8 @@ public void testDiscreteForm() throws Exception
 	
 	assertTrue(pManageDiscreteForms.isPageLoaded());
 	
-	pManageDiscreteForms.unpublishAllForms();
-	pManageDiscreteForms.deleteAllUnPublishedForms();
-	pManageDiscreteForms.createNewDiscreteForm();
-	pManageDiscreteForms.renameDiscreteForm(discreteFormName);
+	String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
+	log("@@discrete form name@@" + discreteFormName);
 				
 	WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
 	
