@@ -36,6 +36,9 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(xpath="//div[@id='formcontainer']//table/tbody/tr[5]/td")
 	public WebElement Patientname;
 	
+	@FindBy(xpath="//div[@class='sectionInfo']")
+	public WebElement formInfo;
+	
 	
 	public HealthFormPage(WebDriver driver) {
 		super(driver);
@@ -114,10 +117,21 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(3000);
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		driver.findElement(By.xpath(".//ul/li/a[@title='"+formName+"']")).click();
-		Thread.sleep(5000);	
+		driver.switchTo().frame("iframe");	
+		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='"+formName+"']"));
+		IHGUtil.waitForElement(driver, 10, formLink);
+		formLink.click();
 		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
+	}
+	
+	public void selectOldCustomForm(String formName) throws Exception {
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("iframe");		
+		WebElement formLink = driver.findElement(By.xpath("//a[text()='"+formName+"']"));	
+		IHGUtil.waitForElement(driver, 10, formLink);
+		formLink.click();
+		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
 
 }

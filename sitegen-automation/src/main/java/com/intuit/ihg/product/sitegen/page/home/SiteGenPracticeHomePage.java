@@ -5,19 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
-import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayed;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.sitegen.page.Integrations.ViewIntegrationsPage;
 import com.intuit.ihg.product.sitegen.page.InterfaceSetUp.InterfaceAdministrationPage;
 import com.intuit.ihg.product.sitegen.page.MerchantAccount.MerchantAccountPage;
 import com.intuit.ihg.product.sitegen.page.customforms.CreateCustomForms;
-import com.intuit.ihg.product.sitegen.page.customforms.ManageYourFormsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.DiscreteFormsPage;
 import com.intuit.ihg.product.sitegen.page.location.ManageYourLocationsPage;
 import com.intuit.ihg.product.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
@@ -62,6 +59,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy (xpath = ".//a[@href = '/configurator/forms/']")
 	private WebElement discreteFormsLink;
+	
+	@FindBy (xpath = "//div[@class='locationUrl']/a/img/..")
+	private WebElement patientPortalUrl;
 	
 	/**
 	 * @author bkrishnankutty
@@ -294,7 +294,10 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	}
 
-
+	public String getPatientPortalUrl(){
+		IHGUtil.waitForElement(driver, 10, patientPortalUrl);	
+		return patientPortalUrl.getAttribute("href");
+	}
 
 
 
