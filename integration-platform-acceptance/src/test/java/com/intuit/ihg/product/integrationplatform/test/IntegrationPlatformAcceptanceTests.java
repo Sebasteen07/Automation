@@ -235,7 +235,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
 		PIDCTestData testData = loadDataFromExcel();
-
+		 
+		Long timestamp = System.currentTimeMillis();
 		log("step 2:LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
@@ -262,7 +263,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 8:Do a GET on PIDC");
 		//this step assumes that the updated patient is the patient from first ten registered patients, so we can save traffic
 		//if max argument is ommited patient should be in first 100 patients
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?max=10", testData.getResponsePath());
+		Long since = timestamp / 1000L - 60 * 60 * 24;
+
+		log("Getting patients since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
 		log("step 9:Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName() , firstLine, secondLine);
