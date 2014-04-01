@@ -657,7 +657,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception 
 	 * @Author:-bbinisha
 	 * @Date :- 07-03-2013
-	 * @UserStrory ID in Rally : US6150
+	 * @UserStory ID in Rally : US6150
 	 * @StepsToReproduce:
 	 * Login to Sitegen platform
 	 * Select any Practice
@@ -910,7 +910,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * ====================================================================================================================
 	 * 
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomForms() throws Exception{
 
 		log("testCustomForms");
