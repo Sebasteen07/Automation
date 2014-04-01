@@ -300,9 +300,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtUserIdActivation.sendKeys(sEmail);
 		txtUserPasswordActivation.sendKeys(sPassword);
 		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
-		txtSecretQuestionActivation.sendKeys(sSecretQuestion);
-	/*	Select questionSelect = new Select(txtSecretQuestionActivation);
-		questionSelect.selectByVisibleText(sSecretQuestion);*/
+		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
+		Select questionSelect = new Select(txtSecretQuestionActivation);
+		questionSelect.selectByVisibleText(sSecretQuestion);
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
 		//Accepting license agreements

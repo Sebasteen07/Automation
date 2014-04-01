@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
+import com.intuit.ihg.product.portal.tests.CheckOldCustomFormTest;
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -95,6 +96,7 @@ import com.intuit.ihg.product.sitegen.page.discreteforms.SocialHistoryPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.SurgeriesAndHospitalizationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.VaccinationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.WelcomeScreenPage;
+
 import org.openqa.selenium.Alert;
 
 
@@ -517,9 +519,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	/**
-	 * @Author:-Shanthala  : Modified :bbinisha
+	 * @Author:-Shanthala  : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
-	 * @User Story ID in Rally :  US6152 and US6151
+	 * @User Story ID in Rally :  US6152 and US6151 and US7626
 	 * @StepsToReproduce:
 	 *Go to siteGen 
 	 *Enter the credentials
@@ -562,7 +564,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
 		log("step 4: Click on Custom Forms");
+		String winHandleSiteGen = driver.getWindowHandle();
 		CreateCustomForms pManageCustomForms=pSiteGenPracticeHomePage.clickCustomForms();
+		String winHandleCustomBuilder = driver.getWindowHandle();
 
 		log("step 5:Click on Manage Custom Form and delete custom form 'Automation Custom Form' if present");
 		ManageYourFormsPage plinkOnManageCustomForm = pManageCustomForms.clicklnkManageCustomForm();
@@ -630,11 +634,26 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 12: Manage your forms -Check custom Form published successfully");
 			verifyEquals(pManageForm.checkForPublishedPage(customFormTitle), true, "Custom Form did not published successfully and not present in published forms table");
-
+			
+			driver.switchTo().window(winHandleSiteGen);
+			
+			// Instancing CreatePatientTest
+			CheckOldCustomFormTest checkOldCustomFormTest =  new CheckOldCustomFormTest();
+			
+			// Setting data provider
+			Portal portal = new Portal();
+			TestcasesData portalTestcasesData = new TestcasesData(portal);
+				
+			// Executing Test
+			checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
+			checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
+			driver.switchTo().window(winHandleCustomBuilder);
+			
+			
 			log("step 13: Manage your forms -Check published Form Preview by clicking on Preview link");
 			verifyEquals(pManageForm.isSearchPageLoaded(),true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
 			pManageForm.clickOnPublishedFormPreviewLink(customFormTitle);
-			ManageYourFormsPage pManageFormTest = pCustomFormPreview.clickOnUnPublishLink(); 
+			pCustomFormPreview.clickOnUnPublishLink(); 
 
 			log("step 14: Manage your forms -Check unpublished Form Preview");
 			verifyEquals(pManageForm.isSearchPageLoaded(), true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");

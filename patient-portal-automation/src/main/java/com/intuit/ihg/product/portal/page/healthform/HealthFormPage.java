@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -19,22 +20,53 @@ import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class HealthFormPage extends BasePageObject {
 	
-    public static final String PAGE_NAME = "Insurance Health Form Page";
-	
-	@FindBy(linkText="Insurance Health Form ( Testing)")
-	private WebElement lnkInsuranceHealthForm;
-	
-	@FindBy(name="footer:submit")
-	private WebElement btnSubmit;
-	
-	@FindBy(linkText="click here")
-	private WebElement lnkclickForPdfDownload;
-	
-	@FindBy(xpath="//div[@class='heading1']")
-	public WebElement InsuranceHelthform;
-	
-	@FindBy(xpath="//div[@id='formcontainer']//table/tbody/tr[5]/td")
-	public WebElement Patientname;
+	  public static final String PAGE_NAME = "Insurance Health Form Page";
+		
+		@FindBy(linkText="Ivan Insurance Health Form ( Testing)")
+		private WebElement lnkInsuranceHealthForm;
+		
+		@FindBy(name="footer:submit")
+		private WebElement btnSubmit;
+		
+		@FindBy(linkText="click here")
+		private WebElement lnkclickForPdfDownload;
+		
+		@FindBy(xpath="//div[@class='heading1']")
+		public WebElement InsuranceHelthform;
+		
+		@FindBy(xpath="//div[@id='formcontainer']//table/tbody/tr[5]/td")
+		public WebElement Patientname;
+		
+		@FindBy(xpath="//input[@value='partial']")
+		private WebElement blindPartial;
+		
+		@FindBy(xpath="//input[@value='blue']")
+		private WebElement colorBlue;
+		
+		@FindBy(xpath="//input[@value='green']")
+		private WebElement colorGreen;
+		
+		@FindBy(xpath="//input[@value='yes']")
+		private WebElement cancerYes;
+		
+		@FindBy(name="content:categories:1:questions:3:question")
+		private WebElement dateOfCancer;
+		
+		@FindBy(name="content:categories:1:questions:5:question")
+		private WebElement feelings;
+		
+		
+		@FindBy(name="content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:1:field")
+		private WebElement middleName;
+		
+		@FindBy(name="content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:15:field")
+		private WebElement martialStatus;
+		
+		@FindBy(name="content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:19:field")
+		private WebElement communicationMethod;
+		
+		@FindBy(xpath="//div[@class='sectionInfo']")
+		public WebElement formInfo;
 	
 	
 	public HealthFormPage(WebDriver driver) {
@@ -61,14 +93,42 @@ public class HealthFormPage extends BasePageObject {
 	
 	
 	/**
-	 * Click on the link InsuranceHealthForm download 
-	 * and move to the next frame 
+	 * Click on the link InsuranceHealthForm and filling the form
 	 */
 	public void fillInsuranceHealthForm() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 20, lnkInsuranceHealthForm);
 		lnkInsuranceHealthForm.click();
+		IHGUtil.waitForElement(driver, 20, middleName);
+		
+		middleName.sendKeys("Middle");
+		Select selectstate1 = new Select(martialStatus);
+		selectstate1.selectByVisibleText("Single");
+		
+		if (driver.getPageSource().contains("Preferred Communication Method:"))
+		{
+			Select selectstate2 = new Select(communicationMethod);
+			selectstate2.selectByVisibleText("US mail");
+		}
+		
+		blindPartial.click();
+		colorBlue.click();
+		colorGreen.click();
+		cancerYes.click();
+		
+		dateOfCancer.sendKeys("10/15/2013");
+		
+		Select selectstate3 = new Select(feelings);
+		selectstate3.selectByVisibleText("happy");
+		
+	}
+	
+	/**
+	 * Submit the form
+	 */
+	public void submitInsuranceHealthForm()		
+	{
 		btnSubmit.click();
 	}
 	
@@ -114,10 +174,21 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(3000);
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		driver.findElement(By.xpath(".//ul/li/a[@title='"+formName+"']")).click();
-		Thread.sleep(5000);	
+		driver.switchTo().frame("iframe");	
+		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='"+formName+"']"));
+		IHGUtil.waitForElement(driver, 10, formLink);
+		formLink.click();
 		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
+	}
+	
+	public void selectOldCustomForm(String formName) throws Exception {
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("iframe");		
+		WebElement formLink = driver.findElement(By.xpath("//a[text()='"+formName+"']"));	
+		IHGUtil.waitForElement(driver, 10, formLink);
+		formLink.click();
+		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
 
 }

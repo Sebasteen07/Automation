@@ -1100,15 +1100,23 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: " + patientData.getUsername());
 		log("Password: " + patientData.getPassword());
 
-		log("step 1: Patient login");
-		PortalLoginPage login = new PortalLoginPage(driver, patientData.geturl());
-		MyPatientPage pMyPatientPage = login.login(patientData.getUsername(), patientData.getPassword());
+		log("step 1: Create Patient");
+		CreatePatientTest createPatient = new CreatePatientTest();
+	//	createPatient.setUrl(patientData.geturl());
+		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
+
 
 		log("step 2: Click on CustomForm");
 		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
 
 		log("step 3: Fill CustomForm");
 		pHealthForm.fillInsuranceHealthForm();
+	
+		
+		assertFalse(driver.getPageSource().contains("Female question"));
+		
+		pHealthForm.submitInsuranceHealthForm();
+		
 		Thread.sleep(10000);
 		verifyEquals(pHealthForm.InsuranceHelthform.getText(), "Thank you for completing our Insurance Health Form ( Testing).");
 		// assertTrue(verifyTextPresent(driver,"Thank you for completing our Insurance Health Form ( Testing)."));
