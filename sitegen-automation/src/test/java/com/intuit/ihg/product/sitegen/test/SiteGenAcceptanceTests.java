@@ -1259,7 +1259,68 @@ public void testDiscreteForm() throws Exception
 	String submittedDate = pViewPatientFormPage.getLastUpdatedDate().getText().substring(17, 27);
 	assertEquals(submittedDate, date, "Form submitted today not found");
 }
+
+/**
+ * @Author: AdamW
+ * @Date: April-01-2014
+ * @UserStory: US7083
+ * 
+ */
+
+@Test(enabled = true, groups = {"AcceptanceTests"})
+public void testDiscreteFormPDF() throws Exception {
 	
+	log("testDiscreteFormPDF");
+	log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
+	log("Browser on which Test is running :"+TestConfig.getBrowserType());
+
+	Sitegen sitegen = new Sitegen();
+	SitegenTestData testCaseData = new SitegenTestData(sitegen);
+
+	log("Step1 :- Getting data from excel.");
+	log("URL :" + testCaseData.getSiteGenUrl());
+	log("USERNAME :" + testCaseData.getFormUser());
+	log("PASSWORD :" + testCaseData.getFormPassword());
+	
+	log("Step 2 :- Opening sitegen home page");
+	SiteGenLoginPage sloginPage = new SiteGenLoginPage (driver, testCaseData.getSiteGenUrl());
+	SiteGenHomePage sHomePage = sloginPage.login(testCaseData.getFormUser(), testCaseData.getFormPassword());
+
+	log("step 3: navigate to SiteGen PracticeHomePage ##########");
+	SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
+	assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+	
+	String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+			
+	log("step 4: Click on Patient Forms");
+	DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+	
+	assertTrue(pManageDiscreteForms.isPageLoaded());
+	
+	String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
+	log("@@discrete form name@@" + discreteFormName);
+	
+	WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
+	
+	log("Step 5: Go to Current symptoms page");
+	CurrentSymptomsPage pCurrentSymptomsPage = pWelcomeScreenPage.clickLnkCurrentSymptoms();
+	
+	log("Step 6: Select options to appear in the test");
+	pCurrentSymptomsPage.selectBasicSymptoms();
+	
+	log("Step 7: Save the form");
+	pCurrentSymptomsPage.clickSave();
+	
+	log("step 8 : Publish the saved Discrete Form");
+	pManageDiscreteForms.publishTheSavedForm(discreteFormName);
+	
+	log("step 9 : Close the window and logout from SiteGenerator");
+	// Switching back to original window using previously saved handle descriptor
+	driver.close();
+	driver.switchTo().window(parentHandle);
+	pSiteGenPracticeHomePage.clicklogout();
+}
+
 	/**
 	 * Test for Patient forms - custom forms
 	 * @throws Exception

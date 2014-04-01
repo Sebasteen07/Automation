@@ -16,6 +16,9 @@ public class WelcomeScreenPage extends BasePageObject {
 		// TODO Auto-generated constructor stub
 	}
 
+	@FindBy(xpath="//li[@data-section='currentsymptoms']/a")
+	private WebElement lnkCurrentSymptoms;
+	
 	@FindBy(xpath="//li[@data-section='welcome']/a")
 	private WebElement lnkWelcome;
 	
@@ -47,6 +50,16 @@ public class WelcomeScreenPage extends BasePageObject {
 	{
 		lnkBasicInformationAboutYou.click();
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
+	}
+	
+	/**
+	 * Clicks on the page 6. Current Symptoms
+	 * @return PageFactory initialization of the page
+	 */
+	public CurrentSymptomsPage clickLnkCurrentSymptoms() 
+	{
+		lnkCurrentSymptoms.click();
+		return PageFactory.initElements(driver, CurrentSymptomsPage.class);
 	}
 	
 	/**
