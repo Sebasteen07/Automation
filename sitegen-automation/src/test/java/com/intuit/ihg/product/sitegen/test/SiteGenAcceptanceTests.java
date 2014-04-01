@@ -1319,6 +1319,67 @@ public void testDiscreteFormPDF() throws Exception {
 	driver.close();
 	driver.switchTo().window(parentHandle);
 	pSiteGenPracticeHomePage.clicklogout();
+	
+	log("Part 2: Patient Portal");
+	
+	Portal portal = new Portal();
+	TestcasesData portalTestcasesData = new TestcasesData(portal);
+	log("URL: " + portalTestcasesData.getFormsUrl());
+
+	log("step 1: Click on Sign Up Fill detials in Create Account Page");
+	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
+	log("email:-" + email);
+	
+	CreatePatientTest createPatient = new CreatePatientTest();
+	createPatient.setUrl(portalTestcasesData.getFormsUrl());
+	MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
+
+	log("step 4:Click On Start Registration Button");
+	FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
+	
+	log("Step 5: Click through the form flow to Current Symptoms");
+	FormOtherProvidersPage pFormOtherProvidersPage = pFormWelcomePage.clickContinueButtonOtherDocs();
+	FormCurrentSymptomsPage currentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
+	
+	log("Step 6: Select symptoms for the patient");
+	currentSymptomsPage.setBasicSymptoms();
+	
+	log("Step 7: Go through the rest of the form and submit it");
+	FormMedicationsPage pFormMedicationsPage = currentSymptomsPage.clickSaveAndContinueButton();
+	
+	log("step 8:Set Medication Form Fields");
+	FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
+
+	log("step 9:Set Allergies Form Fields");
+	FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
+
+	log("step 10:Set Vaccine Form Fields");
+	FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
+
+	log("step 11:Set Surgeries Form Fields");
+	FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
+
+	log("step 12:Set Previous Exams Form Fields");
+	FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
+
+	log("step 13:Set IllnessCondition Form Fields");
+	FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
+
+	log("step 14:Set Family History Form Fields");
+	FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
+
+	log("step 15:Set Social History Form Fields");
+	pFormSocialHistoryPage.setSocialHistoryFormFields();
+
+	log("step 16:Verify Registration Confirmation Text");
+	pMyPatientPage.verifyRegistrationConfirmationText(); 
+	
+	log("Step 17 : Click on 'Fill Out' link under 'Custom Form' section");
+	pMyPatientPage.clickFillOutFormsLink();
+	
+	log("Step 18 : Select " + discreteFormName + " discrete form");
+	CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
+	verifyTrue(pCustomForm.isDiscreteFormDisplayedAsPDF(discreteFormName));
 }
 
 	/**
