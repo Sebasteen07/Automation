@@ -263,5 +263,23 @@ public class DiscreteFormsPage extends BasePageObject{
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Prepares practice for automated test - unpublishes and deletes all forms and creates a new one
+	 * @param discrete True for making discrete form, false to create custom 
+	 * @return Name of the newly created form
+	 */
+	public String initializePracticeForNewForm() throws Exception
+	{
+		// name for the new form
+		String FormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+		
+		unpublishAllForms();
+		deleteAllUnPublishedForms();
+		createNewDiscreteForm();
+		renameDiscreteForm(FormName);
+		
+		return FormName;
+	}
+	
 }

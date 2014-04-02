@@ -40,7 +40,21 @@ public class FormWelcomePage extends BasePageObject
 		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
 		btnContinue.click();
 		return PageFactory.initElements(driver, FormBasicInfoPage.class);
-
+	}
+	
+	/**
+	 * @Description:Click on Continue Button in form that goes to Other Docs
+	 * @return Other Doctors page PageFactory initialization
+	 * @throws Exception
+	 */
+	public FormOtherProvidersPage clickContinueButtonOtherDocs() throws Exception
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setquestionnarieFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
+		btnContinue.click();
+		return PageFactory.initElements(driver, FormOtherProvidersPage.class);
 	}
 
 	/**

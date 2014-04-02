@@ -82,4 +82,13 @@ public class CurrentSymptomsPage extends BasePageObject{
 		chckEyesEarsNoseThroat.click();
 	}
 	
+	/**
+	 * Click on save button and close the form editor
+	 */
+	
+	public void clickSave() 
+	{
+		btnSave.click();
+	}
+	
 }

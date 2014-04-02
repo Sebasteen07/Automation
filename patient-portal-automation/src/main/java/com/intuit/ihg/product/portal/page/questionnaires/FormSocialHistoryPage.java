@@ -48,7 +48,7 @@ public class FormSocialHistoryPage extends BasePageObject
 	 */
 	public void submitForm() throws Exception
 	{
-		Thread.sleep(10000);
+		//Thread.sleep(10000);
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Thread.sleep(5000);
@@ -56,7 +56,8 @@ public class FormSocialHistoryPage extends BasePageObject
 		driver.switchTo().frame(iframe);
 
 		submitForm.click();
-
+		Thread.sleep(5000);
+		submitForm.click();
 	}
 
 	/**

@@ -21,8 +21,11 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	@FindBy( id = "custom_question_customsecond_section_0")
 	private WebElement secondSectionFirstField;
 	
-	@FindBy(id = "nextPageButton")
+	@FindBy(id = "continueWelcomePageButton")
 	private WebElement saveAndContinue;
+	
+	@FindBy(id = "nextPageButton")
+	private WebElement nextPage;
 	
 	@FindBy( id = "custom_question_customsecond_section_1_2")
 	private WebElement scalingRadioButton;
@@ -50,23 +53,21 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	public void fillOutCustomForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
-		IHGUtil.waitForElement(driver, 10, saveAndContinue);
+		//IHGUtil.waitForElement(driver, 10, saveAndContinue);
 		saveAndContinue.click();
+		nextPage.click();
 		PortalUtil.setquestionnarieFrame(driver);
-		IHGUtil.waitForElement(driver, 10, secondSectionFirstField);
+		//IHGUtil.waitForElement(driver, 10, secondSectionFirstField);
 		secondSectionFirstField.sendKeys("Better");
 		PortalUtil.setquestionnarieFrame(driver);
 		scalingRadioButton.click();
-		IHGUtil.waitForElement(driver, 10, saveAndContinue);
-		saveAndContinue.click();
+		nextPage.click();
 		IHGUtil.waitForElement(driver, 10, thirdSectionFirstTextArea);
 		thirdSectionFirstTextArea.sendKeys("Better");
 		PortalUtil.setquestionnarieFrame(driver);
 		IHGUtil.waitForElement(driver, 10, saveAndContinue);
 		PortalUtil.setquestionnarieFrame(driver);
-		saveAndContinue.click();
-		Thread.sleep(3000);
-		
+		nextPage.click();	
 	}
 	
 

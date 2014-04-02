@@ -25,7 +25,6 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 
 	public void checkOldCustomForm(WebDriver driver,TestcasesData testcasesData, String formName) throws Exception {
 
-		log("Test Case: testCreatePatient");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		

@@ -6,6 +6,7 @@ import java.util.Date;
 
 
 
+
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsPage;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
 import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
@@ -65,6 +66,7 @@ import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
+import com.intuit.ihg.product.portal.tests.ForgotUserIdTest;
 import com.intuit.ihg.product.portal.tests.PatientActivationUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -733,8 +735,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @Author: rperkinsjr
-	 * @Date: 4/22/2013
+	 * @Author: rperkinsjr : refactored by Prokop Rehacek
+	 * @Date: 4/22/2013 : refacterd 4/1/2014
 	 * @StepsToReproduce: Access Patient Portal Login page Click Forgot ID link
 	 *                    Enter email address and continue Answer security
 	 *                    question and continue Access personal email inbox to
@@ -746,60 +748,52 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserId() throws Exception {
-		log("Test Case: testPatientForgotUserId");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Test Case: testCreatePatientOnBetaSite");
+		
+		// Instancing CreatePatientTest
+		ForgotUserIdTest forgotUserIdTest  = new ForgotUserIdTest();
 
-		log("step 1: Get Data from Excel");
+		// Setting data provider
 		Portal portal = new Portal();
-		TestcasesData patientData = new TestcasesData(portal);
+		TestcasesData testcasesData = new TestcasesData(portal);
 
-		// Some other data setup for email searching:
-		Date startEmailSearchDate = new Date();
-		Gmail gmail = new Gmail(patientData.getEmail(), patientData.getPassword());
-		int unSeenEmailCount = gmail.getInboxNewMessageCount();
+		// Executing Test
+		forgotUserIdTest.forgotUserIdTest(driver, testcasesData);
+		
+	}
+	
+	
+	/**
+	 * @Author: Prokop Rehacek
+	 * @Date: 4/1/2014
+	 * @StepsToReproduce: Access Patient Portal Login page Click Forgot ID link
+	 *                    Enter email address with different case and continue Answer security
+	 *                    question and continue Access personal email inbox to
+	 *                    check for email Validate email contents: subject, user
+	 *                    id, site link ==============
+	 *                    ===============================================
+	 * @AreaImpacted :
+	 * @throws Exception
+	 */
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
+		
+		log("Test Case: testCreatePatientOnBetaSite");
+		
+		// Instancing CreatePatientTest
+		ForgotUserIdTest forgotUserIdTest  = new ForgotUserIdTest();
 
-		log("step 2: Navigate to login page");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, patientData.geturl());
-
-		log("step 3: Click forgot user id link");
-		ForgotUserIdEnterEmailPage step1 = loginPage.forgotUserId();
-		assertTrue(step1.isPageLoaded(), "There was an error loading the first page in the Forgot UserId workflow.");
-		PerformanceReporter.getPageLoadDuration(driver, ForgotUserIdEnterEmailPage.PAGE_NAME);
-
-		log("step 4: Enter patient email");
-		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(patientData.getEmail());
-
-		if(IHGUtil.getEnvironmentType().toString().equals("PROD")||IHGUtil.getEnvironmentType().toString().equals("DEMO")) {
-
-			log("Enter Patient's DOB");
-			step2.selectDOB(patientData.getDob_Day(), patientData.getDob_Month(), patientData.getDob_Year());
-		}
-		log("step 5: Answer patient security question");
-		ForgotUserIdConfirmationPage step3 = step2.answerSecurityQuestion(patientData.getAnswer());
-		assertTrue(step3.confirmationPageLoaded(), "There was an error loading the confirmation page in the Forgot UserId workflow");
-		PerformanceReporter.getPageLoadDuration(driver, ForgotUserIdConfirmationPage.PAGE_NAME);
-
-		log("step 6: Access Gmail and check for received email");
-		int count = 1;
-		boolean flag = false;
-		do {
-			boolean foundEmail = CheckEmail.validateForgotUserID(gmail, startEmailSearchDate, patientData.getEmail(), "Your User ID for",
-					patientData.getUsername());
-			if (foundEmail) {
-				assertTrue(foundEmail, "The Forgot User ID email wasn't received.");
-				System.out.println("The User ID email receiced In between :" + count * 60 + "seconds");
-				flag = true;
-				break;
-			} else {
-				Thread.sleep(60000);
-				count++;
-			}
-
-		} while (count < 21);
-		if (!flag) {
-			log("The User ID email wasn't received even after Five minutes of wait");
-		}
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+		
+		// Set case insensitive for email
+		forgotUserIdTest.setCaseInsensitiveEmail(true);
+		
+		// Executing Test
+		forgotUserIdTest.forgotUserIdTest(driver, testcasesData);
+		
 	}
 
 

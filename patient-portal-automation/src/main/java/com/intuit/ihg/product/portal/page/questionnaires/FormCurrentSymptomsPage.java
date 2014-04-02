@@ -21,6 +21,18 @@ public class FormCurrentSymptomsPage extends BasePageObject
 
 	@FindBy(id="idonot_symptoms_general")
 	WebElement noSymptoms;
+	
+	@FindBy(id="chills_symptom_general")
+	WebElement checkChills;
+	
+	@FindBy(id="insomnia_symptom_general")
+	WebElement checkInsomnia;
+	
+	@FindBy(id="bruising_symptom_blood")
+	WebElement checkBruising;
+	
+	@FindBy(id="earache_sumptom_ent")
+	WebElement checkEarache;
 
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
@@ -53,7 +65,7 @@ public class FormCurrentSymptomsPage extends BasePageObject
 	}
 
 	/**
-	 * @Description:Set Current Symptoms Form Fields
+	 * @Description: Set no Current Symptoms Form Fields and continue
 	 * @return FormMedicationsPage
 	 * @throws Exception
 	 */
@@ -66,9 +78,18 @@ public class FormCurrentSymptomsPage extends BasePageObject
 		clickSaveAndContinueButton();
 
 		return PageFactory.initElements(driver, FormMedicationsPage.class);
-
-
 	}
 
+	/**
+	 * @Description: Set some basic symptom for later PDF test
+	 * @throws: Exception
+	 */
+	public void setBasicSymptoms() throws Exception 
+	{
+		checkChills.click();
+		checkInsomnia.click();
+		checkBruising.click();
+		checkEarache.click();
+	}
 
 }
