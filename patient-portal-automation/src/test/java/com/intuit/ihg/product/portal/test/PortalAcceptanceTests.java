@@ -1152,7 +1152,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		String actualPatientName = pHealthForm.Patientname.getText().trim();
 
 		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : ihgqa automation"), true);
+		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
 		/*
 		 * assertTrue(verifyTextPresent(driver,
 		 * "Patient Name : ihgqa  automation "));
