@@ -14,6 +14,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
  
+
+import com.intuit.ihg.common.utils.IHGUtil;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -144,4 +147,21 @@ public class URLStatusChecker {
  
         return mimicWebDriverCookieStore;
     }
+    
+	/**
+     * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and
+     * downloading it via the URLStatusChecker class.
+     *
+     * @return the http status code from the download
+     */
+	public int getDownloadStatusCode(String url, RequestMethod method) throws URISyntaxException, IOException {
+		IHGUtil.PrintMethodName();
+		URLStatusChecker urlChecker = new URLStatusChecker(driver);
+	    urlChecker.setURIToCheck(url);
+	    urlChecker.setHTTPRequestMethod(RequestMethod.GET);
+	    urlChecker.mimicWebDriverCookieState(true);
+	    
+	    return urlChecker.getHTTPStatusCode();
+	}
+    
 }

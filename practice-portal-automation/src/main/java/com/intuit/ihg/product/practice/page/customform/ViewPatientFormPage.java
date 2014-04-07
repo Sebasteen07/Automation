@@ -14,6 +14,13 @@ public class ViewPatientFormPage extends BasePageObject {
 	@FindBy(xpath = "//td[strong[contains(text(), 'Last updated on: ')]]")
 	private WebElement lastUpdatedDate;
 	
+	@FindBy(xpath = "//a[contains(text(), 'View as PDF')]")
+	private WebElement linkPDF; 
+	
+	public String getDownloadURL() {
+		return linkPDF.getAttribute("href");
+	}
+	
 	public ViewPatientFormPage(WebDriver driver)
 	{
 		super(driver);

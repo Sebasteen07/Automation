@@ -115,12 +115,13 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean isFormDisplayedAsPDF(String formName) throws Exception {
+	public boolean isFormDisplayedAsPDF() throws Exception {
+		String xpath = "//a[contains(text(), 'View as PDF')]";
+		
 		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
-		WebElement formInPDF = driver.findElement(By.xpath(".//span[text()='"+formName+"']/ancestor::li/table/tbody/tr/td/a[@class='pdf text']"));
+		WebElement formInPDF = driver.findElement(By.xpath(xpath));
 		return PracticeUtil.isExistsElement(driver, formInPDF);
 	}
 	
