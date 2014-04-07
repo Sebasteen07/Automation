@@ -88,8 +88,8 @@ public class MakePaymentPage extends BasePageObject {
 		paymentAmount.sendKeys(PortalConstants.PaymentAmount);
 		try
 		{
-		paymentComment.clear();
-		paymentComment.sendKeys(PortalConstants.PaymentComment);
+			paymentComment.clear();
+			paymentComment.sendKeys(PortalConstants.PaymentComment);
 		}
 		catch(Exception e)
 		{
@@ -98,7 +98,7 @@ public class MakePaymentPage extends BasePageObject {
 		Select selectcreditCard=new Select(creditCard);
 		try
 		{
-			selectcreditCard.selectByVisibleText(PortalConstants.CardType);
+			selectcreditCard.selectByVisibleText("Test Card 111");
 		}
 		catch(Exception e)
 		{

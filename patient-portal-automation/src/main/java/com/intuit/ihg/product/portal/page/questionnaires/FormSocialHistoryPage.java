@@ -56,8 +56,6 @@ public class FormSocialHistoryPage extends BasePageObject
 		driver.switchTo().frame(iframe);
 
 		submitForm.click();
-		Thread.sleep(5000);
-		submitForm.click();
 	}
 
 	/**

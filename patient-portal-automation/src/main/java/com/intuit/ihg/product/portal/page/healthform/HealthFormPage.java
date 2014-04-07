@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.downloads.FileDownloader;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.portal.page.solutions.virtualofficevisit.VirtualOfficeVisitHistoryPage;
@@ -28,7 +29,7 @@ public class HealthFormPage extends BasePageObject {
 		@FindBy(name="footer:submit")
 		private WebElement btnSubmit;
 		
-		@FindBy(linkText="click here")
+		@FindBy(linkText="View as PDF")
 		private WebElement lnkclickForPdfDownload;
 		
 		@FindBy(xpath="//div[@class='heading1']")
@@ -54,8 +55,7 @@ public class HealthFormPage extends BasePageObject {
 		
 		@FindBy(name="content:categories:1:questions:5:question")
 		private WebElement feelings;
-		
-		
+				
 		@FindBy(name="content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:1:field")
 		private WebElement middleName;
 		
@@ -73,7 +73,7 @@ public class HealthFormPage extends BasePageObject {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-
+	
 	/**
 	 * Gives an indication if the page loaded as expected
 	 * @return true or false
@@ -88,9 +88,7 @@ public class HealthFormPage extends BasePageObject {
 			// Catch element not found error
 		}
 		return result;
-	}
-	
-	
+	}	
 	
 	/**
 	 * Click on the link InsuranceHealthForm and filling the form
@@ -136,8 +134,6 @@ public class HealthFormPage extends BasePageObject {
 	/**
      * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and
      * downloading it via the URLStatusChecker class.
-     * 
-     * Will return a boolean value indicating if the download was successful or not.
      *
      * @return the http status code from the download
      */
@@ -145,7 +141,7 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 	    PortalUtil.setPortalFrame(driver);
 	    
-	    return insuranceHealthFormDownload(lnkInsuranceHealthForm.getAttribute("href"), RequestMethod.GET);
+	    return insuranceHealthFormDownloadCode(lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
 	
 	/**
@@ -160,14 +156,21 @@ public class HealthFormPage extends BasePageObject {
 	 * @throws IOException
 	 */
 	
-	private int insuranceHealthFormDownload(String url, RequestMethod method) throws URISyntaxException, IOException {
-		
+	private int insuranceHealthFormDownloadCode(String url, RequestMethod method) throws URISyntaxException, IOException {
+		IHGUtil.PrintMethodName();
+		log("Download URL: " + url);
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);
 	    urlChecker.setURIToCheck(url);
 	    urlChecker.setHTTPRequestMethod(RequestMethod.GET);
 	    urlChecker.mimicWebDriverCookieState(true);
 	    
 	    return urlChecker.getHTTPStatusCode();
+	}
+	
+	public void downloadPDF() throws Exception {
+	    FileDownloader downloadTestFile = new FileDownloader(driver);
+	    String downloadedFileAbsoluteLocation = downloadTestFile.downloadFile(lnkclickForPdfDownload);
+	    log("File downloaded to " + downloadedFileAbsoluteLocation);
 	}
 	
 	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
@@ -190,5 +193,12 @@ public class HealthFormPage extends BasePageObject {
 		formLink.click();
 		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
+	
+	public void clickLnkForPdfDownload() {
+		lnkclickForPdfDownload.click();
+	}
 
+	public String getPDFDownloadLink() {
+		return lnkclickForPdfDownload.getAttribute("href");
+	}
 }
