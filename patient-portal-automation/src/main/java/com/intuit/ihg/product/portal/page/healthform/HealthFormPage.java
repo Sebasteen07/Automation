@@ -167,12 +167,6 @@ public class HealthFormPage extends BasePageObject {
 	    return urlChecker.getHTTPStatusCode();
 	}
 	
-	public void downloadPDF() throws Exception {
-	    FileDownloader downloadTestFile = new FileDownloader(driver);
-	    String downloadedFileAbsoluteLocation = downloadTestFile.downloadFile(lnkclickForPdfDownload);
-	    log("File downloaded to " + downloadedFileAbsoluteLocation);
-	}
-	
 	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(3000);
