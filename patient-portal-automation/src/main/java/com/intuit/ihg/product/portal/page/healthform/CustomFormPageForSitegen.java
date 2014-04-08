@@ -118,27 +118,11 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	public boolean isFormDisplayedAsPDF() throws Exception {
 		String xpath = "//a[contains(text(), 'View as PDF')]";
 		
-		IHGUtil.PrintMethodName();
+		//IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		WebElement formInPDF = driver.findElement(By.xpath(xpath));
 		return PracticeUtil.isExistsElement(driver, formInPDF);
-	}
-	
-	
-	/**
-	 * Description : Verify whether the discrete form is displayed in the Health forms page.
-	 * @param formName
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean isDiscreteFormDisplayedAsPDF(String formName) throws Exception {
-		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		WebElement discreteFormInPDF = driver.findElement(By.xpath(".//a[text()='"+formName+"']/ancestor::li/table/tbody/tr/td/a[@class='pdf text']"));
-		return PracticeUtil.isExistsElement(driver, discreteFormInPDF);
 	}
 	
 	/*

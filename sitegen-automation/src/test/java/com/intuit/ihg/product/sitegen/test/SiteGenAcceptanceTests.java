@@ -933,7 +933,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testCustomForms() throws Exception{
+	public void testCustomForms() throws Exception {
 
 		log("testCustomForms");
 		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
@@ -1007,8 +1007,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 17 : Logout of patient portal");
 		pMyPatientPage.logout(driver);
-		driver.close();
-		WebDriver driver = WebDriverFactory.getWebDriver();
 		
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
@@ -1036,8 +1034,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		HealthFormPage pHealthForm1 = new HealthFormPage(driver);
 		String actualPatientName = pHealthForm1.Patientname.getText().trim();
 
-		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm1.Patientname.getText().trim().contains(" Patient Name : AutoPatient  Medfusion "), true);
+		log("Displayed patient name is: " + actualPatientName);
+		verifyEquals(pHealthForm1.Patientname.getText().trim().contains("Patient Name : AutoPatient Medfusion"), true);
 	}
 	
 	
@@ -1234,7 +1232,7 @@ public void testDiscreteFormEndToEnd() throws Exception
 	
 	log("Step 20: Select " + discreteFormName + " discrete form");
 	CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
-	verifyTrue(pCustomForm.isDiscreteFormDisplayedAsPDF(discreteFormName));
+	verifyTrue(pCustomForm.isFormDisplayedAsPDF());
 		
 	log("Step 21: Logout of patient portal");
 	pMyPatientPage.logout(driver);
