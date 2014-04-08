@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.downloads.FileDownloader;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.portal.page.solutions.virtualofficevisit.VirtualOfficeVisitHistoryPage;
