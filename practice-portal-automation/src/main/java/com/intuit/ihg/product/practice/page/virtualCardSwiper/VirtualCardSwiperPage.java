@@ -10,11 +10,15 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+//import com.intuit.ihg.product.portal.page.MyPatientPage;
 
 public class VirtualCardSwiperPage extends BasePageObject {
 
 	public static final String title = "Virtual Card Swiper";
 
+	@FindBy( xpath ="//*[@id='submenu']/ul/li[3]/a")
+	private WebElement chargeHistory;
+	
 	@FindBy( xpath = ".//*[@id='pagetitle']/h1" )
 	private WebElement pageTitleEle;
 
@@ -51,6 +55,15 @@ public class VirtualCardSwiperPage extends BasePageObject {
 	@FindBy( xpath = ".//span[@class='feedbackPanelINFO']")
 	private WebElement paymentSuccessMsg;
 	
+	@FindBy( xpath = "//a[contains(text(), 'Charge History')]")
+	private WebElement lnkChargeHistory;
+	
+	public VirtualCardSwiperPageChargeHistory lnkChargeHistoryclick(WebDriver driver)
+	{
+		IHGUtil.waitForElement(driver, 20, lnkChargeHistory);
+		lnkChargeHistory.click();
+		return PageFactory.initElements(driver, VirtualCardSwiperPageChargeHistory.class);
+	}
 	
 	public VirtualCardSwiperPage(WebDriver driver) {
 		super(driver);

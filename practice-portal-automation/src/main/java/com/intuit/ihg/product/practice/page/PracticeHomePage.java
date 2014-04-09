@@ -217,7 +217,7 @@ public class PracticeHomePage extends BasePageObject {
 	 * 
 	 * @throws Exception
 	 */
-	public PatientactivationPage clickVirtualCardSwiperTab() throws Exception {
+	public VirtualCardSwiperPage clickVirtualCardSwiperTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, virtualCardSwiperTab);
 		
@@ -230,7 +230,7 @@ public class PracticeHomePage extends BasePageObject {
 		}
 		
 		virtualCardSwiperTab.click();
-		return PageFactory.initElements(driver, PatientactivationPage.class);
+		return PageFactory.initElements(driver, VirtualCardSwiperPage.class);
 	}
 	
 	/**

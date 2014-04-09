@@ -7,6 +7,8 @@ import java.util.Date;
 
 
 
+
+
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsPage;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
 import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
@@ -63,6 +65,7 @@ import com.intuit.ihg.product.portal.page.solutions.virtualofficevisit.VirtualOf
 import com.intuit.ihg.product.portal.page.solutions.virtualofficevisit.VirtualOfficeVisitQuestionnairePage;
 import com.intuit.ihg.product.portal.page.symptomAssessment.NewSymptomAssessmentPage;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
+import com.intuit.ihg.product.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
@@ -92,6 +95,7 @@ import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisi
 import com.intuit.ihg.product.practice.tests.BillPaymentTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
+import com.intuit.ihg.product.practice.tests.RecivePayNowTest;
 import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
@@ -1719,5 +1723,47 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		patientActivation.ActivatePatient(driver, testcasesData, patientActivationSearchTest, practiceTestData,
 				patientActivationSearchTest.getUnlockLink());
 
+	}
+	
+
+	/**
+	 * @Author: Ivan David
+	 * @Date: 04/01/2013
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayNow() throws Exception {
+		
+
+		log("Test Case: testPayNow - No login payment");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+		
+	
+		log("Step 1: Open no login payment page");
+		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.geturl());
+		log("Step 2: Fill in payment info and submit");
+		
+		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(),
+						testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
+				
+		log("Step 3: Verify payment OK");
+		assertTrue(driver.getPageSource().contains("Thank You for your payment"));
+		
+		log("Step 3: Verify account set to N/A");
+		verifyTrue(driver.getPageSource().contains("Account N/A.")); 
+		
+		
+		log("Step 4: Search the payment in Practice portal");
+		RecivePayNowTest recievePayNowTest = new RecivePayNowTest();
+		
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		recievePayNowTest.PayNowVerify(driver, practiceTestData,pNoLoginPaymentPage.GetAmountPrize());
 	}
 }
