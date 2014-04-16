@@ -140,6 +140,37 @@ public class RestUtils {
 	}
 	
 	/**
+	 * Reads the XML and checks REASON 
+	 * @param xmlFileName XML to check
+	 * @param Long timestamp of a sent Reason to check
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 */
+	public static void isReasonResponseXMLValid(String xmlFileName, String reason) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+
+		Log4jUtil.log("finding reason message");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) 
+		{
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (reason));
+			if (node.getChildNodes().item(0).getTextContent().contains(reason))
+			{
+				found = true;
+				Log4jUtil.log("Reason is found.");
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Reason was not found in response XML");
+		Log4jUtil.log("response is ok");
+	}
+	
+	/**
 	 * Reads the XML and checks asked Question if it complies
 	 * @param xmlFileName XML question to prepare
 	 * @param from sender of a message - external System ID
@@ -237,6 +268,7 @@ public class RestUtils {
         httpPostReq.setEntity(se);
         httpPostReq.addHeader("Accept", "application/xml");
         httpPostReq.addHeader("Content-Type", "application/xml");
+        Log4jUtil.log("Post Request Url4: ");
         HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
         String sResp = EntityUtils.toString(resp.getEntity());
