@@ -332,6 +332,53 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	/**
 	 * @Author: Prokop Rehacek
+	 * @Date: 04/14/2014
+	 * @StepsToReproduce: 	1. Practice Portal login 
+	 * 						2. Click on Patient Search Link
+	 *                   	3. Set Patient Search Fields,
+	 *                   	4. Open patient dashboard
+	 *                   	5. Click on Edit link next to Email
+	 *                   	6. Change email address
+	 *                   	7. Verify that it was changed
+	 *                    ====================================
+	 *                    =========================
+	 * @AreaImpacted :
+	 * @throws Exception
+	 */
+	@Test (enabled = true, groups = {"AcceptanceTests"},retryAnalyzer=RetryAnalyzer.class)
+	public void testChangePatientEmail() throws Exception {
+
+		log("Test Case: testPatientSearchLink");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Login to Practice Portal");
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+
+		log("step 2: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
+
+		log("step 3: Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.chngMailFName, PracticeConstants.chngMailLName);
+		
+		log("step 4: Open Patient Dashboard");
+		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(PracticeConstants.chngMailFName, PracticeConstants.chngMailLName);
+		
+		log("step 5: Click Edit email");
+		pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
+		
+		log("step 6: Update email");
+		pPatientDashboardPage = pPatientSearchPage.changeEmail(practiceTestData.getPatientEmail());
+		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
+
+	}
+	
+	/**
+	 * @Author: Prokop Rehacek
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: 
 	 *                   
@@ -362,7 +409,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
 
-		log("step 3:Set Patient Search Fields");
+		log("step 3: Set Patient Search Fields");
 		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.frgtFName, PracticeConstants.frgtLName);
 		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(PracticeConstants.frgtFName, PracticeConstants.frgtLName);
 	

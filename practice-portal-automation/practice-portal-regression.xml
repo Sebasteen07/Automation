@@ -23,6 +23,7 @@
           <include name="testFileSharing"/>
           <include name="testMakePaymentForPatient"/>
           <include name="testOnlineBillPayProcess"/>
+          <include name="testChangePatientEmail"/>
       </methods>    
 </classes>     
 </test>

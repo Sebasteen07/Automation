@@ -13,6 +13,9 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath="//a[contains(.,'Send Password Reset Email To Patient')]")
 	private WebElement userPasswordEmail;
 	
+	@FindBy(xpath="//td/strong[text()='Email']/../following-sibling::node()/a")
+	private WebElement editEmail;
+	
 	@FindBy(xpath="//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
 	
@@ -42,5 +45,14 @@ public class PatientDashboardPage extends BasePageObject{
 		IHGUtil.waitForElement(driver, 15, feedback);
 		return feedback.getText();
 	}
+	
+	public PatientSearchPage clickEditEmail (){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 10, editEmail );
+		editEmail.click( );
+		return PageFactory.initElements( driver, PatientSearchPage.class );
+	}
+	
+	
 
 }

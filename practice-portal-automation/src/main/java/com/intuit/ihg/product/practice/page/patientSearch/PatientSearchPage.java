@@ -49,6 +49,15 @@ public class PatientSearchPage extends BasePageObject{
 	@FindBy( xpath = "//input[@value='Email Username']")
 	private WebElement	emailUserName;
 	
+	@FindBy(name="email")
+	private WebElement newEmail;
+	
+	@FindBy(name="confirm_email")
+	private WebElement newEmailConfirm;
+	
+	@FindBy(name="submitted")
+	private WebElement updateEmail;
+	
 	private WebElement patient;
 	
 	/**
@@ -155,6 +164,26 @@ public class PatientSearchPage extends BasePageObject{
 		IHGUtil.waitForElement(driver,10,emailUserName);
 		emailUserName.click();
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
+	}
+	
+	public PatientDashboardPage changeEmail(String baseEmail){
+		// create new email string from baseEmail@something.com to baseEmail+1234568@something.com
+		String concatEmailWith = "+"+String.valueOf(System.currentTimeMillis());
+		StringBuffer sbNewEmail = new StringBuffer(baseEmail);
+		sbNewEmail.insert(baseEmail.indexOf("@"), concatEmailWith);
+		
+		log("Change email to: "+sbNewEmail.toString());
+		
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 15, newEmail);		
+		newEmail.sendKeys(sbNewEmail.toString());
+		newEmailConfirm.sendKeys(sbNewEmail.toString());
+		
+		IHGUtil.waitForElement(driver, 15, updateEmail);
+		updateEmail.click();
+		
+		return PageFactory.initElements(driver, PatientDashboardPage.class);
+	
 	}
 	
 
