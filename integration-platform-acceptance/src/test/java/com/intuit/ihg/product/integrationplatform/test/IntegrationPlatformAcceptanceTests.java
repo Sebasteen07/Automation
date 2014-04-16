@@ -14,6 +14,8 @@ import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.Appointment;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
@@ -29,11 +31,16 @@ import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
+import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
+import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
+import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep4Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffHistoryPage;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep1Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep3Page;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
+
 
 
 /**
@@ -78,6 +85,77 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentRequest() throws Exception {
+		
+		log("Test Case: Appointment Request");
+		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+		Long timestamp = System.currentTimeMillis();
+		
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("step 2: LogIn");
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
+		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("step 3: Click on Appointment Button on My Patient Page");
+		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
+
+		log("step 4: Complete Appointment Request Step1 Page  ");
+		AppointmentRequestStep2Page apptRequestStep2 = apptRequestStep1.requestAppointment(null,null,testData.getPreferredDoctor(),null);
+
+		log("step 5: Complete Appointment Request Step2 Page  ");
+		AppointmentRequestStep3Page apptRequestStep3 = apptRequestStep2.fillInForm(PortalConstants.PreferredTimeFrame,
+				PortalConstants.PreferredDay, PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason,
+				PortalConstants.WhichIsMoreImportant, testData.getPhoneNumber());
+		
+		log("Getting Appointment reason ");
+		long time=apptRequestStep2.getCreatedTs();
+		String reason=PortalConstants.ApptReason.toString()+" "+String.valueOf(time);
+	    
+		log("step 6: Complete Appointment Request Step3 Page  ");
+		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
+
+		log("step 7: Complete Appointment Request Step4 Page  ");
+		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
+			
+		log("step 8: Setup Oauth client"); 
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		//OAuthPropertyManager.init(testData.getOAuthProperty());
+		
+		log("step 9: Get Appointment Rest call");
+		
+		//get only messages from last day in epoch time to avoid transferring lot of data
+		Long since = timestamp / 1000L - 60 * 60 * 24;
+		
+		log("Getting messages since timestamp: " + since);
+		
+		//do the call and save xml, ",0" is there because of the since attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("step 10: Checking validity of the response xml");
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+	}
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestion() throws Exception {
 		
