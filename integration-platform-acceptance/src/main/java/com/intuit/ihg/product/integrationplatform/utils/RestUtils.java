@@ -297,7 +297,15 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);		
 		OAuthPropertyManager.init(oAuthProperty);
-		OAuth20TokenManager.initializeTokenStore(appToken, username, password);
+		System.out.println("appToken: " +appToken);
+		System.out.println("username: " +username);
+		System.out.println("password: " +password);
+		try {
+			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
+		} catch (Exception hException) {
+			// TODO Auto-generated catch block
+			hException.getCause().printStackTrace();
+		}
 		//System.out.println("appToken: " +appToken);
 		//System.out.println("username: " +username);
 		//System.out.println("password: " +password);
