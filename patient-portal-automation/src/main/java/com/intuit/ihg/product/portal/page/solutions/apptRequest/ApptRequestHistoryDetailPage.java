@@ -3,17 +3,15 @@ package com.intuit.ihg.product.portal.page.solutions.apptRequest;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.openqa.selenium.By;
+
+
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.clipboard.TextTransfer;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class ApptRequestHistoryDetailPage extends BasePageObject{
@@ -48,7 +46,7 @@ public class ApptRequestHistoryDetailPage extends BasePageObject{
 		
 		String mainWindowHandle=driver.getWindowHandle();
 	    Set<String> windowIterator = driver.getWindowHandles();
-	    Iterator ite = windowIterator.iterator();
+	    Iterator<String> ite = windowIterator.iterator();
 		
 		while(ite.hasNext())
 		{

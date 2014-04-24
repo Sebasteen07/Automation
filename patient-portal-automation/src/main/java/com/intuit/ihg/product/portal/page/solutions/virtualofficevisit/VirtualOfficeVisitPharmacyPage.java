@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class VirtualOfficeVisitPharmacyPage extends BasePageObject {
 

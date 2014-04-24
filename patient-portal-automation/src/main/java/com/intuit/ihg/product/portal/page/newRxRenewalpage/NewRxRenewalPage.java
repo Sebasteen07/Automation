@@ -2,23 +2,17 @@ package com.intuit.ihg.product.portal.page.newRxRenewalpage;
 
 import java.util.List;
 
-import junit.framework.Assert;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
 
 public class NewRxRenewalPage  extends BasePageObject {
 

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+import static org.testng.Assert.*;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -34,6 +36,9 @@ public class ResetYourPasswordPage extends BasePageObject{
 	
 	@FindBy(css ="#content > div > div.heading1")
 	private WebElement verifyMessage;
+	
+	@FindBy(xpath="//span[@class='feedbackPanelERROR']")
+	private WebElement feedBackError;
 			
 	public ResetYourPasswordPage(WebDriver driver)
 	{
@@ -100,6 +105,31 @@ public class ResetYourPasswordPage extends BasePageObject{
 		driver.navigate().to(strurl);
 		return PageFactory.initElements(driver,ActivatePasswordChangePage.class);
 		
+	}
+	
+	public SecretAnswerDoesntMatchPage sendBadAnswerTwice( String userId, String securityAnswer ) {
+		IHGUtil.PrintMethodName();
+	    PortalUtil.setPortalFrame(driver);
+	    
+	    //type  user name and submit
+	    txtUserID.sendKeys(userId);
+		btnContinue.click();
+		
+		//wait for security answer text field
+		IHGUtil.waitForElement(driver, 60, txtSecurityAnswer);
+		
+		txtSecurityAnswer.sendKeys(securityAnswer);
+		btnContinue.click();
+		
+		IHGUtil.waitForElement(driver, 60, feedBackError);		
+		assertTrue(feedBackError.getText().contains("Your answer to the security question doesn't match our records. Please try again"));
+		
+		btnContinue.click();
+		
+		return PageFactory.initElements(driver,  SecretAnswerDoesntMatchPage.class);
+		
+		
+	
 	}
 	
 

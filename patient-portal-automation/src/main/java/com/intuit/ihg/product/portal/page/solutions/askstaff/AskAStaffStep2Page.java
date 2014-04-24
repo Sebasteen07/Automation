@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.portal.page.solutions.askstaff;
 
-import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
@@ -101,7 +100,6 @@ public class AskAStaffStep2Page extends BasePageObject {
 		
 		// Randomly select year from choices
 		Select expireYear = new Select(expirationDateYear);
-		List<WebElement> years = expireYear.getOptions();
 		Random rand = new Random();
 		int choice = rand.nextInt(11) + 1;
 		expireYear.selectByIndex(choice);

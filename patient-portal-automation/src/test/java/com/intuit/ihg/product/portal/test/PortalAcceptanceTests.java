@@ -3,15 +3,8 @@ package com.intuit.ihg.product.portal.test;
 import java.util.Calendar;
 import java.util.Date;
 
-
-
-
-
-
-
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsPage;
 import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
-import com.intuit.ihg.product.practice.page.customform.ViewPatientFormPage;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
 import org.testng.annotations.AfterMethod;
@@ -25,13 +18,9 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.portal.page.myAccount.insurance.InsurancePage;
 import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPageOnBetaSite;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPasswordPage;
 import com.intuit.ihg.product.portal.page.forgotPassword.ActivatePasswordChangePage;
 import com.intuit.ihg.product.portal.page.forgotPassword.ResetYourPasswordPage;
-import com.intuit.ihg.product.portal.page.forgotuserid.ForgotUserIdConfirmationPage;
-import com.intuit.ihg.product.portal.page.forgotuserid.ForgotUserIdEnterEmailPage;
-import com.intuit.ihg.product.portal.page.forgotuserid.ForgotUserIdSecretAnswerPage;
+import com.intuit.ihg.product.portal.page.forgotPassword.SecretAnswerDoesntMatchPage;
 import com.intuit.ihg.product.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
@@ -83,26 +72,20 @@ import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.practice.page.askstaff.*;
 import com.intuit.ihg.product.practice.page.messages.PracticeMessagePage;
 import com.intuit.ihg.product.practice.page.messages.PracticeMessagesSearchPage;
-import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.practice.page.symptomassessment.SymptomAssessmentDetailsPage;
 import com.intuit.ihg.product.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitOnlineVisitAndMedicationPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitPracticeConfirmationPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
-import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSummaryPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitTakeActionPage;
 import com.intuit.ihg.product.practice.tests.BillPaymentTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
 import com.intuit.ihg.product.practice.tests.RecivePayNowTest;
-import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
 import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ihg.common.utils.mail.CheckEmail;
-import com.intuit.ihg.common.utils.mail.Gmail;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
@@ -421,7 +404,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
 
 		log("step 8: Navigate to Appt Request History Page");
-		ApptRequestHistoryPage apptRequestHistory = myPatientPage.clickApptRequestHistoryLink();
+		myPatientPage.clickApptRequestHistoryLink();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestHistoryPage.PAGE_NAME);
 
 		log("step 9 :Logout from Patient Portal ");
@@ -961,7 +944,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(vovConfirm.isPageLoaded(), VirtualOfficeVisitPracticeConfirmationPage.PAGE_NAME + " failed to load");
 
 		log("step 16: confirm and submit");
-		VirtualOfficeVisitSummaryPage vovSummary = vovConfirm.confirmAndSubmit();
+		vovConfirm.confirmAndSubmit();
 		assertTrue(verifyTextPresent(driver, "Your prescription and communication have been posted and the visit has been closed."));
 
 		log("step 17: logout of practice portal");
@@ -1068,6 +1051,46 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	}
+	
+	/**
+	 * @Author:- Prokop Rehacek
+	 * @Date:-4/23/2014
+	 * @User Story ID in Rally US7907
+	 * @StepsToReproduce:
+	 * 
+	 *                    Click on Forgot Password Link on LogIn Page On the
+	 *                    Reset Password Page Give UserId 
+	 *					  Write wrong answer twice and verify that is shown page
+	 *					  That want you to contact practice
+	 *                    password ============================================
+	 *                    =================
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testForgotPasswordFailToAnswerSQ() throws Exception {
+
+		log("**INFO:: TestForgotPasswordFailToAnswerSQ");
+		log("**INFO:: Environment on which Testcase is Running:-" + IHGUtil.getEnvironmentType());
+		log("**INFO:: Browser on which Testcase is Running :-" + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		log("URL: " + testcasesData.geturl());
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
+
+		log("step 2: Click Forgot Password");
+		ResetYourPasswordPage pResetYourPasswordPage = loginpage.clickForgotYourPasswordLink();
+
+		log("step 4: Enter your gmail, security Answer and check your gmail account");
+		SecretAnswerDoesntMatchPage pSecretAnswerDoesntMatchPage = pResetYourPasswordPage.sendBadAnswerTwice(testcasesData.getUsername(), "BadAnswer");
+		
+		log("step 5: Verify redirection button is present");
+		pSecretAnswerDoesntMatchPage.verifyPracticeButtonPresent(driver);
+
+	}
 
 	/**
 	 * @Author: bkrishnankutty
@@ -1144,7 +1167,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 				patientData.getDob_Year());
 
 		log("step 10: View the Result");
-		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
+		pSearchPatientFormsResultPage.clickViewLink();
 
 		log("step 11: Verify the Result");
 		String actualPatientName = pHealthForm.Patientname.getText().trim();

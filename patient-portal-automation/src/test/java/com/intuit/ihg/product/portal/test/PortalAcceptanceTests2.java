@@ -54,7 +54,6 @@ import com.intuit.ihg.product.practice.page.symptomassessment.SymptomAssessmentF
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitOnlineVisitAndMedicationPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitPracticeConfirmationPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
-import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitSummaryPage;
 import com.intuit.ihg.product.practice.page.virtualofficevisit.VirtualOfficeVisitTakeActionPage;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
@@ -376,7 +375,7 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		assertTrue(vovConfirm.isPageLoaded(), VirtualOfficeVisitPracticeConfirmationPage.PAGE_NAME + " failed to load");
 
 		log("step 16: confirm and submit");
-		VirtualOfficeVisitSummaryPage vovSummary = vovConfirm.confirmAndSubmit();
+		vovConfirm.confirmAndSubmit();
 		assertTrue(verifyTextPresent(driver, "Your prescription and communication have been posted and the visit has been closed."));
 
 		log("step 17: logout of practice portal");
