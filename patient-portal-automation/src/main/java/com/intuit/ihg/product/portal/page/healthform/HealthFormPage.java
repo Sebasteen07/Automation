@@ -28,7 +28,7 @@ public class HealthFormPage extends BasePageObject {
 		@FindBy(name="footer:submit")
 		private WebElement btnSubmit;
 		
-		@FindBy(linkText="View as PDF")
+		@FindBy(linkText="Ivan Insurance Health Form ( Testing)")
 		private WebElement lnkclickForPdfDownload;
 		
 		@FindBy(xpath="//div[@class='heading1']")

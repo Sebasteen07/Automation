@@ -23,10 +23,10 @@ public class ResetYourPasswordPage extends BasePageObject{
 	@FindBy(how=How.NAME,using="inputs:1:input:input")
 	private WebElement txtSecurityAnswer;
 	
-	@FindBy(how=How.NAME,using="inputs:2:input:input")
+	@FindBy(how=How.NAME,using="inputs:0:input:input")
 	private WebElement txtPassword;
     
-	@FindBy(how=How.NAME,using="inputs:3:input:input")
+	@FindBy(how=How.NAME,using="inputs:1:input:input")
 	private WebElement txtConfirmPassword;
 	
 	@FindBy(how=How.NAME,using="buttons:submit")
@@ -62,8 +62,11 @@ public class ResetYourPasswordPage extends BasePageObject{
 		btnContinue.click();
 		
 		//answer all the security question
-		IHGUtil.waitForElement(driver,60, txtConfirmPassword);
+		IHGUtil.waitForElement(driver,60, txtSecurityAnswer);
 		txtSecurityAnswer.sendKeys(securityAnswer);
+		btnContinue.click();
+		
+		IHGUtil.waitForElement(driver,60, txtConfirmPassword);
 		txtPassword.sendKeys(password);
 		txtConfirmPassword.sendKeys(password);
 		btnSendMail.click();

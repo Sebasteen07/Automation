@@ -1757,8 +1757,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 3: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A.")); 
 		
+		log("Step 4: Verify the prize format.");
+		verifyTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
 		
-		log("Step 4: Search the payment in Practice portal");
+		log("Step 5: Search the payment in Practice portal");
 		RecivePayNowTest recievePayNowTest = new RecivePayNowTest();
 		
 		Practice practice = new Practice();

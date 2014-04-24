@@ -43,7 +43,8 @@ public class ActivatePasswordChangePage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		log("New password : " + password);
-	    txtPassword.sendKeys(password);
+		IHGUtil.waitForElement(driver,6, btnSignIn);
+		txtPassword.sendKeys(password);
 	    btnSignIn.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}

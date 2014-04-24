@@ -117,16 +117,12 @@ public class MyPatientPage  extends BasePageObject{
 			IHGUtil.PrintMethodName();
 			Thread.sleep(6000);
 			PortalUtil.setPortalFrame(driver);
-		    waitformyaccountLink(driver, 6);
+			IHGUtil.waitForElement(driver,6, myaccountLink);
 			myaccountLink.click();
       		return PageFactory.initElements(driver,MyAccountPage.class);
 		}
 		
-		public boolean waitformyaccountLink(WebDriver driver,int n) throws InterruptedException
-		{   
-			IHGUtil.PrintMethodName();
-			return IHGUtil.waitForElement(driver,n, myaccountLink);
-		}
+
 		
 	    public PortalLoginPage logout(WebDriver driver) throws InterruptedException,IOException {
 			
@@ -148,7 +144,7 @@ public class MyPatientPage  extends BasePageObject{
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException
 	{
 		PortalUtil.setPortalFrame(driver);
-	    return waitformyaccountLink(driver, 60);
+			    return IHGUtil.waitForElement(driver,6, myaccountLink);
 	}
 	
 	

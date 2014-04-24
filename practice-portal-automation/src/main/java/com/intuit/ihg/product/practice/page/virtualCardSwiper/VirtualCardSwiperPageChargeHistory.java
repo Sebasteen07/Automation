@@ -87,6 +87,6 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	public boolean VerifyAmount(String amount)
 	{
 		PracticeUtil.setPracticeFrame(driver);
-		return driver.getPageSource().contains(amount);
+		return driver.getPageSource().contains("$" + amount + ".00");
 	}
 }
