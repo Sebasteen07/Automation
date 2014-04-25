@@ -31,7 +31,6 @@ public class CleanGmailInboxTest extends BaseTestNGWebDriver {
 		log("Password: " + testcasesData.getPassword());
 		
 		log("step 2: Clean the Gmail Inbox");
-		String sSubject = String.format("Your password has been reset");
 		PortalUtil util = new PortalUtil(driver);
 		util.cleanInbox(testcasesData.getUsername(),testcasesData.getPassword());
 	}

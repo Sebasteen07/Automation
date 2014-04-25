@@ -126,10 +126,10 @@ public class InsurancePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("delete existing insurances");
 		PortalUtil.setPortalFrame(driver);
-		List<WebElement> items =driver.findElements(By.xpath("//a[contains(text(),'Delete')]"));
-		 for(WebElement itemDetails : items) {
+		List<WebElement> items = driver.findElements(By.xpath("//a[contains(text(),'Delete')]"));
+		for ( int i = 0; i < items.size(); i++ ) {
 			  deleteInsurance();
-		 }
+		}
 	}
 
 

@@ -1,9 +1,5 @@
 package com.intuit.ihg.product.portal.utils;
 
-import java.awt.Toolkit;
-
-import org.openqa.selenium.Dimension;
-
 public class PortalConstants {
 	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
 	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;

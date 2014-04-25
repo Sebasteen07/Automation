@@ -1,21 +1,13 @@
 package com.intuit.ihg.product.portal.page;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
-import com.gargoylesoftware.htmlunit.WaitingRefreshHandler;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.portal.page.MyPatientPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPageOnBetaSite;
-import com.intuit.ihg.product.portal.page.forgotPassword.ResetYourPasswordPage;
-import com.intuit.ihg.product.portal.page.forgotuserid.ForgotUserIdEnterEmailPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalConstants;

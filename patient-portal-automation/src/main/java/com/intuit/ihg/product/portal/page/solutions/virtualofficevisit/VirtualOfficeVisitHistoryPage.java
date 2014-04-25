@@ -1,8 +1,5 @@
 package com.intuit.ihg.product.portal.page.solutions.virtualofficevisit;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +15,6 @@ import com.intuit.ihg.product.portal.utils.PortalUtil;
 public class VirtualOfficeVisitHistoryPage extends BasePageObject {
 	
 	public static final String PAGE_NAME = "Virtual Office Visit History Page";
-	
-	private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	
 	@FindBy(xpath=".//a/span")
 	private List<WebElement> vovHistoryList;
