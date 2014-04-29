@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;import com.intuit.ihg.common.utils.IHGUtil;import com.intuit.ihg.product.community.page.CommunityHomePage;import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;import com.intuit.ihg.common.utils.IHGUtil;import com.intuit.ihg.product.community.page.CommunityHomePage;
 
 public class AppointmentRequestScheduleAppointmentPage extends BasePageObject {
 	

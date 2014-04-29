@@ -3,13 +3,9 @@ package com.intuit.ihg.product.community.utils;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import mx4j.log.Log;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.IHGUtil;

@@ -5,8 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;import org.openqa.selenium.support.ui.Select;
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;import com.intuit.ifs.csscat.core.pageobject.BasePageObject;import com.intuit.ihg.common.utils.IHGUtil;import com.intuit.ihg.product.community.page.CommunityHomePage;import com.intuit.ihg.product.community.utils.CommunityConstants;import com.intuit.ihg.product.portal.utils.PortalConstants;import com.intuit.ihg.product.portal.utils.PortalUtil;
+import org.openqa.selenium.support.PageFactory;import com.intuit.ifs.csscat.core.pageobject.BasePageObject;import com.intuit.ihg.common.utils.IHGUtil;import com.intuit.ihg.product.community.page.CommunityHomePage;import com.intuit.ihg.product.community.utils.CommunityConstants;
 
 public class BillPayPaymentDetailsPage extends BasePageObject {
 

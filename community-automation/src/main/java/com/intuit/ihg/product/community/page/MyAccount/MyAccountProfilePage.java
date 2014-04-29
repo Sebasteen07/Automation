@@ -127,7 +127,7 @@ public class MyAccountProfilePage extends BasePageObject {
 		WebElement notification = (new WebDriverWait(driver, 60)).until(ExpectedConditions.presenceOfElementLocated(By
 						.xpath("//h2[contains(text(),'Success')]")));
 		
-		return successNotification.isDisplayed();
+		return notification.isDisplayed();
 	}
 	
 	 

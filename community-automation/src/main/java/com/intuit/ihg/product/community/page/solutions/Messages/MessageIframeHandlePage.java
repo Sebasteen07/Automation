@@ -8,6 +8,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
 
@@ -24,7 +25,10 @@ public class MessageIframeHandlePage extends BasePageObject{
 	
 	public MessageHealthInformationPage handleIframe() throws InterruptedException {
 		driver.switchTo().frame(CCDViewFrame);
-		WebElement innerFrame = (new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.id("personalHeader")));
+
+		WebDriverWait innerFrame = (new WebDriverWait(driver, 30));
+		innerFrame.until(ExpectedConditions.elementToBeClickable(By.id("personalHeader")));
+		
         return PageFactory.initElements(driver, MessageHealthInformationPage.class);
     }
 	

@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.community.test;
 
-import java.util.Random;
 
 import junit.framework.Assert;
 

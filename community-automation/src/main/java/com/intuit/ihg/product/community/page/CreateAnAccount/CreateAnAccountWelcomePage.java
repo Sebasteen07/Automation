@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.community.page.CommunityHomePage;
-import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
 
 public class CreateAnAccountWelcomePage extends BasePageObject {
 
