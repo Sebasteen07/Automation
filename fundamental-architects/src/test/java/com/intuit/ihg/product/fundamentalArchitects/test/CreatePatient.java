@@ -35,7 +35,7 @@ public class CreatePatient extends BaseTestNGWebDriver {
 		TestcasesData testcasesData = new TestcasesData(portal);
 
 		// Executing Test
-		createPatientTest.CreatePatient(driver, testcasesData);
+		createPatientTest.createPatient(driver, testcasesData);
 
 	}
 
@@ -64,7 +64,7 @@ public class CreatePatient extends BaseTestNGWebDriver {
 		TestcasesData testcasesData = new TestcasesData(portal);
 
 		// Executing Test
-		createPatientTest.CreatePatient(driver, testcasesData);
+		createPatientTest.createPatient(driver, testcasesData);
 
 		// Variable with email and password for login to another practice
 		// via healthKey
