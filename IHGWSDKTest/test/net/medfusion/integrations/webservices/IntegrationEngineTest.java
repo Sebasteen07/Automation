@@ -15,6 +15,7 @@ import net.medfusion.integrations.webservices.intengine.IntengineSoapBindingStub
 import net.medfusion.integrations.webservices.intengine.objects.Change;
 import net.medfusion.integrations.webservices.intengine.objects.ChangeGroup;
 import net.medfusion.integrations.webservices.intengine.objects.ChangeQuestion;
+import net.medfusion.integrations.webservices.intengine.objects.Field;
 import net.medfusion.integrations.webservices.medfusion.objects.WebServiceReturnComposite;
 import net.medfusion.integrations.webservices.utils.WebserviceUtils;
 
@@ -119,7 +120,7 @@ public class IntegrationEngineTest {
             Map<String, String> questionFields) {
         ChangeGroup changeGroup = new ChangeGroup();
 
-        List fieldList = new ArrayList();
+        List<Field> fieldList = new ArrayList<Field>();
         fieldList.add(ieField(WebServiceConstants.FIELD_CHQG_QUESTIONGROUPID,
                 questionGroupId, WebServiceConstants.FIELD_DATATYPE_INT));
 
@@ -150,14 +151,14 @@ public class IntegrationEngineTest {
                 .size()];
 
         int i = 0;
-        Set keys = questionFields.keySet();
-        for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
+        Set<String> keys = questionFields.keySet();
+        for (Iterator<String> iterator = keys.iterator(); iterator.hasNext();) {
             ChangeQuestion changeQuestion = new ChangeQuestion();
 
             String setKey = (String) iterator.next();
             String setValue = questionFields.get(setKey);
 
-            List fieldList = new ArrayList();
+            List<Field> fieldList = new ArrayList<Field>();
             fieldList.add(ieField(WebServiceConstants.FIELD_CHQ_QUESTIONID,
                     Integer.valueOf(setKey),
                     WebServiceConstants.FIELD_DATATYPE_INT));
@@ -243,7 +244,7 @@ public class IntegrationEngineTest {
 
             Change change = new Change();
 
-            List fieldList = new ArrayList();
+            List<Field> fieldList = new ArrayList<Field>();
             fieldList.add(ieField(
                     WebServiceConstants.FIELD_CHANGE_INTEGRATIONID,
                     SystemConfigProperties.WSFM_INTEGRATIONID,

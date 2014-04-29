@@ -1,6 +1,5 @@
 package net.medfusion.integrations.webservices;
 
-import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +17,7 @@ public class CommserviceWebservicesTest {
             "yyyy-MM-dd'T'HH:mm:ss.SS");
     private CommserviceServiceLocator locator1 = null;
     private CommserviceSoapBindingStub service1 = null;
-    private BufferedWriter buff = null;
+//    private BufferedWriter buff = null;
 
     @BeforeClass
     public void oneTimeSetUp() throws Exception {
