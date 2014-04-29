@@ -30,8 +30,8 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 public class GmailBot implements MailBot {
 
 	private static final String GMAIL_FOLDER_INBOX = "Inbox";
-	private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
-	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
+	//private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
+	//private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
 	//private static final String GMAIL_FOLDER_TRASH = "[Gmail]/Trash"; // UK =
 	private static final String GMAIL_FOLDER_TRASH = "Inbox";																	// [Google
 																		// Mail]/Bin
@@ -916,7 +916,7 @@ public class GmailBot implements MailBot {
 
 		IHGUtil.PrintMethodName();
 
-		Set<String> urlList = new HashSet<String>();
+		// Set<String> urlList = new HashSet<String>();
 
 		// /////////////////////////
 		// Use GmailBot to parse email;
@@ -1052,7 +1052,7 @@ public class GmailBot implements MailBot {
 
 		IHGUtil.PrintMethodName();
 
-		Set<String> urlList = new HashSet<String>();
+		// Set<String> urlList = new HashSet<String>();
 
 		// /////////////////////////
 		// Use GmailBot to parse email;
