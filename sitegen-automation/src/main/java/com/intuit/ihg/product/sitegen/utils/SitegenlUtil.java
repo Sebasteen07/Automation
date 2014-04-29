@@ -3,9 +3,6 @@ package com.intuit.ihg.product.sitegen.utils;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;

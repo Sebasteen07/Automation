@@ -1,14 +1,6 @@
 package com.intuit.ihg.product.sitegen.test;
 
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.jsoup.Connection.Method;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
@@ -23,7 +15,6 @@ import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.healthform.CustomFormPageForSitegen;
 import com.intuit.ihg.product.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.page.questionnaires.FormAllergiesPage;
@@ -66,7 +57,6 @@ import com.intuit.ihg.product.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.sitegen.page.customforms.ManageYourFormsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.CustomFormPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.DiscreteFormsPage;
-import com.intuit.ihg.product.sitegen.page.home.SiteGenAdminHomePage;
 import com.intuit.ihg.product.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.page.location.AddLocationPage;
@@ -99,8 +89,6 @@ import com.intuit.ihg.product.sitegen.page.discreteforms.SocialHistoryPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.SurgeriesAndHospitalizationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.VaccinationsPage;
 import com.intuit.ihg.product.sitegen.page.discreteforms.WelcomeScreenPage;
-
-import org.openqa.selenium.Alert;
 
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
@@ -1028,7 +1016,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				SitegenConstants.PATIENT_DOBYEAR);
 
 		log("step 22: View the Result");
-		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
+		pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
 		
 		log("step 23 : Verify the Result");
 		HealthFormPage pHealthForm1 = new HealthFormPage(driver);
@@ -1495,7 +1483,7 @@ public void testDiscreteFormPDF() throws Exception {
 				SitegenConstants.PATIENT_DOBYEAR);
 
 		log("step 21: View the Result");
-		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
+		pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
 		
 		log("step 22 : Verify the Result");
 		HealthFormPage pHealthForm1 = new HealthFormPage(driver);

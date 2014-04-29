@@ -12,7 +12,6 @@ import com.google.common.base.Function;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.page.home.SiteGenPracticeHomePage;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 /**

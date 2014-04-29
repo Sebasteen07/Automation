@@ -7,8 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
-import com.intuit.ihg.product.sitegen.page.physicians.AddPhysicianStep2EditLocationInfoPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 /**

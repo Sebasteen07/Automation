@@ -8,8 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 	
 	public class OtherDoctorsYouSeen extends BasePageObject{
 		

@@ -6,10 +6,8 @@
 	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
 	  <version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
-	
-	<groupId>com.intuit.ihg</groupId>
+
 	<artifactId>sitegen-automation</artifactId>
-	<version>ihg-depot-trunk-SNAPSHOT</version>
 	<name>sitegen-automation</name>
 	<description>Site Generator automation tests</description>
     
