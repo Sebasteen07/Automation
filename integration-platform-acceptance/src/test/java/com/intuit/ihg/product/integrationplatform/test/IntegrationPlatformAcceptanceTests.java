@@ -79,7 +79,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 
 		log("step 2:LogIn");
-		TestPage loginpage = new TestPage(driver, "http://www.google.com");
+		new TestPage(driver, "http://www.google.com");
 		Thread.sleep(100000);
 		//MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
 

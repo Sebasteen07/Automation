@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.IOException;
 import java.net.URL;
 
 import com.intuit.ihg.common.utils.ExcelSheetReader;

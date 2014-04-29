@@ -7,9 +7,7 @@
 	  <version>ihg-depot-trunk-SNAPSHOT</version>
 </parent>
 
-  <groupId>com.intuit.ihg</groupId>
   <artifactId>integration-platform-automation</artifactId>
-  <version>ihg-depot-trunk-SNAPSHOT</version>
   <name>integration-platform-automation</name>
   <description>Integration Platform Acceptance Automation</description>
   
