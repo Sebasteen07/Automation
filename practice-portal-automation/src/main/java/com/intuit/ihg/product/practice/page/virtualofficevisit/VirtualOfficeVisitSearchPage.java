@@ -1,12 +1,9 @@
 package com.intuit.ihg.product.practice.page.virtualofficevisit;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,12 +12,11 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.page.messages.PracticeMessagesSearchPage;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class VirtualOfficeVisitSearchPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Virtual Office Visit Search Page";
-	private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+//	private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	private boolean hasSearched = false;
 	
 	// Finds all Status radio options

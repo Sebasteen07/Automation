@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.practice.page.fileSharing;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -10,12 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 /**
  * 

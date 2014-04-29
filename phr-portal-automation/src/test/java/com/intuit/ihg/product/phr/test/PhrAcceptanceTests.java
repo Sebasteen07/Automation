@@ -24,10 +24,8 @@ import com.intuit.ihg.product.phr.page.portaltophr.IntuitAcceptPrivacyPolicy;
 import com.intuit.ihg.product.phr.page.profile.PhrProfilePage;
 import com.intuit.ihg.product.phr.utils.Phr;
 import com.intuit.ihg.product.phr.utils.PhrTestcasesData;
-import com.intuit.ihg.product.phr.utils.PhrUtil;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
@@ -36,7 +34,6 @@ import com.intuit.ihg.product.portal.page.portaltophr.AcceptPhrTermsandCondition
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 
 public class PhrAcceptanceTests extends BaseTestNGWebDriver {

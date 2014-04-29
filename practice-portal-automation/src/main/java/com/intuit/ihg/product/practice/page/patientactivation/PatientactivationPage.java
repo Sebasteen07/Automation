@@ -1,9 +1,4 @@
 package com.intuit.ihg.product.practice.page.patientactivation;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
@@ -11,14 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class PatientactivationPage extends BasePageObject{
 	

@@ -1,8 +1,6 @@
 package com.intuit.ihg.product.practice.page.documentManagement;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import org.openqa.selenium.WebDriver;
@@ -11,9 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;

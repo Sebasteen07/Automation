@@ -7,7 +7,6 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.practice.page.patientactivation.PatientactivationPage;
 import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;

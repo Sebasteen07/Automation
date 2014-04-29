@@ -1,9 +1,5 @@
 package com.intuit.ihg.product.phr.page.phrHealthInformationPage;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -107,11 +103,11 @@ public class VitalSignsPage extends BasePageObject {
 		int iValue = (table_Size-row_Size)+1;
 
 		for( int i=iValue; i<=table_Size; i++) { 
-			DateFormat formatter;
-			Date date1;
-			Calendar cal;
-			long scalmili;
-			formatter = new SimpleDateFormat("MM/dd/yyyy");
+//			DateFormat formatter;
+//			Date date1;
+//			Calendar cal;
+//			long scalmili;
+//			formatter = new SimpleDateFormat("MM/dd/yyyy");
 
 
 			WebElement  ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/span"));

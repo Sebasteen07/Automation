@@ -1,25 +1,14 @@
 package com.intuit.ihg.product.practice.page.patientMessaging;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class PatientMessagingPage extends BasePageObject{
 

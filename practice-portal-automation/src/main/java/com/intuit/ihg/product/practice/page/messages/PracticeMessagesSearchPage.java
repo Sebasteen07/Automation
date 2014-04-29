@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.practice.page.messages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -11,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -160,7 +157,7 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(10000);
 		IHGUtil.setFrame(driver, "iframebody");	
-		boolean flag=false;
+//		boolean flag=false;
 		int count=1;
 		for (WebElement message : messageList) 
 		{
@@ -171,7 +168,7 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 			{
 				driver.findElement(By.xpath(".//*[@id='MfAjaxFallbackDefaultDataTable']/tbody".concat("/tr["+count+"]/td[1]/span/a"))).click();
 				//message.click();
-				flag=true;
+//				flag=true;
 				break;
 			}
 			count++;

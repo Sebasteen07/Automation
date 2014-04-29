@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.phr.page.phrEmergencyContactPage;
 
-import java.util.Random;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

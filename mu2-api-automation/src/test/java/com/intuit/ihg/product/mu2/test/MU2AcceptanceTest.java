@@ -13,10 +13,6 @@ import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
 import com.intuit.ihg.product.mu2.utils.UtilityFunctions;
 
-import com.intuit.ihg.product.mu2.utils.TrackingDBHandler;
-
-import com.intuit.ihg.product.mu2.utils.XMLHandler;
-
 public class MU2AcceptanceTest extends BaseTestNGWebDriver { 
 		
 	@Override

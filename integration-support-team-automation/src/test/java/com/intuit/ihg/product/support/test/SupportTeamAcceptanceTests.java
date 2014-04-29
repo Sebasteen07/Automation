@@ -15,17 +15,9 @@ import net.medfusion.integrations.webservices.medfusion.MedfusionSoapBindingStub
 import net.medfusion.integrations.webservices.medfusion.objects.Comm;
 import net.medfusion.integrations.webservices.medfusion.objects.CommAttachment;
 import net.medfusion.integrations.webservices.medfusion.objects.CommDetail;
-import net.medfusion.integrations.webservices.medfusion.objects.EM;
-import net.medfusion.integrations.webservices.medfusion.objects.EMField;
-import net.medfusion.integrations.webservices.medfusion.objects.EMRecipient;
-import net.medfusion.integrations.webservices.medfusion.objects.EMStatus;
-import net.medfusion.integrations.webservices.medfusion.objects.EMTemplate;
+import net.medfusion.integrations.webservices.medfusion.objects.Field;
 
 import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,7 +26,6 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.entities.CcdType;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.support.utils.Support;
 import com.intuit.ihg.product.support.utils.SupportConstants;
 import com.intuit.ihg.product.support.utils.SupportTestcasesData;
@@ -75,7 +66,6 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 * =============================================================
 	 */
-	@SuppressWarnings("unchecked")
 	@Test(enabled = true, dataProvider = "patientData", groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendCommunicationsWithAttachment(int memberID, int practiceID, int staffID, String subject, String message) throws Exception {
 
@@ -133,7 +123,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			.println("Send a Generic Communication from Staff to Member");
 			Comm communication = new Comm();
 
-			Vector fieldVector = new Vector();
+			Vector<Field> fieldVector = new Vector<Field>();
 
 			fieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -164,7 +154,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			
 			// build comm details
 			CommDetail[] cds = new CommDetail[2];
-			Vector detailFieldVector = new Vector();
+			Vector<Field> detailFieldVector = new Vector<Field>();
 			detailFieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
 					WebServiceConstants.FIELD_COMMDETAIL_MEMBERID, null));
@@ -185,7 +175,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			cds[0] = new CommDetail();
 			cds[0].setFields(theDetailFields);
 
-			detailFieldVector = new Vector();
+			detailFieldVector = new Vector<Field>();
 			detailFieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
 					WebServiceConstants.FIELD_COMMDETAIL_MEMBERID,
@@ -215,7 +205,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			if (testFile.exists()) {
 				System.out.println("Building Comm Attachment...");
 				CommAttachment[] ca = new CommAttachment[1];
-				Vector attachmentFieldVector = new Vector();
+				Vector<Field> attachmentFieldVector = new Vector<Field>();
 				attachmentFieldVector
 				.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
 						WebServiceConstants.FIELD_COMMATTACHMENT_NAME,
@@ -341,7 +331,6 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 * =====================================================
 	 */
-	@SuppressWarnings("unchecked")
 	@Test(enabled = false, dataProvider = "labResults", groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLabResultForPatient(int memberID, int practiceID, int staffID, String subject, String message) throws Exception {
 
@@ -400,7 +389,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			.println("Send a Generic Communication from Staff to Member");
 			Comm communication = new Comm();
 
-			Vector fieldVector = new Vector();
+			Vector<Field> fieldVector = new Vector<Field>();
 
 			fieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -429,7 +418,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 
 			// build comm details
 			CommDetail[] cds = new CommDetail[2];
-			Vector detailFieldVector = new Vector();
+			Vector<Field> detailFieldVector = new Vector<Field>();
 			detailFieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
 					WebServiceConstants.FIELD_COMMDETAIL_MEMBERID, null));
@@ -450,7 +439,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 			cds[0] = new CommDetail();
 			cds[0].setFields(theDetailFields);
 
-			detailFieldVector = new Vector();
+			detailFieldVector = new Vector<Field>();
 			detailFieldVector
 			.add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
 					WebServiceConstants.FIELD_COMMDETAIL_MEMBERID,

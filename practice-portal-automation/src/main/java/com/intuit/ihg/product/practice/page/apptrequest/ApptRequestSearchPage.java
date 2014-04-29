@@ -13,8 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffRequestStatus;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class ApptRequestSearchPage extends BasePageObject {
@@ -175,7 +173,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 		log("Select end Month in search filter options");
 		IHGUtil.waitForElement(driver, 6, endMonth);
 		Select endMonthSelect = new Select(endMonth);
-		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index");
+		endMonthSelect.getFirstSelectedOption().getAttribute("index");
 		
 		log("Select end Year in search filter options");
 		IHGUtil.waitForElement(driver, 6, startYear);

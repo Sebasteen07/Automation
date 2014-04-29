@@ -23,7 +23,6 @@ import com.intuit.ihg.product.practice.page.patientMessaging.PatientMessagingPag
 import com.intuit.ihg.product.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.practice.page.treatmentplanpage.TreatmentPlansPage;
-import com.intuit.ihg.product.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;

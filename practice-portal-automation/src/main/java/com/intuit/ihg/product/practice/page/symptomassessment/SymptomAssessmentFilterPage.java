@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.practice.page.symptomassessment;
 
-import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,10 +8,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestEntity;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestProcessOption;
-import com.intuit.ihg.product.practice.page.customform.SearchPatientFormsResultPage;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class SymptomAssessmentFilterPage extends BasePageObject {
 

@@ -11,7 +11,7 @@ public class ApptRequestEntity {
 	private String apptAmPm;
 	private String apptDate;
 
-	public ApptRequestEntity ApptRequestEntity() {
+	public ApptRequestEntity GetApptRequestEntity() {
 		return this;
 	}
 

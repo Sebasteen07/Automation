@@ -11,7 +11,6 @@ import com.intuit.ihg.product.practice.page.documentManagement.documentManagemen
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 import com.intuit.ihg.product.practice.utils.ReadFilePath;
 
 public class PracticePortalRegressionTests extends BaseTestNGWebDriver {
@@ -61,9 +60,6 @@ public class PracticePortalRegressionTests extends BaseTestNGWebDriver {
 		docManagement.addNewPatient(PracticeConstants.firstName, PracticeConstants.lastName, PracticeConstants.patientID, PracticeConstants.email,PracticeConstants.value, PracticeConstants.year, PracticeConstants.zipCode);
 
 		log("Step 6 : Getting the document to upload from filepath");
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.filename);
-
 		log("Step 7 : Uploading the document.");
 		docManagement.browseFile();
 		docManagement.uploadDocument();

@@ -1,8 +1,5 @@
 package com.intuit.ihg.product.phr.utils;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -17,11 +14,6 @@ import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.intuit.ihg.common.entities.CcdType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
-
-
-
-
 
 public class PhrUtil extends IHGUtil {
 

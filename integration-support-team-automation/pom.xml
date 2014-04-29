@@ -8,7 +8,6 @@
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
 		<version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
-	<groupId>com.intuit.ihg</groupId>
 	<artifactId>integration-support-team-automation</artifactId>
 	<name>integration-support-team-automation</name>
 	<packaging>jar</packaging>

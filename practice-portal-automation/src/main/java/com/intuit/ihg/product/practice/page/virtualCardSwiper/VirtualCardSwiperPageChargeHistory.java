@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.practice.page.virtualCardSwiper;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +8,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestStatus;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class VirtualCardSwiperPageChargeHistory extends BasePageObject {

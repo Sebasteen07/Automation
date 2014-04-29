@@ -36,7 +36,7 @@ public class RxRenewalDetailPage extends BasePageObject{
 	//private Select selectFrequency;
 	
 	// rxrs:0:rxPanel:container:table:unitsForm:select
-	private Select selectUnitsForm;
+//	private Select selectUnitsForm;
 	
 	///////////////////////////////////
 	// Secure Communication

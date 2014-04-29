@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.phr.page.phrHealthInformationPage;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +9,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.phr.utils.PhrUtil;
 
 public class LaboratoryAndTestResultPage extends BasePageObject{
 
@@ -92,9 +89,9 @@ public class LaboratoryAndTestResultPage extends BasePageObject{
 		log("removing all results present");
 		driver.switchTo().defaultContent();
 
-		int row_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span")).size();
+//		int row_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span")).size();
 		int table_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr")).size();
-		int iValue = (table_Size-row_Size)+1;
+//		int iValue = (table_Size-row_Size)+1;
 
 		for( int i=2; i<=table_Size; i++) { 
 			WebElement  ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/span"));

@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.practice.page.onlinebillpay;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import org.openqa.selenium.By;
@@ -11,12 +9,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class eStatementUploadPage extends BasePageObject {
 
@@ -104,8 +99,8 @@ public class eStatementUploadPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
 		
-		int size = driver.findElements(By.xpath(".//form[@id='resultsForm']/table/tbody/tr")).size();
-		 driver.findElement(By.xpath(".//form[@id='resultsForm']/table/tbody/tr")).click();
+		driver.findElements(By.xpath(".//form[@id='resultsForm']/table/tbody/tr")).size();
+		driver.findElement(By.xpath(".//form[@id='resultsForm']/table/tbody/tr")).click();
 			
 	}
 	
