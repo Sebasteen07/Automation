@@ -9,7 +9,6 @@
 		<version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.intuit.ihg</groupId>
 	<artifactId>ehcore-api-automation</artifactId>
 	<name>ehcore-api-automation</name>
 	<description>Ehcore Api Automation</description>

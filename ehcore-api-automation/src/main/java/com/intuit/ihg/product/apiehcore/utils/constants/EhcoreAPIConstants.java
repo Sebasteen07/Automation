@@ -2,8 +2,6 @@ package com.intuit.ihg.product.apiehcore.utils.constants;
 
 import java.net.HttpURLConnection;
 
-import com.intuit.ihg.common.utils.IHGUtil;
-
 /**
  * @author bkrishnankutty, bbinisha
  * @Date 6/Aug/2013

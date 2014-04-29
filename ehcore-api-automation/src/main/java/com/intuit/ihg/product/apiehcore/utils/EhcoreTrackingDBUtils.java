@@ -94,7 +94,7 @@ public class EhcoreTrackingDBUtils {
 		List<Message>  details =  new ArrayList<Message>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String attributes = null;
+//		String attributes = null;
 
 		try {
 

@@ -1792,8 +1792,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 				log("Execution Browser: " + TestConfig.getBrowserType());
 
 				List<Message> msgDetails = new ArrayList<Message>();
-				String expectedCcd = CCDImportConstants.AS_RAW+ "AS_RawResponse.xml";
-				
 				EhcoreAPI ehcoreApi = new EhcoreAPI();
 				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 				AllscriptsMessageEnvelope response = EhcoreAPIUtil.sendAllscriptsImportMessage(testData,CCDImportConstants.AS_CCD);
@@ -1804,7 +1802,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		(),EhcoreAPIConstants.AS_RAWPERSIST));
 				//Pass nodeType and get the obj_ref_id in Tracking DB
-				String obj_ref_id  = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString
+				EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString
 
 		());
 			log("Exiting testASImportRawMessagePersist test method ... ");			
@@ -2003,10 +2001,6 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 				EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 			
 				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),CCDExportConstants.AS_CCD_EXPORT);
-				List<Message> msgDetailsNew = new ArrayList<Message>();
-				msgDetailsNew = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString
-
-		(),CCDExportConstants.AS_CCD_EXPORT);
 				EhcoreAPIUtil.verifyExpectedDataJobProcStatus(response.getDataJobId(),TrackingEnumHolder.DATAJOB_STATUS.ERROR.toString());
 
 				log("Exiting testDCPublish2ConnectHubActivity test method ... ");			
@@ -2260,10 +2254,11 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 				log("Entering checkRouteMsgToPractice test method ... ");
 
-				List<Message> msgDetails = new ArrayList<Message>();
+//				List<Message> msgDetails = new ArrayList<Message>();
 			
 				ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(UUID.randomUUID().toString(),"validExportMsg");
-				msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString
+//				msgDetails = 
+						EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString
 
 		(),EhcoreAPIConstants.CCDEXPORT);
 				
@@ -5003,8 +4998,8 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Entering test method setup ... ");
 		DataJob dj = new DataJob();
-		EhcoreAPI ehcoreApi = new EhcoreAPI();
-		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
+//		EhcoreAPI ehcoreApi = new EhcoreAPI();
+//		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
 
 		List<Message> msgDetails = new ArrayList<Message>();
@@ -5599,7 +5594,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 		
 		log("step2:- sending the request and getting the response");
-		EhcoreAPIUtil util =new EhcoreAPIUtil(driver);
+//		EhcoreAPIUtil util =new EhcoreAPIUtil(driver);
 		ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),"invalidAllScriptsCCDExportMsg");
 		
 		log("step3:- sending the request and getting the response");
@@ -5716,15 +5711,16 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 
 		List<Message> msgDetails = new ArrayList<Message>();
-		EhcoreAPIUtil util =new EhcoreAPIUtil(driver);
-		String expectedCcd = CCDExportConstants.AS_CCDEXPORT_INVALID_ERROR+ "AllScriptsAdapter_CCDExport_ErrorResponse.xml";
+//		EhcoreAPIUtil util =new EhcoreAPIUtil(driver);
+//		String expectedCcd = CCDExportConstants.AS_CCDEXPORT_INVALID_ERROR+ "AllScriptsAdapter_CCDExport_ErrorResponse.xml";
 
 		ProcessingResponse response = EhcoreAPIUtil.sendCCDExportMessage(testData.getPatientID(),"invalidAllScriptsCCDExportMsg");;
 
 		msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getMessageId(),TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),CCDExportConstants.AS_CCD_EXPORT);
 		
 		//Pass nodeType and get the obj_ref_id in Tracking DB
-		String obj_ref_id  =  EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString()); 
+//		String obj_ref_id  =  
+				EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString()); 
 			log("Exiting testRawMessagePersistForValidMessage test method ... ");
 	}
 

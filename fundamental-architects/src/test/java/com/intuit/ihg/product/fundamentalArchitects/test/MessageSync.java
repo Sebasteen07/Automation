@@ -2,7 +2,6 @@ package com.intuit.ihg.product.fundamentalArchitects.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import org.bouncycastle.asn1.ess.SigningCertificate;
 import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -114,7 +113,7 @@ public class MessageSync extends BaseTestNGWebDriver {
 		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
 
 		log("step 8: Navigate to Appt Request History Page");
-		ApptRequestHistoryPage apptRequestHistory = myPatientPage.clickApptRequestHistoryLink();
+		myPatientPage.clickApptRequestHistoryLink();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestHistoryPage.PAGE_NAME);
 
 		log("step 9 :Logout from Patient Portal ");

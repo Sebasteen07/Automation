@@ -2,7 +2,6 @@ package com.intuit.ihg.product.apiehcore.page;
 
 
 import java.net.HttpURLConnection;
-import org.apache.log4j.Logger;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
 import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
@@ -12,7 +11,7 @@ import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
 
 public class DataJobIDPage {
 	
-	private static DataJob dj = null;
+//	private static DataJob dj = null;
 	public static boolean isProcStatusAsExpected = false;
 	public static String actualStatus = null;
 	public static String djStatus = null;

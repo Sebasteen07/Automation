@@ -7,9 +7,7 @@
 	  <version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>com.intuit.ihg</groupId>
 	<artifactId>fundamental-architects</artifactId>
-	<version>ihg-depot-trunk-SNAPSHOT</version>
 	<name>fundamental-architects</name>
 	<description>Fundamental Architects automation tests</description>
     
