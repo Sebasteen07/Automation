@@ -8,9 +8,7 @@
 		<version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.intuit.ihg</groupId>
 	<artifactId>service-mediator-automation</artifactId>
-	<version>ihg-depot-trunk-SNAPSHOT</version>
 	<name>service mediator automation</name>
 	<description>Service Mediator Automation</description>
 

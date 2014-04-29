@@ -21,7 +21,7 @@ public class PerformanceReporter {
 		long navigationStart;
 		long loadEventEnd;
 		
-		Map timingData = PerformanceReporter.getPerformanceTimings(driver);
+		Map<String, Long> timingData = PerformanceReporter.getPerformanceTimings(driver);
 		navigationStart = (Long) timingData.get(NAVIGATION_START);
 		loadEventEnd = (Long) timingData.get(LOAD_EVENT_END);
 		long duration = loadEventEnd - navigationStart;
@@ -33,14 +33,15 @@ public class PerformanceReporter {
 	}
 	
 	public static void printBrowserPerformanceTimings(WebDriver driver) throws InterruptedException {		
-		Map timingData = PerformanceReporter.getPerformanceTimings(driver);		
+//		Map<String, Long> timingData = PerformanceReporter.getPerformanceTimings(driver);		
 	}
 	
-	private static Map getPerformanceTimings(WebDriver driver) throws InterruptedException {
-		Map timingData = null;
+	@SuppressWarnings("unchecked")
+	private static Map<String, Long> getPerformanceTimings(WebDriver driver) throws InterruptedException {
+		Map<String, Long> timingData = null;
 
 		do {
-			timingData = (Map) ((JavascriptExecutor)driver).executeScript("var performance = window.performance || {};" + 
+			timingData = (Map<String, Long>) ((JavascriptExecutor)driver).executeScript("var performance = window.performance || {};" + 
 	                "var timings = performance.timing || {};"+
 	                "return timings;");
 			

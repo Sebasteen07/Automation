@@ -30,8 +30,8 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 public class GmailBot implements MailBot {
 
 	private static final String GMAIL_FOLDER_INBOX = "Inbox";
-	private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
-	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
+//	private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
+//	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
 	//private static final String GMAIL_FOLDER_TRASH = "[Gmail]/Trash"; // UK =
 	private static final String GMAIL_FOLDER_TRASH = "Inbox";																	// [Google
 																		// Mail]/Bin
@@ -497,7 +497,8 @@ public class GmailBot implements MailBot {
 
 		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
 
-		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+//		String sDate = "", sFrom = "", sSubject = "", 
+		String sContentType = "", sTo = "", sContent = "", sPlainText = "", sHTML = "";
 
 		boolean bSubjectFound = false;
 
@@ -529,14 +530,14 @@ public class GmailBot implements MailBot {
 				// TODO - mark messages as seen (via bot?).
 
 				// TODO verify is recent - may have to account for time zones!
-				sDate = message.get("DATE");
+//				sDate = message.get("DATE");
 
-				sFrom = message.get("FROM"); // TODO verify expected FROM
+//				sFrom = message.get("FROM"); // TODO verify expected FROM
 												// address
 				sTo = message.get("TO"); // Format is (sans []):
 											// ["com.test.igh+FOO@gmail.com"
 											// <com.test.igh+FOO@gmail.com>]
-				sSubject = message.get("SUBJECT"); // TODO verify expected
+//				sSubject = message.get("SUBJECT"); // TODO verify expected
 													// subject
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");
@@ -790,7 +791,8 @@ public class GmailBot implements MailBot {
 
 		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
 
-		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+//		String sDate = "", sFrom = "", sSubject = "", sContentType = ""
+		String sTo = "", sContent = "", sPlainText = "", sHTML = "";
 
 		boolean bBodyContentsFound = false;
 
@@ -824,18 +826,18 @@ public class GmailBot implements MailBot {
 				bBodyContentsFound = true;
 
 				// TODO verify is recent - may have to account for time zones!
-				sDate = message.get("DATE");
+//				sDate = message.get("DATE");
 
-				sFrom = message.get("FROM"); // TODO verify expected FROM
+//				sFrom = message.get("FROM"); // TODO verify expected FROM
 												// address
 				sTo = message.get("TO"); // Format is (sans []):
 											// ["com.test.igh+FOO@gmail.com"
 											// <com.test.igh+FOO@gmail.com>]
-				sSubject = message.get("SUBJECT");
+//				sSubject = message.get("SUBJECT");
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");
 				sHTML = message.get("HTML");
-				sContentType = message.get("CONTENT-TYPE");
+//				sContentType = message.get("CONTENT-TYPE");
 
 				// TODO - mark messages as seen (via bot?).
 				break;
@@ -916,7 +918,7 @@ public class GmailBot implements MailBot {
 
 		IHGUtil.PrintMethodName();
 
-		Set<String> urlList = new HashSet<String>();
+//		Set<String> urlList = new HashSet<String>();
 
 		// /////////////////////////
 		// Use GmailBot to parse email;
@@ -941,7 +943,8 @@ public class GmailBot implements MailBot {
 
 		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
 
-		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+//		String sDate = "", sFrom = "", sSubject = "", sContentType = ""
+		String sTo = "", sContent = "", sPlainText = "", sHTML = "";
 
 		boolean bSubjectFound = false;
 
@@ -973,19 +976,19 @@ public class GmailBot implements MailBot {
 				// TODO - mark messages as seen (via bot?).
 
 				// TODO verify is recent - may have to account for time zones!
-				sDate = message.get("DATE");
+//				sDate = message.get("DATE");
 
-				sFrom = message.get("FROM"); // TODO verify expected FROM
+//				sFrom = message.get("FROM"); // TODO verify expected FROM
 												// address
 				sTo = message.get("TO"); // Format is (sans []):
 											// ["com.test.igh+FOO@gmail.com"
 											// <com.test.igh+FOO@gmail.com>]
-				sSubject = message.get("SUBJECT"); // TODO verify expected
+//				sSubject = message.get("SUBJECT"); // TODO verify expected
 													// subject
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");
 				sHTML = message.get("HTML");
-				sContentType = message.get("CONTENT-TYPE");
+//				sContentType = message.get("CONTENT-TYPE");
 
 				break;
 			}
@@ -1052,7 +1055,7 @@ public class GmailBot implements MailBot {
 
 		IHGUtil.PrintMethodName();
 
-		Set<String> urlList = new HashSet<String>();
+//		Set<String> urlList = new HashSet<String>();
 
 		// /////////////////////////
 		// Use GmailBot to parse email;
@@ -1077,7 +1080,8 @@ public class GmailBot implements MailBot {
 
 		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
 
-		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+//		String sDate = "", sFrom = "", sSubject = "", sContentType = ""
+		String sTo = "", sContent = "", sPlainText = "", sHTML = "";
 
 		boolean bSubjectFound = false;
 
@@ -1109,19 +1113,19 @@ public class GmailBot implements MailBot {
 				// TODO - mark messages as seen (via bot?).
 
 				// TODO verify is recent - may have to account for time zones!
-				sDate = message.get("DATE");
+//				sDate = message.get("DATE");
 
-				sFrom = message.get("FROM"); // TODO verify expected FROM
+//				sFrom = message.get("FROM"); // TODO verify expected FROM
 												// address
 				sTo = message.get("TO"); // Format is (sans []):
 											// ["com.test.igh+FOO@gmail.com"
 											// <com.test.igh+FOO@gmail.com>]
-				sSubject = message.get("SUBJECT"); // TODO verify expected
+//				sSubject = message.get("SUBJECT"); // TODO verify expected
 													// subject
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");
 				sHTML = message.get("HTML");
-				sContentType = message.get("CONTENT-TYPE");
+//				sContentType = message.get("CONTENT-TYPE");
 
 				break;
 			}
@@ -1263,7 +1267,8 @@ public class GmailBot implements MailBot {
 		int iSleep = 10000;
 		Log4jUtil.log("### DEBUG: MAIL SLEEP (ms): " + iSleep);
 
-		String sDate = "", sFrom = "", sTo = "", sSubject = "", sContent = "", sPlainText = "", sHTML = "", sContentType = "";
+//		String sDate = "", sFrom = "", sSubject = "",  sTo= "" 
+		String sContentType = "", sContent = "", sPlainText = "", sHTML = "";
 		boolean bSubjectFound = false;
 
 		for (int safetyValve = 0; safetyValve < mailTries; safetyValve++) {
@@ -1294,14 +1299,14 @@ public class GmailBot implements MailBot {
 				// TODO - mark messages as seen (via bot?).
 
 				// TODO verify is recent - may have to account for time zones!
-				sDate = message.get("DATE");
+//				sDate = message.get("DATE");
 
-				sFrom = message.get("FROM"); // TODO verify expected FROM
+//				sFrom = message.get("FROM"); // TODO verify expected FROM
 												// address
 				//sTo = message.get("TO"); // Format is (sans []):
 											// ["com.test.igh+FOO@gmail.com"
 											// <com.test.igh+FOO@gmail.com>]
-				sSubject = message.get("SUBJECT"); // TODO verify expected
+//				sSubject = message.get("SUBJECT"); // TODO verify expected
 													// subject
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");

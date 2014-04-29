@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.testng.Assert;
@@ -23,7 +24,7 @@ public class WebPoster {
 	String serviceUrl = null;
 	String contentType = "text/xml;charset=UTF-8";
 	int expectedStatusCode = 200;
-	Map<String, String> headerMap = new HashMap();
+	Map<String, String> headerMap = new HashMap<String, String>();
 	
 	/**
 	 * sets the service URL

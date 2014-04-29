@@ -2,7 +2,6 @@ package com.intuit.ihg.product.smintegration.test;
 
 import java.util.HashMap;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
@@ -17,12 +16,8 @@ import com.intuit.ihg.product.phr.page.PhrLoginPage;
 import com.intuit.ihg.product.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
-import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
-import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
-import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.smintegration.page.AppointmentReqtStep2Page;
@@ -99,7 +94,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage myPatientPage = loginPage.login(userName, password);
 
 		log("step 3: Click on Appointment Button on My Patient Page");
-		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
+		myPatientPage.clickAppointmentRequestTab();
 
 		log("step 4: Complete Appointment Request Step1 Page  ");
 		AppointmentRequestFirstPage apptRequest=new AppointmentRequestFirstPage(driver);
@@ -381,7 +376,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:Click Sign-UP");
 		PortalLoginPage loginpage = new PortalLoginPage(driver,
 				testcasesData.getUrl());
-		CreateAccountPage pBetaSiteCreateAccountPage = loginpage
+		loginpage
 				.signUp();
 
 		BetaCreateNewPatientPage createNewPatientPage = new BetaCreateNewPatientPage(

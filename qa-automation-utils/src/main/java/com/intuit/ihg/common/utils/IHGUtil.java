@@ -657,7 +657,7 @@ public class IHGUtil extends BasePageObject {
 	 * @throws Exception
 	 */
 	public boolean Dates_in_Range(List<String> dateList, String fromDate, String toDate) throws Exception {
-		IHGUtil sdputil = new IHGUtil(driver);
+//		IHGUtil sdputil = new IHGUtil(driver);
 		boolean bret = true;
 
 		for (String sdate : dateList) {
