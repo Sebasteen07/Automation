@@ -16,14 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
 
 import net.medfusion.encounter.ws.WebServiceConstants;
 import net.medfusion.integrations.webservices.common.exceptions.WebServiceExceptionInvalidParameter;
 import net.medfusion.integrations.webservices.common.query.Criteria;
-import net.medfusion.integrations.webservices.commservice.CommserviceServiceLocator;
-import net.medfusion.integrations.webservices.commservice.CommserviceSoapBindingStub;
 import net.medfusion.integrations.webservices.framework.SystemConfigProperties;
 import net.medfusion.integrations.webservices.medfusion.MedfusionServiceLocator;
 import net.medfusion.integrations.webservices.medfusion.MedfusionSoapBindingStub;
@@ -74,8 +71,8 @@ public class MedfusionWebservicesTest {
     private MedfusionServiceLocator locator = null;
     private MedfusionSoapBindingStub service = null;
 
-    private CommserviceServiceLocator locator1 = null;
-    private CommserviceSoapBindingStub service1 = null;
+//    private CommserviceServiceLocator locator1 = null;
+//    private CommserviceSoapBindingStub service1 = null;
     private BufferedWriter buff = null;
 
     @BeforeClass
@@ -431,7 +428,7 @@ public class MedfusionWebservicesTest {
                     .println("Create a MemberLocked Object with the Minimum Required net.medfusion.integrations.webservices.medfusion.objects.Fields");
             MemberLocked memberLocked = new MemberLocked();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -585,7 +582,7 @@ public class MedfusionWebservicesTest {
                     .println("entering testCreateOrUpdateMultipleMemberLocked()");
 
             MemberLocked memberLocked = new MemberLocked();
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_PRACTICEMEMBER_PRACTICEID,
@@ -634,7 +631,7 @@ public class MedfusionWebservicesTest {
             memberLocked.setFields(theFields);
 
             MemberLocked memberLocked2 = new MemberLocked();
-            Vector fieldVector2 = new Vector();
+            Vector<Field> fieldVector2 = new Vector<Field>();
             fieldVector2
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_PRACTICEMEMBER_PRACTICEID,
@@ -825,7 +822,7 @@ public class MedfusionWebservicesTest {
 
             MemberLocked memberLocked = new MemberLocked();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -1728,7 +1725,7 @@ public class MedfusionWebservicesTest {
 
                     Comm communication = new Comm();
 
-                    Vector fieldVector = new Vector();
+                    Vector<Field> fieldVector = new Vector<Field>();
 
                     fieldVector
                             .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -1758,7 +1755,7 @@ public class MedfusionWebservicesTest {
 
                     // build comm details
                     CommDetail[] cds = new CommDetail[2];
-                    Vector detailFieldVector = new Vector();
+                    Vector<Field> detailFieldVector = new Vector<Field>();
 
                     detailFieldVector
                             .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -1782,7 +1779,7 @@ public class MedfusionWebservicesTest {
                     cds[0] = new CommDetail();
                     cds[0].setFields(theDetailFields);
 
-                    detailFieldVector = new Vector();
+                    detailFieldVector = new Vector<Field>();
                     detailFieldVector
                             .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                                     WebServiceConstants.FIELD_COMMDETAIL_MEMBERID,
@@ -2116,7 +2113,7 @@ public class MedfusionWebservicesTest {
                     .println("Send a Generic Communication from Staff to Member");
             Comm communication = new Comm();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2141,7 +2138,7 @@ public class MedfusionWebservicesTest {
 
             // build comm details
             CommDetail[] cds = new CommDetail[2];
-            Vector detailFieldVector = new Vector();
+            Vector<Field> detailFieldVector = new Vector<Field>();
             detailFieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_COMMDETAIL_MEMBERID, null));
@@ -2162,7 +2159,7 @@ public class MedfusionWebservicesTest {
             cds[0] = new CommDetail();
             cds[0].setFields(theDetailFields);
 
-            detailFieldVector = new Vector();
+            detailFieldVector = new Vector<Field>();
             detailFieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_COMMDETAIL_MEMBERID,
@@ -2192,7 +2189,7 @@ public class MedfusionWebservicesTest {
             if (testFile.exists()) {
                 System.out.println("Building Comm Attachment...");
                 CommAttachment[] ca = new CommAttachment[1];
-                Vector attachmentFieldVector = new Vector();
+                Vector<Field> attachmentFieldVector = new Vector<Field>();
                 attachmentFieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                                 WebServiceConstants.FIELD_COMMATTACHMENT_NAME,
@@ -2298,7 +2295,7 @@ public class MedfusionWebservicesTest {
 
             System.out.println("Create an Enhanced Message");
             EM msg = new EM();
-            Vector emFieldVector = new Vector();
+            Vector<Field> emFieldVector = new Vector<Field>();
             emFieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_EM_DELIVERYMODE,
@@ -2325,7 +2322,7 @@ public class MedfusionWebservicesTest {
                             WebServiceConstants.FIELD_EM_TYPE_OTHER));
 
             EMRecipient rec = new EMRecipient();
-            Vector recFieldVector = new Vector();
+            Vector<Field> recFieldVector = new Vector<Field>();
             recFieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_EMRECIPIENT_TYPE,
@@ -2350,7 +2347,7 @@ public class MedfusionWebservicesTest {
             msg.setFields(theEMFields);
 
             EMTemplate msgTemplate = new EMTemplate();
-            Vector emTemplateFieldVector = new Vector();
+            Vector<Field> emTemplateFieldVector = new Vector<Field>();
             emTemplateFieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                             WebServiceConstants.FIELD_EMTEMPLATE_BODYTEXT,
@@ -2456,7 +2453,7 @@ public class MedfusionWebservicesTest {
                 // contain the advice)
                 Comm communication = new Comm();
 
-                Vector fieldVector = new Vector();
+                Vector<Field> fieldVector = new Vector<Field>();
 
                 fieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2557,7 +2554,7 @@ public class MedfusionWebservicesTest {
                 // contain the advice)
                 Comm communication = new Comm();
 
-                Vector fieldVector = new Vector();
+                Vector<Field> fieldVector = new Vector<Field>();
 
                 fieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2612,7 +2609,7 @@ public class MedfusionWebservicesTest {
                 // create an RxRefillReqEntry to prescribe to the Patient
                 RxRefillReqEntry rxRefillReqEntry = new RxRefillReqEntry();
 
-                Vector rxFieldVector = new Vector();
+                Vector<Field> rxFieldVector = new Vector<Field>();
 
                 rxFieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2642,7 +2639,7 @@ public class MedfusionWebservicesTest {
                 // Create the Pharmacy (From Known Pharmacy Data)
                 Pharmacy pharm = new Pharmacy();
 
-                Vector pharmacyFieldVector = new Vector();
+                Vector<Field> pharmacyFieldVector = new Vector<Field>();
 
                 pharmacyFieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2678,7 +2675,7 @@ public class MedfusionWebservicesTest {
                 System.out
                         .println("Processing the VOV With Prescription at a Charge of $15.00");
                 BigDecimal fee = new BigDecimal(15.00);
-                int commId = service
+                service
                         .communicateAndProcessVOVWithPrescription(
                                 vovId.intValue(),
                                 staffId.intValue(),
@@ -2731,14 +2728,14 @@ public class MedfusionWebservicesTest {
                     new BigDecimal(5.00) };
             String[] uniqueIds = { "SIDG123456A", "SIDG123456B", "SIDG123456C" };
 
-            List statementIds = new ArrayList();
+            List<Integer> statementIds = new ArrayList<Integer>();
 
             System.out
                     .println("Create a few Statement Objects with known MemberIds");
             for (int i = 0; i < 3; i++) {
                 Statement statement = new Statement();
 
-                Vector fieldVector = new Vector();
+                Vector<Field> fieldVector = new Vector<Field>();
 
                 fieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -2816,7 +2813,7 @@ public class MedfusionWebservicesTest {
             System.out.println("Create a Statement Object with a Non-Member");
             Statement statement = new Statement();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -3041,8 +3038,8 @@ public class MedfusionWebservicesTest {
     public void testEMDate() {
         System.out.println("+ sendMessage()");
         int createdEmId = 0;
-        SimpleDateFormat format = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:sszzz", Locale.US);
+//        SimpleDateFormat format = new SimpleDateFormat(
+//                "yyyy-MM-dd'T'HH:mm:sszzz", Locale.US);
 
         try {
             System.out
@@ -3068,7 +3065,7 @@ public class MedfusionWebservicesTest {
                 WebserviceUtils.dumpResults(templateFieldsField);
 
                 EM msg = new EM();
-                Vector emFieldVector = new Vector();
+                Vector<Field> emFieldVector = new Vector<Field>();
                 emFieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                                 WebServiceConstants.FIELD_EM_DELIVERYMODE,
@@ -3097,7 +3094,7 @@ public class MedfusionWebservicesTest {
                                 WebServiceConstants.FIELD_EM_TYPE_OTHER));
 
                 EMRecipient rec = new EMRecipient();
-                Vector recFieldVector = new Vector();
+                Vector<Field> recFieldVector = new Vector<Field>();
                 recFieldVector
                         .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
                                 WebServiceConstants.FIELD_EMRECIPIENT_TYPE,
@@ -3115,7 +3112,7 @@ public class MedfusionWebservicesTest {
                                 WebServiceConstants.FIELD_EM_RECIPIENTS,
                                 recipients));
 
-                List emFieldValueList = new ArrayList();
+                List<EMFieldValue> emFieldValueList = new ArrayList<EMFieldValue>();
 
                 EMFieldValue emFieldValue = new EMFieldValue();
                 emFieldValueList.add(emFieldValue);
@@ -3148,7 +3145,7 @@ public class MedfusionWebservicesTest {
                                         .size()]));
                 msg.setFields(theEMFields);
 
-                int createdEmID = service
+                service
                         .createEMFromTemplate(
                                 msg,
                                 myTemplate
@@ -3286,8 +3283,8 @@ public class MedfusionWebservicesTest {
     @Test
     public void testStatementWebServicesWithActiveInactiveMembers() {
         // update the various fields for your own practice
-        final SimpleDateFormat StatementDateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd");
+//        final SimpleDateFormat StatementDateFormat = new SimpleDateFormat(
+//                "yyyy-MM-dd");
 
         final Integer PRACTICE_ID = 10000;
         final Integer LOCATION_ID = 10000;
@@ -3296,7 +3293,7 @@ public class MedfusionWebservicesTest {
             // active member
             Statement statement = new Statement();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -3376,7 +3373,7 @@ public class MedfusionWebservicesTest {
             // inactive member with inactivemember id
             Statement statement = new Statement();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -3457,7 +3454,7 @@ public class MedfusionWebservicesTest {
             // inactive member with practice id
             Statement statement = new Statement();
 
-            Vector fieldVector = new Vector();
+            Vector<Field> fieldVector = new Vector<Field>();
 
             fieldVector
                     .add(new net.medfusion.integrations.webservices.medfusion.objects.Field(
@@ -3567,6 +3564,7 @@ public class MedfusionWebservicesTest {
 
         // Ensure all the bytes have been read in
         if (offset < bytes.length) {
+        	is.close();
             throw new IOException("Could not completely read file "
                     + file.getName());
         }

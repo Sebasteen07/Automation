@@ -9,7 +9,6 @@
         <version>ihg-depot-trunk-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.intuit.ihg</groupId>
     <artifactId>wsdk-automation</artifactId>
     <name>wsdk-automation</name>
     <packaging>jar</packaging>
