@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.community.utils;
 
-import java.util.Date;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
@@ -8,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.entities.Patient;
 import com.intuit.ihg.common.entities.TestObject;
-import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.community.page.CommunityHomePage;
 import com.intuit.ihg.product.community.page.CommunityLoginPage;
 import com.intuit.ihg.product.community.page.CreateAnAccount.CreateAnAccountHandleIframe;
@@ -30,8 +28,8 @@ public class CreatePatient extends BaseTestNGWebDriver {
 		Random randomGenerator = new Random();
 
 		// Setting up date for Gmail search
-		Date startEmailSearchDate = new Date();
-		GmailCommunity gmail = new GmailCommunity(patient.getGmailUName(), patient.getGmailPassword());
+//		Date startEmailSearchDate = new Date();
+//		GmailCommunity gmail = new GmailCommunity(patient.getGmailUName(), patient.getGmailPassword());
 
 		// Creating random number which is used for identification of the User
 		int randomTestID = 100000000 + randomGenerator.nextInt(900000);

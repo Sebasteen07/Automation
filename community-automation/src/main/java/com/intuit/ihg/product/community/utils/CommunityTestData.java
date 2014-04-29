@@ -2,7 +2,6 @@ package com.intuit.ihg.product.community.utils;
 
 import java.net.URL;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.ExcelSheetReader;
 import com.intuit.ihg.common.utils.IHGUtil;
 

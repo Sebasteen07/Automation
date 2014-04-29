@@ -24,7 +24,7 @@ public class MessageIframeHandlePage extends BasePageObject{
 	
 	public MessageHealthInformationPage handleIframe() throws InterruptedException {
 		driver.switchTo().frame(CCDViewFrame);
-		WebElement innerFrame = (new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.id("personalHeader")));
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.elementToBeClickable(By.id("personalHeader")));
         return PageFactory.initElements(driver, MessageHealthInformationPage.class);
     }
 	

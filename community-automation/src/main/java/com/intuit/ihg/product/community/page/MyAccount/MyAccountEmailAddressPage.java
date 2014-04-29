@@ -58,7 +58,7 @@ public class MyAccountEmailAddressPage extends BasePageObject {
 	
 	public boolean sucessNotification(WebDriver driver) throws Exception {
 
-		WebElement notification = (new WebDriverWait(driver, 60)).until(ExpectedConditions.presenceOfElementLocated(By
+		(new WebDriverWait(driver, 60)).until(ExpectedConditions.presenceOfElementLocated(By
 						.xpath("//h2[contains(text(),'Success')]")));
 		
 		return successNotification.isDisplayed();

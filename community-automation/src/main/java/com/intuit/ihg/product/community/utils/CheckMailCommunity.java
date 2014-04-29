@@ -53,11 +53,11 @@ public class CheckMailCommunity {
 			String subjectSubString, 
 			String userName) throws InterruptedException, MessagingException, IOException {
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		
 		boolean foundEmail = false;
 		for(int i = 0; i < 2; i++) {
-			int msgCount = 0;
+			
 			//Log4jUtil.log("Checking Gmail now for message.");
 			Message[] messages = gmail.findInTrash(recipientEmail, subjectSubString, startEmailSearchDate);
 			if (messages.length > 0) {
@@ -69,7 +69,6 @@ public class CheckMailCommunity {
 						break;
 					}
 					
-					msgCount++;
 					/*Log4jUtil.log("Checking email " + msgCount + " (received at " + 
 							dateFormat.format(m.getSentDate()) + ") of " + messages.length);*/
 				}

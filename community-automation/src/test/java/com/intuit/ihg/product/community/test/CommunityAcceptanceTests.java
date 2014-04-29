@@ -2,15 +2,11 @@ package com.intuit.ihg.product.community.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import java.util.Date;
 import java.util.Random;
 
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -19,11 +15,8 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.entities.Patient;
-import com.intuit.ihg.common.entities.TestObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
-import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.community.page.CommunityHomePage;
 import com.intuit.ihg.product.community.page.CommunityLoginPage;
@@ -44,16 +37,11 @@ import com.intuit.ihg.product.community.page.solutions.Messages.MessageDetailPag
 import com.intuit.ihg.product.community.page.solutions.Messages.MessageHealthInformationPage;
 import com.intuit.ihg.product.community.page.solutions.Messages.MessageIframeHandlePage;
 import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
-import com.intuit.ihg.product.community.utils.CheckMailCommunity;
 import com.intuit.ihg.product.community.utils.Community;
 import com.intuit.ihg.product.community.utils.CommunityConstants;
 import com.intuit.ihg.product.community.utils.CommunityTestData;
 import com.intuit.ihg.product.community.utils.CommunityUtils;
 import com.intuit.ihg.product.community.utils.CreatePatientBeta;
-import com.intuit.ihg.product.community.utils.GmailMessage;
-import com.intuit.ihg.product.community.utils.GmailCommunity;
-import com.intuit.ihg.product.community.utils.PracticeUrl;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep1Page;
@@ -67,12 +55,9 @@ import com.intuit.ihg.product.practice.page.askstaff.AskAStaffSearchPage;
 import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPayDetailPage;
 import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPayVerifyPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalConfirmCommunication;
 import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPage;
 import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPageConfirmation;
 import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
 
 @Test
 public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
@@ -230,7 +215,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(detailStep1,
 				"The submitted patient request was not found in the practice");
 
-		WebElement innerFrame = (new WebDriverWait(driver, 30))
+		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.presenceOfElementLocated(By
 						.id("iframe")));
 
@@ -252,7 +237,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		// Verifying Gmail for new message from Doctor
 		
 		log (" Checking Gmail for new message from Doctor");
-		String sSubject = "New message from";
+//		String sSubject = "New message from";
 		String link = "https://";
 		GmailBot gbot = new GmailBot();
 		String sURL = gbot.findInboxEmailLink(testcasesData.getGmailUName(),
@@ -274,7 +259,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
 
 		log("step 18: Load the Community URL and Check the Page Title");
-		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
+		new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		Assert.assertEquals(
@@ -283,7 +268,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 						.trim());
 
 		log("step 19 : LogIn to Community");
-		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
+		loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		verifyTrue(
@@ -437,7 +422,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		// Waiting for Inner Frame to be loaded, max wait time is 30
 		// seconds
 
-		WebElement innerFrame = (new WebDriverWait(driver, 30))
+		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.presenceOfElementLocated(By
 						.id("iframe")));
 
@@ -469,14 +454,14 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
 
 		log("step 22: Load the Community URL and Check the Page Title");
-		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
+		new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		verifyEquals(CommunityUtils.PAGE_TITLE_INTUIT_HEALTH, driver.getTitle().trim(),
 				"### It seems Community may be down at this moment .... Community Title what we ");
 
 		log("step 23: LogIn to Community");
-		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
+		loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 		Thread.sleep(3000);
 
@@ -633,7 +618,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		// Checking Gmail for Bill Pay receipt
 
 		GmailBot gbot = new GmailBot();
-		String sSubject = "Your receipt from";
+//		String sSubject = "Your receipt from";
 		String link = "http://";
 		String sURL = gbot.findInboxEmailLink(testcasesData.getGmailUName(),
 				testcasesData.getGmailPassword(), testcasesData.getGmailBillPayReceipt(),
@@ -654,7 +639,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
 
 		log("step 19: Load the Community URL and Check the Page Title");
-		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
+		new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(3000);
 		
@@ -662,7 +647,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				.trim(),"### It seems Community may be down at this moment .... Community Title what we ");
 
 		log("step 20 : LogIn to Community");
-		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
+		loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		verifyTrue(
@@ -822,7 +807,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Finishing RxRenewal
 		log("step 17: Finishing RxRenewal");
-		RxRenewalConfirmCommunication renewalConfirmCommunication = rxRenewalDetailPageConfirmation
+		rxRenewalDetailPageConfirmation
 				.clickContinue();
 
 		log("step 18: Signing of the Patient Portal");
@@ -833,7 +818,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 19:Login to Community to check If the Patient got a message in the Inbox from Pratcie Portal");
 
 		log("step 20: Load the Community URL and Check the Page Title");
-		CommunityLoginPage loginPage1 = new CommunityLoginPage(driver,
+		new CommunityLoginPage(driver,
 				testcasesData.getUrl());
 		Thread.sleep(5000);
 		
@@ -842,7 +827,7 @@ public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
 				);
 
 		log("step 21 : LogIn to Community");
-		CommunityHomePage homePage1 = loginPage.LoginToCommunity(
+		loginPage.LoginToCommunity(
 				testcasesData.getUserName(), testcasesData.getPassword());
 		Thread.sleep(3000);
 		

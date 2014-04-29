@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.community.page.RxRenewal;
 
-import junit.framework.Assert;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.community.page.CommunityHomePage;
 
 public class RxRenewalChoosePharmacy extends BasePageObject {
 
@@ -44,7 +41,7 @@ public class RxRenewalChoosePharmacy extends BasePageObject {
 		addressTextBox.sendKeys(sPharmacy);
 		PharmacySearchButton.click();
 		// Waiting for location_listing element to show up
-		WebElement locationlisting = (new WebDriverWait(driver, 30))
+		(new WebDriverWait(driver, 30))
 				.until(ExpectedConditions.visibilityOfElementLocated(By
 						.id("location_listing")));
 

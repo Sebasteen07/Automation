@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
 
 public class MyAccountSecurityQuestionPage extends BasePageObject {
 
@@ -56,7 +55,7 @@ public class MyAccountSecurityQuestionPage extends BasePageObject {
 
 	public boolean sucessNotification(WebDriver driver) throws Exception {
 
-		WebElement notification = (new WebDriverWait(driver, 60))
+		(new WebDriverWait(driver, 60))
 				.until(ExpectedConditions.presenceOfElementLocated(By
 						.xpath("//h2[contains(text(),'Success')]")));
 

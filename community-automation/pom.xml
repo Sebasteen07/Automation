@@ -9,7 +9,6 @@
         <version>ihg-depot-trunk-SNAPSHOT</version>
     </parent>
 	
-	<groupId>com.intuit.ihg</groupId>
 	<artifactId>community-automation</artifactId>
     <name>community-automation</name>
     <packaging>jar</packaging>

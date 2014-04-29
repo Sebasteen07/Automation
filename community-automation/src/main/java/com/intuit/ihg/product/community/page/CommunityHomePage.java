@@ -8,22 +8,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.community.page.AskAQuestion.AskAQuestionHistory;
 import com.intuit.ihg.product.community.page.AskAQuestion.AskAQuestionQuestionType;
-import com.intuit.ihg.product.community.page.AskAQuestion.AskAQuestionSelectDoctor;
 import com.intuit.ihg.product.community.page.BillPay.BillPayChooseYourPractice;
 import com.intuit.ihg.product.community.page.MakeAppointmentRequest.AppointmentRequestSelectDoctorPage;
 import com.intuit.ihg.product.community.page.MyAccount.MyAccountMenuPage;
 import com.intuit.ihg.product.community.page.RxRenewal.RxRenewalChoosePrescription;
 import com.intuit.ihg.product.community.page.solutions.Messages.MessagePage;
 import com.intuit.ihg.product.community.utils.CommunityUtils;
-import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class CommunityHomePage extends BasePageObject {
 

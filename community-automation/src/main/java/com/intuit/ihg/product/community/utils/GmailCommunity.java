@@ -30,7 +30,7 @@ public class GmailCommunity {
 	private String pwd;
 	private final static String GMAIL_IMAP_HOST = "imap.gmail.com";
 	private final static String GMAIL_STORE_PROTOCOL = "imaps";
-	private final static String GMAIL_IMAP_PORT = "993";
+//	private final static String GMAIL_IMAP_PORT = "993";
 	
 	private boolean connected = false;
 	
