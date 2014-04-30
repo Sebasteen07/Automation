@@ -12,21 +12,21 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
-import com.intuit.ihg.product.community.page.CommunityHomePage;
-import com.intuit.ihg.product.community.page.CommunityLoginPage;
-import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordEnterNewPasswordPage;
-import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordEnterUserIDPage;
-import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordSignInNewPassword;
-import com.intuit.ihg.product.community.page.ForgotPassword.ResetPasswordSummaryPage;
-import com.intuit.ihg.product.community.page.ForgotUserId.ForgotUserIdAnswerQuestionPage;
-import com.intuit.ihg.product.community.page.ForgotUserId.ForgotUserIdEnterEmailAddressPage;
-import com.intuit.ihg.product.community.page.MyAccount.MyAccountMenuPage;
-import com.intuit.ihg.product.community.page.MyAccount.MyAccountProfilePage;
-import com.intuit.ihg.product.community.page.MyAccount.MyAccountSecurityQuestionPage;
 import com.intuit.ihg.product.community.utils.Community;
 import com.intuit.ihg.product.community.utils.CommunityConstants;
 import com.intuit.ihg.product.community.utils.CommunityTestData;
 import com.intuit.ihg.product.community.utils.CommunityUtils;
+import com.intuit.ihg.product.object.maps.community.page.CommunityHomePage;
+import com.intuit.ihg.product.object.maps.community.page.CommunityLoginPage;
+import com.intuit.ihg.product.object.maps.community.page.ForgotPassword.ResetPasswordEnterNewPasswordPage;
+import com.intuit.ihg.product.object.maps.community.page.ForgotPassword.ResetPasswordEnterUserIDPage;
+import com.intuit.ihg.product.object.maps.community.page.ForgotPassword.ResetPasswordSignInNewPassword;
+import com.intuit.ihg.product.object.maps.community.page.ForgotPassword.ResetPasswordSummaryPage;
+import com.intuit.ihg.product.object.maps.community.page.ForgotUserId.ForgotUserIdAnswerQuestionPage;
+import com.intuit.ihg.product.object.maps.community.page.ForgotUserId.ForgotUserIdEnterEmailAddressPage;
+import com.intuit.ihg.product.object.maps.community.page.MyAccount.MyAccountMenuPage;
+import com.intuit.ihg.product.object.maps.community.page.MyAccount.MyAccountProfilePage;
+import com.intuit.ihg.product.object.maps.community.page.MyAccount.MyAccountSecurityQuestionPage;
 
 public class CommunityRegressionTests extends BaseTestNGWebDriver {
 
