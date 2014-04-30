@@ -4,18 +4,14 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-
 import com.intuit.ihg.product.community.utils.Community;
 import com.intuit.ihg.product.community.utils.CommunityTestData;
-import com.intuit.ihg.product.community.utils.CreatePatientBeta;
-
+import com.intuit.ihg.product.object.maps.community.page.CreatePatientBeta;
 import com.intuit.ihg.product.portal.page.PortalLoginPage;
-
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
 import com.intuit.ihg.product.portal.tests.PatientActivationUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
-
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
