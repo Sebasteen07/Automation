@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.apiehcore.page;
+package com.intuit.ihg.product.object.maps.apiehcore.page;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

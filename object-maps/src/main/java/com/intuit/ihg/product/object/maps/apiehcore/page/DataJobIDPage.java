@@ -1,13 +1,10 @@
-package com.intuit.ihg.product.apiehcore.page;
-
+package com.intuit.ihg.product.object.maps.apiehcore.page;
 
 import java.net.HttpURLConnection;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
 import com.intuit.ihg.product.apiehcore.utils.constants.DataJobConstant;
 import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
-
-
 
 public class DataJobIDPage {
 	
@@ -34,12 +31,4 @@ public class DataJobIDPage {
 		
 		return dj;
 	}
-
-
-	
-
-
-
-
-
 }

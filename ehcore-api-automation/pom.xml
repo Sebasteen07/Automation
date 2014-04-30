@@ -284,6 +284,11 @@
 		</dependency>
 		<!-- EH-CORE dependency END -->
 
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>object-maps</artifactId>
+			<version>ihg-depot-trunk-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 
