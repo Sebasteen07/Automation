@@ -11,6 +11,9 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
+import com.intuit.ihg.product.integrationplatform.page.LoginPage;
+import com.intuit.ihg.product.integrationplatform.page.PatientPage;
+import com.intuit.ihg.product.integrationplatform.page.RxRenewalPage;
 import com.intuit.ihg.product.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
@@ -21,6 +24,8 @@ import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.Prescription;
+import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.phr.page.PhrHomePage;
 import com.intuit.ihg.product.phr.page.messages.PhrInboxMessage;
@@ -31,6 +36,7 @@ import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
@@ -40,7 +46,7 @@ import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep1Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.askstaff.AskAStaffStep3Page;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-
+import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 
 /**
@@ -67,7 +73,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	 */
 
 	
-	//@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
 	 log("+++++++++++++ Test run+++++++++++");
@@ -79,7 +85,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 
 		log("step 2:LogIn");
-		new TestPage(driver, "http://www.google.com");
+		TestPage loginpage = new TestPage(driver, "http://www.google.com");
 		Thread.sleep(100000);
 		//MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
@@ -536,5 +542,81 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		//driver.switchTo().defaultContent();
 		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPrescription() throws Exception {
+		log("Test Case: Get Prescription Request");
+		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("step 1: Get Data from Excel");
+		Prescription prescription = new Prescription();
+		PrescriptionTestData testData = new PrescriptionTestData(prescription);
+		Long timestamp = System.currentTimeMillis();
+		
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("step 2: LogIn");
+		
+		LoginPage loginPage = new LoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
+		PatientPage patientPage = loginPage.login(testData.getUserName(), testData.getPassword());	
+
+		log("step 3: Verify for My Patient Page ");
+		PortalUtil.setPortalFrame(driver);
+		verifyEquals(patientPage.txtPatientPage.getText(), IntegrationConstants.PATIENT_PAGE);
+
+		log("step 4: Click on PrescriptionRenewal Link ");
+		RxRenewalPage rxRenewalPage = patientPage.clickPrescriptionRenewal();
+		
+		log("step 5:set Medication Fields in RxRenewal Page");
+		rxRenewalPage.setMedication();
+
+		log("step 6:set Pharmacy Fields in RxRenewal Page");
+		rxRenewalPage.setPharmacyFields();
+		
+		log("Getting Medication Name ");
+		long time=rxRenewalPage.getCreatedTs();
+		String medicationName=IntegrationConstants.MEDICATION_NAME.toString()+String.valueOf(time);
+		log("Medication Name :"+medicationName);
+		
+		log("step 7:Verify RxRenewal Confirmation Message");
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 5, rxRenewalPage.renewalConfirmationmessage);
+		verifyEquals(rxRenewalPage.renewalConfirmationmessage.getText(), IntegrationConstants.RENEWAL_CONFIRMATION);
+
+		log("step 8: Logout of Patient Portal");
+		patientPage.logout(driver);
+		
+
+		log("step 9: Setup Oauth client"); 
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		//OAuthPropertyManager.init(testData.getOAuthProperty());
+		
+		log("step 10: Get Prescription Rest call");
+		//get only messages from last hour in epoch time to avoid transferring lot of data
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		log("Getting messages since timestamp: " + since);
+				
+		//do the call and save xml, ",0" is there because of the since attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());		
+		
+		log("step 11: Checking validity of the response xml");
+		RestUtils.isMedicationNameResponseXMLValid(testData.getResponsePath(), medicationName);
 	}
 }

@@ -1,8 +1,11 @@
 	package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Random;
 
@@ -10,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -23,6 +27,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
+import org.springframework.aop.ThrowsAdvice;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,8 +36,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
+import com.intuit.api.security.client.OAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
+import com.intuit.api.security.client.TokenManager;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -164,6 +171,37 @@ public class RestUtils {
 	}
 	
 	/**
+	 * Reads the XML and checks Medication Name_ 
+	 * @param xmlFileName XML to check
+	 * @param Long timestamp of a sent Medication Name to check
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 */
+	public static void isMedicationNameResponseXMLValid(String xmlFileName, String medicationName) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+
+		Log4jUtil.log("finding Medication Name");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.MEDICATION_NAME_TAG);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) 
+		{
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (medicationName));
+			if (node.getChildNodes().item(0).getTextContent().contains(medicationName))
+			{
+				found = true;
+				Log4jUtil.log("Medication Name found");
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Medication Name was not found in response XML");
+		//Log4jUtil.log("response is ok");
+	}
+	
+	/**
 	 * Reads the XML and checks asked Question if it complies
 	 * @param xmlFileName XML question to prepare
 	 * @param from sender of a message - external System ID
@@ -290,18 +328,18 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);		
 		OAuthPropertyManager.init(oAuthProperty);
-		System.out.println("appToken: " +appToken);
-		System.out.println("username: " +username);
-		System.out.println("password: " +password);
-		try {
-			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
-		} catch (Exception hException) {
-			// TODO Auto-generated catch block
-			hException.getCause().printStackTrace();
-		}
 		//System.out.println("appToken: " +appToken);
 		//System.out.println("username: " +username);
 		//System.out.println("password: " +password);
+		try
+		{
+			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
+		}
+		catch (Exception hException)
+		{
+			hException.getCause().printStackTrace();
+		}
+		
 		
 		//emptyFile(responsePath);
 	} 
