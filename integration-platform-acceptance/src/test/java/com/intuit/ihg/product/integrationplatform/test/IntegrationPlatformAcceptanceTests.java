@@ -36,7 +36,6 @@ import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
@@ -85,7 +84,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 
 		log("step 2:LogIn");
-		TestPage loginpage = new TestPage(driver, "http://www.google.com");
+		new TestPage(driver, "http://www.google.com");
 		Thread.sleep(100000);
 		//MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
 

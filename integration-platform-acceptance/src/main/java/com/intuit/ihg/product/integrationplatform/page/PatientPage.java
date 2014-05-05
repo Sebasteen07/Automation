@@ -45,7 +45,7 @@ public class PatientPage  extends BasePageObject{
 			
 			IHGUtil.PrintMethodName();
 			pPortalUtil.maximize(driver);
-			LoginPage pPortalLoginPage = clickLogout(driver);
+			clickLogout(driver);
 	        // TODO - deal with random survey
 	        return PageFactory.initElements(driver, LoginPage.class);
 	       }

@@ -1,8 +1,6 @@
 package com.intuit.ihg.product.integrationplatform.page;
 
 import java.util.List;
-import java.util.Random;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
