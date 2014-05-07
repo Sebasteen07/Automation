@@ -39,7 +39,12 @@
             <artifactId>practice-portal-automation</artifactId>
             <version>${ihg.version}</version>
         </dependency>
-	</dependencies>
+         		<dependency>
+         			<groupId>com.intuit.ihg</groupId>
+         			<artifactId>object-maps</artifactId>
+         			<version>ihg-depot-trunk-SNAPSHOT</version>
+         		</dependency>
+     </dependencies>
 
 	<build>
 		<plugins>
