@@ -17,10 +17,10 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
-import com.intuit.ihg.product.portal.page.MyPatientPage;
-import com.intuit.ihg.product.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
+import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
+import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 

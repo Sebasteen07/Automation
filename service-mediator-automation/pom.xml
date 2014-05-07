@@ -34,11 +34,6 @@
 			<version>${ihg.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>phr-portal-automation</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
@@ -73,11 +68,6 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patient-portal-automation</artifactId>
-			<version>${ihg.version}</version>
 		</dependency>
 
 		<dependency>
@@ -122,7 +112,12 @@
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>common-steps</artifactId>
+			<version>ihg-depot-trunk-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

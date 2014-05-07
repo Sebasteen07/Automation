@@ -33,8 +33,8 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patient-portal-automation</artifactId>
-			<version>${ihg.version}</version>
+			<artifactId>common-steps</artifactId>
+			<version>ihg-depot-trunk-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

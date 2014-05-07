@@ -31,15 +31,10 @@
             <version>${ihg.version}</version>
         </dependency> 
         <dependency>
-            <groupId>com.intuit.ihg</groupId>
-            <artifactId>practice-portal-automation</artifactId>
-            <version>${ihg.version}</version>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>common-steps</artifactId>
+        	<version>ihg-depot-trunk-SNAPSHOT</version>
         </dependency>
-        <dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patient-portal-automation</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>  
     </dependencies>
     <build>
         <plugins>
