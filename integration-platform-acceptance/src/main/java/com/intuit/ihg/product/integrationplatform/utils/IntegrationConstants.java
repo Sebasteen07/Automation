@@ -38,13 +38,6 @@ public class IntegrationConstants {
 	public static final String CCD_MESSAGE_SUBJECT = "New Health Information Import";
 	public static final String REASON = "Reason";
 	//Prescription Constant
-	public static final String MEDICATION_NAME = "MEDICATION";
-	public static final String DOSAGE = "200gm";
-	public static final String QUANTITY = "2";
-	public final static String PATIENT_PAGE = "My Patient Page";
-	public final static String RENEWAL_CONFIRMATION = "Thank you for submitting your Prescription Renewal.";
-	public static final String MEDICATION_NAME_TAG = "MedicationName";
-	public static final CharSequence NO_OF_REFILLS = "12";
-	public static final CharSequence PRESCRIPTION_NO = "#12345";
-	public static final CharSequence ADDITIONAL_INFO = "New prescription request";
+	public static final String EMAIL_SUBJECT = "This is reply to Prescription";
+	public static final String EMAIL_BODY = "New Reply to Rx for";
 }

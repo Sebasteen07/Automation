@@ -11,9 +11,6 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
-import com.intuit.ihg.product.integrationplatform.page.LoginPage;
-import com.intuit.ihg.product.integrationplatform.page.PatientPage;
-import com.intuit.ihg.product.integrationplatform.page.RxRenewalPage;
 import com.intuit.ihg.product.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
@@ -36,6 +33,7 @@ import com.intuit.ihg.product.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
 import com.intuit.ihg.product.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
@@ -569,36 +567,34 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
 		log("step 2: LogIn");
-		
-		LoginPage loginPage = new LoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
-		PatientPage patientPage = loginPage.login(testData.getUserName(), testData.getPassword());	
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(patientPage.txtPatientPage.getText(), IntegrationConstants.PATIENT_PAGE);
+		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click on PrescriptionRenewal Link ");
-		RxRenewalPage rxRenewalPage = patientPage.clickPrescriptionRenewal();
+		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
 		
 		log("step 5:set Medication Fields in RxRenewal Page");
-		rxRenewalPage.setMedication();
+		newRxRenewalPage.setMedicationDetails();
 
 		log("step 6:set Pharmacy Fields in RxRenewal Page");
-		rxRenewalPage.setPharmacyFields();
+		newRxRenewalPage.setPharmacyFields();
 		
 		log("Getting Medication Name ");
-		long time=rxRenewalPage.getCreatedTs();
-		String medicationName=IntegrationConstants.MEDICATION_NAME.toString()+String.valueOf(time);
+		long time=newRxRenewalPage.getCreatedTs();
+		String medicationName=PortalConstants.MedicationName.toString()+String.valueOf(time);
 		log("Medication Name :"+medicationName);
 		
 		log("step 7:Verify RxRenewal Confirmation Message");
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 5, rxRenewalPage.renewalConfirmationmessage);
-		verifyEquals(rxRenewalPage.renewalConfirmationmessage.getText(), IntegrationConstants.RENEWAL_CONFIRMATION);
+		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
+		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
 
 		log("step 8: Logout of Patient Portal");
-		patientPage.logout(driver);
+		myPatientPage.logout(driver);
 		
 
 		log("step 9: Setup Oauth client"); 
@@ -613,9 +609,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Getting messages since timestamp: " + since);
 				
 		//do the call and save xml, ",0" is there because of the since attribute format
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());		
-		
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
 		log("step 11: Checking validity of the response xml");
-		RestUtils.isMedicationNameResponseXMLValid(testData.getResponsePath(), medicationName);
+		RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), medicationName);	
+
+
 	}
 }

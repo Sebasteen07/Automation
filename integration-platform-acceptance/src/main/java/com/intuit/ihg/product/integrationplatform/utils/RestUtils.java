@@ -36,6 +36,7 @@ import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 
 public class RestUtils {
@@ -56,8 +57,6 @@ public class RestUtils {
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
         .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
-
-		
         HttpEntity entity = resp.getEntity();
         String sResp = EntityUtils.toString(entity);
         
@@ -164,20 +163,20 @@ public class RestUtils {
 	}
 	
 	/**
-	 * Reads the XML and checks Medication Name_ 
+	 * Reads the XML and checks Medication Details_ 
 	 * @param xmlFileName XML to check
-	 * @param Long timestamp of a sent Medication Name to check
+	 * @param Long timestamp of a sent Reason to check
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	public static void isMedicationNameResponseXMLValid(String xmlFileName, String medicationName) throws ParserConfigurationException, SAXException, IOException {
+	public static void isMedicationDetailsResponseXMLValid(String xmlFileName, String medicationName) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
 		Log4jUtil.log("finding Medication Name");
 		boolean found = false;
-		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.MEDICATION_NAME_TAG);
+		NodeList nodes = doc.getElementsByTagName(PortalConstants.Medication_Name_Tag);
 		Node node = null;
 		for (int i = 0; i < nodes.getLength(); i++) 
 		{
@@ -185,13 +184,23 @@ public class RestUtils {
 			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (medicationName));
 			if (node.getChildNodes().item(0).getTextContent().contains(medicationName))
 			{
+				Element ele = (Element) nodes.item(i).getParentNode();
+				Node nDosage=ele.getElementsByTagName(PortalConstants.Medication_Dosage).item(0);
+				Node nQuantity=ele.getElementsByTagName(PortalConstants.Quantity_Tag).item(0);
+				Node nRefillNumber=ele.getElementsByTagName(PortalConstants.Refill_Number_Tag).item(0);
+				Node nPrescriptionNumber=ele.getElementsByTagName(PortalConstants.Prescription_Number_Tag).item(0);
+				Node nAdditionalInformation=ele.getElementsByTagName(PortalConstants.Additional_Information_Tag).item(0);
+				Assert.assertEquals(nDosage.getTextContent(), PortalConstants.Dosage.toString(), "The actual value of dosage doesnt equal the expected value");
+				Assert.assertEquals(nQuantity.getTextContent(), PortalConstants.Quantity.toString(), "The actual value of quantity doesnt equal the expected value");
+				Assert.assertEquals(nRefillNumber.getTextContent(), PortalConstants.No_Of_Refills.toString(), "The actual value of refill no. doesnt equal the expected value");
+				Assert.assertEquals(nPrescriptionNumber.getTextContent(), PortalConstants.Prescription_No.toString(), "The actual value of prescription no. doesnt equal the expected value");
+				Assert.assertEquals(nAdditionalInformation.getTextContent(), PortalConstants.Additional_Info.toString(), "The actual additional info doesnt equal the expected value");		
 				found = true;
-				Log4jUtil.log("Medication Name found");
 				break;
 			}
 		}
 		Assert.assertTrue(found, "Medication Name was not found in response XML");
-		//Log4jUtil.log("response is ok");
+		Log4jUtil.log("response is ok");
 	}
 	
 	/**
@@ -321,18 +330,18 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);		
 		OAuthPropertyManager.init(oAuthProperty);
+		System.out.println("appToken: " +appToken);
+		System.out.println("username: " +username);
+		System.out.println("password: " +password);
+		try {
+			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
+		} catch (Exception hException) {
+			// TODO Auto-generated catch block
+			hException.getCause().printStackTrace();
+		}
 		//System.out.println("appToken: " +appToken);
 		//System.out.println("username: " +username);
 		//System.out.println("password: " +password);
-		try
-		{
-			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
-		}
-		catch (Exception hException)
-		{
-			hException.getCause().printStackTrace();
-		}
-		
 		
 		//emptyFile(responsePath);
 	} 
