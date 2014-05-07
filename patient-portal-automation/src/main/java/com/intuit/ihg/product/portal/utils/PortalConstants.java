@@ -39,6 +39,18 @@ public class PortalConstants {
 	public final static String RenewalConfirmation = "Thank you for submitting your Prescription Renewal.";
 	public final static String MyPatientPage = "My Patient Page";
 	public final static String RxRenewalSubject = "RxRenewalSubject";
+	// Added variables for Prescription test in Integration Platform 
+	public final static String Quantity = "2";
+	public final static String No_Of_Refills = "12.00";
+	public final static String Prescription_No = "#12345";
+	public final static String Additional_Info = "New prescription request";
+	public static final String Medication_Dosage = "MedicationDosage";
+	
+	public static final String Medication_Name_Tag = "MedicationName";
+	public static final String Quantity_Tag = "Quantity";
+	public static final String Refill_Number_Tag = "RefillNumber";
+	public static final String Prescription_Number_Tag = "PrescriptionNumber";
+	public static final String Additional_Information_Tag = "AdditionalInformation";
 
 	// MakePayment Fields
 	public final static String PatientAccountNumber = "137353065771";

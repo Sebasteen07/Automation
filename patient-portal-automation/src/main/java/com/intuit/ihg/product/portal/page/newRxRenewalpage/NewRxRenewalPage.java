@@ -15,9 +15,11 @@ import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class NewRxRenewalPage  extends BasePageObject {
-
+	
+	private long createdTs;
 	public NewRxRenewalPage(WebDriver driver) {
 		super(driver);
+		createdTs = System.currentTimeMillis();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -58,6 +60,17 @@ public class NewRxRenewalPage  extends BasePageObject {
 
 	@FindBy(xpath = "//div[@class='paperPad']/div[4]/p")
 	public WebElement renewalConfirmationmessage;
+	@FindBy(xpath = "//div[@id='medForm']/div[3]/div[@class='fieldWrapper']/div[2]/input")
+	private WebElement quantity;
+	
+	@FindBy(xpath = "//div[@id='medForm']/div[4]/div[@class='fieldWrapper']/div[2]/input")
+	private WebElement numberOfRefills;
+	
+	@FindBy(xpath = "//div[@id='medForm']/div[5]/div[@class='fieldWrapper']/div[2]/input")
+	private WebElement prescriptionNo;
+	
+	@FindBy(xpath = "//div[@id='medicationForm']/div[2]/div[@class='medicationBorder']/div[3]/div[@class='fieldWrapper']/div[2]/textarea")
+	public WebElement additionalInformation;
 
 	/**
 	 * @Description:Choose the provider name from Drop Down
@@ -176,5 +189,27 @@ public class NewRxRenewalPage  extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.PrintMethodName();
 	}
-
+	
+	/**
+	 * @return createdTs
+	 */
+	public long getCreatedTs() {
+		IHGUtil.PrintMethodName();
+		return createdTs;
+	}
+	/**
+	 * @Description: Set Medication details for integration Platform project
+	 */
+	public void setMedicationDetails()
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		medicationName.sendKeys(PortalConstants.MedicationName+""+createdTs);
+		dosage.sendKeys(PortalConstants.Dosage);
+		quantity.sendKeys(PortalConstants.Quantity);
+		numberOfRefills.sendKeys(PortalConstants.No_Of_Refills);
+		prescriptionNo.sendKeys(PortalConstants.Prescription_No);
+		additionalInformation.sendKeys(PortalConstants.Additional_Info);
+		
+	}
 }
