@@ -43,12 +43,12 @@ import com.intuit.ihg.product.object.maps.mobile.page.solutions.pharmacy.Pharmac
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.pharmacy.PharmacyDetailsPage;
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.rxrenewal.RequestRenewalPage;
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.rxrenewal.SelectAMedicationPage;
-import com.intuit.ihg.product.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep1Page;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep2Page;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestSearchPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.practice.tests.BillPaymentTest;
 import com.intuit.ihg.product.practice.utils.*;
 

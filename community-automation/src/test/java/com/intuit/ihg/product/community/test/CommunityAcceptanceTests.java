@@ -43,22 +43,22 @@ import com.intuit.ihg.product.object.maps.community.page.solutions.Messages.Mess
 import com.intuit.ihg.product.object.maps.community.page.solutions.Messages.MessageHealthInformationPage;
 import com.intuit.ihg.product.object.maps.community.page.solutions.Messages.MessageIframeHandlePage;
 import com.intuit.ihg.product.object.maps.community.page.solutions.Messages.MessagePage;
-import com.intuit.ihg.product.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep1Page;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestDetailStep2Page;
-import com.intuit.ihg.product.practice.page.apptrequest.ApptRequestSearchPage;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffQuestionDetailStep2Page;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
-import com.intuit.ihg.product.practice.page.askstaff.AskAStaffSearchPage;
-import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPayDetailPage;
-import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPaySearchPage;
-import com.intuit.ihg.product.practice.page.onlinebillpay.OnlineBillPayVerifyPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPage;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalDetailPageConfirmation;
-import com.intuit.ihg.product.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep2Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPayDetailPage;
+import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPayVerifyPage;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalDetailPage;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalDetailPageConfirmation;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 
 @Test
 public class CommunityAcceptanceTests extends BaseTestNGWebDriver {
