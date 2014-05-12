@@ -24,10 +24,14 @@ import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
@@ -221,6 +225,9 @@ public class MyPatientPage  extends BasePageObject{
 	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10); // we need to wait until the form window disappears
+		
+		wait.until(ExpectedConditions.elementToBeClickable(lnkFillOutForms));
 		lnkFillOutForms.click();
 		return PageFactory.initElements(driver, HealthFormPage.class);
 	}
