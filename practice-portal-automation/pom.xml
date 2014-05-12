@@ -31,7 +31,12 @@
             <groupId>com.intuit.ihg</groupId>
             <artifactId>qa-automation-utils</artifactId>
             <version>${qa-automation-utils.version}</version>
-        </dependency>   
+        </dependency>
+        <dependency>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>common-steps</artifactId>
+        	<version>ihg-depot-trunk-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

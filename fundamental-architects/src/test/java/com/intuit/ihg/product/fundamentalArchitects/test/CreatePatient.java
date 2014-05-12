@@ -7,7 +7,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.product.community.utils.Community;
 import com.intuit.ihg.product.community.utils.CommunityTestData;
 import com.intuit.ihg.product.object.maps.community.page.CreatePatientBeta;
-import com.intuit.ihg.product.portal.page.PortalLoginPage;
+import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
 import com.intuit.ihg.product.portal.tests.PatientActivationUtil;

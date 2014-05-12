@@ -33,11 +33,6 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 			<version>${ihg.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patient-portal-automation</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
 				
 		<dependency>
 	                 <groupId>com.intuit.api.security</groupId>
@@ -81,8 +76,13 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 			<artifactId>awaitility</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-	
-		
+
+
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>object-maps</artifactId>
+       			<version>ihg-depot-trunk-SNAPSHOT</version>
+       		</dependency>
 	</dependencies>
 	
 	

@@ -33,11 +33,6 @@
             <artifactId>qa-automation-utils</artifactId>
              <version>${ihg.version}</version>
         </dependency>
-                <dependency>
-            <groupId>com.intuit.ihg</groupId>
-            <artifactId>practice-portal-automation</artifactId>
-            <version>${ihg.version}</version>
-        </dependency>
         <dependency>
             <groupId>net.medfusion</groupId>
             <artifactId>integrations</artifactId>
