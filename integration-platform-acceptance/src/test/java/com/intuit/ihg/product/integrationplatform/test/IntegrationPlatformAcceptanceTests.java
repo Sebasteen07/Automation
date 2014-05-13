@@ -296,7 +296,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestion() throws Exception {
 		
 		log("Test Case: AMDC Ask Question");
@@ -364,7 +364,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessage() throws Exception{
 		log("Test Case: AMDC Secure Message");
 		
@@ -449,7 +449,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
 		PIDCTestData testData = loadDataFromExcel();
@@ -491,7 +491,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistration() throws Exception{
 		log("Test Case: PIDC Patient Registration");
 		PIDCTestData testData = loadDataFromExcel();
@@ -588,7 +588,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		return testData;
 	}
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCsendCCD() throws Exception {
 		
 		log("Test Case: send a CCD and check in patient Portal");
@@ -678,7 +678,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetPrescription() throws Exception {
 		log("Test Case: Get Prescription Request");
 		
