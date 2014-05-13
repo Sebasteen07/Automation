@@ -11,7 +11,7 @@ public class AppointmentTestData {
 	private ExcelSheetReader excelReader = null;
 
 	public AppointmentTestData(Appointment aptData) throws Exception {
-		// which enviroment data need to picked
+		// which environment data need to picked
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
 		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
@@ -77,5 +77,16 @@ public class AppointmentTestData {
 		return AppointmentObj.PhoneNumber;
 	}	
 	
+	public String getPracticeURL() {
+		return AppointmentObj.PracticeURL;
+	}	
+	
+	public String getPracticeUserName() {
+		return AppointmentObj.PracticeUserName;
+	}	
+	
+	public String getPracticePassword() {
+		return AppointmentObj.PracticePassword;
+	}	
 	
 }

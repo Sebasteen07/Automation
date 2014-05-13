@@ -39,8 +39,9 @@ public class PortalConstants {
 	public final static String RenewalConfirmation = "Thank you for submitting your Prescription Renewal.";
 	public final static String MyPatientPage = "My Patient Page";
 	public final static String RxRenewalSubject = "RxRenewalSubject";
+	
 	// Added variables for Prescription test in Integration Platform 
-	public final static String Quantity = "2";
+	public final static String Quantity = "3";
 	public final static String No_Of_Refills = "12.00";
 	public final static String Prescription_No = "#12345";
 	public final static String Additional_Info = "New prescription request";

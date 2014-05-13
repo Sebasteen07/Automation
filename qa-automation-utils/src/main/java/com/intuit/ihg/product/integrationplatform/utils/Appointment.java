@@ -16,4 +16,7 @@ public class Appointment {
 	public String OAuthPassword ="";
 	public String PreferredDoctor ="";
 	public String PhoneNumber="";
+	public String PracticeURL="";
+	public String PracticeUserName="";
+	public String PracticePassword="";
 }

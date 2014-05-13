@@ -1,9 +1,14 @@
-	package com.intuit.ihg.product.integrationplatform.utils;
+package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +29,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -165,7 +172,7 @@ public class RestUtils {
 	/**
 	 * Reads the XML and checks Medication Details_ 
 	 * @param xmlFileName XML to check
-	 * @param Long timestamp of a sent Reason to check
+	 * @param Long timestamp of a sent Medication Name to check
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
@@ -461,5 +468,190 @@ public class RestUtils {
 		
 	}
 	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param parentNode
+	 * @param childNode
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException 
+	 * @throws ParseException 
+	 * @throws DOMException 
+	 */
+	public static String findValueOfChildNode(String xmlFileName,
+			String parentNode,String reason,String subject,String reply)
+			throws ParserConfigurationException, SAXException, IOException, TransformerException, DOMException, ParseException {
+
+		IHGUtil.PrintMethodName();
+		String getApt_req_id= null;
+		String updatedXML=null;
+		File xmlResponeFile = new File(xmlFileName);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(xmlResponeFile);
+		doc.getDocumentElement().normalize();
+
+		NodeList pnode = doc.getElementsByTagName(parentNode);
+
+		for (int i = 0; i < pnode.getLength(); i++) {
+			Element element = (Element) pnode.item(i);	
+			String reaString=element.getElementsByTagName("Reason").item(0).getFirstChild().getNodeValue();
+			if (reaString.equalsIgnoreCase(reason))
+				{		
+				Node node=element.getElementsByTagName("Reason").item(0).getParentNode();
+					node=node.getParentNode();
+				if (node.hasAttributes()) {
+					Attr attr=(Attr) node.getAttributes().getNamedItem("id");
+					getApt_req_id=attr.getValue();
+				}
+				String getFrom=element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue();
+				String getTo=element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue();
+				element=(Element)element.getParentNode();
+				String getCreatedDateTime=element.getElementsByTagName("CreatedDateTime").item(0).getFirstChild().getNodeValue();
+				String getUpdatedDateTime=element.getElementsByTagName("UpdatedDateTime").item(0).getFirstChild().getNodeValue();
+				xmlFileName=IntegrationConstants.APPOINTMENT_RESPONSE_PATH+"PostAppointment.xml";
+				updatedXML=postAppointmentRequest(xmlFileName,getApt_req_id, getFrom,getTo,getCreatedDateTime,getUpdatedDateTime,subject,reply);
+				break;
+			}
+
+		}
+		return updatedXML;
 		
+	}
+	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param parentNode
+	 * @param childNode
+	 * @param attribute
+	 * @param updatedDateTime 
+	 * @param createdDateTime 
+	 * @param to 
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException 
+	 * @throws ParseException 
+	 * @throws DOMException 
+	 */
+	public  static String postAppointmentRequest(String xmlFileName,
+			String app_req_id, String From, String To, String createdDateTime, String updatedDateTime,String subject,String reply)
+			throws ParserConfigurationException, SAXException, IOException, TransformerException, DOMException, ParseException {
+		Document doc=buildDOMXML(xmlFileName);
+		
+		Node node=doc.getElementsByTagName(IntegrationConstants.APPOINTMENT).item(0);
+		Element element=(Element) node;
+		//update appointment id,createdDateTime,updatedDateTime,message_thread_id
+		element.setAttribute(IntegrationConstants.APPOINTMENT_ID, app_req_id);
+		Node ncreatedDateTime=element.getElementsByTagName(IntegrationConstants.CREATED_TIME).item(0);
+		Node nupdatedDateTime=element.getElementsByTagName(IntegrationConstants.UPDATE_TIME).item(0);
+		Node nmessaageThreadID=element.getElementsByTagName(IntegrationConstants.MESSAGE_THREAD_ID).item(0);
+		ncreatedDateTime.setTextContent(createdDateTime);
+		nupdatedDateTime.setTextContent(updatedDateTime);
+		nmessaageThreadID.setTextContent(app_req_id);
+		
+		//update From,To
+		node=doc.getElementsByTagName(IntegrationConstants.APPOINTMENT_REQUEST).item(0);
+		Node nFrom=element.getElementsByTagName(IntegrationConstants.FROM).item(0);
+		Node nTo=element.getElementsByTagName(IntegrationConstants.TO).item(0);
+		nFrom.setTextContent(From);
+		nTo.setTextContent(To);
+		
+		//update messageId,Subject,message_thread_id
+		Node cNode=doc.getElementsByTagName(IntegrationConstants.COMMUNICATION).item(0);
+		Element ele=(Element) cNode;
+		ele.setAttribute(IntegrationConstants.MESSAGE_ID,"5a5346dc-4671-4355-9391-363fde62"+fourDigitRandom());
+		Node ncFrom=ele.getElementsByTagName(IntegrationConstants.FROM).item(0);
+		Node ncTo=ele.getElementsByTagName(IntegrationConstants.TO).item(0);
+		ncFrom.setTextContent(To);
+		ncTo.setTextContent(From);
+		Node nSubject=element.getElementsByTagName(IntegrationConstants.SUBJECT).item(0);
+		nSubject.setTextContent(subject);
+		Node ncmessaageThreadID=ele.getElementsByTagName(IntegrationConstants.MESSAGE_THREAD_ID).item(0);
+		ncmessaageThreadID.setTextContent(app_req_id);
+		Node nmessage=element.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
+		nmessage.setTextContent(reply);
+		
+		//update sent time,ScheduledDateTime
+		Node nSent=element.getElementsByTagName(IntegrationConstants.SENT_DATE).item(0);
+		nSent.setTextContent(SentDate(createdDateTime));
+		Node nScheduledDate=element.getElementsByTagName(IntegrationConstants.SCHEDULED_DATE).item(0);
+		nScheduledDate.setTextContent(ScheduledDate(createdDateTime));
+		
+		return domToString(doc);
+	}
+	
+	/**
+	 * 
+	 * @param createdDateTime
+	 * @return
+	 * @throws ParseException 
+	 */
+	private static String ScheduledDate(String createdDateTime) throws ParseException {
+		String scheduleDate=null;
+		SimpleDateFormat formatter, FORMATTER;
+		formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		Date date = formatter.parse(createdDateTime);
+		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		scheduleDate=FORMATTER.format(date.getTime() + (3 *(1000 * 60 * 60 * 24)));
+		scheduleDate=new StringBuffer(scheduleDate).insert(22, ":").toString();
+		return scheduleDate;
+	}
+
+	/**
+	 * 
+	 * @param createdDateTime
+	 * @return
+	 * @throws ParseException
+	 */
+	private static String SentDate(String createdDateTime) throws ParseException {
+		String sentDate=null;
+		SimpleDateFormat formatter, FORMATTER;
+		formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		Date date = formatter.parse(createdDateTime);
+		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		long hour = 3600 * 2000;
+		sentDate=FORMATTER.format(date.getTime() + hour);
+		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
+		return sentDate;
+	}
+
+	/**
+	 * 
+	 * @param xmlFilePath
+	 * @return
+	 */
+	public static String fileToString(String xmlFilePath) {
+		String xmlInString = convertXMLFileToString(xmlFilePath);
+		return xmlInString;
+	}
+	
+	/**
+	 * 
+	 * @param xmlFilePath
+	 * @return
+	 */
+	public static String convertXMLFileToString(String fileName) {
+		try {
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+					.newInstance();
+			InputStream inputStream = new FileInputStream(new File(fileName));
+			org.w3c.dom.Document doc = documentBuilderFactory
+					.newDocumentBuilder().parse(inputStream);
+			StringWriter stw = new StringWriter();
+			Transformer serializer = TransformerFactory.newInstance()
+					.newTransformer();
+			serializer.transform(new DOMSource(doc), new StreamResult(stw));
+			return stw.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

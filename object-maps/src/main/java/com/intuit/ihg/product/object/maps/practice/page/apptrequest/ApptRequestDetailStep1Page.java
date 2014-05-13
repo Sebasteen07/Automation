@@ -54,6 +54,11 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	
 	@FindBy(xpath=".//input[@value='Submit Appointment Request']")
 	private WebElement btnSubmitApptRequest;
+	@FindBy(xpath = ".//table/tbody/tr[1]/td/table/tbody/tr[5]/td[2]/span")
+	private WebElement messageSubject;
+	
+	@FindBy(xpath = ".//table/tbody/tr[1]/td/table/tbody/tr[6]/td/span/p")
+	private WebElement messageBody;
 
 	private long createdTs;
 	
@@ -159,4 +164,30 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
+	/**
+	 * Will check Secure Message subject text & return subject text
+	 * @return
+	 */
+	public String getPracticeMessageSubject() 
+	{
+	  if(isApptRequestDetailPageLoaded()==false){
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		IHGUtil.waitForElement(driver,60,messageSubject);
+	  }
+		return messageSubject.getText();
+	  
+	}
+	
+
+	/**
+	 * Will check Secure Message reply text & returns message text
+	 * @return
+	 */
+	public String getPracticeMessageBody() {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		IHGUtil.waitForElement(driver,1,messageBody);
+		return messageBody.getText();
+	}
 }

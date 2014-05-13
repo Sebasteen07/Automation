@@ -5,12 +5,25 @@ import java.util.Random;
 
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
-
+import static org.testng.Assert.assertNotNull;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
+import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
+import com.intuit.ihg.product.integrationplatform.utils.AMDC;
+import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.Appointment;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
+import com.intuit.ihg.product.integrationplatform.utils.EHDC;
+import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
+import com.intuit.ihg.product.integrationplatform.utils.PIDC;
+import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.Prescription;
+import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
+import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.object.maps.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
@@ -30,18 +43,10 @@ import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskASta
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep1Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep2Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep3Page;
-import com.intuit.ihg.product.integrationplatform.utils.AMDC;
-import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.Appointment;
-import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
-import com.intuit.ihg.product.integrationplatform.utils.EHDC;
-import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
-import com.intuit.ihg.product.integrationplatform.utils.PIDC;
-import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.Prescription;
-import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
-import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
@@ -70,7 +75,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	 */
 
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	//@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
 	 log("+++++++++++++ Test run+++++++++++");
@@ -88,7 +93,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	/*
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -141,7 +147,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
 			
 		log("step 8: Setup Oauth client"); 
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 		
 		//OAuthPropertyManager.init(testData.getOAuthProperty());
 		
@@ -158,8 +163,140 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 10: Checking validity of the response xml");
 		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
 	}
+	*/
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAppointmentRequest() throws Exception {
+		
+		log("Test Case: Appointment Request");
+		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		Long timestamp = System.currentTimeMillis();
+		log("step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+					
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("step 2: LogIn");
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
+		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("step 3: Click on Appointment Button on My Patient Page");
+		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
+
+		log("step 4: Complete Appointment Request Step1 Page  ");
+		AppointmentRequestStep2Page apptRequestStep2 = apptRequestStep1.requestAppointment(null,null,testData.getPreferredDoctor(),null);
+
+		log("step 5: Complete Appointment Request Step2 Page  ");
+		AppointmentRequestStep3Page apptRequestStep3 = apptRequestStep2.fillInForm(PortalConstants.PreferredTimeFrame,
+				PortalConstants.PreferredDay, PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason,
+				PortalConstants.WhichIsMoreImportant, testData.getPhoneNumber());
+		
+		log("Getting Appointment reason ");
+		long time=apptRequestStep2.getCreatedTs();
+		String reason=PortalConstants.ApptReason.toString()+" "+String.valueOf(time);
+		String arSMSubject=IntegrationConstants.AR_SM_SUBJECT.toString()+""+String.valueOf(time);
+		String arSMBody=IntegrationConstants.AR_SM_BODY.toString()+""+String.valueOf(time);
+		log("************Appointment Reason: "+reason);
+		log("************Appointment Secure Message Subject: "+arSMSubject);
+		log("************Appointment Secure Message Body: "+arSMBody);
+	    
+		log("step 6: Complete Appointment Request Step3 Page  ");
+		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
+
+		log("step 7: Complete Appointment Request Step4 Page  ");
+		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
+
+		log("step 8: Logout of Patient Portal");
+		myPatientPage.logout(driver);
+		
+		log("step 9: Setup Oauth client"); 
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		log("step 10: Get Appointment Rest call");
+		
+		//get only messages from last hour in epoch time to avoid transferring lot of data
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		log("Getting messages since timestamp: " + since);
+		
+		//do the call and save xml, ",0" is there because of the since attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("step 11: Checking reason in the response xml");
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+		
+		String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(),"AppointmentRequest",reason,arSMSubject,arSMBody);
+			
+		// httpPostRequest method
+		log("step 12: Do Message Post Request");
+		RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
+			
+		//patient Portal validation 
+		log("step 13: Login to Patient Portal");
+		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("step 14: Go to Inbox");
+		ConsolidatedInboxPage inboxPage = pPatientPage.clickViewAllMessages();
+		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
+		log("step 15: Find message in Inbox");
+		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(arSMSubject);
+
+		log("step 16: Validate message loads and is the right message");
+		String actualSubject = msg.getPracticeReplyMessageTitle();
+		assertTrue(msg.getPracticeReplyMessageTitle().contains(arSMSubject), "Expected subject containting ["
+						+ arSMSubject + "but actual subject was [" + actualSubject + "]");
+		
+		log("step 17: Logout of Patient Portal");
+		pPatientPage.logout(driver);
+		
+		//Practice portal validation  
+		log("step 18: Login to Practice Portal");
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("step 19: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
+		
+		log("step 20: Search for appt requests");
+		apptSearch.searchForApptRequests(2,null,null);
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
+		
+		String actualSMSubject=detailStep1.getPracticeMessageSubject();
+		assertTrue(detailStep1.getPracticeMessageSubject().contains(arSMSubject), "Expected Secure Message Subject containing [" +arSMSubject
+				+ "but actual message subject was [" + actualSMSubject + "]");
+		
+		String actualSMBody=detailStep1.getPracticeMessageBody();
+		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody), "Expected Secure Message Body containing [" +arSMBody
+				+ "but actual message body was [" + actualSMBody + "]");
+				
+		log("step 21: Logout of Practice Portal");
+		practiceHome.logOut();		
+		
+	}
+	
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestion() throws Exception {
 		
 		log("Test Case: AMDC Ask Question");
@@ -227,7 +364,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessage() throws Exception{
 		log("Test Case: AMDC Secure Message");
 		
@@ -312,7 +449,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
 		PIDCTestData testData = loadDataFromExcel();
@@ -354,7 +491,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistration() throws Exception{
 		log("Test Case: PIDC Patient Registration");
 		PIDCTestData testData = loadDataFromExcel();
@@ -451,7 +588,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		return testData;
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCsendCCD() throws Exception {
 		
 		log("Test Case: send a CCD and check in patient Portal");
@@ -541,7 +678,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetPrescription() throws Exception {
 		log("Test Case: Get Prescription Request");
 		

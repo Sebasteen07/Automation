@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import com.intuit.ihg.common.utils.IHGUtil;
+
 /**
  * @author bkrishnankutty
  * @Date 5/Aug/2013
@@ -36,8 +38,32 @@ public class IntegrationConstants {
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "New Health Information Import";
+	//Appointment Request constants
 	public static final String REASON = "Reason";
+	public static final String TEST_DATA = "src/test/resources/config/";
+	public static final String APPOINTMENT_RESPONSE_PATH = TEST_DATA
+			+ IHGUtil.getEnvironmentType() + "/";
+	public static final String CREATED_TIME = "CreatedDateTime";
+	public static final String UPDATE_TIME = "UpdatedDateTime";
+	public static final String MESSAGE_THREAD_ID = "MessageThreadId";
+	public static final String APPOINTMENT = "Appointment";
+	public static final String APPOINTMENT_ID = "id";
+	public static final String APPOINTMENT_REQUEST = "AppointmentRequest";
+	public static final String COMMUNICATION = "Communication";
+	public static final String SENT_DATE = "Sent";
+	public static final String SCHEDULED_DATE = "ScheduledDateTime";
+	public static final String AR_SM_SUBJECT = "This is reply to Appointment";
+	public static final String AR_SM_BODY = "New Reply to AR for";
+	
 	//Prescription Constant
-	public static final String EMAIL_SUBJECT = "This is reply to Prescription";
-	public static final String EMAIL_BODY = "New Reply to Rx for";
+	public static final String MEDICATION_NAME = "MEDICATION";
+	public static final String DOSAGE = "200gm";
+	public static final String QUANTITY = "2";
+	public final static String PATIENT_PAGE = "My Patient Page";
+	public final static String RENEWAL_CONFIRMATION = "Thank you for submitting your Prescription Renewal.";
+	public static final String MEDICATION_NAME_TAG = "MedicationName";
+	public static final CharSequence NO_OF_REFILLS = "12";
+	public static final CharSequence PRESCRIPTION_NO = "#12345";
+	public static final CharSequence ADDITIONAL_INFO = "New prescription request";
+
 }
