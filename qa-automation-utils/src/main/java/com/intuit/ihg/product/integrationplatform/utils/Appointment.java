@@ -8,7 +8,7 @@ public class Appointment {
 	public String RestUrl = "";
 	public String ResponsePath = "";
 	public String From = "";
-	public String SecureMessagePath = "";
+	public String AppointmentPath = "";
 	public String OAuthProperty ="";
 	public String OAuthKeyStore ="";
 	public String OAuthAppToken ="";

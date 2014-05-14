@@ -40,9 +40,6 @@ public class IntegrationConstants {
 	public static final String CCD_MESSAGE_SUBJECT = "New Health Information Import";
 	//Appointment Request constants
 	public static final String REASON = "Reason";
-	public static final String TEST_DATA = "src/test/resources/config/";
-	public static final String APPOINTMENT_RESPONSE_PATH = TEST_DATA
-			+ IHGUtil.getEnvironmentType() + "/";
 	public static final String CREATED_TIME = "CreatedDateTime";
 	public static final String UPDATE_TIME = "UpdatedDateTime";
 	public static final String MESSAGE_THREAD_ID = "MessageThreadId";

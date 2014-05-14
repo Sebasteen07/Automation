@@ -184,7 +184,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Rest Url: " + testData.getRestUrl());
 		log("Response Path: " + testData.getResponsePath());
 		log("From: " + testData.getFrom());
-		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("AppointmentPath: " + testData.getAppointmentPath());
 		log("OAuthProperty: " + testData.getOAuthProperty());
 		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
@@ -241,43 +241,23 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 11: Checking reason in the response xml");
 		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
 		
-		String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(),"AppointmentRequest",reason,arSMSubject,arSMBody);
+		String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(),"AppointmentRequest",reason,arSMSubject,arSMBody,testData.getAppointmentPath());
 			
 		// httpPostRequest method
 		log("step 12: Do Message Post Request");
 		RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
 			
-		//patient Portal validation 
-		log("step 13: Login to Patient Portal");
-		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
-
-		log("step 14: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = pPatientPage.clickViewAllMessages();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("step 15: Find message in Inbox");
-		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(arSMSubject);
-
-		log("step 16: Validate message loads and is the right message");
-		String actualSubject = msg.getPracticeReplyMessageTitle();
-		assertTrue(msg.getPracticeReplyMessageTitle().contains(arSMSubject), "Expected subject containting ["
-						+ arSMSubject + "but actual subject was [" + actualSubject + "]");
-		
-		log("step 17: Logout of Patient Portal");
-		pPatientPage.logout(driver);
-		
 		//Practice portal validation  
-		log("step 18: Login to Practice Portal");
+		log("step 13: Login to Practice Portal");
 
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
 
-		log("step 19: Click Appt Request tab");
+		log("step 14: Click Appt Request tab");
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 		
-		log("step 20: Search for appt requests");
+		log("step 15: Search for appt requests");
 		apptSearch.searchForApptRequests(2,null,null);
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
 		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
@@ -291,8 +271,29 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody), "Expected Secure Message Body containing [" +arSMBody
 				+ "but actual message body was [" + actualSMBody + "]");
 				
-		log("step 21: Logout of Practice Portal");
-		practiceHome.logOut();		
+		log("step 16: Logout of Practice Portal");
+		practiceHome.logOut();	
+		
+		//patient Portal validation 
+		log("step 17: Login to Patient Portal");
+		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("step 18: Go to Inbox");
+		ConsolidatedInboxPage inboxPage = pPatientPage.clickViewAllMessages();
+		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
+		log("step 19: Find message in Inbox");
+		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(arSMSubject);
+
+		log("step 20: Validate message loads and is the right message");
+		String actualSubject = msg.getPracticeReplyMessageTitle();
+		assertTrue(msg.getPracticeReplyMessageTitle().contains(arSMSubject), "Expected subject containting ["
+						+ arSMSubject + "but actual subject was [" + actualSubject + "]");
+		
+		log("step 21: Logout of Patient Portal");
+		pPatientPage.logout(driver);
+			
 		
 	}
 	

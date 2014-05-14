@@ -45,8 +45,8 @@ public class AppointmentTestData {
 		return AppointmentObj.From;
 	}
 	
-	public String getSecureMessagePath(){
-		return AppointmentObj.SecureMessagePath;
+	public String getAppointmentPath(){
+		return AppointmentObj.AppointmentPath;
 	}
 		
 	public String getOAuthProperty(){

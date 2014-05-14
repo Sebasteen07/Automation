@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.integrationplatform.utils;
+	package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -482,7 +482,7 @@ public class RestUtils {
 	 * @throws DOMException 
 	 */
 	public static String findValueOfChildNode(String xmlFileName,
-			String parentNode,String reason,String subject,String reply)
+			String parentNode,String reason,String subject,String reply, String appointment)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException, DOMException, ParseException {
 
 		IHGUtil.PrintMethodName();
@@ -512,8 +512,7 @@ public class RestUtils {
 				element=(Element)element.getParentNode();
 				String getCreatedDateTime=element.getElementsByTagName("CreatedDateTime").item(0).getFirstChild().getNodeValue();
 				String getUpdatedDateTime=element.getElementsByTagName("UpdatedDateTime").item(0).getFirstChild().getNodeValue();
-				xmlFileName=IntegrationConstants.APPOINTMENT_RESPONSE_PATH+"PostAppointment.xml";
-				updatedXML=postAppointmentRequest(xmlFileName,getApt_req_id, getFrom,getTo,getCreatedDateTime,getUpdatedDateTime,subject,reply);
+				updatedXML=postAppointmentRequest(appointment,getApt_req_id, getFrom,getTo,getCreatedDateTime,getUpdatedDateTime,subject,reply);
 				break;
 			}
 
