@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import com.intuit.ihg.common.utils.IHGUtil;
-
 /**
  * @author bkrishnankutty
  * @Date 5/Aug/2013
