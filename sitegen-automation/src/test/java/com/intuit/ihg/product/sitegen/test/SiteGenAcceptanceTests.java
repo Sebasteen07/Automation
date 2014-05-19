@@ -1141,6 +1141,7 @@ public void testDiscreteFormEndToEnd() throws Exception
 	
 	log("step 17: Click on Social History the last page of discrete form");
 	SocialHistoryPage pSocialHistoryPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
+	pSocialHistoryPage.showThisPage();
 	pSocialHistoryPage.clickSave();
 	
 	log("step 18: Publish the saved Discrete Form");
@@ -1209,7 +1210,7 @@ public void testDiscreteFormEndToEnd() throws Exception
 	log("step 16: Set Family History Form Fields");
 	FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
 
-	log("step 17: Set Social History Form Fields");
+	log("step 17: Set Social History Form Fields and submit the form");
 	pFormSocialHistoryPage.setSocialHistoryFormFields();
 
 	log("step 18: Verify Registration Confirmation Text");

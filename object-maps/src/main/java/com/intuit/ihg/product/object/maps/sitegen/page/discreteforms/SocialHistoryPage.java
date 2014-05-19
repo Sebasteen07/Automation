@@ -13,7 +13,7 @@ public class SocialHistoryPage extends BasePageObject{
 	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
 	
-	@FindBy(id="save_config_form")              
+	@FindBy(id = "save_config_form")              
 	private WebElement btnSave;
 	
 	@FindBy(id = "hide_socialhistory_section_check")
@@ -98,6 +98,18 @@ public class SocialHistoryPage extends BasePageObject{
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Unselects the checkbox for hiding the page
+	 * 
+	 */
+	
+	public void showThisPage()
+	{
+		if (hideSocialhistorySectionCheck.isSelected() == true)
+			hideSocialhistorySectionCheck.click();
+			
 	}
 	
 	/**
