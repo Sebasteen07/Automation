@@ -5,7 +5,9 @@ import java.util.Random;
 
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
+
 import static org.testng.Assert.assertNotNull;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -31,8 +33,8 @@ import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
@@ -280,11 +282,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("step 18: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = pPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = pPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 19: Find message in Inbox");
-		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(arSMSubject);
+		MessagePage msg = inboxPage.openMessageInInbox(arSMSubject);
 
 		log("step 20: Validate message loads and is the right message");
 		String actualSubject = msg.getPracticeReplyMessageTitle();
@@ -418,12 +420,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("step 7: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 8: Find message in Inbox");
 		String messageIdentifier = Long.toString(timestamp);
-		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(messageIdentifier);
+		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
 
 		log("step 9: Validate message loads and is the right message");
 		String actualSubject = msg.getPracticeReplyMessageTitle();
@@ -622,32 +624,32 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 				testData.getPassword());
 		
 		log("step 3: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 4: Find message in Inbox");
-		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
+		MessagePage pMessage = inboxPage
 		.clickFirstMessageRow();
 
 		log("step 5: Validate message subject and send date");
 		Thread.sleep(1000);
-		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
+		assertEquals(pMessage.getPracticeReplyMessageTitle(),
 				IntegrationConstants.CCD_MESSAGE_SUBJECT,
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("step 6: Click on link ReviewHealthInformation");
-		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
+		pMessage.clickBtnReviewHealthInformation();
 
 		
 		log("step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		pConsolidatedInboxMessage.verifyCCDViewerAndClose();
+		pMessage.verifyCCDViewerAndClose();
 		
 		driver.switchTo().defaultContent();
 		
 		log("step 8: Go to patient page");
-		pMyPatientPage = pConsolidatedInboxMessage.clickMyPatientPage();
+		pMyPatientPage = pMessage.clickMyPatientPage();
 		
 		log("step 9:Click PHR");
 		pMyPatientPage.clickPHRWithoutInit(driver);
