@@ -60,6 +60,9 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "tou")
 	private WebElement checkIntuitTerms;
+	
+	@FindBy(name = "addOption")
+	private WebElement prefferedProvider;
 
 	// ===========Full page=======================
 
@@ -230,6 +233,9 @@ public class CreateAccountPage extends BasePageObject {
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 
+	/**
+	 * @brief Is it just me or does this method do something else then choosing a provider?
+	 */
 	public void chooseProvider(String pProvider) {
 		PortalUtil.setPortalFrame(driver);
 		List<WebElement> list = driver.findElements(By.xpath("//select[@name='editLoginInfo:border:editForm:inputs:6:input:input']/option"));
@@ -242,7 +248,10 @@ public class CreateAccountPage extends BasePageObject {
 			}
 			count++;
 		}
-
+		if (prefferedProvider.isDisplayed()) {
+			Select provider = new Select(prefferedProvider);
+			provider.selectByIndex(1);
+		}
 	}
 
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,

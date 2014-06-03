@@ -225,9 +225,9 @@ public class MyPatientPage  extends BasePageObject{
 	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 10); // we need to wait until the form window disappears
+		WebDriverWait wait = new WebDriverWait(driver, 15); // we need to wait until the form window disappears
 		
-		wait.until(ExpectedConditions.elementToBeClickable(lnkFillOutForms));
+		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
 		lnkFillOutForms.click();
 		return PageFactory.initElements(driver, HealthFormPage.class);
 	}
