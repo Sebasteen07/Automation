@@ -1,6 +1,8 @@
 package com.intuit.ihg.product.sitegen.test;
 
 
+import javax.ws.rs.core.MediaType;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
@@ -91,6 +93,7 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.rest.RestUtils;
 
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
@@ -1264,14 +1267,18 @@ public void testDiscreteFormEndToEnd() throws Exception
  * Tests if filling out a form generates a PDF, if link for downloading
  * the PDF appears in Patient Portal and if the link is working.
  * 
- * Deletes all the forms in forms config and makes a new one for the test
  * Creates new patient
  */
 
 @Test(enabled = true, groups = {"AcceptanceTests"})
 public void testDiscreteFormPDF() throws Exception {
 	
-	log("testDiscreteFormPDF");
+	String form = new String();
+
+	form = RestUtils.get("http://dev3aapp13.qhg.local:8080/eh/v1/practice/0407cf53-b37e-4cf7-9718-4b79259e47a0/ccdExchangeBatch?since=1401840000,0&max=10", String.class, MediaType.APPLICATION_XML);
+	
+	System.out.print(form);
+	/*log("testDiscreteFormPDF");
 	log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
 	log("Browser on which Test is running :"+TestConfig.getBrowserType());
 	
@@ -1305,21 +1312,15 @@ public void testDiscreteFormPDF() throws Exception {
 	log("step 6: Set Medication Form Fields");
 	pFormMedicationsPage.setMedicationFormFields();
 
-	log("step 13: Set Social History Form Fields and submit the form");
+	log("step 7: Set Social History Form Fields and submit the form");
 	FormSocialHistoryPage pFormSocialHistoryPage = PageFactory.initElements(driver, FormSocialHistoryPage.class);
 	pFormSocialHistoryPage.setSocialHistoryFormFields();
-
-	//log("step 14: Verify Registration Confirmation Text");
-	//pMyPatientPage.verifyRegistrationConfirmationText(); 
 	
-	//log("Step 15: Click on 'Fill Out' link under 'Custom Form' section");
-	//HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-	
-	log("Step 16: Test if PDF is downloadable");
+	log("Step 8: Test if PDF is downloadable");
 	PortalUtil.setPortalFrame(driver);
 	URLStatusChecker status = new URLStatusChecker(driver);
 	assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
-	assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
+	assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);*/
 }
 
 	/**
