@@ -89,7 +89,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		//Wait according to environment
 		log("step 8: Waiting for Events sync in DWH");
 		if((IHGUtil.getEnvironmentType().toString().equals("DEV3")) || IHGUtil.getEnvironmentType().toString().equals("PROD")){
-			Thread.sleep(600000);
+			Thread.sleep(900000);
 		}
 		else {
 			Thread.sleep(600000*3);
