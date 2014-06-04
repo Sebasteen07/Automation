@@ -1135,6 +1135,49 @@ public class IHGUtil extends BasePageObject {
 	}
 
 
+	/**
+	 * Description: This method searches for the appropriate case in the case table based on the filtration criteria (a substring)
+	 * @param Xpath of the table,List of case search criteria
+	 * @return Row number where the exact case matching with the search criteria is present
+	 */	
+	public static List<Object> searchResultsSubstring(WebDriver pDriver,String pTableXpath,ArrayList<String> pMyArr_expected){
+		int i=0;
+		int rowNumber=0;
+		boolean flag=false;
+		List<Object> list = new ArrayList<Object>();	
+		ArrayList<String> myArr_actual = new ArrayList<String>();
+		WebElement table =pDriver.findElement(By.xpath(pTableXpath));
+		List<WebElement> rows=table.findElements(By.tagName("tr"));
+		mainLoop:for(WebElement row:rows){	
+			i++;
+			myArr_actual.clear();
+			List<WebElement> columns = row.findElements(By.tagName("td"));
+			for(WebElement column: columns){
+				myArr_actual.add(column.getText().toString());				
+			}
+			for(int j=0;j<pMyArr_expected.size();j++){
+				if(!myArr_actual.contains(pMyArr_expected.get(j))){
+					flag=false;
+					break;	
+				}				
+				else{
+					flag=true;
+					if(myArr_actual.get(2).contains(pMyArr_expected.get(1))){
+					     Log4jUtil.log (pMyArr_expected.get(j)+"is present in row :"+i, Level.INFO);  
+					     break;		
+					     }		
+				}				
+			}
+			if(flag==true){
+				rowNumber=i;
+				list.add(rowNumber);
+				list.add(flag);
+				break mainLoop;
+			}	
+		}
+		return list;
+	}
+
 
 	/**
 	 * @author:-bkrishnankutty

@@ -58,6 +58,8 @@ public class MessagePage extends BasePageObject {
 	@FindBy(id = "basicInfo")
 	private WebElement ccdBasicInfo;
 	
+	@FindBy(id = "savePdf")
+	private WebElement pdfDownload;
 	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
 			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
 	
@@ -178,4 +180,33 @@ public class MessagePage extends BasePageObject {
 			textBoxToEnterEmailAddress.clear();
 		}
 	}
+	/**
+	 * click on PDF button
+	 */
+	public void clickOnPDF() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		IHGUtil.waitForElement(driver, 60, webframe);
+		driver.switchTo().frame(webframe);
+		pdfDownload.click();
+		
+	}
+	
+	/**
+	 * Enter EmailID for transmit and send  
+	 */
+	public void generateTransmitEvent(String email) throws InterruptedException{
+		  IHGUtil.PrintMethodName();
+		  driver.switchTo().defaultContent();
+		  IHGUtil.waitForElement(driver, 20, webframe);
+		  driver.switchTo().frame(webframe);
+		  btnShareWithDoctor.click();
+		  IHGUtil.waitForElement(driver, 20, textBoxToEnterEmailAddress);
+		  textBoxToEnterEmailAddress.sendKeys(email);
+		  btnSendToShareTheHealthInformation.click();
+		  IHGUtil.waitForElement(driver, 70, textBoxResponseMsg);
+		  String successMessage="Your health information was sent to "+email+"!";
+		  log(textBoxResponseMsg.getText().toString());
+		  Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
+		 }
 }
