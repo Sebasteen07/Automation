@@ -63,7 +63,9 @@ public class RestUtils {
         HttpGet httpGetReq = new HttpGet(strUrl);
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
         .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        httpGetReq.addHeader("ExternalSystemId", "79");
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+        //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
         String sResp = EntityUtils.toString(entity);
         
@@ -320,6 +322,7 @@ public class RestUtils {
 						+ resp.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n"
 						+ sResp);
+		Log4jUtil.log("Response Code" +resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 		
         Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);

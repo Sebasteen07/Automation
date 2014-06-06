@@ -11,8 +11,9 @@ import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ActivatePas
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.SecretAnswerDoesntMatchPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.*;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.insurance.InsurancePage;
@@ -380,11 +381,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("URL: " + testcasesData.geturl());
 		log("USER NAME: " + testcasesData.getUsername());
 		log("Password: " + testcasesData.getPassword());
-
+		
 		log("step 2: LogIn");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		MyPatientPage myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
-
+		
 		log("step 3: Click on Appointment Button on My Patient Page");
 		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
 
@@ -440,19 +441,19 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 16: Logout of Practice Portal");
 		practiceHome.logOut();
-
+		
 		log("step 17: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
 		log("step 18: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 19: Find message in Inbox");
 		String uniquePracticeResponse = Long.toString(detailStep1.getCreatedTs());
-		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
+		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 20: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -707,13 +708,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
 		log("step 17: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 18: Find message in Inbox");
 		String uniquePracticeResponse = Long.toString(detailStep2.getCreatedTimeStamp());
-		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
+		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 19: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -955,19 +956,20 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		home = login.login(patientData.getUsername(), patientData.getPassword());
 
 		log("step 19: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = home.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = home.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 20: Find message in Inbox");
 		String uniquePracticeResponse = vovPrescribe.getCreatedTs();
-		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
+		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
 		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
 				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
-
+		
+		
 		log("step 22: Reply back to practice");
 		inboxPage = message.replyToMessage(null);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
@@ -1000,6 +1002,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeMessagePage theMessage = messageSearch.retrieveMessage(uniquePracticeResponse);
 		assertNotNull(theMessage, "The Patients reply to the Virtual Office Visit message was not received by the practice.");
 		assertTrue(theMessage.isPageLoaded(), PracticeMessagePage.PAGE_NAME + " failed to load");
+		
 
 	}
 
@@ -1284,17 +1287,18 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			pMyPatientPage = loginPage.login(patientData.getUsername(), patientData.getPassword());
 
 			log("step 15: Go to Inbox");
-			ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
+			MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 			assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-			PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+			PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 			log("step 16: Find message in Inbox");
-			ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(practiceResponse);
+			MessagePage message = inboxPage.openMessageInInbox(practiceResponse);
 
 			log("step 17: Validate message loads and is the right message");
 			String actualSubject = message.getPracticeReplyMessageTitle();
 			assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
 					+ "but actual subject was [" + actualSubject + "]");
+			
 		}
 	}
 
@@ -1400,13 +1404,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 
 		log("step 12: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
-		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())+PortalConstants.RxRenewalSubject;
 
 		log("step 13: Find message in Inbox And Validate Message Subject");
-		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
+		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 14: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -1479,11 +1483,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
 		log("step 9: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
-		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
+		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 10: Find message in Inbox");
-		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(uniquePracticeResponse);
+		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 11: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -1589,9 +1593,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * @AreaImpacted :
 	 * @throws Exception
+	 * 
+	 * This test is obsolete now because of new messaging center where isn't refresh button
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMyMessagesRefreshButton() throws Exception {
 
 		log("Test Case: testAppointmentRequest");

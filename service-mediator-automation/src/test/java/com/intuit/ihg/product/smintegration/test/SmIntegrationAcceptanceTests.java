@@ -16,8 +16,8 @@ import com.intuit.ihg.product.object.maps.phr.page.PhrLoginPage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
 import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentReqtStep2Page;
 import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentReqtStep3Page;
 import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentRequestFirstPage;
@@ -302,11 +302,11 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			MyPatientPage home = login.login(userName, password);
 			
 			log("step 19: Go to Inbox");
-			ConsolidatedInboxPage inboxPage = home.clickViewAllMessages();
+			MessageCenterInboxPage inboxPage = home.clickViewAllMessagesInMessageCenter();
 			Thread.sleep(3000);
 			
 			log("step 20: Find message in Inbox");
-			ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(emailSubject_Db_Response);
+			MessagePage message = inboxPage.openMessageInInbox(emailSubject_Db_Response);
 	
 			
 			log("step 21: Validate message loads and is the right message");
@@ -1138,11 +1138,11 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getPassword());
 
 		log("step 19: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = home.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = home.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 20: Find message in Inbox");
-		ConsolidatedInboxMessage message = inboxPage
+		MessagePage message = inboxPage
 				.openMessageInInbox(emailSubject_Db_Response);
 
 		log("step 21: Validate message loads and is the right message");

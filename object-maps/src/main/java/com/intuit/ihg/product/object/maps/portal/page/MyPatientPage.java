@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
@@ -213,6 +214,13 @@ public class MyPatientPage  extends BasePageObject{
 		PortalUtil.setPortalFrame(driver);
 		btnViewallmessages.click();
 		return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
+	}
+	
+	public MessageCenterInboxPage clickViewAllMessagesInMessageCenter() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		btnViewallmessages.click();
+		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
 	}
 
 	public VirtualOfficeVisitProviderPage clickVirtualOfficeVisitLink() {

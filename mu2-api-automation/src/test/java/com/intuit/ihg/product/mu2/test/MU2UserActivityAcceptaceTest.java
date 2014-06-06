@@ -34,7 +34,7 @@ public class MU2UserActivityAcceptaceTest  extends BaseTestNGWebDriver {
 
 	
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUserActivityLog() throws Exception {
 		log("Test Case: testUserActivityLog");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
