@@ -83,8 +83,14 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		String Email=testData.getEmail();
 		pMessageCenterInboxPage.generateTransmitEvent(Email);
 		
+		log("step 8: Close the CCD");
+		pMessageCenterInboxPage.verifyCCDViewerAndClose();
+		
+		log("step 9: Logout of Patient Portal");
+		pMyPatientPage.logout(driver);
+		
 		//Wait according to environment
-		log("step 8: Waiting for Events sync in DWH");
+		log("step 10: Waiting for Events sync in DWH");
 		if((IHGUtil.getEnvironmentType().toString().equals("DEV3")) || IHGUtil.getEnvironmentType().toString().equals("PROD")){
 			Thread.sleep(900000);
 		}
@@ -93,7 +99,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		}		
 						
 		// Setup oauth Client
-		log("step 9: Setup Oauth client"); 
+		log("step 11: Setup Oauth client"); 
 		RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
 		
 		
@@ -103,28 +109,28 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		String restPullUrl=new StringBuilder(testData.getPullAPIURL()).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
 		log("Updated PULL API URL"+restPullUrl);
 		
-		log("Step 10: Send Pull API HTTP GET Request");
+		log("Step 12: Send Pull API HTTP GET Request");
 		RestUtils.setupHttpGetRequest(restPullUrl, testData.getResponsePath());
 		
 		String intuitPatientID=testData.getIntuitPatientID();
 		log("practicePatientID:"+intuitPatientID);
 
 		// verify "View" event in response XML and return Action Timestamp
-		log("Step 11: Assert for 'View' event present in Pull API response xml");	
+		log("Step 13: Assert for 'View' event present in Pull API response xml");	
 		String ActionTimestamp1= UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.RESOURCE_TYPE,MU2Constants.VIEW_ACTION, timestamp,intuitPatientID);
 		Assert.assertNotNull(ActionTimestamp1, "'View' Event is not found in Response XML");
 		viewEventTime=UtilityFunctions.generateDate(ActionTimestamp1);
 		log("View event portal Time"+viewEventTime);
 		
 		// verify "Download" event in response XML and return Action Timestamp
-		log("Step 12: Assert for 'Download' event present in Pull API response xml");
+		log("Step 14: Assert for 'Download' event present in Pull API response xml");
 		String ActionTimestamp2=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.RESOURCE_TYPE,MU2Constants.DOWNLOAD_ACTION,timestamp,intuitPatientID);
 		Assert.assertNotNull(ActionTimestamp2, "'Download' Event is not found in Response XML");
 		downloadEventTime=UtilityFunctions.generateDate(ActionTimestamp2);
 		log("Download event portal Time"+downloadEventTime);
 		
 		// verify "Transmit" event in response XML and return Action Timestamp
-		log("Step 13: Assert for 'Transmit' event present in Pull API response xml");
+		log("Step 15: Assert for 'Transmit' event present in Pull API response xml");
 		String ActionTimestamp3=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID);
 		Assert.assertNotNull(ActionTimestamp3, "'Transmit' Event is not found in Response XML");
 		transmitEventTime=UtilityFunctions.generateDate(ActionTimestamp3);
@@ -132,14 +138,13 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		
 		
 		//again Login to patient portal and Verify  event in Account activity
-		log("step 14:LogIn");
+		log("step 16:LogIn");
 		PortalLoginPage ploginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage myPatientPage = ploginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
 
-		log("step 15:Click on myaccountLink on MyPatientPage");
+		log("step 17:Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage = myPatientPage.clickMyAccountLink();
 
-		log("step 16: Click on Account Activity link");
 		ViewAccountActivityPage viewAccountActivity = pMyAccountPage.addAccountActivityLink();
 		viewAccountActivity.clickOnViewAccountActivity();
 		driver.switchTo().defaultContent();
