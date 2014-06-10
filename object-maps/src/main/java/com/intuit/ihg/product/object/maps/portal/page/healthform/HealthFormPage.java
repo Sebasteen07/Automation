@@ -8,12 +8,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class HealthFormPage extends BasePageObject {
@@ -26,8 +30,11 @@ public class HealthFormPage extends BasePageObject {
 		@FindBy(name="footer:submit")
 		private WebElement btnSubmit;
 		
-		@FindBy(linkText="Ivan Insurance Health Form ( Testing)")
+		@FindBy(xpath="//li[a[@title='Form output test']]/table/tbody/tr/td/a")
 		private WebElement lnkclickForPdfDownload;
+		
+		@FindBy(linkText="Form output test")
+		private WebElement pdfForm;
 		
 		@FindBy(xpath="//div[@class='heading1']")
 		public WebElement InsuranceHelthform;
@@ -191,5 +198,36 @@ public class HealthFormPage extends BasePageObject {
 
 	public String getPDFDownloadLink() {
 		return lnkclickForPdfDownload.getAttribute("href");
+	}
+	
+	
+	/**
+	 * @brief Looks for a link to download PDF
+	 * @return true if the link to pdf is found otherwise false
+	 */
+	public boolean isPDFLinkPresent() {
+		boolean result;
+		
+		try {
+			result = lnkclickForPdfDownload.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return result;
+	}
+	
+	public FormWelcomePage openPdfForm() {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		
+		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
+		wait.until(ExpectedConditions.visibilityOf(pdfForm));
+		/*for (int seconds = 0; seconds < 30; seconds++) {
+			if ( driver.findElement(By.xpath("//a[contains(text(), 'Form output test')]")) != null ) {
+				driver.findElement(By.xpath("//a[contains(text(), 'Form output test')]")).click();
+				break;
+			}
+		}*/
+		pdfForm.click();
+		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 }

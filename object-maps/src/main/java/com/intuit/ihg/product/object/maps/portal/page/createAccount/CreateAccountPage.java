@@ -60,6 +60,9 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "tou")
 	private WebElement checkIntuitTerms;
+	
+	@FindBy(name = "addOption")
+	private WebElement prefferedProvider;
 
 	// ===========Full page=======================
 
@@ -217,12 +220,9 @@ public class CreateAccountPage extends BasePageObject {
 		txtUserID.sendKeys(email);
 		txtPassword.sendKeys(password);
 		txtConfirmpassword.sendKeys(password);
-		/*
-		 * Select secretQuestion=new Select(dropDownSecretQuestion);
-		 * secretQuestion.selectByVisibleText(Question);
-		 */
-		chooseProvider(Question);
+		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
+		chooseProvider();
 		chkAgreePatientPrivacyInfo.click();
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
@@ -230,7 +230,11 @@ public class CreateAccountPage extends BasePageObject {
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 
-	public void chooseProvider(String pProvider) {
+	/**
+	 * @brief Chooses secret question. This method used to have a different name (choose provider) which did not make sense
+	 * @author Adam + someone mysterious
+	 */
+	public void chooseSecretQuestion(String pProvider) {
 		PortalUtil.setPortalFrame(driver);
 		List<WebElement> list = driver.findElements(By.xpath("//select[@name='editLoginInfo:border:editForm:inputs:6:input:input']/option"));
 		for (WebElement li : list) {
@@ -242,9 +246,20 @@ public class CreateAccountPage extends BasePageObject {
 			}
 			count++;
 		}
-
 	}
 
+	/**
+	 * @brief If the option to select a preffered provider is displayed then this method does so
+	 * @author Adam
+	 */
+	public void chooseProvider() {
+		// check if there is preffered provider option
+		if (driver.findElements(By.name("addOption")).size() > 0) {
+			Select provider = new Select(prefferedProvider); // and if so, select the first one
+			provider.selectByIndex(1);
+		}
+	}
+	
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
 					String sSSN, String sEmail) {
 		

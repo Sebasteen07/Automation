@@ -1,7 +1,10 @@
 package com.intuit.ihg.product.sitegen.test;
 
 
+import javax.ws.rs.core.MediaType;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
@@ -77,6 +80,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.WebDriverFactory;
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -89,6 +93,7 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.rest.RestUtils;
 
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
@@ -1074,7 +1079,7 @@ public void testDiscreteFormEndToEnd() throws Exception
 	log("USER NAME: "+testcasesData.getAutomationUser());
 	log("Password: "+testcasesData.getAutomationUserPassword());
 
-	log("Step 2 :- Opening sitegen home page");
+	log("Step 2  :- Opening sitegen home page");
 	SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
 	SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
 
@@ -1262,7 +1267,6 @@ public void testDiscreteFormEndToEnd() throws Exception
  * Tests if filling out a form generates a PDF, if link for downloading
  * the PDF appears in Patient Portal and if the link is working.
  * 
- * Deletes all the forms in forms config and makes a new one for the test
  * Creates new patient
  */
 
@@ -1272,73 +1276,27 @@ public void testDiscreteFormPDF() throws Exception {
 	log("testDiscreteFormPDF");
 	log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
 	log("Browser on which Test is running :"+TestConfig.getBrowserType());
-
-	Sitegen sitegen = new Sitegen();
-	SitegenTestData testCaseData = new SitegenTestData(sitegen);
-
-	log("Step 1:- Getting data from excel.");
-	log("URL :" + testCaseData.getSiteGenUrl());
-	log("USERNAME :" + testCaseData.getFormUser());
-	log("PASSWORD :" + testCaseData.getFormPassword());
-	
-	log("Step 2 :- Opening sitegen home page");
-	SiteGenLoginPage sloginPage = new SiteGenLoginPage (driver, testCaseData.getSiteGenUrl());
-	SiteGenHomePage sHomePage = sloginPage.login(testCaseData.getFormUser(), testCaseData.getFormPassword());
-
-	log("step 3: navigate to SiteGen PracticeHomePage");
-	SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-	assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-	
-	String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
-			
-	log("step 4: Click on Patient Forms");
-	DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-	
-	assertTrue(pManageDiscreteForms.isPageLoaded());
-	
-	String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
-	log("@@discrete form name@@" + discreteFormName);
-	
-	WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
-	
-	log("Step 5: Go to Current symptoms page");
-	CurrentSymptomsPage pCurrentSymptomsPage = pWelcomeScreenPage.clickLnkCurrentSymptoms();
-	
-	log("Step 6: Select options to appear in the test");
-	pCurrentSymptomsPage.selectBasicSymptoms();
-	
-	log("Step 7: Save the form");
-	pCurrentSymptomsPage.clickSave();
-	
-	log("step 8 : Publish the saved Discrete Form");
-	pManageDiscreteForms.publishTheSavedForm(discreteFormName);
-	
-	log("step 9 : Close the window and logout from SiteGenerator");
-	// Switching back to original window using previously saved handle descriptor
-	driver.close();
-	driver.switchTo().window(parentHandle);
-	pSiteGenPracticeHomePage.clicklogout();
-	
-	log("Part 2: Patient Portal");
 	
 	Portal portal = new Portal();
 	TestcasesData portalTestcasesData = new TestcasesData(portal);
-	log("URL: " + portalTestcasesData.getFormsUrl());
+	log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
 
 	log("step 1: Click on Sign Up Fill detials in Create Account Page");
 	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 	log("email:-" + email);
 	
 	CreatePatientTest createPatient = new CreatePatientTest();
-	createPatient.setUrl(portalTestcasesData.getFormsUrl());
+	createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
 	MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
 
 	log("step 2: Click On Start Registration Button");
-	FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
+	HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+	FormWelcomePage pFormWelcomePage = formsPage.openPdfForm();
 	
 	log("Step 3: Click through the form flow to Current Symptoms");
-	FormOtherProvidersPage pFormOtherProvidersPage = pFormWelcomePage.clickContinueButtonOtherDocs();
-	FormCurrentSymptomsPage currentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
+	FormBasicInfoPage basicInfoPage = pFormWelcomePage.clickContinueButton();
+	basicInfoPage.clickSaveAndContinueButton();
+	FormCurrentSymptomsPage currentSymptomsPage = PageFactory.initElements(driver, FormCurrentSymptomsPage.class);//pFormOtherProvidersPage.setNoProvidersOnPage();
 	
 	log("Step 4: Select symptoms for the patient");
 	currentSymptomsPage.setBasicSymptoms();
@@ -1347,41 +1305,17 @@ public void testDiscreteFormPDF() throws Exception {
 	FormMedicationsPage pFormMedicationsPage = currentSymptomsPage.clickSaveAndContinueButton();
 	
 	log("step 6: Set Medication Form Fields");
-	FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
+	pFormMedicationsPage.setMedicationFormFields();
 
-	log("step 7: Set Allergies Form Fields");
-	FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
-
-	log("step 8: Set Vaccine Form Fields");
-	FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
-
-	log("step 9: Set Surgeries Form Fields");
-	FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
-
-	log("step 10: Set Previous Exams Form Fields");
-	FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
-
-	log("step 11: Set IllnessCondition Form Fields");
-	FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
-
-	log("step 12: Set Family History Form Fields");
-	FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
-
-	log("step 13: Set Social History Form Fields");
+	log("step 7: Set Social History Form Fields and submit the form");
+	FormSocialHistoryPage pFormSocialHistoryPage = PageFactory.initElements(driver, FormSocialHistoryPage.class);
 	pFormSocialHistoryPage.setSocialHistoryFormFields();
-
-	log("step 14: Verify Registration Confirmation Text");
-	pMyPatientPage.verifyRegistrationConfirmationText(); 
 	
-	log("Step 15: Click on 'Fill Out' link under 'Custom Form' section");
-	HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-	
-	log("Step 16: Test if PDF is downloadable");
+	log("Step 8: Test if PDF is downloadable");
 	PortalUtil.setPortalFrame(driver);
 	URLStatusChecker status = new URLStatusChecker(driver);
+	assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
 	assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
-	
-	
 }
 
 	/**

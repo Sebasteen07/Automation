@@ -1,5 +1,8 @@
 package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -51,6 +54,8 @@ public class FormSocialHistoryPage extends BasePageObject
 	 */
 	public void submitForm() throws Exception
 	{
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		
 		//Thread.sleep(10000);
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
@@ -60,8 +65,11 @@ public class FormSocialHistoryPage extends BasePageObject
 
 		submitForm.click();
 		
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until( ExpectedConditions.not( ExpectedConditions.elementToBeClickable(submitForm) ) );
+		try {
+			wait.until( ExpectedConditions.not( ExpectedConditions.visibilityOf(iframe) ) );
+		} catch (NoSuchElementException e) {
+			log("Form element not found, ready to continue");
+		}
 	}
 
 	/**
