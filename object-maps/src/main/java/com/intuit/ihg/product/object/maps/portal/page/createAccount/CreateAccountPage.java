@@ -235,6 +235,7 @@ public class CreateAccountPage extends BasePageObject {
 
 	/**
 	 * @brief Is it just me or does this method do something else then choosing a provider?
+	 * PS: I added choosing the provider to the end of the method, so that the name of the method makes at least some sense - Adam
 	 */
 	public void chooseProvider(String pProvider) {
 		PortalUtil.setPortalFrame(driver);
@@ -248,7 +249,8 @@ public class CreateAccountPage extends BasePageObject {
 			}
 			count++;
 		}
-		if (prefferedProvider.isDisplayed()) {
+		// check if there is preffered provider option
+		if (driver.findElements(By.name("addOption")).size() > 0) {
 			Select provider = new Select(prefferedProvider);
 			provider.selectByIndex(1);
 		}

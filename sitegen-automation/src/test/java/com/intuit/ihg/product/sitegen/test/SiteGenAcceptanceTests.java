@@ -1273,25 +1273,20 @@ public void testDiscreteFormEndToEnd() throws Exception
 @Test(enabled = true, groups = {"AcceptanceTests"})
 public void testDiscreteFormPDF() throws Exception {
 	
-	String form = new String();
-
-	form = RestUtils.get("http://dev3aapp13.qhg.local:8080/eh/v1/practice/0407cf53-b37e-4cf7-9718-4b79259e47a0/ccdExchangeBatch?since=1401840000,0&max=10", String.class, MediaType.APPLICATION_XML);
-	
-	System.out.print(form);
-	/*log("testDiscreteFormPDF");
+	log("testDiscreteFormPDF");
 	log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
 	log("Browser on which Test is running :"+TestConfig.getBrowserType());
 	
 	Portal portal = new Portal();
 	TestcasesData portalTestcasesData = new TestcasesData(portal);
-	log("URL: https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=10851&muu=3007");
+	log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
 
 	log("step 1: Click on Sign Up Fill detials in Create Account Page");
 	String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 	log("email:-" + email);
 	
 	CreatePatientTest createPatient = new CreatePatientTest();
-	createPatient.setUrl("https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=10851&muu=3007");
+	createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
 	MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
 
 	log("step 2: Click On Start Registration Button");
@@ -1320,7 +1315,7 @@ public void testDiscreteFormPDF() throws Exception {
 	PortalUtil.setPortalFrame(driver);
 	URLStatusChecker status = new URLStatusChecker(driver);
 	assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
-	assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);*/
+	assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
 }
 
 	/**

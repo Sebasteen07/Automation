@@ -49,7 +49,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	@FindBy(id="save_config_form") 
 	private WebElement btnSaveForms;
 	
-
+	private int waitingPeriod = 7; // in seconds
 
 	//Constructor
 	public DiscreteFormsPage(WebDriver driver) {
@@ -63,7 +63,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	 */
 	public void deleteAllUnPublishedForms() throws Exception {
 		List<WebElement> deleteButtons;
-		WebDriverWait wait = new WebDriverWait(driver, 4); // object that would make the webdriver wait until deleted item disappears
+		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
@@ -84,7 +84,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void unpublishAllForms() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 4); // object that would make the webdriver wait until deleted item disappears
+		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	

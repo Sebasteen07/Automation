@@ -54,7 +54,7 @@ public class FormSocialHistoryPage extends BasePageObject
 	 */
 	public void submitForm() throws Exception
 	{
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
 		
 		//Thread.sleep(10000);
 		PortalUtil.PrintMethodName();
@@ -68,7 +68,7 @@ public class FormSocialHistoryPage extends BasePageObject
 		try {
 			wait.until( ExpectedConditions.not( ExpectedConditions.visibilityOf(iframe) ) );
 		} catch (NoSuchElementException e) {
-			log("Element not found, ready to continue");
+			log("Form element not found, ready to continue");
 		}
 	}
 

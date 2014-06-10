@@ -102,13 +102,15 @@ public class SocialHistoryPage extends BasePageObject{
 	
 	/**
 	 * Unselects the checkbox for hiding the page
-	 * 
+	 * Adds a tea-drinking question so that the page does not hide again
 	 */
 	
 	public void showThisPage()
 	{
-		if (hideSocialhistorySectionCheck.isSelected() == true)
+		if (hideSocialhistorySectionCheck.isSelected() == true) {
 			hideSocialhistorySectionCheck.click();
+			teacoffeeHealthhabits.click();
+		}
 			
 	}
 	
