@@ -373,9 +373,18 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
-		BaseTestSoftAssert.verifyTrue(nodes.getLength() == 2, "There should be 2 State elements in processing status response");
-		
-		return (nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED));
+		if(nodes.getLength() < 2)
+		{
+			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"There should be 1 State element in processing status response");
+			
+		}
+		else
+		{
+			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"There should be 2 State elements in processing status response");
+		}
+		return true;
 	}
 
 	/**
@@ -581,7 +590,7 @@ public class RestUtils {
 		
 		//update sent time,ScheduledDateTime
 		Node nSent=element.getElementsByTagName(IntegrationConstants.SENT_DATE).item(0);
-		nSent.setTextContent(SentDate(createdDateTime));
+		nSent.setTextContent(SentDate());
 		Node nScheduledDate=element.getElementsByTagName(IntegrationConstants.SCHEDULED_DATE).item(0);
 		nScheduledDate.setTextContent(ScheduledDate(createdDateTime));
 		
@@ -591,7 +600,7 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param createdDateTime
-	 * @return
+	 * @return scheduleDate
 	 * @throws ParseException 
 	 */
 	private static String ScheduledDate(String createdDateTime) throws ParseException {
@@ -607,18 +616,16 @@ public class RestUtils {
 
 	/**
 	 * 
-	 * @param createdDateTime
-	 * @return
+	 * @param 
+	 * @return sentDate
 	 * @throws ParseException
 	 */
-	private static String SentDate(String createdDateTime) throws ParseException {
+	private static String SentDate() throws ParseException {
 		String sentDate=null;
-		SimpleDateFormat formatter, FORMATTER;
-		formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-		Date date = formatter.parse(createdDateTime);
+		SimpleDateFormat FORMATTER;
+		long date=System.currentTimeMillis();
 		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		long hour = 3600 * 2000;
-		sentDate=FORMATTER.format(date.getTime() + hour);
+		sentDate=FORMATTER.format(date);
 		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
 		return sentDate;
 	}
