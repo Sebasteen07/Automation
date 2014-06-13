@@ -806,25 +806,39 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			String ccd = RestUtils.prepareCCD(testData.getCCDPath());
+				
+			log("step 2: Do Message Post Request");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
+
+			log("step 3: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(10000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
 			
-			RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());		
-			
-			log("step 3:LogIn to Patient Portal ");
+			log("step 4:LogIn to Patient Portal ");
 			PortalLoginPage portalloginpage = new PortalLoginPage(driver,
 					testData.getURL());
 			MyPatientPage pMyPatientPage = portalloginpage.login(
 					testData.getUserName(),
 					testData.getPassword());
 			
-			log("step 4: Go to Inbox");
+			log("step 5: Go to Inbox");
 			MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 			assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-			log("step 5: Find message in Inbox");
+			log("step 6: Find message in Inbox");
 			MessagePage pMessage = inboxPage
 			.clickFirstMessageRow();
 
-			log("step 6: Validate message subject and send date");
+			log("step 7: Validate message subject and send date");
 			Thread.sleep(1000);
 			assertEquals(pMessage.getPracticeReplyMessageTitle(),
 					IntegrationConstants.CCD_MESSAGE_SUBJECT,
