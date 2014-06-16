@@ -90,8 +90,7 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-//import com.intuit.ihg.product.integrationplatform.utils.RestUtils;;
-
+import com.intuit.ihg.rest.RestUtils;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -117,7 +116,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
 
 		log("step 1: Get Data from Excel ##########");
-
+		
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
@@ -1315,6 +1314,15 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
 	}
 	
+	@Test(enabled = true)
+	public void testFormCCD() throws Exception {
+		log("Calling a REST");
+//		RestUtils.get("http://dev3aapp13.qhg.local:8080/eh/v1/practice/0407cf53-b37e-4cf7-9718-4b79259e47a0/ccdExchangeBatch?since=1401840000,0&max=100",
+//				clazz, responseType, headers);
+		String str = new String(RestUtils.get("http://httpbin.org/ip", String.class, "xml"));
+		System.out.println(str);
+	}
+
 	/**
 	 * Test for Patient forms - custom forms
 	 * @throws Exception
