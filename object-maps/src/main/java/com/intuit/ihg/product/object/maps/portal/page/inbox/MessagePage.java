@@ -18,7 +18,7 @@ public class MessagePage extends BasePageObject {
 	@FindBy(xpath = ".//div[@class='messageArea']/div[@class='messageBody'][1]/div[@class='commMessageHeader']/div[@class='subject']")
 	private WebElement practiceResponseSubject;
 
-	@FindBy(name = "buttons:2:button")
+	@FindBy(name = "buttons:4:button")
 	private WebElement btnReply;
 
 	@FindBy(name = "body")
