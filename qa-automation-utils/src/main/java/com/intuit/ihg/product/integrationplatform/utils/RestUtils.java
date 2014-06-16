@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -622,9 +623,9 @@ public class RestUtils {
 	 */
 	private static String SentDate() throws ParseException {
 		String sentDate=null;
-		SimpleDateFormat FORMATTER;
-		long date=System.currentTimeMillis();
-		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		SimpleDateFormat FORMATTER=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		FORMATTER.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
+		long date=new Date().getTime();
 		sentDate=FORMATTER.format(date);
 		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
 		return sentDate;
