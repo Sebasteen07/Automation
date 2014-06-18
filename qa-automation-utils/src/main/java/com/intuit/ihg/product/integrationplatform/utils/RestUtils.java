@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.TimeZone;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -591,7 +589,7 @@ public class RestUtils {
 		
 		//update sent time,ScheduledDateTime
 		Node nSent=element.getElementsByTagName(IntegrationConstants.SENT_DATE).item(0);
-		nSent.setTextContent(SentDate());
+		nSent.setTextContent(SentDate(createdDateTime));
 		Node nScheduledDate=element.getElementsByTagName(IntegrationConstants.SCHEDULED_DATE).item(0);
 		nScheduledDate.setTextContent(ScheduledDate(createdDateTime));
 		
@@ -617,16 +615,17 @@ public class RestUtils {
 
 	/**
 	 * 
-	 * @param 
+	 * @param createdDateTime
 	 * @return sentDate
 	 * @throws ParseException
 	 */
-	private static String SentDate() throws ParseException {
+	private static String SentDate(String createdDateTime) throws ParseException {
 		String sentDate=null;
-		SimpleDateFormat FORMATTER=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		FORMATTER.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
-		long date=new Date().getTime();
-		sentDate=FORMATTER.format(date);
+		SimpleDateFormat formatter,FORMATTER;
+		formatter=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		Date date = formatter.parse(createdDateTime);
+		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		sentDate=FORMATTER.format(date.getTime() + (5 *60000));
 		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
 		return sentDate;
 	}
