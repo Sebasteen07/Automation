@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,7 +62,9 @@ public class RestUtils {
         HttpGet httpGetReq = new HttpGet(strUrl);
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
         .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        httpGetReq.addHeader("ExternalSystemId", "79");
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+        //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
         String sResp = EntityUtils.toString(entity);
         
@@ -320,6 +321,7 @@ public class RestUtils {
 						+ resp.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n"
 						+ sResp);
+		Log4jUtil.log("Response Code" +resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 		
         Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
@@ -370,9 +372,18 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
-		BaseTestSoftAssert.verifyTrue(nodes.getLength() == 2, "There should be 2 State elements in processing status response");
-		
-		return (nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED));
+		if(nodes.getLength() < 2)
+		{
+			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"There should be 1 State element in processing status response");
+			
+		}
+		else
+		{
+			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"There should be 2 State elements in processing status response");
+		}
+		return true;
 	}
 
 	/**
@@ -588,7 +599,7 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param createdDateTime
-	 * @return
+	 * @return scheduleDate
 	 * @throws ParseException 
 	 */
 	private static String ScheduledDate(String createdDateTime) throws ParseException {
@@ -605,17 +616,16 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param createdDateTime
-	 * @return
+	 * @return sentDate
 	 * @throws ParseException
 	 */
 	private static String SentDate(String createdDateTime) throws ParseException {
 		String sentDate=null;
-		SimpleDateFormat formatter, FORMATTER;
-		formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		SimpleDateFormat formatter,FORMATTER;
+		formatter=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		Date date = formatter.parse(createdDateTime);
 		FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		long hour = 3600 * 2000;
-		sentDate=FORMATTER.format(date.getTime() + hour);
+		sentDate=FORMATTER.format(date.getTime() + (5 *60000));
 		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
 		return sentDate;
 	}

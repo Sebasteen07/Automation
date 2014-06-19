@@ -24,7 +24,7 @@ public class APIData {
 		// reading the entire file
 		excelReader = new ExcelSheetReader(url.getFile());
 		// filtering the entire file
-		apiobj = (APITestData)excelReader.getSingleExcelRow(getData, temp);
+		apiobj = (APITestData) excelReader.getSingleExcelRow(getData, temp);
 	}
 	
 	
@@ -191,7 +191,40 @@ public class APIData {
 		return apiobj.DB_PASSWORD;
 	}
 	
-
+	public String getCCDPath() {
+		// TODO Auto-generated method stub
+		return apiobj.CCD_PATH;
+	}
 	
+	public String getPortalURL() {
+		// TODO Auto-generated method stub
+		return apiobj.PORTAL_URL;
+	}
+	
+	public String getPortalUserName() {
+		// TODO Auto-generated method stub
+		return apiobj.PORTAL_USERNAME;
+	}
+	
+	public String getPortalPassword() {
+		// TODO Auto-generated method stub
+		return apiobj.PORTAL_PASSWORD;
+	}
+	
+	public String getIntuitPatientID() {
+		// TODO Auto-generated method stub
+		return apiobj.INTUIT_PATIENT_ID;
+	}
+	
+	public String getRestUrl() {
+		// TODO Auto-generated method stub
+		return apiobj.REST_URL;	
+	}	
+	
+	public String getEmail() {
+		  // TODO Auto-generated method stub
+		  return apiobj.TRANSMIT_EMAIL;
+	}
+		
 
 }
