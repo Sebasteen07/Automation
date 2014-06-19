@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
@@ -30,8 +29,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
@@ -214,13 +211,6 @@ public class MyPatientPage  extends BasePageObject{
 		btnViewallmessages.click();
 		return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
 	}
-	
-	public MessageCenterInboxPage clickViewAllMessagesInMessageCenter() {
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		btnViewallmessages.click();
-		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
-	}
 
 	public VirtualOfficeVisitProviderPage clickVirtualOfficeVisitLink() {
 		IHGUtil.PrintMethodName();
@@ -232,9 +222,6 @@ public class MyPatientPage  extends BasePageObject{
 	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 15); // we need to wait until the form window disappears
-		
-		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
 		lnkFillOutForms.click();
 		return PageFactory.initElements(driver, HealthFormPage.class);
 	}

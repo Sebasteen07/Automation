@@ -24,8 +24,8 @@ import com.intuit.ihg.product.object.maps.phr.page.portaltophr.IntuitAcceptPriva
 import com.intuit.ihg.product.object.maps.phr.page.profile.PhrProfilePage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.portaltophr.AcceptPhrTermsandConditions;
@@ -395,7 +395,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 		Phr phr = new Phr();
 		PhrTestcasesData phrtestcasesData = new PhrTestcasesData(phr);
-		
+
 		log("URL: " + phrtestcasesData.geturl());
 		log("USER NAME: " + phrtestcasesData.getccdUserName());
 		log("Password: " + phrtestcasesData.getccdUserPassword());
@@ -451,24 +451,27 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 				phrtestcasesData.getccdUserPassword());
 
 		log("step 13: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 14: Find message in Inbox");
-		MessagePage pNewInboxMessage = inboxPage.clickFirstMessageRow();
+		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
+		.clickFirstMessageRow();
 
 		log("step 15: Validate message subject and send date");
-		assertEquals(pNewInboxMessage.getPracticeReplyMessageTitle(),
+		Thread.sleep(1000);
+		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
 				"New Health Information Import",
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("step 16: Click on link ReviewHealthInformation");
-		pNewInboxMessage.clickBtnReviewHealthInformation();
+		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
 
 		log("step 17:Share the address with the Doctor and click Close Viewer");
-		pNewInboxMessage.closeViewer();
+		pConsolidatedInboxMessage.closeViewer();
+
 
 	}
 
@@ -502,11 +505,11 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("step 2: Get Data from Excel");		
-		
+		log("step 2: Get Data from Excel");
+
 		Phr phr=new Phr();
 		PhrTestcasesData phrtestcasesData=new PhrTestcasesData(phr);
-		
+
 		log("URL: "+phrtestcasesData.geturl());
 		log("USER NAME: "+phrtestcasesData.getccdUserName());
 		log("Password: "+phrtestcasesData.getccdUserPassword());
@@ -544,7 +547,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 11:Click Logout");
 		loginpage = pPhrDocumentsPage.clickLogout();
-		
+
 		log("step 12:LogIn to Patient Portal ");
 		Portal portal = new Portal();
 		TestcasesData portalTestData = new TestcasesData(portal);
@@ -555,25 +558,26 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 				phrtestcasesData.getccdUserPassword());
 
 		log("step 13: Go to Inbox");
-		MessageCenterInboxPage inboxPage  = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage  = pMyPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 14: Find message in Inbox");
-		MessagePage pInboxMessage = inboxPage.clickFirstMessageRow();
+		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
+		.clickFirstMessageRow();
 
 		log("step 15: Validate message subject and send date");
 		Thread.sleep(1000);
-		assertEquals(pInboxMessage.getPracticeReplyMessageTitle(),
+		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
 				"New Health Information Import",
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("step 15: Click on link ReviewHealthInformation");
-		pInboxMessage.clickBtnReviewHealthInformation();
+		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
 
 		log("step 10:Share the address with the Doctor and click Close Viewer");
-		pInboxMessage.closeViewer();
+		pConsolidatedInboxMessage.closeViewer();
 	}
 
 

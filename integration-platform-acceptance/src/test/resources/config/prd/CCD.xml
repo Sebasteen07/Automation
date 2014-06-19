@@ -9,7 +9,7 @@
   </CcdMessageHeaders>
   <PatientDemographics xmlns="">
     <PatientIdentifier>
-      <PracticePatientId>97751582014</PracticePatientId>
+      <PracticePatientId>ihgqa.prod.patient</PracticePatientId>
     </PatientIdentifier>
     <Name>
       <Prefix>Mr</Prefix>

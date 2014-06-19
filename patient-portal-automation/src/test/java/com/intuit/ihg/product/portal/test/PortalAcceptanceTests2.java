@@ -17,8 +17,8 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.insurance.InsurancePage;
@@ -147,11 +147,11 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
 		log("step 12: Go to Inbox");
-		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
-		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
+		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		log("step 13: Find message in Inbox");
-		MessagePage message = inboxPage.openMessageInInbox(PortalConstants.RxRenewalSubject);
+		ConsolidatedInboxMessage message = inboxPage.clickMessageLinkOpenMessageInInbox(PortalConstants.RxRenewalSubject);
 
 		log("step 14: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -256,18 +256,17 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		pMyPatientPage = loginPage.login(patientData.getUsername(), patientData.getPassword());
 
 		log("step 15: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		log("step 16: Find message in Inbox");
-		MessagePage message = inboxPage.openMessageInInbox(practiceResponse);
+		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(practiceResponse);
 
 		log("step 17: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
 		assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
-				+ "but actual subject was [" + actualSubject + "]");
-		
+						+ "but actual subject was [" + actualSubject + "]");
 
 	}
 	
@@ -387,13 +386,13 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		home = login.login(patientData.getUsername(), patientData.getPassword());
 
 		log("step 19: Go to Inbox");
-		MessageCenterInboxPage inboxPage = home.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage = home.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		log("step 20: Find message in Inbox");
 		String uniquePracticeResponse = vovPrescribe.getCreatedTs();
-		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
+		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
@@ -535,18 +534,18 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
 
 		log("step 17: Go to Inbox");
-		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
 		log("step 18: Find message in Inbox");
 		String uniquePracticeResponse = Long.toString(detailStep2.getCreatedTimeStamp());
-		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
+		ConsolidatedInboxMessage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 19: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
 		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+						+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
 	}
 	
 	/**

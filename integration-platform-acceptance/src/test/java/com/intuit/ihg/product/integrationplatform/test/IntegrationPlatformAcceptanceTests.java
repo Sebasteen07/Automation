@@ -5,9 +5,7 @@ import java.util.Random;
 
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
-
 import static org.testng.Assert.assertNotNull;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -20,8 +18,6 @@ import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.GE;
-import com.intuit.ihg.product.integrationplatform.utils.GETestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
@@ -35,8 +31,8 @@ import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
@@ -79,7 +75,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	 */
 
 	
-	////////@Test  (enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	//@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
 	 log("+++++++++++++ Test run+++++++++++");
@@ -98,7 +94,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/*
-	////////@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -169,7 +165,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	*/
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2EAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -249,32 +245,19 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 		// httpPostRequest method
 		log("step 12: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
-
-		log("step 13: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(10000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
 			
 		//Practice portal validation  
-		log("step 14: Login to Practice Portal");
+		log("step 13: Login to Practice Portal");
 
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
 
-		log("step 15: Click Appt Request tab");
+		log("step 14: Click Appt Request tab");
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 		
-		log("step 16: Search for appt requests");
+		log("step 15: Search for appt requests");
 		apptSearch.searchForApptRequests(2,null,null);
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
 		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
@@ -288,33 +271,33 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody), "Expected Secure Message Body containing [" +arSMBody
 				+ "but actual message body was [" + actualSMBody + "]");
 				
-		log("step 17: Logout of Practice Portal");
+		log("step 16: Logout of Practice Portal");
 		practiceHome.logOut();	
 		
 		//patient Portal validation 
-		log("step 18: Login to Patient Portal");
+		log("step 17: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
 
-		log("step 19: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pPatientPage.clickViewAllMessagesInMessageCenter();
+		log("step 18: Go to Inbox");
+		ConsolidatedInboxPage inboxPage = pPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		log("step 20: Find message in Inbox");
-		MessagePage msg = inboxPage.openMessageInInbox(arSMSubject);
+		log("step 19: Find message in Inbox");
+		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(arSMSubject);
 
-		log("step 21: Validate message loads and is the right message");
+		log("step 20: Validate message loads and is the right message");
 		String actualSubject = msg.getPracticeReplyMessageTitle();
 		assertTrue(msg.getPracticeReplyMessageTitle().contains(arSMSubject), "Expected subject containting ["
 						+ arSMSubject + "but actual subject was [" + actualSubject + "]");
 		
-		log("step 22: Logout of Patient Portal");
+		log("step 21: Logout of Patient Portal");
 		pPatientPage.logout(driver);
 			
 		
 	}
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestion() throws Exception {
 		
 		log("Test Case: AMDC Ask Question");
@@ -382,7 +365,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessage() throws Exception{
 		log("Test Case: AMDC Secure Message");
 		
@@ -435,12 +418,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("step 7: Go to Inbox");
-		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
+		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 8: Find message in Inbox");
 		String messageIdentifier = Long.toString(timestamp);
-		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+		ConsolidatedInboxMessage msg = inboxPage.openMessageInInbox(messageIdentifier);
 
 		log("step 9: Validate message loads and is the right message");
 		String actualSubject = msg.getPracticeReplyMessageTitle();
@@ -467,7 +450,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
 		PIDCTestData testData = loadDataFromExcel();
@@ -509,7 +492,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistration() throws Exception{
 		log("Test Case: PIDC Patient Registration");
 		PIDCTestData testData = loadDataFromExcel();
@@ -606,7 +589,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		return testData;
 	}
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCsendCCD() throws Exception {
 		
 		log("Test Case: send a CCD and check in patient Portal");
@@ -629,68 +612,55 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
 		
-		log("step 2: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
-
-		log("step 3: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(10000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
-		log("step 4:LogIn to Patient Portal ");
+		RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
+		
+		log("step 2:LogIn to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
 				testData.getURL());
 		MyPatientPage pMyPatientPage = portalloginpage.login(
 				testData.getUserName(),
 				testData.getPassword());
 		
-		log("step 5: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		log("step 3: Go to Inbox");
+		ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		log("step 6: Find message in Inbox");
-		MessagePage pMessage = inboxPage
+		log("step 4: Find message in Inbox");
+		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
 		.clickFirstMessageRow();
 
-		log("step 7: Validate message subject and send date");
+		log("step 5: Validate message subject and send date");
 		Thread.sleep(1000);
-		assertEquals(pMessage.getPracticeReplyMessageTitle(),
+		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
 				IntegrationConstants.CCD_MESSAGE_SUBJECT,
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
-		log("step 8 Click on link ReviewHealthInformation");
-		pMessage.clickBtnReviewHealthInformation();
+		log("step 6: Click on link ReviewHealthInformation");
+		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
 
 		
-		log("step 9: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
+		log("step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		pConsolidatedInboxMessage.verifyCCDViewerAndClose();
 		
 		driver.switchTo().defaultContent();
 		
-		log("step 10: Go to patient page");
-		pMyPatientPage = pMessage.clickMyPatientPage();
+		log("step 8: Go to patient page");
+		pMyPatientPage = pConsolidatedInboxMessage.clickMyPatientPage();
 		
-		log("step 11:Click PHR");
+		log("step 9:Click PHR");
 		pMyPatientPage.clickPHRWithoutInit(driver);
 		PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
 		
-		log("step 12:Go to PHR Inbox");
+		log("step 10:Go to PHR Inbox");
 		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-		//assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
+		assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		log("step 13: Click first message");
+		log("step 11: Click first message");
 		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
 
-		log("step 14: Validate message subject and send date");
+		log("step 12: Validate message subject and send date");
 		Thread.sleep(1000);
 		assertEquals(phrInboxMessage.getPhrMessageSubject(),
 				IntegrationConstants.CCD_MESSAGE_SUBJECT,
@@ -698,18 +668,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
-		log("step 15: Click on link ReviewHealthInformation");
+		log("step 13: Click on link ReviewHealthInformation");
 		phrInboxMessage.clickBtnReviewHealthInformationPhr();
 
 		
-		log("step 16:Verify if CCD Viewer is loaded and click Close Viewer");
+		log("step 14:Verify if CCD Viewer is loaded and click Close Viewer");
 		phrInboxMessage.verifyCCDViewerAndClosePhr();
 		
 		//driver.switchTo().defaultContent();
 		
 	}
 	
-	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetPrescription() throws Exception {
 		log("Test Case: Get Prescription Request");
 		
@@ -781,107 +751,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("step 11: Checking validity of the response xml");
 		RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), medicationName);	
-		
+
+
 	}
-		
-		@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-		public void testGEAdaptersendCCD() throws Exception {
-			
-			log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
-			GE EHDCData = new GE();
-			GETestData testData = new GETestData(EHDCData);
-			
-			log("UserName: " + testData.getUserName());
-			log("Password:" + testData.getPassword());
-			log("Rest Url: " + testData.getRestUrl());
-			log("CCD Path: " + testData.getCCDPath());
-			log("Response Path: " + testData.getResponsePath());
-			log("OAuthProperty: " + testData.getOAuthProperty());
-			log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-			log("OAuthAppToken: " + testData.getOAuthAppToken());
-			log("OAuthUsername: " + testData.getOAuthUsername());
-			log("OAuthPassword: " + testData.getOAuthPassword());
-			
-			log("step 1: Setup Oauth client"); 
-			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
-			
-			String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-				
-			log("step 2: Do Message Post Request");
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
-
-			log("step 3: Get processing status until it is completed");
-			boolean completed = false;
-			for (int i = 0; i < 3; i++) {
-				// wait 10 seconds so the message can be processed
-				Thread.sleep(10000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-					completed = true;
-					break;
-				}
-			}
-			verifyTrue(completed, "Message processing was not completed in time");
-			
-			log("step 4:LogIn to Patient Portal ");
-			PortalLoginPage portalloginpage = new PortalLoginPage(driver,
-					testData.getURL());
-			MyPatientPage pMyPatientPage = portalloginpage.login(
-					testData.getUserName(),
-					testData.getPassword());
-			
-			log("step 5: Go to Inbox");
-			MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-			assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-			log("step 6: Find message in Inbox");
-			MessagePage pMessage = inboxPage
-			.clickFirstMessageRow();
-
-			log("step 7: Validate message subject and send date");
-			Thread.sleep(1000);
-			assertEquals(pMessage.getPracticeReplyMessageTitle(),
-					IntegrationConstants.CCD_MESSAGE_SUBJECT,
-			"### Assertion failed for Message subject");
-			log("######  Message Date :: " + IHGUtil.getEstTiming());
-			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
-			log("step 8: Click on link ReviewHealthInformation");
-			pMessage.clickBtnReviewHealthInformation();
-
-			
-			log("step 9: Verify if CCD Viewer is loaded and click Close Viewer");
-			pMessage.verifyCCDViewerAndClose();
-			
-			driver.switchTo().defaultContent();
-			
-			log("step 10: Go to patient page");
-			pMyPatientPage = pMessage.clickMyPatientPage();
-			
-			log("step 11:Click PHR");
-			pMyPatientPage.clickPHRWithoutInit(driver);
-			PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-			
-			log("step 12:Go to PHR Inbox");
-			PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-			assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-			log("step 13: Click first message");
-			PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
-
-			log("step 14: Validate message subject and send date");
-			Thread.sleep(1000);
-			assertEquals(phrInboxMessage.getPhrMessageSubject(),
-					IntegrationConstants.CCD_MESSAGE_SUBJECT,
-			"### Assertion failed for Message subject");
-			log("######  Message Date :: " + IHGUtil.getEstTiming());
-			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
-			log("step 15: Click on link ReviewHealthInformation");
-			phrInboxMessage.clickBtnReviewHealthInformationPhr();
-			
-			log("step 16:Verify if CCD Viewer is loaded and click Close Viewer");
-			phrInboxMessage.verifyCCDViewerAndClosePhr();
-			
-		}
 }

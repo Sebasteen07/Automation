@@ -148,8 +148,4 @@ public class TestcasesData {
 	public String getPreferredLocationBeta() {		
 		return portalobj.preferredLocationBeta;
 	}
-	
-	public String getFormsAltUrl() {
-		return portalobj.formsAltUrl;
-	}
 }

@@ -47,7 +47,7 @@ public class FormWelcomePage extends BasePageObject
 	 * @return Other Doctors page PageFactory initialization
 	 * @throws Exception
 	 */
-	public BasePageObject clickContinueButtonOtherDocs() throws Exception
+	public FormOtherProvidersPage clickContinueButtonOtherDocs() throws Exception
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);

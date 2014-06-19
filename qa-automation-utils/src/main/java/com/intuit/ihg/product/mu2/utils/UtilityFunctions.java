@@ -7,10 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -112,10 +108,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 	 * @param action
 	 * @return
 	 */
-	public static String FindEventInResonseXML(String xmlFileName,String event,String resourceType,String action,Long timeStamp,String practicePatientID) {
+	public static boolean FindEventInResonseXML(String xmlFileName,String event,String resourceType,String action) {
 		IHGUtil.PrintMethodName();
-
-		String ActionTimestamp = null;
+		boolean isEventPresent = false;
 		try {
 		
 		File stocks = new File(xmlFileName);
@@ -130,31 +125,16 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		Node node = nodes.item(i);
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 		Element element = (Element) node;
-		String readValue;
-		readValue=getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP,element);
-		Long recordedTimeStamp=Long.valueOf(readValue);
-		if(recordedTimeStamp >= timeStamp)
-		{
-			
-		if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)&&getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID))
-			{
-			
-			ActionTimestamp=getValue(MU2Constants.ACTION_TIMESTAMP,element);
-			
+		if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)){
+			isEventPresent= true;
 			break;
-			}
-		}
-		else
-		{
-			//Log4jUtil.log("Event is not found in the pull events response XML");
 		}
 		}
 		}
 		} catch (Exception ex) {
 		ex.printStackTrace();
 		}
-	return ActionTimestamp;
-	
+	return isEventPresent;
 	}
 
 		private static String getValue(String tag, Element element) {
@@ -275,25 +255,10 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		}
 		
 		
-		/**
-		 * Generate Portal event time according to event time in Response 
-		 * @param actualTimeStamp
-		 * @throws ParseException 
-		 * 
-		 */
 		
-		public static String generateDate(String actualTimeStamp) throws ParseException{
-			
-			final long HOUR = 3600*1000;// in milli-seconds.
-		   	DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		   	Date now = FORMATTER.parse(actualTimeStamp);
-		   	long hours=now.getTime() - 4 * HOUR;
-		   	long expecteDate = Long.parseLong(Long.toString(hours));
-		    Date date = new Date(expecteDate);   	
-		  	DateFormat formatDate = new SimpleDateFormat("MM/dd/yyyy");
-		    DateFormat formatTime = new SimpleDateFormat("HH:mm");		  	
-		  	String joinedDate=new StringBuilder(formatDate.format(date).toString()).append(" at ").append(formatTime.format(date).toString()).toString();
-			return joinedDate;
-		}
+	
+
+
 		
+	
 }

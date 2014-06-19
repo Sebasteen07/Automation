@@ -1,7 +1,6 @@
 package com.intuit.ihg.product.mu2.utils;
 
 public class APITestData {	
-	
 	public String PULLAPI_URL ="";
 	public String OAUTH_PROPERTY ="";
 	public String RESPONSEPATH ="";
@@ -29,14 +28,6 @@ public class APITestData {
 	public String DB_USER ="";
 	public String DB_PASSWORD ="";
 	
-	//MU2 pull events 
-	public String REST_URL ="";
-	public String CCD_PATH ="";
-	public String PORTAL_URL ="";
-	public String PORTAL_USERNAME ="";
-	public String PORTAL_PASSWORD ="";
-	public String INTUIT_PATIENT_ID ="";
-	public String TRANSMIT_EMAIL ="";	 
 	
 }
 	

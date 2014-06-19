@@ -4,15 +4,35 @@
     
 <!--This is a sample config file that can be used for testing. The OAuth library uses the DCPropertyManager so these config values should be included in the containing application-->
 
-    <entry key="oauth.keystore.file.path">./src/test/resources/config/dev3</entry>
-    <entry key="oauth.keystore.file.name">oauth2.keystore</entry>	    
-    <entry key="oauth.consumer.keysecret.url">https://dev3-int.dev.medfusion.net/v1/oauth2/oauthapplication/</entry>
-    <entry key="oauth.token.access.userpass.url">https://dev3-int.dev.medfusion.net/v1/oauth2/token</entry>
-        
-    <entry key="ihg.host.patient">http://dev3vip-rwsdk-core-svc.qhg.local/rwsdk</entry>
-    <entry key="ihg.host.amdc">http://dev3vip-am-core-svc.qhg.local/am</entry>
-    <entry key="ihg.host.events">http://dev3vip-eventhub-svc.qhg.local/events</entry>
-    <entry key="ihg.host.ccd">http://dev3vip-eh-core-svc.qhg.local/eh</entry>
-    <entry key="ihg.host.geccd">http://dev3aapp13.qhg.local:8080/geehr</entry>   
-        
+    <entry key="oauth.keystore.file.path">./src/test/resources/config/dev3</entry>	
+    <entry key="oauth.token.request.url">https://oauthws.e2e.qdc.ep.intuit.net/oauth/v1/get_request_token</entry>	
+
+    <entry key="resource.server.baseurl">http://demo.medfusion.net/v1/</entry>	
+	<!--entry key="resource.server.baseurl">http://dev3app11.qhg.local:8080/dealer/v1</entry-->	
+	<!--BEGIN: Client configuration-->
+    <entry key="oauth.keystore.file.lock">https://oauthws.e2e.qdc.ep.intuit.net/oauth/v1/get_request_token</entry>	
+    <entry key="oauth.consumer.keysecret.url">https://oauthws.e2e.qdc.ep.intuit.net/oauth/v1/create_consumer</entry>
+    <entry key="oauth.token.access.userpass.url">https://oauthws.e2e.qdc.ep.intuit.net/oauth/v1/get_access_token_by_intuit_credentials</entry>
+	
+	<!-- this is for PRD-->
+	<!--entry key="oauth.consumer.keysecret.url">https://oauth.intuit.com/oauth/v1/create_consumer</entry>
+	<entry key="oauth.token.access.userpass.url">https://oauth.intuit.com/oauth/v1/get_access_token_by_intuit_credentials</entry-->
+
+	<!--END: Client configuration-->
+
+	<!--BEGIN: Service Filter Configuration-->
+    <entry key="oauth.validation.url">https://oauthws.e2e.qdc.ep.intuit.net/iam/oauth_utils/v1/messages/validation/</entry>	
+	<!--If oauth.enabled is not specified, library defaults to true.  legal values are 'true' and 'false'-->
+  	<entry key="oauth.enabled">false</entry>
+	<!--END: Service Filter Configuration-->
+
+
+	<!--BEGIN: Client AND Service Filter Configuration-->
+    <entry key="resource.owner.baseurl">http://resource.owner.com</entry>	
+	<!--END: Client AND Service Filter Configuration-->
+
+    <!--entry key="logsvc.localpart">LoggingServiceBasic</entry>
+    <entry key="logsvc.namespaceuri">http://tempuri.org/</entry-->
+    <entry key="log.level">ERROR</entry> 
+    
 </properties>
