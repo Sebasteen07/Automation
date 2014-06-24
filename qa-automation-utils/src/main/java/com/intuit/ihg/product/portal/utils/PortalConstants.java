@@ -52,6 +52,9 @@ public class PortalConstants {
 	public static final String Refill_Number_Tag = "RefillNumber";
 	public static final String Prescription_Number_Tag = "PrescriptionNumber";
 	public static final String Additional_Information_Tag = "AdditionalInformation";
+	
+	//new added variables for post prescription API
+	public static final String RxRenewal_Subject_Tag = "Prescription Renewal Approved";
 
 	// MakePayment Fields
 	public final static String PatientAccountNumber = "137353065771";

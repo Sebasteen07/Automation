@@ -51,7 +51,7 @@ public class IntegrationConstants {
 	public static final String AR_SM_BODY = "New Reply to AR for";
 	
 	//Prescription Constant
-	public static final String MEDICATION_NAME = "MEDICATION";
+	public static final String MEDICATION = "Medication";
 	public static final String DOSAGE = "200gm";
 	public static final String QUANTITY = "2";
 	public final static String PATIENT_PAGE = "My Patient Page";
@@ -60,5 +60,17 @@ public class IntegrationConstants {
 	public static final CharSequence NO_OF_REFILLS = "12";
 	public static final CharSequence PRESCRIPTION_NO = "#12345";
 	public static final CharSequence ADDITIONAL_INFO = "New prescription request";
+	
+	//New added variables for Post Prescription
+	public static final String PRESCRIPTION = "Prescription";
+	public static final String PRESCRIPTION_ID = "id";
+	public static final String PRESCRIPTION_RENEWAL_REQUEST = "PrescriptionRenewalRequest";
+	public static final String REQUESTED_PROVIDER = "RequestedProvider";
+	public static final String REQUESTED_LOCATION = "RequestedLocation";
+	public static final String DOSAGE_TAG = "MedicationDosage";
+	public static final String QUANTITY_TAG = "Quantity";
+	public static final String REFILL_NUMBER_TAG = "RefillNumber";
+	public static final String PRESCRIPTION_NUMBER_TAG = "PrescriptionNumber";
+	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";	
 
 }

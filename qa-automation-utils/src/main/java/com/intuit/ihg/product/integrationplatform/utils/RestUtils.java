@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
@@ -663,4 +664,149 @@ public class RestUtils {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param parentNode
+	 * @param medication
+	 * @param rxSMSubject
+	 * @param prescriptionPath
+	 * @return updatedXML
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws TransformerException 
+	 * @throws ParseException 
+	 * @throws DOMException 
+	 */
+	public static String findValueOfMedicationNode(String xmlFileName,String parentNode, String medication, String rxSMSubject, String rxSMBody,
+			String prescriptionPath) throws ParserConfigurationException, SAXException, IOException, DOMException, ParseException, TransformerException {
+		IHGUtil.PrintMethodName();
+		String getPrescription_id= null;
+		String updatedXML=null;
+		File xmlResponeFile = new File(xmlFileName);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(xmlResponeFile);
+		doc.getDocumentElement().normalize();
+		ArrayList<String> medication_details = new ArrayList<String>();
+
+		NodeList pnode = doc.getElementsByTagName(parentNode);
+
+		for (int i = 0; i < pnode.getLength(); i++) {
+			Element element = (Element) pnode.item(i);	
+			String reaString=element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
+			if (reaString.equalsIgnoreCase(medication))
+				{		
+				Node node=element.getElementsByTagName("MedicationName").item(0).getParentNode();
+				medication_details.add(element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("MedicationDosage").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("Quantity").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("RefillNumber").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("PrescriptionNumber").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getFirstChild().getNodeValue().toString());
+				node=node.getParentNode();
+				element=(Element)element.getParentNode();
+				medication_details.add(element.getElementsByTagName("RequestedLocation").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("RequestedProvider").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
+				node=node.getParentNode();				   
+				if (node.hasAttributes()) {
+					Attr attr=(Attr) node.getAttributes().getNamedItem("id");
+					getPrescription_id=attr.getValue();
+				}
+				element=(Element)element.getParentNode();
+				String getCreatedDateTime=element.getElementsByTagName("CreatedDateTime").item(0).getFirstChild().getNodeValue();
+				String getUpdatedDateTime=element.getElementsByTagName("UpdatedDateTime").item(0).getFirstChild().getNodeValue();
+				updatedXML=postMedicationRequest(prescriptionPath,getPrescription_id, medication_details,getCreatedDateTime,getUpdatedDateTime,rxSMSubject,rxSMBody);
+				break;
+			}
+
+		}
+		return updatedXML;
+	}
+
+	/**
+	 * 
+	 * @param prescriptionPath
+	 * @param getApt_req_id
+	 * @param medication_details
+	 * @param getCreatedDateTime
+	 * @param getUpdatedDateTime
+	 * @param rxSMSubject
+	 * @return
+	 * @throws ParseException 
+	 * @throws DOMException 
+	 * @throws TransformerException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 */
+	private static String postMedicationRequest(String prescriptionPath,
+			String getPrescription_id, ArrayList<String> medication_details,
+			String getCreatedDateTime, String getUpdatedDateTime,
+			String rxSMSubject, String rxSMBody) throws DOMException, ParseException, TransformerException, ParserConfigurationException, SAXException, IOException {
+		
+		Document doc=buildDOMXML(prescriptionPath);
+		
+		Node node=doc.getElementsByTagName(IntegrationConstants.PRESCRIPTION).item(0);
+		Element element=(Element) node;
+		//update appointment id,createdDateTime,updatedDateTime,message_thread_id
+		element.setAttribute(IntegrationConstants.PRESCRIPTION_ID, getPrescription_id);
+		Node ncreatedDateTime=element.getElementsByTagName(IntegrationConstants.CREATED_TIME).item(0);
+		Node nupdatedDateTime=element.getElementsByTagName(IntegrationConstants.UPDATE_TIME).item(0);
+		ncreatedDateTime.setTextContent(getCreatedDateTime);
+		nupdatedDateTime.setTextContent(getUpdatedDateTime);
+				
+		//update From,To
+		node=doc.getElementsByTagName(IntegrationConstants.PRESCRIPTION_RENEWAL_REQUEST).item(0);
+		Node nFrom=element.getElementsByTagName(IntegrationConstants.FROM).item(0);
+		Node nTo=element.getElementsByTagName(IntegrationConstants.TO).item(0);
+		Node nRequestedProvider=element.getElementsByTagName(IntegrationConstants.REQUESTED_PROVIDER).item(0);
+		Node nRequestedLocation=element.getElementsByTagName(IntegrationConstants.REQUESTED_LOCATION).item(0);
+		
+		nFrom.setTextContent(medication_details.get(9));
+		nTo.setTextContent(medication_details.get(8));
+		nRequestedProvider.setTextContent(medication_details.get(7));
+		nRequestedLocation.setTextContent(medication_details.get(6));
+		
+		//update medication details
+		node=doc.getElementsByTagName(IntegrationConstants.MEDICATION).item(0);
+		Node nMedicationName=element.getElementsByTagName(IntegrationConstants.MEDICATION_NAME_TAG).item(0);
+		Node nMedicationDosage=element.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
+		Node nQuantity=element.getElementsByTagName(IntegrationConstants.QUANTITY_TAG).item(0);
+		Node nRefillNumber=element.getElementsByTagName(IntegrationConstants.REFILL_NUMBER_TAG).item(0);
+		Node nPrescriptionNumber=element.getElementsByTagName(IntegrationConstants.PRESCRIPTION_NUMBER_TAG).item(0);
+		Node nAdditionalInformation=element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
+		
+		nAdditionalInformation.setTextContent(medication_details.get(5));
+		nPrescriptionNumber.setTextContent(medication_details.get(4));
+		nRefillNumber.setTextContent(medication_details.get(3));
+		nQuantity.setTextContent(medication_details.get(2));
+		nMedicationDosage.setTextContent(medication_details.get(1));
+		nMedicationName.setTextContent(medication_details.get(0));
+		
+		//update messageId,Subject,message_thread_id
+		Node cNode=doc.getElementsByTagName(IntegrationConstants.COMMUNICATION).item(0);
+		Element ele=(Element) cNode;
+		ele.setAttribute(IntegrationConstants.MESSAGE_ID,"11623b2e-6824-4c0e-9ed2-0ceb6f6a"+fourDigitRandom());
+		Node ncFrom=ele.getElementsByTagName(IntegrationConstants.FROM).item(0);
+		Node ncTo=ele.getElementsByTagName(IntegrationConstants.TO).item(0);
+		ncFrom.setTextContent(medication_details.get(8));
+		ncTo.setTextContent(medication_details.get(9));
+		Node nSubject=element.getElementsByTagName(IntegrationConstants.SUBJECT).item(0);
+		nSubject.setTextContent(rxSMSubject);
+		Node ncmessaageThreadID=ele.getElementsByTagName(IntegrationConstants.MESSAGE_THREAD_ID).item(0);
+		ncmessaageThreadID.setTextContent(getPrescription_id);
+		Node nmessage=element.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
+		nmessage.setTextContent(rxSMBody);
+		
+		//update sent time
+		Node nSent=element.getElementsByTagName(IntegrationConstants.SENT_DATE).item(0);
+		nSent.setTextContent(SentDate(getCreatedDateTime));
+		
+		return domToString(doc);
+		
+	}
 }

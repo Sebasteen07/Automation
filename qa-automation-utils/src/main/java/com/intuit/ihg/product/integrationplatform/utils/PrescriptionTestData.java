@@ -46,8 +46,8 @@ public class PrescriptionTestData {
 		return PrescriptionObj.From;
 	}
 	
-	public String getSecureMessagePath(){
-		return PrescriptionObj.SecureMessagePath;
+	public String getPrescriptionPath(){
+		return PrescriptionObj.PrescriptionPath;
 	}
 		
 	public String getOAuthProperty(){

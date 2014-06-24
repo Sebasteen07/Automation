@@ -8,7 +8,7 @@ public class Prescription {
 	public String RestUrl = "";
 	public String ResponsePath = "";
 	public String From = "";
-	public String SecureMessagePath = "";
+	public String PrescriptionPath = "";
 	public String OAuthProperty ="";
 	public String OAuthKeyStore ="";
 	public String OAuthAppToken ="";

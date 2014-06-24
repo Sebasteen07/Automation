@@ -51,6 +51,7 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
@@ -98,7 +99,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/*
-	////////@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -710,8 +711,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testGetPrescription() throws Exception {
-		log("Test Case: Get Prescription Request");
+	public void testE2ERxPrescription() throws Exception {
+		log("Test Case: Rx Prescription Request");
 		
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -727,7 +728,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Rest Url: " + testData.getRestUrl());
 		log("Response Path: " + testData.getResponsePath());
 		log("From: " + testData.getFrom());
-		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("PrescriptionPath: " + testData.getPrescriptionPath());
 		log("OAuthProperty: " + testData.getOAuthProperty());
 		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
@@ -756,6 +757,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String medicationName=PortalConstants.MedicationName.toString()+String.valueOf(time);
 		log("Medication Name :"+medicationName);
 		
+		String rxSMSubject=PortalConstants.RxRenewal_Subject_Tag.toString()+String.valueOf(time);
+		log("Perscription Subject :"+rxSMSubject);
+		
+		String rxSMBody=IntegrationConstants.QUESTION_MESSAGE.toString()+""+String.valueOf(time);
+		log("Perscription Reply :"+rxSMBody);
+		
 		log("step 7:Verify RxRenewal Confirmation Message");
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
@@ -781,6 +788,66 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("step 11: Checking validity of the response xml");
 		RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), medicationName);	
+		
+		String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(),"Medication",medicationName,rxSMSubject,rxSMBody,testData.getPrescriptionPath());
+		//log("postXML :" +postXML);
+		
+		log("step 12: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
+
+		log("step 13: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(10000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+		
+		//Done-Patient portal validation
+		log("step 14: Login to Patient Portal");
+		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("step 15: Go to Inbox");
+		MessageCenterInboxPage inboxPage = pPatientPage.clickViewAllMessagesInMessageCenter();
+		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
+		log("step 16: Find message in Inbox");
+		MessagePage msg = inboxPage.openMessageInInbox(rxSMSubject);
+
+		log("step 17: Validate message loads and is the right message");
+		String actualSubject = msg.getPracticeReplyMessageTitle();
+		assertTrue(msg.getPracticeReplyMessageTitle().contains(rxSMSubject), "Expected subject containting ["
+						+ rxSMSubject + "but actual subject was [" + actualSubject + "]");
+		
+		log("step 18: Logout of Patient Portal");
+		pPatientPage.logout(driver);
+		
+		//to Do-Practice portal validation  
+		log("step 19: Login to Practice Portal");
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("step 20:Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+
+		log("step 21:Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday(2);
+
+		log("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		/*log("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();*/
+
+		log("step 22: Logout of Practice Portal");
+		practiceHome.logOut();
 		
 	}
 		
