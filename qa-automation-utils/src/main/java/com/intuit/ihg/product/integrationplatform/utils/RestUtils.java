@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -48,6 +50,8 @@ import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 
 public class RestUtils {
 
+	
+	public static String gnMessageID;
 	/**
 	 * Performs OAuth Get Request and saves the resposse
 	 * @param strUrl server Get url
@@ -235,6 +239,7 @@ public class RestUtils {
 		//set random message id
 		elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + fourDigitRandom());
 		
+		gnMessageID=elem.getAttribute(IntegrationConstants.MESSAGE_ID).toString();
 		//set other attributes
 		Node nFrom = elem.getElementsByTagName(IntegrationConstants.FROM).item(0);
 		Node nTo = elem.getElementsByTagName(IntegrationConstants.TO).item(0);
@@ -244,6 +249,11 @@ public class RestUtils {
 		nSubject.setTextContent(subject);
 
 		return domToString(doc);
+	}
+	
+	//retrive new message ID
+	public static String newMessageID(){
+		return gnMessageID;
 	}
 	
 	//generate four digit random for the message id
@@ -809,4 +819,72 @@ public class RestUtils {
 		return domToString(doc);
 		
 	}
+	
+	/**
+	 * 
+	 * @param epoch
+	 * @return readGMTtime
+	 */
+	public static String readTime(long epoch)
+	{
+		String time=String.valueOf(epoch);
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		Date now = new Date(Long.parseLong(time)*1000);
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String readGMTtime = dateFormatGmt.format(now);
+		return readGMTtime;
+	}
+	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param messageID
+	 * @param readdatetimestamp
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public static void isReadCommunicationMessage(String xmlFileName, String messageID , String readdatetimestamp) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		
+		File stocks = new File(xmlFileName);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(stocks);
+		doc.getDocumentElement().normalize();
+	
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.READCOMMUNICATION);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			
+		Node node = nodes.item(i);
+		if (node.getNodeType() == Node.ELEMENT_NODE)
+		{
+			Element element = (Element) node;
+			String readValue;
+			readValue=getValue(IntegrationConstants.MESSAGE_ID,element);
+			if(readValue.equalsIgnoreCase(messageID))
+			{
+				Log4jUtil.log("Message ID is Found in read communication response");
+				getValue(IntegrationConstants.READDATETIMESTAMP, element).contains(readdatetimestamp);
+				Log4jUtil.log("Actual readdatetimestamp"+getValue(IntegrationConstants.READDATETIMESTAMP, element));
+				break;
+				
+			}
+			Log4jUtil.log("Message ID is not Found in read communication response");
+		
+		}
+		}
+		
+	}
+	/**
+	 * 
+	 * @param tag
+	 * @param element
+	 * @return
+	 */
+	private static String getValue(String tag, Element element) {
+		NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
+		Node node = (Node) nodes.item(0);
+		return node.getNodeValue();
+		}
 }

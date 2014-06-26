@@ -72,5 +72,9 @@ public class IntegrationConstants {
 	public static final String REFILL_NUMBER_TAG = "RefillNumber";
 	public static final String PRESCRIPTION_NUMBER_TAG = "PrescriptionNumber";
 	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";	
+	
+	//Read Communication
+	public static final String READCOMMUNICATION = "ReadCommunication";
+	public static final String READDATETIMESTAMP = "readdatetimestamp";
 
 }

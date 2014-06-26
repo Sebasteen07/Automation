@@ -415,6 +415,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		long timestamp = System.currentTimeMillis();
 		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getFrom(), testData.getUserName(), "Test " + timestamp);
 		
+		String messageID=RestUtils.newMessageID();
+		log("New Message ID:"+messageID);
+		
 		log("step 4: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
 
@@ -441,28 +444,38 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("step 8: Find message in Inbox");
 		String messageIdentifier = Long.toString(timestamp);
+		
+		log("step 9: Log the message read time ");
+		long epoch = System.currentTimeMillis()/1000;
+		
+		String readdatetimestamp=RestUtils.readTime(epoch);
+		log("Message Read Time:"+readdatetimestamp);
+		
 		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
 
-		log("step 9: Validate message loads and is the right message");
+		log("step 10: Validate message loads and is the right message");
 		String actualSubject = msg.getPracticeReplyMessageTitle();
 		assertTrue(msg.getPracticeReplyMessageTitle().contains(messageIdentifier), "Expected subject containting ["
 						+ messageIdentifier + "but actual subject was [" + actualSubject + "]");
 		
-		log("step 10: Reply to the message");
+		log("step 11: Do a GET and get the read communiccation");
+		Long since = timestamp / 1000L - 60 * 24;
+		log("Getting messages since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getReadCommunicationURL() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("step 12: Validate the message id and read time in response");
+		RestUtils.isReadCommunicationMessage(testData.getResponsePath(),messageID,readdatetimestamp);
+				
+		log("step 13: Reply to the message");
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
 		
-		log("step 11: Wait 60 seconds, so the message can be processed");
+		log("step 14: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 		
-		log("step 12: Do a GET and get the message");
-		// get only messages from last day in epoch time to avoid transferring lot of data
-		Long since = timestamp / 1000L - 60 * 60 * 24;
-
-		log("Getting messages since timestamp: " + since);
-
+		log("step 15: Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
-		log("step 13: Validate message reply");
+		log("step 16: Validate message reply");
 		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
 		
 	}

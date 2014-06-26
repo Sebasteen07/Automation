@@ -14,5 +14,5 @@ public class AMDC {
 	public String OAuthAppToken ="";
 	public String OAuthUsername ="";
 	public String OAuthPassword ="";
-	
+	public String ReadCommuniationURL ="";
 }

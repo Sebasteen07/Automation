@@ -72,5 +72,7 @@ public class AMDCTestData {
 		return AmdcObj.OAuthPassword;
 	}	
 	
-	
+	public String getReadCommunicationURL(){
+		return AmdcObj.ReadCommuniationURL;
+	}
 }
