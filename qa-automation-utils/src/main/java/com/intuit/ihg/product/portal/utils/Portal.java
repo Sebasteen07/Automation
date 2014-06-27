@@ -32,5 +32,6 @@ public class Portal {
 	public String betaUrl="";
 	public String preferredDoctorBeta="";
 	public String preferredLocationBeta="";
-	public String formsAltUrl;	
+	public String formsAltUrl;
+	public String restUrl;
 }

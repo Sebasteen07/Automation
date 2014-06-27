@@ -32,8 +32,7 @@ public class FormSocialHistoryPage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */
-	public void clickSaveAndContinueButton() throws Exception
-	{
+	public void clickSaveAndContinueButton() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -49,8 +48,7 @@ public class FormSocialHistoryPage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */
-	public void submitForm() throws Exception
-	{
+	public void submitForm() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		
 		//Thread.sleep(10000);
@@ -74,10 +72,8 @@ public class FormSocialHistoryPage extends BasePageObject
 	 * @return FormSocialHistoryPage
 	 * @throws Exception
 	 */
-	public void setSocialHistoryFormFields() throws Exception
-	{	
+	public void setSocialHistoryFormFields() throws Exception {	
 		clickSaveAndContinueButton();
-
 		submitForm();
 	}
 

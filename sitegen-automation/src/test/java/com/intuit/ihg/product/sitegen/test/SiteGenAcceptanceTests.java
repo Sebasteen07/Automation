@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.sitegen.test;
 
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
@@ -90,11 +89,16 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-//import com.intuit.ihg.product.integrationplatform.utils.RestUtils;;
-
+import com.intuit.ihg.common.utils.ccd.CCDTest;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
+	private void logTestInfo(String testName) {
+		log(testName);
+		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
+		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+	}
+	
 	/**
 	 * @Author:-bkrishnankutty
 	 * @Date:-6/9/2013
@@ -112,12 +116,10 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
-		log("testSiteGen");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testSiteGen");
 
 		log("step 1: Get Data from Excel ##########");
-
+		
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
@@ -146,8 +148,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-
-
 	/**
 	 * @Author:-bkrishnankutty
 	 * @Date:-6/12/2013
@@ -169,9 +169,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testLocation() throws Exception {
 
-		log("testLocation");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testLocation");
 
 		log("step 1: Get Data from Excel ##########");
 
@@ -239,9 +237,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testPhysician() throws Exception {
 
-		log("testPhysician");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testPhysician");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -355,9 +351,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("@@@@@@ WARNING 6-25-2013 ISSUES in DEV3 build so this testcase wont be working there ######");
 		log("@@@@@@ Also do check the status of ISSUES DE1178,DE1179 ######");
 
-		log("testPermission");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testPermission");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -446,9 +440,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testIntergationEngAndInterfaceSetUp() throws Exception {
 
-		log("testIntergationEngAndInterfaceSetUp");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testIntergationEngAndInterfaceSetUp");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -535,9 +527,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testCustomFormPublished() throws Exception {
-		log("testCustomFormPublished");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+
+		logTestInfo("testCustomFormPublished");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -761,9 +752,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testImportAndExportStaff() throws Exception {
 
-		log("testImportAndExportStaff");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testImportAndExportStaff");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -1064,9 +1053,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	{
 		String date = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Date that will be used to validate forms update date
 		
-		log("testDiscreteForm");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testDiscreteForm");
 	
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
@@ -1076,7 +1063,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: "+testcasesData.getAutomationUser());
 		log("Password: "+testcasesData.getAutomationUserPassword());
 	
-		log("Step 2  :- Opening sitegen home page");
+		log("Step 2: Opening sitegen home page");
 		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
 		SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
 	
@@ -1096,12 +1083,12 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 					
 		WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
 		
-		log("step 5:Click on Basic Information About You");
+		log("step 5: Click on Basic Information About You");
 		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
 		log("select some basic questions to appear in the form");
 		pBasicInfoAboutYou.selectBasicInfo();
 		
-		log("step 6:Click on Emergency Contact Information");
+		log("step 6: Click on Emergency Contact Information");
 		EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clickLnkEmergency();
 		pEmergencyContactInfoPage.selectBasicInfo();
 		
@@ -1270,9 +1257,11 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testDiscreteFormPDF() throws Exception {
 		
-		log("testDiscreteFormPDF");
-		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
-		log("Browser on which Test is running :"+TestConfig.getBrowserType());
+		long timestamp = System.currentTimeMillis() / 1000L;
+		String xml = new String();
+		String easyBruisingString = new String("Easy bruising");
+		
+		logTestInfo("testDiscreteFormPDF");
 		
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
@@ -1286,7 +1275,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
 	
-		log("step 2: Click On Start Registration Button");
+		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		FormWelcomePage pFormWelcomePage = formsPage.openPdfForm();
 		
@@ -1313,8 +1302,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		URLStatusChecker status = new URLStatusChecker(driver);
 		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
 		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
+		
+		log("Step 9: Test if CCD is produced");
+		log("Calling rest");
+		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
+		assertTrue(xml.contains(easyBruisingString));
 	}
-	
+
 	/**
 	 * Test for Patient forms - custom forms
 	 * @throws Exception
@@ -1323,10 +1317,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomFormsEndToEnd() throws Exception {
 
-		log("testCustomForms");
-		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
-		log("Browser on which Test is running :"+TestConfig.getBrowserType());
-
+		logTestInfo("testCustomForms");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testCaseData = new SitegenTestData(sitegen);
 
@@ -1427,9 +1418,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testDiscreteFormFill() throws Exception {
-		log("testDiscreteFormFill");
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		logTestInfo("testDiscreteFormFill");
 
 		log("Step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
