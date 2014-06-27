@@ -384,8 +384,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	@Test  (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCSecureMessage() throws Exception{
-		log("Test Case: AMDC Secure Message");
+	public void testAMDCSecureMessageWithReadCommnunication() throws Exception{
+		log("Test Case: AMDC Secure Message with Read Communication");
 		
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -416,7 +416,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getFrom(), testData.getUserName(), "Test " + timestamp);
 		
 		String messageID=RestUtils.newMessageID();
-		log("New Message ID:"+messageID);
+		log("Partner Message ID:"+messageID);
 		
 		log("step 4: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
@@ -458,8 +458,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		assertTrue(msg.getPracticeReplyMessageTitle().contains(messageIdentifier), "Expected subject containting ["
 						+ messageIdentifier + "but actual subject was [" + actualSubject + "]");
 		
-		log("step 11: Do a GET and get the read communiccation");
+		log("step 11: Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
+		
 		log("Getting messages since timestamp: " + since);
 		RestUtils.setupHttpGetRequest(testData.getReadCommunicationURL() + "?since=" + since + ",0", testData.getResponsePath());
 		

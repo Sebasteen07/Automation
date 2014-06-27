@@ -852,7 +852,8 @@ public class RestUtils {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(stocks);
 		doc.getDocumentElement().normalize();
-	
+		
+		Log4jUtil.log("Expected Read DateTimestamp: "+readdatetimestamp);
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.READCOMMUNICATION);
 		for (int i = 0; i < nodes.getLength(); i++) {
 			
@@ -864,13 +865,13 @@ public class RestUtils {
 			readValue=getValue(IntegrationConstants.MESSAGE_ID,element);
 			if(readValue.equalsIgnoreCase(messageID))
 			{
-				Log4jUtil.log("Message ID is Found in read communication response");
+				Log4jUtil.log("Message ID is found in read communication response");
 				getValue(IntegrationConstants.READDATETIMESTAMP, element).contains(readdatetimestamp);
-				Log4jUtil.log("Actual readdatetimestamp"+getValue(IntegrationConstants.READDATETIMESTAMP, element));
+				Log4jUtil.log("Actual Read DateTimestamp: "+getValue(IntegrationConstants.READDATETIMESTAMP, element));
 				break;
 				
 			}
-			Log4jUtil.log("Message ID is not Found in read communication response");
+			Log4jUtil.log("Message ID is not found in read communication response");
 		
 		}
 		}
