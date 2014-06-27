@@ -135,8 +135,7 @@ public class TestcasesData {
 		return portalobj.formsUrl;
 	}
 	
-	public String getBetaUrl() {
-		
+	public String getBetaUrl() {	
 		return portalobj.betaUrl;
 	}
 	
@@ -151,5 +150,9 @@ public class TestcasesData {
 	
 	public String getFormsAltUrl() {
 		return portalobj.formsAltUrl;
+	}
+	
+	public String getRestUrl() {
+		return portalobj.restUrl;
 	}
 }

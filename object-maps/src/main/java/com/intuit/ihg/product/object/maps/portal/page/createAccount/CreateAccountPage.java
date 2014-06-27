@@ -24,6 +24,9 @@ public class CreateAccountPage extends BasePageObject {
 
 	@FindBy(name = "lastname")
 	private WebElement txtLastname;
+	
+	@FindBy(name = "gender")
+	private WebElement radioButtGender;
 
 	@FindBy(name = "birthday")
 	private WebElement txtbirthday;
@@ -176,16 +179,10 @@ public class CreateAccountPage extends BasePageObject {
 		patientLastName = patientLastName + PortalUtil.createRandomNumber();
 		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate();
 		
-		//Setting Date of birth
-		Select birthdaySelect = new Select(birthdayMonth);
-		birthdaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
-		
-		txtPatientFirstname.click();// This a fix given for chrome browser
-						// for dealing date drop down
+		txtPatientFirstname.click();
 		log("PatientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
 		log("PatientSSN: " + patientSSN);
@@ -199,8 +196,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtFirstName.sendKeys(patientFirstName);
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
-		txtLastName.click();// This a fix given for chrome browser for
-					// dealing date drop down
+		txtLastName.click();
 		txtSSN.clear();
 		txtSSN.sendKeys(patientSSN);
 		chkGender.click();
@@ -228,6 +224,13 @@ public class CreateAccountPage extends BasePageObject {
 		btnSubmit.click();
 
 		return PageFactory.initElements(driver, MyPatientPage.class);
+	}
+
+	private void setBirthDate() {
+		Select birthdaySelect = new Select(birthdayMonth);
+		birthdaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
+		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
+		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
 	}
 
 	/**
@@ -270,12 +273,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtPatientFirstname.sendKeys(sPatientFirstName);
 		txtLastname.sendKeys(sPatientLastName);
 		
-		//Setting Date of birth
-		Select birthDaySelect = new Select(birthdayMonth);
-		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
@@ -293,14 +291,7 @@ public class CreateAccountPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
 
-		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
-		//Setting Date of birth
-		//To support 14.2 Create An Account - Patient Birthdate improvements
-		Select birthDaySelect = new Select(birthdayMonth);
-		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		/*birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);*/
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
