@@ -1021,26 +1021,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	
 	
 	/**
-	 * @Author:-Shanthala, AdamW
-	 * @Date:- Nov-26-2013
-	 * @User Story ID in Rally : US7083
-	 * @StepsToReproduce: 1. Log in to the Site Generator as SG user: fdrebin /
-	 *  medfusion123 2. Find Forms QA Automation Practice 3.
-	 *  Click on Discrete Forms 4. Remove all published forms
-	 * from the published section (we don't want to create
-	 *  excessive amount of forms) 5. Click on Registration &
-	 *   Health History Form button 6. Click on the newly
-	 *  created form 7. Change the form name to a unique name
-	 *  8. Save form 9. Click on Publish button for the
-	 *  corresponding form 10. Move to Patient Portal URL:
-	 *  https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=
-	 *  11264&muu=3424 11. Sign in with new patient 12. Go
-	 * through the form flow and fill in the necessary
-	 * sections 13. Submit the form 14. Go to the health form
-	 * section in the Patient Portal 15. Assure that PDF is
-	 * displayed under the form name 16. Log in to practice
-	 * portal - ajohnson / medfusion123 17. Click on the
-	 * custom forms tab 18. Find the previously submitted form
+	 * @User Story ID in Rally: US544 - TA30648
+	 * @StepsToReproduce: TODO
 	 * === Prerequisite for the test case to run=========
 	 * Practice configured
 	 * Practices configured on: DEV3, DEMO
@@ -1049,12 +1031,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testDiscreteFormEndToEnd() throws Exception 
+	public void testDiscreteFormDeleteCreatePublish() throws Exception 
 	{
-		String date = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Date that will be used to validate forms update date
+		//String date = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Date that will be used to validate forms update date
+		String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, somehting is wrong";
 		
 		logTestInfo("testDiscreteForm");
-	
+
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
@@ -1080,8 +1063,11 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
 		log("@@discrete form name@@" + discreteFormName);
-					
+		
+		log("Open form and change welcome page text");
 		WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
+		pWelcomeScreenPage.clickWelcomeMessagePage();
+		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
 		
 		log("step 5: Click on Basic Information About You");
 		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
@@ -1147,100 +1133,97 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("URL: " + portalTestcasesData.getFormsUrl());
-	
-		log("step 2 and 3: Click on Sign Up Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
-		log("email:-" + email);
 		
-		CreatePatientTest createPatient = new CreatePatientTest();
-		createPatient.setUrl(portalTestcasesData.getFormsUrl());
-		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
+		log("step 2:LogIn");  
+		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
 	
-		log("step 4: Click On Start Registration Button");
+		log("step 3: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		
-		log("Click On Continue Button");
-		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
-	
-		log("step 5: Set Basic Information Form Fields");
-		FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromFields();
-	
-		log("step 6: Set Emergency Contact Form Fields");
-		FormInsurancePage pFormInsurancePage = pFormEmergencyContactPage.setEmergencyContactFormFields(portalTestcasesData.getEmail());
-	
-		// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
-		log("step 7: Set Insurance Form Fields");
-		FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
-		
-		log("step 8: Set Providers Form Fields");
-		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
-	
-		log("step 9: Set Current Symptoms Form Fields");
-		FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
-	
-		log("step 10: Set Medication Form Fields");
-		FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
-	
-		log("step 11: Set Allergies Form Fields");
-		FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
-	
-		log("step 12: Set Vaccine Form Fields");
-		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
-	
-		log("step 13: Set Surgeries Form Fields");
-		FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
-	
-		log("step 14: Set Previous Exams Form Fields");
-		FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
-	
-		log("step 15: Set IllnessCondition Form Fields");
-		FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
-	
-		log("step 16: Set Family History Form Fields");
-		FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
-	
-		log("step 17: Set Social History Form Fields and submit the form");
-		pFormSocialHistoryPage.setSocialHistoryFormFields();
-	
-		log("step 18: Verify Registration Confirmation Text");
-		pMyPatientPage.verifyRegistrationConfirmationText(); 
-		
-		log("Step 19: Click on 'Fill Out' link under 'Custom Form' section");
-		pMyPatientPage.clickFillOutFormsLink();
-		
-		log("Step 20: Select " + discreteFormName + " discrete form");
-		CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
-		verifyTrue(pCustomForm.isFormDisplayedAsPDF());
-			
-		log("Step 21: Logout of patient portal");
-		pMyPatientPage.logout(driver);
-	
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
-		log("Step 22: Login to Practice Portal");
-		
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
-		
-		log("step 23: On Practice Portal Home page Click CustomFormTab");
-		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-	
-		log("step 24: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
-		
-		log("step 25: View the Result");
-		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
-		
-		log("step 26: Verify date and download code");
-		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
-		String submittedDate = pViewPatientFormPage.getLastUpdatedDate().getText().substring(17, 27);
-		assertEquals(submittedDate, date, "Form submitted today not found");
-		
-		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
-		URLStatusChecker status = new URLStatusChecker(driver);
-		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
+		assertTrue( pFormWelcomePage.welcomeMessageContent(welcomeMessage) );
+
+//		log("Click On Continue Button");
+//		pFormWelcomePage.clickContinueButton();
+//	
+//		log("step 5: Set Basic Information Form Fields");
+//		FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromFields();
+//	
+//		log("step 6: Set Emergency Contact Form Fields");
+//		FormInsurancePage pFormInsurancePage = pFormEmergencyContactPage.setEmergencyContactFormFields(portalTestcasesData.getEmail());
+//	
+//		// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
+//		log("step 7: Set Insurance Form Fields");
+//		FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
+//		
+//		log("step 8: Set Providers Form Fields");
+//		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
+//	
+//		log("step 9: Set Current Symptoms Form Fields");
+//		FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
+//	
+//		log("step 10: Set Medication Form Fields");
+//		FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
+//	
+//		log("step 11: Set Allergies Form Fields");
+//		FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
+//	
+//		log("step 12: Set Vaccine Form Fields");
+//		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
+//	
+//		log("step 13: Set Surgeries Form Fields");
+//		FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
+//	
+//		log("step 14: Set Previous Exams Form Fields");
+//		FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
+//	
+//		log("step 15: Set IllnessCondition Form Fields");
+//		FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
+//	
+//		log("step 16: Set Family History Form Fields");
+//		FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
+//	
+//		log("step 17: Set Social History Form Fields and submit the form");
+//		pFormSocialHistoryPage.setSocialHistoryFormFields();
+//	
+//		log("step 18: Verify Registration Confirmation Text");
+//		pMyPatientPage.verifyRegistrationConfirmationText(); 
+//		
+//		log("Step 19: Click on 'Fill Out' link under 'Custom Form' section");
+//		pMyPatientPage.clickFillOutFormsLink();
+//		
+//		log("Step 20: Select " + discreteFormName + " discrete form");
+//		CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
+//		verifyTrue(pCustomForm.isFormDisplayedAsPDF());
+//			
+//		log("Step 21: Logout of patient portal");
+//		pMyPatientPage.logout(driver);
+//	
+//		Practice practice = new Practice();
+//		PracticeTestData practiceTestData = new PracticeTestData(practice);
+//		
+//		log("Step 22: Login to Practice Portal");
+//		
+//		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
+//		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
+//		
+//		log("step 23: On Practice Portal Home page Click CustomFormTab");
+//		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
+//		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+//	
+//		log("step 24: Search for PatientForms With Status Open");
+//		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+//		
+//		log("step 25: View the Result");
+//		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
+//		
+//		log("step 26: Verify date and download code");
+//		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
+//		String submittedDate = pViewPatientFormPage.getLastUpdatedDate().getText().substring(17, 27);
+//		assertEquals(submittedDate, date, "Form submitted today not found");
+//		
+//		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
+//		URLStatusChecker status = new URLStatusChecker(driver);
+//		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
 	}
 	
 	/**
@@ -1454,7 +1437,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName); 
 		
 		log("Step 5: Change welcome message");
-		pWelcomeScreenPage.clickWelcomePageMessage();
+		pWelcomeScreenPage.clickWelcomeMessagePage();
 		String welcomeMessage = SitegenConstants.DISCRETEFORM_WELCOME_MESSAGE;
 		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
 		

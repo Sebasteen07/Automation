@@ -216,7 +216,7 @@ public class HealthFormPage extends BasePageObject {
 		return result;
 	}
 	
-	public FormWelcomePage openPdfForm() {
+	public FormWelcomePage openPdfForm() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
@@ -228,6 +228,7 @@ public class HealthFormPage extends BasePageObject {
 			}
 		}*/
 		pdfForm.click();
+		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 }

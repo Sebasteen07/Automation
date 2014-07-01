@@ -289,12 +289,13 @@ public class MyPatientPage  extends BasePageObject{
 			 * @return
 			 * @throws InterruptedException
 			 */
-			public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws InterruptedException
+			public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws Exception
 			{
 				Thread.sleep(5000);
 				PortalUtil.setPortalFrame(pdriver);
 				IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
 				startRegistrationlnk.click();
+				PortalUtil.setquestionnarieFrame(driver);
 				return PageFactory.initElements(pdriver,FormWelcomePage.class);
 			}
 

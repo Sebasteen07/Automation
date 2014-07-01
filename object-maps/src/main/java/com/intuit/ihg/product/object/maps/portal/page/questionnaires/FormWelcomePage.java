@@ -33,9 +33,8 @@ public class FormWelcomePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */
-	public FormBasicInfoPage clickContinueButton() throws Exception{
+	public FormBasicInfoPage clickContinueButton() throws Exception {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
 		btnContinue.click();
@@ -47,10 +46,8 @@ public class FormWelcomePage extends BasePageObject
 	 * @return Other Doctors page PageFactory initialization
 	 * @throws Exception
 	 */
-	public BasePageObject clickContinueButtonOtherDocs() throws Exception
-	{
+	public BasePageObject clickContinueButtonOtherDocs() throws Exception {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
 		btnContinue.click();
@@ -71,8 +68,8 @@ public class FormWelcomePage extends BasePageObject
 		return result;
 	}
 	
-	public boolean welcomeMessageContent(String message)
-	{
+	public boolean welcomeMessageContent(String message) {
+		
 		return message.equals(welcomeMessage.getText());
 	}
 	

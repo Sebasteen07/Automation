@@ -33,8 +33,7 @@ public class WelcomeScreenPage extends BasePageObject {
 	 * Replace welcome message for the patient
 	 * @param message
 	 */
-	public void setWelcomeMessage(String message)
-	{
+	public void setWelcomeMessage(String message) {
 		lnkWelcomeScreenText.clear();
 		lnkWelcomeScreenText.sendKeys(message);
 		
@@ -44,8 +43,7 @@ public class WelcomeScreenPage extends BasePageObject {
 	 * Clicks on the next page 1. Basic Information About You
 	 * @return PageFactory initialization of BasicInformationAboutYouPage Class
 	 */
-	public BasicInformationAboutYouPage clickLnkBasicInfoAboutYou() 
-	{
+	public BasicInformationAboutYouPage clickLnkBasicInfoAboutYou() {
 		lnkBasicInformationAboutYou.click();
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
 	}
@@ -54,17 +52,15 @@ public class WelcomeScreenPage extends BasePageObject {
 	 * Clicks on the page 6. Current Symptoms
 	 * @return PageFactory initialization of the page
 	 */
-	public CurrentSymptomsPage clickLnkCurrentSymptoms() 
-	{
+	public CurrentSymptomsPage clickLnkCurrentSymptoms() {
 		lnkCurrentSymptoms.click();
 		return PageFactory.initElements(driver, CurrentSymptomsPage.class);
 	}
 	
 	/**
-	 * Click on welcome message in menu	
+	 * Click on welcome message page in menu	
 	 */
-	public void clickWelcomePageMessage()
-	{
+	public void clickWelcomeMessagePage() {
 		lnkWelcome.click();
 	}
 }
