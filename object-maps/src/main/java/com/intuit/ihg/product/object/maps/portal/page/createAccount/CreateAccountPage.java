@@ -289,8 +289,9 @@ public class CreateAccountPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		radioButtGender.click();
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
-
+		
 		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
