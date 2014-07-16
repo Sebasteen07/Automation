@@ -45,6 +45,9 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 
 	@FindBy(xpath="//ul[@id='tabnav']//a[contains(@href,'../action/doQnaireLayout?method=init&sessionRequired=false')]")
 	private WebElement formLayOutTab;
+	
+    @FindBy(xpath="//ul[@id='tabnav']//a[contains(@href,'../action/doAddCategoryToQ?method=init&sessionRequired=false')]")
+    private WebElement formAddCategoriesTab;
 
 
 	public AddQuestionsToCategoryPage(WebDriver driver) {
@@ -84,7 +87,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 
-		log("Select question1");
+		log("Select question");
 		Select dropdownquestion1 =new Select(dropDownQuestionText0);
 		dropdownquestion1.selectByVisibleText(formquestion1);
 		dropDownQuestionText0.click();
@@ -107,7 +110,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 	public void addAnswerForQuestion1(String formanswerset1) {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
-		log("Select first question answer.");
+		log("Select question answer.");
 		Select dropdownanswer1=new Select(dropDownStdAnswerSet0);
 		dropdownanswer1.selectByVisibleText(formanswerset1);
 
@@ -119,7 +122,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 	 * @param formanswerset2
 	 * @return  true if question label matches question selected else returns false.
 	 * @throws Exception
-	 */
+	 
 	public boolean addQuestion2ToCategory(String formquestion2)throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -142,7 +145,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 	/**
 	 * @author bbinisha
 	 * @param formanswerset2
-	 */
+	 
 	public void addAnswerForQuestion2(String formanswerset2) {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -158,7 +161,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 	 * @param formanswerset3
 	 * @return  true if question label matches question selected else returns false.
 	 * @throws Exception
-	 */
+	 
 	public boolean addQuestion3ToCategory(String formquestion3)throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -180,7 +183,7 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 	/**
 	 * @author bbinisha
 	 * @param formanswerset3
-	 */
+	 
 	public void addAnswerForQuestion3(String formanswerset3) {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -189,26 +192,35 @@ public class AddQuestionsToCategoryPage extends BasePageObject {
 		dropdownanswer1.selectByVisibleText(formanswerset3);	
 	}
 
-
+*/
+	
 	/**
 	 * Click on Form Layout tab to set form layout page number
 	 * @return  true if question label matches question selected else returns false.
 	 * @throws Exception
 	 */
-	public CustomFormLayoutPage saveCategoryQuestions() throws Exception {
+    public void saveCategoryQuestions() throws Exception {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, btnSave);
 		btnSave.click();
+    }
+    
+    public CustomFormLayoutPage clickCustomFormLayoutPage() throws Exception
+    {
 		IHGUtil.waitForElement(driver, 30, formLayOutTab);
 		formLayOutTab.click();
 		Thread.sleep(9000);
 		return PageFactory.initElements(driver, CustomFormLayoutPage.class);
 
 	}
-
-
-
-
+    public CustomFormAddCategoriesPage clickCustomFormAddCategoriesPage() throws Exception
+    {
+        IHGUtil.waitForElement(driver, 30, formAddCategoriesTab);
+        formAddCategoriesTab.click();
+        Thread.sleep(9000);
+        return PageFactory.initElements(driver, CustomFormAddCategoriesPage.class);
+    }
+    
 }

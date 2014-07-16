@@ -576,44 +576,63 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 8: Build a Custom Form");
 			assertTrue(pCustomFormAddCategories.isSearchPageLoaded(), "Expected the SiteGen Build a Custom Form page to be loaded to add categories into the custom form, but it was not.");
 			AddQuestionsToCategoryPage pAddCAtegories = pCustomFormAddCategories.addCategoriesDetails(SitegenConstants.FORMCATEGORY);
-
-			log("step 9A: Add Question1 to category");
+			
+			log("step 9A: Add Question1 to category 1");
 			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add questions to the category page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
 			verifyTrue(pAddCAtegories.addQuestion1ToCategory(SitegenConstants.FORMQUESTION1), "Custom Form question1 and answerset1 did not updated successfully.");
 			pAddCAtegories.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET1);
+			pAddCAtegories.saveCategoryQuestions();
+			
+			CustomFormAddCategoriesPage pCustomFormAddCategories2 = pAddCAtegories.clickCustomFormAddCategoriesPage();
+			AddQuestionsToCategoryPage pAddCAtegories2 = pCustomFormAddCategories2.addCategoriesDetails(SitegenConstants.FORMCATEGORY2);
 
-			log("step 9B: Add Question2 to category");
-			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
-			verifyTrue(pAddCAtegories.addQuestion2ToCategory(SitegenConstants.FORMQUESTION2), "Custom Form question2 and answerset2 did not updated successfully.");
-			pAddCAtegories.addAnswerForQuestion2(SitegenConstants.FORMANSWERSET2);
+			log("step 9B: Add Question2 to category 2");
+			verifyTrue(pAddCAtegories2.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Questions are not getting added to expected Category");
+			verifyTrue(pAddCAtegories2.addQuestion1ToCategory(SitegenConstants.FORMQUESTION2), "Custom Form question2 and answerset2 did not updated successfully.");
+			pAddCAtegories2.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET2);
+			pAddCAtegories2.saveCategoryQuestions();
 
-			log("step 9C: Add Question3 to category");
-			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
-			verifyTrue(pAddCAtegories.addQuestion3ToCategory(SitegenConstants.FORMQUESTION3), "Custom Form question3 and answerset3 did not updated successfully.");
-			pAddCAtegories.addAnswerForQuestion3(SitegenConstants.FORMANSWERSET3);
+			CustomFormAddCategoriesPage pCustomFormAddCategories3 = pAddCAtegories2.clickCustomFormAddCategoriesPage();
+			AddQuestionsToCategoryPage pAddCAtegories3 = pCustomFormAddCategories3.addCategoriesDetails(SitegenConstants.FORMCATEGORY3);
+			
+			log("step 9C: Add Question3 to category 3");
+			verifyTrue(pAddCAtegories3.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
+			verifyTrue(pAddCAtegories3.addQuestion1ToCategory(SitegenConstants.FORMQUESTION3), "Custom Form question3 and answerset3 did not updated successfully.");
+			pAddCAtegories3.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET3);
 
 			log("step 9D: Save added questions to category");
 			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
-			CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.saveCategoryQuestions();
-
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
+			pAddCAtegories.saveCategoryQuestions();
+			
+			CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.clickCustomFormLayoutPage();
+			
 			log("step 10: Set Custom Form Layout");
 			verifyTrue(pAddQuestionsToCategory.isSearchPageLoaded(), "Expected the SiteGen form Layout page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Form Layout is not set for Expected Category");
-			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Form Layout is not set for Expected Category");
+			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
+			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE2, SitegenConstants.FORMCATEGORY2);
+			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE3, SitegenConstants.FORMCATEGORY3);
+			
+			
+			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
+			
+			
 			Thread.sleep(8000);
 			log("step 11: Custom Form Preview Page to click on publish");
 			verifyTrue(pCustomFormPreview.isSearchPageLoaded(), "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Form Layout is not set for Expected Category");
+			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
 			verifyTrue(verifyTextPresent(driver,customFormTitle),"Vewing custom form is not expected custom form");
 			Thread.sleep(8000);
 			//This assert statements can be changed after getting standard valid custom form from Richard/Don B
-			verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
+			//verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
 			verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form preview");
-			verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
+			//verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
 			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink(); 
 
 			log("step 12: Manage your forms -Check custom Form published successfully");
@@ -630,14 +649,29 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				
 			// Executing Test
 			checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
-			checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
+			String winHandlePatientPortal = driver.getWindowHandle();
+			HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
+		
+			
 			driver.switchTo().window(winHandleCustomBuilder);
 			
 			
 			log("step 13: Manage your forms -Check published Form Preview by clicking on Preview link");
 			verifyEquals(pManageForm.isSearchPageLoaded(),true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
+			log("step 13a: Delete 2 pages");
 			pManageForm.clickOnPublishedFormPreviewLink(customFormTitle);
-			pCustomFormPreview.clickOnUnPublishLink(); 
+			pAddCAtegories.clickCustomFormLayoutPage();
+			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY);
+			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY3);
+			pAddQuestionsToCategory.categorySequence();
+			
+			pAddQuestionsToCategory.saveFormLayout();
+			driver.switchTo().window(winHandlePatientPortal);
+			
+			checkOldCustomFormTest.checkDeletedPages(driver, page, customFormTitle);
+			
+			driver.switchTo().window(winHandleCustomBuilder);
+			pCustomFormPreview.clickOnUnPublishLink(); 	
 
 			log("step 14: Manage your forms -Check unpublished Form Preview");
 			verifyEquals(pManageForm.isSearchPageLoaded(), true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");

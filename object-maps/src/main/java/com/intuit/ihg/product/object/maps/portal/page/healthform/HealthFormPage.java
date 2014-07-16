@@ -71,6 +71,28 @@ public class HealthFormPage extends BasePageObject {
 		
 		@FindBy(xpath="//div[@class='sectionInfo']")
 		public WebElement formInfo;
+		
+        @FindBy(name="footer:next")
+        private WebElement btnNext;
+        
+        @FindBy(name="content:categories:0:questions:0:question:vitalsForm:inputFieldsContainer:inputFieldsPanel:fieldsContainer:fields:0:field")
+        private WebElement vitalName;
+        
+        @FindBy(name="content:categories:0:questions:0:question:vitalsForm:inputFieldsContainer:inputFieldsPanel:fieldsContainer:fields:1:field")
+        private WebElement vitalValue;
+        
+        @FindBy(name="content:categories:0:questions:0:question:vitalsForm:inputFieldsContainer:inputFieldsPanel:submitContainer:inlineSubmit")
+        private WebElement vitalSave;
+        
+        @FindBy(xpath="//*[@id='solutions']/ul/li[4]/a")
+        private WebElement lnkHealthForms;
+        
+        @FindBy(className = "delete")
+        private WebElement delete;
+        
+        @FindBy(className = "add")
+        private WebElement add;
+
 	
 	
 	public HealthFormPage(WebDriver driver) {
@@ -230,4 +252,34 @@ public class HealthFormPage extends BasePageObject {
 		pdfForm.click();
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
+	
+    public void clickNext() {
+        
+        IHGUtil.waitForElement(driver, 20, btnNext);
+        btnNext.click();
+    }
+    
+    public void fillVitals() throws Exception
+    {
+        if ((driver.findElements(By.className("delete")).size() > 0))
+        {
+            delete.click();
+            driver.switchTo().alert().accept();
+            add.click();        
+        }
+        
+        IHGUtil.waitForElement(driver, 20, vitalName);
+        Select dropdownquestion1 =new Select(vitalName);
+        dropdownquestion1.selectByVisibleText("Height");
+        vitalValue.sendKeys("1");
+        vitalSave.click();
+    }
+    
+    public void clickHealthForms()
+    {
+        driver.switchTo().defaultContent();
+        IHGUtil.waitForElement(driver, 20, lnkHealthForms);
+        lnkHealthForms.click();
+    }
+
 }
