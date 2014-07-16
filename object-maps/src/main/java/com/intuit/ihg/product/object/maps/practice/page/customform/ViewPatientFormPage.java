@@ -21,14 +21,15 @@ public class ViewPatientFormPage extends BasePageObject {
 		return linkPDF.getAttribute("href");
 	}
 	
-	public ViewPatientFormPage(WebDriver driver)
-	{
+	public ViewPatientFormPage(WebDriver driver) {
 		super(driver);
 	}
 	
-	public WebElement getLastUpdatedDate()
-	{
-		return lastUpdatedDate;
+	public String getLastUpdatedDate() {
+		return lastUpdatedDate.getText();
 	}
 
+	public String getLastUpdatedDateFormatted() {
+		return getLastUpdatedDate().substring(17, 27);
+	}
 }

@@ -8,19 +8,11 @@ import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.CustomFormPageForSitegen;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormAllergiesPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormBasicInfoPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormCurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormEmergencyContactPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormFamilyHistoryPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormIllnessConditionsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormInsurancePage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormMedicationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormOtherProvidersPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormPreviousExamsPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormSocialHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormSurgeriesHospitalizationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormVaccinePage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -41,22 +33,9 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormAdd
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLayoutPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.Allergiespage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.BasicInformationAboutYouPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.CurrentSymptomsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.EmergencyContactInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ExamsTestsAndProceduresPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.FamilyMedicalHistoryPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.HealthInsuranceInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.IllnessesAndConditionsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.MedicationsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.OtherDoctorsYouSeen;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SecondaryHealthInsurancePage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SocialHistoryPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SurgeriesAndHospitalizationsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.VaccinationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
@@ -93,11 +72,18 @@ import com.intuit.ihg.common.utils.ccd.CCDTest;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
-	private void logTestInfo(String testName) {
+	private void logTestEvironmentInfo(String testName) {
 		log(testName);
 		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
 	}
+	
+	private void logSGLoginInfo(SitegenTestData testData) {
+		log("URL: "+testData.getSiteGenUrl());
+		log("Username: "+testData.getAutomationUser());
+		log("Password: "+testData.getAutomationUserPassword());
+	}
+
 	
 	/**
 	 * @Author:-bkrishnankutty
@@ -116,16 +102,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
-		logTestInfo("testSiteGen");
+		logTestEvironmentInfo("testSiteGen");
 
 		log("step 1: Get Data from Excel ##########");
 		
-		Sitegen sitegen=new Sitegen();
-		SitegenTestData testcasesData=new SitegenTestData(sitegen);
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testcasesData = new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -169,16 +153,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testLocation() throws Exception {
 
-		logTestInfo("testLocation");
+		logTestEvironmentInfo("testLocation");
 
 		log("step 1: Get Data from Excel ##########");
 
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -237,15 +219,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testPhysician() throws Exception {
 
-		logTestInfo("testPhysician");
+		logTestEvironmentInfo("testPhysician");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -351,15 +331,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("@@@@@@ WARNING 6-25-2013 ISSUES in DEV3 build so this testcase wont be working there ######");
 		log("@@@@@@ Also do check the status of ISSUES DE1178,DE1179 ######");
 
-		logTestInfo("testPermission");
+		logTestEvironmentInfo("testPermission");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -440,15 +418,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testIntergationEngAndInterfaceSetUp() throws Exception {
 
-		logTestInfo("testIntergationEngAndInterfaceSetUp");
+		logTestEvironmentInfo("testIntergationEngAndInterfaceSetUp");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -502,7 +478,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		pViewIntegrationsPage.cleanIntegrationTestData();		
 	}
 
-
 	/**
 	 * @Author:-Shanthala  : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
@@ -528,15 +503,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testCustomFormPublished() throws Exception {
 
-		logTestInfo("testCustomFormPublished");
+		logTestEvironmentInfo("testCustomFormPublished");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -673,18 +646,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testMerchantAccountSetUpViaPaypal() throws Exception{
 
-		log("testMerchantAccountSetUpViaPaypal");
-		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
-		log("Browser on which Test is running :"+TestConfig.getBrowserType());
-
+		logTestEvironmentInfo("testMerchantAccountSetUpViaPaypal");
 
 		log("Step1 :- Getting data from excel.");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testCaseData = new SitegenTestData(sitegen);
 
-		log("URL :"+testCaseData.getSiteGenUrl());
-		log("USERNAME :"+testCaseData.getAutomationUser());
-		log("PASSWORD :"+testCaseData.getAutomationUserPassword());
+		logSGLoginInfo(testCaseData);
 
 
 		log("Step2 :- Opening sitegen home page");
@@ -752,15 +720,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testImportAndExportStaff() throws Exception {
 
-		logTestInfo("testImportAndExportStaff");
+		logTestEvironmentInfo("testImportAndExportStaff");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -836,9 +802,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		String password = testCaseData.getAutomationUserPassword();
 
 		log("Step1 :- Getting data from excel.");
-		log("URL :"+testCaseData.getSiteGenUrl());
-		log("USERNAME :"+testCaseData.getAutomationUser());
-		log("PASSWORD :"+testCaseData.getAutomationUserPassword());
+		logSGLoginInfo(testCaseData);
 
 		log("Step2 :- Opening sitegen home page");
 		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testCaseData.getSiteGenUrl());
@@ -911,7 +875,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * ====================================================================================================================
 	 * 
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomForms() throws Exception {
 
 		log("testCustomForms");
@@ -922,9 +886,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		SitegenTestData testCaseData = new SitegenTestData(sitegen);
 
 		log("Step1 :- Getting data from excel.");
-		log("URL :"+testCaseData.getSiteGenUrl());
-		log("USERNAME :"+testCaseData.getFormUser());
-		log("PASSWORD :"+testCaseData.getFormPassword());
+		logSGLoginInfo(testCaseData);
 
 		log("Step 2 :- Opening sitegen home page");
 		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testCaseData.getSiteGenUrl());
@@ -1032,19 +994,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception 
-	{
-		//String date = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Date that will be used to validate forms update date
-		String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, somehting is wrong";
-		
-		logTestInfo("testDiscreteForm");
+	{	
+		logTestEvironmentInfo("testDiscreteForm");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
 	
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 	
 		log("Step 2: Opening sitegen home page");
 		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -1061,170 +1018,100 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 		
+		log("step 5: Unpublish and delete all forms and create a new one");
 		String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
-		log("@@discrete form name@@" + discreteFormName);
+		log("@@discrete form name@@" + discreteFormName);	
 		
-		log("Open form and change welcome page text");
-		WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName);
-		pWelcomeScreenPage.clickWelcomeMessagePage();
-		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
+		log("step 6: Initialize the new form");
+		pManageDiscreteForms.prepareFormForPracticeTest(discreteFormName);
 		
-		log("step 5: Click on Basic Information About You");
-		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
-		log("select some basic questions to appear in the form");
-		pBasicInfoAboutYou.selectBasicInfo();
-		
-		log("step 6: Click on Emergency Contact Information");
-		EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clickLnkEmergency();
-		pEmergencyContactInfoPage.selectBasicInfo();
-		
-		log("step 7a: Click on Health Insurance Information");
-		HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkInsurance();
-		pHealthInsuranceInfoPage.selectInsuranceCompanyQuestion();
-		
-		log("step 7b: Click on Secondary Health Insurance Information");	
-		SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkSecondaryInsurance() ;
-		pSecondaryHealthInsurancePage.selectInsuranceCompanyQuestion();
-		
-		log("step 8: Click on Other Doctors You Have Seen");
-		OtherDoctorsYouSeen pOtherDoctorsYouSeen = pSecondaryHealthInsurancePage.clicklnkOtherDoctors();
-		
-		log("step 9: Click on Current Symptoms");
-		CurrentSymptomsPage pCurrentSymptomsPage = pOtherDoctorsYouSeen.clicklnkCurrentSymptoms();
-		pCurrentSymptomsPage.selectBasicSymptoms();
-		
-		log("step 10: Click on Medications link");
-		MedicationsPage pMedicationPage = pCurrentSymptomsPage.clicklnkMedications();
-	
-		log("step 11: Click on Allergies link");
-		Allergiespage pAllergiesPage = pMedicationPage.clicklnkAllergies();
-				
-		log("step 12: Click on Vaccinations");
-		VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkVaccinations();
-				
-		log("step 13: Click on SurgeriesAndHospitalizationsPage");
-		SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkSurgsHosps();
-		
-		log("step 14: Click on Exam Test and  Procedures");
-		ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
-		
-		log("step 15: Click on Illness and Conditions");
-		IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
-		
-		log("step 16: Click on Family Medical History");
-		FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
-		
-		log("step 17: Click on Social History the last page of discrete form");
-		SocialHistoryPage pSocialHistoryPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
-		pSocialHistoryPage.showThisPage();
-		pSocialHistoryPage.clickSave();
-		
-		log("step 18: Publish the saved Discrete Form");
+		log("step 7: Publish the saved Discrete Form");
 		pManageDiscreteForms.publishTheSavedForm(discreteFormName);
 		
-		log("step 19: Close the window and logout from SiteGenerator");
+		log("step 8: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle descriptor
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 		
-		log("step 1: Go to Patient Portal using the original window");
+		log("step 9: Go to Patient Portal using the original window");
 						
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("URL: " + portalTestcasesData.getFormsUrl());
 		
-		log("step 2:LogIn");  
+		log("step 10:LogIn");  
 		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
 	
-		log("step 3: Click On Start Registration Button and verify welcome page of the previously created form");
+		log("step 11: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		assertTrue( pFormWelcomePage.welcomeMessageContent(welcomeMessage) );
-
-//		log("Click On Continue Button");
-//		pFormWelcomePage.clickContinueButton();
-//	
-//		log("step 5: Set Basic Information Form Fields");
-//		FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromFields();
-//	
-//		log("step 6: Set Emergency Contact Form Fields");
-//		FormInsurancePage pFormInsurancePage = pFormEmergencyContactPage.setEmergencyContactFormFields(portalTestcasesData.getEmail());
-//	
-//		// Because we stated that we are self paying the next page is Other Providers and not Secondary Insurance 
-//		log("step 7: Set Insurance Form Fields");
-//		FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
-//		
-//		log("step 8: Set Providers Form Fields");
-//		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
-//	
-//		log("step 9: Set Current Symptoms Form Fields");
-//		FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
-//	
-//		log("step 10: Set Medication Form Fields");
-//		FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
-//	
-//		log("step 11: Set Allergies Form Fields");
-//		FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
-//	
-//		log("step 12: Set Vaccine Form Fields");
-//		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
-//	
-//		log("step 13: Set Surgeries Form Fields");
-//		FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
-//	
-//		log("step 14: Set Previous Exams Form Fields");
-//		FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.clickSaveAndContinueButton();
-//	
-//		log("step 15: Set IllnessCondition Form Fields");
-//		FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
-//	
-//		log("step 16: Set Family History Form Fields");
-//		FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
-//	
-//		log("step 17: Set Social History Form Fields and submit the form");
-//		pFormSocialHistoryPage.setSocialHistoryFormFields();
-//	
-//		log("step 18: Verify Registration Confirmation Text");
-//		pMyPatientPage.verifyRegistrationConfirmationText(); 
-//		
-//		log("Step 19: Click on 'Fill Out' link under 'Custom Form' section");
-//		pMyPatientPage.clickFillOutFormsLink();
-//		
-//		log("Step 20: Select " + discreteFormName + " discrete form");
-//		CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
-//		verifyTrue(pCustomForm.isFormDisplayedAsPDF());
-//			
-//		log("Step 21: Logout of patient portal");
-//		pMyPatientPage.logout(driver);
-//	
-//		Practice practice = new Practice();
-//		PracticeTestData practiceTestData = new PracticeTestData(practice);
-//		
-//		log("Step 22: Login to Practice Portal");
-//		
-//		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-//		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
-//		
-//		log("step 23: On Practice Portal Home page Click CustomFormTab");
-//		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-//		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-//	
-//		log("step 24: Search for PatientForms With Status Open");
-//		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
-//		
-//		log("step 25: View the Result");
-//		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
-//		
-//		log("step 26: Verify date and download code");
-//		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
-//		String submittedDate = pViewPatientFormPage.getLastUpdatedDate().getText().substring(17, 27);
-//		assertEquals(submittedDate, date, "Form submitted today not found");
-//		
-//		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
-//		URLStatusChecker status = new URLStatusChecker(driver);
-//		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
+		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"})
+	public void testFormPracticePortal() throws Exception {
+		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
+		String discreteFormName = "Form for Practice view test"; 
+		
+		logTestEvironmentInfo("testDiscreteFormFill");
+
+		log("Step 1: Get Data from Excel ##########");
+		Portal portal = new Portal();
+		TestcasesData portalTestcasesData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
+		
+		log("Step 2: LogIn");  
+		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+		
+		log("Step 3: Go to forms page");
+		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
+		
+		log("Step 4: Open the right form");
+		formPage.openDiscreteForm("practiceForm");
+		
+		log("Step 5: Fill out the form");
+		
+		FormBasicInfoPage demographPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
+		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+		medsPage.setNoMedications();
+		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
+		illsPage.checkMononucleosis();
+		illsPage.clickSaveAndContinueButton(null);
+		illsPage.submitForm();
+		
+		log("Step 5: Logout of patient portal");
+		pMyPatientPage.logout(driver);
+	
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		
+		log("Step 6: Login to Practice Portal");
+		
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());	
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
+		
+		log("step 7: On Practice Portal Home page Click CustomFormTab");
+		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
+		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+	
+		log("step 8: Search for PatientForms With Status Open");
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+		
+		log("step 9: View the Result");
+		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
+		
+		log("step 10: Verify date and download code");
+		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
+		String submittedDate = pViewPatientFormPage.getLastUpdatedDateFormatted();
+		assertEquals(submittedDate, currentDate, "Form submitted today not found");
+		
+		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
+		URLStatusChecker status = new URLStatusChecker(driver);
+		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
+	}
+
 	
 	/**
 	 * @Author: Adam Warzel
@@ -1244,7 +1131,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		String xml = new String();
 		String easyBruisingString = new String("Easy bruising");
 		
-		logTestInfo("testDiscreteFormPDF");
+		logTestEvironmentInfo("testDiscreteFormPDF");
 		
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
@@ -1260,12 +1147,11 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		FormWelcomePage pFormWelcomePage = formsPage.openPdfForm();
+		FormWelcomePage pFormWelcomePage = formsPage.openDiscreteForm("pdfForm");
 		
 		log("Step 3: Click through the form flow to Current Symptoms");
-		FormBasicInfoPage basicInfoPage = pFormWelcomePage.clickContinueButton();
-		basicInfoPage.clickSaveAndContinueButton();
-		FormCurrentSymptomsPage currentSymptomsPage = PageFactory.initElements(driver, FormCurrentSymptomsPage.class);//pFormOtherProvidersPage.setNoProvidersOnPage();
+		FormBasicInfoPage basicInfoPage = pFormWelcomePage.clickContinueButton(FormBasicInfoPage.class);		
+		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveAndContinueButton(FormCurrentSymptomsPage.class);
 		
 		log("Step 4: Select symptoms for the patient");
 		currentSymptomsPage.setBasicSymptoms();
@@ -1300,7 +1186,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomFormsEndToEnd() throws Exception {
 
-		logTestInfo("testCustomForms");
+		logTestEvironmentInfo("testCustomForms");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testCaseData = new SitegenTestData(sitegen);
 
@@ -1401,15 +1287,12 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testDiscreteFormFill() throws Exception {
-		logTestInfo("testDiscreteFormFill");
+		logTestEvironmentInfo("testDiscreteFormFill");
 
 		log("Step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-
-		log("URL: "+testcasesData.getSiteGenUrl());
-		log("USER NAME: "+testcasesData.getAutomationUser());
-		log("Password: "+testcasesData.getAutomationUserPassword());
+		logSGLoginInfo(testcasesData);
 
 		log("Step 2 :- Opening sitegen home page");
 		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
@@ -1474,7 +1357,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("step 5: Verify new welcome text on welcome page");
 	//	verifyTrue(pFormWelcomePage.welcomeMessageContent(SitegenConstants.DISCRETEFORM_WELCOME_MESSAGE));
-		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
+		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton(FormBasicInfoPage.class);
 		
 		log("Step 6: Fill in Basic info about you");
 		pFormBasicInfoPage.saveAndFinishAnotherTime();

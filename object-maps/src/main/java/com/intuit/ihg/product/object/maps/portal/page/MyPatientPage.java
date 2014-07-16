@@ -131,7 +131,7 @@ public class MyPatientPage  extends BasePageObject{
 	    public PortalLoginPage logout(WebDriver driver) throws InterruptedException,IOException {
 			
 			IHGUtil.PrintMethodName();
-			pPortalUtil.maximize(driver);
+			//pPortalUtil.maximize(driver);
 			clickLogout(driver);
 	        // TODO - deal with random survey
 	        return PageFactory.initElements(driver, PortalLoginPage.class);

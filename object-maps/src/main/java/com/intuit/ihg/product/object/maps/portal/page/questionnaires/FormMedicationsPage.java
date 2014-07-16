@@ -17,7 +17,7 @@ public class FormMedicationsPage extends BasePageObject
 		// TODO Auto-generated constructor stub
 	}
 
-	@FindBy(id="idonot_medications")
+	@FindBy(id = "idonot_medications")
 	WebElement noMedications;
 
 
@@ -28,25 +28,22 @@ public class FormMedicationsPage extends BasePageObject
 	 * @Description:Set No Medications
 	 * @throws Exception
 	 */
-	public void setNoMedications() throws Exception 
-	{
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		noMedications.click();
-
+	public void setNoMedications() throws Exception {
+		if (noMedications.isSelected() == false)
+			noMedications.click();
 	}
 
 	/**
-	 * @Description:Click on Save and Continue Form Button
-	 * @return
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
 	 * @throws Exception
-	 */	 
-	public FormAllergiesPage clickSaveAndContinueButton() throws Exception
-	{
+	 */
+	public <T extends BasePageObject> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver, FormAllergiesPage.class);
+		return PageFactory.initElements(driver, nextPageClass);
 	}
 
 	/**
@@ -54,13 +51,10 @@ public class FormMedicationsPage extends BasePageObject
 	 * @return FormAllergiesPage
 	 * @throws Exception
 	 */
-	public FormAllergiesPage setMedicationFormFields() throws Exception
-	{
+	public FormAllergiesPage setMedicationFormFields() throws Exception {
 		setNoMedications();
 
-		clickSaveAndContinueButton();
-
-		return PageFactory.initElements(driver, FormAllergiesPage.class);
+		return clickSaveAndContinueButton(FormAllergiesPage.class);
 
 	}
 

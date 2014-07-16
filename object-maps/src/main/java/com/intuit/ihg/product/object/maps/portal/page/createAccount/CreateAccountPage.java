@@ -179,7 +179,7 @@ public class CreateAccountPage extends BasePageObject {
 		patientLastName = patientLastName + PortalUtil.createRandomNumber();
 		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
-		// radioButtGender.click();
+		radioButtGender.click();
 		setBirthDate();
 		
 		txtPatientFirstname.click();

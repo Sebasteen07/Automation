@@ -20,36 +20,64 @@ public class FormIllnessConditionsPage extends BasePageObject
 
 	@FindBy(id="idonot_conditions")
 	WebElement noConditions;
+	
+	@FindBy(id="mononucleosis_condition_other")
+	WebElement monoCheckbox;
 
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
+	
+	@FindBy(xpath="//*[@id='container']//section/div[@class='done_frame']/a")
+	private WebElement submitForm;
+
+	@FindBy(xpath = ".//iframe[@title ='Forms']")
+	private WebElement iframe;
+	
+	@FindBy(id = "closeFormButton")
+	private WebElement closeButton;
 
 	/**
 	 * @Description:Set No Conditions
 	 * @return
 	 * @throws Exception
 	 */
-	public void setNoConditions() throws Exception 
-	{
+	public void setNoConditions() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		noConditions.click();
-
 	}
 
+	public void checkMononucleosis() throws Exception {
+		if (monoCheckbox.isSelected() == false)
+			monoCheckbox.click();
+	}
+	
 	/**
-	 * @Description:Click on Save and Continue Form Button
+	 * @Description:Click on Submit Form Button
 	 * @return
 	 * @throws Exception
 	 */
-	public FormFamilyHistoryPage clickSaveAndContinueButton() throws Exception
-	{
+	public void submitForm() throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 15);	
+		
+		submitForm.click();
+		wait.until(ExpectedConditions.elementToBeClickable(closeButton));	
+		closeButton.click();
+	}
+	
+	/**
+	 * @description Clicks on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
+	 * @throws Exception
+	 */
+	public <T extends BasePageObject> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver, FormFamilyHistoryPage.class);
+		return nextPageClass == null ? null : PageFactory.initElements(driver, nextPageClass);
 	}
 
 	/**
@@ -57,13 +85,8 @@ public class FormIllnessConditionsPage extends BasePageObject
 	 * @return FormFamilyHistoryPage
 	 * @throws Exception
 	 */
-	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception
-	{
+	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
 		setNoConditions();
-
-		clickSaveAndContinueButton();
-		return PageFactory.initElements(driver, FormFamilyHistoryPage.class);
-
-
+		return  clickSaveAndContinueButton(FormFamilyHistoryPage.class);
 	}
 }
