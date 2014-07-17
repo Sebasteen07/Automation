@@ -7,10 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 
 public class PatientactivationPage extends BasePageObject{
@@ -130,7 +131,7 @@ public class PatientactivationPage extends BasePageObject{
 		Log4jUtil.log("!!!!!!!!!Randorm Email is!!!!!!!!!!!!"+emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
-		setDOB("December", "31", "1980");
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 		zip.sendKeys(zipCodeString);
 		clickregpatient();
 		clickverify();
