@@ -173,10 +173,8 @@ public class CreateAccountPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 
-		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
 		log("patientFirstName: " + patientFirstName);
 		txtPatientFirstname.sendKeys(patientFirstName);
-		patientLastName = patientLastName + PortalUtil.createRandomNumber();
 		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
 		radioButtGender.click();
@@ -225,12 +223,87 @@ public class CreateAccountPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
+	
+	/**
+	 * try to create existing user in same practice
+	 * @param patientFirstName
+	 * @param patientLastName
+	 * @param gender
+	 * @param patientZip
+	 * @param patientSSN 
+	 * @param email
+	 * @return
+	 */
+	public CreateAccountExistingUserPage tryCreateExistingUser(String patientFirstName, String patientLastName, String patientZip, String patientSSN,
+					String email, String bMonth, String bDay, String bYear) {
 
-	private void setBirthDate() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		
+		log("patientFirstName: " + patientFirstName);
+		txtPatientFirstname.sendKeys(patientFirstName);
+		log("patientLastName: " + patientLastName);
+		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate(bMonth, bDay, bYear);
+		
+		txtPatientFirstname.click();
+		log("PatientZip: " + patientZip);
+		txtzipcode.sendKeys(patientZip);
+		log("PatientSSN: " + patientSSN);
+		txtssn.sendKeys(patientSSN);
+		log("Email: " + email);
+		txtEmail.sendKeys(email);
+		btnContinue.click();
+		
+		return PageFactory.initElements(driver, CreateAccountExistingUserPage.class);
+	}
+	
+	/**
+	 * try to create existing user in different practice
+	 * @param patientFirstName
+	 * @param patientLastName
+	 * @param gender
+	 * @param patientZip
+	 * @param patientSSN 
+	 * @param email
+	 * @return
+	 */
+	public CreateAccountHealthKeyPage tryCreateExistingUserDiffPrac(String patientFirstName, String patientLastName, String patientZip, String patientSSN,
+					String email, String bMonth, String bDay, String bYear) {
+
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		
+		log("patientFirstName: " + patientFirstName);
+		txtPatientFirstname.sendKeys(patientFirstName);
+		log("patientLastName: " + patientLastName);
+		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate(bMonth, bDay, bYear);
+		
+		txtPatientFirstname.click();
+		log("PatientZip: " + patientZip);
+		txtzipcode.sendKeys(patientZip);
+		log("PatientSSN: " + patientSSN);
+		txtssn.sendKeys(patientSSN);
+		log("Email: " + email);
+		txtEmail.sendKeys(email);
+		btnContinue.click();
+		
+		return PageFactory.initElements(driver, CreateAccountHealthKeyPage.class);
+	}
+	
+
+	private void setBirthDate(String Month, String Day, String Year) {
 		Select birthdaySelect = new Select(birthdayMonth);
-		birthdaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		birthdaySelect.selectByVisibleText(Month);
+		birthdayDay.sendKeys(Day);
+		birthdayYear.sendKeys(Year);
+	}
+	
+	private void setBirthDate() {
+		setBirthDate(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 	}
 
 	/**

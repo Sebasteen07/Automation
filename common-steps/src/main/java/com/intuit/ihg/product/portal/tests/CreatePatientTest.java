@@ -19,6 +19,8 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 	private String email="";
 	private String password="";
 	private String url="";
+	private String firstName = "";
+	private String lastName = "";
 	
 	//Getters for getting the email and password value and reusing in other tests
 	public String getEmail() {
@@ -35,6 +37,22 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 	
 	public void setUrl(String str) {
 		url = str;
+	}
+	
+	public void setFirstName(String str) {
+		firstName = str;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setLastName(String str) {
+		lastName = str;
+	}
+	
+	public String getLastName() {
+		return lastName;
 	}
 
 
@@ -63,10 +81,12 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		
 		//Setting the variables for user in other tests
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
+		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
+		lastName = testcasesData.getLastName() + PortalUtil.createRandomNumber();
 		password = testcasesData.getPassword();
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(testcasesData.getFirstName(),
-						testcasesData.getLastName(), email, testcasesData.getPhoneNumber(),
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName,
+						lastName, email, testcasesData.getPhoneNumber(),
 						testcasesData.getZip(), testcasesData.getSSN(),
 						testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
 						testcasesData.getAnswer(), testcasesData.getAddressState(), testcasesData.getAddressCity());
@@ -112,6 +132,8 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 		log("step 3:Fill detials in Create Account Page");
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
+		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
+		lastName = testcasesData.getLastName() + PortalUtil.createRandomNumber();
 		password = testcasesData.getPassword();
 		log("email:-" + email);
 		CreateAccountPasswordPage pCreateAccountPasswordPage = pCreateAccountPage.createAccount(testcasesData.getFirstName(),

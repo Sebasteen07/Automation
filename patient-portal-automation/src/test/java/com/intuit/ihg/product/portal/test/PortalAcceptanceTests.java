@@ -75,6 +75,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
 import com.intuit.ihg.product.portal.tests.ForgotUserIdTest;
+import com.intuit.ihg.product.portal.tests.HealthKeyMatchTest;
 import com.intuit.ihg.product.portal.tests.PatientActivationUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -1532,9 +1533,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3:Fill detials in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
+		String firstname = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
+		String lastname = testcasesData.getLastName() + PortalUtil.createRandomNumber();
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(testcasesData.getFirstName(),
-				testcasesData.getLastName(), email, testcasesData.getPhoneNumber(), testcasesData.getZip(), testcasesData.getSSN(),
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstname,
+				lastname, email, testcasesData.getPhoneNumber(), testcasesData.getZip(), testcasesData.getSSN(),
 				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(), testcasesData.getAnswer(),
 				testcasesData.getAddressState(), testcasesData.getAddressCity());
 
@@ -1797,4 +1800,68 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		recievePayNowTest.PayNowVerify(driver, practiceTestData,pNoLoginPaymentPage.GetAmountPrize());
 	}
+	
+	
+	/**
+	 * @Author:- Prokop Rehacek
+	 * @Date:-7/10/2014
+	 * @User Story ID US8868 in Rally
+	 * @StepsToReproduce:	1. go to patient portal
+	 *				      	2. click create account
+	 *				      	4. fill out patient info same as some existing patient
+	 *				      	5. Exist page should be shown
+	 *				      	6. login 
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthKey66MatchSamePractice() throws Exception {
+
+		// Instancing CreatePatientTest
+		HealthKeyMatchTest healthKeyMatch66 = new HealthKeyMatchTest();
+
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		// Executing Test
+		healthKeyMatch66.healthKey66SamePracticeMatch(driver, testcasesData);
+
+	}
+	
+	/**
+	 * @Author:- Prokop Rehacek
+	 * @Date:-7/10/2014
+	 * @User Story ID US8868 in Rally
+	 * @StepsToReproduce:	1. create patient in practice A
+	 *				      	2. go to practice B
+	 *				      	3. click create account
+	 *				      	4. fill out patient info same as patient in practice A
+	 *				      	5. HK page should be shown
+	 *				      	6. login 
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthKey66MatchDifferentPractice() throws Exception {
+		
+		// Instancing CreatePatientTest - create patient in practice A
+		CreatePatientTest createPatientTest = new CreatePatientTest();
+
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		// Executing Test
+		createPatientTest.createPatient(driver, testcasesData);
+
+		// Instancing healthkey test
+		HealthKeyMatchTest healthKeyMatch66 = new HealthKeyMatchTest();
+
+		// seting url for practice B
+		healthKeyMatch66.setUrl(testcasesData.getHealthKeyPracticeUrl());
+		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
+
+	}
+
 }
