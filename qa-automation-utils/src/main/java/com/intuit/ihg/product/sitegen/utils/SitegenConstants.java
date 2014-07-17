@@ -52,13 +52,19 @@ public class SitegenConstants {
 	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instrcutions";
 	public final static String FORMMESSAGE = "Automation Custom Health Form Message";
 	public final static String FORMCATEGORY = "Insurance and Referrals";
+	public final static String FORMCATEGORY2 = "Demographics";
+    public final static String FORMCATEGORY3 = "Vital Signs";
 	public final static String FORMQUESTION1 = "Provide Insurance Information";
-	public final static String FORMQUESTION2 = "Patient Name"; 
+    public final static String FORMQUESTION2 = "Provide Demographics information"; 
 	public final static String FORMQUESTION3 = "Vitals information";
 	public final static String FORMANSWERSET1 = "Insurance";
 	public final static String FORMANSWERSET2 = "Demographics" ;
 	public final static String FORMANSWERSET3 = "Vitals";
-	public final static String FORMLAYOUTPAGE = "1";
+    public final static String FORMLAYOUTPAGE = "3";
+    public final static String FORMLAYOUTPAGE2 = "1";
+    public final static String FORMLAYOUTPAGE3 = "2";
+    public final static String FORMLAYOUTPAGE0 = "0";
+
 
 	//for Merchant AccountSetup for Practise through Paypal
 	public final static String PROCESSORVALUE1 = "PayPal";
