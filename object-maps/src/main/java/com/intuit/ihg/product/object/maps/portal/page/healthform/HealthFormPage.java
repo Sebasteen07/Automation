@@ -2,6 +2,8 @@ package com.intuit.ihg.product.object.maps.portal.page.healthform;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,17 +26,24 @@ public class HealthFormPage extends BasePageObject {
 	
 	  public static final String PAGE_NAME = "Insurance Health Form Page";
 		
-		@FindBy(linkText="Ivan Insurance Health Form ( Testing)")
-		private WebElement lnkInsuranceHealthForm;
-		
 		@FindBy(name="footer:submit")
 		private WebElement btnSubmit;
 		
 		@FindBy(xpath="//li[a[@title='Form output test']]/table/tbody/tr/td/a")
 		private WebElement lnkclickForPdfDownload;
 		
+		// Forms on the page
+		
 		@FindBy(linkText="Form output test")
 		private WebElement pdfForm;
+		
+		@FindBy(linkText="Form for Practice view test")
+		private WebElement practiceForm;
+		
+		@FindBy(linkText="Ivan Insurance Health Form ( Testing)")
+		private WebElement lnkInsuranceHealthForm;
+		
+		private Map<String, WebElement> discreteForms;
 		
 		@FindBy(xpath="//div[@class='heading1']")
 		public WebElement InsuranceHelthform;
@@ -98,6 +107,9 @@ public class HealthFormPage extends BasePageObject {
 	public HealthFormPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
+		discreteForms = new HashMap<String, WebElement>();
+		discreteForms.put("pdfForm", pdfForm);
+		discreteForms.put("practiceForm", practiceForm);
 	}
 	
 	/**
@@ -238,18 +250,18 @@ public class HealthFormPage extends BasePageObject {
 		return result;
 	}
 	
-	public FormWelcomePage openPdfForm() {
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+	/**
+	 * @brief Opens a form on the page selected by parameter and initializes its welcome page
+	 * @param selectedForm String value determining which form to open
+	 * @return method returns initialized object for Welcome page of the form
+	 */
+	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 8);
 		
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
-		wait.until(ExpectedConditions.visibilityOf(pdfForm));
-		/*for (int seconds = 0; seconds < 30; seconds++) {
-			if ( driver.findElement(By.xpath("//a[contains(text(), 'Form output test')]")) != null ) {
-				driver.findElement(By.xpath("//a[contains(text(), 'Form output test')]")).click();
-				break;
-			}
-		}*/
-		pdfForm.click();
+		wait.until(ExpectedConditions.visibilityOf( discreteForms.get(selectedForm) ));
+		discreteForms.get(selectedForm).click();
+		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 	

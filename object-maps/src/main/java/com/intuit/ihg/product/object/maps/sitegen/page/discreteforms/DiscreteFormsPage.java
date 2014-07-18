@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 
+import static org.testng.AssertJUnit.fail;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,11 +10,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SocialHistoryPage.QuestionType;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
@@ -45,16 +49,37 @@ public class DiscreteFormsPage extends BasePageObject{
 	@FindBy(name="custom_form_name") 
 	private WebElement lnkCustomForm;
 	
-	
 	@FindBy(id="save_config_form") 
 	private WebElement btnSaveForms;
 	
-	private int waitingPeriod = 7; // in seconds
-
+	private int waitingPeriod = 5;// in seconds
+	
+	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
+	
+	public String getWelcomeMessage() {
+		return welcomeMessage;
+	}
+	
 	//Constructor
 	public DiscreteFormsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
+	}
+	
+	/**
+	 * @param xpath - xpath used to find the forms in forms config
+	 * @param count - number of the items found by the xpath
+	 * @throws InterruptedException
+	 */
+	public void waitForFormToDissappear(String xpath, int count) throws InterruptedException {
+		float timePassed = 0;
+		
+		while (driver.findElements(By.xpath(xpath)).size() == count) {
+			Thread.sleep(500);
+			 timePassed += 0.5;
+			if (timePassed > waitingPeriod)
+				fail("Waiting for form to be deleted is taking too long");
+		}
 	}
 	
 	/**
@@ -63,18 +88,18 @@ public class DiscreteFormsPage extends BasePageObject{
 	 */
 	public void deleteAllUnPublishedForms() throws Exception {
 		List<WebElement> deleteButtons;
-		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
+		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
-		log("Number of UnPublished rows is :"+count);
+		log("Number of UnPublished rows is :" + count);
+		
 		while (count > 0) {
 			deleteButtons = driver.findElements(By.xpath(xpath));
 			deleteButtons.get(0).click();
 			yesDeleteButton.click();
-			// wait until the deleted form disappears
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+			waitForFormToDissappear(xpath, count);
 			count--;
 		}
 	}
@@ -84,18 +109,17 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void unpublishAllForms() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
+		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
-		log("Number of Published rows is :"+count);
-		List<WebElement> unpublishButtonList = driver.findElements(By.xpath(xpath));
-
-		for (WebElement unpublishButton : unpublishButtonList) {		
-			unpublishButton.click();	
-			// wait until the unpublished form disappears from published section
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+		log("Number of Published rows is :" + count);
+		
+		while (count > 0) {		
+			List<WebElement> unpublishButtonList = driver.findElements(By.xpath(xpath));
+            unpublishButtonList.get(0).click();	
+			waitForFormToDissappear(xpath, count);
 			count--;
 		}
 
@@ -254,7 +278,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * Checks if the Patient Forms page is loaded by checking if crucial element of it is present
 	 * @return True if the button is present, false otherwise
 	 */
-	public boolean isPageLoaded(){
+	public boolean isPageLoaded() {
 		boolean result = false;
 		try {
 			result = registrationHealthHistoryFormButton.isDisplayed();
@@ -269,8 +293,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @param discrete True for making discrete form, false to create custom 
 	 * @return Name of the newly created form
 	 */
-	public String initializePracticeForNewForm() throws Exception
-	{
+	public String initializePracticeForNewForm() throws Exception {
 		// name for the new form
 		String FormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 		
@@ -280,6 +303,76 @@ public class DiscreteFormsPage extends BasePageObject{
 		renameDiscreteForm(FormName);
 		
 		return FormName;
+	}
+	
+	public void prepareFormForPracticeTest(String discreteFormName) throws Exception {
+		log("Open form and change welcome page text");
+		WelcomeScreenPage pWelcomeScreenPage = openDiscreteForm(discreteFormName);
+		pWelcomeScreenPage.clickWelcomeMessagePage();
+		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
+		
+		log("step 5: Click on Basic Information About You");
+		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
+		log("select some basic questions to appear in the form");
+		pBasicInfoAboutYou.selectBasicInfo();
+		
+		log("step 6: Click on Emergency Contact Information");
+		EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clickLnkEmergency();
+		pEmergencyContactInfoPage.selectBasicInfo();
+		
+		log("step 7a: Click on Health Insurance Information");
+		HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkInsurance();
+		pHealthInsuranceInfoPage.selectInsuranceCompanyQuestion();
+		
+		log("step 7b: Click on Secondary Health Insurance Information");	
+		SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkSecondaryInsurance() ;
+		pSecondaryHealthInsurancePage.selectInsuranceCompanyQuestion();
+		
+		log("step 8: Click on Other Doctors You Have Seen");
+		OtherDoctorsYouSeen pOtherDoctorsYouSeen = pSecondaryHealthInsurancePage.clicklnkOtherDoctors();
+		
+		log("step 9: Click on Current Symptoms");
+		CurrentSymptomsPage pCurrentSymptomsPage = pOtherDoctorsYouSeen.clicklnkCurrentSymptoms();
+		pCurrentSymptomsPage.selectBasicSymptoms();
+		
+		log("step 10: Click on Medications link");
+		MedicationsPage pMedicationPage = pCurrentSymptomsPage.clicklnkMedications();
+	
+		log("step 11: Click on Allergies link");
+		Allergiespage pAllergiesPage = pMedicationPage.clicklnkAllergies();
+				
+		log("step 12: Click on Vaccinations");
+		VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkVaccinations();
+				
+		log("step 13: Click on SurgeriesAndHospitalizationsPage");
+		SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkSurgsHosps();
+		
+		log("step 14: Click on Exam Test and  Procedures");
+		ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
+		
+		log("step 15: Click on Illness and Conditions");
+		IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
+		
+		log("step 16: Click on Family Medical History");
+		FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
+		
+		log("step 17: Click on Social History the last page of discrete form");
+		SocialHistoryPage socialPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
+		socialPage.showThisPage();
+		
+		log("step 18: Try to save the form with uncomplete question");
+		socialPage.clickAddSection();
+		socialPage.clickOnNewSection();
+		socialPage.setSectionName("Additional questions");
+		socialPage.setQuestionName("added question");
+		socialPage.clickSave();
+		socialPage.errorMessageAppearedTest();
+		socialPage.setQuestionType(QuestionType.multiSelect);
+		socialPage.clickSave();
+		socialPage.errorMessageAppearedTest();
+		socialPage.setMultiSelectAnswers("1, 2, 3, or 4");
+		
+		socialPage.clickSave();
 	}
 	
 }

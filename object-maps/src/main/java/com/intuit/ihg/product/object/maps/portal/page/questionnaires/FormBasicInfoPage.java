@@ -19,6 +19,7 @@ public class FormBasicInfoPage extends BasePageObject
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
+	
 	@FindBy(id="streetaddr1")
 	private WebElement address;
 
@@ -241,18 +242,18 @@ public class FormBasicInfoPage extends BasePageObject
 	}
 
 	/**
-	 * @Description:Click on Save and Continue Button
-	 * @return
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
-	public FormEmergencyContactPage clickSaveAndContinueButton() throws Exception
-	{
+	public <T extends BasePageObject> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
 		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver,FormEmergencyContactPage.class);
+		return PageFactory.initElements(driver, nextPageClass);
 	}
 
 
@@ -270,10 +271,8 @@ public class FormBasicInfoPage extends BasePageObject
 		setPrimaryPhoneNumber();		
 		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
 		setSex(PortalConstants.Sex);
-				
-		clickSaveAndContinueButton();
 
-		return PageFactory.initElements(driver,FormEmergencyContactPage.class);
+		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
 
 	}
 	

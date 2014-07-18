@@ -1545,7 +1545,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 
 		log("Click On Continue Button");
-		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton();
+		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton(null);
 
 		log("step 5:Set Basic Information Form Fields");
 		FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromFields();

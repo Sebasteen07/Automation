@@ -131,7 +131,7 @@ public class MyPatientPage  extends BasePageObject{
 	    public PortalLoginPage logout(WebDriver driver) throws InterruptedException,IOException {
 			
 			IHGUtil.PrintMethodName();
-			pPortalUtil.maximize(driver);
+			//pPortalUtil.maximize(driver);
 			clickLogout(driver);
 	        // TODO - deal with random survey
 	        return PageFactory.initElements(driver, PortalLoginPage.class);
@@ -289,12 +289,13 @@ public class MyPatientPage  extends BasePageObject{
 			 * @return
 			 * @throws InterruptedException
 			 */
-			public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws InterruptedException
+			public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws Exception
 			{
 				Thread.sleep(5000);
 				PortalUtil.setPortalFrame(pdriver);
 				IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
 				startRegistrationlnk.click();
+				PortalUtil.setquestionnarieFrame(driver);
 				return PageFactory.initElements(pdriver,FormWelcomePage.class);
 			}
 

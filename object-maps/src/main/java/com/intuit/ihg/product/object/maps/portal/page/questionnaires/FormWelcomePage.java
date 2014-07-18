@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class FormWelcomePage extends BasePageObject
 {
@@ -29,32 +28,17 @@ public class FormWelcomePage extends BasePageObject
 	private WebElement welcomeMessage;
 	
 	/**
-	 * @Description:Click on Continue Button
-	 * @return
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
-	public FormBasicInfoPage clickContinueButton() throws Exception{
+	public <T extends BasePageObject> T clickContinueButton(Class<T> nextPageClass) throws Exception {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
 		btnContinue.click();
-		return PageFactory.initElements(driver, FormBasicInfoPage.class);
-	}
-	
-	/**
-	 * @Description:Click on Continue Button in form that goes to Other Docs
-	 * @return Other Doctors page PageFactory initialization
-	 * @throws Exception
-	 */
-	public BasePageObject clickContinueButtonOtherDocs() throws Exception
-	{
-		IHGUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
-		btnContinue.click();
-		return PageFactory.initElements(driver, FormOtherProvidersPage.class);
+		return PageFactory.initElements(driver, nextPageClass);
 	}
 
 	/**
@@ -71,8 +55,8 @@ public class FormWelcomePage extends BasePageObject
 		return result;
 	}
 	
-	public boolean welcomeMessageContent(String message)
-	{
+	public boolean welcomeMessageContent(String message) {
+		
 		return message.equals(welcomeMessage.getText());
 	}
 	
