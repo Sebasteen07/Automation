@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 
+import static org.testng.AssertJUnit.fail;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,11 +10,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SocialHistoryPage.QuestionType;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
@@ -48,10 +52,10 @@ public class DiscreteFormsPage extends BasePageObject{
 	@FindBy(id="save_config_form") 
 	private WebElement btnSaveForms;
 	
-	private int waitingPeriod = 3;// in seconds
+	private int waitingPeriod = 5;// in seconds
 	
 	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
-
+	
 	public String getWelcomeMessage() {
 		return welcomeMessage;
 	}
@@ -63,23 +67,39 @@ public class DiscreteFormsPage extends BasePageObject{
 	}
 	
 	/**
+	 * @param xpath - xpath used to find the forms in forms config
+	 * @param count - number of the items found by the xpath
+	 * @throws InterruptedException
+	 */
+	public void waitForFormToDissappear(String xpath, int count) throws InterruptedException {
+		float timePassed = 0;
+		
+		while (driver.findElements(By.xpath(xpath)).size() == count) {
+			Thread.sleep(500);
+			 timePassed += 0.5;
+			if (timePassed > waitingPeriod)
+				fail("Waiting for form to be deleted is taking too long");
+		}
+	}
+	
+	/**
 	 * Description : Deletes all the unpublished forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
 	public void deleteAllUnPublishedForms() throws Exception {
 		List<WebElement> deleteButtons;
-		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
+		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :" + count);
+		
 		while (count > 0) {
 			deleteButtons = driver.findElements(By.xpath(xpath));
 			deleteButtons.get(0).click();
 			yesDeleteButton.click();
-			// wait until the deleted form disappears
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+			waitForFormToDissappear(xpath, count);
 			count--;
 		}
 	}
@@ -89,18 +109,17 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @throws Exception
 	 */
 	public void unpublishAllForms() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
+		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of Published rows is :" + count);
-		List<WebElement> unpublishButtonList = driver.findElements(By.xpath(xpath));
-
-		for (WebElement unpublishButton : unpublishButtonList) {		
-			unpublishButton.click();	
-			// wait until the unpublished form disappears from published section
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("(" + xpath + ")[" + String.valueOf(count) + "]")));
+		
+		while (count > 0) {		
+			List<WebElement> unpublishButtonList = driver.findElements(By.xpath(xpath));
+            unpublishButtonList.get(0).click();	
+			waitForFormToDissappear(xpath, count);
 			count--;
 		}
 
@@ -338,9 +357,22 @@ public class DiscreteFormsPage extends BasePageObject{
 		FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
 		
 		log("step 17: Click on Social History the last page of discrete form");
-		SocialHistoryPage pSocialHistoryPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
-		pSocialHistoryPage.showThisPage();
-		pSocialHistoryPage.clickSave();
+		SocialHistoryPage socialPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
+		socialPage.showThisPage();
+		
+		log("step 18: Try to save the form with uncomplete question");
+		socialPage.clickAddSection();
+		socialPage.clickOnNewSection();
+		socialPage.setSectionName("Additional questions");
+		socialPage.setQuestionName("added question");
+		socialPage.clickSave();
+		socialPage.errorMessageAppearedTest();
+		socialPage.setQuestionType(QuestionType.multiSelect);
+		socialPage.clickSave();
+		socialPage.errorMessageAppearedTest();
+		socialPage.setMultiSelectAnswers("1, 2, 3, or 4");
+		
+		socialPage.clickSave();
 	}
 	
 }
