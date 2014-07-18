@@ -23,6 +23,9 @@ public class CreateAccountExistingUserPage extends BasePageObject {
 	
 	@FindBy(xpath = "//div[@id='workflowMessage']/p/span[contains(.,'The information you entered matches an existing account.')]")
 	private WebElement titleMessage;
+	
+	@FindBy(name="phoneButton")
+	private WebElement btnPhoneVerify;
 
 	public CreateAccountExistingUserPage(WebDriver driver) {
 		super(driver);
@@ -56,6 +59,14 @@ public class CreateAccountExistingUserPage extends BasePageObject {
 		return IHGUtil.waitForElement(driver,6, titleMessage);
 	}
 	
-	
+	public CreatePatientVerifyPhonePage clickVerifyPhone(WebDriver driver) {
+		
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver,6, btnPhoneVerify);
+		
+		btnPhoneVerify.click();
+		
+		return PageFactory.initElements(driver, CreatePatientVerifyPhonePage.class);
+	}
 	
 }

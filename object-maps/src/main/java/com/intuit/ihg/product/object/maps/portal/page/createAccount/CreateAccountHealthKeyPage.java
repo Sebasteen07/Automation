@@ -24,6 +24,9 @@ public class CreateAccountHealthKeyPage extends BasePageObject {
 	@FindBy(xpath = "//div[@id='workflowMessage']/p/span[contains(.,'website that is a member of the Healthkey network')]")
 	private WebElement titleMessage;
 
+	@FindBy(name="phoneButton")
+	private WebElement btnPhoneVerify;
+	
 	public CreateAccountHealthKeyPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
@@ -56,5 +59,14 @@ public class CreateAccountHealthKeyPage extends BasePageObject {
 		return IHGUtil.waitForElement(driver,6, titleMessage);
 	}
 		
+	public CreatePatientVerifyPhonePage clickVerifyPhone(WebDriver driver) {
+		
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver,6, btnPhoneVerify);
+		
+		btnPhoneVerify.click();
+		
+		return PageFactory.initElements(driver, CreatePatientVerifyPhonePage.class);
+	}
 	
 }

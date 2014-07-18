@@ -1863,5 +1863,70 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
 
 	}
+	
+	/**
+	 * @Author:- Ivan David
+	 * @Date:-7/17/2014
+	 * @User Story ID US8868 in Rally
+	 * @StepsToReproduce:	1. go to patient portal
+	 *				      	2. click create account
+	 *				      	4. fill out patient info same as some existing patient with only 5 same values
+	 *				      	5. May Exist page should be shown
+	 *						6. Verify patient by phone
+	 *				      	7. login 
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthKey56MatchSamePractice() throws Exception {
+
+		// Instancing CreatePatientTest
+		HealthKeyMatchTest healthKeyMatch56 = new HealthKeyMatchTest();
+
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		// Executing Test
+		healthKeyMatch56.healthKey56SamePracticeMatch(driver, testcasesData);
+
+	}
+	
+	/**
+	 * @Author:- Ivan David
+	 * @Date:-7/17/2014
+	 * @User Story ID US8868 in Rally
+	 * @StepsToReproduce:	1. create patient in practice A
+	 *				      	2. go to practice B
+	 *				      	3. click create account
+	 *				      	4. fill out patient info same as patient in practice A only with 5 same values
+	 *				      	5. May Exist page should be shown
+	 *						6. Verify patient by phone
+	 *						7. HK page should be shown
+	 *				      	8. login 
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthKey56MatchDifferentPractice() throws Exception {
+		
+		// Instancing CreatePatientTest - create patient in practice A
+		CreatePatientTest createPatientTest = new CreatePatientTest();
+
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		// Executing Test
+		createPatientTest.createPatient(driver, testcasesData);
+
+		// Instancing healthkey test
+		HealthKeyMatchTest healthKeyMatch56 = new HealthKeyMatchTest();
+
+		// seting url for practice B
+		healthKeyMatch56.setUrl(testcasesData.getHealthKeyPracticeUrl());
+		healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), "tester");
+
+	}
 
 }
