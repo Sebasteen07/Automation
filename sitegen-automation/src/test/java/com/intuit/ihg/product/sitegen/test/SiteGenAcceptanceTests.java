@@ -1,12 +1,10 @@
 package com.intuit.ihg.product.sitegen.test;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.CustomFormPageForSitegen;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormBasicInfoPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormCurrentSymptomsPage;
@@ -14,6 +12,8 @@ import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormIllness
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormMedicationsPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormSocialHistoryPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.SpecialCharFormFirstPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.SpecialCharFormSecondPage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
@@ -33,10 +33,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormAdd
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLayoutPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.BasicInformationAboutYouPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.location.AddLocationPage;
@@ -55,7 +52,6 @@ import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ifs.csscat.core.WebDriverFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -67,7 +63,6 @@ import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
@@ -876,145 +871,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		merchantAcctPage.deleteExistingMerchantAcct();
 	}
-
-	/**
-	 * @throws Exception 
-	 * @Author:-bbinisha
-	 * @Date :- 07-03-2013
-	 * @UserStrory ID in Rally : US7093
-	 * @StepsToReproduce:
-	 * Login to Sitegen platform
-	 * Select 'Medfusion Site Administration' Practice
-	 * Select 'Discrete Form' solution
-	 * Remove all published forms from the published section (we don't want to create excessive amount of forms)
-	 * Click on Custom Form button
-	 * Click on the newly created form
-	 * Change the form name to a unique name
-	 * Make a heading item in the first section, write a heading title (A Custom Form)
-	 * Write 2 required questions in the second section, the second one with single select
-	 * Write 1 question to the third part. Make this question as unrequired.
-	 * Save form
-	 * Click on Publish button for the corresponding form
-	 * Move to Patient Portal URL: https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424
-	 * Sign in with a patient
-	 * Go through the form flow and fill in the necessary sections
-	 * Submit the form
-	 * Go to the health form section in the Patient Portal
-	 * Assure that PDF is displayed under the form name
-	 * Log in to practice portal - ajohnson / medfusion123
-	 * Click on the custom forms tab
-	 * Find the previously submitted form
-	 * ====================================================================================================================
-	 * ********** Invalid for PROD since both requirements is only for DEV3. ***************
-	 * ====================================================================================================================
-	 * 
-	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"})
-	public void testCustomForms() throws Exception {
-
-		log("testCustomForms");
-		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
-		log("Browser on which Test is running :"+TestConfig.getBrowserType());
-
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testCaseData = new SitegenTestData(sitegen);
-
-		log("Step1 :- Getting data from excel.");
-		logSGLoginInfo(testCaseData);
-
-		log("Step 2 :- Opening sitegen home page");
-		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testCaseData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = sloginPage.login(testCaseData.getFormUser(), testCaseData.getFormPassword());
-
-		log("Step 3 :- Navigating to the Practice page.");
-		SiteGenPracticeHomePage practiseHome = new SiteGenPracticeHomePage(driver);
-		practiseHome = sHomePage.clickLinkMedfusionSiteAdministration();
-
-		log("Step 4 : Navigating to 'Discrete Forms'");
-		DiscreteFormsPage discreteForm = practiseHome.clickOnDiscreteForms();
-		String parent_window = driver.getWindowHandle();
-		SitegenlUtil.switchToNewWindow(driver);
-		
-		log("Step 5 : Delete All Published Forms.'");
-		discreteForm.unpublishAllForms();	
-		discreteForm.deleteAllUnPublishedForms();
-
-		log("Step 6 : Add a new Custom Form");
-		discreteForm.createANewCustomForm();
-		
-		log("Step 7 : Open the newly created Custom Form");
-		CustomFormPage customFormPage = discreteForm.openCustomForm();
-		
-		String formName = SitegenConstants.CUSTOMFORMNAME+IHGUtil.createRandomNumericString().substring(0, 4);
-		log("Form Name *****" + formName);
-		
-		log("Step 8 : Change the custom form name to a uniquename");
-		customFormPage.renameCustomForm(formName);
-		
-		log("Step 9 : Fill the Custom Form details ");
-		customFormPage.clickFirstSection();
-		customFormPage.fillCustomFormDetails(SitegenConstants.HEADINGTITLE, SitegenConstants.QUESTIONTITLE1, SitegenConstants.QUESTIONTITLE2, SitegenConstants.AVAILABLE_ANSWERS);
-		
-		log("Step 10 : Publish the saved Custom Form");
-		customFormPage.publishTheSavedForm(formName);
-	
-		driver.close();
-		driver.switchTo().window(parent_window);
-	
-		log("Step 11 : Login to Patient portal");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, "https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424");
-		MyPatientPage pMyPatientPage = loginpage.login("autouser123","medfusion123");
-		
-		log("Step 12 : Click on 'Fill Out' link under 'Custom Form' section");
-		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
-		
-		log("Step 13 : Select "+formName+" custom form.");
-		CustomFormPageForSitegen pCustomForm = pHealthForm.selectCustomForm(formName);
-		
-		log("Step 14 : Fill out all the details");
-		pCustomForm.fillOutCustomForm(formName);
-		
-		log("Step 15 : Submit the Form.");
-		pCustomForm.submitCustomForm();
-		
-		log("Step 16 : Verify whether the form is completed and is displayed as PDF.");
-		pCustomForm.isFormDisplayedAsPDF();
-		
-		log("Step 17 : Logout of patient portal");
-		pMyPatientPage.logout(driver);
-		
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
-		log("Step 18 : Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());		
-		
-		log("Step 19 : Verify whether the practice home page is loaded.");
-		verifyTrue(practiceHome.isHomePageLoaded(), "Expected to see 'Recent Activity' on home page, but it was not found");
-		
-		log("step 20: On Practice Portal Home page Click CustomFormTab");
-		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-
-		log("step 21 : Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(
-				SitegenConstants.PATIENT_FIRSTNAME, SitegenConstants.PATIENT_LASTTNAME, SitegenConstants.PATIENT_DOBMONTH, SitegenConstants.PATIENT_DOBDAY,
-				SitegenConstants.PATIENT_DOBYEAR);
-
-		log("step 22: View the Result");
-		pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
-		
-		log("step 23 : Verify the Result");
-		HealthFormPage pHealthForm1 = new HealthFormPage(driver);
-		String actualPatientName = pHealthForm1.Patientname.getText().trim();
-
-		log("Displayed patient name is: " + actualPatientName);
-		verifyEquals(pHealthForm1.Patientname.getText().trim().contains("Patient Name : AutoPatient Medfusion"), true);
-	}
-	
-	
-	
 	
 	/**
 	 * @User Story ID in Rally: US544 - TA30648
@@ -1027,8 +883,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testDiscreteFormDeleteCreatePublish() throws Exception 
-	{	
+	public void testDiscreteFormDeleteCreatePublish() throws Exception {	
 		logTestEvironmentInfo("testDiscreteForm");
 
 		log("step 1: Get Data from Excel ##########");
@@ -1095,7 +950,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
 		
-		log("Step 2: LogIn");  
+		log("Step 2: Log in to Patient Portal");  
 		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
 		
@@ -1146,6 +1001,35 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
 	}
 
+
+	@Test(enabled = true)
+	public void testQuotationMarksInForm() throws Exception {
+		logTestEvironmentInfo("testDiscreteFormFill");
+
+		log("Step 1: Get Data from Excel ##########");
+		Portal portal = new Portal();
+		TestcasesData portalTestcasesData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
+		
+		log("Step 2: Log in to Patient Portal");  
+		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+		
+		log("Step 3: Go to forms page");
+		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
+		
+		log("Step 4: Open the right form");
+		formPage.openDiscreteForm("specialChars");
+		
+		log("Step 5: Fill the form out with values containing quotes");
+		SpecialCharFormFirstPage customPage1 = PageFactory.initElements(driver, SpecialCharFormFirstPage.class);
+		customPage1.selectQuotatedAnswers();
+		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveAndContinueButton(SpecialCharFormSecondPage.class);
+		customPage2.selectAnswerQuoteMark();
+		customPage2.signConsent();
+		customPage2.clickSaveAndContinueButton(null);
+		customPage2.submitForm();
+	}
 	
 	/**
 	 * @Author: Adam Warzel
@@ -1210,202 +1094,5 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
 		assertTrue(xml.contains(easyBruisingString));
-	}
-
-	/**
-	 * Test for Patient forms - custom forms
-	 * @throws Exception
-	 */
-
-	@Test(enabled = false, groups = {"AcceptanceTests"})
-	public void testCustomFormsEndToEnd() throws Exception {
-
-		logTestEvironmentInfo("testCustomForms");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testCaseData = new SitegenTestData(sitegen);
-
-		log("Step1 :- Getting data from excel.");
-		log("URL :"+testCaseData.getSiteGenUrl());
-		log("USERNAME :"+testCaseData.getFormUser());
-		log("PASSWORD :"+testCaseData.getFormPassword());
-
-		log("Step 2 :- Opening sitegen home page");
-		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testCaseData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = sloginPage.login(testCaseData.getFormUser(), testCaseData.getFormPassword());
-//		SiteGenHomePage sHomePage = sloginPage.login("fdrebin", "medfusion123");
-
-		log("Step 3 :- Navigating to the Practice page.");
-		SiteGenPracticeHomePage practiseHome = new SiteGenPracticeHomePage(driver);
-		practiseHome = sHomePage.clickLinkMedfusionSiteAdministration();
-
-		log("Step 4 : Navigating to 'Discrete Forms'");
-		DiscreteFormsPage discreteForm = practiseHome.clickOnDiscreteForms();
-		String parent_window = driver.getWindowHandle();
-		SitegenlUtil.switchToNewWindow(driver);
-		
-		log("Step 5 : Delete All Published Forms.'");
-		discreteForm.unpublishAllForms();	
-		discreteForm.deleteAllUnPublishedForms();
-
-		log("Step 6 : Add a new Custom Form");
-		discreteForm.createANewCustomForm();
-		
-		log("Step 7 : Open the newly created Custom Form");
-		CustomFormPage customFormPage = discreteForm.openCustomForm();
-		
-		String formName = SitegenConstants.CUSTOMFORMNAME+IHGUtil.createRandomNumericString().substring(0, 4);
-		log("Form Name *****"+formName);
-		
-		log("Step 8 : Change the custom form name to a uniquename");
-		customFormPage.renameCustomForm(formName);
-		
-		log("Step 9 : Fill the Custom Form details ");
-		customFormPage.fillCustomFormDetailsWithAllReqNUnReqQuestions(SitegenConstants.HEADINGTITLE);
-		
-		log("Step 10 : Publish the saved Custom Form");
-		customFormPage.publishTheSavedForm(formName);
-	
-		driver.switchTo().defaultContent();
-		driver.switchTo().window(parent_window);
-	
-		log("Step 11 : Login to Patient portal");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, "https://dev3.dev.medfusion.net/secure/welcome.cfm?gid=11264&muu=3424");
-		MyPatientPage pMyPatientPage = loginpage.login("autouser123","medfusion123");
-		
-		log("Step 12 : Click on 'Fill Out' link under 'Custom Form' section");
-		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
-		
-		log("Step 13 : Select "+formName+" custom form.");
-		CustomFormPageForSitegen pCustomForm = pHealthForm.selectCustomForm(formName);
-		
-		log("Step 14 : Fill out all the details");
-		pCustomForm.fillOutCustomForm2(formName);
-		
-		log("Step 15 : Submit the Form.");
-		pCustomForm.submitCustomForm();
-		
-		log("Step 16 : Verify whether the form is completed and is displayed as PDF.");
-		pCustomForm.isFormDisplayedAsPDF();
-		
-		log("Step 17 : Logout of patient portal");
-		pMyPatientPage.logout(driver);
-		driver.close();
-		WebDriver driver = WebDriverFactory.getWebDriver();
-		
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
-		log("Step 18 : Login to Practice Portal");
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());		
-				
-		log("step 19: On Practice Portal Home page Click CustomFormTab");
-		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-
-		log("step 20 : Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(
-				SitegenConstants.PATIENT_FIRSTNAME, SitegenConstants.PATIENT_LASTTNAME, SitegenConstants.PATIENT_DOBMONTH, SitegenConstants.PATIENT_DOBDAY,
-				SitegenConstants.PATIENT_DOBYEAR);
-
-		log("step 21: View the Result");
-		pSearchPatientFormsResultPage.clickOnSitegenCustomForm(formName);
-		
-		log("step 22 : Verify the Result");
-		HealthFormPage pHealthForm1 = new HealthFormPage(driver);
-		String actualPatientName = pHealthForm1.Patientname.getText().trim();
-
-		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm1.Patientname.getText().trim().contains("Patient Name : AutoPatient Medfusion"), true);
-	}
-	
-	@Test(enabled = false, groups = {"AcceptanceTests"})
-	public void testDiscreteFormFill() throws Exception {
-		logTestEvironmentInfo("testDiscreteFormFill");
-
-		log("Step 1: Get Data from Excel ##########");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		logSGLoginInfo(testcasesData);
-
-		log("Step 2 :- Opening sitegen home page");
-		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
-
-		log("Step 3: navigate to SiteGen PracticeHomePage ##########");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		
-		String discreteFormName = SitegenConstants.DISCRETEFORMNAME +IHGUtil.createRandomNumericString().substring(0, 4);
-		log("@@discrete form name@@" + discreteFormName);
-		
-		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
-				
-		log("Step 4: Click on Patient Forms");
-		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-		
-		assertTrue(pManageDiscreteForms.isPageLoaded());
-		
-		pManageDiscreteForms.unpublishAllForms();
-		pManageDiscreteForms.deleteAllUnPublishedForms();
-		pManageDiscreteForms.createNewDiscreteForm();
-		pManageDiscreteForms.renameDiscreteForm(discreteFormName);
-
-		WelcomeScreenPage pWelcomeScreenPage = pManageDiscreteForms.openDiscreteForm(discreteFormName); 
-		
-		log("Step 5: Change welcome message");
-		pWelcomeScreenPage.clickWelcomeMessagePage();
-		String welcomeMessage = SitegenConstants.DISCRETEFORM_WELCOME_MESSAGE;
-		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
-		
-		log("step 6:Click on Basic Information About You");
-		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
-		pBasicInfoAboutYou.selectAdditionalInfo();
-		pBasicInfoAboutYou.clickSave();
-					
-		log("Step 18 : Publish the saved Discrete Form");
-		pManageDiscreteForms.publishTheSavedForm(discreteFormName);
-				
-		log("Step 19 : Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle descriptor
-		driver.close();
-		driver.switchTo().window(parentHandle);
-		pSiteGenPracticeHomePage.clicklogout();
-		
-		log("step 1 : Go to Patient Portal using the original window");
-		
-		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-		log("URL: " + portalTestcasesData.getFormsUrl());
-
-		log("step 2 and 3: Click on Sign Up Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
-		log("email:-" + email);
-		
-		CreatePatientTest createPatient = new CreatePatientTest();
-		createPatient.setUrl(portalTestcasesData.getFormsUrl());
-		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
-
-		log("step 4: Click On Start Registration Button");
-		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		
-		log("step 5: Verify new welcome text on welcome page");
-	//	verifyTrue(pFormWelcomePage.welcomeMessageContent(SitegenConstants.DISCRETEFORM_WELCOME_MESSAGE));
-		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton(FormBasicInfoPage.class);
-		
-		log("Step 6: Fill in Basic info about you");
-		pFormBasicInfoPage.saveAndFinishAnotherTime();
-		
-		log("Step 19 : Click on 'Fill Out' link under 'Custom Form' section");
-		pMyPatientPage.clickFillOutFormsLink();
-		
-		log("Step 20 : Select " + discreteFormName + " discrete form");
-		CustomFormPageForSitegen pCustomForm = new CustomFormPageForSitegen(driver);
-		verifyTrue(pCustomForm.isLastSaveDate(discreteFormName));
-		
-		log("Step 21 : Logout of patient portal");
-		pMyPatientPage.logout(driver);
-		
-		driver.close();	
 	}
 }

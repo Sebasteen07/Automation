@@ -52,7 +52,7 @@ public class DiscreteFormsPage extends BasePageObject{
 	@FindBy(id="save_config_form") 
 	private WebElement btnSaveForms;
 	
-	private int waitingPeriod = 5;// in seconds
+	private int waitingPeriodSeconds = 10;
 	
 	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
 	
@@ -76,8 +76,8 @@ public class DiscreteFormsPage extends BasePageObject{
 		
 		while (driver.findElements(By.xpath(xpath)).size() == count) {
 			Thread.sleep(500);
-			 timePassed += 0.5;
-			if (timePassed > waitingPeriod)
+			timePassed += 0.5;
+			if (timePassed > waitingPeriodSeconds)
 				fail("Waiting for form to be deleted is taking too long");
 		}
 	}
