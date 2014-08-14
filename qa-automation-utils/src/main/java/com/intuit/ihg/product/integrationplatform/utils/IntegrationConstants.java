@@ -76,5 +76,10 @@ public class IntegrationConstants {
 	//Read Communication
 	public static final String READCOMMUNICATION = "ReadCommunication";
 	public static final String READDATETIMESTAMP = "readdatetimestamp";
+	
+	//All Script CCD
+	public static final String TRANSPORTSTATUS = "ns4:TransportStatus";
+	public static final String CCDSTATUS = "Success";
+	
 
 }

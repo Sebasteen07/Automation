@@ -1,11 +1,15 @@
 	package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,9 +29,11 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
@@ -320,6 +326,8 @@ public class RestUtils {
         httpPostReq.setEntity(se);
         httpPostReq.addHeader("Accept", "application/xml");
         httpPostReq.addHeader("Content-Type", "application/xml");
+        httpPostReq.addHeader("Noun", "Encounter");
+        httpPostReq.addHeader("Verb", "Completed");
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
@@ -437,7 +445,6 @@ public class RestUtils {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(response);
-
 		doc.getDocumentElement().normalize();
 		return doc;
 	}
@@ -888,4 +895,78 @@ public class RestUtils {
 		Node node = (Node) nodes.item(0);
 		return node.getNodeValue();
 		}
+	
+	/**
+	 * 
+	 * @param strUrl
+	 * @param payload
+	 * @param responseFilePath
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException 
+	 */
+	public static void setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath) throws IOException, URISyntaxException{
+		IHGUtil.PrintMethodName();
+    	
+		HttpClient client = new DefaultHttpClient();
+        Log4jUtil.log("Post Request Url: "+ strUrl);
+        
+        HttpPost request = new HttpPost();
+        request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        request.setURI(new URI(strUrl));
+        request.setEntity(new StringEntity(payload));
+        request.setHeader("Noun", "Encounter");
+        request.setHeader("Verb", "Completed");
+        Log4jUtil.log("Post Request Url4: ");
+        HttpResponse response = client.execute(request);
+        String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		Assert.assertTrue(response.getStatusLine().getStatusCode() == 200
+				|| response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is "
+						+ response.getStatusLine().getStatusCode()
+						+ " instead of 200/202. Response message:\n"
+						+ sResp);
+		Log4jUtil.log("Response Code" +response.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
+   	}
+	
+	/**
+	 * 
+	 * @param fileName
+	 * @return
+	 * @throws IOException 
+	 */
+	public static String readXMLfile(String fileName) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
+		String line;
+		StringBuilder sb = new StringBuilder();
+		while((line=br.readLine())!= null){
+	    sb.append(line.trim());
+	   	}
+		br.close();
+	 return sb.toString();
+	}
+	/**
+	 * 
+	 * @param responsePath
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public static boolean isCCDProcessingCompleted(String responsePath) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(responsePath);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.TRANSPORTSTATUS);
+		{
+		BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.CCDSTATUS),
+		"There should be 1 Status element in processing status response");
+		}	
+		return true;
+	}
+
+	
 }
