@@ -82,7 +82,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	 */
 
 	
-	////////@Test      (enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	//////////@Test      (enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
 	 log("+++++++++++++ Test run+++++++++++");
@@ -101,7 +101,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/*
-	//@Test      (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	////@Test      (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -971,7 +971,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		}
 		
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-		public void testAllScriptsendCCD() throws Exception {
+		public void testAllScriptImportCCD() throws Exception {
 			
 			log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
 			AllScript allScriptData = new AllScript();

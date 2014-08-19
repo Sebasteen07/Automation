@@ -1,4 +1,3 @@
-
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
 <S:Header/>
 <S:Body>
@@ -19,7 +18,7 @@
 		</KeyedValue>
 		<KeyedValue>
 			<Key>PatientID</Key>
-			<Value>20130801276</Value>
+			<Value>02175110</Value>
 		</KeyedValue>
 		<KeyedValue>
 			<Key>ProviderID</Key>
@@ -57,9 +56,9 @@
 			<MessageID xmlns="urn:Allscripts:mombt">8aa5d265-6875-44e7-b3f1-084b71d22a4e</MessageID>
 			<ReplyToMessageID xmlns="urn:Allscripts:mombt"/>
 			<Patient xmlns="urn:Allscripts:mombt">
-				<Mrn>20130801276</Mrn>
+				<Mrn>02175110</Mrn>
 				<IDs>
-					<CodeValue>49317</CodeValue>
+					<CodeValue>75110</CodeValue>
 					<CodeDescription>Intuit Patient</CodeDescription>
 					<CodeType>Id</CodeType>
 					<CodingSystem>Intuit</CodingSystem>
