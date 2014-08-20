@@ -84,6 +84,9 @@ public class SocialHistoryPage extends BasePageObject{
 	@FindBy(id = "custom_title_socialhistory_section_0")
 	private WebElement customSectionName;
 	
+	@FindBy(linkText = "Insert An Item")
+	private WebElement insertItemButton;
+	
 	@FindBy(id = "custom_questiontitle_socialhistory_section_0")
 	private WebElement questionNameField;
 	
@@ -211,5 +214,9 @@ public class SocialHistoryPage extends BasePageObject{
       */
      public void errorMessageAppearedTest() {
     	 assertTrue(errorNotification.isDisplayed());
+     }
+     
+     public void clickInsertItemButton() {
+    	 insertItemButton.click();
      }
 }

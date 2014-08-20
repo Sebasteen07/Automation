@@ -44,8 +44,11 @@ public class SpecialCharFormFirstPage extends BasePageObject {
 	 * @brief Selects checkboxes in the form that contain quotations marks - "
 	 */
 	public void selectQuotatedAnswers() {
-		feverCheck.click();
-		coughCheck.click();
+		if (feverCheck.isSelected() == false) 
+			feverCheck.click();
+		
+		if (coughCheck.isSelected())
+			coughCheck.click();
 	}
 	
 }

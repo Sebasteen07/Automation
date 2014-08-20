@@ -1048,6 +1048,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml = new String();
 		String easyBruisingString = new String("Easy bruising");
+		String diacriticString = new String("¿¡eñÑeŘ");
 		
 		logTestEvironmentInfo("testDiscreteFormPDF");
 		
@@ -1073,11 +1074,19 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 4: Select symptoms for the patient");
 		currentSymptomsPage.setBasicSymptoms();
+		currentSymptomsPage.enterComment(diacriticString);
+		
+		log("Step 5: Close and reopen the form");
+		currentSymptomsPage.closeForm();
+		formsPage.openDiscreteForm("pdfForm");
+		
+		log("Test if correct values are prefilled");
+		assertEquals(currentSymptomsPage.getCommentTextContent(), diacriticString);
+		assertTrue( currentSymptomsPage.getCheckEarache().isSelected(),
+					"The earache checkbox was not prefilled as expected" );
 		
 		log("Step 5: Go through the rest of the form and submit it");
 		FormMedicationsPage pFormMedicationsPage = currentSymptomsPage.clickSaveAndContinueButton();
-		
-		log("step 6: Set Medication Form Fields");
 		pFormMedicationsPage.setMedicationFormFields();
 	
 		log("step 7: Set Social History Form Fields and submit the form");

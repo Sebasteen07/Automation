@@ -57,7 +57,8 @@ public class SpecialCharFormSecondPage extends BasePageObject {
 	 * @brief Signs consent with a name containing quote marks
 	 */
 	public void signConsent() {
-		consent.sendKeys("Frankie \"Tester\" Testguy");
+		if (consent.getText().length() == 0)
+			consent.sendKeys("Frankie \"Tester\" Testguy");
 	}
 	
 	/**

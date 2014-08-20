@@ -364,6 +364,7 @@ public class DiscreteFormsPage extends BasePageObject{
 		socialPage.clickAddSection();
 		socialPage.clickOnNewSection();
 		socialPage.setSectionName("Additional questions");
+		socialPage.clickInsertItemButton();
 		socialPage.setQuestionName("added question");
 		socialPage.clickSave();
 		socialPage.errorMessageAppearedTest();
