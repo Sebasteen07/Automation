@@ -213,62 +213,18 @@ public class DiscreteFormsPage extends BasePageObject{
 		return PageFactory.initElements(driver, WelcomeScreenPage.class);
 	}
 	
-
-
-/**
-	 * * @author Shanthala
-	 * @Desc:- click on Link Custom Form
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 * 
-	 */
-
-	//public DiscreteFormConfigurationUtilityPage clickLnkDiscreteForms() throws Exception {
-/*	public DiscreteFormsPage clickLnkDiscreteForms() throws Exception {
-
-		log("Clicking on Discrete forms");
-		IHGUtil.waitForElement(driver, 50, lnkDiscreteForms);
-		try {
-			lnkDiscreteForms.click();
-		}catch(Exception e) {
-			lnkDiscreteForms.click();
-		}
-		Thread.sleep(2000);
-		for(String winHandle : driver.getWindowHandles()){
-			driver.switchTo().window(winHandle);
-		}
-		if(TestConfig.getBrowserType().equals(BrowserTypeUtil.BrowserType.iexplore)) {
-			driver.manage().window().maximize();
-		}
-
-		return PageFactory.initElements(driver, DiscreteFormsPage.class);
-
-	}*/
-	
-	
 	/**
 	 * Click on link - General Registration and Health History	
 	 * @return
 	 * @throws InterruptedException 
 	 */
 	
-	public BasicInformationAboutYouPage clicklnkAutomationPracticeDiscreteForm() throws InterruptedException
-	{	
+	public BasicInformationAboutYouPage clicklnkAutomationPracticeDiscreteForm() throws InterruptedException {	
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 		
 		IHGUtil.waitForElement(driver, 30, lnkAutomationPracticeDiscreteForm);
 		lnkAutomationPracticeDiscreteForm.click();
-		
-		/*
-		lnkGeneralRegAndHealthHistory.click();
-		
-		IHGUtil.waitForElement(driver, 30, lnkUnPublishForm);
-		lnkUnPublishForm.click();
-		Thread.sleep(2000);
-		lnkDeletePublishForm.click();
-		
-		*/
 			
 		// Close the browser window
 		return PageFactory.initElements(driver,BasicInformationAboutYouPage.class);
@@ -311,56 +267,56 @@ public class DiscreteFormsPage extends BasePageObject{
 		pWelcomeScreenPage.clickWelcomeMessagePage();
 		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
 		
-		log("step 5: Click on Basic Information About You");
+		log("substep 1: Click on Basic Information About You");
 		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
 		log("select some basic questions to appear in the form");
 		pBasicInfoAboutYou.selectBasicInfo();
 		
-		log("step 6: Click on Emergency Contact Information");
+		log("substep 2: Click on Emergency Contact Information");
 		EmergencyContactInformationPage pEmergencyContactInfoPage = pBasicInfoAboutYou.clickLnkEmergency();
 		pEmergencyContactInfoPage.selectBasicInfo();
 		
-		log("step 7a: Click on Health Insurance Information");
+		log("substep 3a: Click on Health Insurance Information");
 		HealthInsuranceInformationPage pHealthInsuranceInfoPage = pEmergencyContactInfoPage.clicklnkInsurance();
 		pHealthInsuranceInfoPage.selectInsuranceCompanyQuestion();
 		
-		log("step 7b: Click on Secondary Health Insurance Information");	
+		log("substep 3b: Click on Secondary Health Insurance Information");	
 		SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkSecondaryInsurance() ;
 		pSecondaryHealthInsurancePage.selectInsuranceCompanyQuestion();
 		
-		log("step 8: Click on Other Doctors You Have Seen");
+		log("substep 4: Click on Other Doctors You Have Seen");
 		OtherDoctorsYouSeen pOtherDoctorsYouSeen = pSecondaryHealthInsurancePage.clicklnkOtherDoctors();
 		
-		log("step 9: Click on Current Symptoms");
+		log("substep 5: Click on Current Symptoms");
 		CurrentSymptomsPage pCurrentSymptomsPage = pOtherDoctorsYouSeen.clicklnkCurrentSymptoms();
 		pCurrentSymptomsPage.selectBasicSymptoms();
 		
-		log("step 10: Click on Medications link");
+		log("substep 6: Click on Medications link");
 		MedicationsPage pMedicationPage = pCurrentSymptomsPage.clicklnkMedications();
 	
-		log("step 11: Click on Allergies link");
+		log("substep 7: Click on Allergies link");
 		Allergiespage pAllergiesPage = pMedicationPage.clicklnkAllergies();
 				
-		log("step 12: Click on Vaccinations");
+		log("substep 8: Click on Vaccinations");
 		VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkVaccinations();
 				
-		log("step 13: Click on SurgeriesAndHospitalizationsPage");
+		log("substep 9: Click on SurgeriesAndHospitalizationsPage");
 		SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkSurgsHosps();
 		
-		log("step 14: Click on Exam Test and  Procedures");
+		log("substep 10: Click on Exam Test and  Procedures");
 		ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
 		
-		log("step 15: Click on Illness and Conditions");
+		log("substep 11: Click on Illness and Conditions");
 		IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
 		
-		log("step 16: Click on Family Medical History");
+		log("substep 12: Click on Family Medical History");
 		FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
 		
-		log("step 17: Click on Social History the last page of discrete form");
+		log("substep 13: Click on Social History the last page of discrete form");
 		SocialHistoryPage socialPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();
 		socialPage.showThisPage();
 		
-		log("step 18: Try to save the form with uncomplete question");
+		log("substep 14: Try to save the form with uncomplete question");
 		socialPage.clickAddSection();
 		socialPage.clickOnNewSection();
 		socialPage.setSectionName("Additional questions");

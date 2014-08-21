@@ -943,7 +943,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
 		String discreteFormName = "Form for Practice view test"; 
 		
-		logTestEvironmentInfo("testDiscreteFormFill");
+		logTestEvironmentInfo("testFormPracticePortal");
 
 		log("Step 1: Get Data from Excel ##########");
 		Portal portal = new Portal();
