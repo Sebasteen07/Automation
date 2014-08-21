@@ -44,7 +44,7 @@
       <LastName>Franicky</LastName>
       <Suffix>Suffix</Suffix>
     </Name>
-    <DateOfBirth>1980-12-31T12:00:01</DateOfBirth>
+    <DateOfBirth>1987-01-11T12:00:01</DateOfBirth>
     <Race>American Indian or Alaska Native</Race>
     <Ethnicity>Hispanic or Latino</Ethnicity>
     <Gender>MALE</Gender>
@@ -99,7 +99,7 @@
         <City></City>
         <State></State>
         <Country></Country>
-        <ZipCode></ZipCode>
+        <ZipCode>27560</ZipCode>
       </Address>
       <Phone>Phone</Phone>
     </Employment>
