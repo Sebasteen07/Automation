@@ -19,7 +19,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormWelcomePage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class HealthFormPage extends BasePageObject {
@@ -265,8 +265,7 @@ public class HealthFormPage extends BasePageObject {
 	 *            String value determining which form to open
 	 * @return method returns initialized object for Welcome page of the form
 	 */
-	public FormWelcomePage openDiscreteForm(String selectedForm)
-			throws Exception {
+	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 8);
 
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame

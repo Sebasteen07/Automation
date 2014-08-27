@@ -1,23 +1,17 @@
-package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
+package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-//import com.intuit.ihg.product.portal.utils.PortalConstants;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
-public class FormVaccinePage extends BasePageObject 
-{
+public class FormVaccinePage extends PortalFormPage {
 
 	public FormVaccinePage(WebDriver driver)  {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 
@@ -44,8 +38,7 @@ public class FormVaccinePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */	
-	public void setTetanus(String type) throws Exception 
-	{
+	public void setTetanus(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(tetanusvaccination);
@@ -57,8 +50,7 @@ public class FormVaccinePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */	
-	public void setHPV(String type) throws Exception 
-	{
+	public void setHPV(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(hpvvaccination);
@@ -70,8 +62,7 @@ public class FormVaccinePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */	
-	public void setInfluenza(String type) throws Exception 
-	{
+	public void setInfluenza(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(influeenzavaccination);
@@ -83,8 +74,7 @@ public class FormVaccinePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */	
-	public void setPneumonia(String type) throws Exception 
-	{
+	public void setPneumonia(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(pneumoniavaccination);
@@ -96,49 +86,10 @@ public class FormVaccinePage extends BasePageObject
 	 * @return
 	 * @throws Exception
 	 */	
-	public void clickTetanus() throws Exception 
-	{
+	public void clickTetanus() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		tdapimmunization.click();
-	}
-
-	/**
-	 * @Description:Click on Save and Continue Form Button
-	 * @return
-	 * @throws Exception
-	 */	
-	public FormSurgeriesHospitalizationsPage clickSaveAndContinueButton() throws Exception
-	{
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
-		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver,FormSurgeriesHospitalizationsPage.class);
-	}
-
-	/**
-	 * @Description:Set Vaccine Form Fields
-	 * @return FormSurgeriesHospitalizationsPage
-	 * @throws Exception
-	 */
-	public FormSurgeriesHospitalizationsPage setVaccineFormFields() throws Exception
-	{
-		//setTetanus(PortalConstants.Tetanus);
-
-		//setHPV(PortalConstants.HPV);
-
-		//setInfluenza(PortalConstants.Influenza);
-
-		//setPneumonia(PortalConstants.Pneumonia);
-
-		//clickTetanus();
-
-		clickSaveAndContinueButton();
-		return PageFactory.initElements(driver,FormSurgeriesHospitalizationsPage.class);
-
-
 	}
 
 }

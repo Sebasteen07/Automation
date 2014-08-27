@@ -1,14 +1,12 @@
-package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
+package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 
-public class FormMedicationsPage extends BasePageObject
+public class FormMedicationsPage extends PortalFormPage 
 {
 
 
@@ -31,19 +29,6 @@ public class FormMedicationsPage extends BasePageObject
 	public void setNoMedications() throws Exception {
 		if (noMedications.isSelected() == false)
 			noMedications.click();
-	}
-
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends BasePageObject> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver, nextPageClass);
 	}
 
 	/**

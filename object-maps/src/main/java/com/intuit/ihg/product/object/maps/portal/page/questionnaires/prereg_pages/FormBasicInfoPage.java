@@ -1,18 +1,17 @@
-package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
+package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
-public class FormBasicInfoPage extends BasePageObject
+public class FormBasicInfoPage extends PortalFormPage 
 {
 
 	public FormBasicInfoPage(WebDriver driver) {
@@ -20,46 +19,46 @@ public class FormBasicInfoPage extends BasePageObject
 		// TODO Auto-generated constructor stub
 	}
 	
-	@FindBy(id="streetaddr1")
+	@FindBy(id = "streetaddr1")
 	private WebElement address;
 
-    @FindBy(id="city")
+    @FindBy(id = "city")
 	private WebElement city;
 
-    @FindBy(id="state")
+    @FindBy(id = "state")
     private WebElement state;
 
-    @FindBy(id="postalcode")
+    @FindBy(id = "postalcode")
 	private WebElement zip;
 
-    @FindBy(id="primaryphone_phone")
+    @FindBy(id = "primaryphone_phone")
 	private WebElement primaryPhone;
 
-    @FindBy(id="primaryphone_type")
+    @FindBy(id = "primaryphone_type")
     private WebElement primaryPhoneType;
     
-    @FindBy(id="gender")
+    @FindBy(id = "gender")
     private WebElement gender;
     
-	@FindBy(id="maritalstatus")
+	@FindBy(id = "maritalstatus")
 	private WebElement maritalStatus;
 
-	@FindBy(id="preferredcontact")
+	@FindBy(id = "preferredcontact")
 	private WebElement preferredCommunication;
 
-	@FindBy(id="language")
+	@FindBy(id = "language")
 	private WebElement preferredLanguage;
 
-	@FindBy(id="race")
+	@FindBy(id = "race")
 	private WebElement race;
 
-	@FindBy(id="ethnicity")
+	@FindBy(id = "ethnicity")
 	private WebElement ethnicity;
 
-	@FindBy(id="formeditor")
+	@FindBy(id = "formeditor")
 	private WebElement whoIsFillingOutForm;
 
-	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
+	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 	
 	@FindBy(className = "save")
@@ -70,13 +69,11 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setStreetAddress() throws Exception 
-	{
+	public void setStreetAddress() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		address.clear();
 		address.sendKeys(PortalUtil.createRandomNumericString(4)+"Required St");
-		
 	}
 	
 	/**
@@ -84,13 +81,11 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setCity() throws Exception 
-	{
+	public void setCity() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		city.clear();
 		city.sendKeys(PortalUtil.createRandomNumericString(4)+"-City");
-		
 	}
 	
 	
@@ -99,8 +94,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setState(String type) throws Exception 
-	{
+	public void setState(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(state);
@@ -113,13 +107,11 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setZip() throws Exception 
-	{
+	public void setZip() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		zip.clear();
 		zip.sendKeys(PortalUtil.createRandomNumericString(5));
-		
 	}
 	
 	/**
@@ -127,13 +119,11 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setPrimaryPhoneNumber() throws Exception 
-	{
+	public void setPrimaryPhoneNumber() throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		primaryPhone.clear();
 		primaryPhone.sendKeys("919-555-"+PortalUtil.createRandomNumericString(4));
-		
 	}
 	
 	/**
@@ -141,8 +131,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setPrimaryPhoneType(String type) throws Exception 
-	{
+	public void setPrimaryPhoneType(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(primaryPhoneType);
@@ -154,8 +143,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setSex(String type) throws Exception 
-	{
+	public void setSex(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(gender);
@@ -168,8 +156,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setMaritalStatus(String type) throws Exception 
-	{
+	public void setMaritalStatus(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(maritalStatus);
@@ -181,8 +168,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setPreferredCommunication(String type) throws Exception 
-	{
+	public void setPreferredCommunication(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(preferredCommunication);
@@ -194,8 +180,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setPreferredLanguage(String type) throws Exception 
-	{
+	public void setPreferredLanguage(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(preferredLanguage);
@@ -207,8 +192,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setRace(String type) throws Exception 
-	{
+	public void setRace(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(race);
@@ -220,8 +204,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setEthnicity(String type) throws Exception 
-	{
+	public void setEthnicity(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(ethnicity);
@@ -233,8 +216,7 @@ public class FormBasicInfoPage extends BasePageObject
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setWhoIsFillingOutForm(String type) throws Exception 
-	{
+	public void setWhoIsFillingOutForm(String type) throws Exception {
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(whoIsFillingOutForm);
@@ -242,28 +224,11 @@ public class FormBasicInfoPage extends BasePageObject
 	}
 
 	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends BasePageObject> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(saveAndContinuebtn));
-		saveAndContinuebtn.click();
-		return PageFactory.initElements(driver, nextPageClass);
-	}
-
-
-	/**
 	 * @Description:Set Basic Information Form Fields
 	 * @return FormEmergencyContactPage
 	 * @throws Exception
 	 */
-	public FormEmergencyContactPage setBasicInfoFromFields() throws Exception
-	{ 
+	public FormEmergencyContactPage setBasicInfoFromFields() throws Exception { 
 		setStreetAddress();		
 		setCity();		
 		setState(PortalConstants.State);		
@@ -276,8 +241,7 @@ public class FormBasicInfoPage extends BasePageObject
 
 	}
 	
-	public void saveAndFinishAnotherTime() throws Exception
-	{
+	public void saveAndFinishAnotherTime() throws Exception {
 		setStreetAddress();		
 		setCity();		
 		setState(PortalConstants.State);		
