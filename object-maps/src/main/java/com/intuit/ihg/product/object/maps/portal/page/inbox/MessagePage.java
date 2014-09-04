@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.object.maps.portal.page.inbox;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -68,6 +69,8 @@ public class MessagePage extends BasePageObject {
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"Your health information was sent to ihg_qa@direct.healthvault.com!"};
+	
+	private WebElement messageHeader;
 
 	public MessagePage(WebDriver driver) {
 		super(driver);
@@ -81,7 +84,7 @@ public class MessagePage extends BasePageObject {
 	public String getPracticeReplyMessageTitle() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,10,practiceResponseSubject);
+		IHGUtil.waitForElement(driver,30,practiceResponseSubject);
 		return practiceResponseSubject.getText();
 	}
 	
@@ -209,4 +212,18 @@ public class MessagePage extends BasePageObject {
 		  log(textBoxResponseMsg.getText().toString());
 		  Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
 		 }
+	
+	public boolean isSubjectLocated(String subject) throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		messageHeader = driver.findElement(By.xpath("// * [contains(text(),'" + subject + "')]"));
+		if (messageHeader.isDisplayed()) { 
+		log("Subject found");	
+		return true;
+		}
+		else {
+			log("Subject not found");
+			return false;
+			}
+		}
 }
