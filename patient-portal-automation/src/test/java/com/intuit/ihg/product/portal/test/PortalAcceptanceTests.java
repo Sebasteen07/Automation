@@ -302,7 +302,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientOnBetaSite() throws Exception {
 		
 		// Instancing CreatePatientTest
@@ -457,9 +457,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 20: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "] but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
+
 	}
 
 	/**
@@ -718,9 +717,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 19: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 	}
 
 	/**
@@ -966,10 +963,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
-		
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
 		
 		log("step 22: Reply back to practice");
 		inboxPage = message.replyToMessage(null);
@@ -1414,9 +1408,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 14: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
 	}
 
