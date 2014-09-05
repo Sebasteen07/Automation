@@ -56,10 +56,11 @@ public class MessageCenterInboxPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 10, inboxTab);
-		
+		log("Opening message with subject "+uniqueSubString);
 		WebElement message = driver.findElement(By.xpath("//span[contains(.,'"+uniqueSubString+"')]/../.."));
 		IHGUtil.waitForElement(driver, 10, message);
 		message.click();
+		IHGUtil.waitForElement(driver, 10, inboxTab);
 		
 		return PageFactory.initElements(driver, MessagePage.class);
 	}
