@@ -3,6 +3,7 @@ package com.intuit.ihg.product.portal.test;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
@@ -1258,7 +1259,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			// Now start login with practice data
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 			PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
+			
 			log("step 9: On Practice Portal Home page Click SymptomAssessmentTab");
 			SymptomAssessmentFilterPage pSymptomAssessmentFilter = practiceHome.clicksymptomAssessmentTab();
 
@@ -1290,9 +1291,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			MessagePage message = inboxPage.openMessageInInbox(practiceResponse);
 
 			log("step 17: Validate message loads and is the right message");
-			String actualSubject = message.getPracticeReplyMessageTitle();
-			assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
-					+ "but actual subject was [" + actualSubject + "]");
+			assertTrue(message.isSubjectLocated(practiceResponse));
 			
 		}
 	}
@@ -1483,9 +1482,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 11: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
 	}
 
