@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -69,8 +71,6 @@ public class MessagePage extends BasePageObject {
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"This Direct Address appears to be invalid. Your message was not sent.",
 			"Your health information was sent to ihg_qa@direct.healthvault.com!"};
-	
-	private WebElement messageHeader;
 
 	public MessagePage(WebDriver driver) {
 		super(driver);
@@ -215,8 +215,11 @@ public class MessagePage extends BasePageObject {
 	
 	public boolean isSubjectLocated(String subject) throws InterruptedException{
 		IHGUtil.PrintMethodName();
+		
 		PortalUtil.setPortalFrame(driver);
-		messageHeader = driver.findElement(By.xpath("// * [contains(text(),'" + subject + "')]"));
+		log("Looking for message with Header "+subject);
+		wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
+		WebElement	messageHeader = driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
 		if (messageHeader.isDisplayed()) { 
 		log("Subject found");	
 		return true;
