@@ -75,7 +75,7 @@ public class PracticeLoginPage extends BasePageObject {
 		userName.sendKeys(providedUerName);
 		password.sendKeys(providedPassword);
 		btnLogin.click();
-
+		IHGUtil.printCookies(driver);
 		return PageFactory.initElements(driver, PracticeHomePage.class);
 	}
 

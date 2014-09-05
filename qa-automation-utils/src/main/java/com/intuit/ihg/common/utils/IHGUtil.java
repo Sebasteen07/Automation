@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
@@ -1364,5 +1365,15 @@ public class IHGUtil extends BasePageObject {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void printCookies(WebDriver driver) {
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		System.out.println("Printing Cookies -------");
+		for (Cookie c : cookies) {
+			System.out.println(c.toString());
+		}
+		System.out.println("--------------------------");
 	}
 }
