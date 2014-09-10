@@ -209,4 +209,9 @@ public class MessagePage extends BasePageObject {
 		  log(textBoxResponseMsg.getText().toString());
 		  Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
 		 }
+	
+	public WebElement GetWebframe()
+	{
+		return webframe;
+	}
 }
