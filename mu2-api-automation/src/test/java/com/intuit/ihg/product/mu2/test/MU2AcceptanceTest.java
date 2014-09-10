@@ -27,8 +27,8 @@ import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
 
-public class MU2AcceptanceTest extends BaseTestNGWebDriver { 
-
+public class MU2AcceptanceTest extends BaseTestNGWebDriver {
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMU2PullAPI() throws Exception {
 		log("Test Case: MU2 Pull API and VDT - Account Activity verification");

@@ -3,7 +3,7 @@ package com.intuit.ihg.common.utils;
 public class EnvironmentTypeUtil {
 	
  public enum EnvironmentType {
-			DEV3, QA1, P10INT, DEMO, PROD
+			DEV3, QA1, P10INT, DEMO, PROD, PROD_access
 		               }
 
 	/**
@@ -29,6 +29,8 @@ public class EnvironmentTypeUtil {
 				return EnvironmentType.PROD;
 			else if (env.equalsIgnoreCase("DEV3"))
 				return EnvironmentType.DEV3;
+			else if (env.equalsIgnoreCase("PROD_access"))
+				return EnvironmentType.PROD_access;
 			else 
 				return EnvironmentType.DEV3;
 	}

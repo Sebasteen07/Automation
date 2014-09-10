@@ -3,6 +3,7 @@ package com.intuit.ihg.product.portal.test;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
@@ -302,7 +303,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientOnBetaSite() throws Exception {
 		
 		// Instancing CreatePatientTest
@@ -457,9 +458,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 20: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "] but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
+
 	}
 
 	/**
@@ -718,9 +718,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 19: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 	}
 
 	/**
@@ -966,10 +964,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
-		
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
 		
 		log("step 22: Reply back to practice");
 		inboxPage = message.replyToMessage(null);
@@ -1264,7 +1259,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			// Now start login with practice data
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 			PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
+			
 			log("step 9: On Practice Portal Home page Click SymptomAssessmentTab");
 			SymptomAssessmentFilterPage pSymptomAssessmentFilter = practiceHome.clicksymptomAssessmentTab();
 
@@ -1296,9 +1291,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			MessagePage message = inboxPage.openMessageInInbox(practiceResponse);
 
 			log("step 17: Validate message loads and is the right message");
-			String actualSubject = message.getPracticeReplyMessageTitle();
-			assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
-					+ "but actual subject was [" + actualSubject + "]");
+			assertTrue(message.isSubjectLocated(practiceResponse));
 			
 		}
 	}
@@ -1340,7 +1333,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click on PrescriptionRenewal Link ");
 		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
@@ -1414,9 +1407,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 14: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
 	}
 
@@ -1457,7 +1448,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click on Make Payment Link ");
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
@@ -1491,9 +1482,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 11: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
 	}
 
@@ -1662,7 +1651,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click PHR Link");
 		PHRPage pPHRPage = myPatientPage.clickPHR(driver);
