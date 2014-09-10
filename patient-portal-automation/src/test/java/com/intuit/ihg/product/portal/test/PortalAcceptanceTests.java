@@ -1340,7 +1340,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click on PrescriptionRenewal Link ");
 		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
@@ -1457,7 +1457,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click on Make Payment Link ");
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
@@ -1662,7 +1662,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
+		verifyEquals(myPatientPage.gettxtMyPatientPage().getText(), PortalConstants.MyPatientPage);
 
 		log("step 4: Click PHR Link");
 		PHRPage pPHRPage = myPatientPage.clickPHR(driver);
