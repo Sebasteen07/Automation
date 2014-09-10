@@ -3,7 +3,6 @@ package com.intuit.ihg.product.portal.test;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
