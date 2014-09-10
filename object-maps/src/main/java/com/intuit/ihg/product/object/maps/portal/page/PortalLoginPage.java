@@ -108,7 +108,7 @@ public class PortalLoginPage extends BasePageObject {
 		username.sendKeys( sUsername );
 		password.sendKeys( sPassword );
 		login.click();
-		Thread.sleep(10000);
+//		Thread.sleep(10000);
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
