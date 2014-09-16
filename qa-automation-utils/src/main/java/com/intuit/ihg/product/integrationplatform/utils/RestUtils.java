@@ -878,8 +878,7 @@ public class RestUtils {
 				break;
 				
 			}
-			Log4jUtil.log("Message ID is not found in read communication response");
-		
+			    Log4jUtil.log("Message ID is not found in read communication response");
 		}
 		}
 		
@@ -967,6 +966,41 @@ public class RestUtils {
 		}	
 		return true;
 	}
+	/**
+	 * 
+	 * @param responsePath
+	 * @param externalPatientID
+	 * @param firstname 
+	 * @param medfusionID 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 */
+	public static void isPatientAppeared(String responsePath,
+			String externalPatientID, String medfusionID, String firstname) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
+		
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICE_ID);
+		for (int i = 0; i < nodes.getLength(); i++){
+			if(nodes.item(i).getTextContent().equals(externalPatientID)){
+				Log4jUtil.log("Searching: External Patient ID:" + externalPatientID + ", and Actual External Patient ID is:" + nodes.item(i).getTextContent().toString());
+				NodeList node=doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
+				Log4jUtil.log("Searching: Medfusion Patient ID:" + medfusionID + ", and Actual Medfusion Patient ID is: " + node.item(i).getTextContent().toString());
+				Assert.assertTrue(node.item(i).getTextContent().equals(medfusionID),"Medfusion Patient Id was not found");
+				node=doc.getElementsByTagName(IntegrationConstants.CCDTAG);
+				Assert.assertTrue(node.item(i).getTextContent().contains("<given>"+firstname+"</given>"),"CCD DATA was not Found");
+				Log4jUtil.log("Expected '"+"<given>"+firstname+"</given>"+"' is found in CCD XML.");
+				break;
+			}
+			if(i == nodes.getLength() - 1){
+				Assert.fail("Patient was not found");
+			}
+		}
+		
+		
+	}
+
 
 	
 }

@@ -290,5 +290,17 @@ public class FormBasicInfoPage extends BasePageObject
 		
 		save.click();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public FormEmergencyContactPage setBasicInfoFromField() throws Exception
+	{ 
+		setStreetAddress();		
+		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
+
+	}
 
 }

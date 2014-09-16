@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientSearch;
 
+import junit.framework.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,7 +21,25 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath="//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
 	
+	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[5]/td[2]/a")
+	private WebElement editPatientID;
+	
+	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[5]/td[2]")
+	private WebElement txtMedfusionID;
+	
+	@FindBy(name="emrid")
+	private WebElement txtexternalID;
+	
+	@FindBy(name="submitted")
+	private WebElement btnUpdateInfo;
+	
+	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[5]/td[2]")
+	private WebElement lblPatientID;
+	
 	private WebElement feedback;
+	
+	public static String medfusionID = null;
+	public String patientID = null;
 	
 	public PatientDashboardPage(WebDriver driver) {
 		super(driver);
@@ -52,7 +72,33 @@ public class PatientDashboardPage extends BasePageObject{
 		editEmail.click( );
 		return PageFactory.initElements( driver, PatientSearchPage.class );
 	}
-	
-	
+	/**
+	 * Read MedfusionID and Set ExternalPatientID  
+	 * @return ExternalPatientID
+	 */
+	public String setExternalPatientID (){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 10, editPatientID );
+		editPatientID.click( );
+		IHGUtil.waitForElement( driver, 30, txtMedfusionID );
+		patientID=txtMedfusionID.getText().toString();
+		medfusionID(patientID);
+		String emrID=patientID.concat("2014");
+		txtexternalID.clear();
+		txtexternalID.sendKeys(emrID);
+		btnUpdateInfo.click();
+		IHGUtil.waitForElement(driver, 10, lblPatientID);
+		Assert.assertTrue("patient ID is not set", lblPatientID.getText().contains(emrID));
+		return emrID;
+	}
+	/**
+	 * 
+	 * @param patientID
+	 * @return medfusionID
+	 */
+	public String medfusionID(String patientID)
+	{
+		return patientID;
+	}
 
 }

@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+
+import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class FormMedicationsPage extends BasePageObject
@@ -23,12 +26,17 @@ public class FormMedicationsPage extends BasePageObject
 
 	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
+	
+	@FindBy(xpath=".//*[@id='section5']/section/div[2]/a")
+	private WebElement btnSubmit;
 
 	/**
 	 * @Description:Set No Medications
 	 * @throws Exception
 	 */
 	public void setNoMedications() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 20, noMedications);
 		if (noMedications.isSelected() == false)
 			noMedications.click();
 	}
@@ -57,5 +65,19 @@ public class FormMedicationsPage extends BasePageObject
 		return clickSaveAndContinueButton(FormAllergiesPage.class);
 
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public MyPatientPage fillMedicationFormFields() throws Exception {
+		setNoMedications();
+		saveAndContinuebtn.click();
+		
+		IHGUtil.waitForElement(driver, 10, btnSubmit);
+		btnSubmit.click();
+		return PageFactory.initElements(driver, MyPatientPage.class);
 
+	}
 }
