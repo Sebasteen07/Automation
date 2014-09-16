@@ -254,5 +254,17 @@ public class FormBasicInfoPage extends PortalFormPage
 		
 		save.click();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public FormEmergencyContactPage setBasicInfoFromField() throws Exception
+	{ 
+		setStreetAddress();		
+		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
+
+	}
 
 }

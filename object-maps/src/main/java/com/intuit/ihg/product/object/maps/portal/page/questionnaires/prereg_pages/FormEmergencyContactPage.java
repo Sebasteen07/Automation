@@ -103,4 +103,26 @@ public class FormEmergencyContactPage extends PortalFormPage
 		email.clear();
 		email.sendKeys(input);
 	}
+   /**
+    * 
+    * @return
+    * @throws Exception
+    */
+	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception
+	{
+		setFirstName(PortalConstants.FirstName);
+
+		setLastName(PortalConstants.LastName);
+
+		setRelation(PortalConstants.Relation);
+
+		setPrimaryPhone("1234567890", PortalConstants.Mobile);
+
+		clickSaveAndContinueButton();
+
+		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
+
+
+	}
+
 }
