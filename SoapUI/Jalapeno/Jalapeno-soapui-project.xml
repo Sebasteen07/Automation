@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="2ae0122f-7db8-431f-88f4-9c7720fb8124" activeEnvironment="Default" name="Jalapeno" resourceRoot="" soapui-version="5.1.1" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="Port">8081</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.ProTestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Environment" value="Default"/>
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="TestSuite" value="HealthKey Full Match"/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Ignore Errors" value="false"/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="user-settings.xml Password" value=""/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="Save Project" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="TestCase" value="&lt;all>"/>
+  <con:entry key="Print Report" value="false"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="Root Folder" value=""/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="Endpoint" value=""/>
+  <con:entry key="Select Report Type" value="TestSuite Report"/>
+</xml-fragment>]]></con:setting></con:settings><con:interface xsi:type="con:RestService" id="0cc69b8c-91dc-44aa-b68d-fe7ef8eb5e9e" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://172.18.81.96:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://172.18.81.96:8080</con:endpoint></con:endpoints><con:resource name="Check" path="/user-rest/services/healthkey/check" id="c49a0e12-ff8f-45ce-b53a-961227f6bab5"><con:settings/><con:parameters/><con:method name="HealthKey Check service" id="bc2f73a4-6a7c-4dd9-8ac8-48d4d132a7f0" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:chec="http://172.18.81.96/user-rest/services/healthkey/check">chec:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:chec="http://172.18.81.96/user-rest/services/healthkey/check">chec:Fault</con:element></con:representation><con:request name="HealthKey Check service" id="5a9eae45-6184-4da1-a2ae-85f99b396fb0" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request/><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="519b3d9a-8ef9-4d93-a213-8b7ed65eed54" name="HealthKey"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2b9c4578-6461-4fab-a873-4bf15cc95e54" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Exact Match on the same practice" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="db8a10c8-5dbe-47c3-b521-66758910ed3f"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "23847",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontestt+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="dc269701-4057-42f1-9503-e886ed55be26" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:memberId[1]</con:xpath><con:element>memberId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>76854</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:practiceId[1]</con:xpath><con:element>practiceId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>23847</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="f944b7a8-f6f5-47a3-baa8-b03041f599e4" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Exact Match on different practice" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="f1e29e65-d6e7-4fa7-9842-586f33293af9"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="a9f9f919-cccc-4cc8-96db-4ae7a29dec23" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="2228823a-1e47-4882-a459-a414fc921c76" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="No Exact Match on the same practice" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="9dadee61-b544-483e-ac12-33e75e2bff7f"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12344",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="15adb790-f82d-45a0-9cc1-b7a025bf9edc" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="327f6d13-b734-4ecf-8cfe-491bdae1a906" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="5/6 Zip" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="4dfb471a-94f9-445c-98e5-de4628b05ae3"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12344",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="15adb790-f82d-45a0-9cc1-b7a025bf9edc" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="0efe0e4e-8e59-4322-aa7c-9f96805e4c5d" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="5/6 Email" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="126f9309-4c50-4ee0-80b0-4d2bf82b9655"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "mmedfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="1869b744-5e4c-4322-b9ca-7269cfc11617" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:memberId[1]</con:xpath><con:element>memberId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>76854</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:practiceId[1]</con:xpath><con:element>practiceId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>23847</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="006645e9-d47d-418b-998c-62fff4d2c943" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="5/6 First Name" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="e570f271-53d9-4cb7-9df3-e2b46ade7e67"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325FirstF",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="6126a037-80ff-45ec-9a7a-ab6ed6851232" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:memberId[1]</con:xpath><con:element>memberId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>76854</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:practiceId[1]</con:xpath><con:element>practiceId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>23847</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="7929df4e-6ebf-47c7-910b-35a2a98d1043" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Copy of 5/6 Last Name" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="93142ebf-9330-4ec5-a516-6c98dd2173ed"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325LastT",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="15adb790-f82d-45a0-9cc1-b7a025bf9edc" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:memberId[1]</con:xpath><con:element>memberId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>76854</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:practiceId[1]</con:xpath><con:element>practiceId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>23847</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="466d6d2e-8ec7-4582-9a79-57c6092a680c" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="5/6 Gender" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="a03fa01c-a5bd-46c8-90ec-ebc242bb6b78"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12345",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "F",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-01T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="c07ece27-dc00-463d-b7b8-13c38aa0918a" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:memberId[1]</con:xpath><con:element>memberId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>76854</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:partialMatches[1]/ns1:e[1]/ns1:practiceId[1]</con:xpath><con:element>practiceId</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>23847</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>true</match>
+   <partialMatches>
+      <e>
+         <memberId>76854</memberId>
+         <practiceId>23847</practiceId>
+      </e>
+   </partialMatches>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:testCase id="a7bff252-40a0-4318-9044-10003b440c20" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="5/6 DOB" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="REST Test Request" id="2ed9dffc-086f-481f-8989-7b33c7ca6672"><con:settings/><con:config service="http://172.18.81.96:8080" methodName="HealthKey Check service" resourcePath="/user-rest/services/healthkey/check" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Test Request" id="2711641d-33c7-4026-8b72-784cee521636" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://172.18.81.96:8080</con:endpoint><con:request>{
+   "zip": "12344",
+   "firstName": "jc2014119325First",
+   "lastName": "jc2014119325Last",
+   "gender": "M",
+   "practiceId": "50",
+   "dateOfBirth": "1980-01-02T00:00:00.000-0500",
+   "email": "medfusiontest+jc2014119325@gmail.com"
+}</con:request><con:originalUri>http://172.18.81.96/user-rest/services/healthkey/check</con:originalUri><con:assertion type="MessageContentAssertion" id="70f51c27-3971-4c80-aabb-6cfb99628043" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:fullMatch[1]/@null</con:xpath><con:element>@null</con:element><con:type/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>true</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://172.18.81.96/user-rest/services/healthkey/check';
+//ns1:Response[1]/ns1:match[1]</con:xpath><con:element>match</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>true</con:enabled><con:expectedValue>false</con:expectedValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://172.18.81.96/user-rest/services/healthkey/check">
+   <fullMatch null="true"/>
+   <match>false</match>
+   <partialMatches/>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Description</con:name><con:value>Patient is registered withing the practice, expected to provide MemberID/PracticeID and mention about patient already registred</con:value></con:property></con:properties><con:reportParameters/></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:requirements/><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:oAuth2ProfileContainer/><con:reporting><con:reportTemplates/><con:xmlTemplates/><con:parameters/></con:reporting><con:sensitiveInformation/></con:soapui-project>
