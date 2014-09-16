@@ -12,7 +12,7 @@ import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.phr.PHRPage;
 import com.intuit.ihg.product.object.maps.portal.page.portaltophr.AcceptPhrTermsandConditions;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormWelcomePage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.ApptRequestHistoryPage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep1Page;

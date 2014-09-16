@@ -1,11 +1,14 @@
 package com.intuit.ihg.product.sitegen.test;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.SpecialCharFormFirstPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.SpecialCharFormSecondPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -13,7 +16,6 @@ import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_page
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormMedicationsPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormSocialHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
@@ -47,7 +49,6 @@ import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
-//import com.intuit.ihg.common.utils.ccd.CCDTest;
 
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -73,14 +74,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {	
-		logTestEvironmentInfo("testDiscreteForm");
-
+		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+		
+		logTestEvironmentInfo("testDiscreteFormDeleteCreatePublish");
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-	
 		logSGLoginInfo(testcasesData);
 	
 		log("Step 2: Opening sitegen home page");
@@ -99,14 +100,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 		
 		log("step 5: Unpublish and delete all forms and create a new one");
-		String discreteFormName = pManageDiscreteForms.initializePracticeForNewForm();
-		log("@@discrete form name@@" + discreteFormName);	
+		pManageDiscreteForms.initializePracticeForNewForm();
 		
 		log("step 6: Initialize the new form");
-		pManageDiscreteForms.prepareFormForPracticeTest(discreteFormName);
+		pManageDiscreteForms.prepareFormForTest(newFormName);
 		
 		log("step 7: Publish the saved Discrete Form");
-		pManageDiscreteForms.publishTheSavedForm(discreteFormName);
+		pManageDiscreteForms.publishTheSavedForm(newFormName);
 		
 		log("step 8: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle descriptor
@@ -153,14 +153,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 5: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		FormBasicInfoPage demographPage;
-		
-		// sometimes the first page is welcome page
-		if (welcomePage.isWelcomePageLoaded() == true)
-			demographPage = welcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);
-		else
-			demographPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
-		
+		FormBasicInfoPage demographPage = welcomePage.skipWelcomePage(FormBasicInfoPage.class); 
 		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
@@ -202,7 +195,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true)
 	public void testQuotationMarksInForm() throws Exception {
-		logTestEvironmentInfo("testDiscreteFormFill");
+		logTestEvironmentInfo("testQuotationMarksInForm");
 
 		log("Step 1: Get Data from Excel ##########");
 		Portal portal = new Portal();
@@ -220,12 +213,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		formPage.openDiscreteForm("specialChars");
 		
 		log("Step 5: Fill the form out with values containing quotes");
-		SpecialCharFormFirstPage customPage1 = PageFactory.initElements(driver, SpecialCharFormFirstPage.class);
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		SpecialCharFormFirstPage customPage1 = welcomePage.skipWelcomePage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
 		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveAndContinueButton(SpecialCharFormSecondPage.class);
 		customPage2.selectAnswerQuoteMark();
 		customPage2.signConsent();
-		customPage2.clickSaveAndContinueButton(null);
+		customPage2.clickSaveAndContinueButton();
 		customPage2.submitForm();
 	}
 	
@@ -261,8 +255,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		CreatePatientTest createPatient = new CreatePatientTest();
 		createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
+		
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
-	
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		FormWelcomePage pFormWelcomePage = formsPage.openDiscreteForm("pdfForm");
@@ -285,12 +282,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 					"The earache checkbox was not prefilled as expected" );
 		
 		log("Step 5: Go through the rest of the form and submit it");
-		FormMedicationsPage pFormMedicationsPage = currentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
-		pFormMedicationsPage.setMedicationFormFields();
+		FormMedicationsPage medicationsPage = currentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+		medicationsPage.setNoMedications();
 	
 		log("step 7: Set Social History Form Fields and submit the form");
-		FormSocialHistoryPage pFormSocialHistoryPage = PageFactory.initElements(driver, FormSocialHistoryPage.class);
-		pFormSocialHistoryPage.submitFromSocialHistory();
+		FormSocialHistoryPage socialHistoryPage = medicationsPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
+		socialHistoryPage.fillOutDefaultExerciseLength();
+		socialHistoryPage.clickSaveAndContinueButton();
+		socialHistoryPage.submitForm();
 		
 		log("Step 8: Test if PDF is downloadable");
 		PortalUtil.setPortalFrame(driver);
@@ -318,7 +317,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
@@ -338,19 +337,16 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	//	createPatient.setUrl(patientData.geturl());
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
 
-
 		log("step 2: Click on CustomForm");
 		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
 
 		log("step 3: Fill CustomForm");
 		pHealthForm.fillInsuranceHealthForm();
-	
 		
 		assertFalse(driver.getPageSource().contains("Female question"));
 		
 		pHealthForm.submitInsuranceHealthForm();
 		
-//		Thread.sleep(10000);
 		verifyEquals(pHealthForm.InsuranceHelthform.getText(), "Thank you for completing our Insurance Health Form ( Testing).");
 		// assertTrue(verifyTextPresent(driver,"Thank you for completing our Insurance Health Form ( Testing)."));
 
@@ -417,7 +413,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = false, groups = {"AcceptanceTests"})
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEvironmentInfo("testCustomFormPublished");

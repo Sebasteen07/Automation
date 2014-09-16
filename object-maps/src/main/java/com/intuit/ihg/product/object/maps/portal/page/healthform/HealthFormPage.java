@@ -19,7 +19,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormWelcomePage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class HealthFormPage extends BasePageObject {

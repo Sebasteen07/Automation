@@ -25,16 +25,6 @@ public class PortalFormPage extends BasePageObject {
 		super(driver);
 	}
 	
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
-		return clickSaveAndContinueButton(nextPageClass, this.btnContinue);
-	}
-
 	
 	/**
 	 * @brief Click on Continue Button
@@ -55,6 +45,26 @@ public class PortalFormPage extends BasePageObject {
 	}
 	
 	/**
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
+	 * @throws Exception
+	 */
+	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
+		return clickSaveAndContinueButton(nextPageClass, this.btnContinue);
+	}
+
+	/**
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
+	 * @throws Exception
+	 */
+	public <T extends PortalFormPage> T clickSaveAndContinueButton() throws Exception {
+		return clickSaveAndContinueButton(null, this.btnContinue);
+	}
+	
+	/**
 	 * @Description:Click on Submit Form Button
 	 * @return
 	 * @throws Exception
@@ -66,4 +76,5 @@ public class PortalFormPage extends BasePageObject {
 		wait.until(ExpectedConditions.elementToBeClickable(closeButton));	
 		closeButton.click();
 	}
+
 }

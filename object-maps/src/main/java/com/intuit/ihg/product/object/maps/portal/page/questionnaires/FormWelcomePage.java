@@ -1,11 +1,12 @@
-package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages;
+package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
+
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
+import org.openqa.selenium.support.PageFactory;
 
 public class FormWelcomePage extends PortalFormPage {
 
@@ -26,11 +27,14 @@ public class FormWelcomePage extends PortalFormPage {
 	 */
 	public boolean isWelcomePageLoaded() {
 		boolean result = false;
+		
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		try {
 			result = btnContinue.isEnabled();
 		} catch (NoSuchElementException e) {
 			log("Welcome page of forms is not loaded");
 		}
+		driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
 		return result;
 	}
 	
@@ -45,5 +49,17 @@ public class FormWelcomePage extends PortalFormPage {
 	@Override
 	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveAndContinueButton(nextPageClass, this.btnContinue);
+	}
+	
+	/**
+	 * @param nextPageClass - class of the page that follows immediately after the welcome page
+	 * @return Initiated object for the next page
+	 * @throws Exception
+	 */
+	public <T extends PortalFormPage> T skipWelcomePage(Class<T> nextPageClass) throws Exception {
+		if (isWelcomePageLoaded() == true)
+			return clickSaveAndContinueButton(nextPageClass);
+		else
+			return PageFactory.initElements(driver, nextPageClass);
 	}
 }

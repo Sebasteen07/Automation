@@ -3,6 +3,7 @@ package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pag
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 
@@ -13,23 +14,26 @@ public class FormSocialHistoryPage extends PortalFormPage
 		super(driver);
 	}
 	
-	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
+	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
-	@FindBy(xpath="//*[@id='container']//section/div[@class='done_frame']/a")
+	@FindBy(xpath = "//*[@id='container']//section/div[@class='done_frame']/a")
 	private WebElement submitForm;
 
-	@FindBy( xpath = ".//iframe[@title ='Forms']")
+	@FindBy(xpath = ".//iframe[@title ='Forms']")
 	private WebElement iframe;
 	
-	/**
-	 * @Description: Continue through the form and submit it
-	 * @return FormSocialHistoryPage
-	 * @throws Exception
-	 */
-	public void submitFromSocialHistory() throws Exception {	
-		clickSaveAndContinueButton(null);
-		submitForm();
-	}
+	@FindBy(id = "exercise_healthhabits")
+	private WebElement exerciseLength;
+	
+	@FindBy(id = "exercise_healthhabits_type")
+	private WebElement exerciseFrequency;
+	
 
+	public void fillOutDefaultExerciseLength() {
+		Select exerciseFreqSelect = new Select(exerciseFrequency);
+		
+		exerciseLength.sendKeys("20");
+		exerciseFreqSelect.selectByVisibleText("day");
+	}
 }
