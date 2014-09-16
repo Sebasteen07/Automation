@@ -3,6 +3,7 @@ package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pag
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 
@@ -63,6 +64,5 @@ public class FormMedicationsPage extends PortalFormPage
 		IHGUtil.waitForElement(driver, 10, btnSubmit);
 		btnSubmit.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
-
 	}
 }

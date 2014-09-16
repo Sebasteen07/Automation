@@ -3,6 +3,8 @@ package com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pag
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -46,6 +48,8 @@ public class FormCurrentSymptomsPage extends PortalFormPage
 	}
 	
 	public String getCommentTextContent() {
+		WebDriverWait wait = new WebDriverWait(driver, 6, 2000);
+		wait.until(ExpectedConditions.visibilityOf(commentsField));
 		return commentsField.getText();
 	}
 	
