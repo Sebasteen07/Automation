@@ -42,15 +42,17 @@ C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-message
 		<PrescriptionRenewalRequest>
 			<From>streethawk1</From>
 			<To>amdcpatient123</To>
-			<RequestedProvider>streethawk1</RequestedProvider>
-			<RequestedLocation>DelhiNorth</RequestedLocation>
+			<RequestedProvider>roger11</RequestedProvider>
+			<RequestedLocation>hq-beach</RequestedLocation>
+			<PreferredInsurance>self</PreferredInsurance>
 			<Medication>
-				<MedicationName>Gemcal</MedicationName>
-				<MedicationDosage>5mg</MedicationDosage>
-				<Quantity>1</Quantity>
-				<RefillNumber/>
-				<PrescriptionNumber>#12345</PrescriptionNumber>
-				<AdditionalInformation/>
+				<MedicationRequestStatus>APPROVED</MedicationRequestStatus>
+				<MedicationName>Hyzaar</MedicationName>
+				<MedicationDosage>8</MedicationDosage>
+				<Quantity>80</Quantity>
+				<RefillNumber>600.00</RefillNumber>
+				<PrescriptionNumber>6000</PrescriptionNumber>
+				<AdditionalInformation>25th Aug 12.56pm</AdditionalInformation>
 				<SigCodes>
 					<SigCode>
 						<SigCodeAbbreviation>BID</SigCodeAbbreviation>

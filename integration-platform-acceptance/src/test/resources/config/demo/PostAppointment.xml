@@ -49,7 +49,7 @@ C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-message
    <Sent>2014-04-29T08:30:07-05:00</Sent>
    <MessageThreadId>812aaa0a-ee51-46ea-9b4c-dd6281438fdf</MessageThreadId>
    <AllowReply>true</AllowReply>
-   <AllowAttachment>true</AllowAttachment>
+   <AllowAttachment>false</AllowAttachment>
    <Message>New Reply to AR for dummytext</Message>   
   </Communication>
   <ScheduledAppointment>

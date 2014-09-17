@@ -33,7 +33,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	public void testMU2PullAPI() throws Exception {
 		log("Test Case: MU2 Pull API and VDT - Account Activity verification");
 	
-		log("Test case Environment "+IHGUtil.getEnvironmentType());
+		log("Test case Environment: "+IHGUtil.getEnvironmentType());
 		log("Execution Browser: " +TestConfig.getBrowserType());
 		
 		long timestamp=System.currentTimeMillis();
@@ -42,20 +42,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		String viewEventTime = null,downloadEventTime = null,transmitEventTime = null;
 		APITestData apitestData = new APITestData();
 		APIData testData = new APIData(apitestData);
-		
-		
-		//Generate and Post CCD
-		//String ccd=RestUtils.prepareCCD(testData.getCCDPath());
-		//System.out.println("Genrated XML:"+ccd);
-		
-		//log("step 1: Setup Oauth client"); 
-		//RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
-		
-		//log("step 1:step Do Message Post Request");
-		//RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
-		
-		// Generate CCD-VDT events through patient portal
-		log("step 1:LogIn");
+
+		log("step 1: LogIn");
 		log("Practice URL"+testData.getPortalURL());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
@@ -69,9 +57,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 
 		log("step 4: Validate message subject");
 		Thread.sleep(1000);
-		assertEquals(pMessageCenterInboxPage.getPracticeReplyMessageTitle(),
-				IntegrationConstants.CCD_MESSAGE_SUBJECT,
-		"### Assertion failed for Message subject");
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
 
 		log("step 5: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
@@ -138,11 +124,11 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		
 		
 		//again Login to patient portal and Verify  event in Account activity
-		log("step 16:LogIn");
+		log("step 16: LogIn");
 		PortalLoginPage ploginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage myPatientPage = ploginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
 
-		log("step 17:Click on myaccountLink on MyPatientPage");
+		log("step 17: Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage = myPatientPage.clickMyAccountLink();
 
 		ViewAccountActivityPage viewAccountActivity = pMyAccountPage.addAccountActivityLink();

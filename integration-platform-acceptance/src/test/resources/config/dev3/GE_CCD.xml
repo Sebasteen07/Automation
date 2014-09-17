@@ -9,8 +9,8 @@
 	</GECcdMessageHeaders>
 	<PatientDemographics xmlns="">
 		<PatientIdentifier>
-			<ExtPracticePatientId>681272014</ExtPracticePatientId>
-			<IntuitPatientId>68127</IntuitPatientId>
+			<ExtPracticePatientId>769452014</ExtPracticePatientId>
+			<IntuitPatientId>76945</IntuitPatientId>
 		</PatientIdentifier>
 		<Name>
 			<Prefix>Mr</Prefix>

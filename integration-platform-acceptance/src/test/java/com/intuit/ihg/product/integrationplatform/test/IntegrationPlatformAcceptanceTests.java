@@ -307,6 +307,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		log("step 16: Search for appt requests");
 		apptSearch.searchForApptRequests(2,null,null);
+		Thread.sleep(240000);
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
 		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
@@ -1023,9 +1024,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 			log("step 7: Validate message subject and send date");
 			Thread.sleep(1000);
-			/*assertEquals(pMessage.getPracticeReplyMessageTitle(),
-					IntegrationConstants.CCD_MESSAGE_SUBJECT,
-			"### Assertion failed for Message subject");*/
 			log("######  Message Date :: " + IHGUtil.getEstTiming());
 			assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
 			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));

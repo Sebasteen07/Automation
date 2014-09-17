@@ -122,6 +122,7 @@ public class MessagePage extends BasePageObject {
 	public void clickBtnReviewHealthInformation() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 20, btnReviewHealthInformation);
 		btnReviewHealthInformation.click();	
 	}
 	

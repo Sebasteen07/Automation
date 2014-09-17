@@ -52,7 +52,7 @@ import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
+
 
 public class RestUtils {
 
@@ -393,13 +393,13 @@ public class RestUtils {
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
 		if(nodes.getLength() < 2)
 		{
-			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
 					"There should be 1 State element in processing status response");
 			
 		}
 		else
 		{
-			BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
 					"There should be 2 State elements in processing status response");
 		}
 		return true;
@@ -961,7 +961,7 @@ public class RestUtils {
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.TRANSPORTSTATUS);
 		{
-		BaseTestSoftAssert.verifyTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.CCDSTATUS),
+		Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.CCDSTATUS),
 		"There should be 1 Status element in processing status response");
 		}	
 		return true;
