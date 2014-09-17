@@ -7,9 +7,9 @@
 	  <version>ihg-depot-trunk-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sitegen-automation</artifactId>
-	<name>sitegen-automation</name>
-	<description>Site Generator automation tests</description>
+	<artifactId>forms-automation</artifactId>
+	<name>forms-automation</name>
+	<description>Forms automation tests</description>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
