@@ -110,8 +110,7 @@ public class FormEmergencyContactPage extends PortalFormPage
     * @return
     * @throws Exception
     */
-	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception
-	{
+	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception {
 		setFirstName(PortalConstants.FirstName);
 
 		setLastName(PortalConstants.LastName);
@@ -123,8 +122,6 @@ public class FormEmergencyContactPage extends PortalFormPage
 		clickSaveAndContinueButton();
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
-
-
 	}
 
 }

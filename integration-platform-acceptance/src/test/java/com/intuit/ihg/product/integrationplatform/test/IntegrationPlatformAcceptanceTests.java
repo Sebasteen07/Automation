@@ -43,10 +43,10 @@ import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPa
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormBasicInfoPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormCurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormEmergencyContactPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormMedicationsPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormBasicInfoPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormEmergencyContactPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormMedicationsPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
@@ -1165,7 +1165,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 			
 			log("step 16: Click on Continue button ");
-			FormBasicInfoPage pFormBasicInfoPage=pFormWelcomePage.clickContinueButton(FormBasicInfoPage.class);
+			FormBasicInfoPage pFormBasicInfoPage=pFormWelcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);
 			
 			log("step 17: Set Basic Information Form Fields");
 			FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromField();
@@ -1174,7 +1174,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			FormCurrentSymptomsPage pFormCurrentSymptomsPage=pFormEmergencyContactPage.fillEmergencyContactFormFields();
 			
 			log("step 19: Set Current Symptoms Form Fields");
-			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
+			pFormCurrentSymptomsPage.setNoSymptoms();
+			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
 			
 			log("step 20: Set Medication Form Fields");
 			myPatientPage=pFormMedicationsPage.fillMedicationFormFields();	

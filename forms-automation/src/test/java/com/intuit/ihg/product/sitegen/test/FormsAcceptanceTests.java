@@ -241,7 +241,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml = new String();
 		String easyBruisingString = new String("Easy bruising");
-		String diacriticString = new String("¿¡eñÑeŘ");
+		String diacriticString = new String("¿¡eñÑeŘ\"");
 		
 		logTestEvironmentInfo("testDiscreteFormPDF");
 		
@@ -271,15 +271,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4: Select symptoms for the patient");
 		currentSymptomsPage.setBasicSymptoms();
 		currentSymptomsPage.enterComment(diacriticString);
-		
-		log("Step 5: Close and reopen the form");
-		currentSymptomsPage.closeForm();
-		formsPage.openDiscreteForm("pdfForm");
-		
-		log("Test if correct values are prefilled");
-		assertEquals(currentSymptomsPage.getCommentTextContent(), diacriticString);
-		assertTrue( currentSymptomsPage.getCheckEarache().isSelected(),
-					"The earache checkbox was not prefilled as expected" );
 		
 		log("Step 5: Go through the rest of the form and submit it");
 		FormMedicationsPage medicationsPage = currentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
