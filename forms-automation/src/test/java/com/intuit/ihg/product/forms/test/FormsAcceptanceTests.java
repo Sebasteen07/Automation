@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.sitegen.test;
+package com.intuit.ihg.product.forms.test;
 
 import java.util.concurrent.TimeUnit;
 
