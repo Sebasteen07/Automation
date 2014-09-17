@@ -249,8 +249,10 @@ public class HealthFormPage extends BasePageObject {
 	 */
 	public boolean isPDFLinkPresent() {
 		boolean result;
-
+		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
+		
 		try {
+			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
 			result = lnkclickForPdfDownload.isDisplayed();
 		} catch (NoSuchElementException e) {
 			return false;
