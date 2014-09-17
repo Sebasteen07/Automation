@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "sitegen-automation" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "SiteGen-Location-Test" >
+	<classes>
+		<class name = "com.intuit.ihg.product.forms.test.FormsAcceptanceTests" />
+		   	<methods>
+	    		<include name="testDiscreteFormDeleteCreatePublish" />
+      	</methods>
+	</classes>
+</test>
+</suite>
