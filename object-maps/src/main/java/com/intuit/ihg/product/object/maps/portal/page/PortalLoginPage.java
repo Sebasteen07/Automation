@@ -76,6 +76,7 @@ public class PortalLoginPage extends BasePageObject {
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
 		driver.manage().window().maximize();
+		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}
 	
@@ -108,7 +109,7 @@ public class PortalLoginPage extends BasePageObject {
 		username.sendKeys( sUsername );
 		password.sendKeys( sPassword );
 		login.click();
-		Thread.sleep(10000);
+//		Thread.sleep(10000);
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	

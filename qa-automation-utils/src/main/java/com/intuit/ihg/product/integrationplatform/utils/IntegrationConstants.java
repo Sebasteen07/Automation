@@ -81,5 +81,7 @@ public class IntegrationConstants {
 	public static final String TRANSPORTSTATUS = "ns4:TransportStatus";
 	public static final String CCDSTATUS = "Success";
 	
-
+	//Form Export
+	public static final String MEDFUSIONPATIENTID = "IntuitPatientId";
+	public static final String CCDTAG = "CcdXml";
 }

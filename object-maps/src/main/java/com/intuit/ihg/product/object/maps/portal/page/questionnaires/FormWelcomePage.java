@@ -1,44 +1,24 @@
 package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
+public class FormWelcomePage extends PortalFormPage {
 
-public class FormWelcomePage extends BasePageObject
-{
-
-
-	public FormWelcomePage(WebDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
-	}
-
-	@FindBy(id="continueWelcomePageButton")
+	@FindBy(id = "continueWelcomePageButton")
 	private WebElement btnContinue;
 
-	
 	@FindBy(xpath = "//section[@class='content indented']/p[1]")
 	private WebElement welcomeMessage;
 	
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends BasePageObject> T clickContinueButton(Class<T> nextPageClass) throws Exception {
-		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(btnContinue));
-		btnContinue.click();
-		return PageFactory.initElements(driver, nextPageClass);
+	
+	public FormWelcomePage(WebDriver driver) {
+		super(driver);
 	}
 
 	/**
@@ -47,17 +27,39 @@ public class FormWelcomePage extends BasePageObject
 	 */
 	public boolean isWelcomePageLoaded() {
 		boolean result = false;
+		
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		try {
 			result = btnContinue.isEnabled();
 		} catch (NoSuchElementException e) {
 			log("Welcome page of forms is not loaded");
 		}
+		driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
 		return result;
 	}
 	
-	public boolean welcomeMessageContent(String message) {
-		
+	/**
+	 * Compares string from parameter with Welcome Page message text
+	 * @return True if Welcome page message is equal to the message entered as parameter
+	 */
+	public boolean welcomeMessageContent(String message) {		
 		return message.equals(welcomeMessage.getText());
 	}
+
+	@Override
+	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
+		return super.clickSaveAndContinueButton(nextPageClass, this.btnContinue);
+	}
 	
+	/**
+	 * @param nextPageClass - class of the page that follows immediately after the welcome page
+	 * @return Initiated object for the next page
+	 * @throws Exception
+	 */
+	public <T extends PortalFormPage> T skipWelcomePage(Class<T> nextPageClass) throws Exception {
+		if (isWelcomePageLoaded() == true)
+			return clickSaveAndContinueButton(nextPageClass);
+		else
+			return PageFactory.initElements(driver, nextPageClass);
+	}
 }

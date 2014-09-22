@@ -115,7 +115,11 @@ public class MyPatientPage  extends BasePageObject{
 			super(driver);
 			// TODO Auto-generated constructor stub
 		}
-
+		
+		public WebElement gettxtMyPatientPage()
+		{
+			return txtMyPatientPage;
+		}
 		
 		public MyAccountPage clickMyAccountLink() throws InterruptedException {
 			IHGUtil.PrintMethodName();
@@ -125,8 +129,6 @@ public class MyPatientPage  extends BasePageObject{
 			myaccountLink.click();
       		return PageFactory.initElements(driver,MyAccountPage.class);
 		}
-		
-
 		
 	    public PortalLoginPage logout(WebDriver driver) throws InterruptedException,IOException {
 			

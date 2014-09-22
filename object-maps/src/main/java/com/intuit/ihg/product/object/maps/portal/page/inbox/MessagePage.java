@@ -1,9 +1,11 @@
 package com.intuit.ihg.product.object.maps.portal.page.inbox;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -81,7 +83,7 @@ public class MessagePage extends BasePageObject {
 	public String getPracticeReplyMessageTitle() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,10,practiceResponseSubject);
+		IHGUtil.waitForElement(driver,30,practiceResponseSubject);
 		return practiceResponseSubject.getText();
 	}
 	
@@ -120,6 +122,7 @@ public class MessagePage extends BasePageObject {
 	public void clickBtnReviewHealthInformation() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 20, btnReviewHealthInformation);
 		btnReviewHealthInformation.click();	
 	}
 	
@@ -209,4 +212,21 @@ public class MessagePage extends BasePageObject {
 		  log(textBoxResponseMsg.getText().toString());
 		  Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
 		 }
+	
+	public boolean isSubjectLocated(String subject) throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		
+		PortalUtil.setPortalFrame(driver);
+		log("Looking for message with Header "+subject);
+		wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
+		WebElement	messageHeader = driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
+		if (messageHeader.isDisplayed()) { 
+		log("Subject found");	
+		return true;
+		}
+		else {
+			log("Subject not found");
+			return false;
+			}
+		}
 }

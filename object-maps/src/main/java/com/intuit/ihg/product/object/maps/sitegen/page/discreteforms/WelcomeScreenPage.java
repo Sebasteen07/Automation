@@ -14,20 +14,20 @@ public class WelcomeScreenPage extends BasePageObject {
 		// TODO Auto-generated constructor stub
 	}
 
-	@FindBy(xpath="//li[@data-section='currentsymptoms']/a")
+	@FindBy(xpath = "//li[@data-section='currentsymptoms']/a")
 	private WebElement lnkCurrentSymptoms;
 	
-	@FindBy(xpath="//li[@data-section='welcome']/a")
+	@FindBy(xpath = "//li[@data-section='welcome']/a")
 	private WebElement lnkWelcome;
 	
-	@FindBy(name="welcomeScreenText")
+	@FindBy(name = "welcomeScreenText")
 	private WebElement lnkWelcomeScreenText;
 
-	@FindBy(xpath="//li[@data-section='demographics']/a")
+	@FindBy(xpath = "//li[@data-section='demographics']/a")
 	private WebElement lnkBasicInformationAboutYou;
 	
-	
-	
+	@FindBy(id = "custom_form_name")
+	private WebElement formNameField;
 	
 	/**
 	 * Replace welcome message for the patient
@@ -36,7 +36,15 @@ public class WelcomeScreenPage extends BasePageObject {
 	public void setWelcomeMessage(String message) {
 		lnkWelcomeScreenText.clear();
 		lnkWelcomeScreenText.sendKeys(message);
-		
+	}
+
+	/**
+	 * Set the name of the form
+	 * @param newFormName - the name for the form
+	 */
+	public void setFormName(String newFormName) {
+		formNameField.clear();
+		formNameField.sendKeys(newFormName);
 	}
 	
 	/**

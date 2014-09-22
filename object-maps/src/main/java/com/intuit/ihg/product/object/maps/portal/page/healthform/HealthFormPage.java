@@ -249,8 +249,10 @@ public class HealthFormPage extends BasePageObject {
 	 */
 	public boolean isPDFLinkPresent() {
 		boolean result;
-
+		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
+		
 		try {
+			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
 			result = lnkclickForPdfDownload.isDisplayed();
 		} catch (NoSuchElementException e) {
 			return false;
@@ -265,8 +267,7 @@ public class HealthFormPage extends BasePageObject {
 	 *            String value determining which form to open
 	 * @return method returns initialized object for Welcome page of the form
 	 */
-	public FormWelcomePage openDiscreteForm(String selectedForm)
-			throws Exception {
+	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 8);
 
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame

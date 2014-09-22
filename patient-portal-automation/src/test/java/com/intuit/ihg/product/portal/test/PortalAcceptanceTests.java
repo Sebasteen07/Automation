@@ -6,11 +6,9 @@ import java.util.Date;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ActivatePasswordChangePage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.SecretAnswerDoesntMatchPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
@@ -22,20 +20,6 @@ import com.intuit.ihg.product.object.maps.portal.page.myAccount.preferences.Pref
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.wallet.WalletPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.phr.PHRPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormAllergiesPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormBasicInfoPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormCurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormEmergencyContactPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormFamilyHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormIllnessConditionsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormInsurancePage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormMedicationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormOtherProvidersPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormPreviousExamsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormSocialHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormSurgeriesHospitalizationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormVaccinePage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.*;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.*;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.virtualofficevisit.VirtualOfficeVisitConfirmationPage;
@@ -51,8 +35,6 @@ import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestD
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.*;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
 import com.intuit.ihg.product.object.maps.practice.page.messages.PracticeMessagePage;
 import com.intuit.ihg.product.object.maps.practice.page.messages.PracticeMessagesSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
@@ -302,7 +284,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientOnBetaSite() throws Exception {
 		
 		// Instancing CreatePatientTest
@@ -457,9 +439,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 20: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "] but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
+
 	}
 
 	/**
@@ -718,9 +699,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 19: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 	}
 
 	/**
@@ -966,10 +945,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
-		
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
 		
 		log("step 22: Reply back to practice");
 		inboxPage = message.replyToMessage(null);
@@ -1098,97 +1074,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	/**
 	 * @Author: bkrishnankutty
-	 * @Date: 05/4/2013
-	 * @StepsToReproduce: Login to Patient Portal Click on CustomForm Fill
-	 *                    CustomForm and submit Download InsuranceHealthForm
-	 *                    pdf-- validate HTTP Status Code Logout from Patient
-	 *                    Portal Login to Practice Portal On Practice Portal
-	 *                    Home page Click on CustomFormTab Search for
-	 *                    PatientForms With Status Open View and Validate the
-	 *                    Result ==============================================
-	 *                    ===============
-	 * @AreaImpacted :
-	 * @throws Exception
-	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCustomForms() throws Exception {
-
-		log("Test Case: testCustomForms");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Retrieving test case data");
-		Portal portal = new Portal();
-		TestcasesData patientData = new TestcasesData(portal);
-
-		log("URL: " + patientData.geturl());
-		log("USER NAME: " + patientData.getUsername());
-		log("Password: " + patientData.getPassword());
-
-		log("step 1: Create Patient");
-		CreatePatientTest createPatient = new CreatePatientTest();
-	//	createPatient.setUrl(patientData.geturl());
-		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
-
-
-		log("step 2: Click on CustomForm");
-		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
-
-		log("step 3: Fill CustomForm");
-		pHealthForm.fillInsuranceHealthForm();
-	
-		
-		assertFalse(driver.getPageSource().contains("Female question"));
-		
-		pHealthForm.submitInsuranceHealthForm();
-		
-		Thread.sleep(10000);
-		verifyEquals(pHealthForm.InsuranceHelthform.getText(), "Thank you for completing our Insurance Health Form ( Testing).");
-		// assertTrue(verifyTextPresent(driver,"Thank you for completing our Insurance Health Form ( Testing)."));
-
-		log("step 4: Download InsuranceHealthForm -- validate HTTP Status Code");
-		assertEquals(pHealthForm.clickInsuranceHealthFormDownloadText(), 200,
-				"Download of InsuranceHealth Form PDF returned unexpected HTTP status code");
-
-		log("step 7: Logout of Patient Portal");
-		pMyPatientPage.logout(driver);
-
-		log("step 8: Login to Practice Portal");
-		// Load up practice test data
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("step 8: On Practice Portal Home page Click CustomFormTab");
-		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-		assertTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-
-		log("step 9: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(
-				patientData.getFirstName(), patientData.getLastName(), patientData.getDob_Month(), patientData.getDob_Day(),
-				patientData.getDob_Year());
-
-		log("step 10: View the Result");
-		pSearchPatientFormsResultPage.clickViewLink();
-
-		log("step 11: Verify the Result");
-		String actualPatientName = pHealthForm.Patientname.getText().trim();
-
-		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
-		/*
-		 * assertTrue(verifyTextPresent(driver,
-		 * "Patient Name : ihgqa  automation "));
-		 * assertTrue(verifyTextPresent(driver, "Patient DOB : 01/11/1987"));
-		 */
-		// assertTrue(verifyTextPresent(driver,
-		// "Patient SSN : 987-65-4322"));
-	}
-
-	/**
-	 * @Author: bkrishnankutty
 	 * @Date: 05/6/2013
 	 * @StepsToReproduce: Patient login Click on SymptomAssessment and Select
 	 *                    your doctor Give Your Symptom and submit Answer all
@@ -1224,7 +1109,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			log("****Symptom Assessment scenario wont work with DEV3 environment-Known Issue****");
 			log("**Issue details: 3rd party not being able to hit our server on dev3 ***");
 
-		}else{
+		} else {
 
 			log("step 1: Patient login");
 			PortalLoginPage loginPage = new PortalLoginPage(driver, patientData.geturl());
@@ -1264,7 +1149,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			// Now start login with practice data
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 			PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
+			
 			log("step 9: On Practice Portal Home page Click SymptomAssessmentTab");
 			SymptomAssessmentFilterPage pSymptomAssessmentFilter = practiceHome.clicksymptomAssessmentTab();
 
@@ -1296,9 +1181,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			MessagePage message = inboxPage.openMessageInInbox(practiceResponse);
 
 			log("step 17: Validate message loads and is the right message");
-			String actualSubject = message.getPracticeReplyMessageTitle();
-			assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
-					+ "but actual subject was [" + actualSubject + "]");
+			assertTrue(message.isSubjectLocated(practiceResponse));
 			
 		}
 	}
@@ -1414,9 +1297,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 14: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
 	}
 
@@ -1491,103 +1372,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 11: Validate message loads and is the right message");
-		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(uniquePracticeResponse), "Expected subject containting ["
-				+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
 
-	}
-
-	/**
-	 * @Author: Kiran_GT
-	 * @Date: 07/17/2013
-	 * @StepsToReproduce: Patient login Click on Create Account Give New User
-	 *                    Details Click on Create Account Button to Submit User
-	 *                    Details Click On Start Registration Button in My
-	 *                    Patient Page Fill the Required Details in each from
-	 *                    Click on save and continue button to save the filled
-	 *                    details in the form Validate Registration Confirmation
-	 *                    message ================================
-	 *                    =============================
-	 * @AreaImpacted :
-	 * @throws Exception
-	 */
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDiscreteForms() throws Exception {
-
-		log("Test Case: testCreatePatientOnBetaSite");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
-
-		log("URL: " + testcasesData.geturl());
-		log("USER NAME: " + testcasesData.getUsername());
-		log("Password: " + testcasesData.getPassword());
-		log("URL: " + testcasesData.geturl());
-
-		log("step 2:Click Sign-UP");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		CreateAccountPage pCreateAccountPage = loginpage.signUp();
-
-		log("step 3:Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
-		String firstname = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
-		String lastname = testcasesData.getLastName() + PortalUtil.createRandomNumber();
-		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstname,
-				lastname, email, testcasesData.getPhoneNumber(), testcasesData.getZip(), testcasesData.getSSN(),
-				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(), testcasesData.getAnswer(),
-				testcasesData.getAddressState(), testcasesData.getAddressCity());
-
-		log("step 4:Click On Start Registration Button");
-		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-
-		log("Click On Continue Button");
-		FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickContinueButton(null);
-
-		log("step 5:Set Basic Information Form Fields");
-		FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromFields();
-
-		log("step 6:Set Emergency Contact Form Fields");
-		FormInsurancePage pFormInsurancePage = pFormEmergencyContactPage.setEmergencyContactFormFields(testcasesData.getEmail());
-
-		log("step 7:Set Insurance Form Fields");
-		FormOtherProvidersPage pFormOtherProvidersPage = pFormInsurancePage.setSelfPayInsurance();
-
-		log("step 8:Set Providers Form Fields");
-		FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormOtherProvidersPage.setNoProvidersOnPage();
-
-		log("step 9:Set Current Symptoms Form Fields");
-		FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.setCurrentSymptomsFormFields();
-
-		log("step 10:Set Medication Form Fields");
-		FormAllergiesPage pFormAllergiesPage = pFormMedicationsPage.setMedicationFormFields();
-
-		log("step 11:Set Allergies Form Fields");
-		FormVaccinePage pFormVaccinePage = pFormAllergiesPage.setAllergiesFormFields();
-
-		log("step 12:Set Vaccine Form Fields");
-		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage = pFormVaccinePage.setVaccineFormFields();
-
-		log("step 13:Set Surgeries Form Fields");
-		FormPreviousExamsPage pFormPreviousExamsPage = pFormSurgeriesHospitalizationsPage.setSurgeriesFormFields();
-
-		log("step 14:Set Previous Exams Form Fields");
-		FormIllnessConditionsPage pFormIllnessConditionsPage = pFormPreviousExamsPage.setPreviousExamsFormFields();
-
-		log("step 15:Set IllnessCondition Form Fields");
-		FormFamilyHistoryPage pFormFamilyHistoryPage = pFormIllnessConditionsPage.setIllnessConditionFormFields();
-
-		log("step 16:Set Family History Form Fields");
-		FormSocialHistoryPage pFormSocialHistoryPage = pFormFamilyHistoryPage.setFamilyHistoryFormFields();
-
-		log("step 17:Set Social History Form Fields");
-		pFormSocialHistoryPage.setSocialHistoryFormFields();
-
-		log("step 18:Verify Registration Confirmation Text");
-		pMyPatientPage.verifyRegistrationConfirmationText();
 	}
 
 	/**

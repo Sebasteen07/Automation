@@ -3,6 +3,7 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 import static org.testng.AssertJUnit.fail;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -10,14 +11,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.WebDriverWait;
-
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SocialHistoryPage.QuestionType;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 	/**
@@ -77,19 +74,18 @@ public class DiscreteFormsPage extends BasePageObject{
 		while (driver.findElements(By.xpath(xpath)).size() == count) {
 			Thread.sleep(500);
 			timePassed += 0.5;
-			if (timePassed > waitingPeriodSeconds)
+			if (timePassed > waitingPeriodSeconds) {
 				fail("Waiting for form to be deleted is taking too long");
+			}
 		}
 	}
 	
 	/**
-	 * Description : Deletes all the unpublished forms present in the Discrete Forms page.
+	 * Description: Deletes all the unpublished forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
 	public void deleteAllUnPublishedForms() throws Exception {
 		List<WebElement> deleteButtons;
-		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
-		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";	
 		int count = driver.findElements(By.xpath(xpath)).size();
@@ -105,11 +101,11 @@ public class DiscreteFormsPage extends BasePageObject{
 	}
 
 	/**
-	 * Description : Unpublishes all the published forms present in the Discrete Forms page.
+	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
 	public void unpublishAllForms() throws Exception {
-		//WebDriverWait wait = new WebDriverWait(driver, waitingPeriod); // object that would make the webdriver wait until deleted item disappears
+		List<WebElement> unpublishButtonList; 
 		
 		IHGUtil.PrintMethodName();
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
@@ -117,12 +113,11 @@ public class DiscreteFormsPage extends BasePageObject{
 		log("Number of Published rows is :" + count);
 		
 		while (count > 0) {		
-			List<WebElement> unpublishButtonList = driver.findElements(By.xpath(xpath));
+			 unpublishButtonList = driver.findElements(By.xpath(xpath));
             unpublishButtonList.get(0).click();	
 			waitForFormToDissappear(xpath, count);
 			count--;
 		}
-
 	}
 
 	/**
@@ -249,23 +244,23 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * @param discrete True for making discrete form, false to create custom 
 	 * @return Name of the newly created form
 	 */
-	public String initializePracticeForNewForm() throws Exception {
+	public void initializePracticeForNewForm() throws Exception {
 		// name for the new form
-		String FormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
-		
+	
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		unpublishAllForms();
 		deleteAllUnPublishedForms();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		createNewDiscreteForm();
-		renameDiscreteForm(FormName);
-		
-		return FormName;
 	}
 	
-	public void prepareFormForPracticeTest(String discreteFormName) throws Exception {
+	public void prepareFormForTest(String newFormName) throws Exception {
 		log("Open form and change welcome page text");
-		WelcomeScreenPage pWelcomeScreenPage = openDiscreteForm(discreteFormName);
+		WelcomeScreenPage pWelcomeScreenPage = openDiscreteForm("General Registration and Health History");
 		pWelcomeScreenPage.clickWelcomeMessagePage();
 		pWelcomeScreenPage.setWelcomeMessage(welcomeMessage);
+		log("Rename the form");
+		pWelcomeScreenPage.setFormName(newFormName);
 		
 		log("substep 1: Click on Basic Information About You");
 		BasicInformationAboutYouPage pBasicInfoAboutYou = pWelcomeScreenPage.clickLnkBasicInfoAboutYou();
@@ -317,6 +312,12 @@ public class DiscreteFormsPage extends BasePageObject{
 		socialPage.showThisPage();
 		
 		log("substep 14: Try to save the form with uncomplete question");
+		testAddingQuestion(socialPage);
+		
+		socialPage.clickSave();
+	}
+
+	public void testAddingQuestion(SocialHistoryPage socialPage) throws Exception {
 		socialPage.clickAddSection();
 		socialPage.clickOnNewSection();
 		socialPage.setSectionName("Additional questions");
@@ -328,8 +329,6 @@ public class DiscreteFormsPage extends BasePageObject{
 		socialPage.clickSave();
 		socialPage.errorMessageAppearedTest();
 		socialPage.setMultiSelectAnswers("1, 2, 3, or 4");
-		
-		socialPage.clickSave();
 	}
 	
 }
