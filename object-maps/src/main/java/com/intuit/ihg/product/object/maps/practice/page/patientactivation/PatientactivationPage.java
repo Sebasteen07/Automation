@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ifs.csscat.report.model.testng.Test;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
@@ -121,21 +122,24 @@ public class PatientactivationPage extends BasePageObject{
 		emailAddressString=IHGUtil.createRandomEmailAddress(sEmail);
 		
 		IHGUtil.PrintMethodName();
-		Log4jUtil.log("!!!!!!!!!Randorm First Name is!!!!!!!!!!!!"+firstNameString);
+		Log4jUtil.log("New Random First Name is"+firstNameString);
 		firstName.sendKeys(firstNameString);
 		lastName.sendKeys(lastNameString);
 		male.click();
-		Log4jUtil.log("!!!!!!!!!Randorm patientid is!!!!!!!!!!!!"+patientIdString);
+		Log4jUtil.log("New Random patientid is"+patientIdString);
 		patientId.sendKeys(patientIdString);
 		
-		Log4jUtil.log("!!!!!!!!!Randorm Email is!!!!!!!!!!!!"+emailAddressString);
+		Log4jUtil.log("New Random Email is"+emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
 		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 		zip.sendKeys(zipCodeString);
 		clickregpatient();
 		clickverify();
-		clickgetkey();
+		
+//		clickgetkey deprecated after US8665 (remove comment to test where that change is not yet deployed) --by JakubO
+//		clickgetkey();
+		
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink=unlockLink.getText().trim();
 		Assert.assertTrue("### ERROR: Couldn't get unlock link", unlocklink!="");
@@ -182,6 +186,7 @@ public class PatientactivationPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		btnGenerateKey.click();
 	}
+
 	public void clickdone()
 	{
 		IHGUtil.PrintMethodName();
