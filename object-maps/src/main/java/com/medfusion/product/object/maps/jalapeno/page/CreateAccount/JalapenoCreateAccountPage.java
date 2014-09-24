@@ -15,13 +15,13 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	 * @StepsToReproduce:
 	 */
 	
-	@FindBy(how = How.ID, using = "patientfirstname")
+	@FindBy(how = How.ID, using = "firstName")
 	private WebElement inputPatientFirstName;
 	
-	@FindBy(how = How.ID, using = "patientlastname")
+	@FindBy(how = How.ID, using = "lastName")
 	private WebElement inputPatientLastName;
 	
-	@FindBy(how = How.ID, using = "emailaddress")
+	@FindBy(how = How.ID, using = "email")
 	private WebElement inputEmailAddresss;
 	
 	@FindBy(how = How.ID, using = "confirmemailaddress")
@@ -36,19 +36,22 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "phone")
 	private WebElement inputPhone;
 	
-	@FindBy(how = How.ID, using = "dateofbirthmonth")
+	@FindBy(how = How.ID, using = "birthDate_month")
 	private WebElement inputDateOfBirthMonth;
 	
-	@FindBy(how = How.ID, using = "dateofbirthday")
+	@FindBy(how = How.ID, using = "birthDate_day")
 	private WebElement inputDateOfBirthDay;
 	
-	@FindBy(how = How.ID, using = "dateofbirthyear")
+	@FindBy(how = How.ID, using = "birthDate_year")
 	private WebElement inputDateOfBirthYear;
 	
-	@FindBy(how = How.ID, using = "gender")
-	private WebElement radioGender;
+	@FindBy(how = How.ID, using = "gender_male_label")
+	private WebElement maleGender;
 	
-	@FindBy(how = How.ID, using = "zipcode")
+	@FindBy(how = How.ID, using = "gender_female_label")
+	private WebElement femaleGender;
+	
+	@FindBy(how = How.ID, using = "postalCode")
 	private WebElement inputZipCode;
 	
 	@FindBy(how = How.CLASS_NAME, using = "arrow_prev ng-binding")
