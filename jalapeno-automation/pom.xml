@@ -37,6 +37,11 @@
         	<artifactId>object-maps</artifactId>
         	<version>ihg-depot-trunk-SNAPSHOT</version>
         </dependency>
+        <dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>common-steps</artifactId>
+			<version>ihg-depot-trunk-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

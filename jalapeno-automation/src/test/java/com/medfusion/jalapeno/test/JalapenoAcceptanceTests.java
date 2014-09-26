@@ -10,6 +10,8 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.medfusion.jalapeno.utils.Jalapeno;
+import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
@@ -37,8 +39,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver,
-				testData.getUrl());
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 
 	}
@@ -54,11 +55,9 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver,
-				testData.getUrl());
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(
-				testData.getUserId(), testData.getPassword());
-		//TODO Implement Verification on Home Page once developed 	
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
+		// TODO Implement Verification on Home Page once developed
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -72,10 +71,23 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver,
-				testData.getUrl());
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(
-				testData.getUserId(), "WrongPassword");
-		//TODO Implement Verification on Home Page once developed 	
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoLoginPage.login(testData.getUserId(), "WrongPassword");
+		// TODO Implement Verification on Home Page once developed
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatient() throws Exception {
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest(driver);
+		jalapenoCreatePatientTest.createPatient(driver, testData);
+		
 	}
 }
