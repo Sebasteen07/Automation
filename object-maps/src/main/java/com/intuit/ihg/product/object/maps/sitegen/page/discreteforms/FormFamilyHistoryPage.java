@@ -9,7 +9,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class FamilyMedicalHistoryPage extends BasePageObject{
+public class FormFamilyHistoryPage extends BasePageObject{
 	
 	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
@@ -99,7 +99,7 @@ public class FamilyMedicalHistoryPage extends BasePageObject{
 	private WebElement familymedicalhistoryComments;
 	
 	
-	public FamilyMedicalHistoryPage(WebDriver driver) 
+	public FormFamilyHistoryPage(WebDriver driver) 
 	{
 		super(driver);
 		// TODO Auto-generated constructor stub

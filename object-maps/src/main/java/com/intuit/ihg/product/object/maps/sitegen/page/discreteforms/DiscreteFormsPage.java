@@ -305,7 +305,7 @@ public class DiscreteFormsPage extends BasePageObject{
 		IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
 		
 		log("substep 12: Click on Family Medical History");
-		FamilyMedicalHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
+		FormFamilyHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
 		
 		log("substep 13: Click on Social History the last page of discrete form");
 		SocialHistoryPage socialPage = pFamilyMedicalHistoryPage.clicklnkSocialHistory();

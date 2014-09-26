@@ -8,14 +8,9 @@ import org.testng.annotations.Test;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.SpecialCharFormFirstPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.SpecialCharFormSecondPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormBasicInfoPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormMedicationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormSocialHistoryPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.*;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
@@ -240,7 +235,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml = new String();
-		String easyBruisingString = new String("Easy bruising");
+		// easy bruising is mapped to following term in Forms Configurator in SiteGen
+		String easyBruisingString = new String("ABO donor$$$easy"); 
 		String diacriticString = new String("¿¡eñÑeŘ\"");
 		
 		logTestEvironmentInfo("testDiscreteFormPDF");
@@ -275,22 +271,23 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Go through the rest of the form and submit it");
 		FormMedicationsPage medicationsPage = currentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
 		medicationsPage.setNoMedications();
-	
-		log("step 7: Set Social History Form Fields and submit the form");
-		FormSocialHistoryPage socialHistoryPage = medicationsPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
+		FormFamilyHistoryPage familyPage = medicationsPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class);
+		familyPage.setNoFamilyHistory();
+		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
 		socialHistoryPage.fillOutDefaultExerciseLength();
 		socialHistoryPage.clickSaveAndContinueButton();
 		socialHistoryPage.submitForm();
 		
-		log("Step 8: Test if PDF is downloadable");
+		log("Step 6: Test if PDF is downloadable");
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
 		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
 		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
 		
-		log("Step 9: Test if CCD is produced");
+		log("Step 7: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
+//		System.out.print(xml);
 		assertTrue(xml.contains(easyBruisingString));
 	}
 	
