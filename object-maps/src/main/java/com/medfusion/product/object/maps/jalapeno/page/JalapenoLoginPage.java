@@ -79,8 +79,9 @@ public class JalapenoLoginPage extends BasePageObject {
 		for (WebElement w : webElementsList) {
 
 			try {
+				log("Checking WebElement" + w.toString());
 				if (w.isDisplayed()) {
-					log("WebElement " + w + "is displayed");
+					log("WebElement " + w.toString() + "is displayed");
 					allElementsDisplayed = true;
 				} else {
 					return false;
