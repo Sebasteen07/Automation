@@ -2,6 +2,7 @@ package com.intuit.ihg.product.object.maps.phr.page;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.Assert;
@@ -186,7 +187,7 @@ public class PhrDocumentsPage extends BasePageObject {
 	 */
 	public String getPstTimings() {
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MMMM d, yyyy");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("PST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
