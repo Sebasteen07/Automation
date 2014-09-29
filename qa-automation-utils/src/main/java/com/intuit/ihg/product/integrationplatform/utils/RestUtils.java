@@ -58,6 +58,8 @@ public class RestUtils {
 
 	
 	public static String gnMessageID;
+	public static String SigCodeAbbreviation;
+	public static String SigCodeMeaning;
 	/**
 	 * Performs OAuth Get Request and saves the resposse
 	 * @param strUrl server Get url
@@ -765,6 +767,7 @@ public class RestUtils {
 			String getCreatedDateTime, String getUpdatedDateTime,
 			String rxSMSubject, String rxSMBody) throws DOMException, ParseException, TransformerException, ParserConfigurationException, SAXException, IOException {
 		
+		
 		Document doc=buildDOMXML(prescriptionPath);
 		
 		Node node=doc.getElementsByTagName(IntegrationConstants.PRESCRIPTION).item(0);
@@ -804,6 +807,15 @@ public class RestUtils {
 		nMedicationDosage.setTextContent(medication_details.get(1));
 		nMedicationName.setTextContent(medication_details.get(0));
 		
+		String SigCode=generateRandomString();
+		Node nSigCodeAbbreviation=element.getElementsByTagName("SigCodeAbbreviation").item(0);
+		Node nSigCodeMeaning=element.getElementsByTagName("SigCodeMeaning").item(0);
+		
+		nSigCodeAbbreviation.setTextContent(SigCode);
+		nSigCodeMeaning.setTextContent(SigCode.concat(" Daily"));
+		
+		SigCodeAbbreviation= nSigCodeAbbreviation.getTextContent().toString();
+		SigCodeMeaning = nSigCodeMeaning.getTextContent().toString();
 		//update messageId,Subject,message_thread_id
 		Node cNode=doc.getElementsByTagName(IntegrationConstants.COMMUNICATION).item(0);
 		Element ele=(Element) cNode;
@@ -1000,7 +1012,22 @@ public class RestUtils {
 		
 		
 	}
-
-
+	/**
+	 * Generate random String for Sig Code 
+	 * @return
+	 */
+	public static String generateRandomString(){
+		String CHAR_LIST ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuffer randStr = new StringBuffer();
+        for(int i=0; i<4; i++){
+        	int randomNo = 0;
+	        Random randomGenerator = new Random();
+	        randomNo = randomGenerator.nextInt(26);
+            char ch = CHAR_LIST.charAt(randomNo);
+            randStr.append(ch);
+        }
+        return randStr.toString();
+    }
 	
+
 }

@@ -62,6 +62,10 @@ public class MessagePage extends BasePageObject {
 	
 	@FindBy(id = "savePdf")
 	private WebElement pdfDownload;
+	
+	@FindBy(xpath = "//span[@fieldid='instructions']")
+	private WebElement sigCodeInstructions;
+		
 	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
 			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
 	
@@ -122,7 +126,7 @@ public class MessagePage extends BasePageObject {
 	public void clickBtnReviewHealthInformation() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 20, btnReviewHealthInformation);
+		IHGUtil.waitForElement(driver, 60, btnReviewHealthInformation);
 		btnReviewHealthInformation.click();	
 	}
 	
@@ -229,4 +233,17 @@ public class MessagePage extends BasePageObject {
 			return false;
 			}
 		}
+	
+	/**
+	 * verify sidcode meaning in patient portal
+	 * @param sigCodeMeaning
+	 */
+	
+	public String readSigCode(String sigCodeMeaning) {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setFrame(driver, "iframebody");
+		IHGUtil.waitForElement(driver, 220, sigCodeInstructions);
+		log("Searching: SigCode Meaning is:" + sigCodeMeaning + ", and Actual SigCode Meaning is:" + sigCodeInstructions.getText().toString());
+		return sigCodeInstructions.getText().toString();
+	}
 }

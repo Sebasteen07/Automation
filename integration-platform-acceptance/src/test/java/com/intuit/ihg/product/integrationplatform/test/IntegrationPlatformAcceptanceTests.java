@@ -92,7 +92,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	 */
 
 	
-	////////////////@Test       (enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	////////////@Test      (enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
 	 log("+++++++++++++ Test run+++++++++++");
@@ -111,7 +111,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 
 	/*
-	//////////@Test       (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//////@Test      (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -182,7 +182,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	*/
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2EAppointmentRequest() throws Exception {
 		
 		log("Test Case: Appointment Request");
@@ -329,7 +329,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestion() throws Exception {
 		
 		log("Test Case: AMDC Ask Question");
@@ -397,7 +397,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessageWithReadCommnunication() throws Exception{
 		log("Test Case: AMDC Secure Message with Read Communication");
 		
@@ -497,7 +497,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 	}
 	
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception{
 		log("Test Case: PIDC Patient Update");
 		PIDCTestData testData = loadDataFromExcel();
@@ -539,7 +539,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistration() throws Exception{
 		log("Test Case: PIDC Patient Registration");
 		PIDCTestData testData = loadDataFromExcel();
@@ -637,7 +637,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		return testData;
 	}
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCsendCCD() throws Exception {
 		
 		log("Test Case: send a CCD and check in patient Portal");
@@ -738,7 +738,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 	}
 	
-	@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ERxPrescription() throws Exception {
 		log("Test Case: Rx Prescription Request");
 		
@@ -774,10 +774,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("step 4: Click on PrescriptionRenewal Link ");
 		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
 		
-		log("step 5:set Medication Fields in RxRenewal Page");
+		log("step 5: Set Medication Fields in RxRenewal Page");
 		newRxRenewalPage.setMedicationDetails();
 
-		log("step 6:set Pharmacy Fields in RxRenewal Page");
+		log("step 6: Set Pharmacy Fields in RxRenewal Page");
 		newRxRenewalPage.setPharmacyFields();
 		
 		log("Getting Medication Name ");
@@ -791,7 +791,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String rxSMBody=IntegrationConstants.QUESTION_MESSAGE.toString()+""+String.valueOf(time);
 		log("Perscription Reply :"+rxSMBody);
 		
-		log("step 7:Verify RxRenewal Confirmation Message");
+		log("step 7: Verify RxRenewal Confirmation Message");
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
 		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
@@ -809,7 +809,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		//get only messages from last hour in epoch time to avoid transferring lot of data
 		Long since = timestamp / 1000L - 60 * 24;
 		
-		log("Getting messages since timestamp: " + since);
+		log("Getting messages since timestamp :" + since);
 				
 		//do the call and save xml, ",0" is there because of the since attribute format
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
@@ -818,6 +818,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), medicationName);	
 		
 		String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(),"Medication",medicationName,rxSMSubject,rxSMBody,testData.getPrescriptionPath());
+		
+		String SigCodeAbbreviation=RestUtils.SigCodeAbbreviation;
+		String SigCodeMeaning=RestUtils.SigCodeMeaning;
+		
+		String sigCodes=SigCodeAbbreviation+" - "+SigCodeMeaning;
+		
+		log("SigCodeAbbreviation :" +SigCodeAbbreviation);
+		log("SigCodeMeaning :" +SigCodeMeaning);
 		
 		log("step 12: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
@@ -836,7 +844,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		verifyTrue(completed, "Message processing was not completed in time");
 		
 		//Patient portal validation
-		log("step 14: Login to Patient Portal");
+	    log("step 14: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pPatientPage = ploginPage.login(testData.getUserName(), testData.getPassword());
 
@@ -844,40 +852,44 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		MessageCenterInboxPage inboxPage = pPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
+		//String rxSMSubject="Prescription Renewal Approved1411738963818";
 		log("step 16: Find message in Inbox");
 		MessagePage msg = inboxPage.openMessageInInbox(rxSMSubject);
 
 		log("step 17: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated(rxSMSubject));
 		
+		log("step 18: Checking Instructions(SigCodeMeaning) in inbox");
+		String Instructions=msg.readSigCode(SigCodeMeaning);
+		verifyEquals(SigCodeMeaning, Instructions);
 		
-		log("step 18: Logout of Patient Portal");
+		log("step 19: Logout of Patient Portal");
 		pPatientPage.logout(driver);
 		
 		//Practice portal validation  
-		log("step 19: Login to Practice Portal");
+		log("step 20: Login to Practice Portal");
 
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
 
-		log("step 20:Click On RxRenewal in Practice Portal");
+		log("step 21: Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
 
-		log("step 21:Search for Today's RxRenewal in Practice Portal");
+		log("step 22: Search for Today's RxRenewal in Practice Portal");
 		rxRenewalSearchPage.searchForRxRenewalToday(2);
 
-		log("Get the RxRenewal Details in Practice Portal");
+		log("step 23: Get the RxRenewal Details in Practice Portal");
 		rxRenewalSearchPage.getRxRenewalDetails();
+		
+		log("step 24: Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.checkMedicationDetails(medicationName,sigCodes);
 
-		/*log("Set the RxRenewal Fields in Practice Portal");
-		rxRenewalSearchPage.setRxRenewalFields();*/
-
-		log("step 22: Logout of Practice Portal");
+		log("step 24: Logout of Practice Portal");
 		practiceHome.logOut();
 		
 	}
 		
-		@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testGEAdaptersendCCD() throws Exception {
 			
 			log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
@@ -899,7 +911,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-			
+						
 			log("step 2: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
 
@@ -976,7 +988,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 		}
 		
-		@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testAllScriptImportCCD() throws Exception {
 			
 			log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
@@ -1026,7 +1038,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			Thread.sleep(1000);
 			log("######  Message Date :: " + IHGUtil.getEstTiming());
 			assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+			//assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 			log("step 8: Click on link ReviewHealthInformation");
 			pMessage.clickBtnReviewHealthInformation();

@@ -7,9 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
@@ -249,7 +251,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 		String index2= endDaySelect.getFirstSelectedOption().getAttribute("index");
 		startDaySelect.selectByIndex(Integer.parseInt(index2));
 		Thread.sleep(2000);
-
 		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
 		Thread.sleep(2000);
@@ -261,5 +262,15 @@ public class RxRenewalSearchPage extends BasePageObject {
 		}
 		getPayments.click();
 		Thread.sleep(8000);
+	}
+	
+	public void checkMedicationDetails(String medicationName, String sigCode)
+	{
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		Log4jUtil.log("Searching: Mediaction Name is:" + medicationName + ", and Actual Medication Name is:" + mediactionName.getText().toString());
+		Log4jUtil.log("Searching: SigCode Abbreviation & Meaning is:" + sigCode + ", and Actual SigCode Abbreviation & Meaning is:" + frequency.getText().toString());
+		Assert.assertEquals(mediactionName.getText(), medicationName, "Invalid Medication Name was found");
+		Assert.assertEquals(frequency.getText(), sigCode, "Invalid SigCode Abbreviation & Meaning were found");
 	}
 }
