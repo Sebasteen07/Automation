@@ -7,6 +7,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 public class JalapenoCreateAccountPage2 extends BasePageObject {
@@ -43,7 +44,8 @@ public class JalapenoCreateAccountPage2 extends BasePageObject {
 	
 	
 	public JalapenoHomePage fillInDataPage2(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
-
+		IHGUtil.PrintMethodName();
+		
 		log("Setting User Name as " + userId);
 		inputUserId.sendKeys(userId);
 		log("Setting Password as " + password);

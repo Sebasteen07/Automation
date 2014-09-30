@@ -9,11 +9,10 @@ import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
-import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage2;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
-public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
-
+public class JalapenoHealthKey6Of6Inactive extends BaseTestNGWebDriver{
+	
 	private String email = "";
 	private String password = "";
 	private String url = "";
@@ -54,7 +53,7 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 		return lastName;
 	}
 
-	public JalapenoHomePage createPatient(WebDriver driver, PropertyFileLoader testData) throws InterruptedException {
+	public JalapenoHomePage healthKey6Of6Inactive(WebDriver driver, PropertyFileLoader testData) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		int randomize = PortalUtil.createRandomNumber();
 		
@@ -74,11 +73,10 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
 
-		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 =  jalapenoCreateAccountPage.fillInDataPage1(firstName, lastName, email,
-				testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear(), true, testData.getZipCode());	
-		jalapenoCreateAccountPage2.fillInDataPage2(email, testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
-		
-
+		jalapenoCreateAccountPage.fillInDataPage1(testData.getHealthKey6Of6FirstnameInactive(), testData.getHealthKey6Of6LastnameInactive(), testData.getHealthKey6Of6EmailInactive(),
+				testData.getHealthKey6Of6DOBMonthInactive(), testData.getHealthKey6Of6DOBDayInactive(), testData.getHealthKey6Of6DOBYearInactive(), true, testData.getHealthKey6Of6ZipInactive());
+		assertTrue(jalapenoLoginPage.isTextVisible(JalapenoConstants.HEALTHKEY_MATCH_SAME_PRACTICE_INACTIVE_MESSAGES));
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
+
 }

@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.jalapeno.page;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -81,6 +82,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		for (WebElement w : webElementsList) {
 
 			try {
+				IHGUtil.waitForElement(driver, 20, w);
 				log("Checking WebElement" + w.toString());
 				if (w.isDisplayed()) {
 					log("WebElement " + w.toString() + "is displayed");
@@ -114,6 +116,10 @@ public class JalapenoLoginPage extends BasePageObject {
 		log("Clicking on Join In button");
 		joinButton.click();
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
+	}
+	
+	public boolean isTextVisible(String text) {
+		return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
 	}
 
 }

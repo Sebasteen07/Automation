@@ -10,10 +10,11 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
-import com.medfusion.jalapeno.utils.Jalapeno;
 import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
+import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
+import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
+import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 /**
  * @Author:Jakub Calabek
@@ -76,7 +77,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		// TODO Implement Verification on Home Page once developed
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
 
 		log(this.getClass().getName());
@@ -86,8 +87,52 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest(driver);
+		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
 		jalapenoCreatePatientTest.createPatient(driver, testData);
 		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		JalapenoHealthKey6Of6SamePractice jalapenoHealthKey6Of6SamePractice = new JalapenoHealthKey6Of6SamePractice();
+		jalapenoHealthKey6Of6SamePractice.healthKey6Of6SamePractice(driver, testData);
+		
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoHealthKey6Of6DifferentPractice jalapenoHealthKey6Of6DifferentPractice = new JalapenoHealthKey6Of6DifferentPractice();
+		jalapenoHealthKey6Of6DifferentPractice.healthKey6Of6DifferentPractice(driver, testData);
+		
+	}
+		
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoHealthKey6Of6Inactive jalapenoHealthKey6Of6Inactive = new JalapenoHealthKey6Of6Inactive();
+		jalapenoHealthKey6Of6Inactive.healthKey6Of6Inactive(driver, testData);
+	
 	}
 }
