@@ -1,7 +1,9 @@
 package com.medfusion.product.object.maps.jalapeno.page.CreateAccount;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGUtil;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,10 +46,10 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "postalCode")
 	private WebElement inputZipCode;
 
-	@FindBy(how = How.CLASS_NAME, using = "arrow_prev ng-binding")
+	@FindBy(how = How.ID, using = "cancel")
 	private WebElement buttonCancel;
 
-	@FindBy(how = How.XPATH, using = ".//*[@id='createAccountStep1_form']/p/button[2]")
+	@FindBy(how = How.ID, using = "next")
 	private WebElement buttonChooseUserId;
 
 	public JalapenoCreateAccountPage(WebDriver driver) {
@@ -57,7 +59,8 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 
 	public JalapenoCreateAccountPage2 fillInDataPage1(String firstName, String lastName, String email, String month, String day, String year, boolean gender,
 			String zipCode) {
-
+		IHGUtil.PrintMethodName();
+		
 		log("Setting Firstname as " + firstName);
 		inputPatientFirstName.sendKeys(firstName);
 		log("Setting LastName as " + lastName);
@@ -87,6 +90,10 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 		buttonChooseUserId.click();
 
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage2.class);
+	}
+	
+	public boolean isTextVisible(String text) {
+		return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
 	}
 
 }

@@ -14,6 +14,10 @@ public class PropertyFileLoader {
 	public String getUrl() {
 		return property.getProperty("url");
 	}
+	
+	public String getDifferentUrl() {
+		return property.getProperty("differentUrl");
+	}
 
 	public String getUserId() {
 
@@ -24,7 +28,7 @@ public class PropertyFileLoader {
 
 		return property.getProperty("password");
 	}
-	
+
 	public String getFirstName() {
 		return property.getProperty("FirstName");
 	}
@@ -38,7 +42,7 @@ public class PropertyFileLoader {
 
 		return property.getProperty("email");
 	}
-	
+
 	public String getDOBDay() {
 		return property.getProperty("DOBDay");
 	}
@@ -52,22 +56,84 @@ public class PropertyFileLoader {
 
 		return property.getProperty("DOBYear");
 	}
-	
+
 	public String getZipCode() {
 		return property.getProperty("ZipCode");
 	}
-	
+
 	public String getSecretQuestion() {
 
 		return property.getProperty("SecretQuestion");
 	}
-	
+
 	public String getSecretAnswer() {
 		return property.getProperty("SecretAnswer");
 	}
-	
+
 	public String getphoneNumer() {
 		return property.getProperty("phoneNumer");
+	}
+
+	public String getHealthKey6Of6FirstnameSamePractice() {
+		return property.getProperty("HealthKey6Of6FirstnameSamePractice");
+	}
+
+	public String getHealthKey6Of6LastnameSamePractice() {
+
+		return property.getProperty("HealthKey6Of6LastnameSamePractice");
+	}
+
+	public String getHealthKey6Of6EmailSamePractice() {
+
+		return property.getProperty("HealthKey6Of6EmailSamePractice");
+	}
+
+	public String getHealthKey6Of6DOBMonthSamePractice() {
+		return property.getProperty("HealthKey6Of6DOBMonthSamePractice");
+	}
+
+	public String getHealthKey6Of6DOBDaySamePractice() {
+
+		return property.getProperty("HealthKey6Of6DOBDaySamePractice");
+	}
+
+	public String getHealthKey6Of6DOBYearSamePractice() {
+		return property.getProperty("HealthKey6Of6DOBYearSamePractice");
+	}
+
+	public String getHealthKey6Of6ZipSamePractice() {
+		return property.getProperty("HealthKey6Of6ZipSamePractice");
+	}
+	
+	public String getHealthKey6Of6FirstnameInactive() {
+		return property.getProperty("HealthKey6Of6FirstnameInactive");
+	}
+
+	public String getHealthKey6Of6LastnameInactive() {
+
+		return property.getProperty("HealthKey6Of6LastnameInactive");
+	}
+
+	public String getHealthKey6Of6EmailInactive() {
+
+		return property.getProperty("HealthKey6Of6EmailInactive");
+	}
+
+	public String getHealthKey6Of6DOBMonthInactive() {
+		return property.getProperty("HealthKey6Of6DOBMonthInactive");
+	}
+
+	public String getHealthKey6Of6DOBDayInactive() {
+
+		return property.getProperty("HealthKey6Of6DOBDayInactive");
+	}
+
+	public String getHealthKey6Of6DOBYearInactive() {
+		return property.getProperty("HealthKey6Of6DOBYearInactive");
+	}
+
+	public String getHealthKey6Of6ZipInactive() {
+		return property.getProperty("HealthKey6Of6ZipInactive");
 	}
 
 	public PropertyFileLoader() throws IOException {
