@@ -1,5 +1,6 @@
 package com.medfusion.product.jalapeno;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -75,7 +76,7 @@ public class JalapenoHealthKey6Of6Inactive extends BaseTestNGWebDriver{
 
 		jalapenoCreateAccountPage.fillInDataPage1(testData.getHealthKey6Of6FirstnameInactive(), testData.getHealthKey6Of6LastnameInactive(), testData.getHealthKey6Of6EmailInactive(),
 				testData.getHealthKey6Of6DOBMonthInactive(), testData.getHealthKey6Of6DOBDayInactive(), testData.getHealthKey6Of6DOBYearInactive(), true, testData.getHealthKey6Of6ZipInactive());
-		assertTrue(jalapenoLoginPage.isTextVisible(JalapenoConstants.HEALTHKEY_MATCH_SAME_PRACTICE_INACTIVE_MESSAGES));
+		driver.findElement(By.xpath("// * [contains(text(),'" + JalapenoConstants.HEALTHKEY_MATCH_SAME_PRACTICE_INACTIVE_MESSAGES + "')]")).isDisplayed();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
