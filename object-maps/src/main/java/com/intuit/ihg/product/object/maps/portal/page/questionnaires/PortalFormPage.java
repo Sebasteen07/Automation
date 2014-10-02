@@ -25,7 +25,6 @@ public class PortalFormPage extends BasePageObject {
 		super(driver);
 	}
 	
-	
 	/**
 	 * @brief Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form

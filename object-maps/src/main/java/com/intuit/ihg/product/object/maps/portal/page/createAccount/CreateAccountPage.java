@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.object.maps.portal.page.createAccount;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -329,11 +330,13 @@ public class CreateAccountPage extends BasePageObject {
 	 * @author Adam
 	 */
 	public void chooseProvider() {
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		// check if there is preffered provider option
 		if (driver.findElements(By.name("addOption")).size() > 0) {
 			Select provider = new Select(prefferedProvider); // and if so, select the first one
 			provider.selectByIndex(1);
 		}
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 	
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,

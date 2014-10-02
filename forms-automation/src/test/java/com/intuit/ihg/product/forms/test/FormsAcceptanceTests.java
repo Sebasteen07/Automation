@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.forms.test;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
@@ -10,6 +8,8 @@ import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.*;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -231,8 +231,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testDiscreteFormPDF() throws Exception {
-		
+	public void testDiscreteFormPdfCcd() throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml = new String();
 		// easy bruising is mapped to following term in Forms Configurator in SiteGen
@@ -240,7 +239,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		String diacriticString = new String("¿¡eñÑeŘ\"");
 		
 		logTestEvironmentInfo("testDiscreteFormPDF");
-		
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
@@ -248,30 +246,26 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 1: Click on Sign Up Fill detials in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
 		log("email:-" + email);
-		
 		CreatePatientTest createPatient = new CreatePatientTest();
 		createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
-		
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		FormWelcomePage pFormWelcomePage = formsPage.openDiscreteForm("pdfForm");
 		
-		log("Step 3: Click through the form flow to Current Symptoms");
+		log("Step 3: Fill out the form");
 		FormBasicInfoPage basicInfoPage = pFormWelcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);		
 		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveAndContinueButton(FormCurrentSymptomsPage.class);
-		
-		log("Step 4: Select symptoms for the patient");
 		currentSymptomsPage.setBasicSymptoms();
 		currentSymptomsPage.enterComment(diacriticString);
-		
-		log("Step 5: Go through the rest of the form and submit it");
-		FormMedicationsPage medicationsPage = currentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+		CurrentSymptomsSupplementalPage symptomsSupplemental = currentSymptomsPage.clickSaveAndContinueButton(CurrentSymptomsSupplementalPage.class);
+		symptomsSupplemental.fillLogicalAnswersForPdfTest();
+		FormMedicationsPage medicationsPage = symptomsSupplemental.clickSaveAndContinueButton(FormMedicationsPage.class);
 		medicationsPage.setNoMedications();
-		FormFamilyHistoryPage familyPage = medicationsPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class);
+		IllnessesSupplementalPage illnessesPage = medicationsPage.clickSaveAndContinueButton(IllnessesSupplementalPage.class);
+		illnessesPage.fillOut();
+		FormFamilyHistoryPage familyPage = illnessesPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class); 
 		familyPage.setNoFamilyHistory();
 		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
 		socialHistoryPage.fillOutDefaultExerciseLength();
@@ -287,7 +281,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
-//		System.out.print(xml);
 		assertTrue(xml.contains(easyBruisingString));
 	}
 	
