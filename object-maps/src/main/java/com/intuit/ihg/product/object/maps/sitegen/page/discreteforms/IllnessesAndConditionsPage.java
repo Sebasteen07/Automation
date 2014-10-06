@@ -340,12 +340,12 @@ public class IllnessesAndConditionsPage extends BasePageObject{
 	 * @return
 	 */
 	
-	public FamilyMedicalHistoryPage clicklnkFamilyHistory()
+	public FormFamilyHistoryPage clicklnkFamilyHistory()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkFamilyHistory);
 		lnkFamilyHistory.click();
-		return PageFactory.initElements(driver,FamilyMedicalHistoryPage.class);
+		return PageFactory.initElements(driver,FormFamilyHistoryPage.class);
 	}
 }
 

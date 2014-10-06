@@ -13,8 +13,25 @@ public class PortalCustomFormPage extends PortalFormPage {
 		super(driver);
 	}
 
+	/**
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
+	 * @throws Exception
+	 */
 	@Override
 	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveAndContinueButton(nextPageClass, this.btnContinue);
+	}
+	
+	/**
+	 * @brief Click on Continue Button
+	 * @param nextPageClass Class of the following page in the form
+	 * @return initialized PageObject for the next page
+	 * @throws Exception
+	 */
+	@Override
+	public <T extends PortalFormPage> T clickSaveAndContinueButton() throws Exception {
+		return clickSaveAndContinueButton(null, this.btnContinue);
 	}
 }

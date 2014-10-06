@@ -18,6 +18,7 @@ import org.openhealthtools.mdht.uml.cda.ClinicalDocument;
 import org.openhealthtools.mdht.uml.cda.util.CDADiagnostic;
 import org.openhealthtools.mdht.uml.cda.util.CDAUtil;
 import org.openhealthtools.mdht.uml.cda.util.ValidationResult;
+
 import com.intuit.ihg.rest.RestUtils;
 
 
@@ -61,7 +62,21 @@ public class CCDTest {
 		headers.put("Authentication-Type", "2wayssl");
 		System.out.println("Generated url is " + restUrl);
 		
-		xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+		try {
+			xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+		} 
+		catch (Exception requestException) {
+			// first 3 or more letters of the exception message contain request error code
+			int errorCode = Integer.parseInt( requestException.getMessage().substring(0, 3) ); 
+			if (errorCode == 204) { // CCD may not have yet been generated
+				Thread.sleep(2000);
+				xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+			}
+			else {
+				throw requestException;
+			}
+		}
+		
 		xml = StringEscapeUtils.unescapeXml(xml);
 		
 		return xml;
