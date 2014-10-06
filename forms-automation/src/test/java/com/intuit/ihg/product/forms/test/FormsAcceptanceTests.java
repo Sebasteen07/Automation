@@ -58,6 +58,31 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Username: "+testData.getAutomationUser());
 		log("Password: "+testData.getAutomationUserPassword());
 	}
+	
+	/**
+	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
+	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
+	 */
+	private void fillOutputForm(String diacriticString) throws Exception {
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		FormBasicInfoPage basicInfoPage = welcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);		
+		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveAndContinueButton(FormCurrentSymptomsPage.class);
+		currentSymptomsPage.setBasicSymptoms();
+		currentSymptomsPage.enterComment(diacriticString);
+		CurrentSymptomsSupplementalPage symptomsSupplemental = currentSymptomsPage.clickSaveAndContinueButton(CurrentSymptomsSupplementalPage.class);
+		symptomsSupplemental.fillLogicalAnswersForPdfTest();
+		FormMedicationsPage medicationsPage = symptomsSupplemental.clickSaveAndContinueButton(FormMedicationsPage.class);
+		medicationsPage.setNoMedications();
+		IllnessesSupplementalPage illnessesPage = medicationsPage.clickSaveAndContinueButton(IllnessesSupplementalPage.class);
+		illnessesPage.fillOut();
+		FormFamilyHistoryPage familyPage = illnessesPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class); 
+		familyPage.setNoFamilyHistory();
+		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
+		socialHistoryPage.fillOutDefaultExerciseLength();
+		socialHistoryPage.clickSaveAndContinueButton();
+		socialHistoryPage.submitForm();
+	}
+	
 
 	/**
 	 * @User Story ID in Rally: US544 - TA30648
@@ -231,7 +256,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testDiscreteFormPdfCcd() throws Exception {
+	public void testFormPdfCcd() throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml = new String();
 		// easy bruising is mapped to following term in Forms Configurator in SiteGen
@@ -252,38 +277,23 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		FormWelcomePage pFormWelcomePage = formsPage.openDiscreteForm("pdfForm");
+		formsPage.openDiscreteForm("pdfForm");
 		
 		log("Step 3: Fill out the form");
-		FormBasicInfoPage basicInfoPage = pFormWelcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);		
-		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveAndContinueButton(FormCurrentSymptomsPage.class);
-		currentSymptomsPage.setBasicSymptoms();
-		currentSymptomsPage.enterComment(diacriticString);
-		CurrentSymptomsSupplementalPage symptomsSupplemental = currentSymptomsPage.clickSaveAndContinueButton(CurrentSymptomsSupplementalPage.class);
-		symptomsSupplemental.fillLogicalAnswersForPdfTest();
-		FormMedicationsPage medicationsPage = symptomsSupplemental.clickSaveAndContinueButton(FormMedicationsPage.class);
-		medicationsPage.setNoMedications();
-		IllnessesSupplementalPage illnessesPage = medicationsPage.clickSaveAndContinueButton(IllnessesSupplementalPage.class);
-		illnessesPage.fillOut();
-		FormFamilyHistoryPage familyPage = illnessesPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class); 
-		familyPage.setNoFamilyHistory();
-		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
-		socialHistoryPage.fillOutDefaultExerciseLength();
-		socialHistoryPage.clickSaveAndContinueButton();
-		socialHistoryPage.submitForm();
+		fillOutputForm(diacriticString);
 		
-		log("Step 6: Test if PDF is downloadable");
+		log("Step 4: Test if PDF is downloadable");
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
 		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
 		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
 		
-		log("Step 7: Test if CCD is produced");
+		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
 		assertTrue(xml.contains(easyBruisingString));
 	}
-	
+
 	/**
 	 * @Author: bkrishnankutty
 	 * @Date: 05/4/2013
