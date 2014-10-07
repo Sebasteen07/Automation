@@ -308,7 +308,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
@@ -325,7 +325,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 1: Create Patient");
 		CreatePatientTest createPatient = new CreatePatientTest();
-	//	createPatient.setUrl(patientData.geturl());
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
 
 		log("step 2: Click on CustomForm");
@@ -404,7 +403,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * Description
 	 * @throws Exception
 	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"})
+	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEvironmentInfo("testCustomFormPublished");
