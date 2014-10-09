@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.intuit.ihg.common.utils.IHGConstants;
+
 public class FormWelcomePage extends PortalFormPage {
 
 	@FindBy(id = "continueWelcomePageButton")
@@ -34,7 +36,7 @@ public class FormWelcomePage extends PortalFormPage {
 		} catch (NoSuchElementException e) {
 			log("Welcome page of forms is not loaded");
 		}
-		driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		return result;
 	}
 	

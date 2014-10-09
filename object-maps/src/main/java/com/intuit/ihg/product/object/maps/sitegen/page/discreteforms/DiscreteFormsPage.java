@@ -16,6 +16,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.SocialHistoryPage.QuestionType;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.common.utils.IHGConstants;
 
 	/**
 	 * 
@@ -250,7 +251,7 @@ public class DiscreteFormsPage extends BasePageObject{
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		unpublishAllForms();
 		deleteAllUnPublishedForms();
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		createNewDiscreteForm();
 	}
 	
