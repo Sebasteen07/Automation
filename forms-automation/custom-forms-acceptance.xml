@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "forms-automation" verbose = "2" >
+<suite name = "custom-forms-automation" verbose = "2" >
 <listeners>
   <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
  	
-<test name = "Forms-Automation" >
+<test name = "Custom-Forms-Automation" >
 	<classes>
 		<class name = "com.intuit.ihg.product.forms.test.FormsAcceptanceTests" />
+			<methods>
+				<include name = "testCustomFormPublished" />
+				<include name = "testCustomForms" />
+			</methods>
 	</classes>
 </test>
 </suite>

@@ -10,8 +10,6 @@
 	<classes>
 	    <class name="com.intuit.ihg.product.portal.test.PortalAcceptanceTests" />
 	   		<methods>
-	   		    <include name="testCustomForms" />
-	   	        <include name="testDiscreteForms" />	    
         		<include name="testBillPaymentEnd2End" />
         		<include name="testSymptomAssessment" />
         		<include name="testVirtualOfficeVisitEnd2End" />
