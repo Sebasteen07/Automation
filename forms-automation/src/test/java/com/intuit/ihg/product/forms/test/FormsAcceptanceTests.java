@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
+import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
@@ -8,8 +9,7 @@ import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.*;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -42,12 +42,11 @@ import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
-	private void logTestEvironmentInfo(String testName) {
+	private void logTestEnvironmentInfo(String testName) {
 		log(testName);
 		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
@@ -85,20 +84,28 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	
 
 	/**
-	 * @User Story ID in Rally: US544 - TA30648
-	 * @StepsToReproduce: 
+	 * User Story ID in Rally: US544 - TA30648
+	 * StepsToReproduce:
+     *      Log in to SG
+     *      Go to Forms Config
+     *      Unpublish all forms
+     *      Delete all forms
+     *      Create a new form and configure it
+     *      Create a custom section and test saving it without name and questions
+     *      Save the form
+     *      Publish it
+     *      Test viewing the form on Patient Portal
 	 * === Prerequisite for the test case to run=========
 	 * Practice configured
 	 * Practices configured on: DEV3, DEMO, PROD
 	 * ============================================================
-	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests"})
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests", "PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {	
 		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 		
-		logTestEvironmentInfo("testDiscreteFormDeleteCreatePublish");
+		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
@@ -149,12 +156,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
 	public void testFormPracticePortal() throws Exception {
 		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
 		String discreteFormName = "Form for Practice view test"; 
 		
-		logTestEvironmentInfo("testFormPracticePortal");
+		logTestEnvironmentInfo("testFormPracticePortal");
 
 		log("Step 1: Get Data from Excel ##########");
 		Portal portal = new Portal();
@@ -197,7 +204,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
 	
 		log("step 8: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage =
+                pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
 		
 		log("step 9: View the Result");
 		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
@@ -213,9 +221,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true)
+	@Test(enabled = true, groups = {"PatientForms"})
 	public void testQuotationMarksInForm() throws Exception {
-		logTestEvironmentInfo("testQuotationMarksInForm");
+		logTestEnvironmentInfo("testQuotationMarksInForm");
 
 		log("Step 1: Get Data from Excel ##########");
 		Portal portal = new Portal();
@@ -254,16 +262,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * Creates new patient
 	 */
-	
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
 	public void testFormPdfCcd() throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
-		String xml = new String();
+		String xml;
 		// easy bruising is mapped to following term in Forms Configurator in SiteGen
-		String easyBruisingString = new String("ABO donor$$$easy"); 
-		String diacriticString = new String("¿¡eñÑeŘ\"");
+		String easyBruisingString = "ABO donor$$$easy";
+		String diacriticString = "¿¡eñÑeŘ\"";
 		
-		logTestEvironmentInfo("testDiscreteFormPDF");
+		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
@@ -291,7 +298,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
-		assertTrue(xml.contains(easyBruisingString));
+		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD");
 	}
 
 	/**
@@ -308,7 +315,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests", "CustomForms"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
@@ -332,11 +339,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Fill CustomForm");
 		pHealthForm.fillInsuranceHealthForm();
-		
+
 		assertFalse(driver.getPageSource().contains("Female question"));
-		
+
 		pHealthForm.submitInsuranceHealthForm();
-		
+
 		verifyEquals(pHealthForm.InsuranceHelthform.getText(), "Thank you for completing our Insurance Health Form ( Testing).");
 		// assertTrue(verifyTextPresent(driver,"Thank you for completing our Insurance Health Form ( Testing)."));
 
@@ -380,33 +387,33 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		// assertTrue(verifyTextPresent(driver,
 		// "Patient SSN : 987-65-4322"));
 	}
-	
+
 	/**
 	 * @Author:-Shanthala  : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
 	 * @User Story ID in Rally :  US6152 and US6151 and US7626
 	 * @StepsToReproduce:
-	 *Go to siteGen 
+	 *Go to siteGen
 	 *Enter the credentials
 	 *Search for the practice
-	 *Click on Custom Form	
+	 *Click on Custom Form
 	 *Click on Create Custom Form
 	 *Publish Custom Form and check for preview
 	 *Unpublish Custom Form, check for Preview and delete unpublished custom form
 	 *
 	 *=== Prerequisite for the test case to run=========
-	 * Nurse Named :- 
+	 * Nurse Named :-
 	 *
 	 *====Valid Custom Form details required. Test data would be updated after getting proper test data
 	 * =============================================================
-	 * @AreaImpacted :- 
+	 * @AreaImpacted :-
 	 * Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"})
+	@Test(enabled = true, groups = {"AcceptanceTests", "CustomForms"})
 	public void testCustomFormPublished() throws Exception {
 
-		logTestEvironmentInfo("testCustomFormPublished");
+		logTestEnvironmentInfo("testCustomFormPublished");
 
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen=new Sitegen();
@@ -439,7 +446,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			plinkOnManageCustomForm.deleteUnpublishedForm(SitegenConstants.FORMTITLE);
 			log("Existing custom form named 'Automation Custom Form deleted");
 
-		}else {
+		} else {
 			log("step 6: Click on Create Custom Form");
 			CreateCustomFormPage plinkOnCustomForm = pManageCustomForms.clicklnkCreateCustomForm();
 
@@ -452,16 +459,17 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 8: Build a Custom Form");
 			assertTrue(pCustomFormAddCategories.isSearchPageLoaded(), "Expected the SiteGen Build a Custom Form page to be loaded to add categories into the custom form, but it was not.");
 			AddQuestionsToCategoryPage pAddCAtegories = pCustomFormAddCategories.addCategoriesDetails(SitegenConstants.FORMCATEGORY);
-			
+
 			log("step 9A: Add Question1 to category 1");
 			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add questions to the category page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
 			verifyTrue(pAddCAtegories.addQuestion1ToCategory(SitegenConstants.FORMQUESTION1), "Custom Form question1 and answerset1 did not updated successfully.");
 			pAddCAtegories.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET1);
 			pAddCAtegories.saveCategoryQuestions();
-			
+
 			CustomFormAddCategoriesPage pCustomFormAddCategories2 = pAddCAtegories.clickCustomFormAddCategoriesPage();
 			AddQuestionsToCategoryPage pAddCAtegories2 = pCustomFormAddCategories2.addCategoriesDetails(SitegenConstants.FORMCATEGORY2);
+            System.out.print(SitegenConstants.FORMCATEGORY);
 
 			log("step 9B: Add Question2 to category 2");
 			verifyTrue(pAddCAtegories2.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
@@ -472,7 +480,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 			CustomFormAddCategoriesPage pCustomFormAddCategories3 = pAddCAtegories2.clickCustomFormAddCategoriesPage();
 			AddQuestionsToCategoryPage pAddCAtegories3 = pCustomFormAddCategories3.addCategoriesDetails(SitegenConstants.FORMCATEGORY3);
-			
+
 			log("step 9C: Add Question3 to category 3");
 			verifyTrue(pAddCAtegories3.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
@@ -483,9 +491,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
 			pAddCAtegories.saveCategoryQuestions();
-			
+
 			CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.clickCustomFormLayoutPage();
-			
+
 			log("step 10: Set Custom Form Layout");
 			verifyTrue(pAddQuestionsToCategory.isSearchPageLoaded(), "Expected the SiteGen form Layout page to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Form Layout is not set for Expected Category");
@@ -494,11 +502,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
 			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE2, SitegenConstants.FORMCATEGORY2);
 			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE3, SitegenConstants.FORMCATEGORY3);
-			
-			
+
+
 			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
-			
-			
+
+
 			Thread.sleep(8000);
 			log("step 11: Custom Form Preview Page to click on publish");
 			verifyTrue(pCustomFormPreview.isSearchPageLoaded(), "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
@@ -509,29 +517,29 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			//verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
 			verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form preview");
 			//verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
-			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink(); 
+			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
 
 			log("step 12: Manage your forms -Check custom Form published successfully");
 			verifyEquals(pManageForm.checkForPublishedPage(customFormTitle), true, "Custom Form did not published successfully and not present in published forms table");
-			
+
 			driver.switchTo().window(winHandleSiteGen);
-			
+
 			// Instancing CreatePatientTest
 			CheckOldCustomFormTest checkOldCustomFormTest =  new CheckOldCustomFormTest();
-			
+
 			// Setting data provider
 			Portal portal = new Portal();
 			TestcasesData portalTestcasesData = new TestcasesData(portal);
-				
+
 			// Executing Test
 			checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
 			String winHandlePatientPortal = driver.getWindowHandle();
 			HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
-		
-			
+
+
 			driver.switchTo().window(winHandleCustomBuilder);
-			
-			
+
+
 			log("step 13: Manage your forms -Check published Form Preview by clicking on Preview link");
 			verifyEquals(pManageForm.isSearchPageLoaded(),true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
 			log("step 13a: Delete 2 pages");
@@ -540,14 +548,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY);
 			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY3);
 			pAddQuestionsToCategory.categorySequence();
-			
+
 			pAddQuestionsToCategory.saveFormLayout();
 			driver.switchTo().window(winHandlePatientPortal);
-			
+
 			checkOldCustomFormTest.checkDeletedPages(driver, page, customFormTitle);
-			
+
 			driver.switchTo().window(winHandleCustomBuilder);
-			pCustomFormPreview.clickOnUnPublishLink(); 	
+			pCustomFormPreview.clickOnUnPublishLink();
 
 			log("step 14: Manage your forms -Check unpublished Form Preview");
 			verifyEquals(pManageForm.isSearchPageLoaded(), true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
@@ -555,7 +563,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 15: Manage your forms -Click on publish link");
 			verifyEquals(pCustomFormPreview.isSearchPageLoaded(),true, "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
-			pCustomFormPreview.clickOnPublishLink(); 
+			pCustomFormPreview.clickOnPublishLink();
 
 			log("step 16: Manage your forms -Check custom Form published was able to unpublish successfully");
 			verifyEquals(pManageForm.isSearchPageLoadedForUnpublishedTable(),true, "Expected the SiteGen Manage your Forms -> unpublished form page to be loaded to unpublish the published form, but it was not.");
@@ -564,5 +572,5 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 17: Manage your forms -Check custom Form unpublished was able to delete successfully");
 			pManageForm.deleteUnpublishedForm(customFormTitle);
 		}
-	}	
+	}
 }

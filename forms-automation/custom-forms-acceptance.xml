@@ -7,12 +7,13 @@
 </listeners>
  	
 <test name = "Custom-Forms-Automation" >
+    <groups>
+        <run>
+            <include name="CustomForms" />
+        </run>
+    </groups>
 	<classes>
 		<class name = "com.intuit.ihg.product.forms.test.FormsAcceptanceTests" />
-			<methods>
-				<include name = "testCustomFormPublished" />
-				<include name = "testCustomForms" />
-			</methods>
 	</classes>
 </test>
 </suite>

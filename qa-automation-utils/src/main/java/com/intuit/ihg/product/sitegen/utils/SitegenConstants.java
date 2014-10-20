@@ -49,7 +49,7 @@ public class SitegenConstants {
 	//for Custom Forms
 	public final static String FORMTYPE = "Custom Health Form";
 	public final static String FORMTITLE = "Auto CustomForm";
-	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instrcutions";
+	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instructions";
 	public final static String FORMMESSAGE = "Automation Custom Health Form Message";
 	public final static String FORMCATEGORY = "Insurance and Referrals";
 	public final static String FORMCATEGORY2 = "Demographics";

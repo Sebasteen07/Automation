@@ -7,14 +7,14 @@
 </listeners>
  	
 <test name = "Patient-forms-Automation" >
+    <groups>
+        <run>
+            <include name="PatientForms" />
+        </run>
+    </groups>
+
 	<classes>
 		<class name = "com.intuit.ihg.product.forms.test.FormsAcceptanceTests" />
-			<methods>
-				<include name = "testDiscreteFormDeleteCreatePublish" />
-				<include name = "testFormPdfCcd" />
-				<include name = "testFormPracticePortal" />
-				<include name = "testQuotationMarksInForm" />
-			</methods>
 	</classes>
 </test>
 </suite>
