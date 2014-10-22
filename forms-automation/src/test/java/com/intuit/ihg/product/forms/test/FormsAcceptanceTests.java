@@ -81,144 +81,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		socialHistoryPage.clickSaveAndContinueButton();
 		socialHistoryPage.submitForm();
 	}
-	
-
-	/**
-	 * User Story ID in Rally: US544 - TA30648
-	 * StepsToReproduce:
-     *      Log in to SG
-     *      Go to Forms Config
-     *      Unpublish all forms
-     *      Delete all forms
-     *      Create a new form and configure it
-     *      Create a custom section and test saving it without name and questions
-     *      Save the form
-     *      Publish it
-     *      Test viewing the form on Patient Portal
-	 * === Prerequisite for the test case to run=========
-	 * Practice configured
-	 * Practices configured on: DEV3, DEMO, PROD
-	 * ============================================================
-	 * @throws Exception
-	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests", "PatientForms"})
-	public void testDiscreteFormDeleteCreatePublish() throws Exception {	
-		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
-		
-		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
-		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		logSGLoginInfo(testcasesData);
-	
-		log("Step 2: Opening sitegen home page");
-		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
-	
-		log("step 3: navigate to SiteGen PracticeHomePage ##########");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		
-		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
-				
-		log("step 4: Click on Patient Forms");
-		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-		
-		assertTrue(pManageDiscreteForms.isPageLoaded());
-		
-		log("step 5: Unpublish and delete all forms and create a new one");
-		pManageDiscreteForms.initializePracticeForNewForm();
-		
-		log("step 6: Initialize the new form");
-		pManageDiscreteForms.prepareFormForTest(newFormName);
-		
-		log("step 7: Publish the saved Discrete Form");
-		pManageDiscreteForms.publishTheSavedForm(newFormName);
-		
-		log("step 8: Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle descriptor
-		driver.close();
-		driver.switchTo().window(parentHandle);
-		pSiteGenPracticeHomePage.clicklogout();
-		
-		log("step 9: Go to Patient Portal using the original window");
-						
-		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-		log("URL: " + portalTestcasesData.getFormsUrl());
-		
-		log("step 10:LogIn");  
-		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
-	
-		log("step 11: Click On Start Registration Button and verify welcome page of the previously created form");
-		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
-	}
-	
-	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
-	public void testFormPracticePortal() throws Exception {
-		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
-		String discreteFormName = "Form for Practice view test"; 
-		
-		logTestEnvironmentInfo("testFormPracticePortal");
-
-		log("Step 1: Get Data from Excel ##########");
-		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
-		
-		log("Step 2: Log in to Patient Portal");  
-		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
-		
-		log("Step 3: Go to forms page");
-		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
-		
-		log("Step 4: Open the right form");
-		formPage.openDiscreteForm("practiceForm");
-		
-		log("Step 5: Fill out the form");
-		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		FormBasicInfoPage demographPage = welcomePage.skipWelcomePage(FormBasicInfoPage.class); 
-		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
-		medsPage.setNoMedications();
-		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
-		illsPage.checkMononucleosis();
-		illsPage.clickSaveAndContinueButton(null);
-		illsPage.submitForm();
-		
-		log("Step 5: Logout of patient portal");
-		pMyPatientPage.logout(driver);
-	
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
-		log("Step 6: Login to Practice Portal");
-		
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());	
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
-		
-		log("step 7: On Practice Portal Home page Click CustomFormTab");
-		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-	
-		log("step 8: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage =
-                pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
-		
-		log("step 9: View the Result");
-		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
-		
-		log("step 10: Verify date and download code");
-		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
-		String submittedDate = pViewPatientFormPage.getLastUpdatedDateFormatted();
-		assertEquals(submittedDate, currentDate, "Form submitted today not found");
-		
-		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
-		URLStatusChecker status = new URLStatusChecker(driver);
-		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
-	}
 
 
 	@Test(enabled = true, groups = {"PatientForms"})
@@ -299,6 +161,141 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD");
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
+	public void testFormPracticePortal() throws Exception {
+		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
+		String discreteFormName = "Form for Practice view test";
+
+		logTestEnvironmentInfo("testFormPracticePortal");
+
+		log("Step 1: Get Data from Excel ##########");
+		Portal portal = new Portal();
+		TestcasesData portalTestcasesData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
+
+		log("Step 2: Log in to Patient Portal");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+
+		log("Step 3: Go to forms page");
+		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
+
+		log("Step 4: Open the right form");
+		formPage.openDiscreteForm("practiceForm");
+
+		log("Step 5: Fill out the form");
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		FormBasicInfoPage demographPage = welcomePage.skipWelcomePage(FormBasicInfoPage.class);
+		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+		medsPage.setNoMedications();
+		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
+		illsPage.checkMononucleosis();
+		illsPage.clickSaveAndContinueButton(null);
+		illsPage.submitForm();
+
+		log("Step 5: Logout of patient portal");
+		pMyPatientPage.logout(driver);
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+		log("Step 6: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
+
+		log("step 7: On Practice Portal Home page Click CustomFormTab");
+		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
+		verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+
+		log("step 8: Search for PatientForms With Status Open");
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage =
+                pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+
+		log("step 9: View the Result");
+		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
+
+		log("step 10: Verify date and download code");
+		// take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
+		String submittedDate = pViewPatientFormPage.getLastUpdatedDateFormatted();
+		assertEquals(submittedDate, currentDate, "Form submitted today not found");
+
+		log("Download URL: " + pViewPatientFormPage.getDownloadURL());
+		URLStatusChecker status = new URLStatusChecker(driver);
+		assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
+	}
+
+    /**
+     * User Story ID in Rally: US544 - TA30648
+	 * StepsToReproduce:
+     *      Log in to SG
+     *      Go to Forms Config
+     *      Unpublish all forms
+     *      Delete all forms
+     *      Create a new form and configure it
+     *      Create a custom section and test saving it without name and questions
+     *      Save the form
+     *      Publish it
+     *      Test viewing the form on Patient Portal
+	 * === Prerequisite for the test case to run=========
+	 * Practice configured
+	 * Practices configured on: DEV3, DEMO, PROD
+	 * ============================================================
+	 * @throws Exception
+	 */
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests", "PatientForms"})
+	public void testDiscreteFormDeleteCreatePublish() throws Exception {
+		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+
+		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
+		log("step 1: Get Data from Excel ##########");
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testcasesData = new SitegenTestData(sitegen);
+		logSGLoginInfo(testcasesData);
+
+		log("Step 2: Opening sitegen home page");
+		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
+		SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
+
+		log("step 3: navigate to SiteGen PracticeHomePage ##########");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+
+		log("step 4: Click on Patient Forms");
+		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+
+		assertTrue(pManageDiscreteForms.isPageLoaded());
+
+		log("step 5: Unpublish and delete all forms and create a new one");
+		pManageDiscreteForms.initializePracticeForNewForm();
+
+		log("step 6: Initialize the new form");
+		pManageDiscreteForms.prepareFormForTest(newFormName);
+
+		log("step 7: Publish the saved Discrete Form");
+		pManageDiscreteForms.publishTheSavedForm(newFormName);
+
+		log("step 8: Close the window and logout from SiteGenerator");
+		// Switching back to original window using previously saved handle descriptor
+		driver.close();
+		driver.switchTo().window(parentHandle);
+		pSiteGenPracticeHomePage.clicklogout();
+
+		log("step 9: Go to Patient Portal using the original window");
+
+		Portal portal = new Portal();
+		TestcasesData portalTestcasesData = new TestcasesData(portal);
+		log("URL: " + portalTestcasesData.getFormsUrl());
+
+		log("step 10:LogIn");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+
+		log("step 11: Click On Start Registration Button and verify welcome page of the previously created form");
+		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
+		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
 	}
 
 	/**
