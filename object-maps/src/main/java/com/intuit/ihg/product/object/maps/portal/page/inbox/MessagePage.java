@@ -237,12 +237,14 @@ public class MessagePage extends BasePageObject {
 	/**
 	 * verify sidcode meaning in patient portal
 	 * @param sigCodeMeaning
+	 * @throws InterruptedException 
 	 */
 	
-	public String readSigCode(String sigCodeMeaning) {
+	public String readSigCode(String sigCodeMeaning) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(240000);
 		PortalUtil.setFrame(driver, "iframebody");
-		IHGUtil.waitForElement(driver, 220, sigCodeInstructions);
+		IHGUtil.waitForElement(driver, 60, sigCodeInstructions);
 		log("Searching: SigCode Meaning is:" + sigCodeMeaning + ", and Actual SigCode Meaning is:" + sigCodeInstructions.getText().toString());
 		return sigCodeInstructions.getText().toString();
 	}

@@ -75,14 +75,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("step 9: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 		
-		//Wait according to environment
 		log("step 10: Waiting for Events sync in DWH");
-		if((IHGUtil.getEnvironmentType().toString().equals("DEV3")) || IHGUtil.getEnvironmentType().toString().equals("PROD")){
-			Thread.sleep(900000);
-		}
-		else {
-			Thread.sleep(600000*3);
-		}		
+		Thread.sleep(600000);		
 						
 		// Setup oauth Client
 		log("step 11: Setup Oauth client"); 
