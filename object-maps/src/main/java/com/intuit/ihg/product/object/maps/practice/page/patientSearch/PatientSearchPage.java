@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientSearch;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -57,6 +59,9 @@ public class PatientSearchPage extends BasePageObject{
 	
 	@FindBy(name="submitted")
 	private WebElement updateEmail;
+	
+	@FindBy(xpath="//table[@class='searchForm']//input[@name='member_type']")
+	private List<WebElement> patientStatus;
 	
 	private WebElement patient;
 	
@@ -186,5 +191,24 @@ public class PatientSearchPage extends BasePageObject{
 	
 	}
 	
-
+	public void searchAllPatientInPatientSearch(String fName, String lName,int status) throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 15, firstName);
+		firstName.clear();
+		firstName.sendKeys(fName);
+		IHGUtil.waitForElement(driver, 15, lastName);
+		lastName.clear();
+		lastName.sendKeys(lName);
+		
+		for (WebElement pstatus : patientStatus)
+		{
+			if(Integer.parseInt(pstatus.getAttribute("value"))==status)
+			{
+				pstatus.click();
+			}
+		}
+		IHGUtil.waitForElement(driver, 10, searchForPatient);
+		Thread.sleep(2000);
+		searchForPatient.click();	
+	}
 }

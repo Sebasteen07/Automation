@@ -142,6 +142,13 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "birthday:year")
 	private WebElement birthdayYear;
+	
+	@FindBy(name = "cont:questioninput")
+	private WebElement txtActivationCode;
+	
+	@FindBy(name = "buttons:submit")
+	private WebElement btnActivate;
+	
 
 	public CreateAccountPage(WebDriver driver) {
 		super(driver);
@@ -341,7 +348,7 @@ public class CreateAccountPage extends BasePageObject {
 	}
 	
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail) {
+					String sSSN, String sEmail,String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
 		
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -359,7 +366,26 @@ public class CreateAccountPage extends BasePageObject {
 		txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
+		IHGUtil.waitForElement(driver, 30, txtActivationCode);
+		txtActivationCode.sendKeys(activationCode);
 
+		btnActivate.click();
+		log("I am on the second Page :======");
+		
+		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
+		txtUserIdActivation.sendKeys(sEmail);
+		txtUserPasswordActivation.sendKeys(sPassword);
+		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
+		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
+		Select questionSelect = new Select(txtSecretQuestionActivation);
+		questionSelect.selectByVisibleText(sSecretQuestion);
+		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
+		
+		//Accepting license agreements
+		
+		checkPrivacyInformation.click();
+		checkIntuitTerms.click();
+		btnSubmit.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
@@ -368,6 +394,7 @@ public class CreateAccountPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
 		//radioButtGender.click();
 		setBirthDate();
@@ -377,7 +404,6 @@ public class CreateAccountPage extends BasePageObject {
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
 
 		btnSubmit.click();
-		
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);

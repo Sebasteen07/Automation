@@ -99,6 +99,17 @@ public class PIDCTestData {
 	
 	public String getSecretAnswer(){
 		return PidcObj.SecretAnswer;
+	}
+	public String getPracticeURL(){
+		return PidcObj.PracticeURL;
 	}	
+	
+	public String getPracticeUserName(){
+		return PidcObj.PracticeUserName;
+	}	
+	
+	public String getPracticePassword(){
+		return PidcObj.PracticePassword;
+	}
 	
 }

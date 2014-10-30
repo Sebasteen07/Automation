@@ -22,4 +22,7 @@ public class PIDC {
 	public String PatientPassword ="";
 	public String SecretQuestion ="";
 	public String SecretAnswer ="";
+	public String PracticeURL ="";
+	public String PracticeUserName ="";
+	public String PracticePassword ="";
 }
