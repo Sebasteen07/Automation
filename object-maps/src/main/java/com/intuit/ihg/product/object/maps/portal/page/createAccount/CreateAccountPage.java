@@ -348,7 +348,7 @@ public class CreateAccountPage extends BasePageObject {
 	}
 	
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail,String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
+					String sSSN, String sEmail) {
 		
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -363,47 +363,33 @@ public class CreateAccountPage extends BasePageObject {
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
-		txtEmail.sendKeys(sEmail);
-
-		btnSubmit.click();
-		IHGUtil.waitForElement(driver, 30, txtActivationCode);
-		txtActivationCode.sendKeys(activationCode);
-
-		btnActivate.click();
-		log("I am on the second Page :======");
 		
-		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
-		txtUserIdActivation.sendKeys(sEmail);
-		txtUserPasswordActivation.sendKeys(sPassword);
-		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
-		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
-		Select questionSelect = new Select(txtSecretQuestionActivation);
-		questionSelect.selectByVisibleText(sSecretQuestion);
-		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
-		
-		//Accepting license agreements
-		
-		checkPrivacyInformation.click();
-		checkIntuitTerms.click();
 		btnSubmit.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
-	public MyPatientPage fillEmailActivaion(String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer) {
+	public MyPatientPage fillPatientActivaion(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
+					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
 
+		txtPatientFirstname.sendKeys(sPatientFirstName);
+		txtLastname.sendKeys(sPatientLastName);
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
-		//radioButtGender.click();
+		radioButtGender.click();
 		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
+		txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
+		IHGUtil.waitForElement(driver, 30, txtActivationCode);
+		txtActivationCode.sendKeys(activationCode);
+		btnActivate.click();
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
