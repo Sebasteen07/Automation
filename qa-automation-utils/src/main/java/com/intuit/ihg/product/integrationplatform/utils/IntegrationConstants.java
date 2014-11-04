@@ -32,7 +32,7 @@ public class IntegrationConstants {
 	public static final Object NAME = "Name";
 	public static final String FIRST_NAME = "FirstName";
 	public static final String LAST_NAME = "LastName";
-	public static final Object EMAIL_ADDRESS = "EmailAddress";
+	public static final String EMAIL_ADDRESS = "EmailAddress";
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "New Health Information Import";
@@ -84,4 +84,33 @@ public class IntegrationConstants {
 	//Form Export
 	public static final String MEDFUSIONPATIENTID = "IntuitPatientId";
 	public static final String CCDTAG = "CcdXml";
+	
+	//Added new constants for PIDC Regression 
+	public static final String GENDER = "Gender";
+	public static final String SSN = "SocialSecurityNumber";
+	public static final String CITY = "City";
+	public static final String ZIPCODE = "ZipCode";
+	public static final String HOMEPHONE = "HomePhone";
+	
+	public static final String MIDDLENAME = "MiddleName";
+	public static final String MOBILEPHONE = "MobilePhone";
+	public static final String WORKPHONE = "WorkPhone";
+	
+	public static final String PREFERREDLANGUAGE = "PreferredLanguage";
+	public static final String RACE = "Race";
+	public static final String ETHINICITY = "Ethnicity";
+	public static final String MARRITALSTATUS = "MaritalStatus";
+	public static final String CHOOSECOMMUNICATION= "PreferredCommunication";
+	
+	public static final String PATIENTRELATIONTOSUBSCRIBER= "PatientRelationToSubscriber";
+	
+	public static final String PRIMARYINSURANCE = "PrimaryInsurance";
+	public static final String POLICYNUMBER = "PolicyNumber";
+	public static final String COMPANYNAME = "CompanyName";
+	
+	public static final String DATEOFBIRTH = "DateOfBirth";
+	public static final String SUBSCRIBERDATEOFBIRTH = "SubscriberDateOfBirth";
+	public static final String CLAIMSPHONE = "ClaimsPhone";
+	public static final String SUBSCRIBERSSN = "SubscriberSocialSecurityNumber";
+	public static final String GROUPNUMBER = "GroupNumber";
 }

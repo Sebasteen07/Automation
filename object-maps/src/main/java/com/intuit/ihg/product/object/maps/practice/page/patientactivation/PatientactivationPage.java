@@ -12,6 +12,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.report.model.testng.Test;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 
@@ -77,7 +78,45 @@ public class PatientactivationPage extends BasePageObject{
 	@FindBy( how = How.NAME, using="buttons:submit")
 	private WebElement Submit;
 	
-	String unlocklink ="";
+	@FindBy(css="input[name='member_ssn1']")
+	private WebElement SSN1;
+	
+	@FindBy(css="input[name='member_ssn2']")
+	private WebElement SSN2;
+	
+	@FindBy(css="input[name='member_ssn3']")
+	private WebElement SSN3;
+	
+	@FindBy(css="input[name='member_home_ac']")
+	private WebElement Home_No1;
+	
+	@FindBy(css="input[name='member_home_pre']")
+	private WebElement Home_No2;
+	
+	@FindBy(css="input[name='member_home_suff']")
+	private WebElement Home_No3;
+	
+	@FindBy(css="input[name='member_addr1']")
+	private WebElement AddLine1;
+	
+	@FindBy(css="input[name='member_addr2']")
+	private WebElement AddLine2;
+	
+	@FindBy(css="input[name='member_city']")
+	private WebElement City;
+	
+	@FindBy(name="member_state")
+	private WebElement State;
+	
+	/*@FindBy(css="form[name*='unlockmain'] > table.7.1]")
+	private WebElement activationCode;*/
+	
+	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
+	private WebElement unlockCode;
+	
+	
+	
+	
 	
 	public void clickAddNewPatient() {
 	
@@ -91,6 +130,7 @@ public class PatientactivationPage extends BasePageObject{
 	private String patientIdString="";
 	private String zipCodeString="";
 	private String emailAddressString="";
+	private String unlocklink ="";
 	
 	public String getFirstNameString() {
 		return firstNameString;
@@ -112,7 +152,10 @@ public class PatientactivationPage extends BasePageObject{
 		return emailAddressString;
 	}
 	
-	
+	public String getUnlockLink() {
+		return unlocklink;
+	}
+
 	public void setinitialdetails(String sEmail)
 	{
 		firstNameString="Beta" + IHGUtil.createRandomNumericString();
@@ -132,6 +175,7 @@ public class PatientactivationPage extends BasePageObject{
 		Log4jUtil.log("New Random Email is"+emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
+		
 		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 		zip.sendKeys(zipCodeString);
 		clickregpatient();
@@ -192,9 +236,52 @@ public class PatientactivationPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		btnDone.click();
 	}
+
 	
-	public String getUnlockLink() {
-		return unlocklink;
+	public String setFullDetails(PIDCTestData testData)
+	{
+		firstNameString="MF" + IHGUtil.createRandomNumericString();
+		patientIdString=IHGUtil.createRandomNumericString();
+		emailAddressString =IHGUtil.createRandomEmailAddress(testData.getEmail());
+		
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("First Name is :"+firstNameString);
+		firstName.sendKeys(firstNameString);
+
+		lastName.sendKeys(testData.getLastName());
+		male.click();
+		SSN1.sendKeys(testData.getSSN().subSequence(0, 3));
+		SSN2.sendKeys(testData.getSSN().subSequence(3, 5));
+		SSN3.sendKeys(testData.getSSN().subSequence(5, 9));
+		Log4jUtil.log("Patientid is :"+patientIdString);
+		patientId.sendKeys(patientIdString);
+		Home_No1.sendKeys(testData.getHomePhoneNo().substring(0, 3));
+		Home_No2.sendKeys(testData.getHomePhoneNo().substring(3, 6));
+		Home_No3.sendKeys(testData.getHomePhoneNo().substring(6, 10));
+		Log4jUtil.log("Email is :"+emailAddressString);
+		email.sendKeys(emailAddressString);
+		confirmEmail.sendKeys(emailAddressString);
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		AddLine1.sendKeys(testData.getAddress1());
+		AddLine2.sendKeys(testData.getAddress2());
+		City.sendKeys(testData.getCity());
+		Select stateSelect=new Select(State);
+		stateSelect.selectByVisibleText(testData.getState());
+		zip.sendKeys(testData.getZipCode());
+		
+		clickregpatient();
+		IHGUtil.waitForElement(driver,30, btnVerified);
+		clickverify();
+
+		IHGUtil.waitForElement(driver, 30, unlockLink);
+		unlocklink=unlockLink.getText().trim();
+		Assert.assertTrue("### ERROR: Couldn't get unlock link", unlocklink!="");
+		String activationCode=unlockCode.getText().toString();
+		Log4jUtil.log("Unlock Code :"+activationCode);
+
+		Log4jUtil.log("#### The unlock link exists and the link is :"+unlocklink);
+		clickdone();
+		return activationCode;
 	}
 	
 	
