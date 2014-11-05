@@ -51,4 +51,8 @@ public class AllScriptTestData {
 		return allscriptObj.ResponsePath;
 	}
 		
+	public String getEmail(){
+		return allscriptObj.Email;
+	}
+		
 }

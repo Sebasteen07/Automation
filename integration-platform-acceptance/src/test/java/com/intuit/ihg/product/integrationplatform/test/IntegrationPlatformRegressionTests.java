@@ -3,8 +3,6 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -23,7 +21,6 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
 
 
 

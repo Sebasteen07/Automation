@@ -1024,9 +1024,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Rest Url: " + testData.getRestUrl());
 			log("CCD Path: " + testData.getCCDPath());
 			log("Response Path: " + testData.getResponsePath());
+			log("Response Path: " + testData.getEmail());
 			
 			log("Step 1: AllScript CCD");
-			String ccd = RestUtils.readXMLfile(testData.getCCDPath());
+			String ccd = RestUtils.convertXMLFileToString(testData.getCCDPath());
 			
 			log("Step 2: Do Message Post Request");
 			RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());	
@@ -1067,27 +1068,33 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Step 8: Click on link ReviewHealthInformation");
 			pMessage.clickBtnReviewHealthInformation();
 
+			log("Step 9: Click on PDF download Link");
+			pMessage.clickOnPDF();
 			
-			log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
+			log("Step 10: Click on Send Information link");
+			String Email=testData.getEmail();
+			pMessage.generateTransmitEvent(Email);
+			
+			log("Step 11: Verify if CCD Viewer is loaded and click Close Viewer");
 			pMessage.verifyCCDViewerAndClose();
 			
 			driver.switchTo().defaultContent();
 			
-			log("Step 10: Go to patient page");
+			log("Step 12: Go to patient page");
 			pMyPatientPage = pMessage.clickMyPatientPage();
 			
-			log("Step 11: Click PHR");
+			log("Step 13: Click PHR");
 			pMyPatientPage.clickPHRWithoutInit(driver);
 			PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
 			
-			log("Step 12: Go to PHR Inbox");
+			log("Step 14: Go to PHR Inbox");
 			PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
 			assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-			log("Step 13: Click first message");
+			log("Step 15: Click first message");
 			PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
 
-			log("Step 14: Validate message subject and send date");
+			log("Step 16: Validate message subject and send date");
 			Thread.sleep(1000);
 			assertEquals(phrInboxMessage.getPhrMessageSubject(),
 					IntegrationConstants.CCD_MESSAGE_SUBJECT,
@@ -1095,10 +1102,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("######  Message Date :: " + IHGUtil.getEstTiming());
 			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
-			log("Step 15: Click on link ReviewHealthInformation");
+			log("Step 17: Click on link ReviewHealthInformation");
 			phrInboxMessage.clickBtnReviewHealthInformationPhr();
 			
-			log("Step 16: Verify if CCD Viewer is loaded and click Close Viewer");
+			log("Step 18: Verify if CCD Viewer is loaded and click Close Viewer");
 			phrInboxMessage.verifyCCDViewerAndClosePhr();
 			
 		}
