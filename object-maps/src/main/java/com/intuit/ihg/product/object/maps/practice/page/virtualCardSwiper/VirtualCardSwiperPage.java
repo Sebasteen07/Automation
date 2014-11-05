@@ -95,7 +95,7 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		amountToChargeField.sendKeys(amt);
 		cvvField.sendKeys(cvv);
 		zipField.sendKeys(zip);
-		if(IHGUtil.getEnvironmentType().toString()== "DEV3") {
+		if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) {
 			paymentCommentField.sendKeys(comment);
 		}
 			
