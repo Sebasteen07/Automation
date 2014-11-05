@@ -121,7 +121,7 @@ public class PatientDashboardPage extends BasePageObject{
 	 */
 	public String activationCode()
 	{
-		IHGUtil.waitForElement(driver, 60, lblunlockLink);
+		IHGUtil.waitForElement(driver, 60, lblactivationCode);
 		return lblactivationCode.getText().toString();
 		
 	}

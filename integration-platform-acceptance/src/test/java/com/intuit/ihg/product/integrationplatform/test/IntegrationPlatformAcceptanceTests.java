@@ -614,7 +614,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Step 11: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillInShortPatientCreation(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), activationCode);
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), activationCode);
 
 		log("Step 12: Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
@@ -629,7 +629,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		log("Step 14: Find the patient and check if he is registered");
 		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId);
-	}
+		}
 	
 	private PIDCTestData loadDataFromExcel() throws Exception{
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());

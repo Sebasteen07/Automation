@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -45,10 +46,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.beust.testng.TestNG;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
+import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -56,7 +59,7 @@ import com.intuit.ihg.product.portal.utils.PortalConstants;
 
 public class RestUtils {
 
-	
+	static Random random = new Random();
 	public static String gnMessageID;
 	public static String SigCodeAbbreviation;
 	public static String SigCodeMeaning;
@@ -430,12 +433,13 @@ public class RestUtils {
 				Node line2 = homeAddress.getElementsByTagName(IntegrationConstants.LINE2).item(0);
 				Assert.assertEquals(line1.getTextContent(), firstLine, "The actual value of Line 1 address doesnt equal the updated value");
 				Assert.assertEquals(line2.getTextContent(), secondLine, "The actual value of Line 2 address doesnt equal the updated value");
-				break;
-			}
-			if(i == nodes.getLength() - 1){
-				Assert.fail("Patient was not found");
-			}
-		}
+				break;					
+				}
+			if(i== nodes.getLength() - 1)
+			{
+				Assert.fail("Patient was not Found");
+			}			
+		}		
 		
 	}
 
@@ -485,7 +489,7 @@ public class RestUtils {
 				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED, "Patient has different status than expected. Status is: " + status.getTextContent());
 				found = true;
 				break;
-			}
+				}
 		}
 		Assert.assertTrue(found, "Patient was not found in the response XML");
 		
@@ -1029,5 +1033,160 @@ public class RestUtils {
         return randStr.toString();
     }
 	
-
+	/**
+	 * 
+	 */
+	public static List<String> genrateRandomData(String SSN,String Email,String Gender)
+	{
+		List<String> updatelist=new ArrayList<String>();
+		updatelist.add("FName"+random.nextInt(100));//FirstName
+		updatelist.add("LName"+random.nextInt(100));//Last name
+		updatelist.add("243456789"+random.nextInt(10));//home phone
+		updatelist.add("Address1"+random.nextInt(100));//Street 1 
+		updatelist.add("Address2"+random.nextInt(100));//Street 2
+		updatelist.add("City"+random.nextInt(100));//City
+		updatelist.add("1456"+random.nextInt(10));//zipcode
+		
+		updatelist.add(SSN);//SSN
+		updatelist.add(Gender);//Gender
+		updatelist.add(Email);//EMail
+		
+		updatelist.add("MName"+random.nextInt(100));//Middle Name
+		updatelist.add("242456789"+random.nextInt(10));//Mobile phone
+		updatelist.add("989456789"+random.nextInt(10));//Work phone
+		updatelist.add("01/01/199"+random.nextInt(10));//Date of birth
+		
+		
+		//additional data For Insurance Detials
+		updatelist.add("444-456-786"+random.nextInt(10));//Customer Service phone number
+		updatelist.add("123-45-67"+random.nextInt(100));//Insured SSN
+		updatelist.add("PolicyNumber"+random.nextInt(100));//Policy number
+		updatelist.add("GroupNumber"+random.nextInt(100));//Group number
+		updatelist.add("01/01/200"+random.nextInt(10));//Effective Date
+		updatelist.add("12"+random.nextInt(100));//Co Pay
+		
+		return updatelist;
+	}
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param practicePatientId
+	 * @param list
+	 * @param insuredlist
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws ParseException 
+	 */
+	public static void verifyPatientDetails(String xmlFileName, String practicePatientId, List<String> list, String insuranceName) throws ParserConfigurationException, SAXException, IOException, ParseException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for(int i = 0; i < patients.getLength(); i++){
+			if(patients.item(i).getTextContent().equals(practicePatientId)){
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+							
+				Log4jUtil.log("Checking Patient FirstName, Last Name, SSN, Gender");
+				Node FirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				BaseTestSoftAssert.verifyEquals(FirstName.getTextContent(), list.get(0), "Patient has different FirstName than expected. FirstName is: " + FirstName.getTextContent());
+				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				BaseTestSoftAssert.verifyEquals(LastName.getTextContent(), list.get(1), "Patient has different LastName than expected. LastName is: " + LastName.getTextContent());
+				Node SSN = patient.getElementsByTagName(IntegrationConstants.SSN).item(0);
+				BaseTestSoftAssert.verifyEquals(SSN.getTextContent(), list.get(7), "Patient has different SSN than expected. Gender is: " + SSN.getTextContent());
+				Node Gender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
+				BaseTestSoftAssert.verifyEquals(Gender.getTextContent(), list.get(8), "Patient has different Gender than expected. Gender is: " + Gender.getTextContent());
+				Log4jUtil.log("Checking Patient HomePhone, Email Address");
+				Node HomePhone = patient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
+				BaseTestSoftAssert.verifyEquals(HomePhone.getTextContent(), list.get(2), "Patient has different HomePhone than expected. HomePhone is: " + HomePhone.getTextContent());
+				Node EmailAddress = patient.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
+				BaseTestSoftAssert.verifyEquals(EmailAddress.getTextContent(), list.get(9), "Patient has different EmailAddress than expected. EmailAddress is: " + EmailAddress.getTextContent());
+				Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
+				Node Line1 = patient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
+				BaseTestSoftAssert.verifyEquals(Line1.getTextContent(), list.get(3), "Patient has different Address1 than expected. Address2 is: " + Line1.getTextContent());
+				Node Line2 = patient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
+				BaseTestSoftAssert.verifyEquals(Line2.getTextContent(), list.get(4), "Patient has different Address2 than expected. Address1 is: " + Line2.getTextContent());
+				Node City = patient.getElementsByTagName(IntegrationConstants.CITY).item(0);
+				BaseTestSoftAssert.verifyEquals(City.getTextContent(), list.get(5), "Patient has different City than expected. City is: " + City.getTextContent());
+				Node ZipCode = patient.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
+				BaseTestSoftAssert.verifyEquals(ZipCode.getTextContent(), list.get(6), "Patient has different ZipCode than expected. ZipCode is: " + ZipCode.getTextContent());
+				if(insuranceName!=null)
+				{			
+					String birthdate=convertDate(list.get(13))+"T00:00:00";
+					Log4jUtil.log("Checking Patient Date of Birth, Middle Name");
+					Node DateOfBirth = patient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
+					BaseTestSoftAssert.verifyEquals(DateOfBirth.getTextContent(), birthdate, "Patient has different DateOfBirth than expected. DateOfBirth is: " + DateOfBirth.getTextContent());
+					Node MiddleName = patient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
+					BaseTestSoftAssert.verifyEquals(MiddleName.getTextContent(), list.get(10), "Patient has different MiddleName than expected. MiddleName is: " + MiddleName.getTextContent());
+					Log4jUtil.log("Checking Patient Mobile No, WorkPhone");
+					Node MobilePhone = patient.getElementsByTagName(IntegrationConstants.MOBILEPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(MobilePhone.getTextContent(), list.get(11), "Patient has different MobilePhone than expected. MobilePhone is: " + MobilePhone.getTextContent());
+					Node WorkPhone = patient.getElementsByTagName(IntegrationConstants.WORKPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(WorkPhone.getTextContent(), list.get(12), "Patient has different WorkPhone than expected. WorkPhone is: " + WorkPhone.getTextContent());
+					Log4jUtil.log("Checking Patient Preferred Language, Race, Ethnicity, MaritalStatus, ChooseCommunication");
+					Node PreferredLanguage = patient.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE).item(0);
+					BaseTestSoftAssert.verifyEquals(PreferredLanguage.getTextContent(), list.get(20), "Patient has different PreferredLanguage than expected. PreferredLanguage is: " + PreferredLanguage.getTextContent());
+					Node Race = patient.getElementsByTagName(IntegrationConstants.RACE).item(0);
+					BaseTestSoftAssert.verifyEquals(Race.getTextContent(), list.get(21), "Patient has different Race than expected. Race is: " + Race.getTextContent());
+					Node Ethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
+					BaseTestSoftAssert.verifyEquals(Ethnicity.getTextContent(), list.get(22), "Patient has different Ethnicity than expected. Ethnicity is: " + Ethnicity.getTextContent());
+					Node MaritalStatus = patient.getElementsByTagName(IntegrationConstants.MARRITALSTATUS).item(0);
+					BaseTestSoftAssert.verifyEquals(MaritalStatus.getTextContent(), list.get(23).toUpperCase(), "Patient has different MaritalStatus than expected. MaritalStatus is: " + MaritalStatus.getTextContent());
+					Node ChooseCommunication = patient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+					BaseTestSoftAssert.verifyEquals(ChooseCommunication.getTextContent(), list.get(24), "Patient has different ChooseCommunication than expected. ChooseCommunication is: " + ChooseCommunication.getTextContent());
+					/*Node state = patient.getElementsByTagName(IntegrationConstants.PROCESSING_STATE).item(0);
+					BaseTestSoftAssert.verifyEquals(state.getTextContent(), list.get(25), "Patient has different state than expected. state is: " + state.getTextContent());
+					*/
+					//PRIMARY INSURANCE DETAILS 
+					Log4jUtil.log("Checking Insurance PolicyNumber, Insurance Name");
+					Node cNode=patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
+					Element ele=(Element) cNode;
+					Node PolicyNumber = ele.getElementsByTagName(IntegrationConstants.POLICYNUMBER).item(0);
+					BaseTestSoftAssert.verifyEquals(PolicyNumber.getTextContent(), list.get(16), "Patient has different PolicyNumber than expected. PolicyNumber is: " + PolicyNumber.getTextContent());
+				    Node CompanyName = ele.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(CompanyName.getTextContent(), insuranceName, "Patient has different Insurance Name than expected. CompanyName is: " + CompanyName.getTextContent());
+					Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
+					Node InsuranceAddressLine1 = ele.getElementsByTagName(IntegrationConstants.LINE1).item(0);
+					BaseTestSoftAssert.verifyEquals(InsuranceAddressLine1.getTextContent(), list.get(3), "Patient has different InsuranceAddressLine1 than expected. InsuranceAddressLine1 is: " + InsuranceAddressLine1.getTextContent());
+					Node InsuranceAddressLine2 = ele.getElementsByTagName(IntegrationConstants.LINE2).item(0);
+					BaseTestSoftAssert.verifyEquals(InsuranceAddressLine2.getTextContent(), list.get(4), "Patient has different InsuranceAddressLine2 than expected. InsuranceAddressLine1 is: " + InsuranceAddressLine2.getTextContent());
+					Node InsuranceCity = ele.getElementsByTagName(IntegrationConstants.CITY).item(0);
+					BaseTestSoftAssert.verifyEquals(InsuranceCity.getTextContent(), list.get(5), "Patient has different InsuranceCity than expected. InsuranceCity is: " + InsuranceCity.getTextContent());
+					Node InsuranceZipCode = ele.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
+					BaseTestSoftAssert.verifyEquals(InsuranceZipCode.getTextContent(), list.get(6), "Patient has different InsuranceZipCode than expected. InsuranceZipCode is: " + InsuranceZipCode.getTextContent());
+					Log4jUtil.log("Checking Patient Relation To Subscriber, Subscriber Date Of Birth, Customer Service Number, SSN, Group Number");
+					Node PatientRelationToSubscriber = ele.getElementsByTagName(IntegrationConstants.PATIENTRELATIONTOSUBSCRIBER).item(0);
+					BaseTestSoftAssert.verifyEquals(PatientRelationToSubscriber.getTextContent(), list.get(26).toUpperCase(), "Patient has different PatientRelationToSubscriber than expected. InsuranceZipCode is: " + PatientRelationToSubscriber.getTextContent());
+					Node SubscriberDateOfBirth = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERDATEOFBIRTH).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberDateOfBirth.getTextContent(), birthdate, "Patient has different SubscriberDateOfBirth than expected. SubscriberDateOfBirth is: " + SubscriberDateOfBirth.getTextContent());
+					Node ClaimsPhone = ele.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(ClaimsPhone.getTextContent(), list.get(14), "Patient has different ClaimsPhone than expected. ClaimsPhone is: " + ClaimsPhone.getTextContent());
+					Node SubscriberSocialSecurityNumber = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERSSN).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberSocialSecurityNumber.getTextContent(), list.get(15), "Patient has different SubscriberSocialSecurityNumber than expected. SubscriberSocialSecurityNumber is: " + SubscriberSocialSecurityNumber.getTextContent());
+					Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
+					BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), list.get(17), "Patient has different GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
+					break;
+				}
+				
+				
+			}
+			
+		}
+		
+		//Assert.assertTrue(found, "Patient was not found in the response XML");
+		
+				
+	}
+/**
+ * 
+ * @param dateString
+ * @return
+ * @throws ParseException
+ */
+	private static String convertDate(String dateString) throws ParseException {
+		SimpleDateFormat givenFormat=new SimpleDateFormat("dd/mm/yyyy");
+		SimpleDateFormat expectedFormat=new SimpleDateFormat("yyyy-MM-dd");
+		Date date=givenFormat.parse(dateString);
+		String expectedDate=expectedFormat.format(date);
+		return expectedDate;
+	}
 }
