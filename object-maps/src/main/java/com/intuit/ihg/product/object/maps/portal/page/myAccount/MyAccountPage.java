@@ -77,6 +77,43 @@ public class MyAccountPage extends BasePageObject {
 	@FindBy(xpath = "//select[@name='inputs:19:input:input']")
 	private WebElement chooseCommunicationDropDrown;
 
+	@FindBy(name = "inputs:2:input:input")
+	private WebElement txtFirstName;
+	
+	@FindBy(name = "inputs:3:input:input")
+	private WebElement txtMiddleName;
+	
+	@FindBy(name = "inputs:4:input:input")
+	private WebElement txtLastName;
+	
+	@FindBy(name = "inputs:5:input:input")
+	private WebElement preferredLanguageDropDown;
+	
+	@FindBy(name = "inputs:9:input:input")
+	private WebElement stateDropDown;
+	
+	@FindBy(name = "inputs:12:input:input")
+	private WebElement txtMobilePhone;
+	
+	@FindBy(name = "inputs:13:input:input")
+	private WebElement txtWorkPhone;
+	
+	@FindBy(name = "inputs:14:input:input")
+	private WebElement dateOfBirth;
+	
+	@FindBy(name = "inputs:15:input:input")
+	private WebElement gender;
+	
+	@FindBy(name = "inputs:16:input:input")
+	private WebElement raceDropDown;
+	
+	@FindBy(name = "inputs:17:input:input")
+	private WebElement ethnicityDropDown;
+	
+	@FindBy(name = "inputs:18:input:input")
+	private WebElement maritalStatusDropDown;
+	
+	
 	public MyAccountPage(WebDriver driver) {
 		super(driver);
 	}
@@ -259,5 +296,56 @@ public class MyAccountPage extends BasePageObject {
 		}
 		IHGUtil.waitForElement(driver,10,btnSubmit);
 		btnSubmit.click();
+	}
+	/**
+	 * 
+	 * @param list
+	 */
+	public void fillPatientDetails(List<String> list)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		txtFirstName.clear();
+		txtFirstName.sendKeys(list.get(0));
+		txtMiddleName.clear();
+		txtMiddleName.sendKeys(list.get(10));
+		txtLastName.clear();
+		txtLastName.sendKeys(list.get(1));
+		txtAddress1.clear();
+		txtAddress1.sendKeys(list.get(3));
+		txtAddress2.clear();
+		txtAddress2.sendKeys(list.get(4));
+		txtCity.clear();
+		txtCity.sendKeys(list.get(5));
+		txtZipCode.clear();
+		txtZipCode.sendKeys(list.get(6));
+		txtHomePhone.clear();
+		txtHomePhone.sendKeys(list.get(2));
+		txtMobilePhone.clear();
+		txtMobilePhone.sendKeys(list.get(11));
+		txtWorkPhone.clear();
+		txtWorkPhone.sendKeys(list.get(12));
+		dateOfBirth.clear();
+		dateOfBirth.sendKeys(list.get(13));
+		Select dropDownElement=new Select(preferredLanguageDropDown);
+		dropDownElement.selectByVisibleText(list.get(20));
+		
+		Select stateDropDownElement=new Select(stateDropDown);
+		stateDropDownElement.selectByVisibleText(list.get(25));
+		
+		Select raceDropDownElement=new Select(raceDropDown);
+		raceDropDownElement.selectByVisibleText(list.get(21));
+		
+		Select ethnicityDropDownElement=new Select(ethnicityDropDown);
+		ethnicityDropDownElement.selectByVisibleText(list.get(22));
+		
+		Select maritalStatusDropDownElement=new Select(maritalStatusDropDown);
+		maritalStatusDropDownElement.selectByVisibleText(list.get(23));
+		
+		Select chooseCommunicationDropDrownElement=new Select(chooseCommunicationDropDrown);
+		chooseCommunicationDropDrownElement.selectByVisibleText(list.get(24));
+		btnSubmit.click();
+		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+		
 	}
 }

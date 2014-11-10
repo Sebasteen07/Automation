@@ -142,6 +142,13 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "birthday:year")
 	private WebElement birthdayYear;
+	
+	@FindBy(name = "cont:questioninput")
+	private WebElement txtActivationCode;
+	
+	@FindBy(name = "buttons:submit")
+	private WebElement btnActivate;
+	
 
 	public CreateAccountPage(WebDriver driver) {
 		super(driver);
@@ -356,28 +363,33 @@ public class CreateAccountPage extends BasePageObject {
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
-		txtEmail.sendKeys(sEmail);
-
+		
 		btnSubmit.click();
-
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
-	public MyPatientPage fillEmailActivaion(String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer) {
+	public MyPatientPage fillPatientActivaion(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
+					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
+
+		txtPatientFirstname.sendKeys(sPatientFirstName);
+		txtLastname.sendKeys(sPatientLastName);
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
-		//radioButtGender.click();
+		radioButtGender.click();
 		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
+		txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
-		
+		IHGUtil.waitForElement(driver, 30, txtActivationCode);
+		txtActivationCode.sendKeys(activationCode);
+		btnActivate.click();
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);

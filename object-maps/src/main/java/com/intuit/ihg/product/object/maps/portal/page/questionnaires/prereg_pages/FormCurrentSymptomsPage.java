@@ -17,7 +17,7 @@ public class FormCurrentSymptomsPage extends PortalFormPage
 		super(driver);
 	}
 
-	@FindBy(id = "idonot_symptoms_general")
+	@FindBy(id = "idonot_symptoms_general_group")
 	WebElement noSymptoms;
 	
 	@FindBy(id = "chills_symptom_general")

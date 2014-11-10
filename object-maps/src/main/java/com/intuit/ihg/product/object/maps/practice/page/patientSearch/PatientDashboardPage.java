@@ -36,6 +36,12 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[5]/td[2]")
 	private WebElement lblPatientID;
 	
+	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[11]/td[2]")
+	private WebElement lblunlockLink;
+	
+	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[13]/td[2]")
+	private WebElement lblactivationCode;
+		
 	private WebElement feedback;
 	
 	public static String medfusionID = null;
@@ -99,6 +105,25 @@ public class PatientDashboardPage extends BasePageObject{
 	public String medfusionID(String patientID)
 	{
 		return patientID;
+	}
+	
+	/*
+	 * return Activation Link
+	 */
+	public String unlockLink()
+	{
+		IHGUtil.waitForElement(driver, 60, lblunlockLink);
+		return lblunlockLink.getText().toString();
+		
+	}
+	/*
+	 * return Activation Code
+	 */
+	public String activationCode()
+	{
+		IHGUtil.waitForElement(driver, 60, lblactivationCode);
+		return lblactivationCode.getText().toString();
+		
 	}
 
 }

@@ -9,4 +9,5 @@ public class AllScript {
 	public String RestUrl = "";
 	public String CCDPath = "";
 	public String ResponsePath = "";
+	public String Email = "";
 }

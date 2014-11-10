@@ -1519,7 +1519,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientActivation() throws Exception {
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();

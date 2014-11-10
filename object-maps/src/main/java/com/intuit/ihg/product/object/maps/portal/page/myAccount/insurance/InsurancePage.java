@@ -27,6 +27,9 @@ public class InsurancePage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@class='null required text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:3:field']")
 	private WebElement txtclaimsAddressLine1;
+	
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:4:field']")
+	private WebElement txtclaimsAddressLine2;               
 
 	@FindBy(xpath = "//input[@class='null required text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:5:field']")
 	private WebElement txtclaimsAddressCity;
@@ -36,8 +39,23 @@ public class InsurancePage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@class='null required text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:7:field']")
 	private WebElement txtclaimsAddressZip;
-
-	@FindBy(xpath = "//select[@class='null required choice' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:9:field']")
+	
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:8:field']")
+	private WebElement txtcustomerServicePhoneNumber;
+	
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:11:field']")
+	private WebElement txtinsuredSSN;
+	
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:13:field']")
+	private WebElement txtgroupNumber;
+	
+	@FindBy(xpath = "//input[@class='text hasDatepicker' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:14:field']")
+	private WebElement dteffectiveDate;
+	
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:15:field']")
+	private WebElement txtcoPay;
+	
+	@FindBy(xpath = "//select[@class='null required choice'and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:9:field']")
 	private WebElement drpdwnrelationtoPolicyProvider;
 
 	@FindBy(how = How.NAME, using = "content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:12:field")
@@ -66,6 +84,7 @@ public class InsurancePage extends BasePageObject {
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
 		PortalUtil.setPortalFrame(driver);
+	
 		
 		log("Enter Insurance details for Self");		
 		Select relationtoPolicyProvider = new Select(drpdwnrelationtoPolicyProvider);
@@ -131,7 +150,73 @@ public class InsurancePage extends BasePageObject {
 			  deleteInsurance();
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param Insurancetype
+	 * @param InsuranceName
+	 * @param Relation
+	 * @throws InterruptedException 
+	 */
+	 
+	
+	public void allInsuranceDetails(String InsuranceName, String Insurancetype, String Relation, List<String> insurancelist) throws InterruptedException
+	{
+		
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		
+		log("Enter Insurance details for Self");		
+		Select relationtoPolicyProvider = new Select(drpdwnrelationtoPolicyProvider);
+		relationtoPolicyProvider.selectByVisibleText(Relation);
+		
+				
+		log("Select Insurance Type");
+		Select insuranceType = new Select(drpdwninsuranceType);
+		insuranceType.selectByVisibleText(Insurancetype);
+		Thread.sleep(4000);
+		
+		log("Select Insurance name");
+		Select insuranceName = new Select(drpdwnInsuranceName);
+		insuranceName.selectByValue(InsuranceName);
+		Thread.sleep(4000);
+		
+		log("Enter Address");
+		txtclaimsAddressLine1.sendKeys(insurancelist.get(3));
+		
+		log("Enter Address 2");
+		txtclaimsAddressLine2.sendKeys(insurancelist.get(4));
+		
+		log("Enter City");
+		txtclaimsAddressCity.sendKeys(insurancelist.get(5));
+	
+		log("Select State");
+		Select claimsAddressState = new Select(drpdwnclaimsAddressState);
+		claimsAddressState.selectByVisibleText("Alaska");
+		
+		log("Enter Zip");
+		txtclaimsAddressZip.sendKeys(insurancelist.get(6));
+		
+		log("Enter Customer Service Phone Number");
+		txtcustomerServicePhoneNumber.sendKeys(insurancelist.get(14));
+		
+		log("Enter Insured SSN");
+		txtinsuredSSN.sendKeys(insurancelist.get(15));
+				
+		log("Enter Insurance Policy Number");
+		txtpolicyNumber.sendKeys(insurancelist.get(16));
+		
+		log("Enter Group Number");
+		txtgroupNumber.sendKeys(insurancelist.get(17));
+		
+		/*log("Enter Effective Date");
+		dteffectiveDate.sendKeys(insurancelist.get(18));
+		
+		log("Enter Co Pay");
+		txtcoPay.sendKeys(insurancelist.get(19));*/
+		
+		btnSaveInsurance.click();
+	}
 
 }
 

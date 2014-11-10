@@ -99,6 +99,72 @@ public class PIDCTestData {
 	
 	public String getSecretAnswer(){
 		return PidcObj.SecretAnswer;
+	}
+	public String getPracticeURL(){
+		return PidcObj.PracticeURL;
 	}	
 	
+	public String getPracticeUserName(){
+		return PidcObj.PracticeUserName;
+	}	
+	
+	public String getPracticePassword(){
+		return PidcObj.PracticePassword;
+	}
+	
+	public String getLastName(){
+		return PidcObj.LastName;
+	}
+	
+	public String getCity(){
+		return PidcObj.City;
+	}	
+	
+	public String getState(){
+		return PidcObj.State;
+	}	
+	
+	public String getAddress1(){
+		return PidcObj.Address1;
+	}
+	
+	public String getAddress2(){
+		return PidcObj.Address2;
+	}
+	
+	public String getHomePhoneNo(){
+		return PidcObj.HomePhoneNo;
+	}
+	
+	public String getInsurance_Type(){
+		return PidcObj.Insurance_Type;
+	}
+	
+	public String getInsurance_Name(){
+		return PidcObj.Insurance_Name;
+	}
+	
+	public String getRelation(){
+		return PidcObj.Relation;
+	}
+	
+	public String getPreferredLanguage(){
+		return PidcObj.PreferredLanguage;
+	}
+	
+	public String getRace(){
+		return PidcObj.Race;
+	}
+	
+	public String getEthnicity(){
+		return PidcObj.Ethnicity;
+	}
+	
+	public String getMaritalStatus(){
+		return PidcObj.MaritalStatus;
+	}
+	
+	public String getChooseCommunication(){
+		return PidcObj.ChooseCommunication;
+	}
 }
