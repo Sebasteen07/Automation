@@ -19,7 +19,6 @@
         		<include name="testPhrPortalSSO" />
         		<include name="testViewAsPdf" />
         		<include name="testAddNewPatientSearch" />
-        		<include name="testAddNewPatientActivation" />
       		</methods>
   </classes>
 	
