@@ -1630,7 +1630,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthKey66MatchDifferentPractice() throws Exception {
-		
+
 		// Instancing CreatePatientTest - create patient in practice A
 		CreatePatientTest createPatientTest = new CreatePatientTest();
 
@@ -1646,7 +1646,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// seting url for practice B
 		healthKeyMatch66.setUrl(testcasesData.getHealthKeyPracticeUrl());
-		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
+		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(),
+                createPatientTest.getFirstName(), createPatientTest.getLastName());
 
 	}
 	

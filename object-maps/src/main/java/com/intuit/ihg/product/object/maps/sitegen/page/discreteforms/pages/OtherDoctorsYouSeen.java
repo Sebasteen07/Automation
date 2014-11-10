@@ -1,8 +1,6 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-	
-	
-	import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -66,7 +64,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 	 * @return
 	 */
 	
-	public CurrentSymptomsPage clicklnkCurrentSymptoms() 
+	public CurrentSymptomsPage clicklnkCurrentSymptoms()
 	{	
 		lnkCurrentSymptoms.click();
 		return PageFactory.initElements(driver, CurrentSymptomsPage.class);

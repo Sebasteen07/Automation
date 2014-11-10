@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,12 +51,12 @@ public class MedicationsPage extends BasePageObject{
 	 * @return
 	 */
 	
-	public Allergiespage clicklnkAllergies()
+	public AllergiesPage clicklnkAllergies()
 	{	
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkAllergies);
 		lnkAllergies.click();
-		return PageFactory.initElements(driver,Allergiespage.class);
+		return PageFactory.initElements(driver,AllergiesPage.class);
 	}
 	
 }

@@ -18,7 +18,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.ViewIntegrat
 import com.intuit.ihg.product.object.maps.sitegen.page.InterfaceSetUp.InterfaceAdministrationPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.MerchantAccount.MerchantAccountPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CreateCustomForms;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.DiscreteFormsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.location.ManageYourLocationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;

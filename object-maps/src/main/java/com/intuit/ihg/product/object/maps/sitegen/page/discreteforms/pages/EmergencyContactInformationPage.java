@@ -1,5 +1,6 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.HealthInsuranceInformationPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -73,7 +74,7 @@ public class EmergencyContactInformationPage extends BasePageObject{
 	 * @return
 	 */
 	
-	public HealthInsuranceInformationPage clicklnkInsurance() 
+	public HealthInsuranceInformationPage clicklnkInsurance()
 	{	
 		lnkInsurance.click();
 		return PageFactory.initElements(driver, HealthInsuranceInformationPage.class);

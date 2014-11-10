@@ -24,7 +24,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormAdd
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLayoutPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.DiscreteFormsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.portal.tests.CheckOldCustomFormTest;
@@ -53,11 +53,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	private void logSGLoginInfo(SitegenTestData testData) {
-		log("URL: "+testData.getSiteGenUrl());
-		log("Username: "+testData.getAutomationUser());
-		log("Password: "+testData.getAutomationUserPassword());
+		log("URL: " + testData.getSiteGenUrl());
+		log("Username: " + testData.getAutomationUser());
+		log("Password: " + testData.getAutomationUserPassword());
 	}
-	
+
 	/**
 	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
 	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
@@ -124,7 +124,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * Creates new patient
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
+	@Test(enabled = true, groups = {"PatientForms"})
 	public void testFormPdfCcd() throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml;
@@ -163,7 +163,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD");
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests", "PatientForms"})
+	@Test(enabled = true, groups = {"PatientForms"})
 	public void testFormPracticePortal() throws Exception {
 		String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd"); // Will be used to validate forms update date
 		String discreteFormName = "Form for Practice view test";
@@ -243,7 +243,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * ============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"AcceptanceTests", "PatientForms"})
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
 		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
@@ -284,7 +284,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		pSiteGenPracticeHomePage.clicklogout();
 
 		log("step 9: Go to Patient Portal using the original window");
-
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("URL: " + portalTestcasesData.getFormsUrl());
@@ -312,7 +311,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests", "CustomForms"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"CustomForms"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
@@ -407,7 +406,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests", "CustomForms"})
+	@Test(enabled = true, groups = {"CustomForms"})
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEnvironmentInfo("testCustomFormPublished");

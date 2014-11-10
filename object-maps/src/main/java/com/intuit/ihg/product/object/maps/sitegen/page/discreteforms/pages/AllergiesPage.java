@@ -1,15 +1,15 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.FormConfigPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class Allergiespage extends BasePageObject{
+public class AllergiesPage extends FormConfigPage {
 	
 	@FindBy(xpath="//li[@data-section='immunizations']/a")
 	private WebElement lnkVaccinations;
@@ -119,7 +119,7 @@ public class Allergiespage extends BasePageObject{
 	@FindBy(id = "allergies_anythingelse")
 	private WebElement allergiesComments;
 
-	public Allergiespage(WebDriver driver) 
+	public AllergiesPage(WebDriver driver)
 	{
 		super(driver);
 		// TODO Auto-generated constructor stub
