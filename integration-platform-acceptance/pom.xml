@@ -124,7 +124,7 @@
                             <failBuild>false</failBuild>
                             <!--<groups>${testGroups}</groups> -->
                             <suiteXmlFiles>
-                                <suiteXmlFile>integration-platform-acceptance.xml</suiteXmlFile>
+                                <suiteXmlFile>${suite.xml}</suiteXmlFile>
                             </suiteXmlFiles>
                             <systemPropertyVariables>
                                 <testRoot>${basedir}</testRoot>
