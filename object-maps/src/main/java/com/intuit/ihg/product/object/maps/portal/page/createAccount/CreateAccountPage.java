@@ -68,6 +68,10 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "addOption")
 	private WebElement prefferedProvider;
+	
+	@FindBy(name = "editAccountPref:border:editForm:inputs:0:input:input")
+	private WebElement prefferedProviderQA1;
+
 
 	// ===========Full page=======================
 
@@ -226,7 +230,12 @@ public class CreateAccountPage extends BasePageObject {
 		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
 		chooseProvider();
-		chkAgreePatientPrivacyInfo.click();
+		
+		if (!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1"))
+			{
+				chkAgreePatientPrivacyInfo.click();
+			}
+		
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 
@@ -339,11 +348,20 @@ public class CreateAccountPage extends BasePageObject {
 	 */
 	public void chooseProvider() {
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+		
 		// check if there is preffered provider option
 		if (driver.findElements(By.name("addOption")).size() > 0) {
-			Select provider = new Select(prefferedProvider); // and if so, select the first one
+				Select provider = new Select(prefferedProvider); // and if so, select the first one
+				provider.selectByIndex(1);
+			}
+		//For QA1 environmet there is another name of preffered provide drop down name.
+		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1"))
+		{
+			Select provider = new Select(prefferedProviderQA1); // and if so, select the first one
 			provider.selectByIndex(1);
 		}
+		
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 	}
 	

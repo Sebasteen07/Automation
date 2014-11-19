@@ -76,7 +76,7 @@ public class CreatefamilymemberPage extends BasePageObject{
 	@FindBy(xpath = "//div[@class='paperPad']/div[3]//span")
 	private WebElement conformationmessage;
 	
-	@FindBy(xpath = ".//*[@id='MfAjaxFallbackDefaultDataTable']/tbody/tr[2]/td[3]/span/span/a")
+	@FindBy(linkText = "Unlink Dependent")
 	private WebElement unlink;
 	
 	public CreatefamilymemberPage(WebDriver driver)
