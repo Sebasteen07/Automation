@@ -63,6 +63,7 @@ public class RestUtils {
 	public static String gnMessageID;
 	public static String SigCodeAbbreviation;
 	public static String SigCodeMeaning;
+	public static String gnMessageThreadID;
 	/**
 	 * Performs OAuth Get Request and saves the resposse
 	 * @param strUrl server Get url
@@ -127,6 +128,9 @@ public class RestUtils {
 			node = nodes.item(i);
 			System.out.println("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (timestamp.toString()));
 			if (node.getChildNodes().item(0).getTextContent().contains(timestamp.toString())) {
+				Element ele = (Element) nodes.item(i).getParentNode();
+				Node messageThreadID=ele.getElementsByTagName(IntegrationConstants.MESSAGE_THREAD_ID).item(0);
+				gnMessageThreadID=messageThreadID.getTextContent();
 				found = true;
 				break;
 			}
@@ -136,6 +140,7 @@ public class RestUtils {
 		Log4jUtil.log("finding QuestionType and Message element");
 		boolean questionTypefound = false;
 		boolean messageFound = false;
+		
 		Node parent = node.getParentNode();
 		NodeList childrens = parent.getChildNodes();
 		for (int j = 0; j < childrens.getLength(); j++) {
@@ -148,6 +153,7 @@ public class RestUtils {
 				if (childrens.item(j).getNodeName().equals(IntegrationConstants.QUESTION_MESSAGE)) {
 					messageFound = true;
 				}
+				
 			}
 		}
 		Assert.assertTrue(questionTypefound, "QuestionType element was not found in response XML");
@@ -155,6 +161,11 @@ public class RestUtils {
 		Log4jUtil.log("response is ok");
 	}
 	
+	
+	//retrive message Thread ID
+		public static String messageThreadID(){
+			return gnMessageThreadID;
+		}
 	/**
 	 * Reads the XML and checks REASON 
 	 * @param xmlFileName XML to check
@@ -239,7 +250,7 @@ public class RestUtils {
 	 * @throws SAXException 
 	 * @throws TransformerException 
 	 */
-	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject, String messageID) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		
@@ -255,10 +266,14 @@ public class RestUtils {
 		Node nFrom = elem.getElementsByTagName(IntegrationConstants.FROM).item(0);
 		Node nTo = elem.getElementsByTagName(IntegrationConstants.TO).item(0);
 		Node nSubject = elem.getElementsByTagName(IntegrationConstants.SUBJECT).item(0);
+		
 		nFrom.setTextContent(from);
 		nTo.setTextContent(to);
 		nSubject.setTextContent(subject);
-
+		if(messageID!=null){
+		Node nMessageThreadId = elem.getElementsByTagName(IntegrationConstants.MESSAGE_THREAD_ID).item(0);
+		nMessageThreadId.setTextContent(messageID);
+		}
 		return domToString(doc);
 	}
 	
@@ -272,7 +287,7 @@ public class RestUtils {
 		return (new Random()).nextInt(9000) + 1000;
 	}
 	
-	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName, String email) throws ParserConfigurationException, SAXException, IOException, TransformerException{
+	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName, String email, String medfusionPatientID) throws ParserConfigurationException, SAXException, IOException, TransformerException{
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		
@@ -293,6 +308,9 @@ public class RestUtils {
 				childNodes.item(i).setTextContent(email);
 			}
 		}
+		if(medfusionPatientID!=null){
+		Node idNode1 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID).item(0);
+		idNode1.setTextContent(medfusionPatientID);}
 		
 		return domToString(doc);
 	}
@@ -333,6 +351,8 @@ public class RestUtils {
         httpPostReq.addHeader("Content-Type", "application/xml");
         httpPostReq.addHeader("Noun", "Encounter");
         httpPostReq.addHeader("Verb", "Completed");
+        //GW CCD
+      /* httpPostReq.addHeader("ExternalSystemId", "82");  */
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
@@ -478,15 +498,28 @@ public class RestUtils {
 		Assert.assertTrue(found, "Reply was not found in response XML");
 	}
 
-	public static void isPatientRegistered(String xmlFileName, String practicePatientId) throws ParserConfigurationException, SAXException, IOException {
+	public static void isPatientRegistered(String xmlFileName, String practicePatientId, String firstName, String lastName, String patientID) throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
 		boolean found = false;
 		for(int i = 0; i < patients.getLength(); i++){
 			if(patients.item(i).getTextContent().equals(practicePatientId)){
+				Log4jUtil.log("Searching: External Patient ID:" + practicePatientId + ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
 				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED, "Patient has different status than expected. Status is: " + status.getTextContent());
+				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient FirstName:" + firstName + ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
+				Assert.assertEquals(nfirstName.getTextContent(), firstName, "Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
+				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient LastName:" + lastName + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
+				Assert.assertEquals(nlastName.getTextContent(), lastName, "Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
+				if(patientID!=null)
+				{
+					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+					Assert.assertEquals(nPatientId.getTextContent(), patientID, "Patient has different MedfusionPatientId than expected. MedfusionPatientId is: " + nPatientId.getTextContent());
+					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID + ", and Actual Medfusion Patient ID is:" + nPatientId.getTextContent().toString());
+				}
 				found = true;
 				break;
 				}
@@ -1081,7 +1114,7 @@ public class RestUtils {
 	public static void verifyPatientDetails(String xmlFileName, String practicePatientId, List<String> list, String insuranceName) throws ParserConfigurationException, SAXException, IOException, ParseException {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
-		boolean found = false;
+		//boolean found = false;
 		for(int i = 0; i < patients.getLength(); i++){
 			if(patients.item(i).getTextContent().equals(practicePatientId)){
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
@@ -1188,5 +1221,28 @@ public class RestUtils {
 		Date date=givenFormat.parse(dateString);
 		String expectedDate=expectedFormat.format(date);
 		return expectedDate;
+	}
+	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param practicePatientId
+	 * @param medfusionPatientID
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static String prepareCCD(String xmlFileName, String practicePatientId, String medfusionPatientID) throws ParserConfigurationException, SAXException, IOException, TransformerException{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		Node pidNode = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(0);
+		pidNode.setTextContent(practicePatientId);
+		Node mdNode = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID).item(0);
+		mdNode.setTextContent(medfusionPatientID);
+		
+		return domToString(doc);
 	}
 }

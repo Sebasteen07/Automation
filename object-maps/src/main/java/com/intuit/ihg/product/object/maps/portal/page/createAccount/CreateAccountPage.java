@@ -420,7 +420,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
 		//Accepting license agreements
-		
+		chooseProvider();
 		checkPrivacyInformation.click();
 		checkIntuitTerms.click();
 		btnSubmit.click();

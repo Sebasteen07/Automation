@@ -15,4 +15,5 @@ public class AMDC {
 	public String OAuthUsername ="";
 	public String OAuthPassword ="";
 	public String ReadCommuniationURL ="";
+	public String SecureMessage_AskaStaffXML ="";
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 
@@ -21,7 +22,7 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath="//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
 	
-	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[5]/td[2]/a")
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[5]/td[2]/a")
 	private WebElement editPatientID;
 	
 	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[5]/td[2]")
@@ -33,7 +34,7 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(name="submitted")
 	private WebElement btnUpdateInfo;
 	
-	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[5]/td[2]")
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[5]/td[2]")
 	private WebElement lblPatientID;
 	
 	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[11]/td[2]")
@@ -41,7 +42,13 @@ public class PatientDashboardPage extends BasePageObject{
 	
 	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[13]/td[2]")
 	private WebElement lblactivationCode;
-		
+	
+	@FindBy(xpath=".//table[@width='650px']/tbody/tr[7]/td[2]/input")
+	private WebElement externalID;
+	
+	@FindBy(xpath=".//table[@width='650px']/tbody/tr[8]/td[2]/input")
+	private WebElement externalID1;
+	
 	private WebElement feedback;
 	
 	public static String medfusionID = null;
@@ -84,12 +91,9 @@ public class PatientDashboardPage extends BasePageObject{
 	 */
 	public String setExternalPatientID (){
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement( driver, 10, editPatientID );
-		editPatientID.click( );
-		IHGUtil.waitForElement( driver, 30, txtMedfusionID );
-		patientID=txtMedfusionID.getText().toString();
-		medfusionID(patientID);
-		String emrID=patientID.concat("2014");
+		editPatientLink();
+		medfusionID();
+		String emrID=IHGUtil.createRandomNumericString();
 		txtexternalID.clear();
 		txtexternalID.sendKeys(emrID);
 		btnUpdateInfo.click();
@@ -102,11 +106,23 @@ public class PatientDashboardPage extends BasePageObject{
 	 * @param patientID
 	 * @return medfusionID
 	 */
-	public String medfusionID(String patientID)
+	public String medfusionID()
 	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 30, txtMedfusionID );
+		patientID=txtMedfusionID.getText().toString();
 		return patientID;
 	}
 	
+	/**
+	 * 
+	 */
+	public void editPatientLink()
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 60, editPatientID );
+		editPatientID.click( );
+	}
 	/*
 	 * return Activation Link
 	 */
@@ -124,6 +140,22 @@ public class PatientDashboardPage extends BasePageObject{
 		IHGUtil.waitForElement(driver, 60, lblactivationCode);
 		return lblactivationCode.getText().toString();
 		
+	}
+	/**
+	 * 
+	 * @param configExternalID
+	 * @return 
+	 */
+	public String externalID(String configExternalID)
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 60, editPatientID );
+		editPatientID.click( );
+		IHGUtil.waitForElement( driver, 60, externalID );
+		String External_ID=externalID.getAttribute("value").toString()+externalID1.getAttribute("value").toString();
+		BaseTestSoftAssert.verifyEquals(External_ID, configExternalID, "Patient has different External patient ID than expected. External patient ID is: " + External_ID);
+		Assert.assertTrue("External patient ID is not set", External_ID.equalsIgnoreCase(configExternalID));
+		return externalID.getAttribute("value").toString();
 	}
 
 }

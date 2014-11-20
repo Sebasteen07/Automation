@@ -113,4 +113,5 @@ public class IntegrationConstants {
 	public static final String CLAIMSPHONE = "ClaimsPhone";
 	public static final String SUBSCRIBERSSN = "SubscriberSocialSecurityNumber";
 	public static final String GROUPNUMBER = "GroupNumber";
+	public static final String MEDFUSIONID = "MedfusionPatientId";
 }

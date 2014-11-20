@@ -427,7 +427,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
-		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getFrom(), testData.getUserName(), "Test " + timestamp);
+		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getFrom(), testData.getUserName(), "Test " + timestamp,null);
 		
 		String messageID=RestUtils.newMessageID();
 		log("Partner Message ID:"+messageID);
@@ -552,7 +552,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
 		log("Created Email address: " + email);
 		log("Practice Patient ID: " +practicePatientId);
-		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, email);
+		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, email,null);
 		
 		log("Step 2: Setup Oauth client"); 
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
@@ -628,7 +628,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
 		log("Step 14: Find the patient and check if he is registered");
-		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId);
+		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,null);
 		}
 	
 	private PIDCTestData loadDataFromExcel() throws Exception{
@@ -935,7 +935,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-						
+							
 			log("Step 2: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
 
@@ -1109,7 +1109,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			phrInboxMessage.verifyCCDViewerAndClosePhr();
 			
 		}
-		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	
+	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 			public void testE2EFormsExport() throws Exception {
 			log("Test Case: testE2EFormsExport");
 			

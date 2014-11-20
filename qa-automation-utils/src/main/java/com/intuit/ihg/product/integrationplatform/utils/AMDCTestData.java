@@ -75,4 +75,8 @@ public class AMDCTestData {
 	public String getReadCommunicationURL(){
 		return AmdcObj.ReadCommuniationURL;
 	}
+	
+	public String getSecureMessage_AskaStaffXML(){
+		return AmdcObj.SecureMessage_AskaStaffXML;
+	}
 }
