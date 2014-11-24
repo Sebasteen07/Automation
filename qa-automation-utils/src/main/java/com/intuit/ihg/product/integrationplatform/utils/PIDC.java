@@ -39,5 +39,5 @@ public class PIDC {
 	public String Ethnicity ="";
 	public String MaritalStatus ="";
 	public String ChooseCommunication ="";
-	
+	public String Batch_PatientPath ="";
 }

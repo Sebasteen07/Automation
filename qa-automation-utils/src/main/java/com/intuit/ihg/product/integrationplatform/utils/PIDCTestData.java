@@ -167,4 +167,8 @@ public class PIDCTestData {
 	public String getChooseCommunication(){
 		return PidcObj.ChooseCommunication;
 	}
+	
+	public String getBatch_PatientPath(){
+		return PidcObj.Batch_PatientPath;
+	}
 }

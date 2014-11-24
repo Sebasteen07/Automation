@@ -49,10 +49,21 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath=".//table[@width='650px']/tbody/tr[8]/td[2]/input")
 	private WebElement externalID1;
 	
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[2]/td[2]")
+	private WebElement patientName;
+	
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[8]/td[2]")
+	private WebElement lblPatientSource;
+	
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[9]/td[2]")
+	private WebElement lblPatientStatus;
+	
 	private WebElement feedback;
 	
 	public static String medfusionID = null;
 	public String patientID = null;
+	public String patientSource = "Locked - Integration";
+	public String patientStatus = "Invitation Sent";
 	
 	public PatientDashboardPage(WebDriver driver) {
 		super(driver);
@@ -156,6 +167,20 @@ public class PatientDashboardPage extends BasePageObject{
 		BaseTestSoftAssert.verifyEquals(External_ID, configExternalID, "Patient has different External patient ID than expected. External patient ID is: " + External_ID);
 		Assert.assertTrue("External patient ID is not set", External_ID.equalsIgnoreCase(configExternalID));
 		return externalID.getAttribute("value").toString();
+	}
+	
+	/**
+	 * 
+	 */
+	public void verifyDetails(String PatientID,String fName,String lName)
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 60, patientName );
+		BaseTestSoftAssert.verifyEquals(patientName.getText(),(fName+" "+lName+"   Edit"),"First Name & Last Name did not matched");
+		BaseTestSoftAssert.verifyEquals(lblPatientID.getText(),(PatientID+"   Edit"),"PatientID did not matched");
+		BaseTestSoftAssert.verifyEquals(lblPatientSource.getText(),patientSource,"Patient Source did not matched");
+		BaseTestSoftAssert.verifyEquals(lblPatientStatus.getText(),patientStatus,"Patient Status did not matched");
+		
 	}
 
 }

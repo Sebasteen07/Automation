@@ -192,7 +192,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			
 		}
-		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		 @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testAMDCRegression() throws Exception {
 		
 			log("Test Case: AMDC Ask Question Regression");
@@ -379,18 +379,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		patientPage.editPatientLink();
 		String patientID=patientPage.medfusionID();
 		log("Medfusion Patient ID:-"+patientID);
-		
-		log("Step 12: Setup Oauth client"); 
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
-		
+
 		String ExternalID=IHGUtil.createRandomNumericString();
 		String ccd = RestUtils.prepareCCD(testData.getCCDPath(),ExternalID,patientID);
+		log("CCD:"+ccd);
 		
-		log("Step 13: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
-		log("processingUrl:-"+processingUrl);
-
-	/*	log("Step 15: Get processing status until it is completed");
+		log("Step 12: Do Message Post Request");
+		RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());	
+		
+	/*	log("Step 13: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -455,23 +452,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 			public void testOnDemandProvisionPIDC() throws Exception {
 			log("Test Case: OnDemandProvision with Inbound PIDC");
-			
-			log("Execution Environment: " + IHGUtil.getEnvironmentType());
-			log("Execution Browser: " + TestConfig.getBrowserType());
-			
-			log("Step 1: Get Data from Excel");
+
 			PIDCTestData testData = loadDataFromExcel();
-			Long timestamp = System.currentTimeMillis();
-			
-			log("Url: " + testData.getUrl());
-			log("Rest Url: " + testData.getRestUrl());
-			log("Response Path: " + testData.getResponsePath());
-			log("OAuthProperty: " + testData.getOAuthProperty());
-			log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-			log("OAuthAppToken: " + testData.getOAuthAppToken());
-			log("OAuthUsername: " + testData.getOAuthUsername());
-			log("OAuthPassword: " + testData.getOAuthPassword());
-				
+			Long timestamp = System.currentTimeMillis();	
 			
 			log("Step 2: Click Sign-UP");
 			PortalLoginPage loginpage = new PortalLoginPage(driver,
@@ -567,6 +550,72 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Step 17: Find the patient and verify PracticePatientId/Medfusion Patient Id and Patient's demographics details");
 			RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,patientID);
 			
-			
 			}
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCBatch() throws Exception {
+			
+			log("Test Case: Regression Test for Post PIDC (batch size of 3 patients)");
+			PIDCTestData testData = loadDataFromExcel();
+			log("Patient Batch Payload: " + testData.getBatch_PatientPath());
+					
+			log("Step 2 : Generate POST PIDC payload with batch size 3");
+			String batchPatient=RestUtils.generateBatchPIDC(testData.getBatch_PatientPath());
+			
+			List<String> patientData=RestUtils.patientDatails;
+			log("Paient1 (PracticePatientId, FirstName, LastName):"+patientData.get(0)+","+patientData.get(1)+","+patientData.get(2));
+			log("Paient2 (PracticePatientId, FirstName, LastName):"+patientData.get(3)+","+patientData.get(4)+","+patientData.get(5));
+			log("Paient3 (PracticePatientId, FirstName, LastName):"+patientData.get(6)+","+patientData.get(7)+","+patientData.get(8));
+			
+			log("Step 3: Setup Oauth client"); 
+			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+
+			log("Step 4: POST PIDC with batch size 3");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), batchPatient, testData.getResponsePath());
+			
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
+						
+			log("Step 6: Login to Practice Portal to verify Patient Info");
+			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+			PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUserName(),testData.getPracticePassword());
+		
+			for (int j=0; j < 3; j++)
+			{
+				
+			log("Step 7: Click on Patient Search Link");
+			PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
+		
+			log("Step 8: Set Patient Search Fields");
+			pPatientSearchPage.searchAllPatientInPatientSearch(patientData.get(1), patientData.get(2),2);
+		
+			log("Step 9: Verify the Search Result");
+			IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(patientData.get(1)));
+			
+			log("Step 10: Click on Patient");
+			PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(patientData.get(1), patientData.get(2));
+			patientPage.verifyDetails(patientData.get(0), patientData.get(1), patientData.get(2));
+			
+			patientData.remove(0);
+			patientData.remove(0);
+			patientData.remove(0);
+
+			}
+						
+			log("Step 11: Logout of Practice Portal");
+			pPracticeHomePage.logOut();
+			
+			
+			
+		}
 }

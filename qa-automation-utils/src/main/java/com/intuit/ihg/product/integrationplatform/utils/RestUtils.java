@@ -1,9 +1,7 @@
 	package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +44,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.beust.testng.TestNG;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
@@ -64,6 +61,7 @@ public class RestUtils {
 	public static String SigCodeAbbreviation;
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
+	public static List<String> patientDatails=new ArrayList<String>(); 
 	/**
 	 * Performs OAuth Get Request and saves the resposse
 	 * @param strUrl server Get url
@@ -416,16 +414,10 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
-		if(nodes.getLength() < 2)
+		for(int i=0;i <= nodes.getLength() ;i++)
 		{
 			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
 					"There should be 1 State element in processing status response");
-			
-		}
-		else
-		{
-			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED) && nodes.item(1).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
-					"There should be 2 State elements in processing status response");
 		}
 		return true;
 	}
@@ -686,13 +678,14 @@ public class RestUtils {
 		sentDate=new StringBuffer(sentDate).insert(22, ":").toString();
 		return sentDate;
 	}
-
+	
 	/**
 	 * 
 	 * @param xmlFilePath
 	 * @return
 	 */
 	public static String fileToString(String xmlFilePath) {
+		IHGUtil.PrintMethodName();
 		String xmlInString = convertXMLFileToString(xmlFilePath);
 		return xmlInString;
 	}
@@ -703,6 +696,7 @@ public class RestUtils {
 	 * @return
 	 */
 	public static String convertXMLFileToString(String fileName) {
+		IHGUtil.PrintMethodName();
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 					.newInstance();
@@ -712,6 +706,7 @@ public class RestUtils {
 			StringWriter stw = new StringWriter();
 			Transformer serializer = TransformerFactory.newInstance()
 					.newTransformer();
+			serializer.setOutputProperty("omit-xml-declaration", "yes");
 			serializer.transform(new DOMSource(doc), new StreamResult(stw));
 			return stw.toString();
 		} catch (Exception e) {
@@ -966,6 +961,9 @@ public class RestUtils {
         request.setEntity(new StringEntity(payload));
         request.setHeader("Noun", "Encounter");
         request.setHeader("Verb", "Completed");
+        request.addHeader("Authentication-Type", "2wayssl");
+        request.addHeader("Content-Type", "application/xml");
+        request.setHeader("ExternalSystemId", "82");
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse response = client.execute(request);
         String sResp = EntityUtils.toString(response.getEntity());
@@ -978,25 +976,14 @@ public class RestUtils {
 						+ sResp);
 		Log4jUtil.log("Response Code" +response.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
+		
+		
+		
+		/*Header[] h = response.getHeaders(IntegrationConstants.LOCATION_HEADER);
+		Log4jUtil.log("Processing Status URL:-"+h[0].getValue().toString());*/
+		
+        
    	}
-	
-	/**
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException 
-	 */
-	public static String readXMLfile(String fileName) throws IOException
-	{
-		BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
-		String line;
-		StringBuilder sb = new StringBuilder();
-		while((line=br.readLine())!= null){
-	    sb.append(line.trim());
-	   	}
-		br.close();
-	 return sb.toString();
-	}
 	/**
 	 * 
 	 * @param responsePath
@@ -1073,7 +1060,7 @@ public class RestUtils {
 	{
 		List<String> updatelist=new ArrayList<String>();
 		updatelist.add("FName"+random.nextInt(100));//FirstName
-		updatelist.add("LName"+random.nextInt(100));//Last name
+		updatelist.add("TestPatient1"+random.nextInt(100));//Last name
 		updatelist.add("243456789"+random.nextInt(10));//home phone
 		updatelist.add("Address1"+random.nextInt(100));//Street 1 
 		updatelist.add("Address2"+random.nextInt(100));//Street 2
@@ -1244,5 +1231,51 @@ public class RestUtils {
 		mdNode.setTextContent(medfusionPatientID);
 		
 		return domToString(doc);
+	}
+	/**
+	 * Generate Batch PIDC xml with unique values of Patient ExternalID , First Name & Last Name  
+	 * @param xmlFileName
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static String generateBatchPIDC(String xmlFileName) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		NodeList pnode=doc.getElementsByTagName(IntegrationConstants.PATIENT);
+		for(int i=0;i < pnode.getLength();i++)
+		{
+			String randomNo=IHGUtil.createRandomNumericString();
+			String practicePatientID="Patient"+randomNo;
+			Node pidNode = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(i);
+			pidNode.setTextContent(practicePatientID);
+			testData(practicePatientID);
+			Element ele1=(Element) pnode.item(i);
+			NodeList nameNode = ele1.getElementsByTagName(IntegrationConstants.NName);
+			Element ele=(Element) nameNode.item(0);
+			{
+				String fName="FName"+randomNo;
+				Node fnameNode = ele.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				fnameNode.setTextContent(fName);
+				testData(fName);
+				String lName="TestPatient1"+randomNo;
+				Node LnameNode = ele.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				LnameNode.setTextContent(lName);
+				testData(lName);
+			}
+			
+		}
+		
+		return domToString(doc);
+	}
+	/**
+	 * add patient details 
+	 * @param data
+	 */
+	public static void testData(String data) {
+		patientDatails.add(data);
 	}
 }
