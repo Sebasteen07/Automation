@@ -529,7 +529,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Step 8: Do a GET on PIDC");
 		//this Step assumes that the updated patient is the patient from first ten registered patients, so we can save traffic
 		//if max argument is ommited patient should be in first 100 patients
-		Long since = timestamp / 1000L - 60 * 60 * 24;
+		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Getting patients since timestamp: " + since);
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
@@ -548,7 +548,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		Long timestamp = System.currentTimeMillis();
 		String practicePatientId = "Patient" +timestamp;
 		String firstName = "Name" + timestamp;
-		String lastName = "Surname" + timestamp;
+		String lastName = "TestPatient1" + timestamp;
 		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
 		log("Created Email address: " + email);
 		log("Practice Patient ID: " +practicePatientId);
@@ -573,16 +573,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 		//comment code for optimization
-	/*	GmailBot gBot = new GmailBot();
+/*		GmailBot gBot = new GmailBot();
 		log("Step 5: Checking for the activation link inside the patient Gmail inbox");
 
 		// Searching for the link for patient activation in the Gmail Inbox
 		 String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(),
 				PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLink, 2, false, true);
 
-		log("Step 6: Moving to the link obtained from the email message");
+		log("Step 6: Moving to the link obtained from the email message");*/
 		// Moving to the Link from email
-*/		//driver.get(activationUrl);
+		//driver.get(activationUrl);
 		log("Get Activation Link from Practice Portal");
 		log("Step 5: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
@@ -935,7 +935,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-							
+			
 			log("Step 2: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
 
@@ -1027,7 +1027,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Response Path: " + testData.getEmail());
 			
 			log("Step 1: AllScript CCD");
-			String ccd = RestUtils.convertXMLFileToString(testData.getCCDPath());
+			String ccd = RestUtils.fileToString(testData.getCCDPath());
 			
 			log("Step 2: Do Message Post Request");
 			RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());	
