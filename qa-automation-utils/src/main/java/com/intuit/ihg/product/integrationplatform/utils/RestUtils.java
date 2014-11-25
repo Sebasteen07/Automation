@@ -944,11 +944,12 @@ public class RestUtils {
 	 * @param strUrl
 	 * @param payload
 	 * @param responseFilePath
+	 * @return 
 	 * @return
 	 * @throws IOException
 	 * @throws URISyntaxException 
 	 */
-	public static void setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath) throws IOException, URISyntaxException{
+	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath) throws IOException, URISyntaxException{
 		IHGUtil.PrintMethodName();
     	
 		HttpClient client = new DefaultHttpClient();
@@ -979,9 +980,11 @@ public class RestUtils {
 		
 		
 		
-		/*Header[] h = response.getHeaders(IntegrationConstants.LOCATION_HEADER);
-		Log4jUtil.log("Processing Status URL:-"+h[0].getValue().toString());*/
-		
+		if(response.containsHeader(IntegrationConstants.LOCATION_HEADER)){
+		Header[] h=response.getHeaders(IntegrationConstants.LOCATION_HEADER);
+		return h[0].getValue();
+		}
+		return null;
         
    	}
 	/**

@@ -382,12 +382,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 
 		String ExternalID=IHGUtil.createRandomNumericString();
 		String ccd = RestUtils.prepareCCD(testData.getCCDPath(),ExternalID,patientID);
-		log("CCD:"+ccd);
 		
 		log("Step 12: Do Message Post Request");
-		RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());	
+		String processingUrl=RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());
+		log("Processing URl: "+processingUrl);
 		
-	/*	log("Step 13: Get processing status until it is completed");
+		/*log("Step 13: Setup Oauth client"); 
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
+				
+	    log("Step 14: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -400,52 +403,52 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		}
 		verifyTrue(completed, "Message processing was not completed in time");*/
 		
-		log("Step 14: Click on Patient Search Link to verify External Patient ID");
+		log("Step 15: Click on Patient Search Link to verify External Patient ID");
 		pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
 
-		log("Step 15: Set Patient Search Fields");
+		log("Step 16: Set Patient Search Fields");
 		pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 	
-		log("Step 16: Verify the Search Result");
+		log("Step 17: Verify the Search Result");
 		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 		
-		log("Step 17: Click on Patient");
+		log("Step 18: Click on Patient");
 		patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
 		
 		String ExternalpatientID=patientPage.externalID(ExternalID);
 		log("External Patient ID:-"+ExternalpatientID);
 
-		log("Step 18: Logout of Practice Portal");
+		log("Step 19: Logout of Practice Portal");
 		pPracticeHomePage.logOut();
 		
-		log("Step 19: Login to Patient Portal ");
+		log("Step 20: Login to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
 				testData.getUrl());
 		pMyPatientPage = portalloginpage.login(
 				email,
 				testData.getPassword());
 		
-		log("Step 20: Go to Inbox");
+		log("Step 21: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		log("Step 21: Find message in Inbox");
+		log("Step 22: Find message in Inbox");
 		MessagePage pMessage = inboxPage.clickFirstMessageRow();
 
-		log("Step 22: Validate message subject and send date");
+		log("Step 23: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
-		log("Step 23: Click on link ReviewHealthInformation");
+		log("Step 24: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
 		
-		log("Step 24: Verify if CCD Viewer is loaded and click Close Viewer");
+		log("Step 25: Verify if CCD Viewer is loaded and click Close Viewer");
 		pMessage.verifyCCDViewerAndClose();
 		
-		log("Step 25: Logout of Patient Portal");
+		log("Step 26: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 		
 		}
@@ -523,7 +526,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Step 13: Setup Oauth client"); 
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 
-			
 			log("Step 14: Post PIDC with PracticePatientId (On Demand Provision)");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient, testData.getResponsePath());	
 		

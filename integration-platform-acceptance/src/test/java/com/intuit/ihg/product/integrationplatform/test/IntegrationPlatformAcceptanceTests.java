@@ -687,7 +687,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Step 2: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
 
-		log("Step 3: Get processing status until it is completed");
+		/*log("Step 3: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -698,7 +698,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 				break;
 			}
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		verifyTrue(completed, "Message processing was not completed in time");*/
 		log("Step 4:LogIn to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
 				testData.getURL());
@@ -939,7 +939,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Step 2: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());	
 
-			log("Step 3: Get processing status until it is completed");
+			/*log("Step 3: Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
@@ -950,7 +950,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 					break;
 				}
 			}
-			verifyTrue(completed, "Message processing was not completed in time");
+			verifyTrue(completed, "Message processing was not completed in time");*/
 			
 			log("Step 4: LogIn to Patient Portal ");
 			PortalLoginPage portalloginpage = new PortalLoginPage(driver,
