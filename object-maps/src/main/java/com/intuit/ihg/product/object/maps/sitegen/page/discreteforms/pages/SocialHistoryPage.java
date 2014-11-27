@@ -133,7 +133,7 @@ public class SocialHistoryPage extends FormConfigPage {
 	 * Adds a tea-drinking question so that the page does not hide again
 	 */
 	public void showThisPage() {
-		if (hideSocialhistorySectionCheck.isSelected() == true) {
+		if (hideSocialhistorySectionCheck.isSelected()) {
 			hideSocialhistorySectionCheck.click();
 			teacoffeeHealthhabits.click();
 		}
