@@ -4,11 +4,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class PortalFormPage extends BasePageObject {
 	
@@ -20,6 +23,9 @@ public class PortalFormPage extends BasePageObject {
 	
 	@FindBy(id = "nextPageButton")
 	private WebElement btnContinue;
+
+    @FindBy(className = "save")
+    private WebElement saveAndFinishLink;
 	
 	public PortalFormPage(WebDriver driver) {
 		super(driver);
@@ -55,7 +61,6 @@ public class PortalFormPage extends BasePageObject {
 
 	/**
 	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
@@ -75,5 +80,16 @@ public class PortalFormPage extends BasePageObject {
 		wait.until(ExpectedConditions.elementToBeClickable(closeButton));	
 		closeButton.click();
 	}
+
+    public void saveAndFinishAnotherTime() {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        saveAndFinishLink.click();
+//        wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOf(saveAndFinishLink)));
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

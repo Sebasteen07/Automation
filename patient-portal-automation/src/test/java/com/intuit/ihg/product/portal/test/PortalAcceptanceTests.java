@@ -1646,7 +1646,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// seting url for practice B
 		healthKeyMatch66.setUrl(testcasesData.getHealthKeyPracticeUrl());
-		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
+//		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
 
 	}
 	
@@ -1711,7 +1711,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// seting url for practice B
 		healthKeyMatch56.setUrl(testcasesData.getHealthKeyPracticeUrl());
-		healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), "tester");
+//		healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), "tester");
 
 	}
 

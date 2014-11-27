@@ -58,6 +58,9 @@ public class SearchPatientFormsPage extends BasePageObject{
 
 	@FindBy(name="qnaireType")
 	private WebElement dropDownForm;
+
+    @FindBy(linkText = "Search Partially Completed Forms")
+    private WebElement linkPartiallyFilledForm;
 		
 	public SearchPatientFormsPage(WebDriver driver) {
 		super(driver);
@@ -78,7 +81,12 @@ public class SearchPatientFormsPage extends BasePageObject{
 		
 		return result;
 	}
-	
+
+    public SearchPartiallyFilledPage getPartiallyFilledSearch() {
+        linkPartiallyFilledForm.click();
+        return PageFactory.initElements(driver, SearchPartiallyFilledPage.class);
+    }
+
 	/**
 	 * Desc :-SearchPatientFormsWithOpenStatus method will filter the latest custorm form
 	 * @param firstName
@@ -88,8 +96,9 @@ public class SearchPatientFormsPage extends BasePageObject{
 	 * @param dob_year
 	 * @return
 	 */
-	
-	public SearchPatientFormsResultPage SearchPatientFormsWithOpenStatus(String firstName,String lastName,String dob_month,String dob_day,String dob_year)
+	public SearchPatientFormsResultPage SearchPatientFormsWithOpenStatus(String firstName, String lastName,
+                                                                         String dob_month, String dob_day,
+                                                                         String dob_year)
 	{
 		
 		txtFirstName.sendKeys(firstName);

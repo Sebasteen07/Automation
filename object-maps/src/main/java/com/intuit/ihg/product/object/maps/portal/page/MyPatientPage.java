@@ -120,7 +120,11 @@ public class MyPatientPage  extends BasePageObject{
 		{
 			return txtMyPatientPage;
 		}
-		
+
+        public WebElement getLogoutLink() {
+            return logout;
+        }
+
 		public MyAccountPage clickMyAccountLink() throws InterruptedException {
 			IHGUtil.PrintMethodName();
 			Thread.sleep(6000);

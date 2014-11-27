@@ -154,8 +154,6 @@ public class DiscreteFormsPage extends BasePageObject{
 	public void createNewDiscreteForm() throws Exception {
 		IHGUtil.PrintMethodName();
 		System.out.println("CLICK ON DISCRETE FORM");
-		//System.out.println("CHECKING CURRENT URL"+driver.getCurrentUrl());
-		//System.out.println("CHECKING CURRENT url source code"+driver.getPageSource());
 		registrationHealthHistoryFormButton.click();
 		Thread.sleep(5000);
 	}

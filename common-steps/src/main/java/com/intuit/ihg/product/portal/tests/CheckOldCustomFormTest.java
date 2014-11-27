@@ -10,6 +10,7 @@ import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 
 
 public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
@@ -23,7 +24,6 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 	public void setUrl(String str) {
 		url = str;
 	}
-
 
     public HealthFormPage checkOldCustomForm    (WebDriver driver,TestcasesData testcasesData, String formName) throws Exception {
 
@@ -53,14 +53,14 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 	//	verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form on Portal");
 		verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form on Portal");
 	//	verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form on Portal");\
-		
-        pHealthForm.clickNext();
-        
-        log("Step 4: Fill Vitals");
-        pHealthForm.fillVitals();
-        
-        pHealthForm.clickNext();
-        
+//
+//        pHealthForm.clickNext();
+//
+//        log("Step 4: Fill Vitals");
+//        pHealthForm.fillVitals();
+//
+//        pHealthForm.clickNext();
+//
         log("Step 5: exit non completed form");
         pHealthForm.clickHealthForms();
         

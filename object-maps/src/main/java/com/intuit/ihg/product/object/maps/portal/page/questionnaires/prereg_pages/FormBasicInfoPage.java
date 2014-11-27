@@ -240,21 +240,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
 
 	}
-	
-	public void saveAndFinishAnotherTime() throws Exception {
-		setStreetAddress();		
-		setCity();		
-		setState(PortalConstants.State);		
-		setZip();	
-		setPrimaryPhoneNumber();		
-		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
-		setSex(PortalConstants.Sex);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.elementToBeClickable(save));
-		
-		save.click();
-	}
-	
+
 	/**
 	 * 
 	 * @return
