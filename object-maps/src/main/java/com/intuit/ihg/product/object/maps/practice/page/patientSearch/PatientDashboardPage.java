@@ -171,13 +171,16 @@ public class PatientDashboardPage extends BasePageObject{
 	
 	/**
 	 * 
+	 * @param patientID
+	 * @param fName
+	 * @param lName
 	 */
-	public void verifyDetails(String PatientID,String fName,String lName)
+	public void verifyDetails(String patientID,String fName,String lName)
 	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement( driver, 60, patientName );
 		BaseTestSoftAssert.verifyEquals(patientName.getText(),(fName+" "+lName+"   Edit"),"First Name & Last Name did not matched");
-		BaseTestSoftAssert.verifyEquals(lblPatientID.getText(),(PatientID+"   Edit"),"PatientID did not matched");
+		BaseTestSoftAssert.verifyEquals(lblPatientID.getText(),(patientID+"   Edit"),"PatientID did not matched");
 		BaseTestSoftAssert.verifyEquals(lblPatientSource.getText(),patientSource,"Patient Source did not matched");
 		BaseTestSoftAssert.verifyEquals(lblPatientStatus.getText(),patientStatus,"Patient Status did not matched");
 		
