@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

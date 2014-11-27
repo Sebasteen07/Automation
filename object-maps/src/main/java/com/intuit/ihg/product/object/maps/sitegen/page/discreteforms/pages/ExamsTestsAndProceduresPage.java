@@ -1,5 +1,6 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.IllnessesAndConditionsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

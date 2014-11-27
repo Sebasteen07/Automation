@@ -1,5 +1,6 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.MedicationsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,7 +56,7 @@ public class CurrentSymptomsPage extends BasePageObject{
 	 * @return PageFactory initialization for Medications Page
 	 */
 	
-	public MedicationsPage clicklnkMedications() 
+	public MedicationsPage clicklnkMedications()
 	{	
 		
 		SitegenlUtil.setDefaultFrame(driver);

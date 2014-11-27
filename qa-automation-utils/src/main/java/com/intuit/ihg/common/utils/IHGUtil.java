@@ -35,7 +35,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.common.entities.CcdType;
-import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -122,13 +121,13 @@ public class IHGUtil extends BasePageObject {
 
 	/**
 	 * Description : This method will return true if the webElemnt exists in the page. 
-	 * This method calls isExists (By by, long maxTimeInSecondsToWait) with a default wait period of 2 seconds
-	 * @param webelements : example "sdputil.isExists(By.xpath("//input[@name='email']"))"
+	 * This method calls exists (By by, long maxTimeInSecondsToWait) with a default wait period of 2 seconds
+	 * @param webelements : example "sdputil.exists(By.xpath("//input[@name='email']"))"
 	 * @return boolean
 	 */
-	public boolean isExists(By by) {
+	public boolean exists(By by) {
 		long maxTimeInSecondsToWait = 2;
-		return this.isExists(by, maxTimeInSecondsToWait);
+		return this.exists(by, maxTimeInSecondsToWait);
 	}
 
 
@@ -138,7 +137,7 @@ public class IHGUtil extends BasePageObject {
 	 * @return boolean
 	 */
 
-	public boolean isExists(WebElement element) {
+	public boolean exists(WebElement element) {
 		try {
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
@@ -158,7 +157,7 @@ public class IHGUtil extends BasePageObject {
 	 * @return
 	 */
 
-	public boolean isExists(WebElement element, long maxTimeInSecondsToWait) {
+	public boolean exists(WebElement element, long maxTimeInSecondsToWait) {
 		boolean bexists = false;
 		try {
 			driver.manage().timeouts().implicitlyWait(maxTimeInSecondsToWait, TimeUnit.SECONDS);
@@ -180,14 +179,14 @@ public class IHGUtil extends BasePageObject {
 	/**
 	 * Description : This method will return true if the webelemnt exists in the page. User has to provide the 
 	 * element as webelements for example  to test if the element with xpath "//input[@name='email']" is present or not 
-	 * user has to write the code like "sdputil.isExists(By.xpath("//input[@name='email']"))"
+	 * user has to write the code like "sdputil.exists(By.xpath("//input[@name='email']"))"
 	 * The function will wait till the element is displayed or till the timeout which ever comes first.
 	 * 
 	 * @param webelements
 	 * @param maxTimeInSecondsToWait : timeout for the function. Max time to wait.
 	 * @return boolean
 	 */
-	public boolean isExists(By by, long maxTimeInSecondsToWait) {
+	public boolean exists(By by, long maxTimeInSecondsToWait) {
 		boolean bexists = false;
 
 		List<WebElement> webelements;
@@ -1108,7 +1107,7 @@ public class IHGUtil extends BasePageObject {
 		ArrayList<String> myArr_actual = new ArrayList<String>();
 		WebElement table =pDriver.findElement(By.xpath(pTableXpath));
 		List<WebElement> rows=table.findElements(By.tagName("tr"));
-		mainLoop:for(WebElement row:rows){	
+		mainLoop:for(WebElement row:rows){
 			i++;
 			myArr_actual.clear();
 			List<WebElement> columns = row.findElements(By.tagName("td"));
@@ -1376,4 +1375,29 @@ public class IHGUtil extends BasePageObject {
 		}
 		System.out.println("--------------------------");
 	}
+
+    /**
+     * A method that will just wait until an element disappears for dynamic pages
+     * @param element WebElement that will be disappearing
+     * @param periodInMilliseconds determines how long is one waiting cycle
+     * @param maxWaitingTimeInSeconds maximal waiting time in seconds
+     * @throws InterruptedException, TimeoutException
+     */
+    public <U> void waitForElementToDisappear(
+            U element, long periodInMilliseconds, long maxWaitingTimeInSeconds)
+            throws InterruptedException, TimeoutException {
+
+        long sum = 0;
+        long maxWaitInMillis = TimeUnit.MILLISECONDS.convert(maxWaitingTimeInSeconds, TimeUnit.SECONDS);
+
+        // while the element exists - be it specified by By class or by WebElement class
+        while (By.class.isAssignableFrom(element.getClass()) ? exists((By) element) : exists((WebElement) element)) {
+            sum += periodInMilliseconds;
+            if (sum > maxWaitInMillis)
+                throw new TimeoutException(
+                        "Waiting for element to disappear is taking too long and exceeded the limit");
+
+            TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
+        }
+    }
 }

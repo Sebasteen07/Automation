@@ -207,7 +207,7 @@ public class MobileHomePage extends MobileBasePage {
     public boolean isMyMessagesPresent() throws InterruptedException {
         Thread.sleep(5000);
         IHGUtil iUtil = new IHGUtil(driver);
-        return iUtil.isExists(myMessages);
+        return iUtil.exists(myMessages);
     }
 
 

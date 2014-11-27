@@ -27,7 +27,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormAdd
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLayoutPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.DiscreteFormsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.portal.tests.CheckOldCustomFormTest;
@@ -56,11 +56,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	private void logSGLoginInfo(SitegenTestData testData) {
-		log("URL: "+testData.getSiteGenUrl());
-		log("Username: "+testData.getAutomationUser());
-		log("Password: "+testData.getAutomationUserPassword());
+		log("URL: " + testData.getSiteGenUrl());
+		log("Username: " + testData.getAutomationUser());
+		log("Password: " + testData.getAutomationUserPassword());
 	}
-	
+
 	/**
 	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
 	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
@@ -321,7 +321,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		pSiteGenPracticeHomePage.clicklogout();
 
 		log("step 9: Go to Patient Portal using the original window");
-
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("URL: " + portalTestcasesData.getFormsUrl());

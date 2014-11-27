@@ -48,7 +48,7 @@ public class MobileBasePage extends BasePageObject {
 
     public String getErrorMsg() {
         IHGUtil iUtil = new IHGUtil(driver);
-        if (iUtil.isExists(errorMsg)) {
+        if (iUtil.exists(errorMsg)) {
             return errorMsg.getText();
         } else return null;
     }
@@ -72,7 +72,7 @@ public class MobileBasePage extends BasePageObject {
     public String getInstruction() {
         IHGUtil iUtil = new IHGUtil(driver);
 
-        if (iUtil.isExists(instruction)) {
+        if (iUtil.exists(instruction)) {
             return instruction.getText();
         } else return null;
     }
@@ -80,7 +80,7 @@ public class MobileBasePage extends BasePageObject {
     public boolean isErrorMsgPresent() throws InterruptedException {
         Thread.sleep(5000);
         IHGUtil iUtil = new IHGUtil(driver);
-        return iUtil.isExists(errorMsg);
+        return iUtil.exists(errorMsg);
     }
 
     public String processUrlForEnv(String url, String env) {
