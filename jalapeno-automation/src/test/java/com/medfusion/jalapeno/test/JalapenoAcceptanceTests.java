@@ -15,6 +15,7 @@ import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 /**
  * @Author:Jakub Calabek
@@ -134,5 +135,26 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHealthKey6Of6Inactive jalapenoHealthKey6Of6Inactive = new JalapenoHealthKey6Of6Inactive();
 		jalapenoHealthKey6Of6Inactive.healthKey6Of6Inactive(driver, testData);
 	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLoginLogut() throws Exception {
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+
+		log("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
+		
+		log("Clicking on Sign out");
+		jalapenoHomePage.logout(driver);
+		
+	
+		// TODO Implement Verification on Home Page once developed
 	}
 }

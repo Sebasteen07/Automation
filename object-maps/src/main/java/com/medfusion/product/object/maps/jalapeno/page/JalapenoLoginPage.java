@@ -61,6 +61,12 @@ public class JalapenoLoginPage extends BasePageObject {
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}
+	
+	public JalapenoLoginPage(WebDriver driver) {
+		
+		super(driver);
+		PageFactory.initElements(driver, this);
+	}
 
 	public boolean assessLoginPageElements() {
 
