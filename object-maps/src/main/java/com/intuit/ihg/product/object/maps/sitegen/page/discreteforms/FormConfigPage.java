@@ -49,7 +49,7 @@ public class FormConfigPage extends BasePageObject {
         if (backToTheList.isDisplayed())
             backToTheList.click();
         else
-            floatingSaveButton.click();
+            floatingBackButton.click();
     }
 
     public void clickSaveButton() {
