@@ -241,7 +241,8 @@ public class DiscreteFormsPage extends BasePageObject{
 		pHealthInsuranceInfoPage.selectInsuranceCompanyQuestion();
 
 		log("substep 3b: Click on Secondary Health Insurance Information");
-		SecondaryHealthInsurancePage pSecondaryHealthInsurancePage = pHealthInsuranceInfoPage.clicklnkSecondaryInsurance() ;
+		SecondaryHealthInsurancePage pSecondaryHealthInsurancePage =
+                pHealthInsuranceInfoPage.clicklnkSecondaryInsurance();
 		pSecondaryHealthInsurancePage.selectInsuranceCompanyQuestion();
 		
 		log("substep 4: Click on Other Doctors You Have Seen");
@@ -256,7 +257,8 @@ public class DiscreteFormsPage extends BasePageObject{
 		AllergiesPage pAllergiesPage = pMedicationPage.clicklnkAllergies();
 		VaccinationsPage pVaccinationPage = pAllergiesPage.clicklnkVaccinations();
 		SurgeriesAndHospitalizationsPage pSurgeriesAndHospitalizationsPage = pVaccinationPage.clicklnkSurgsHosps();
-		ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage = pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
+		ExamsTestsAndProceduresPage pExamsTestsAndProceduresPage =
+                pSurgeriesAndHospitalizationsPage.clicklnkProcedures();
 		IllnessesAndConditionsPage pIllnessesAndConditionsPage = pExamsTestsAndProceduresPage.clicklnkConditions();
 		FormFamilyHistoryPage pFamilyMedicalHistoryPage = pIllnessesAndConditionsPage.clicklnkFamilyHistory();
 		

@@ -297,8 +297,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: navigate to SiteGen PracticeHomePage ##########");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 
 		log("step 4: Click on Patient Forms");
@@ -306,6 +306,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 
 		log("step 5: Unpublish and delete all forms and create a new one");
+        driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
 
 		log("step 6: Initialize the new form");
