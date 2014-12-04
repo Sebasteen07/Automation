@@ -58,7 +58,7 @@ public class InsurancePage extends BasePageObject {
 	@FindBy(xpath = "//select[@class='null required choice'and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:9:field']")
 	private WebElement drpdwnrelationtoPolicyProvider;
 
-	@FindBy(how = How.NAME, using = "content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:12:field")
+	@FindBy(xpath = "//input[@class='null required text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:11:field']")
 	private WebElement txtpolicyNumber;
 
 	@FindBy(xpath = "//input[@class='submit button' and @value='Save Insurance']")
