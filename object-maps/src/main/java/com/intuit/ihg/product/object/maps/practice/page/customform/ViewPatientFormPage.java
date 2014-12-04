@@ -48,9 +48,7 @@ public class ViewPatientFormPage extends BasePageObject {
 
         if (matcher.find())
 		    return matcher.group();
-        else {
-            IllegalStateException e = new IllegalStateException("No match found");
-            throw e;
-        }
+        else
+            throw new IllegalStateException("Date not found");
 	}
 }

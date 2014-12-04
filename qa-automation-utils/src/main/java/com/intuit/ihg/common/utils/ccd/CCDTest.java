@@ -7,6 +7,9 @@ package com.intuit.ihg.common.utils.ccd;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MediaType;
 
@@ -66,16 +69,24 @@ public class CCDTest {
 			xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
 		} 
 		catch (Exception requestException) {
-			// first 3 or more letters of the exception message contain request error code
-			int errorCode = Integer.parseInt( requestException.getMessage().substring(0, 3) ); 
-			if (errorCode == 204) { // CCD may not have yet been generated
-				Thread.sleep(2000);
-				xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
-			}
-			else {
-				throw requestException;
-			}
-		}
+            // Try to get response code from the exception message using regular expression
+            int errorCode;
+            Pattern pattern = Pattern.compile("\\d\\d\\d");
+            Matcher matcher = pattern.matcher(requestException.getMessage());
+
+            if (!matcher.find())
+                throw new IllegalStateException("Error code not found");
+            else {
+                errorCode = Integer.parseInt(matcher.group());
+
+                if (errorCode == 204) { // CCD may not have yet been generated
+                    TimeUnit.SECONDS.sleep(10);
+                    xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+                } else {
+                    throw requestException;
+                }
+            }
+        }
 		
 		xml = StringEscapeUtils.unescapeXml(xml);
 		
