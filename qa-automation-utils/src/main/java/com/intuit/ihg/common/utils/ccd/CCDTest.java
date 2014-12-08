@@ -29,10 +29,9 @@ public class CCDTest {
 	
 
 	private static String completeRestUrl(String restUrl, long timeStamp) {
-		restUrl = new String(restUrl + timeStamp + ",0&max=100");
-		return restUrl;
+		return restUrl + timeStamp + ",0&max=100";
 	}
-	
+
 	static void validateCDA(ClinicalDocument document) {
     	ValidationResult result = new ValidationResult();
 		CDAUtil.validate(document, result);
@@ -58,10 +57,10 @@ public class CCDTest {
 	 * @return Method returns CCD in the form of xml as a String value
 	 */ 
 	public static String getFormCCD(long timeStamp, String restUrl) throws Exception {
-		String xml = new String();
+		String xml;
 		restUrl = completeRestUrl(restUrl, timeStamp);
 		Map<String, Object> headers = new TreeMap<String, Object>();
-		
+
 		headers.put("Authentication-Type", "2wayssl");
 		System.out.println("Generated url is " + restUrl);
 		
@@ -74,9 +73,10 @@ public class CCDTest {
             Pattern pattern = Pattern.compile("\\d\\d\\d");
             Matcher matcher = pattern.matcher(requestException.getMessage());
 
-            if (!matcher.find())
-                throw new IllegalStateException("Error code not found");
-            else {
+            if (!matcher.find()) {
+                System.out.print("Error code not found");
+                throw requestException;
+            } else {
                 errorCode = Integer.parseInt(matcher.group());
 
                 if (errorCode == 204) { // CCD may not have yet been generated
