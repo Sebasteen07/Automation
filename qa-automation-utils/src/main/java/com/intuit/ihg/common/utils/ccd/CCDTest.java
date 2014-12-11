@@ -7,6 +7,9 @@ package com.intuit.ihg.common.utils.ccd;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MediaType;
 
@@ -26,10 +29,9 @@ public class CCDTest {
 	
 
 	private static String completeRestUrl(String restUrl, long timeStamp) {
-		restUrl = new String(restUrl + timeStamp + ",0&max=100");
-		return restUrl;
+		return restUrl + timeStamp + ",0&max=100";
 	}
-	
+
 	static void validateCDA(ClinicalDocument document) {
     	ValidationResult result = new ValidationResult();
 		CDAUtil.validate(document, result);
@@ -55,10 +57,10 @@ public class CCDTest {
 	 * @return Method returns CCD in the form of xml as a String value
 	 */ 
 	public static String getFormCCD(long timeStamp, String restUrl) throws Exception {
-		String xml = new String();
+		String xml;
 		restUrl = completeRestUrl(restUrl, timeStamp);
 		Map<String, Object> headers = new TreeMap<String, Object>();
-		
+
 		headers.put("Authentication-Type", "2wayssl");
 		System.out.println("Generated url is " + restUrl);
 		
@@ -66,16 +68,25 @@ public class CCDTest {
 			xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
 		} 
 		catch (Exception requestException) {
-			// first 3 or more letters of the exception message contain request error code
-			int errorCode = Integer.parseInt( requestException.getMessage().substring(0, 3) ); 
-			if (errorCode == 204) { // CCD may not have yet been generated
-				Thread.sleep(2000);
-				xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
-			}
-			else {
-				throw requestException;
-			}
-		}
+            // Try to get response code from the exception message using regular expression
+            int errorCode;
+            Pattern pattern = Pattern.compile("\\d\\d\\d");
+            Matcher matcher = pattern.matcher(requestException.getMessage());
+
+            if (!matcher.find()) {
+                System.out.print("Error code not found");
+                throw requestException;
+            } else {
+                errorCode = Integer.parseInt(matcher.group());
+
+                if (errorCode == 204) { // CCD may not have yet been generated
+                    TimeUnit.SECONDS.sleep(10);
+                    xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+                } else {
+                    throw requestException;
+                }
+            }
+        }
 		
 		xml = StringEscapeUtils.unescapeXml(xml);
 		
