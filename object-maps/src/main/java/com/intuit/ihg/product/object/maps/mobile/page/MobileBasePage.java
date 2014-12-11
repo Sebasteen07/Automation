@@ -23,7 +23,7 @@ public class MobileBasePage extends BasePageObject {
     @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div/h1")
     private WebElement heading;
 
-    @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[@href='#home']")
+    @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[contains(@href,'#home')]")
     private WebElement home;
 
     @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[not(@href='#home') and not(@href='#')]")
