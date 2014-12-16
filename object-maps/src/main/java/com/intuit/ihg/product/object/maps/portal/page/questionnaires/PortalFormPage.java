@@ -74,7 +74,7 @@ public class PortalFormPage extends BasePageObject {
 	 * @throws Exception
 	 */
 	public void submitForm() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 15);	
+		WebDriverWait wait = new WebDriverWait(driver, 25);
 		
 		submitForm.click();
 		wait.until(ExpectedConditions.elementToBeClickable(closeButton));	
@@ -82,9 +82,7 @@ public class PortalFormPage extends BasePageObject {
 	}
 
     public void saveAndFinishAnotherTime() {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
         saveAndFinishLink.click();
-//        wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOf(saveAndFinishLink)));
         try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {

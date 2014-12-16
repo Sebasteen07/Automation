@@ -351,11 +351,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestEnd2End() throws Exception {
-
 		log("Test Case: testAppointmentRequestEnd2End");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-
 
 		log("step 1: Get Data from Excel");
 		Portal portal = new Portal();

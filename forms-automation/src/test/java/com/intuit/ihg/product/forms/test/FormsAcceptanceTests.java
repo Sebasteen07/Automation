@@ -203,7 +203,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
-		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD");
+		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 	}
 
 	@Test(enabled = true, groups = {"PatientForms"})
