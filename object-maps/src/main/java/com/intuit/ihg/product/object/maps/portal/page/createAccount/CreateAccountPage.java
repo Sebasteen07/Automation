@@ -85,9 +85,6 @@ public class CreateAccountPage extends BasePageObject {
 	private WebElement txtDoB;
 
 	@FindBy(name = "editPersonalInfo:border:editForm:inputs:4:input:input")
-	private WebElement txtSSN;
-
-	@FindBy(name = "editPersonalInfo:border:editForm:inputs:5:input:input")
 	private WebElement chkGender;
 
 	@FindBy(name = "editMailingAddress:border:editForm:inputs:0:input:input")
@@ -162,15 +159,14 @@ public class CreateAccountPage extends BasePageObject {
 	/**
 	 * creating a new user in Beta patient portal
 	 * 
+	 * @param patientDob_Month
+	 * @param patientDob_Day
+	 * @param patientDob_Year
 	 * @param patientFirstName
 	 * @param patientLastName
 	 * @param email
 	 * @param patientPhoneNumber
-	 * @param patientDob_Month
-	 * @param patientDob_Day
-	 * @param patientDob_Year
 	 * @param patientZip
-	 * @param patientSSN
 	 * @param address
 	 * @param password
 	 * @param Question
@@ -179,9 +175,9 @@ public class CreateAccountPage extends BasePageObject {
 	 * @param city
 	 * @return
 	 */
-	public MyPatientPage createAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
-					 String patientZip, String patientSSN,
-					String address, String password, String Question, String answer, String state, String city) {
+	public MyPatientPage createAccountPage(String patientFirstName, String patientLastName, String email,
+										   String patientPhoneNumber, String patientZip, String address,
+										   String password, String Question, String answer, String state, String city) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -196,8 +192,6 @@ public class CreateAccountPage extends BasePageObject {
 		txtPatientFirstname.click();
 		log("PatientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("PatientSSN: " + patientSSN);
-		txtssn.sendKeys(patientSSN);
 		log("Email: " + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
@@ -208,8 +202,6 @@ public class CreateAccountPage extends BasePageObject {
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
 		txtLastName.click();
-		txtSSN.clear();
-		txtSSN.sendKeys(patientSSN);
 		chkGender.click();
 		txtAddress.sendKeys(address);
 		txtCity.sendKeys(city);

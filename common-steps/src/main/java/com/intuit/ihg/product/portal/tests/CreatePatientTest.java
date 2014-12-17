@@ -87,8 +87,8 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		log("email:-" + email);
 		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName,
 						lastName, email, testcasesData.getPhoneNumber(),
-						testcasesData.getZip(), testcasesData.getSSN(),
-						testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
+						testcasesData.getZip(),
+				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
 						testcasesData.getAnswer(), testcasesData.getAddressState(), testcasesData.getAddressCity());
 
 		log("step 4: Assert Webelements in MyPatientPage");
