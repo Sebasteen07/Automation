@@ -37,7 +37,7 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[5]/td[2]")
 	private WebElement lblPatientID;
 	
-	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[11]/td[2]")
+	@FindBy(linkText="Unlock Link")
 	private WebElement lblunlockLink;
 	
 	@FindBy(xpath=".//*[@id='dashboard']/fieldset[1]/table/tbody/tr[13]/td[2]")
@@ -139,8 +139,9 @@ public class PatientDashboardPage extends BasePageObject{
 	 */
 	public String unlockLink()
 	{
+		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, lblunlockLink);
-		return lblunlockLink.getText().toString();
+		return lblunlockLink.getAttribute("href").toString();
 		
 	}
 	/*
