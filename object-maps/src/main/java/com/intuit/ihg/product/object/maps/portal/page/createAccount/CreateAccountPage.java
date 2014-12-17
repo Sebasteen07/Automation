@@ -231,11 +231,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtSecretAnswer.sendKeys(answer);
 		chooseProvider();
 		
-		if (!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1"))
-			{
-				chkAgreePatientPrivacyInfo.click();
-			}
-		
+		chkAgreePatientPrivacyInfo.click();
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 
