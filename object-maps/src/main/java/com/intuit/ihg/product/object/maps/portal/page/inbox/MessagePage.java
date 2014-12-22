@@ -65,6 +65,9 @@ public class MessagePage extends BasePageObject {
 	
 	@FindBy(xpath = "//span[@fieldid='instructions']")
 	private WebElement sigCodeInstructions;
+	
+	@FindBy(xpath = "//input[@type='file']")
+	private WebElement browseButton;
 		
 	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
 			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
@@ -96,8 +99,9 @@ public class MessagePage extends BasePageObject {
 	 * Will reply to a message using the current message subject, and adding the supplied text for the message body.
 	 * @param body the text for the body of the message
 	 * @return the consolidated inbox
+	 * 
 	 */
-	public MessageCenterInboxPage replyToMessage(String body) {
+	public MessageCenterInboxPage replyToMessage(String body,String fileName) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		
@@ -106,6 +110,10 @@ public class MessagePage extends BasePageObject {
 			body = REPLY_TEXT;
 		}
 		replyBody.sendKeys(body);
+		if(fileName!=null){
+		IHGUtil.waitForElement(driver, 120, browseButton);
+		browseButton.sendKeys(fileName);
+		}
 		btnSend.click();
 		
 		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
@@ -248,4 +256,5 @@ public class MessagePage extends BasePageObject {
 		log("Searching: SigCode Meaning is:" + sigCodeMeaning + ", and Actual SigCode Meaning is:" + sigCodeInstructions.getText().toString());
 		return sigCodeInstructions.getText().toString();
 	}
+	
 }

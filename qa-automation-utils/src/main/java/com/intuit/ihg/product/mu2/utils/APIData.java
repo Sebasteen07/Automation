@@ -225,6 +225,20 @@ public class APIData {
 		  // TODO Auto-generated method stub
 		  return apiobj.TRANSMIT_EMAIL;
 	}
-		
+	
+	public String getImagePath() {
+		  // TODO Auto-generated method stub
+		  return apiobj.IMAGE_PATH;
+	}
+	
+	public String getPortalUserName2() {
+		  // TODO Auto-generated method stub
+		  return apiobj.PORTAL_USERNAME2;
+	}
+	
+	public String getPatientID() {
+		  // TODO Auto-generated method stub
+		  return apiobj.PATIENT_ID;
+	}
 
 }

@@ -291,7 +291,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			Thread.sleep(120000);
 			log("Step 16: Reply to the message");
-			msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
+			msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY,null);
 			
 			log("Step 17: Wait 60 seconds, so the message can be processed");
 			Thread.sleep(60000);  

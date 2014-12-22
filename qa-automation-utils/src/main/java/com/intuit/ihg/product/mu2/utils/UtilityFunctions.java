@@ -10,7 +10,9 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,9 +36,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 
 	public class UtilityFunctions {
 		
-		
+		public static List<String> eventList=new ArrayList<String>();
 	/**
-	 * Sends HTTP Get request and writes response sinto response.xml	
+	 * Sends HTTP Get request and writes response into response.xml	
 	 * @param strUrl
 	 * @param xmlFilePath
 	 * @throws IOException
@@ -287,7 +289,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 			final long HOUR = 3600*1000;// in milli-seconds.
 		   	DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		   	Date now = FORMATTER.parse(actualTimeStamp);
-		   	long hours=now.getTime() - 4 * HOUR;
+		   	long hours=now.getTime() - 5 * HOUR;
 		   	long expecteDate = Long.parseLong(Long.toString(hours));
 		    Date date = new Date(expecteDate);   	
 		  	DateFormat formatDate = new SimpleDateFormat("MM/dd/yyyy");
@@ -295,5 +297,12 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		  	String joinedDate=new StringBuilder(formatDate.format(date).toString()).append(" at ").append(formatTime.format(date).toString()).toString();
 			return joinedDate;
 		}
+		
+		public static List<String> eventList() {
+			eventList.add(MU2Constants.VIEW_ACTION);
+			eventList.add(MU2Constants.DOWNLOAD_ACTION);
+			eventList.add(MU2Constants.TRANSMIT_ACTION);
+			return eventList;
+		}  
 		
 }

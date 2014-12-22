@@ -483,7 +483,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.isReadCommunicationMessage(testData.getResponsePath(),messageID,readdatetimestamp);
 				
 		log("Step 14: Reply to the message");
-		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
+		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY,null);
 		
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
@@ -1222,19 +1222,22 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Step 20: Set Medication Form Fields");
 			myPatientPage=pFormMedicationsPage.fillMedicationFormFields();	
 
-			log("Step 21: Setup Oauth client"); 
+			log("Step 21: Wait 120 seconds, so the message can be processed");
+			Thread.sleep(120000);
+			
+			log("Step 22: Setup Oauth client"); 
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			Long since = timestamp / 1000L - 60 * 24;
 			
-			log("Step 22: Getting messages since timestamp: " + since);
+			log("Step 23: Getting messages since timestamp: " + since);
 			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 			
 			
-			log("Step 23: Validate PatientDemographics and CCD details in the response");
+			log("Step 24: Validate PatientDemographics and CCD details in the response");
 			RestUtils.isPatientAppeared(testData.getResponsePath(), externalPatientID,patientID,firstName);
 				
-			log("Step 24: Logout");
+			log("Step 25: Logout");
 			pMyPatientPage.clickLogout(driver);
 			
 		}
