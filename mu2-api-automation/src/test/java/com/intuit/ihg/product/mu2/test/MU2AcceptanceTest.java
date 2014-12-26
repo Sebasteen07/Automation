@@ -342,7 +342,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 			log("Step 6: Waiting for Events sync in DWH");
 			Thread.sleep(420000);
 
-			log("Step 7: Setup Oauth client"); 
+			log("Step 7: Setup Oauth client 2.O"); 
 			RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
 						
 			// Build new Rest URL with epoch milliseconds 
@@ -422,7 +422,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 			Thread.sleep(420000);		
 							
 			// Setup oauth Client
-			log("Step 10: Setup Oauth client"); 
+			log("Step 10: Setup Oauth client 2.O"); 
 			RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
 			
 			
