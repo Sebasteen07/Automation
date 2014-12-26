@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>    
+    
+<!--This is a sample config file that can be used for testing. The OAuth library uses the DCPropertyManager so these config values should be included in the containing application-->
+
+    <entry key="oauth.keystore.file.path">./src/test/resources/config/dev3</entry>  
+
+   <entry key="oauth.consumer.keysecret.url">https://dev3-int.dev.medfusion.net/v1/oauth1/oauthapplication</entry>
+    <entry key="oauth.token.access.userpass.url">https://dev3-int.dev.medfusion.net/v1/oauth1/token</entry>
+        
+   <entry key="resource.owner.baseurl">http://resource.owner.com</entry>	
+	<!--END: Client AND Service Filter Configuration-->
+
+    <entry key="log.level">DEBUG</entry> 
+
+    <entry key="ihg.host.patient">http://dev3vip-rwsdk-core-svc.qhg.local/rwsdk</entry>
+    <entry key="ihg.host.amdc">http://dev3vip-am-core-svc.qhg.local/am</entry>
+    <entry key="ihg.host.events">https://dev3-int.dev.medfusion.net</entry>
+    <entry key="ihg.host.ccd">http://dev3vip-eh-core-svc.qhg.local/eh</entry>
+    <entry key="ihg.host.geccd">http://dev3aapp13.qhg.local:8080/geehr</entry>
+  	<entry key="ihg.host.appointments">http://dev3vip-am-core-svc.qhg.local</entry>
+      
+
+    <entry key="ihg.practice.id">e7fb00ce-d9ea-43c2-b4f5-f48bd61d68af</entry>    
+    <entry key="oauth.apptoken">IHGTrustedDataServiceE2EAppToken</entry>
+    <entry key="oauth.username">79IHGQAAutomationIntegrated21579</entry>
+    <entry key="oauth.password">1ONaNGK18xTiNvxSBypO</entry>
+    
+</properties>

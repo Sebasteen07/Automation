@@ -47,6 +47,7 @@ import org.xml.sax.SAXException;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
+import com.intuit.api.security.client.TokenManager;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -1280,5 +1281,21 @@ public class RestUtils {
 	 */
 	public static void testData(String data) {
 		patientDatails.add(data);
+	}
+
+	public static void oauthSetup1O(String oAuthKeyStore, String oAuthProperty,
+			String oAuthAppToken, String oAuthUsername, String oAuthPassword) throws IOException {
+		// TODO Auto-generated method stub
+		emptyFile(oAuthKeyStore);		
+		OAuthPropertyManager.init(oAuthProperty);
+		System.out.println("appToken: " +oAuthAppToken);
+		System.out.println("username: " +oAuthUsername);
+		System.out.println("password: " +oAuthPassword);
+		try {
+			TokenManager.initializeTokenStore(oAuthAppToken, oAuthUsername, oAuthPassword);
+		} catch (Exception hException) {
+			// TODO Auto-generated catch block
+			hException.getCause().printStackTrace();
+		}
 	}
 }
