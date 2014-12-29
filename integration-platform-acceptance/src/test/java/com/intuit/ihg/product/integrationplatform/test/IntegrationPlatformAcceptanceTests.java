@@ -29,6 +29,8 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.FormExport;
+import com.intuit.ihg.product.integrationplatform.utils.Payment;
+import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription;
 import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
@@ -41,6 +43,7 @@ import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -1241,4 +1244,55 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			pMyPatientPage.clickLogout(driver);
 			
 		}
+	    
+	    
+	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testOnlineBillPayment() throws Exception {
+    	
+    	log("Test Case: testOnlineBillPayment");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+		Payment paymentData = new Payment();
+		PaymentTestData testcasesData = new PaymentTestData(paymentData);
+		Long timestamp=System.currentTimeMillis();
+		
+		log("URL: " + testcasesData.getUrl());
+		log("USER NAME: " + testcasesData.getUserName());
+		log("Password: " + testcasesData.getPassword());
+		
+
+		log("step 2: LogIn");
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testcasesData.getUrl());
+		MyPatientPage myPatientPage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
+
+		log("step 3: Verify for My Patient Page ");
+		PortalUtil.setPortalFrame(driver);
+		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
+
+		log("step 4: Click on Make Payment Link ");
+		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
+		
+		log("step 5: Set Make Payments Fields");
+		makePaymentPage.setMakePaymentFields();
+
+		log("step 6: Logout of Patient Portal");
+		myPatientPage.logout(driver);
+		
+		log("Step 7: Setup Oauth client 2.O"); 
+		RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
+		
+		log("Step 8: Getting messages since timestamp: " + timestamp);
+		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
+		
+		log("Step 9: Verify payment details");
+		RestUtils.isPaymentAppeared(testcasesData.getResponsePath());
+		
+		
+		
+		
+		
+		
+    }
 }

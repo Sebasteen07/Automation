@@ -115,4 +115,14 @@ public class IntegrationConstants {
 	public static final String GROUPNUMBER = "GroupNumber";
 	public static final String MEDFUSIONID = "MedfusionPatientId";
 	public static final String NName = "Name";
+	
+	public static final String PAYMENTTYPE = "PaymentType";
+	public static final String ACCOUNTNUMBER ="PatientAccountNumber";
+	public static final String PAYMENTSTATUS ="PaymentStatus";
+	public static final String AMOUNT ="AmountPaid";
+	public static final String PAYMENTINFO="PaymentInformation";
+	public static final String SUBMITTED="SUBMITTED";
+	public static final String CCTYPE="CCType";
+	public static final String LASTDIGITS="CCLast4Digits";
+	public static final String CONFIRMNUMBER="ConfirmationNumber";
 }
