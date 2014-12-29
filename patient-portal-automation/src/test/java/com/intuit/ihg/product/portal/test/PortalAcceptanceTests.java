@@ -946,7 +946,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
 		
 		log("step 22: Reply back to practice");
-		inboxPage = message.replyToMessage(null);
+		inboxPage = message.replyToMessage(null,null);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 		Thread.sleep(10000);
 		log("step 23: Logout of Patient Portal");
