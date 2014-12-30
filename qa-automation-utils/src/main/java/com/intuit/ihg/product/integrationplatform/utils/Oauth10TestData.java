@@ -2,7 +2,6 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.net.URL;
 
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.ExcelSheetReader;
 import com.intuit.ihg.common.utils.IHGUtil;
 
@@ -16,7 +15,6 @@ public class Oauth10TestData {
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
 		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		Log4jUtil.log("Url: " +url);
 		// reading the entire file
 		excelReader = new ExcelSheetReader(url.getFile());
 		// filtering the entire file
