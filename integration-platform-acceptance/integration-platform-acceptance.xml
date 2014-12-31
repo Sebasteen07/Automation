@@ -20,7 +20,7 @@
         		<include name="testE2EFormsExport" />
         		<include name="testE2EAppointmentRequest" />
         		<include name="testE2ERxPrescription" />
-        		<include name="testOnlineBillPayment />
+        		<include name="testOnlineBillPayment" />
       		</methods>
 	</classes>
 </test>
