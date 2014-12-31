@@ -43,7 +43,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMU2PullAPI1() throws Exception {
-		log("Test Case: Appointment/Rx/Ask A Staff/Secure Message/Consolidated CCD related events verification in Pull Events");
+		log("Test Case (MU2PullAPI1): Appointment/Rx/Ask A Staff/Secure Message/Consolidated CCD related events verification in Pull Events");
 	
 		log("Test case Environment: "+IHGUtil.getEnvironmentType());
 		log("Execution Browser: " +TestConfig.getBrowserType());
@@ -299,7 +299,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	}		 
 	  @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	  public void testMU2PullAPI2() throws Exception {
-		  log("Test Case: Secure Message related events verification in Pull Events");
+		  log("Test Case (testMU2PullAPI2): Secure Message related events verification in Pull Events");
 			
 			log("Test case Environment: "+IHGUtil.getEnvironmentType());
 			log("Execution Browser: " +TestConfig.getBrowserType());
@@ -373,7 +373,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	  
 	  @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testMU2PullAPI3() throws Exception {
-			log("Test Case: Non Consolidated CCD related events verification in Pull Events");
+			log("Test Case (testMU2PullAPI3): Non Consolidated CCD related events verification in Pull Events");
 		
 			log("Test case Environment: "+IHGUtil.getEnvironmentType());
 			log("Execution Browser: " +TestConfig.getBrowserType());

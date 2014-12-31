@@ -78,7 +78,7 @@ public class RestUtils {
         HttpGet httpGetReq = new HttpGet(strUrl);
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
         .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-        httpGetReq.addHeader("ExternalSystemId", "79");
+        //httpGetReq.addHeader("ExternalSystemId", "82");
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
         //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
@@ -350,8 +350,9 @@ public class RestUtils {
         httpPostReq.addHeader("Content-Type", "application/xml");
         httpPostReq.addHeader("Noun", "Encounter");
         httpPostReq.addHeader("Verb", "Completed");
+        //httpPostReq.addHeader("ExternalSystemId", "79");
         //GW CCD
-      /* httpPostReq.addHeader("ExternalSystemId", "82");  */
+       //httpPostReq.addHeader("ExternalSystemId", "82"); 
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
