@@ -387,23 +387,23 @@ public class CreateAccountPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
+/*		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
 
 		txtPatientFirstname.sendKeys(sPatientFirstName);
 		txtLastname.sendKeys(sPatientLastName);
 		IHGUtil.waitForElement(driver, 30, birthdayDay);
-		radioButtGender.click();
+		radioButtGender.click();*/
 		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
-		txtEmail.sendKeys(sEmail);
+		//txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
-		IHGUtil.waitForElement(driver, 30, txtActivationCode);
+		/*IHGUtil.waitForElement(driver, 30, txtActivationCode);
 		txtActivationCode.sendKeys(activationCode);
-		btnActivate.click();
+		btnActivate.click();*/
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);

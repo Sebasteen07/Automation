@@ -567,7 +567,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		boolean completed = false;
 		for (int i = 0; i < 7; i++) {
 			// wait 60 seconds so the message can be processed
-			Thread.sleep(60000);
+			Thread.sleep(120000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
@@ -606,10 +606,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		String activationUrl = patientPage.unlockLink();
 		log("Activation URL: "+activationUrl);
-		
-		String activationCode = patientPage.activationCode();
-		log("Activation Code: "+activationCode);
-		
+			
 		log("Step 10: Logout of Practice Portal");
 		pPracticeHomePage.logOut();
 		
@@ -617,12 +614,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Step 11: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), activationCode);
-
-		log("Step 12: Signing out of the Patient Portal");
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), null);
+		
+		log("Step 12: Assert Webelements in MyPatientPage");
+		assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
+		
+		log("Step 13: Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
 		
-		log("Step 13: Do a GET on PIDC Url to get registered patient");
+		log("Step 14: Do a GET on PIDC Url to get registered patient");
 		// get only patients from last day in epoch time to avoid transferring lot of data
 		Long since = timestamp / 1000L - 60 * 24;
 
@@ -630,7 +630,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
-		log("Step 14: Find the patient and check if he is registered");
+		log("Step 15: Find the patient and check if he is registered");
 		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,null);
 		}
 	

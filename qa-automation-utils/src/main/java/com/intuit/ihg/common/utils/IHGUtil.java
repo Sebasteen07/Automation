@@ -996,7 +996,7 @@ public class IHGUtil extends BasePageObject {
 
 	public static String getEstTiming(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("M/d/yyyy", Locale.ENGLISH);
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("EST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
