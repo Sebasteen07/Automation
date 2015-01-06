@@ -326,7 +326,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Executing Test
 		createPatientTest.createPatient(driver, testcasesData);
-
 	}
 
 	/**
@@ -1007,7 +1006,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		TestcasesData testcasesData = new TestcasesData(portal);
 
 		log("step 2: Clean the Gmail Inbox");
-		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(), PortalConstants.PORTAL_TITLE.trim());
+		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),
+				PortalConstants.PORTAL_TITLE.trim());
 		PortalUtil pPortalUtil = new PortalUtil(driver);
 		pPortalUtil.emailMessageRemover(testcasesData.getUsername(), testcasesData.getPassword(), sSubject);
 
