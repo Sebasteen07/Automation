@@ -79,12 +79,17 @@ public class MakePaymentPage extends BasePageObject {
 	 * @Description:Set Make Payment Fields
 	 */
 	
-	public void setMakePaymentFields()
+	public void setMakePaymentFields(String accountNumber)
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		patientAccountNumber.clear();
-		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);
+		if(accountNumber!=null)
+		{
+		patientAccountNumber.sendKeys(accountNumber);	
+		}
+		else{
+		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);}
 		paymentAmount.clear();
 		paymentAmount.sendKeys(PortalConstants.PaymentAmount);
 		try

@@ -59,8 +59,34 @@ public class PaymentTestData {
 	
 	public String getOAuthPassword(){
 		return paymentObj.OAuthPassword;
+	}
+	
+	public String getFrom(){
+		return paymentObj.From;
 	}	
 	
-
+	public String getcommunicationXML(){
+		return paymentObj.communicationXML;
+	}
+	
+	public String getPaymentPath(){
+		return paymentObj.PaymentPath;
+	}
+	
+	public String getCommRestUrl(){
+		return paymentObj.CommRestUrl;
+	}
+	
+	public String getPracticeURL(){
+		return paymentObj.PracticeURL;
+	}
+	
+	public String getPracticeUserName(){
+		return paymentObj.PracticeUserName;
+	}
+	
+	public String getPracticePassword(){
+		return paymentObj.PracticePassword;
+	}
 	
 }

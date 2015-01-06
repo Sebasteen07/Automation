@@ -12,5 +12,11 @@ public class Payment {
 	public String OAuthAppToken ="";
 	public String OAuthUsername ="";
 	public String OAuthPassword ="";
-	
+	public String From ="";
+	public String communicationXML ="";
+	public String CommRestUrl ="";
+	public String PaymentPath ="";
+	public String PracticeURL ="";
+	public String PracticeUserName ="";
+	public String PracticePassword ="";
 }

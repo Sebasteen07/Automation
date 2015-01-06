@@ -62,6 +62,7 @@ public class RestUtils {
 	public static String SigCodeAbbreviation;
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
+	public static String paymentID;
 	public static List<String> patientDatails=new ArrayList<String>(); 
 	/**
 	 * Performs OAuth Get Request and saves the resposse
@@ -368,8 +369,11 @@ public class RestUtils {
 		Log4jUtil.log("Response Code" +resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 		
-        Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
-        return h[0].getValue();
+		if(resp.containsHeader(IntegrationConstants.LOCATION_HEADER)){
+			Header[] h=resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+			}
+			return null;
     	}
 	
 	/**
@@ -807,7 +811,7 @@ public class RestUtils {
 		Node node=doc.getElementsByTagName(IntegrationConstants.PRESCRIPTION).item(0);
 		Element element=(Element) node;
 		//update appointment id,createdDateTime,updatedDateTime,message_thread_id
-		element.setAttribute(IntegrationConstants.PRESCRIPTION_ID, getPrescription_id);
+		element.setAttribute(IntegrationConstants.ID, getPrescription_id);
 		Node ncreatedDateTime=element.getElementsByTagName(IntegrationConstants.CREATED_TIME).item(0);
 		Node nupdatedDateTime=element.getElementsByTagName(IntegrationConstants.UPDATE_TIME).item(0);
 		ncreatedDateTime.setTextContent(getCreatedDateTime);
@@ -1303,27 +1307,34 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param responsePath
+	 * @return 
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public static void isPaymentAppeared(String responsePath) throws ParserConfigurationException, SAXException, IOException {
+	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String status) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsePath);
 
-		Log4jUtil.log("finding Payment ");
+		Log4jUtil.log("finding Payment by Account Number");
 		boolean found = false;
-		NodeList payments = doc.getElementsByTagName(IntegrationConstants.PAYMENTTYPE);
-		for(int i = 0; i < payments.getLength(); i++){
-			if(payments.item(i).getTextContent().equals("BillPayment")){
-				Log4jUtil.log("Searching: Bill Payment Type:" + "BillPayment" + ", and Actual Bill Payment Type is:" + payments.item(i).getTextContent().toString());
-				Element payment = (Element) payments.item(i).getParentNode();
-				Node accountNumber=payment.getElementsByTagName(IntegrationConstants.ACCOUNTNUMBER).item(0);
-				Log4jUtil.log("Searching: Patient Account Number:" + PortalConstants.PatientAccountNumber + ", and Actual Patient Account Number is:" + accountNumber.getTextContent().toString());
-				Assert.assertEquals(accountNumber.getTextContent(), PortalConstants.PatientAccountNumber, "Patient Account Number has different than expected. Type is: " + accountNumber.getTextContent());
+		NodeList accountNumber = doc.getElementsByTagName(IntegrationConstants.ACCOUNTNUMBER);
+		for(int i = 0; i < accountNumber.getLength(); i++){
+			if(accountNumber.item(i).getTextContent().equals(patientAccountNumber)){
+				Log4jUtil.log("Searching: Patient Account Number:" + patientAccountNumber + ", and Actual Patient Account Number is:" + accountNumber.item(i).getTextContent().toString());
+				Element payment = (Element) accountNumber.item(i).getParentNode();
+				Node paymentType=payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
+				Log4jUtil.log("Searching: Bill Payment Type:" + "BillPayment" + ", and Actual Bill Payment Type is:" + paymentType.getTextContent().toString());
+				Assert.assertEquals(paymentType.getTextContent(),"BillPayment", "Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
+				paymentType=paymentType.getParentNode();
+				if(paymentType.hasAttributes())
+				{
+					Attr attr=(Attr) paymentType.getAttributes().getNamedItem("id");
+					paymentID=attr.getValue();
+				}
 				Node paymentStatus=payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
-				Log4jUtil.log("Searching: Payment Status:" + IntegrationConstants.SUBMITTED + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
-				Assert.assertEquals(paymentStatus.getTextContent(), IntegrationConstants.SUBMITTED, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
+				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
+				Assert.assertEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
 				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele=(Element) cNode;
@@ -1343,7 +1354,29 @@ public class RestUtils {
 				
 				
 		}
-		Assert.assertTrue(found, "Payment Type Node was not found in the response XML");
+		Assert.assertTrue(found, "Payment Account Number Node was not found in the response XML");
+		
 		
 	}
+	
+ /**
+ * 
+ * @param xmlFile
+ * @param paymentID
+ * @return
+ * @throws ParserConfigurationException
+ * @throws SAXException
+ * @throws IOException
+ * @throws TransformerException
+ */
+	public static String preparePayment(String xmlFile,String paymentID) throws ParserConfigurationException, SAXException, IOException, TransformerException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc=buildDOMXML(xmlFile);
+		Node node=doc.getElementsByTagName(IntegrationConstants.PAYMENT).item(0);
+		Element element=(Element) node;
+		element.setAttribute(IntegrationConstants.ID, paymentID);
+		return domToString(doc);
+		
+	}	
 }

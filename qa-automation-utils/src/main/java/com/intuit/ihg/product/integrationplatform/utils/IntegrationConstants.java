@@ -63,7 +63,7 @@ public class IntegrationConstants {
 	
 	//New added variables for Post Prescription
 	public static final String PRESCRIPTION = "Prescription";
-	public static final String PRESCRIPTION_ID = "id";
+	public static final String ID = "id";
 	public static final String PRESCRIPTION_RENEWAL_REQUEST = "PrescriptionRenewalRequest";
 	public static final String REQUESTED_PROVIDER = "RequestedProvider";
 	public static final String REQUESTED_LOCATION = "RequestedLocation";
@@ -122,7 +122,10 @@ public class IntegrationConstants {
 	public static final String AMOUNT ="AmountPaid";
 	public static final String PAYMENTINFO="PaymentInformation";
 	public static final String SUBMITTED="SUBMITTED";
+	public static final String ACCEPTED="ACCEPTED";
 	public static final String CCTYPE="CCType";
 	public static final String LASTDIGITS="CCLast4Digits";
 	public static final String CONFIRMNUMBER="ConfirmationNumber";
+	public static final String PAYMENT="Payment";
 }
+

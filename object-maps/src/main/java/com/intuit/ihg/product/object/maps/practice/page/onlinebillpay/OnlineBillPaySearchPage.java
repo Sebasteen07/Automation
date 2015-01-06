@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.object.maps.practice.page.onlinebillpay;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -55,6 +57,12 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 	@FindBy( xpath = ".//a[contains(@href, 'paymybill.patsearch_wicket')]")
 	private WebElement patientSearchLink;
 
+	@FindBy( xpath = ".//tbody/tr[1]/td[9]/span/span")
+	private WebElement post;
+	
+	@FindBy( name ="searchParams:1:input")
+	private List<WebElement> status;
+	
 	private long createdTs;
 	
 	public long getCreatedTs() {
@@ -155,5 +163,50 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 		patientSearchLink.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
+	
+	
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getBillDetails() throws Exception {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		try {
+			searchResults.isDisplayed();
+		} catch (Exception e) {
+			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
+		}
+		//Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
+		Thread.sleep(10000);
+		String title=post.getAttribute("title").toString();
+		return title;
+
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 * @throws Exception
+	 */
+	public OnlineBillPayDetailPage searchForBillStatus(int value)  throws Exception{
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		for(WebElement pstatus : status)
+			{
+				if(Integer.parseInt(pstatus.getAttribute("value"))==value)
+				{
+					pstatus.click();
+				}
+			}
+		
+		return PageFactory.initElements(driver, OnlineBillPayDetailPage.class);
+	}
+	
 
 }
