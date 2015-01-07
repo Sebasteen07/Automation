@@ -1342,7 +1342,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
 
 		log("step 5: Set Make Payments Fields");
-		makePaymentPage.setMakePaymentFields();
+		makePaymentPage.setMakePaymentFields(null);
 
 		log("step 6: Logout of Patient Portal");
 		myPatientPage.logout(driver);
