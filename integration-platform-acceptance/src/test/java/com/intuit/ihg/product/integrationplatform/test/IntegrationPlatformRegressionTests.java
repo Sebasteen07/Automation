@@ -620,4 +620,44 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			
 		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientDemographicsUpdate() throws Exception{
+			log("Test Case: PIDC Patient Update for Race, Ethnicity, Language, Preferred Communication and Marital Status all the values");
+			PIDCTestData testData = loadDataFromExcel();
+			 
+			Long timestamp = System.currentTimeMillis();
+			log("Step 2: LogIn");
+			PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
+			MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
+
+			log("Step 3: Click on myaccountLink on MyPatientPage");
+			MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+			
+			String dropValues[]={"Race","Ethnicity","Language","Marital_Status","Communication_Method"};
+			for(int k=0;k<dropValues.length;k++)
+			{
+			log("Updating Values of '" + dropValues[k] +"' field");
+			int count=pMyAccountPage.countDropDownValue(dropValues[k].charAt(0));
+			
+			log("Total number of values in '"+ dropValues[k] +"' field drop-down:"+count);
+			
+			for(int i=0;i<count;i++)
+			{
+				String updatedValue=pMyAccountPage.updateDropDownValue(i,dropValues[k].charAt(0));
+				log("Updated Value :"+updatedValue);
+				Long since = timestamp / 1000L - 60 * 24;
+
+				RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+				
+				RestUtils.validateNode(testData.getResponsePath(), updatedValue,dropValues[k].charAt(0),testData.getUserName());
+				
+			}
+			}	
+			pMyPatientPage.logout(driver);
+				
+			
+			
+			
+		}
 }

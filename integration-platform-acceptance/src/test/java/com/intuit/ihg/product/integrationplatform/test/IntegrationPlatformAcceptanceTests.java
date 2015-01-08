@@ -1333,10 +1333,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY,null);
 		
 		log("Step 16: Wait 60 seconds, so the message can be processed");
-		Thread.sleep(60000);  
+		Thread.sleep(60000);
+		
+		Long since = timestamp / 1000L - 60 * 24;
 		
 		log("Step 17: Do a GET AMDC and verify patient reply in Get AMDC response");
-		RestUtils.setupHttpGetRequest(testcasesData.getCommRestUrl() + "?since=" + "1420435465" + ",0", testcasesData.getResponsePath());
+		RestUtils.setupHttpGetRequest(testcasesData.getCommRestUrl() + "?since=" + since + ",0", testcasesData.getResponsePath());
 		
 		log("Step 18: Validate message reply");
 		RestUtils.isReplyPresent(testcasesData.getResponsePath(), reply_Subject);

@@ -1325,7 +1325,7 @@ public class RestUtils {
 				Element payment = (Element) accountNumber.item(i).getParentNode();
 				Node paymentType=payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
 				Log4jUtil.log("Searching: Bill Payment Type:" + "BillPayment" + ", and Actual Bill Payment Type is:" + paymentType.getTextContent().toString());
-				Assert.assertEquals(paymentType.getTextContent(),"BillPayment", "Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
+				BaseTestSoftAssert.verifyEquals(paymentType.getTextContent(),"BillPayment", "Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
 				paymentType=paymentType.getParentNode();
 				if(paymentType.hasAttributes())
 				{
@@ -1334,7 +1334,7 @@ public class RestUtils {
 				}
 				Node paymentStatus=payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
 				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
-				Assert.assertEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
+				BaseTestSoftAssert.verifyEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
 				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele=(Element) cNode;
@@ -1379,4 +1379,80 @@ public class RestUtils {
 		return domToString(doc);
 		
 	}	
+	
+	/**
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * 
+	 */
+	public static void validateNode(String xmlFileName,String value,char nodeName, String patientID) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		boolean found = false;
+		Document doc=buildDOMXML(xmlFileName);
+		NodeList patient=doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		for(int i=0;i < patient.getLength();i++){
+		if(patient.item(i).getTextContent().equalsIgnoreCase(patientID))
+		{
+			Element ele = (Element) patient.item(i).getParentNode().getParentNode();
+			Node node=null;
+			switch (nodeName) 
+				{
+				case 'R':
+					node=ele.getElementsByTagName(IntegrationConstants.RACE).item(0);
+					break;
+				case 'E':
+					node=ele.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
+					break;
+				case 'L':
+					node=ele.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE).item(0);
+					break;
+				case 'M':
+					node=ele.getElementsByTagName(IntegrationConstants.MARRITALSTATUS).item(0);
+					break;
+				case 'C':
+					node=ele.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+					break;
+				default:
+					break;
+				}
+				if(node==null)
+				{
+					BaseTestSoftAssert.verifyTrue(found, "Node Not Found");
+					break;
+				}
+				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent());
+				BaseTestSoftAssert.verifyTrue(node.getTextContent().equalsIgnoreCase(value), "Value mismatched");
+				
+				found = true;
+				break;
+			}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
+		}
+		
+			
+	}
+	public static void setupHttpGetRequestExceptOauth(String strUrl, String responseFilePath) throws IOException, URISyntaxException{
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+        Log4jUtil.log("Post Request Url: "+ strUrl);
+        
+        HttpGet httpGetReq = new HttpGet(strUrl);
+        httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        httpGetReq.setURI(new URI(strUrl));
+        httpGetReq.addHeader("Authentication-Type", "2wayssl");
+        httpGetReq.addHeader("Content-Type", "application/xml");
+        HttpResponse resp = client.execute(httpGetReq);
+        HttpEntity entity = resp.getEntity();
+        String sResp = EntityUtils.toString(entity);
+        
+        Log4jUtil.log("Check for http 200 response");
+		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+
+		writeFile(responseFilePath, sResp);
+		       
+   	}
 }
