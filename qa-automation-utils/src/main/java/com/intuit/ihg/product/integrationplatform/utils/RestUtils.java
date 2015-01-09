@@ -1428,9 +1428,9 @@ public class RestUtils {
 				found = true;
 				break;
 			}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
-		}
 		
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
 			
 	}
 	public static void setupHttpGetRequestExceptOauth(String strUrl, String responseFilePath) throws IOException, URISyntaxException{
