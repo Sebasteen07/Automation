@@ -420,10 +420,10 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
-		for(int i=0;i <= nodes.getLength() ;i++)
+		for(int i=0;i < nodes.getLength() ;i++)
 		{
-			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
-					"There should be 1 State element in processing status response");
+			Assert.assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"Processing Status is failed for No '"+ i +"' message");
 		}
 		return true;
 	}
@@ -1420,6 +1420,7 @@ public class RestUtils {
 				if(node==null)
 				{
 					BaseTestSoftAssert.verifyTrue(found, "Node Not Found");
+					found = true;
 					break;
 				}
 				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent());
