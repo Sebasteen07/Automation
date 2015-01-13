@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:AdministrativeMessages xmlns:p="http://schema.intuit.com/health/admin/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.intuit.com/health/admin/v1 AdministrativeMessages.xsd">
+   <Sender deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+      <DeviceArguments>
+         <KeyValuePair>
+            <Key>Key</Key>
+            <Value>value</Value>
+         </KeyValuePair>
+      </DeviceArguments>
+   </Sender>
+   <Partner deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+      <DeviceArguments>
+         <KeyValuePair>
+            <Key>Key</Key>
+            <Value>value</Value>
+         </KeyValuePair>
+      </DeviceArguments>
+   </Partner>
+   <Destination deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+      <DeviceArguments>
+         <KeyValuePair>
+            <Key>Key</Key>
+            <Value>value</Value>
+         </KeyValuePair>
+      </DeviceArguments>
+   </Destination>
+   <SecureMessage messageId="99920871-1921-2221-1948-23422015">
+      <From></From>
+      <To></To>
+      <Subject></Subject>
+      <!--MessageThreadId>b3627299-a937-4615-b9cb-5b3b96d45d87</MessageThreadId-->
+      <AllowReply>true</AllowReply>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 1st patient</Message>
+   </SecureMessage>
+   <SecureMessage messageId="99920871-1921-2259-1997-23422016">
+      <From></From>
+      <To></To>
+      <Subject></Subject>
+      <MessageThreadId>a5a9b689-2e1c-4794-a3ea-a55826276d00</MessageThreadId>
+      <AllowReply>true</AllowReply>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 2nd patient </Message>
+   </SecureMessage>
+   <SecureMessage messageId="99920871-8821-2221-1997-23422017">
+      <From></From>
+      <To></To>
+      <Subject></Subject>
+      <!--MessageThreadId>b3627299-a937-4615-b9cb-5b3b96d45d87</MessageThreadId-->
+      <AllowReply>true</AllowReply>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 1st patient</Message>
+   </SecureMessage>
+</p:AdministrativeMessages>
