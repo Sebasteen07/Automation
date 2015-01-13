@@ -32,5 +32,5 @@ public class GW {
 	public String practiceUserName="";
 	public String practicePassword="";
 	public String CCDPath="";
-	
+	public String ExternalSystemID="";
 }

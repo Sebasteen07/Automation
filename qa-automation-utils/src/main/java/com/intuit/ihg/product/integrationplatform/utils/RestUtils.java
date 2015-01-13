@@ -955,7 +955,7 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws URISyntaxException 
 	 */
-	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath) throws IOException, URISyntaxException{
+	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath,String externalSystemID) throws IOException, URISyntaxException{
 		IHGUtil.PrintMethodName();
     	
 		HttpClient client = new DefaultHttpClient();
@@ -970,7 +970,7 @@ public class RestUtils {
         request.setHeader("Verb", "Completed");
         request.addHeader("Authentication-Type", "2wayssl");
         request.addHeader("Content-Type", "application/xml");
-        request.setHeader("ExternalSystemId", "82");
+        request.setHeader("ExternalSystemId", externalSystemID);
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse response = client.execute(request);
         String sResp = EntityUtils.toString(response.getEntity());
@@ -1456,4 +1456,47 @@ public class RestUtils {
 		writeFile(responseFilePath, sResp);
 		       
    	}
+	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param from
+	 * @param to
+	 * @param subject
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static String generateBatchAMDC(String xmlFileName, List newdata) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		NodeList pnode=doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE);
+		for(int i=0;i < pnode.getLength();i++)
+		{
+			Node node = doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE).item(i);
+			Element elem = (Element) node;
+			//set random message id
+			elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + fourDigitRandom());
+			Node fromNode = doc.getElementsByTagName(IntegrationConstants.FROM).item(i);
+			fromNode.setTextContent(newdata.get(0).toString());
+			testData(fromNode.getTextContent());
+			Node toNode = doc.getElementsByTagName(IntegrationConstants.TO).item(i);
+			toNode.setTextContent(newdata.get(1).toString());
+			testData(toNode.getTextContent());
+			Node subjectNode = doc.getElementsByTagName(IntegrationConstants.SUBJECT).item(i);
+			subjectNode.setTextContent(newdata.get(2).toString());
+			testData(subjectNode.getTextContent());
+			Node messageNode = doc.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(i);
+			messageNode.setTextContent(newdata.get(3).toString());
+			testData(messageNode.getTextContent());
+			for(int k=0;k<4;k++)
+			{
+				newdata.remove(0);
+			}
+		}
+		return domToString(doc);
+	}
 }

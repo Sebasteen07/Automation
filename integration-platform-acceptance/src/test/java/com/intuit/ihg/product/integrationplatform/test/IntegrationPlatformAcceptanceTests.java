@@ -1037,7 +1037,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			String ccd = RestUtils.fileToString(testData.getCCDPath());
 			
 			log("Step 2: Do Message Post Request");
-			RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());	
+			RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath(),null);	
 			
 			log("Step 3: verify transport status in response xml");
 			boolean completed = false;

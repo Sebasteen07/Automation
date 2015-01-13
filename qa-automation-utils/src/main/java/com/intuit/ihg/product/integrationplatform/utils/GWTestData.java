@@ -150,5 +150,9 @@ public class GWTestData {
 	public String getCCDPath() {
 		return GWObj.CCDPath;
 	}
+	
+	public String getExternalSystemID() {
+		return GWObj.ExternalSystemID;
+	}
 
 }
