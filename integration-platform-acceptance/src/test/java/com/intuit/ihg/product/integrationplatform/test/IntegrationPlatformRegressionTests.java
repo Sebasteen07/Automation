@@ -647,7 +647,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			{
 				String updatedValue=pMyAccountPage.updateDropDownValue(i,dropValues[k].charAt(0));
 				log("Updated Value :"+updatedValue);
-				Thread.sleep(30000);
+				Thread.sleep(60000);
 				Long since = timestamp / 1000L - 60 * 24;
 				
 				if(!updatedValue.equalsIgnoreCase("Choose One")){
