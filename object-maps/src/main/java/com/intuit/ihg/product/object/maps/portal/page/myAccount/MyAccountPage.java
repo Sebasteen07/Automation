@@ -348,4 +348,80 @@ public class MyAccountPage extends BasePageObject {
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 		
 	}
+	/**Count the no of values of the drop down
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public int countDropDownValue(char key)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		Select select = null;
+		int size = 0;
+		switch (key) {
+		case 'R':
+			select=new Select(raceDropDown);
+			break;
+		case 'E':
+			select=new Select(ethnicityDropDown);
+			break;
+		case 'L':
+			select=new Select(preferredLanguageDropDown);
+			break;
+		case 'M':
+			select=new Select(maritalStatusDropDown);
+			break;
+		case 'C':
+		    select=new Select(chooseCommunicationDropDrown);
+		    break;
+		default:
+			break;
+		}
+		List<WebElement> element=select.getOptions();
+		size=element.size();
+		
+		return size;
+		
+	}
+	/**
+	 * Update the values of dropdown
+	 * @param i
+	 * @param key
+	 * @return
+	 */
+	public String updateDropDownValue(int i,char key)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		Select select = null;
+		String changeValue=null;
+		switch (key) {
+		case 'R':
+			select=new Select(raceDropDown);
+			break;
+		case 'E':
+			select=new Select(ethnicityDropDown);
+			break;
+		case 'L':
+			select=new Select(preferredLanguageDropDown);
+			break;	
+		case 'M':
+			select=new Select(maritalStatusDropDown);
+			break;	
+		case 'C':
+			select=new Select(chooseCommunicationDropDrown);
+			break;	
+		default:
+			
+			break;
+		}
+		select.selectByIndex(i);
+		WebElement option=select.getFirstSelectedOption();
+		changeValue = option.getText();
+		btnSubmit.click();
+		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+		return changeValue;
+	}
+	
 }

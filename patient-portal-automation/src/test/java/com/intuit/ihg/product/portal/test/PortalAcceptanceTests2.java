@@ -82,7 +82,6 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBillPaymentEnd2End() throws Exception {
 
@@ -110,7 +109,7 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
 
 		log("step 5: Set Make Payments Fields");
-		makePaymentPage.setMakePaymentFields();
+		makePaymentPage.setMakePaymentFields(null);
 
 		log("step 6: Logout of Patient Portal");
 		myPatientPage.logout(driver);
@@ -401,7 +400,7 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 						+ uniquePracticeResponse + "but actual subject was [" + actualSubject + "]");
 
 		log("step 22: Reply back to practice");
-		inboxPage = message.replyToMessage(null);
+		inboxPage = message.replyToMessage(null,null);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 		Thread.sleep(10000);
 		log("step 23: Logout of Patient Portal");

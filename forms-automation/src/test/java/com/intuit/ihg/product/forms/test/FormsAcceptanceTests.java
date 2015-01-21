@@ -101,7 +101,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
         MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
 
-        log("Go to forms page and open the \"" + formIdentifier +"\" form");
+        log("Go to forms page and open the \"" + formIdentifier + "\" form");
         HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
         formPage.openDiscreteForm(formIdentifier);
         return pMyPatientPage;

@@ -65,6 +65,18 @@ public class MessagePage extends BasePageObject {
 	
 	@FindBy(xpath = "//span[@fieldid='instructions']")
 	private WebElement sigCodeInstructions;
+	
+	@FindBy(xpath = "//input[@type='file']")
+	private WebElement browseButton;
+	
+	@FindBy(xpath = "//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[3]/div[2]")
+	private WebElement lableTo;
+	
+	@FindBy(xpath = "//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[2]/div[2]")
+	private WebElement lableFrom;
+	
+	@FindBy(css = "div.commMessageText")
+	private WebElement txtMessage;
 		
 	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
 			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
@@ -96,8 +108,9 @@ public class MessagePage extends BasePageObject {
 	 * Will reply to a message using the current message subject, and adding the supplied text for the message body.
 	 * @param body the text for the body of the message
 	 * @return the consolidated inbox
+	 * 
 	 */
-	public MessageCenterInboxPage replyToMessage(String body) {
+	public MessageCenterInboxPage replyToMessage(String body,String fileName) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		
@@ -106,6 +119,10 @@ public class MessagePage extends BasePageObject {
 			body = REPLY_TEXT;
 		}
 		replyBody.sendKeys(body);
+		if(fileName!=null){
+		IHGUtil.waitForElement(driver, 120, browseButton);
+		browseButton.sendKeys(fileName);
+		}
 		btnSend.click();
 		
 		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
@@ -242,10 +259,46 @@ public class MessagePage extends BasePageObject {
 	
 	public String readSigCode(String sigCodeMeaning) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(240000);
+		Thread.sleep(120000);
 		PortalUtil.setFrame(driver, "iframebody");
 		IHGUtil.waitForElement(driver, 60, sigCodeInstructions);
 		log("Searching: SigCode Meaning is:" + sigCodeMeaning + ", and Actual SigCode Meaning is:" + sigCodeInstructions.getText().toString());
 		return sigCodeInstructions.getText().toString();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws InterruptedException 
+	 */
+	public String returnSenderName() throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		Thread.sleep(180000);
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lableFrom);
+		return lableFrom.getText().toString();	
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String returnRecipientName(){
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lableTo);
+		return lableTo.getText().toString();	
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String returnMessage(){
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, txtMessage);
+		return txtMessage.getText().toString();	
+	}
+	
 }

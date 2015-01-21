@@ -47,6 +47,7 @@ import org.xml.sax.SAXException;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
+import com.intuit.api.security.client.TokenManager;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -61,6 +62,7 @@ public class RestUtils {
 	public static String SigCodeAbbreviation;
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
+	public static String paymentID;
 	public static List<String> patientDatails=new ArrayList<String>(); 
 	/**
 	 * Performs OAuth Get Request and saves the resposse
@@ -77,7 +79,7 @@ public class RestUtils {
         HttpGet httpGetReq = new HttpGet(strUrl);
         httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
         .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-        httpGetReq.addHeader("ExternalSystemId", "79");
+        //httpGetReq.addHeader("ExternalSystemId", "82");
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
         //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
@@ -349,8 +351,9 @@ public class RestUtils {
         httpPostReq.addHeader("Content-Type", "application/xml");
         httpPostReq.addHeader("Noun", "Encounter");
         httpPostReq.addHeader("Verb", "Completed");
+        //httpPostReq.addHeader("ExternalSystemId", "79");
         //GW CCD
-      /* httpPostReq.addHeader("ExternalSystemId", "82");  */
+       //httpPostReq.addHeader("ExternalSystemId", "82"); 
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
@@ -366,8 +369,11 @@ public class RestUtils {
 		Log4jUtil.log("Response Code" +resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 		
-        Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
-        return h[0].getValue();
+		if(resp.containsHeader(IntegrationConstants.LOCATION_HEADER)){
+			Header[] h=resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+			}
+			return null;
     	}
 	
 	/**
@@ -414,10 +420,10 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
-		for(int i=0;i <= nodes.getLength() ;i++)
+		for(int i=0;i < nodes.getLength() ;i++)
 		{
-			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
-					"There should be 1 State element in processing status response");
+			Assert.assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"Processing Status is failed for No '"+ i +"' message");
 		}
 		return true;
 	}
@@ -805,7 +811,7 @@ public class RestUtils {
 		Node node=doc.getElementsByTagName(IntegrationConstants.PRESCRIPTION).item(0);
 		Element element=(Element) node;
 		//update appointment id,createdDateTime,updatedDateTime,message_thread_id
-		element.setAttribute(IntegrationConstants.PRESCRIPTION_ID, getPrescription_id);
+		element.setAttribute(IntegrationConstants.ID, getPrescription_id);
 		Node ncreatedDateTime=element.getElementsByTagName(IntegrationConstants.CREATED_TIME).item(0);
 		Node nupdatedDateTime=element.getElementsByTagName(IntegrationConstants.UPDATE_TIME).item(0);
 		ncreatedDateTime.setTextContent(getCreatedDateTime);
@@ -949,7 +955,7 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws URISyntaxException 
 	 */
-	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath) throws IOException, URISyntaxException{
+	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath,String externalSystemID) throws IOException, URISyntaxException{
 		IHGUtil.PrintMethodName();
     	
 		HttpClient client = new DefaultHttpClient();
@@ -964,7 +970,7 @@ public class RestUtils {
         request.setHeader("Verb", "Completed");
         request.addHeader("Authentication-Type", "2wayssl");
         request.addHeader("Content-Type", "application/xml");
-        request.setHeader("ExternalSystemId", "82");
+        request.setHeader("ExternalSystemId", externalSystemID);
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse response = client.execute(request);
         String sResp = EntityUtils.toString(response.getEntity());
@@ -1280,5 +1286,217 @@ public class RestUtils {
 	 */
 	public static void testData(String data) {
 		patientDatails.add(data);
+	}
+
+	public static void oauthSetup1O(String oAuthKeyStore, String oAuthProperty,
+			String oAuthAppToken, String oAuthUsername, String oAuthPassword) throws IOException {
+		// TODO Auto-generated method stub
+		emptyFile(oAuthKeyStore);		
+		OAuthPropertyManager.init(oAuthProperty);
+		System.out.println("appToken: " +oAuthAppToken);
+		System.out.println("username: " +oAuthUsername);
+		System.out.println("password: " +oAuthPassword);
+		try {
+			TokenManager.initializeTokenStore(oAuthAppToken, oAuthUsername, oAuthPassword);
+		} catch (Exception hException) {
+			// TODO Auto-generated catch block
+			hException.getCause().printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param responsePath
+	 * @return 
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String status) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
+
+		Log4jUtil.log("finding Payment by Account Number");
+		boolean found = false;
+		NodeList accountNumber = doc.getElementsByTagName(IntegrationConstants.ACCOUNTNUMBER);
+		for(int i = 0; i < accountNumber.getLength(); i++){
+			if(accountNumber.item(i).getTextContent().equals(patientAccountNumber)){
+				Log4jUtil.log("Searching: Patient Account Number:" + patientAccountNumber + ", and Actual Patient Account Number is:" + accountNumber.item(i).getTextContent().toString());
+				Element payment = (Element) accountNumber.item(i).getParentNode();
+				Node paymentType=payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
+				Log4jUtil.log("Searching: Bill Payment Type:" + "BillPayment" + ", and Actual Bill Payment Type is:" + paymentType.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(paymentType.getTextContent(),"BillPayment", "Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
+				paymentType=paymentType.getParentNode();
+				if(paymentType.hasAttributes())
+				{
+					Attr attr=(Attr) paymentType.getAttributes().getNamedItem("id");
+					paymentID=attr.getValue();
+				}
+				Node paymentStatus=payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
+				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
+				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
+				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
+				Element ele=(Element) cNode;
+				Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
+				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), "100.00", "Payment has different amount than expected. Amount is: " + amount.getTextContent());
+				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
+				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), "1111", "Payment has different last digit than expected. Amount is: " + digits.getTextContent());
+				/*Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
+				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa/Mastercard/American Express/Discover", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
+				Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
+				*/
+				found = true ;
+			    break;
+				}
+				
+				
+				
+		}
+		Assert.assertTrue(found, "Payment Account Number Node was not found in the response XML");
+		
+		
+	}
+	
+ /**
+ * 
+ * @param xmlFile
+ * @param paymentID
+ * @return
+ * @throws ParserConfigurationException
+ * @throws SAXException
+ * @throws IOException
+ * @throws TransformerException
+ */
+	public static String preparePayment(String xmlFile,String paymentID) throws ParserConfigurationException, SAXException, IOException, TransformerException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc=buildDOMXML(xmlFile);
+		Node node=doc.getElementsByTagName(IntegrationConstants.PAYMENT).item(0);
+		Element element=(Element) node;
+		element.setAttribute(IntegrationConstants.ID, paymentID);
+		return domToString(doc);
+		
+	}	
+	
+	/**
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * 
+	 */
+	public static void validateNode(String xmlFileName,String value,char nodeName, String patientID) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		boolean found = false;
+		Document doc=buildDOMXML(xmlFileName);
+		NodeList patient=doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		for(int i=0;i < patient.getLength();i++){
+		if(patient.item(i).getTextContent().equalsIgnoreCase(patientID))
+		{
+			Element ele = (Element) patient.item(i).getParentNode().getParentNode();
+			Node node=null;
+			switch (nodeName) 
+				{
+				case 'R':
+					node=ele.getElementsByTagName(IntegrationConstants.RACE).item(0);
+					break;
+				case 'E':
+					node=ele.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
+					break;
+				case 'L':
+					node=ele.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE).item(0);
+					break;
+				case 'M':
+					node=ele.getElementsByTagName(IntegrationConstants.MARRITALSTATUS).item(0);
+					break;
+				case 'C':
+					node=ele.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+					break;
+				default:
+					break;
+				}
+				if(node==null)
+				{
+					BaseTestSoftAssert.verifyTrue(found, "Node Not Found");
+					found = true;
+					break;
+				}
+				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent());
+				BaseTestSoftAssert.verifyTrue(node.getTextContent().equalsIgnoreCase(value), "Value mismatched");
+				
+				found = true;
+				break;
+			}
+		
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
+			
+	}
+	public static void setupHttpGetRequestExceptOauth(String strUrl, String responseFilePath) throws IOException, URISyntaxException{
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+        Log4jUtil.log("Post Request Url: "+ strUrl);
+        
+        HttpGet httpGetReq = new HttpGet(strUrl);
+        httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        httpGetReq.setURI(new URI(strUrl));
+        httpGetReq.addHeader("Authentication-Type", "2wayssl");
+        httpGetReq.addHeader("Content-Type", "application/xml");
+        HttpResponse resp = client.execute(httpGetReq);
+        HttpEntity entity = resp.getEntity();
+        String sResp = EntityUtils.toString(entity);
+        
+        Log4jUtil.log("Check for http 200 response");
+		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+
+		writeFile(responseFilePath, sResp);
+		       
+   	}
+	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param from
+	 * @param to
+	 * @param subject
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static String generateBatchAMDC(String xmlFileName, List newdata) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		NodeList pnode=doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE);
+		for(int i=0;i < pnode.getLength();i++)
+		{
+			Node node = doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE).item(i);
+			Element elem = (Element) node;
+			//set random message id
+			elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + fourDigitRandom());
+			Node fromNode = doc.getElementsByTagName(IntegrationConstants.FROM).item(i);
+			fromNode.setTextContent(newdata.get(0).toString());
+			testData(fromNode.getTextContent());
+			Node toNode = doc.getElementsByTagName(IntegrationConstants.TO).item(i);
+			toNode.setTextContent(newdata.get(1).toString());
+			testData(toNode.getTextContent());
+			Node subjectNode = doc.getElementsByTagName(IntegrationConstants.SUBJECT).item(i);
+			subjectNode.setTextContent(newdata.get(2).toString());
+			testData(subjectNode.getTextContent());
+			Node messageNode = doc.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(i);
+			messageNode.setTextContent(newdata.get(3).toString());
+			testData(messageNode.getTextContent());
+			for(int k=0;k<4;k++)
+			{
+				newdata.remove(0);
+			}
+		}
+		return domToString(doc);
 	}
 }

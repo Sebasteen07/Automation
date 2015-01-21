@@ -326,7 +326,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Executing Test
 		createPatientTest.createPatient(driver, testcasesData);
-
 	}
 
 	/**
@@ -946,7 +945,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
 		
 		log("step 22: Reply back to practice");
-		inboxPage = message.replyToMessage(null);
+		inboxPage = message.replyToMessage(null,null);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 		Thread.sleep(10000);
 		log("step 23: Logout of Patient Portal");
@@ -1007,7 +1006,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		TestcasesData testcasesData = new TestcasesData(portal);
 
 		log("step 2: Clean the Gmail Inbox");
-		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(), PortalConstants.PORTAL_TITLE.trim());
+		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),
+				PortalConstants.PORTAL_TITLE.trim());
 		PortalUtil pPortalUtil = new PortalUtil(driver);
 		pPortalUtil.emailMessageRemover(testcasesData.getUsername(), testcasesData.getPassword(), sSubject);
 
@@ -1342,7 +1342,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
 
 		log("step 5: Set Make Payments Fields");
-		makePaymentPage.setMakePaymentFields();
+		makePaymentPage.setMakePaymentFields(null);
 
 		log("step 6: Logout of Patient Portal");
 		myPatientPage.logout(driver);

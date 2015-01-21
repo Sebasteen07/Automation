@@ -9,7 +9,7 @@
   </CcdMessageHeaders>
   <PatientDemographics xmlns="">
     <PatientIdentifier>
-      <PracticePatientId>1022496014</PracticePatientId>
+      <PracticePatientId>Oauth2.prod.patient</PracticePatientId>
     </PatientIdentifier>
     <Name>
       <Prefix>Mr</Prefix>
@@ -28,12 +28,12 @@
   </PatientDemographics>
   <PracticeInformation xmlns="">
     <PracticeIdentifier>
-      <PracticeId>9bb5135e-4ae9-44ad-b9ce-2a139fd69c87</PracticeId>
+      <PracticeId>23399eba-8227-4fa8-a47b-6b703ce51af5</PracticeId>
     </PracticeIdentifier>
     <PracticeName>Elekta</PracticeName>
     <Provider>
       <ProviderIdentifier>
-        <PracticeProviderId>ExtIDEventDoc1</PracticeProviderId>
+        <PracticeProviderId>3391682014</PracticeProviderId>
       </ProviderIdentifier>
     </Provider>
   </PracticeInformation>

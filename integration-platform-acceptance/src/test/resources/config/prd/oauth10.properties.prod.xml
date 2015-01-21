@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>    
+    
+<!--This is a sample config file that can be used for testing. The OAuth library uses the DCPropertyManager so these config values should be included in the containing application-->
+
+     <entry key="oauth.keystore.file.path">./src/test/resources/config/prd</entry>
+    <entry key="oauth.consumer.keysecret.url">https://integration.medfusion.net/v1/oauth1/oauthapplication</entry>
+    <entry key="oauth.token.access.userpass.url">https://integration.medfusion.net/v1/oauth1/token</entry>
+    
+   <entry key="resource.owner.baseurl">http://resource.owner.com</entry>	
+	<!--END: Client AND Service Filter Configuration-->
+
+    <entry key="log.level">DEBUG</entry> 
+
+    <entry key="ihg.host.patient">https://integration.medfusion.net</entry>
+    <entry key="ihg.host.amdc">https://integration.medfusion.net</entry>
+    <entry key="ihg.host.events">https://integration.medfusion.net</entry>
+    <entry key="ihg.host.ccd">https://integration.medfusion.net</entry>
+    <entry key="ihg.host.geccd">https://integration.medfusion.net</entry>
+    <entry key="ihg.host.appointments">https://integration.medfusion.net</entry>
+     
+    <!--  IntegrationPlatformPractice   -->
+    <entry key="ihg.practice.id">9bb5135e-4ae9-44ad-b9ce-2a139fd69c87</entry>
+    
+    <entry key="oauth.apptoken">qyprdAB0dCSTnWG4cEgYYcrg7Hzigs6muljYlE15</entry>
+    <entry key="oauth.username">79IHGQAAutomationMU2PullAPI23034</entry>
+    <entry key="oauth.password">eMt5KjJEYJqcTVIBoIOP</entry>
+    
+</properties>

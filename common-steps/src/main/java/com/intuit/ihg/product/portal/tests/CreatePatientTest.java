@@ -77,8 +77,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		PortalLoginPage loginpage = new PortalLoginPage(driver, url);
 		CreateAccountPage pCreateAccountPage = loginpage.signUp();
 
-		log("step 3: Fill detials in Create Account Page");
-		
+		log("step 3: Fill details in Create Account Page");
 		//Setting the variables for user in other tests
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
@@ -87,9 +86,9 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		log("email:-" + email);
 		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName,
 						lastName, email, testcasesData.getPhoneNumber(),
-						testcasesData.getZip(), testcasesData.getSSN(),
-						testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
-						testcasesData.getAnswer(), testcasesData.getAddressState(), testcasesData.getAddressCity());
+						testcasesData.getZip(), testcasesData.getAddress(), testcasesData.getPassword(),
+						testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getAddressState(),
+						testcasesData.getAddressCity());
 
 		log("step 4: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));

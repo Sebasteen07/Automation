@@ -291,7 +291,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			Thread.sleep(120000);
 			log("Step 16: Reply to the message");
-			msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY);
+			msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY,null);
 			
 			log("Step 17: Wait 60 seconds, so the message can be processed");
 			Thread.sleep(60000);  
@@ -321,6 +321,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("ExternalSystemID: " + testData.getExternalSystemID());
 			
 		
 		log("Step 2: Click Sign-UP");
@@ -384,7 +385,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		String ccd = RestUtils.prepareCCD(testData.getCCDPath(),ExternalID,patientID);
 		
 		log("Step 12: Do Message Post Request");
-		String processingUrl=RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath());
+		String processingUrl=RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath(),testData.getExternalSystemID());
 		log("Processing URl: "+processingUrl);
 		
 		/*log("Step 13: Setup Oauth client"); 
@@ -617,6 +618,137 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Step 11: Logout of Practice Portal");
 			pPracticeHomePage.logOut();
 			
+			
+			
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientDemographicsUpdate() throws Exception{
+			log("Test Case: PIDC Patient Update for Race, Ethnicity, Language, Preferred Communication and Marital Status all the values");
+			PIDCTestData testData = loadDataFromExcel();
+			 
+			Long timestamp = System.currentTimeMillis();
+			log("Step 2: LogIn");
+			PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
+			MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
+
+			log("Step 3: Click on myaccountLink on MyPatientPage");
+			MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+			
+			String dropValues[]={"Race","Ethnicity","Language","Marital_Status","Communication_Method"};
+			for(int k=0;k<dropValues.length;k++)
+			{
+			log("Updating Values of '" + dropValues[k] +"' field");
+			int count=pMyAccountPage.countDropDownValue(dropValues[k].charAt(0));
+			
+			log("Total number of values in '"+ dropValues[k] +"' field drop-down:"+count);
+			
+			for(int i=0;i<count;i++)
+			{
+				String updatedValue=pMyAccountPage.updateDropDownValue(i,dropValues[k].charAt(0));
+				log("Updated Value :"+updatedValue);
+				Thread.sleep(60000);
+				Long since = timestamp / 1000L - 60 * 24;
+				
+				if(!updatedValue.equalsIgnoreCase("Choose One")){
+				RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+				
+				RestUtils.validateNode(testData.getResponsePath(), updatedValue,dropValues[k].charAt(0),testData.getUserName());
+				}
+				
+			}
+			}	
+			pMyPatientPage.logout(driver);
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testAMDCBatch() throws Exception{
+			log("Test Case: Regression Test for Post AMDC (batch size of 3 secure messages)");
+			
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+			
+			log("Step 1: Get Data from Excel");
+			AMDC AMDCData = new AMDC();
+			AMDCTestData testData = new AMDCTestData(AMDCData);
+			
+			List<String> newData=new ArrayList<String>();
+			newData.add(testData.getFrom());
+			newData.add(testData.getUserName());
+			newData.add("Test"+IHGUtil.createRandomNumericString());
+			newData.add("This is auto-generated message"+IHGUtil.createRandomNumericString());
+			newData.add(testData.getFrom1());
+			newData.add(testData.getUserName1());
+			newData.add("Test"+IHGUtil.createRandomNumericString());
+			newData.add("This is auto-generated message"+IHGUtil.createRandomNumericString());
+			newData.add(testData.getIntegrationPracticeID());
+			newData.add(testData.getUserName2());
+			newData.add("Test"+IHGUtil.createRandomNumericString());
+			newData.add("This is auto-generated message"+IHGUtil.createRandomNumericString());
+			
+			List<String> senderData=new ArrayList<String>();
+			senderData.add(testData.getSender1());
+			senderData.add(testData.getSender2());
+			senderData.add(testData.getSender3());
+			
+			List<String> recipientData=new ArrayList<String>();
+			recipientData.add(testData.getPatientName1());
+			recipientData.add(testData.getPatientName2());
+			recipientData.add(testData.getPatientName3());
+			
+			log("Step 2: Generate POST AMDC payload with batch size 3");
+			String message = RestUtils.generateBatchAMDC(testData.getBatch_SecureMessage(), newData);
+			
+			List<String> valuedData=RestUtils.patientDatails;
+			
+			log("Step 3: POST AMDC with batch size 3");
+			String processingUrl = RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), message, testData.getResponsePath(),null);
+
+			log("Step 4: Get processing status until it is completed");
+			boolean completed = false;
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(120000);
+			RestUtils.setupHttpGetRequestExceptOauth(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				}
+			verifyTrue(completed, "Message processing was not completed in time");
+					
+			for(int j=0;j<3;j++){
+			log("Step 5: Login to Patient Portal");
+			PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
+			MyPatientPage myPatientPage = loginPage.login(valuedData.get(1), testData.getPassword());
+
+			log("Step 6: Go to Inbox");
+			MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
+			assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
+			log("Step 7: Find message in Inbox");
+			String messageIdentifier = valuedData.get(2).toString();
+			
+			log("Validate message loads and is the right message");
+			MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+			
+			log("Step 8: Validate message loads and is the right message");
+			assertTrue(msg.isSubjectLocated(messageIdentifier));
+			
+			log("Validate the Sender Name ");
+			verifyEquals(msg.returnSenderName(),senderData.get(j), "Sender name is differ than actual");
+			
+			log("Validate the Recipient Name ");
+			verifyEquals(msg.returnRecipientName(),recipientData.get(j), "Recipient name is differ than actual");
+						
+			log("Validate the Message content ");
+			verifyEquals(msg.returnMessage(),valuedData.get(3), "Message is differ than actual");				
+			
+			log("Step 9: Logout");
+			myPatientPage.logout(driver);
+			
+			for(int k=0;k<4;k++)
+			{
+				valuedData.remove(0);
+			}
+			}
 			
 			
 		}

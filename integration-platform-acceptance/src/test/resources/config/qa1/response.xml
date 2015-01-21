@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:Appointments xmlns:ns2="http://schema.intuit.com/health/admin/v1" xmlns:ns3="http://schema.intuit.com/health/prescriptions/v1" xmlns:ns4="http://schema.intuit.com/health/appointments/v1" xmlns:ns5="http://schema.intuit.com/health/readreceipts/v1">
+	<Sender vendorName="Intuit" deviceVersion="13.3" deviceName="IHG AdministrativeMessages"/>
+	<Appointment id="1a0bbbe0-2775-4fd1-a0dc-7d79dedb2521">
+		<Status>OPEN</Status>
+		<CreatedDateTime>2015-01-21T12:00:54.224Z</CreatedDateTime>
+		<UpdatedDateTime>2015-01-21T12:00:54.224Z</UpdatedDateTime>
+		<AppointmentRequest>
+			<From>Oauth2.qa1.patient</From>
+			<To>6329c98e-eaf0-44af-9a78-6815db150c88</To>
+			<RequestedProvider>Centricity1260</RequestedProvider>
+			<RequestedLocation>1111111</RequestedLocation>
+			<RequestedTimeframe>First Available</RequestedTimeframe>
+			<RequestedDaysOfWeek>Tuesday</RequestedDaysOfWeek>
+			<RequestedTimeOfDay>Morning</RequestedTimeOfDay>
+			<PatientPreference>Specific Provider</PatientPreference>
+			<Reason>Test 1421841603774</Reason>
+		</AppointmentRequest>
+		<Communication messageId="1a0bbbe0-2775-4fd1-a0dc-7d79dedb2521">
+			<From>Oauth2.qa1.patient</From>
+			<To>6329c98e-eaf0-44af-9a78-6815db150c88</To>
+			<Subject>Appointment Request</Subject>
+			<Sent>2015-01-21T12:00:54.224Z</Sent>
+			<MessageThreadId>1a0bbbe0-2775-4fd1-a0dc-7d79dedb2521</MessageThreadId>
+			<Message>Dear IHGQA Integration,&lt;br/&gt;&lt;br/&gt;I'm requesting an Appointment.&lt;br/&gt;&lt;br/&gt;Thanks,&lt;br&gt;IHGQA Automation</Message>
+		</Communication>
+	</Appointment>
+</ns4:Appointments>

@@ -10,7 +10,10 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,9 +37,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 
 	public class UtilityFunctions {
 		
-		
+		public static List<String> eventList=new ArrayList<String>();
 	/**
-	 * Sends HTTP Get request and writes response sinto response.xml	
+	 * Sends HTTP Get request and writes response into response.xml	
 	 * @param strUrl
 	 * @param xmlFilePath
 	 * @throws IOException
@@ -139,7 +142,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)&&getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID))
 			{
 			
-			ActionTimestamp=getValue(MU2Constants.ACTION_TIMESTAMP,element);
+			ActionTimestamp=getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP,element);
 			
 			break;
 			}
@@ -276,7 +279,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		
 		
 		/**
-		 * Generate Portal event time according to event time in Response 
+		 * Generate Portal event time [GMT to EST] 
 		 * @param actualTimeStamp
 		 * @throws ParseException 
 		 * 
@@ -284,16 +287,21 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		
 		public static String generateDate(String actualTimeStamp) throws ParseException{
 			
-			final long HOUR = 3600*1000;// in milli-seconds.
-		   	DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		   	Date now = FORMATTER.parse(actualTimeStamp);
-		   	long hours=now.getTime() - 4 * HOUR;
-		   	long expecteDate = Long.parseLong(Long.toString(hours));
-		    Date date = new Date(expecteDate);   	
-		  	DateFormat formatDate = new SimpleDateFormat("MM/dd/yyyy");
-		    DateFormat formatTime = new SimpleDateFormat("HH:mm");		  	
-		  	String joinedDate=new StringBuilder(formatDate.format(date).toString()).append(" at ").append(formatTime.format(date).toString()).toString();
+			long EventRecordedTimestamp = Long.parseLong(actualTimeStamp);
+			Date date = new Date(EventRecordedTimestamp);
+			DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			TimeZone estTime = TimeZone.getTimeZone("EST");
+			gmtFormat.setTimeZone(estTime);
+			String data[]=gmtFormat.format(date).split(" ");		  	
+			String joinedDate=new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
 			return joinedDate;
 		}
+		
+		public static List<String> eventList() {
+			eventList.add(MU2Constants.VIEW_ACTION);
+			eventList.add(MU2Constants.DOWNLOAD_ACTION);
+			eventList.add(MU2Constants.TRANSMIT_ACTION);
+			return eventList;
+		}  
 		
 }

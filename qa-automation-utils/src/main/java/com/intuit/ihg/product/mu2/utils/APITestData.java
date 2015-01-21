@@ -36,8 +36,10 @@ public class APITestData {
 	public String PORTAL_USERNAME ="";
 	public String PORTAL_PASSWORD ="";
 	public String INTUIT_PATIENT_ID ="";
-	public String TRANSMIT_EMAIL ="";	 
-	
+	public String TRANSMIT_EMAIL ="";
+	public String IMAGE_PATH="";
+	public String PORTAL_USERNAME2="";
+	public String PATIENT_ID="";
 }
 	
 

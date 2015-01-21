@@ -73,17 +73,23 @@ public class MakePaymentPage extends BasePageObject {
 	@FindBy(xpath = "//input[@name='wrapper:cardZip']")
     private WebElement billingaddressZipCode;
 	
-	
+	@FindBy(xpath = "//input[@class='button' and @value='Submit Payment']")
+    private WebElement clickOnSubmitbtn;
 	/**
 	 * @Description:Set Make Payment Fields
 	 */
 	
-	public void setMakePaymentFields()
+	public void setMakePaymentFields(String accountNumber)
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		patientAccountNumber.clear();
-		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);
+		if(accountNumber!=null)
+		{
+		patientAccountNumber.sendKeys(accountNumber);	
+		}
+		else{
+		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);}
 		paymentAmount.clear();
 		paymentAmount.sendKeys(PortalConstants.PaymentAmount);
 		try
@@ -121,8 +127,16 @@ public class MakePaymentPage extends BasePageObject {
 			billingaddressZipCode.sendKeys("94043");
 		}
 		clickContinuebtn.click();
+		//This is temporary fix for Dev3 and need to be made generic after element value change is available in Demo and Production after 15.1 deployment 
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
+		{
+			IHGUtil.waitForElement(driver,10,clickOnSubmitbtn);
+			clickOnSubmitbtn.click();
+		}
+		else{
 		IHGUtil.waitForElement(driver,10,clickSubmitbtn);
 		clickSubmitbtn.click();
+		}
 		IHGUtil.waitForElement(driver,10,paymentConfirmation);
 		BaseTestSoftAssert.verifyEquals(paymentConfirmation.getText(),PortalConstants.PaymentConfirmation);
 	}
