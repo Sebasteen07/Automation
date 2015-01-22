@@ -57,6 +57,9 @@ public class NoLoginPaymentPage extends BasePageObject{
 	@FindBy(name="buttonsField:_body:buttons:submit")
 	private WebElement btnSubmit;
 	
+	@FindBy(name="buttons:submit")
+	private WebElement btnsubmit;
+	
 	private String amountPrize;
 	
 	public NoLoginPaymentPage(WebDriver driver, String baseURL) {
@@ -102,8 +105,14 @@ public class NoLoginPaymentPage extends BasePageObject{
 		paymentComment.sendKeys("Payment");
 		}
 		emailField.sendKeys(email);
-		
-		btnSubmit.click();
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
+		{
+			btnsubmit.click();	
+		}
+		else
+		{
+		    btnSubmit.click();
+		}
 		
 	}
 	

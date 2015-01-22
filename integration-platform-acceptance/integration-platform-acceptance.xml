@@ -21,6 +21,8 @@
         		<include name="testE2EAppointmentRequest" />
         		<include name="testE2ERxPrescription" />
         		<include name="testOnlineBillPayment" />
+        		<include name="testPayNow" />
+        		<include name="testVirtualCardSwiper" />
       		</methods>
 	</classes>
 </test>

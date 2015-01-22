@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Payments xmlns:ns2="http://schema.intuit.com/health/securePayments/v1">
+	<PaymentsMessageHeaders>
+		<Sender deviceName="SenderDeviceName"/>
+		<Partner deviceName="PartnerDeviceName"/>
+		<Destination deviceName="DestinationDeviceName"/>
+	</PaymentsMessageHeaders>
+	<PracticeInformation>
+		<PracticeIdentifier>
+			<PracticeId>b23af2ad-4149-4001-8e0a-0cbc9b12a2f5</PracticeId>
+		</PracticeIdentifier>
+	</PracticeInformation>
+	<Payment id="36596">
+		<PaymentDateTimestamp>2015-01-19T13:51:58.348Z</PaymentDateTimestamp>
+		<PaymentType>Pay Now Payment</PaymentType>
+		<PatientAccountNumber>12345</PatientAccountNumber>
+		<PaymentStatus>ACCEPTED</PaymentStatus>
+		<PaymentInformation>
+			<PatientName>Test Card</PatientName>
+			<PatientDateofBirth>2000-01-01T00:00:00Z</PatientDateofBirth>
+			<CardholderName>Test Card</CardholderName>
+			<CardholderZipCode>94043</CardholderZipCode>
+			<ServiceLocation>Main Office</ServiceLocation>
+			<AmountPaid>250.00</AmountPaid>
+			<CCType>Visa</CCType>
+			<CCLast4Digits>1111</CCLast4Digits>
+			<PaymentComments>as</PaymentComments>
+		</PaymentInformation>
+	</Payment>
+</ns2:Payments>
+

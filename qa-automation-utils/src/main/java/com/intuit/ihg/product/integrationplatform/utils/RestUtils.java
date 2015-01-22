@@ -970,7 +970,7 @@ public class RestUtils {
         request.setHeader("Verb", "Completed");
         request.addHeader("Authentication-Type", "2wayssl");
         request.addHeader("Content-Type", "application/xml");
-        request.setHeader("ExternalSystemId", externalSystemID);
+        request.setHeader("ExternalSystemID", externalSystemID);
         Log4jUtil.log("Post Request Url4: ");
         HttpResponse response = client.execute(request);
         String sResp = EntityUtils.toString(response.getEntity());
@@ -1369,13 +1369,20 @@ public class RestUtils {
  * @throws IOException
  * @throws TransformerException
  */
-	public static String preparePayment(String xmlFile,String paymentID) throws ParserConfigurationException, SAXException, IOException, TransformerException
+	public static String preparePayment(String xmlFile,String paymentID,String amonunt,String type) throws ParserConfigurationException, SAXException, IOException, TransformerException
 	{
 		IHGUtil.PrintMethodName();
 		Document doc=buildDOMXML(xmlFile);
 		Node node=doc.getElementsByTagName(IntegrationConstants.PAYMENT).item(0);
 		Element element=(Element) node;
 		element.setAttribute(IntegrationConstants.ID, paymentID);
+		Node nodeType = element.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
+		nodeType.setTextContent(type);
+		if(amonunt!=null)
+		{
+			Node nodeAmount = element.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
+			nodeAmount.setTextContent(amonunt);
+		}
 		return domToString(doc);
 		
 	}	
@@ -1499,4 +1506,52 @@ public class RestUtils {
 		}
 		return domToString(doc);
 	}
+	
+	public static void verifyPayment(String responsePath,String amount, String status, String Type) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
+
+		Log4jUtil.log("finding Payment by Account Number");
+		boolean found = false;
+		NodeList namount = doc.getElementsByTagName(IntegrationConstants.AMOUNT);
+		for(int i = 0; i < namount.getLength(); i++){
+			if(namount.item(i).getTextContent().equals(amount)){
+				Log4jUtil.log("Searching: Patient Amount Number:" + amount + ", and Actual Patient Account Number is:" + namount.item(i).getTextContent().toString());
+				Element payment = (Element) namount.item(i).getParentNode().getParentNode();
+				Node paymentType=payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
+				Log4jUtil.log("Searching: Bill Payment Type:" + Type + ", and Actual Bill Payment Type is:" + paymentType.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(paymentType.getTextContent(), Type , "Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
+				paymentType=paymentType.getParentNode(); 
+				if(paymentType.hasAttributes())
+				{
+					Attr attr=(Attr) paymentType.getAttributes().getNamedItem("id");
+					paymentID=attr.getValue();
+				}
+				Node paymentStatus=payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
+				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
+				/*Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
+				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
+				Element ele=(Element) cNode;
+				Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
+				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), "100.00", "Payment has different amount than expected. Amount is: " + amount.getTextContent());
+				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
+				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), "1111", "Payment has different last digit than expected. Amount is: " + digits.getTextContent());*/
+				/*Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
+				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa/Mastercard/American Express/Discover", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
+				Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
+				*/
+				found = true ;
+			    break;
+				}
+				
+				
+				
+		}
+		Assert.assertTrue(found, "Payment Amount was not found in the response XML");
+		
+		
+	}
 }
+

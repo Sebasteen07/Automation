@@ -28,6 +28,8 @@ import com.intuit.ihg.product.integrationplatform.utils.GETestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.PayNow;
+import com.intuit.ihg.product.integrationplatform.utils.PayNowTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Payment;
 import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription;
@@ -38,6 +40,7 @@ import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
+import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
@@ -66,10 +69,11 @@ import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBill
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
+import com.intuit.ihg.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
-//import com.intuit.ihg.common.utils.mail.GmailBot;
 
 
 
@@ -569,7 +573,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		boolean completed = false;
 		for (int i = 0; i < 7; i++) {
 			// wait 60 seconds so the message can be processed
-			Thread.sleep(120000);
+			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
@@ -628,7 +632,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		// get only patients from last day in epoch time to avoid transferring lot of data
 		Long since = timestamp / 1000L - 60 * 24;
 
-		log("Getting patients since timestamp: " + since);
+ 		log("Getting patients since timestamp: " + since);
 		
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		
@@ -1345,7 +1349,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		myPatientPage.logout(driver);
 		
-		String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID);
+		String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID,null,IntegrationConstants.BILLPAYMENT);
 		
 		log("Step 18: Do a Post and get the message");
 		RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
@@ -1380,4 +1384,152 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Step 24: Verify payment details");
 		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),accountNumber,IntegrationConstants.ACCEPTED);
     }
+	
+	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPayNow() throws Exception {
+			
+
+			log("Test Case: testPayNow - No login payment");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			PayNow payNowData = new PayNow();
+			PayNowTestData testcasesData = new PayNowTestData(payNowData);
+			Long timestamp = System.currentTimeMillis();
+		
+			log("Step 1: Open no login payment page");
+			NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
+			
+			log("Step 2: Fill in payment info and submit");
+			pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(),
+							testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
+					
+			log("Step 3: Verify payment OK");
+			assertTrue(driver.getPageSource().contains("Thank You for your payment"));
+			
+			log("Step 4: Verify account set to N/A");
+			verifyTrue(driver.getPageSource().contains("Account N/A.")); 
+			
+			log("Step 5: Verify the prize format.");
+			verifyTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
+			
+			log("Step 6: Setup Oauth client 2.O"); 
+			RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
+			
+			log("Step 7: Getting messages since timestamp: " + timestamp);
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+			
+			log("Step 8: Verify payment details");
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.SUBMITTED,IntegrationConstants.PAYNOWPAYMENT);
+			
+			String paymentID=RestUtils.paymentID;
+			log("Payment ID :"+paymentID);
+			
+			String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID,pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.PAYNOWPAYMENT);
+			
+			log("Step 9: Do a Post and get the message");
+			RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=payNowpayment", postPayload, testcasesData.getResponsePath());
+			
+			log("Verify Payment status in Practice Portal");
+			log("Step 10: Login to Practice Portal");
+			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
+			PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
+			
+			log("Step 11: Click on Virtual Card Swiper Tab ");
+			VirtualCardSwiperPage vcsPage=practiceHome.clickVirtualCardSwiperTab();
+			
+			log("Step 12: Click on Charge History Link ");
+			VirtualCardSwiperPageChargeHistory vcsPageChargeHistory=vcsPage.lnkChargeHistoryclick(driver);
+				
+			log("Step 13: Search for payment ");
+			vcsPageChargeHistory.SearchPayment(1);
+			
+			String Status=vcsPageChargeHistory.getBillDetails("$"+ pNoLoginPaymentPage.GetAmountPrize() + ".00");
+			assertNotNull(Status, "The submitted pay now request was not found in the practice ");
+			
+			log("Step 14: Logout of Practice Portal ");
+			practiceHome.logOut();
+			
+			log("Verify Payment status in Get Response");
+			log("Step 15: Getting messages since timestamp: " + timestamp);
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+					
+			log("Step 16: Verify payment details");
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.ACCEPTED,IntegrationConstants.PAYNOWPAYMENT);
+			
+			
+		}
+	 
+	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testVirtualCardSwiper() throws Exception {
+	    
+	    	log("Test Case: testPayNow - No login payment");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+
+			PayNow payNowData = new PayNow();
+			PayNowTestData testcasesData = new PayNowTestData(payNowData);
+			Long timestamp = System.currentTimeMillis();
+	    	
+			log("Step 1: Login to Practice Portal");
+			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
+			PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
+			
+			log("Step 2: Click on Virtual Card Swiper Tab ");
+			VirtualCardSwiperPage vcsPage=practiceHome.clickVirtualCardSwiperTab();
+			
+			String Amount=IHGUtil.createRandomNumericString().substring(1, 4);
+			log("Step 2: Click on Virtual Card Swiper Tab ");
+			vcsPage.addCreditCardInfo("Test",
+					"5105105105105100", "MasterCard", "12", "2022", Amount,"110",
+					"12345", "comment");
+			
+			log("Step 4: Verify whether the payment is completed successfully.");
+			verifyEquals(
+					Boolean.valueOf(vcsPage
+							.getPayementCompletedSuccessMsg().contains(
+									"Payment completed")), Boolean.valueOf(true),
+					"The payment is completed properly.");
+			
+			log("Step 5: Setup Oauth client 2.O"); 
+			RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
+			
+			log("Step 6: Getting messages since timestamp: " + timestamp);
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+			
+			log("Step 7: Verify payment details");
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.SUBMITTED,IntegrationConstants.VCSPAYMENT);
+			
+			String paymentID=RestUtils.paymentID;
+			log("Payment ID :"+paymentID);
+			
+			String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID,Amount + ".00",IntegrationConstants.VCSPAYMENT);
+			
+			log("Step 8: Do a Post and get the message");
+			RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=vcsPayment", postPayload, testcasesData.getResponsePath());
+			
+			log("Step 12: Click on Charge History Link after successfully post");
+			VirtualCardSwiperPageChargeHistory vcsPageChargeHistory=vcsPage.lnkChargeHistoryclick(driver);
+			
+			log("Step 13: Search for payment");
+			vcsPageChargeHistory.SearchPayment(2);
+			
+			String Status=vcsPageChargeHistory.getBillDetails("$"+ Amount + ".00");
+			assertNotNull(Status, "The submitted csv request was not found in the practice ");
+			
+			log("Step 14: Logout of Practice Portal ");
+			practiceHome.logOut();
+			
+			log("Verify Payment status in Get Response");
+			log("Step 15: Getting messages since timestamp: " + timestamp);
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+					
+			log("Step 16: Verify payment details");
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.ACCEPTED,IntegrationConstants.VCSPAYMENT);
+			
+			
+	    }
+
+	    
+	    
 }

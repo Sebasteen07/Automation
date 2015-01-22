@@ -1,5 +1,8 @@
 package com.intuit.ihg.product.object.maps.practice.page.virtualCardSwiper;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,12 +45,22 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	@FindBy(name = "buttons:submit")
 	private WebElement btnSubmit;
 	
+	@FindBy(name ="searchParams:2:input")
+	private List<WebElement> types;
+	
+	@FindBy(id="MfAjaxFallbackDefaultDataTable")
+	private WebElement searchResults;
+	
+	@FindBy( xpath = ".//tbody/tr/td[4]/span")
+	private List<WebElement> amount;
+	
 	public VirtualCardSwiperPageChargeHistory(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void SearchPayment() throws InterruptedException
+
+	public void SearchPayment(int value) throws InterruptedException
 	{
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -73,12 +86,22 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
 		Thread.sleep(2000);
 		
-		practicePayment.click();
-		practiceRefund.click();
-		practiceVoid.click();
+		IHGUtil.waitForElement(driver, 20, practicePayment);
+		for(int i=0;i<types.size();i++)
+		{
+			types.get(i).click();
+			
+		}
+		for(WebElement type : types)
+		{
+			if(Integer.parseInt(type.getAttribute("value"))==value)
+			{
+				type.click();
+			}		
+		}
+		
 		IHGUtil.waitForElement(driver, 20, btnSubmit);
 		btnSubmit.click();	
-		
 	}
 
 	public boolean VerifyAmount(String amount)
@@ -86,4 +109,36 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 		return driver.getPageSource().contains("$" + amount + ".00");
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getBillDetails(String amont) throws Exception {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		try {
+			searchResults.isDisplayed();
+		} catch (Exception e) {
+			throw new Exception("Virtual Card Swiper Charge History search result table is not found for particular payment type.");
+		}
+		int j=0;
+		Thread.sleep(10000);
+		for(WebElement amt : amount)
+		{
+			j++;
+			if(amt.getText().contains(amont))
+			{
+				WebElement post=driver.findElement(By.xpath(".//tbody/tr["+j+"]/td[8]/span/span"));
+				String title=post.getAttribute("title").toString();
+				return title;
+			}
+			
+		}
+		return null;
+
+	}
+	
 }

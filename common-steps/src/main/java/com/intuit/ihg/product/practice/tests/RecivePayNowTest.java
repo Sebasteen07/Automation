@@ -31,7 +31,7 @@ public class RecivePayNowTest extends BaseTestNGWebDriver {
 		VirtualCardSwiperPage pVirtualCardSwiperTab=practiceHome.clickVirtualCardSwiperTab();
 		log("Step3: Click on Charge History");
 		VirtualCardSwiperPageChargeHistory pVirtualCardSwiperPageChargeHistory  = pVirtualCardSwiperTab.lnkChargeHistoryclick(driver);
-		pVirtualCardSwiperPageChargeHistory.SearchPayment();
+		pVirtualCardSwiperPageChargeHistory.SearchPayment(1);
 		log("Step 4: Verify payment recieved");
 		verifyTrue(pVirtualCardSwiperPageChargeHistory.VerifyAmount(amount));
 		
