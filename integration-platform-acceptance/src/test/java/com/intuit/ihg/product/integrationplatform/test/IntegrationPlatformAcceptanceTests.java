@@ -1455,7 +1455,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 					
 			log("Step 16: Verify payment details");
-			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.ACCEPTED,IntegrationConstants.PAYNOWPAYMENT);
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.POSTED,IntegrationConstants.PAYNOWPAYMENT);
 			
 			
 		}
@@ -1525,7 +1525,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 					
 			log("Step 16: Verify payment details");
-			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.ACCEPTED,IntegrationConstants.VCSPAYMENT);
+			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.POSTED,IntegrationConstants.VCSPAYMENT);
 			
 			
 	    }

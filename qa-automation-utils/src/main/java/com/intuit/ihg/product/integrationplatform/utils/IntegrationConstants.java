@@ -122,6 +122,7 @@ public class IntegrationConstants {
 	public static final String AMOUNT ="AmountPaid";
 	public static final String PAYMENTINFO="PaymentInformation";
 	public static final String SUBMITTED="SUBMITTED";
+	public static final String POSTED="POSTED";
 	public static final String ACCEPTED="ACCEPTED";
 	public static final String CCTYPE="CCType";
 	public static final String LASTDIGITS="CCLast4Digits";
