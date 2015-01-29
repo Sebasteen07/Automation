@@ -1511,12 +1511,12 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsePath);
 
-		Log4jUtil.log("finding Payment by Account Number");
+		Log4jUtil.log("finding Payment by Amount");
 		boolean found = false;
 		NodeList namount = doc.getElementsByTagName(IntegrationConstants.AMOUNT);
 		for(int i = 0; i < namount.getLength(); i++){
 			if(namount.item(i).getTextContent().equals(amount)){
-				Log4jUtil.log("Searching: Patient Amount Number:" + amount + ", and Actual Patient Account Number is:" + namount.item(i).getTextContent().toString());
+				Log4jUtil.log("Searching: Patient Amount :" + amount + ", and Actual Patient Account is:" + namount.item(i).getTextContent().toString());
 				Element payment = (Element) namount.item(i).getParentNode().getParentNode();
 				Node paymentType=payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
 				Log4jUtil.log("Searching: Bill Payment Type:" + Type + ", and Actual Bill Payment Type is:" + paymentType.getTextContent().toString());
