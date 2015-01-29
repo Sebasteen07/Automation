@@ -1427,34 +1427,47 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 			String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID,pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.PAYNOWPAYMENT);
 			
+			log("Post Payload:"+postPayload);
+			
 			log("Step 9: Do a Post and get the message");
-			RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=payNowpayment", postPayload, testcasesData.getResponsePath());
+			String processingUrl=RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=payNowpayment", postPayload, testcasesData.getResponsePath());
+			
+			log("Step 10: Get processing status until it is completed");
+			boolean completed = false;
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+					completed = true;
+				}
+
+			verifyTrue(completed, "Message processing was not completed in time");
 			
 			log("Verify Payment status in Practice Portal");
-			log("Step 10: Login to Practice Portal");
+			log("Step 11: Login to Practice Portal");
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 			PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
 			
-			log("Step 11: Click on Virtual Card Swiper Tab ");
+			log("Step 12: Click on Virtual Card Swiper Tab ");
 			VirtualCardSwiperPage vcsPage=practiceHome.clickVirtualCardSwiperTab();
 			
-			log("Step 12: Click on Charge History Link ");
+			log("Step 13: Click on Charge History Link ");
 			VirtualCardSwiperPageChargeHistory vcsPageChargeHistory=vcsPage.lnkChargeHistoryclick(driver);
 				
-			log("Step 13: Search for payment ");
+			log("Step 14: Search for payment ");
 			vcsPageChargeHistory.SearchPayment(1);
 			
 			String Status=vcsPageChargeHistory.getBillDetails("$"+ pNoLoginPaymentPage.GetAmountPrize() + ".00");
 			assertNotNull(Status, "The submitted pay now request was not found in the practice ");
 			
-			log("Step 14: Logout of Practice Portal ");
+			log("Step 15: Logout of Practice Portal ");
 			practiceHome.logOut();
 			
 			log("Verify Payment status in Get Response");
-			log("Step 15: Getting messages since timestamp: " + timestamp);
+			log("Step 16: Getting messages since timestamp: " + timestamp);
 			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 					
-			log("Step 16: Verify payment details");
+			log("Step 17: Verify payment details");
 			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.POSTED,IntegrationConstants.PAYNOWPAYMENT);
 			
 			
@@ -1505,26 +1518,40 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 			String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID,Amount + ".00",IntegrationConstants.VCSPAYMENT);
 			
-			log("Step 8: Do a Post and get the message");
-			RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=vcsPayment", postPayload, testcasesData.getResponsePath());
+			log("Post Payload:"+postPayload);
 			
-			log("Step 12: Click on Charge History Link after successfully post");
+			log("Step 8: Do a Post and get the message");
+			String processingUrl=RestUtils.setupHttpPostRequest(testcasesData.getRestUrl()+"=vcsPayment", postPayload, testcasesData.getResponsePath());
+			
+			
+			log("Step 9: Get processing status until it is completed");
+			boolean completed = false;
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+					completed = true;
+				}
+
+			verifyTrue(completed, "Message processing was not completed in time");
+			
+			log("Step 10: Click on Charge History Link after successfully post");
 			VirtualCardSwiperPageChargeHistory vcsPageChargeHistory=vcsPage.lnkChargeHistoryclick(driver);
 			
-			log("Step 13: Search for payment");
+			log("Step 11: Search for payment");
 			vcsPageChargeHistory.SearchPayment(2);
 			
 			String Status=vcsPageChargeHistory.getBillDetails("$"+ Amount + ".00");
 			assertNotNull(Status, "The submitted csv request was not found in the practice ");
 			
-			log("Step 14: Logout of Practice Portal ");
+			log("Step 12: Logout of Practice Portal ");
 			practiceHome.logOut();
 			
 			log("Verify Payment status in Get Response");
-			log("Step 15: Getting messages since timestamp: " + timestamp);
+			log("Step 13: Getting messages since timestamp: " + timestamp);
 			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 					
-			log("Step 16: Verify payment details");
+			log("Step 14: Verify payment details");
 			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.POSTED,IntegrationConstants.VCSPAYMENT);
 			
 			
