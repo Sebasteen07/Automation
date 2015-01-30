@@ -15,7 +15,7 @@
 		<PaymentType>BillPayment</PaymentType>
 		<PracticePatientId>707442014</PracticePatientId>
 		<PatientAccountNumber>707442014</PatientAccountNumber>
-		<PaymentStatus>ACCEPTED</PaymentStatus>
+		<PaymentStatus>POSTED</PaymentStatus>
 		<PaymentInformation>
 			<AmountPaid>500.00</AmountPaid>
 			<CCLast4Digits>1111</CCLast4Digits>

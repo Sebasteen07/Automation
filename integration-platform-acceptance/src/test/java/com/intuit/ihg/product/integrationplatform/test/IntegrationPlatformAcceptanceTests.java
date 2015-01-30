@@ -1308,15 +1308,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Step 11: Get processing status until it is completed");
 		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
+				// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
 				completed = true;
-				break;
 			}
-		}
+			
+		
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 12: Login to Patient Portal");
@@ -1351,18 +1350,25 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		String postPayload=RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID,null,IntegrationConstants.BILLPAYMENT);
 		
-		log("Step 18: Do a Post and get the message");
-		RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
+		log("Step 19: Do a Post and get the message");
+		processingUrl=RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
+		
+		// wait 10 seconds so the message can be processed
+		Thread.sleep(60000);
+		RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+		completed = true;
+		}
 		
 		log("Verify Payment status in Practice Portal");
-		log("Step 19: Login to Practice Portal");
+		log("Step 20: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
 
-		log("Step 20: Click On Online BillPayment Tab in Practice Portal");
+		log("Step 21: Click On Online BillPayment Tab in Practice Portal");
 		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
 
-		log("Step 21: Search Paid Bills By Current Date");
+		log("Step 22: Search Paid Bills By Current Date");
 		onlineBillPaySearchPage.searchForBillPayToday();
 
 		log("Search For Payment By Status ");
@@ -1374,15 +1380,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		String Status=onlineBillPaySearchPage.getBillDetails();
 		assertNotNull(Status, "The submitted Online Bill request was not found in the practice");
 		
-		log("Step 22: Logout of Practice Portal");
+		log("Step 23: Logout of Practice Portal");
 		practiceHome.logOut();
 		
 		log("Verify Payment status in Get Response");
-		log("Step 23: Getting messages since timestamp: " + timestamp);
+		log("Step 24: Getting messages since timestamp: " + timestamp);
 		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
 				
-		log("Step 24: Verify payment details");
-		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),accountNumber,IntegrationConstants.ACCEPTED);
+		log("Step 25: Verify payment details");
+		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),accountNumber,IntegrationConstants.POSTED);
     }
 	
 	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
