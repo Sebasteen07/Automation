@@ -31,10 +31,10 @@ public class MakePaymentPage extends BasePageObject {
 	@FindBy(xpath = "//select[@name='availCreditCardsWrapper:_body:availCreditCards']")
     private WebElement creditCard;
 	
-	@FindBy(xpath = "//input[@class='button' and @value='Continue']")
+	@FindBy(name = ":submit")
     private WebElement clickContinuebtn;
 	
-	@FindBy(xpath = "//input[@class='button' and @value='Submit']")
+	@FindBy(name = "submitButton")
     private WebElement clickSubmitbtn;
 	
 	@FindBy(xpath = "//form[@id='form']/table//div[@class='heading1']")

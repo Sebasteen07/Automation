@@ -16,7 +16,7 @@ public class AskAStaffStep2Page extends BasePageObject {
 	
 	public static final String PAGE_NAME = "Ask A Staff Page - Step 2";
 
-	@FindBy(name="buttonsField:_body:buttons:submit")
+	@FindBy(name="buttons:submit")
 	private WebElement btnSubmit;
 	
 	@FindBy(name="ccpanel:newccdetails:nameOnCreditCard")

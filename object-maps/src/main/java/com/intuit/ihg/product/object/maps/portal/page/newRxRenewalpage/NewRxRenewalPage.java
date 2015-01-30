@@ -30,7 +30,7 @@ public class NewRxRenewalPage  extends BasePageObject {
 	@FindBy(xpath = "//input[@class='button' and @value='Continue']")
 	private WebElement clickContinuebtn;
 
-	@FindBy(xpath = "//input[@class='button' and @value='Submit']")
+	@FindBy(name = "submitButton")
 	private WebElement clickSubmitbtn;
 
 	@FindBy(xpath = "//div[@id='medForm']/div/div[@class='fieldWrapper']/div[2]/input")
@@ -134,7 +134,7 @@ public class NewRxRenewalPage  extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		chooseFromList.click();
 		try{
-			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']/option"));
+			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup']/option"));
 			for(WebElement li : list)
 			{
 				int count=1;

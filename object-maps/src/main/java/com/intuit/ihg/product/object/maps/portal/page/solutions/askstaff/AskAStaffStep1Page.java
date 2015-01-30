@@ -28,7 +28,7 @@ public class AskAStaffStep1Page extends BasePageObject{
 	@FindBy(name="questionWrapper:_body:question")
 	private WebElement question;
 	
-	@FindBy(name="submitWrapper:_body:submit:submit")
+	@FindBy(name=":submit")
 	private WebElement btnContinue;
 	
 	@FindBy(name="agreeRadioGroupWrapper:_body:agreeRadioGroup")
