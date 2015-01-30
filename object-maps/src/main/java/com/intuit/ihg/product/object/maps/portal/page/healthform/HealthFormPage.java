@@ -99,7 +99,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(xpath = "//*[@id='solutions']/ul/li[4]/a")
 	private WebElement lnkHealthForms;
 	
-	@FindBy(xpath = "//*[@id='navigation1']/ul/li[5]/a")
+	@FindBy(xpath = "//*[@id='navigation1']/ul/li[7]/a")
 	private WebElement lnkHealthForms2;
 	
 	@FindBy(linkText = "Health Forms")
@@ -306,26 +306,7 @@ public class HealthFormPage extends BasePageObject {
 
 	public void clickHealthForms() {
 		driver.switchTo().defaultContent();
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
-			{
-				IHGUtil.waitForElement(driver, 20, lnkHealthForms);
-				lnkHealthForms.click();
-			}
-		
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO"))
-			{
-				IHGUtil.waitForElement(driver, 20, lnkHealthForms2);
-				lnkHealthForms2.click();
-			}
-		
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD"))
-			{
-				
-
-				IHGUtil.waitForElement(driver, 20, lnkHealthForms3);	
-				lnkHealthForms3.click();
-			}
-		
+		driver.findElement(By.xpath("//*[contains(text(),'health forms')]")).click();
 	}
 
 }
