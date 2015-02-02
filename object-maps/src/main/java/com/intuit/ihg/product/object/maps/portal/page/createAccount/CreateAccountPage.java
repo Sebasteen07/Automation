@@ -221,12 +221,19 @@ public class CreateAccountPage extends BasePageObject {
 		txtConfirmpassword.sendKeys(password);
 		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
-		chooseProvider();
 		
-		chkAgreePatientPrivacyInfo.click();
+	  /*Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default
+		chooseProvider();*/
+			  
+	    log("ENV " +IHGUtil.getEnvironmentType().toString());
+		if(("PROD".equals(IHGUtil.getEnvironmentType().toString()) || ("DEMO".equals(IHGUtil.getEnvironmentType().toString()))||("DEV3".equals(IHGUtil.getEnvironmentType().toString())))){		
+			chkAgreePatientPrivacyInfo.click();
+		}
+		
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 
+		log("Clicked submit, returning");
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	

@@ -226,11 +226,22 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		driver = pAcceptPhrTermsandConditions.clickbtnAccept();
 
 		log("step 11:Accept the Intuit terms and condition  from PHR side");
-		IntuitAcceptPrivacyPolicy pIntuitAcceptPrivacyPolicy = PageFactory
-		.initElements(driver, IntuitAcceptPrivacyPolicy.class);
-		Thread.sleep(20000);//this thread.sleep is purposeful otherwise script  can fail here
-		PhrHomePage pPhrHomePage = pIntuitAcceptPrivacyPolicy
-		.acceptIntuitTermsAndCondition();
+		//Since the back check is not active on QA1
+		PhrHomePage pPhrHomePage;
+		if (!("QA1".equals(IHGUtil.getEnvironmentType().toString()))){
+			IntuitAcceptPrivacyPolicy pIntuitAcceptPrivacyPolicy = PageFactory
+					.initElements(driver, IntuitAcceptPrivacyPolicy.class);
+			Thread.sleep(20000);
+			//this thread.sleep is purposeful otherwise script  can fail here
+			pPhrHomePage = pIntuitAcceptPrivacyPolicy
+					.acceptIntuitTermsAndCondition();
+		}
+		else {
+			log("Not on this environment! - Passed");
+			pPhrHomePage = PageFactory.initElements(driver, PhrHomePage.class);
+			Thread.sleep(20000);
+			//this thread.sleep is purposeful otherwise script  can fail here
+		}
 
 		log("step 12:Assert profile link on PHR HOme page");
 		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
