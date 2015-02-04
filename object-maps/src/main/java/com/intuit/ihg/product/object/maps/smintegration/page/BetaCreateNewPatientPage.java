@@ -186,21 +186,21 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 		lastName(patientLastName);
 		radioButtGender.click();
 		setBirthDate();
-		String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
+		//String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
 		/*txtbirthday.sendKeys(birthday);*/
 		txtPatientFirstname.click();// This a fix given for chrome browser
 						// for dealing date drop down
 		log("patientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("patientSSN: " + patientSSN);
-		txtssn.sendKeys(patientSSN); 
+		/*log("patientSSN: " + patientSSN);
+		txtssn.sendKeys(patientSSN); */
 		
 		log("email" + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
 
 		log("I am on the second Page :======");
-		txtFirstName.clear();
+		/*txtFirstName.clear();
 		txtFirstName.sendKeys(patientFirstName);
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
@@ -211,7 +211,7 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 					// dealing date drop down
 		txtSSN.clear();
 		txtSSN.sendKeys(patientSSN);
-		chkGender.click();
+		chkGender.click();*/
 		txtAddress.sendKeys(address);
 		txtCity.sendKeys(city);
 		Select selectstate = new Select(dropDownState);
