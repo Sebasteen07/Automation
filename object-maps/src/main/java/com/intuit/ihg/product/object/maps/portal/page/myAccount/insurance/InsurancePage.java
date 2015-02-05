@@ -88,13 +88,12 @@ public class InsurancePage extends BasePageObject {
 		
 		log("Enter Insurance details for Self");		
 		Select relationtoPolicyProvider = new Select(drpdwnrelationtoPolicyProvider);
-		relationtoPolicyProvider.selectByVisibleText(PortalConstants.InsuranceRelation);		
+		relationtoPolicyProvider.selectByVisibleText(PortalConstants.InsuranceRelation);
+		Thread.sleep(4000);
 				
 		log("Select Insurance Type");
 		Select insuranceType = new Select(drpdwninsuranceType);
 		insuranceType.selectByVisibleText(PortalConstants.InsuranceType);
-		
-		//UI removes some of the input boxes when changing relation and type!
 		Thread.sleep(4000);
 		
 		log("Select Insurance name");
