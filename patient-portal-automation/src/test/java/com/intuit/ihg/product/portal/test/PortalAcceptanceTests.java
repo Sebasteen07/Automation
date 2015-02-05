@@ -779,7 +779,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: testAddInsurance");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		IHGUtil util = new IHGUtil(driver);
 
 		log("step 2: Get Data from Excel");
 		Portal portal = new Portal();
@@ -807,7 +806,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 8:asserting for Insurance Name and Insurance Type");
 		
-		util.waitForElementByClassAndText("add","Add Insurance - Click here to add an entry",20);
+		IHGUtil.waitForElementByClassAndText(driver,"add","Add Insurance - Click here to add an entry",20);
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceName));
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceType));
 
@@ -815,7 +814,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pinsuranceDetailsPage.deleteInsurance();
 
 		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");
-		util.waitForElementByClassAndValue("submit","Save Insurance",20);
+		IHGUtil.waitForElementByClassAndValue(driver,"submit","Save Insurance",20);
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceName));
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceType));
 	}
