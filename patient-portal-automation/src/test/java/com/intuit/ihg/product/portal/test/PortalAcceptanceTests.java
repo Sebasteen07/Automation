@@ -805,11 +805,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pinsuranceDetailsPage.addInsuranceDetails();
 
 		log("step 8:asserting for Insurance Name and Insurance Type");
-		final String targetClass ="add";
-		final String targetText = "Add Insurance - Click here to add an entry";
-		//button to wait for (shows when there are no insurances, we just deleted the only one)
-		//move these constants to a central place later on
-		IHGUtil.waitForElementByClassAndText(driver,targetClass,targetText,20);
+		
+		IHGUtil.waitForElementByClassAndText(driver,"add","Add Insurance - Click here to add an entry",20);
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceName));
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceType));
 
@@ -817,11 +814,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pinsuranceDetailsPage.deleteInsurance();
 
 		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");
-		//button to wait for (shows when there are no insurances, we just deleted the only one)
-		//move these constants to a central place later on
-		final String targetClass2 ="submit";
-		final String targetValue = "Save Insurance";
-		IHGUtil.waitForElementByClassAndValue(driver,targetClass2,targetValue,20);
+		IHGUtil.waitForElementByClassAndValue(driver,"submit","Save Insurance",20);
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceName));
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceType));
 	}
