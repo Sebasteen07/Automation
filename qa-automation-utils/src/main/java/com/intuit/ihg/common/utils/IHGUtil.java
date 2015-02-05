@@ -1400,26 +1400,36 @@ public class IHGUtil extends BasePageObject {
             TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
         }
     }
-    public static void waitForElementByClassAndText(WebDriver driver, final String classToFind, final String textToFind, int secondsToWait){
+    public void waitForElementByClassAndText(final String classToFind, final String textToFind, int secondsToWait){
+    	log("###### waiting: element class "+ classToFind + " text \"" + textToFind + "\" with timeout: " + secondsToWait + "seconds");
 		WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
 		ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
 	    	@Override
 	    	public Boolean apply(WebDriver d) {
+	    	log("###### 3 #######");
 	       	WebElement result = d.findElement(By.className(classToFind));
+		   	log("###### 4 #######");
 	       	return textToFind.equals(result.getText());
 	    	}
 		};
+		log("###### 2 #######");
 		wdw.until(condition); // Won't get past here till timeout or element is found
+		log("###### 5 #######");
     }
-    public static void waitForElementByClassAndValue(WebDriver driver,final String classToFind, final String valueToFind, int secondsToWait) {    	
+    public void waitForElementByClassAndValue(final String classToFind, final String valueToFind, int secondsToWait) {
+    	log("###### waiting: element class "+ classToFind + " value \"" + valueToFind + "\" with timeout: " + secondsToWait + "seconds");
 		WebDriverWait wdw = new WebDriverWait(driver, 20);
 		ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver d) {
-	       		WebElement result = d.findElement(By.className(classToFind));  
+	    		log("######- 3 -#######");
+	       		WebElement result = d.findElement(By.className(classToFind));
+	       		log("######- 4 -#######");		  
 	       		return valueToFind.equals(result.getAttribute("value"));
 	    	}
 		};
+		log("######- 2 -#######");
 		wdw.until(condition); // Won't get past here till timeout or element is found
+		log("###### 5 #######");
     }
 }
