@@ -20,8 +20,8 @@ public class PhrMessagesPage  extends BasePageObject{
 	@FindBy(id="inboxTab")
 	private WebElement inboxTab;
 
-	@FindBy(xpath = ".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")
-	//@FindBy(xpath = ".//*[@id='row']/tbody/tr[1]/td[6]/a")
+	//@FindBy(xpath = ".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")
+	@FindBy(xpath = ".//*[@id='row']/tbody/tr[1]/td[6]/a")
 	private WebElement firstMessageRow;
 		
 	
@@ -53,7 +53,8 @@ public class PhrMessagesPage  extends BasePageObject{
 	public PhrInboxMessage clickOnFirstMessage() {
 		PhrUtil.PrintMethodName();
         driver.switchTo().defaultContent();
-        driver.switchTo().frame(0);
+        //driver.switchTo().frame(0);
+        IHGUtil.waitForElement(driver,10,firstMessageRow);
         firstMessageRow.click();
         return PageFactory.initElements(driver, PhrInboxMessage.class);
 		}

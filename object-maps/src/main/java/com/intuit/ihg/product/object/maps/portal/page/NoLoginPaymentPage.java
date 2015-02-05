@@ -54,9 +54,6 @@ public class NoLoginPaymentPage extends BasePageObject{
 	@FindBy(name="emailAddrWrapper:_body:emailAddr")
 	private WebElement emailField;
 	
-	@FindBy(name="buttonsField:_body:buttons:submit")
-	private WebElement btnSubmit;
-	
 	@FindBy(name="buttons:submit")
 	private WebElement btnsubmit;
 	
@@ -105,14 +102,8 @@ public class NoLoginPaymentPage extends BasePageObject{
 		paymentComment.sendKeys("Payment");
 		}
 		emailField.sendKeys(email);
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
-		{
-			btnsubmit.click();	
-		}
-		else
-		{
-		    btnSubmit.click();
-		}
+		btnsubmit.click();	
+
 		
 	}
 	

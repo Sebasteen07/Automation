@@ -36,6 +36,7 @@ import com.intuit.ihg.product.integrationplatform.utils.Prescription;
 import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.object.maps.integrationplatform.page.TestPage;
+import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
@@ -727,12 +728,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),10000));
 
 		log("Step 8: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
 
-		
 		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
 		pMessage.verifyCCDViewerAndClose();
 		
@@ -747,7 +747,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		
 		log("Step 12: Go to PHR Inbox");
 		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-		assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
+		//assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("Step 13: Click first message");
 		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
@@ -761,12 +761,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("Step 15: Click on link ReviewHealthInformation");
-		phrInboxMessage.clickBtnReviewHealthInformationPhr();
+		PhrDocumentsPage phrDocuments=phrInboxMessage.clickBtnReviewHealthInformationPhr();
+		
+		log("step 16:Click on View Health Information");
+		phrDocuments.clickViewHealthInformation();
 
+		log("step 17:click Close Viewer");
+		phrDocuments.closeViewer();
 		
-		log("Step 16: Verify if CCD Viewer is loaded and click Close Viewer");
-		phrInboxMessage.verifyCCDViewerAndClosePhr();
-		
+		log("step 18:Click Logout");
+		phrDocuments.clickLogout();
+	
 		//driver.switchTo().defaultContent();
 		
 	}
@@ -982,7 +987,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			Thread.sleep(1000);
 			log("######  Message Date :: " + IHGUtil.getEstTiming());
 			assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),10000));
 
 			log("Step 8: Click on link ReviewHealthInformation");
 			pMessage.clickBtnReviewHealthInformation();
@@ -1002,7 +1007,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 			log("Step 12:Go to PHR Inbox");
 			PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-			assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
+			//assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 			log("Step 13: Click first message");
 			PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
@@ -1016,10 +1021,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 			log("Step 15: Click on link ReviewHealthInformation");
-			phrInboxMessage.clickBtnReviewHealthInformationPhr();
+			PhrDocumentsPage phrDocuments=phrInboxMessage.clickBtnReviewHealthInformationPhr();
 			
-			log("Step 16:Verify if CCD Viewer is loaded and click Close Viewer");
-			phrInboxMessage.verifyCCDViewerAndClosePhr();
+			log("step 16:Click on View Health Information");
+			phrDocuments.clickViewHealthInformation();
+
+			log("step 17:click Close Viewer");
+			phrDocuments.closeViewer();
+			
+			log("step 18:Click Logout");
+			phrDocuments.clickLogout();
 			
 		}
 		
@@ -1073,7 +1084,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			Thread.sleep(1000);
 			log("######  Message Date :: " + IHGUtil.getEstTiming());
 			assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),10000));
 
 			log("Step 8: Click on link ReviewHealthInformation");
 			pMessage.clickBtnReviewHealthInformation();
@@ -1099,7 +1110,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 			log("Step 14: Go to PHR Inbox");
 			PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-			assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
+			//assertTrue(phrMessagesPage.isInboxLoaded(), "Inbox failed to load properly.");
 						
 			log("Step 15:Click first message");
 			PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
@@ -1113,10 +1124,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 			log("Step 17: Click on link ReviewHealthInformation");
-			phrInboxMessage.clickBtnReviewHealthInformationPhr();
+			PhrDocumentsPage phrDocuments=phrInboxMessage.clickBtnReviewHealthInformationPhr();
 			
-			log("Step 18: Verify if CCD Viewer is loaded and click Close Viewer");
-			phrInboxMessage.verifyCCDViewerAndClosePhr();
+			log("step 18:Click on View Health Information");
+			phrDocuments.clickViewHealthInformation();
+
+			log("step 19:click Close Viewer");
+			phrDocuments.closeViewer();
+			
+			log("step 20:Click Logout");
+			phrDocuments.clickLogout();
 			
 		}
 	
