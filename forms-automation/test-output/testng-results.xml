@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="1" total="1" passed="0">
+  <reporter-output>
+    <line>
+      <![CDATA[<pre>
+testRoot: C:\git\development\forms-automation
+testConfigFile: null
+testResultVideos: C:\git\development\forms-automation\target\failsafe-reports\videos
+testResultScreenshots: C:\git\development\forms-automation\target\failsafe-reports\screenshots
+selenium.browser: firefox
+client os.type: windows
+clear.browser.cache: true
+enable.video.recording: true
+capture.screenshot: true
+reporting.full.stack.trace: false
+isJavascriptCaptureEnabled: false
+isProxyEnabled: false
+logger.level: null
+firefox.profile: null
+firefox.assumeUntrustedCertificateIssuer: true (default = false)
+firefox.acceptUntrustedCertificates: true (default = true)
+firefox.isenableNativeEventEnabled: false
+firefox.downloadable.mime.types: application/excel,application/x-excel,application/x-msexcel,application/vnd.ms-excel,text/comma-separated-values,application/csv,image/jpeg,text/csv,application/x-ofx,application/vnd.intu.qfx,application/vnd.intu.qbo
+firefox.download.location: C:\git\development\forms-automation\target\firefox-download
+</pre><br/>]]>
+    </line>
+    <line>
+      <![CDATA[testFormPracticePortal<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Environment on which Testcase is Running: QA1<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Browser on which Testcase is Running: firefox<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Step 1: Open the form<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Get Portal Data from Excel ##########<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Patient Portal URL: null<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Log in to Patient Portal<br/>]]>
+    </line>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="7812" started-at="2015-02-09T15:57:12Z" finished-at="2015-02-09T15:57:20Z">
+    <groups>
+      <group name="PatientForms">
+        <method signature="FormsAcceptanceTests.testFormPracticePortal()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="testFormPracticePortal" class="com.intuit.ihg.product.forms.test.FormsAcceptanceTests"/>
+      </group> <!-- PatientForms -->
+    </groups>
+    <test name="Default test" duration-ms="7812" started-at="2015-02-09T15:57:12Z" finished-at="2015-02-09T15:57:20Z">
+      <class name="com.intuit.ihg.product.forms.test.FormsAcceptanceTests">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="beforeSuite" is-config="true" duration-ms="133" started-at="2015-02-09T16:57:12Z" finished-at="2015-02-09T16:57:12Z">
+          <reporter-output>
+            <line>
+              <![CDATA[<pre>
+testRoot: C:\git\development\forms-automation
+testConfigFile: null
+testResultVideos: C:\git\development\forms-automation\target\failsafe-reports\videos
+testResultScreenshots: C:\git\development\forms-automation\target\failsafe-reports\screenshots
+selenium.browser: firefox
+client os.type: windows
+clear.browser.cache: true
+enable.video.recording: true
+capture.screenshot: true
+reporting.full.stack.trace: false
+isJavascriptCaptureEnabled: false
+isProxyEnabled: false
+logger.level: null
+firefox.profile: null
+firefox.assumeUntrustedCertificateIssuer: true (default = false)
+firefox.acceptUntrustedCertificates: true (default = true)
+firefox.isenableNativeEventEnabled: false
+firefox.downloadable.mime.types: application/excel,application/x-excel,application/x-msexcel,application/vnd.ms-excel,text/comma-separated-values,application/csv,image/jpeg,text/csv,application/x-ofx,application/vnd.intu.qfx,application/vnd.intu.qbo
+firefox.download.location: C:\git\development\forms-automation\target\firefox-download
+</pre><br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- beforeSuite -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="setUp" is-config="true" duration-ms="3" started-at="2015-02-09T16:57:12Z" finished-at="2015-02-09T16:57:12Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="testSetup()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="testSetup" is-config="true" duration-ms="7218" started-at="2015-02-09T16:57:12Z" finished-at="2015-02-09T16:57:20Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetup -->
+        <test-method status="FAIL" signature="testFormPracticePortal()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="testFormPracticePortal" duration-ms="314" started-at="2015-02-09T16:57:20Z" finished-at="2015-02-09T16:57:20Z">
+          <exception class="java.lang.NullPointerException">
+            <full-stacktrace>
+              <![CDATA[java.lang.NullPointerException
+	at com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage.<init>(PortalLoginPage.java:75)
+	at com.intuit.ihg.product.forms.test.FormsAcceptanceTests.openFormOnPatientPortal(FormsAcceptanceTests.java:101)
+	at com.intuit.ihg.product.forms.test.FormsAcceptanceTests.testFormPracticePortal(FormsAcceptanceTests.java:216)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.NullPointerException -->
+          <reporter-output>
+            <line>
+              <![CDATA[testFormPracticePortal<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Environment on which Testcase is Running: QA1<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Browser on which Testcase is Running: firefox<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Step 1: Open the form<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Get Portal Data from Excel ##########<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Patient Portal URL: null<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Log in to Patient Portal<br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- testFormPracticePortal -->
+        <test-method status="PASS" signature="postTestCase(org.testng.ITestResult)[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="postTestCase" is-config="true" duration-ms="262" started-at="2015-02-09T16:57:20Z" finished-at="2015-02-09T16:57:20Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=testFormPracticePortal status=FAILURE method=FormsAcceptanceTests.testFormPracticePortal()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1] output=testFormPracticePortal<br/>]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- postTestCase -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.intuit.ihg.product.forms.test.FormsAcceptanceTests@3c0f93f1]" name="tearDown" is-config="true" duration-ms="0" started-at="2015-02-09T16:57:20Z" finished-at="2015-02-09T16:57:20Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.intuit.ihg.product.forms.test.FormsAcceptanceTests -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
