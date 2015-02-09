@@ -3,6 +3,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.support.PageFactory;
@@ -1150,7 +1151,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			Long timestamp = System.currentTimeMillis();
 			
 			log("Url: " + testData.getUrl());
-			log("Rest Url: " + testData.getRestUrl());
 			log("Response Path: " + testData.getResponsePath());
 			log("OAuthProperty: " + testData.getOAuthProperty());
 			log("OAuthKeyStore: " + testData.getOAuthKeyStore());
@@ -1159,12 +1159,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("OAuthPassword: " + testData.getOAuthPassword());
 				
 			
+			for(int i=1;i<3;i++){
 			log("Step 2: Click Sign-UP");
 			PortalLoginPage loginpage = new PortalLoginPage(driver,
 					testData.getUrl());
 			loginpage
 					.signUp();
-
+			String getURL=testData.getRestUrl();
+			
 			BetaCreateNewPatientPage createNewPatientPage = new BetaCreateNewPatientPage(
 					driver);
 			log("Step 3: Fill details in Create Account Page");
@@ -1250,23 +1252,47 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			myPatientPage=pFormMedicationsPage.fillMedicationFormFields();	
 
 			log("Step 21: Wait 120 seconds, so the message can be processed");
-			Thread.sleep(120000);
+			Thread.sleep(60000);
 			
-			log("Step 22: Setup Oauth client"); 
+			log("Step 22: Setup Oauth client 2.O"); 
 			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
 			
 			Long since = timestamp / 1000L - 60 * 24;
 			
-			log("Step 23: Getting messages since timestamp: " + since);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			if(i==1)
+			{
+				getURL=testData.getRestUrl()+"/"+externalPatientID;}
+			else
+			{
+				log("Verify both the patient details in ccdExchangeBatch response ");
+				getURL=testData.getRestUrl()+"Batch";}
+			
+			log("Step 23:  Getting forms (CCDs) since timestamp: " + since +" using ccdExchange API");
+			RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.getResponsePath());
 			
 			
+			List<String> patientList=RestUtils.patientDatails;
+			patientList.add(externalPatientID);
+			patientList.add(patientID);
+			patientList.add(firstName);
+			
+			for(int j=0;j<i;j++){
 			log("Step 24: Validate PatientDemographics and CCD details in the response");
-			RestUtils.isPatientAppeared(testData.getResponsePath(), externalPatientID,patientID,firstName);
+			RestUtils.isPatientAppeared(testData.getResponsePath(), patientList.get(0),patientList.get(1),patientList.get(2));
+			
+			if(i==2) 
+			{
+				patientList.remove(0);
+				patientList.remove(0);
+				patientList.remove(0);
+			}
+			
+			}
 				
 			log("Step 25: Logout");
 			pMyPatientPage.clickLogout(driver);
 			
+			}
 		}
 	    
 	    
