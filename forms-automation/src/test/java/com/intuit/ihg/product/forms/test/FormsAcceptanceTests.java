@@ -147,7 +147,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Fill the form out with values containing quotes");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		SpecialCharFormFirstPage customPage1 = welcomePage.skipWelcomePage(SpecialCharFormFirstPage.class);
+		SpecialCharFormFirstPage customPage1 = welcomePage.initializeFormToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
 		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveAndContinueButton(SpecialCharFormSecondPage.class);
 		customPage2.selectAnswerQuoteMark();
@@ -217,7 +217,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		FormBasicInfoPage demographPage = welcomePage.skipWelcomePage(FormBasicInfoPage.class);
+		FormBasicInfoPage demographPage = welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
 		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
@@ -250,8 +250,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
         log("Step 2: Fill out the form");
         FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-        welcomePage.skipWelcomePage(FormBasicInfoPage.class);
-        welcomePage.saveAndFinishAnotherTime();
+        welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
+        welcomePage.clickSaveAndFinishAnotherTime();
         driver.switchTo().defaultContent();
         wait.until( ExpectedConditions.elementToBeClickable(myPatientPage.getLogoutLink()) );
 

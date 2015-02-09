@@ -32,7 +32,7 @@ public class SpecialCharFormSecondPage extends PortalCustomFormPage {
 	 * @brief Signs consent with a name containing quote marks
 	 */
 	public void signConsent() {
-		if (consent.getText().length() == 0)
-			consent.sendKeys("Frankie \"Tester\" Testguy");
+        consent.clear();
+        consent.sendKeys("Frankie \"Tester\" Testguy");
 	}
 }

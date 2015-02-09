@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.object.maps.portal.page.questionnaires;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +25,9 @@ public class PortalFormPage extends BasePageObject {
 	@FindBy(id = "nextPageButton")
 	private WebElement btnContinue;
 
+    @FindBy(id = "prevPageButton")
+    private WebElement previousPageButton;
+
     @FindBy(className = "save")
     private WebElement saveAndFinishLink;
 	
@@ -34,7 +38,7 @@ public class PortalFormPage extends BasePageObject {
 	/**
 	 * @brief Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form
-	 * 		  continueBtton WebElement of the continue button
+	 * 		  continueButton WebElement of the continue button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
@@ -67,9 +71,9 @@ public class PortalFormPage extends BasePageObject {
 	public <T extends PortalFormPage> T clickSaveAndContinueButton() throws Exception {
 		return clickSaveAndContinueButton(null, this.btnContinue);
 	}
-	
+
 	/**
-	 * @Description:Click on Submit Form Button
+	 * @Description Click on Submit Form Button
 	 * @return
 	 * @throws Exception
 	 */
@@ -81,7 +85,7 @@ public class PortalFormPage extends BasePageObject {
 		closeButton.click();
 	}
 
-    public void saveAndFinishAnotherTime() {
+    public void clickSaveAndFinishAnotherTime() {
         saveAndFinishLink.click();
         try {
             TimeUnit.SECONDS.sleep(5);
@@ -90,4 +94,18 @@ public class PortalFormPage extends BasePageObject {
         }
     }
 
+    public void scrollToFooter() {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        String continueButtonID = previousPageButton.getAttribute("id");
+
+        jsExecutor.executeScript("document.getElementById('" + continueButtonID + "').scrollIntoView();");
+    }
+    
+    public void goToFirstPage() {
+        scrollToFooter();
+        while (previousPageButton.isDisplayed()) {
+            previousPageButton.click();
+            scrollToFooter();
+        }
+    }
 }

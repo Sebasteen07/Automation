@@ -58,10 +58,13 @@ public class FormWelcomePage extends PortalFormPage {
 	 * @return Initiated object for the next page
 	 * @throws Exception
 	 */
-	public <T extends PortalFormPage> T skipWelcomePage(Class<T> nextPageClass) throws Exception {
-		if (isWelcomePageLoaded() == true)
+	public <T extends PortalFormPage> T initializeFormToFirstPage(Class<T> nextPageClass) throws Exception {
+		if (isWelcomePageLoaded()) {
 			return clickSaveAndContinueButton(nextPageClass);
-		else
-			return PageFactory.initElements(driver, nextPageClass);
+        }
+		else {
+            goToFirstPage();
+            return PageFactory.initElements(driver, nextPageClass);
+        }
 	}
 }
