@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -66,6 +65,19 @@ public class InsurancePage extends BasePageObject {
 	
 	@FindBy(xpath = "//a[contains(text(),'Delete')]")
 	private WebElement linkDeleteInsurance; 
+	
+	//Timeout for waiting methods in seconds
+	private int waitingTime = 20; 
+	
+	//Class of the Add Insurance button - present when nonzero amount of insurances exists on Insurances page
+	private String addInsuranceButtonClass = "add";	
+	private String addInsuranceButtonText = "Add Insurance - Click here to add an entry";
+	
+	//Class and value of the Submit Insurance button - present either after clicking Add Insurance or by default, when no Insurances are defined for patient
+	private String submitInsuranceButtonClass = "submit";	
+	private String submitInsuranceButtonValue = "Save Insurance";
+		
+			
 
 	
 	public InsurancePage(WebDriver driver) {
@@ -89,11 +101,11 @@ public class InsurancePage extends BasePageObject {
 		log("Enter Insurance details for Self");		
 		Select relationtoPolicyProvider = new Select(drpdwnrelationtoPolicyProvider);
 		relationtoPolicyProvider.selectByVisibleText(PortalConstants.InsuranceRelation);
-		Thread.sleep(4000);
 				
 		log("Select Insurance Type");
 		Select insuranceType = new Select(drpdwninsuranceType);
 		insuranceType.selectByVisibleText(PortalConstants.InsuranceType);
+		//UI swaps here, performs better than checking the swap
 		Thread.sleep(4000);
 		
 		log("Select Insurance name");
@@ -174,11 +186,11 @@ public class InsurancePage extends BasePageObject {
 		log("Select Insurance Type");
 		Select insuranceType = new Select(drpdwninsuranceType);
 		insuranceType.selectByVisibleText(Insurancetype);
-		Thread.sleep(4000);
 		
 		log("Select Insurance name");
 		Select insuranceName = new Select(drpdwnInsuranceName);
 		insuranceName.selectByValue(InsuranceName);
+		//UI swaps here, performs better than checking the swap
 		Thread.sleep(4000);
 		
 		log("Enter Address");
@@ -216,6 +228,33 @@ public class InsurancePage extends BasePageObject {
 		txtcoPay.sendKeys(insurancelist.get(19));*/
 		
 		btnSaveInsurance.click();
+	}
+	
+	
+	
+	// Waiting methods for Insurance page buttons
+	public void waitForAddInsuranceButton(){
+		log("Waiting for Add Insurance button!");
+		try{
+			IHGUtil.waitForElementByClassAndText(driver, addInsuranceButtonClass, addInsuranceButtonText, waitingTime);
+		}
+		catch (Exception e) {
+			log("Element either not found in time or inaccessible, or something even worse happenned while waiting for Add Insurance button");
+			e.printStackTrace();
+		}
+		log("Add Insurance button found, proceeding!");
+	}
+	
+	public void waitForSubmitInsuranceButton(){
+		log("Waiting for Submit Insurance button!");
+		try{
+			IHGUtil.waitForElementByClassAndValue(driver, submitInsuranceButtonClass, submitInsuranceButtonValue, waitingTime);
+		}
+		catch (Exception e) {
+			log("Element either not found in time or inaccessible, or something even worse happenned while waiting for Submit Insurance button");
+			e.printStackTrace();
+		}
+		log("Submit Insurance button found, proceeding!");
 	}
 
 }

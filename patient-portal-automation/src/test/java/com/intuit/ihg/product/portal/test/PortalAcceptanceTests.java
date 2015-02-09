@@ -772,6 +772,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    ==========================================
 	 *                    ===================
 	 * @throws Exception
+	 * 
+	 * refactored a bit on Feb 9th 2015 - jodvarka
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -805,15 +807,15 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pinsuranceDetailsPage.addInsuranceDetails();
 
 		log("step 8:asserting for Insurance Name and Insurance Type");
-		Thread.sleep(20000);
+		
+		pinsuranceDetailsPage.waitForAddInsuranceButton();
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceName));
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceType));
 
 		log("step 9:Click on delete button to delete Insurance added");
 		pinsuranceDetailsPage.deleteInsurance();
-
-		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");
-		Thread.sleep(20000);
+		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");		
+		pinsuranceDetailsPage.waitForSubmitInsuranceButton();
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceName));
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceType));
 	}

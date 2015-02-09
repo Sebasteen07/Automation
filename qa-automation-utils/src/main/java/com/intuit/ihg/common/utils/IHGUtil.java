@@ -1400,4 +1400,27 @@ public class IHGUtil extends BasePageObject {
             TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
         }
     }
+    public static void waitForElementByClassAndText(WebDriver driver,final String classToFind, final String textToFind, int secondsToWait){
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+        	@Override
+        	public Boolean apply(WebDriver d) {
+        		WebElement result = d.findElement(By.className(classToFind));
+        		return textToFind.equals(result.getText());
+        	}
+        };
+        wdw.until(condition); // Won't get past here till timeout or element is found
+    }
+    public static void waitForElementByClassAndValue(WebDriver driver,final String classToFind, final String valueToFind, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+        	@Override
+            public Boolean apply(WebDriver d) {
+            	WebElement result = d.findElement(By.className(classToFind));  
+                return valueToFind.equals(result.getAttribute("value"));
+            }
+        };
+        wdw.until(condition); // Won't get past here till timeout or element is found
+    }
+
 }
