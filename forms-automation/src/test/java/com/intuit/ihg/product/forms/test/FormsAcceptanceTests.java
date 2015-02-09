@@ -540,18 +540,20 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
 
-
-			Thread.sleep(8000);
+			pCustomFormPreview.waitForPublishLink();
+			
 			log("step 11: Custom Form Preview Page to click on publish");
 			verifyTrue(pCustomFormPreview.isSearchPageLoaded(), "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
 			verifyTrue(verifyTextPresent(driver,customFormTitle),"Vewing custom form is not expected custom form");
-			Thread.sleep(8000);
+			
 			//This assert statements can be changed after getting standard valid custom form from Richard/Don B
 			//verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
 			verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form preview");
 			//verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
 			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
+			
+			pCustomFormPreview.waitForUnpublishLink();
 
 			log("step 12: Manage your forms -Check custom Form published successfully");
 			verifyEquals(pManageForm.checkForPublishedPage(customFormTitle), true, "Custom Form did not published successfully and not present in published forms table");
