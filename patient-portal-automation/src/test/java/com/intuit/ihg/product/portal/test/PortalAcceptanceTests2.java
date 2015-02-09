@@ -671,10 +671,10 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		pWalletPage.addCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.CreditCardNumber,
 						testcasesData.getDob_Month(), PortalConstants.Year, testcasesData.getZip());
 
-		log("step 7:Verify correct CC details get added");
+	/*	log("step 7:Verify correct CC details get added");
 		pWalletPage.verifyCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.Month,
 						PortalConstants.Year);
-
+*/
 		log("Delete the new added Credit card");
 		pWalletPage.removeCreditCard(PortalConstants.CreditCardType);
 

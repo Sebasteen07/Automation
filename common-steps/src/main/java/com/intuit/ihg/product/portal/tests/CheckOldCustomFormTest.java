@@ -54,7 +54,7 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 		verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form on Portal");
 	//	verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form on Portal");\
 //
-//        pHealthForm.clickNext();
+        pHealthForm.clickNext();
 //
 //        log("Step 4: Fill Vitals");
 //        pHealthForm.fillVitals();
