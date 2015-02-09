@@ -32,6 +32,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.common.entities.CcdType;
@@ -1422,5 +1423,10 @@ public class IHGUtil extends BasePageObject {
         };
         wdw.until(condition); // Won't get past here till timeout or element is found
     }
+        
+    public static void waitForLinkByText(WebDriver driver, final String text, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+        wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); // Won't get past here till timeout or element is found
+    }   
 
 }
