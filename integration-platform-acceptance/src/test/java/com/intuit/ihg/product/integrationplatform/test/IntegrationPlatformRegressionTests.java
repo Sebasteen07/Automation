@@ -579,7 +579,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
-				Thread.sleep(120000);
+				Thread.sleep(240000);
 				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 					completed = true;
