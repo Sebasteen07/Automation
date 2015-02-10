@@ -7,6 +7,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Created by Adam W on 10.2.2015.
@@ -19,7 +20,7 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
         Log4jUtil.log("Password: " + testData.getAutomationUserPassword());
     }
 
-    public SiteGenPracticeHomePage logInFormsAdminToSG(String login, String password) throws Exception {
+    public SiteGenPracticeHomePage logInSpecificAdminToSG(WebDriver driver, String login, String password) throws Exception {
         log("step 1: Get Data from Excel ##########");
         Sitegen sitegen = new Sitegen();
         SitegenTestData testcasesData = new SitegenTestData(sitegen);

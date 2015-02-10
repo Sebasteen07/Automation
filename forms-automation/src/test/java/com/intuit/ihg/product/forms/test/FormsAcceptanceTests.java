@@ -134,6 +134,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
+    @Test(groups = {"smokeTest"})
+    public void formsConfigSmokeTest() throws Exception {
+        SitegenTestData testData = new SitegenTestData(new Sitegen());
+        SiteGenSteps sgSteps = new SiteGenSteps();
+
+        logTestEnvironmentInfo("formsConfigSmokeTest");
+        DiscreteFormsPage formsPage = sgSteps
+                .logInSpecificAdminToSG(driver, testData.getFormUser(), testData.getFormPassword())
+                .clickLnkDiscreteForms();
+        assertTrue(formsPage.isPageLoaded());
+    }
+
     @Test(enabled = true, groups = {"PatientForms"})
 	public void testQuotationMarksInForm() throws Exception {
 		logTestEnvironmentInfo("testQuotationMarksInForm");
@@ -283,8 +295,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
         Sitegen sitegen = new Sitegen();
         SitegenTestData testcasesData = new SitegenTestData(sitegen);
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-                new SiteGenSteps().logInFormsAdminToSG(testcasesData.getFormUser(), testcasesData.getFormPassword());
+        SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
+                .logInSpecificAdminToSG(driver, testcasesData.getFormUser(), testcasesData.getFormPassword());
 		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 
 		log("step 1: Click on Patient Forms");
