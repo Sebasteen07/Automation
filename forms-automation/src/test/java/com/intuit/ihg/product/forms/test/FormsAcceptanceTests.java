@@ -61,6 +61,23 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Password: " + testData.getAutomationUserPassword());
 	}
 
+    private SiteGenPracticeHomePage logInFormsAdminToSG(String login, String password) throws Exception {
+        log("step 1: Get Data from Excel ##########");
+        Sitegen sitegen = new Sitegen();
+        SitegenTestData testcasesData = new SitegenTestData(sitegen);
+        logSGLoginInfo(testcasesData);
+
+        log("Step 2: Opening sitegen home page");
+        SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver, testcasesData.getSiteGenUrl());
+        SiteGenHomePage sHomePage = sloginPage.login(login, password);
+
+        log("step 3: navigate to SiteGen PracticeHomePage ##########");
+        SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
+        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+        return pSiteGenPracticeHomePage;
+    }
+
 	/**
 	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
 	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
@@ -286,56 +303,48 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
-		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		logSGLoginInfo(testcasesData);
-
-		log("Step 2: Opening sitegen home page");
-		SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = sloginPage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
-
-		log("step 3: navigate to SiteGen PracticeHomePage ##########");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+        Sitegen sitegen = new Sitegen();
+        SitegenTestData testcasesData = new SitegenTestData(sitegen);
+        SiteGenPracticeHomePage pSiteGenPracticeHomePage =
+                logInFormsAdminToSG(testcasesData.getFormUser(), testcasesData.getFormPassword());
 		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 
-		log("step 4: Click on Patient Forms");
+		log("step 1: Click on Patient Forms");
 		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 
-		log("step 5: Unpublish and delete all forms and create a new one");
+		log("step 2: Unpublish and delete all forms and create a new one");
         driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
 
-		log("step 6: Initialize the new form");
+		log("step 3: Initialize the new form");
 		pManageDiscreteForms.prepareFormForTest(newFormName);
 
-		log("step 7: Publish the saved Discrete Form");
+		log("step 4: Publish the saved Discrete Form");
 		pManageDiscreteForms.publishTheSavedForm(newFormName);
 
-		log("step 8: Close the window and logout from SiteGenerator");
+		log("step 5: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle descriptor
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 
-		log("step 9: Go to Patient Portal using the original window");
+		log("step 6: Go to Patient Portal using the original window");
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 		log("URL: " + portalTestcasesData.getFormsUrl());
 
-		log("step 10:LogIn");
+		log("step 7: Log in to Patient Portal");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(),
+                portalTestcasesData.getPassword());
 
-		log("step 11: Click On Start Registration Button and verify welcome page of the previously created form");
+		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
 	}
 
-	/**
+    /**
 	 * @Author: bkrishnankutty
 	 * @Date: 05/4/2013
 	 * @StepsToReproduce: Login to Patient Portal Click on CustomForm Fill
