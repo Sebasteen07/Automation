@@ -6,11 +6,10 @@
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
  	
-<test name = "Integration-Platform-Acceptance" >
+<test name = "Integration-Platform-Regression" >
 	<classes>
 			<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
-			<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
-		
+				
 	</classes>
 </test>
 </suite>

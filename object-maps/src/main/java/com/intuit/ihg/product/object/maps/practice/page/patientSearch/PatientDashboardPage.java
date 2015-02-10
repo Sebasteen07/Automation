@@ -108,7 +108,7 @@ public class PatientDashboardPage extends BasePageObject{
 		txtexternalID.clear();
 		txtexternalID.sendKeys(emrID);
 		btnUpdateInfo.click();
-		IHGUtil.waitForElement(driver, 10, lblPatientID);
+		IHGUtil.waitForElement(driver, 30, lblPatientID);
 		Assert.assertTrue("patient ID is not set", lblPatientID.getText().contains(emrID));
 		return emrID;
 	}

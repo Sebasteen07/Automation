@@ -158,7 +158,7 @@ public class PatientSearchPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver,30,searchResult);
 		patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit "+lstNm+", "+frstNm+"']"));
-		IHGUtil.waitForElement(driver, 10, patient);
+		IHGUtil.waitForElement(driver, 30, patient);
 		patient.click();
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 	}

@@ -3,17 +3,17 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import java.io.IOException;
 
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
+import com.ibm.icu.util.Calendar;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10TestData;
-import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.integrationplatform.utils.OauthUtils;
 
 
 
@@ -31,8 +31,8 @@ public class IntegrationPlatformAcceptanceTests10 {
 	static Oauth10TestData testData = null;
 	String payload=null;
 	String processingUrl=null;
-	Long timestamp = System.currentTimeMillis();
-	String sinceTime="1418714846";
+	Long sinceTime=null;
+    Long sixMonthAgo =null;
 	/*
 	 * Read test-data from excel File
 	 */
@@ -49,18 +49,22 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("OAuthUsername: " + testData.getOAuthUsername());
 		Log4jUtil.log("OAuthPassword: " + testData.getOAuthPassword());
 		
+		Calendar c= Calendar.getInstance();
+		c.add(Calendar.WEEK_OF_MONTH, -24);
+		sixMonthAgo = c.getTime().getTime();
+		sinceTime=sixMonthAgo/1000;
+		
 	}
 	
 	/*
 	 * Set Oauth1.0 connection
 	 */
-	@BeforeMethod
+	
 	public void setConnection() throws IOException
 	{
 		Log4jUtil.log("Step 1: Setup Oauth client 1.0"); 
-		RestUtils.oauthSetup1O(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
-		
-		Log4jUtil.log("Oauth connection successful");
+		assertTrue(OauthUtils.oauthSetup1O(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword()),"Oauth Connection Failed");
+
 	}
 	
 	
@@ -69,20 +73,22 @@ public class IntegrationPlatformAcceptanceTests10 {
 		
 		Log4jUtil.log("TestPIDC covers Post and Get PIDC with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		setConnection();
 
-		String practicePatientId = "Patient" +timestamp;
-		String firstName = "Name" + timestamp;
-		String lastName = "TestPatient1" + timestamp;
-		String email = "vasudeo.parab"+timestamp+"@tejora.com";
-		payload = RestUtils.preparePatient(testData.getCommonPath()+"/patient.xml", practicePatientId, firstName, lastName, email,null);
+		String practicePatientId = "Patient" +sinceTime;
+		String firstName = "Name" + sinceTime;
+		String lastName = "TestPatient1" + sinceTime;
+		String email = "vasudeo.parab"+sinceTime+"@tejora.com";
+		payload = OauthUtils.preparePatient(testData.getCommonPath()+"/patient_Oauth10.xml", practicePatientId, firstName, lastName, email,null);
 		
 		Log4jUtil.log("Step 2: Do a POST call and get processing status URL");
-		processingUrl = RestUtils.setupHttpPostRequest(testData.getPatientRestURL(), payload, testData.getCommonPath()+"/response.xml");
+		processingUrl = OauthUtils.setupHttpPostRequest(testData.getPatientRestURL(), payload, testData.getCommonPath()+"/response.xml");
 		
 		Log4jUtil.log("Processing status URl:"+processingUrl);
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getPatientRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getPatientRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 				
 	}
 	
@@ -91,16 +97,18 @@ public class IntegrationPlatformAcceptanceTests10 {
 				
 		Log4jUtil.log("TestAMDC covers Post and Get AMDC with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		setConnection();
 
-		payload = RestUtils.prepareSecureMessage(testData.getCommonPath()+"/secureMessage.xml", testData.getFrom(), testData.getUserName(), "Test " + timestamp,null);
+		payload = OauthUtils.prepareSecureMessage(testData.getCommonPath()+"/secureMessage.xml", testData.getFrom(), testData.getUserName(), "Test " + sinceTime,null);
 				
 		Log4jUtil.log("Step 2: Do Message Post Request");
-		processingUrl = RestUtils.setupHttpPostRequest(testData.getAMDCRestURL(), payload, testData.getCommonPath()+"/response.xml");
+		processingUrl = OauthUtils.setupHttpPostRequest(testData.getAMDCRestURL(), payload, testData.getCommonPath()+"/response.xml");
 
-		Log4jUtil.log("Processing status URl:"+processingUrl);
+	   
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -109,16 +117,18 @@ public class IntegrationPlatformAcceptanceTests10 {
 		
 		Log4jUtil.log("TestAppointment covers Post and Get Appointment with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		setConnection();
 
-		payload = RestUtils.convertXMLFileToString(testData.getCommonPath()+"/PostAppointment.xml");
+		payload = OauthUtils.convertXMLFileToString(testData.getCommonPath()+"/PostAppointment.xml");
 		
 		Log4jUtil.log("Step 2: Do Message Post Request");
-		processingUrl = RestUtils.setupHttpPostRequest(testData.getAppointmentRestURL(), payload, testData.getCommonPath()+"/response.xml");
+		processingUrl = OauthUtils.setupHttpPostRequest(testData.getAppointmentRestURL(), payload, testData.getCommonPath()+"/response.xml");
 
 		Log4jUtil.log("Processing status URl:"+processingUrl);
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getAppointmentRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getAppointmentRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -127,11 +137,13 @@ public class IntegrationPlatformAcceptanceTests10 {
 		
 		Log4jUtil.log("TestPostCCD covers Post EHDC with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		setConnection();
 
-		payload = RestUtils.prepareCCD(testData.getCommonPath()+"/CCD.xml");
+		payload = OauthUtils.prepareCCD(testData.getCommonPath()+"/CCD_Oauth10.xml");
 		
 		Log4jUtil.log("Step 2: Do Message Post Request");
-		processingUrl = RestUtils.setupHttpPostRequest(testData.getEHDCRestURL(), payload, testData.getCommonPath()+"/response.xml");
+		processingUrl = OauthUtils.setupHttpPostRequest(testData.getEHDCRestURL(), payload, testData.getCommonPath()+"/response.xml");
 		
 		Log4jUtil.log("Processing status URl:"+processingUrl);
 		
@@ -142,8 +154,10 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("TestGetReadCommunication covers Get ReadCommunication with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 
+		setConnection();
+		
 		Log4jUtil.log("Step 2: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getReadCommunicationURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getReadCommunicationURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -153,8 +167,10 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("TestGetCCDExchangeBatch covers Get EHDC with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		
+		setConnection();
+		
 		Log4jUtil.log("Step 2: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getccdExchangeBatch() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getccdExchangeBatch() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -164,15 +180,17 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("TestPrescription covers Post and Get Prescription with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 
-		payload = RestUtils.convertXMLFileToString(testData.getCommonPath()+"/post_rx_payload.xml");
+		setConnection();
+		
+		payload = OauthUtils.convertXMLFileToString(testData.getCommonPath()+"/post_rx_payload.xml");
 		
 		Log4jUtil.log("Step 2: Do Message Post Request");
-		processingUrl = RestUtils.setupHttpPostRequest(testData.getPrescriptionRestURL(), payload, testData.getCommonPath()+"/response.xml");
+		processingUrl = OauthUtils.setupHttpPostRequest(testData.getPrescriptionRestURL(), payload, testData.getCommonPath()+"/response.xml");
 
 		Log4jUtil.log("Processing status URl:"+processingUrl);
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getPrescriptionRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getPrescriptionRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -182,8 +200,10 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("TestGetEvents covers Pull Events with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		
+		setConnection();
+		
 		Log4jUtil.log("Step 2: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getPullEventsURL() + "&sinceTime=" + "1419228075000" + "&maxEvents=400", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getPullEventsURL() + "&sinceTime=" + sixMonthAgo + "&maxEvents=400", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
@@ -193,13 +213,11 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("TestGetPayments covers payments with OAuth 1.0");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		
+		setConnection();
+		
 		Log4jUtil.log("Step 2: Do a Get call");
-		RestUtils.setupHttpGetRequest(testData.getPaymentURL() + "?sinceTime=" + "1419233246000", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getPaymentURL() + "?sinceTime=" + "1419233246000", testData.getCommonPath()+"/response.xml");
 		
 	}
-	@AfterMethod
-	public void close() throws IOException
-	{
-		Log4jUtil.log("======================================================================================================");
-	}
+
 }
