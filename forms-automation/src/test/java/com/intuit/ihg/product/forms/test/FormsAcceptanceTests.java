@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.forms.test;
 
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
+import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -51,32 +52,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	private void logTestEnvironmentInfo(String testName) {
 		log(testName);
-		log("Environment on which Testcase is Running: "+IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: "+TestConfig.getBrowserType());
+		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
+		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
 	}
-	
-	private void logSGLoginInfo(SitegenTestData testData) {
-		log("URL: " + testData.getSiteGenUrl());
-		log("Username: " + testData.getAutomationUser());
-		log("Password: " + testData.getAutomationUserPassword());
-	}
-
-    private SiteGenPracticeHomePage logInFormsAdminToSG(String login, String password) throws Exception {
-        log("step 1: Get Data from Excel ##########");
-        Sitegen sitegen = new Sitegen();
-        SitegenTestData testcasesData = new SitegenTestData(sitegen);
-        logSGLoginInfo(testcasesData);
-
-        log("Step 2: Opening sitegen home page");
-        SiteGenLoginPage sloginPage= new SiteGenLoginPage (driver, testcasesData.getSiteGenUrl());
-        SiteGenHomePage sHomePage = sloginPage.login(login, password);
-
-        log("step 3: navigate to SiteGen PracticeHomePage ##########");
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-        return pSiteGenPracticeHomePage;
-    }
 
 	/**
 	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
@@ -300,13 +278,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
-		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
         Sitegen sitegen = new Sitegen();
         SitegenTestData testcasesData = new SitegenTestData(sitegen);
         SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-                logInFormsAdminToSG(testcasesData.getFormUser(), testcasesData.getFormPassword());
+                new SiteGenSteps().logInFormsAdminToSG(testcasesData.getFormUser(), testcasesData.getFormPassword());
 		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 
 		log("step 1: Click on Patient Forms");
@@ -462,7 +440,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		Sitegen sitegen=new Sitegen();
 		SitegenTestData testcasesData=new SitegenTestData(sitegen);
 
-		logSGLoginInfo(testcasesData);
+		SiteGenSteps.logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
