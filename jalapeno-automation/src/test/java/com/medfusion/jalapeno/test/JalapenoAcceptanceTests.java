@@ -58,8 +58,11 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
-		// TODO Implement Verification on Home Page once developed
+		
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -74,8 +77,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		jalapenoLoginPage.login(testData.getUserId(), "WrongPassword");
-		// TODO Implement Verification on Home Page once developed
+		
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
+		assertFalse(jalapenoHomePage.assessHomePageElements());
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

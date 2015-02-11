@@ -31,23 +31,14 @@ public class JalapenoLoginPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "signin_btn")
 	public WebElement signInButton;
 
-	@FindBy(how = How.ID, using = "create_btn")
+	@FindBy(how = How.ID, using = "createbutton")
 	public WebElement joinButton;
 
 	@FindBy(how = How.ID, using = "remember_label")
 	public WebElement rememberUserNameCheckbox;
 
-	@FindBy(how = How.ID, using = "healthkeyInfo")
-	public WebElement healthKeyInfoLinkElement;
-
 	@FindBy(how = How.ID, using = "paynow_button")
 	public WebElement payNowButton;
-
-	@FindBy(how = How.ID, using = "switchLanguage")
-	public WebElement switchLanguageLink;
-
-	@FindBy(how = How.ID, using = "help")
-	public WebElement helpLink;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 
@@ -80,10 +71,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		webElementsList.add(signInButton);
 		webElementsList.add(joinButton);
 		webElementsList.add(rememberUserNameCheckbox);
-		webElementsList.add(healthKeyInfoLinkElement);
 		webElementsList.add(payNowButton);
-		webElementsList.add(switchLanguageLink);
-		webElementsList.add(helpLink);
 
 		for (WebElement w : webElementsList) {
 
@@ -94,6 +82,7 @@ public class JalapenoLoginPage extends BasePageObject {
 					log("WebElement " + w.toString() + "is displayed");
 					allElementsDisplayed = true;
 				} else {
+					log("WebElement " + w.toString() + "is NOT displayed");
 					return false;
 				}
 			}
