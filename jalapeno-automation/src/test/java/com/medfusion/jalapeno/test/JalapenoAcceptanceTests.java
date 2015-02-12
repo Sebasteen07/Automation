@@ -14,6 +14,8 @@ import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
+import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
+import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
@@ -83,7 +85,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
 
 		log(this.getClass().getName());
@@ -94,11 +96,23 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
 		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
-		jalapenoCreatePatientTest.createPatient(driver, testData);
+		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
 		
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());	
+		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
+		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
 		log(this.getClass().getName());
@@ -110,11 +124,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		JalapenoHealthKey6Of6SamePractice jalapenoHealthKey6Of6SamePractice = new JalapenoHealthKey6Of6SamePractice();
 		jalapenoHealthKey6Of6SamePractice.healthKey6Of6SamePractice(driver, testData);
-		
-		
+			
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
 		log(this.getClass().getName());
@@ -128,7 +141,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 	}
 		
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
 		log(this.getClass().getName());
@@ -142,24 +155,4 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLoginLogut() throws Exception {
-
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Getting Test Data");
-		PropertyFileLoader testData = new PropertyFileLoader();
-
-		log("Load login page");
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
-		
-		log("Clicking on Sign out");
-		jalapenoHomePage.logout(driver);
-		
-	
-		// TODO Implement Verification on Home Page once developed
-	}
 }

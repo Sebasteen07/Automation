@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.jalapeno.page.CreateAccount;
 
+import java.util.ArrayList;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 
@@ -37,19 +39,19 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "birthDate_year")
 	private WebElement inputDateOfBirthYear;
 
-	@FindBy(how = How.ID, using = "gender_male_label")
+	@FindBy(how = How.ID, using = "gender_male")
 	private WebElement maleGender;
 
-	@FindBy(how = How.ID, using = "gender_female_label")
+	@FindBy(how = How.ID, using = "gender_female")
 	private WebElement femaleGender;
 
 	@FindBy(how = How.ID, using = "postalCode")
 	private WebElement inputZipCode;
 
-	@FindBy(how = How.ID, using = "cancel")
+	@FindBy(how = How.ID, using = "cancelStep")
 	private WebElement buttonCancel;
 
-	@FindBy(how = How.ID, using = "next")
+	@FindBy(how = How.ID, using = "nextStep")
 	private WebElement buttonChooseUserId;
 
 	public JalapenoCreateAccountPage(WebDriver driver) {
@@ -90,6 +92,46 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 		buttonChooseUserId.click();
 
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage2.class);
+	}
+	
+	public boolean assessCreateAccountPageElements() {
+
+		boolean allElementsDisplayed = false;
+
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(inputPatientFirstName);
+		webElementsList.add(inputPatientLastName);
+		webElementsList.add(inputEmailAddresss);
+		webElementsList.add(inputDateOfBirthMonth);
+		webElementsList.add(inputDateOfBirthDay);
+		webElementsList.add(inputDateOfBirthYear);
+		webElementsList.add(maleGender);
+		webElementsList.add(femaleGender);
+		webElementsList.add(inputZipCode);
+		webElementsList.add(buttonCancel);
+		webElementsList.add(buttonChooseUserId);
+
+
+		for (WebElement w : webElementsList) {
+
+			try {
+				IHGUtil.waitForElement(driver, 20, w);
+				log("Checking WebElement" + w.toString());
+				if (w.isDisplayed()) {
+					log("WebElement " + w.toString() + "is displayed");
+					allElementsDisplayed = true;
+				} else {
+					log("WebElement " + w.toString() + "is NOT displayed");
+					return false;
+				}
+			}
+
+			catch (Throwable e) {
+				log(e.getStackTrace().toString());
+			}
+
+		}
+		return allElementsDisplayed;
 	}
 	
 	public boolean isTextVisible(String text) {

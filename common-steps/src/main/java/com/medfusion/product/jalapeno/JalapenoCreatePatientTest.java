@@ -70,14 +70,22 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 		if(lastName.isEmpty()) {
 			lastName = testData.getLastName() + randomize;
 		}
+		
+		if(password.isEmpty()) {
+			password = testData.getPassword();
+		}
+
 
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
 
 		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 =  jalapenoCreateAccountPage.fillInDataPage1(firstName, lastName, email,
 				testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear(), true, testData.getZipCode());	
-		jalapenoCreateAccountPage2.fillInDataPage2(email, testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 		
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		jalapenoCreateAccountPage2.fillInDataPage2(null, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}

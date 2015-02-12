@@ -22,23 +22,20 @@ public class JalapenoLoginPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "password")
 	public WebElement inputPassword;
 
-	@FindBy(how = How.ID, using = "signinForgotUserid")
-	public WebElement forgotUserIdLink;
-
-	@FindBy(how = How.ID, using = "signinForgotUserPassword")
-	public WebElement forgotUserPasswordLink;
-
 	@FindBy(how = How.ID, using = "signin_btn")
 	public WebElement signInButton;
 
-	@FindBy(how = How.ID, using = "createbutton")
+	@FindBy(how = How.ID, using = "create_btn")
 	public WebElement joinButton;
 
-	@FindBy(how = How.ID, using = "remember_label")
+	@FindBy(how = How.ID, using = "remember")
 	public WebElement rememberUserNameCheckbox;
 
 	@FindBy(how = How.ID, using = "paynow_button")
 	public WebElement payNowButton;
+	
+	@FindBy(how = How.ID, using = "forgotUserOrPasswordButton")
+	public WebElement forgotUserOrPasswordButton;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 
@@ -66,8 +63,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputUserId);
 		webElementsList.add(inputPassword);
-		webElementsList.add(forgotUserIdLink);
-		webElementsList.add(forgotUserPasswordLink);
+		webElementsList.add(forgotUserOrPasswordButton);
 		webElementsList.add(signInButton);
 		webElementsList.add(joinButton);
 		webElementsList.add(rememberUserNameCheckbox);
