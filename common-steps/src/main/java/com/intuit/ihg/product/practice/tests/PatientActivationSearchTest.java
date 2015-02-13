@@ -44,17 +44,22 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		return emailAddressString;
 	}
 
-	public String PatientActivation(WebDriver driver, PracticeTestData practiceTestData,String email) throws Exception {
+	public String PatientActivation(WebDriver driver, PracticeTestData practiceTestData,String email, 
+			String doctorLogin, String doctorPassword, String url) throws Exception {
 		
 		log("Test Case: Patient Activation");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("step 1: Login to Practice Portal");
-
+		
+		String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
+		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
+		String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPassword() : doctorPassword;
+		
 		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(tempDocLogin, tempDocPassword);
 
 		log("step 2: Click on Patient Search");
 		PatientSearchPage patientSearchPage=practiceHome.clickPatientSearchLink();
@@ -62,9 +67,9 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		log("step 3: Click on Add new Patient");
 		PatientactivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
 
-		log("step 3: Enter all the details and click on Register");
+		log("step 4: Enter all the details and click on Register");
 		patientactivationPage.setinitialdetails(email);
-		
+				
 		log("Moving to linkUrl to finish Create Patient procedure");
 			
 		unlockLink = patientactivationPage.getUnlockLink();
@@ -76,9 +81,7 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		
 		driver.switchTo().defaultContent();
 		
-		return firstNameString;
-		
+		return unlockLink;	
 	}
-	
  
 }

@@ -1530,9 +1530,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		// Creating data provider
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
-
-		patientActivationSearchTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail());
-
+		
+		patientActivationSearchTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail(), null, null, null);
+		
 		// Moving to the Unlock Link get from the Creation on the
 		// PracticePortal
 
@@ -1540,7 +1540,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		patientActivation.ActivatePatient(driver, testcasesData, patientActivationSearchTest, practiceTestData,
 				patientActivationSearchTest.getUnlockLink());
-
 	}
 	
 

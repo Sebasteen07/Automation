@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ifs.csscat.report.model.testng.Test;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -60,10 +59,10 @@ public class PatientactivationPage extends BasePageObject{
 	@FindBy(css="input[onclick*='checkGenKey()']")
 	private WebElement btnGenerateKey;
 	
-	@FindBy(css="a[href*='home.unlock']")
+	@FindBy(css="a[href*='activationCode']")
 	private WebElement unlockLink;
 	
-	@FindBy(css="input[onclick*='returnToCaller()']")
+	@FindBy(how = How.XPATH, using ="//input[@value='Done']")
 	private WebElement btnDone;
 	
 	@FindBy( how = How.NAME, using="birthday")
@@ -107,9 +106,6 @@ public class PatientactivationPage extends BasePageObject{
 	
 	@FindBy(name="member_state")
 	private WebElement State;
-	
-	/*@FindBy(css="form[name*='unlockmain'] > table.7.1]")
-	private WebElement activationCode;*/
 	
 	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
@@ -159,10 +155,10 @@ public class PatientactivationPage extends BasePageObject{
 	public void setinitialdetails(String sEmail)
 	{
 		firstNameString="Beta" + IHGUtil.createRandomNumericString();
-		lastNameString="Tester";
-		patientIdString=IHGUtil.createRandomNumericString();
+		lastNameString="Tester";	
 		zipCodeString=PracticeConstants.Zipcode;
 		emailAddressString=IHGUtil.createRandomEmailAddress(sEmail);
+		patientIdString=emailAddressString;
 		
 		IHGUtil.PrintMethodName();
 		Log4jUtil.log("New Random First Name is"+firstNameString);

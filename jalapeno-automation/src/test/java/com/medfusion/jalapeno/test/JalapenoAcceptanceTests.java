@@ -10,6 +10,11 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.intuit.ihg.product.portal.utils.Portal;
+import com.intuit.ihg.product.portal.utils.TestcasesData;
+import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
+import com.intuit.ihg.product.practice.utils.Practice;
+import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
@@ -18,6 +23,7 @@ import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
 import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 
 /**
  * @Author:Jakub Calabek
@@ -107,6 +113,53 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
 		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
 		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientActivation() throws Exception {
+
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+
+		log("Getting Test Data");
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+		// Creating data provider
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+		
+		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
+		
+		log("Patient Activation on Practice Portal");
+		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail(), 
+				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());	
+		
+		log("Finishing of patient activation");
+		JalapenoPatientActivationPage jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
+	
+		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation("",
+			testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
+			testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
+		
+		log("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Logging out");
+		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testDataFromProp.getPassword());
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());	
+		
+		log("Select PAPER delivery preference");
+		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
+		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.PAPER);
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Logging out");
 		
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());

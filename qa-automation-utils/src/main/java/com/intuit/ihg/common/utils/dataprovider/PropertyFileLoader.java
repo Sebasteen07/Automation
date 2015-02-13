@@ -135,6 +135,18 @@ public class PropertyFileLoader {
 	public String getHealthKey6Of6ZipInactive() {
 		return property.getProperty("HealthKey6Of6ZipInactive");
 	}
+	
+	public String getDoctorLogin() {
+		return property.getProperty("doctorLogin");	 
+	}
+	
+	public String getDoctorPassword() {
+		return property.getProperty("doctorPassword");	 
+	}
+	
+	public String getPortalUrl() {
+		return property.getProperty("portalUrl");	 
+	}
 
 	public PropertyFileLoader() throws IOException {
 
