@@ -3,6 +3,7 @@ package com.intuit.ihg.product.forms.test;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -141,7 +142,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
         logTestEnvironmentInfo("formsConfigSmokeTest");
         DiscreteFormsPage formsPage = sgSteps
-                .logInSpecificAdminToSG(driver, testData.getFormUser(), testData.getFormPassword())
+                .logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword())
                 .clickLnkDiscreteForms();
         assertTrue(formsPage.isPageLoaded());
     }
@@ -161,6 +162,64 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		customPage2.signConsent();
 		customPage2.clickSaveAndContinueButton();
 		customPage2.submitForm();
+	}
+    
+    /**
+     * Tect Case in TestLink: MF-1265
+     * @author phajek
+     * @Date: 13/02/2015
+	 * StepsToReproduce:
+     *      Log in to SG as SU
+     *      Go to Forms Config
+     *      Unpublish all forms
+     *      Delete all forms
+     *      Search and add a new Calculated form
+     *      Test if it is displayed in Calculated Forms directory
+     *      Delete the Form
+     *      Test if it is displayed in Calculated Forms directory
+     * === Prerequisite for the test case to run=========
+	 * Practice configured
+	 * Practices configured on: DEV3, DEMO, PROD
+	 * ============================================================
+	 * @throws Exception
+	 */
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
+	public void testCalculatedFormAddRemove() throws Exception {
+
+		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
+        Sitegen sitegen = new Sitegen();
+        SitegenTestData testcasesData = new SitegenTestData(sitegen);
+        SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
+                .logInUserToSG(driver, testcasesData.getadminUser(), testcasesData.getadminPassword(), testcasesData.getAutomationPracticeName());
+		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+
+		log("step 1: Click on Patient Forms");
+		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		assertTrue(pManageDiscreteForms.isPageLoaded());
+
+		log("step 2: Unpublish and delete all forms and add calculated form");
+        driver.manage().window().maximize();
+		pManageDiscreteForms.initializePracticeForNewForm();
+		assertTrue(
+				pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+		
+
+		log("step 3: Check if the added form is no longer in the Calculated Form Directory ");
+		assertFalse(
+				pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+		
+		log("step 4: Delete all Forms and check if the Calculated Form is back in Directory");
+		pManageDiscreteForms.initializePracticeForNewForm();
+		assertTrue(
+				pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+
+		log("step 5: Close the window and logout from SiteGenerator");
+		// Switching back to original window using previously saved handle descriptor
+		driver.close();
+		driver.switchTo().window(parentHandle);
+		pSiteGenPracticeHomePage.clicklogout();
+
+		
 	}
 
 	/**
@@ -296,7 +355,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         Sitegen sitegen = new Sitegen();
         SitegenTestData testcasesData = new SitegenTestData(sitegen);
         SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-                .logInSpecificAdminToSG(driver, testcasesData.getFormUser(), testcasesData.getFormPassword());
+                .logInUserToSG(driver, testcasesData.getFormUser(), testcasesData.getFormPassword());
 		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
 
 		log("step 1: Click on Patient Forms");
@@ -306,6 +365,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Unpublish and delete all forms and create a new one");
         driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
+		pManageDiscreteForms.createNewForm();
 
 		log("step 3: Initialize the new form");
 		pManageDiscreteForms.prepareFormForTest(newFormName);

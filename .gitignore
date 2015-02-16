@@ -42,3 +42,7 @@ practice-portal-automation/.gitignore
 qa-automation-utils/.gitignore
 service-mediator-automation/.gitignore
 sitegen-automation/.gitignore
+
+# Eclipse specific
+*.classpath
+*.project

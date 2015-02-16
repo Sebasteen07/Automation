@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-import static org.testng.AssertJUnit.fail;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +30,9 @@ public class DiscreteFormsPage extends BasePageObject{
 
 	@FindBy ( xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/a[text() = 'Custom Form']")
 	private WebElement customFormButton;
+	
+	@FindBy ( id = "addCalculatedForm")
+	private WebElement calculatedFormButton;
 
 	@FindBy(xpath = "//a[contains(text(),'Registration & Health History Form')]")
 	private WebElement registrationHealthHistoryFormButton;
@@ -202,13 +204,8 @@ public class DiscreteFormsPage extends BasePageObject{
 	 * Prepares practice for automated test - unpublishes and deletes all forms and creates a new one
 	 * @return Name of the newly created form
 	 */
-	public void initializePracticeForNewForm() throws Exception {
-		// name for the new form
 	
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-		unpublishAllForms();
-		deleteAllUnPublishedForms();
-		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+	public void createNewForm() throws Exception {
 		createNewDiscreteForm();
         try {
             driver.findElement(By.xpath("//a[contains(text(), 'General Registration and Health History')]"));
@@ -218,6 +215,47 @@ public class DiscreteFormsPage extends BasePageObject{
             driver.findElement(By.xpath("//a[contains(text(), 'General Registration and Health History')]"));
         }
         log("A new form successfully created");
+	}
+	
+	public boolean addCalculatedForm(String calculatedFormName) throws Exception {
+		IHGUtil.PrintMethodName();
+		System.out.println("CLICK ON CALCULATED FORM BUTTON");
+		IHGUtil.waitForElement(driver, 30, calculatedFormButton);
+		calculatedFormButton.click();
+		CalculatedFormDirectory pCalculatedFormDirectory = new CalculatedFormDirectory(driver);
+		boolean foundForm=pCalculatedFormDirectory.searchForm(calculatedFormName);
+		if (foundForm)
+		{
+			pCalculatedFormDirectory.selectFound();
+			pCalculatedFormDirectory.addSelected();
+		}	
+
+		pCalculatedFormDirectory.closeDirectory();
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+		
+		return foundForm;		
+	}
+	
+	public boolean searchCalculatedForm(String calculatedFormName) throws Exception {
+		IHGUtil.PrintMethodName();
+		System.out.println("CLICK ON CALCULATED FORM BUTTON");
+		IHGUtil.waitForElement(driver, 30, calculatedFormButton);
+		calculatedFormButton.click();
+		CalculatedFormDirectory pCalculatedFormDirectory = new CalculatedFormDirectory(driver);
+		boolean foundForm=pCalculatedFormDirectory.searchForm(calculatedFormName);
+		pCalculatedFormDirectory.closeDirectory();
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+		return foundForm;
+	}
+	
+	public void initializePracticeForNewForm() throws Exception {
+		// name for the new form
+	
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		unpublishAllForms();
+		deleteAllUnPublishedForms();
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+
 	}
 	
 	public void prepareFormForTest(String newFormName) throws Exception {
@@ -289,5 +327,6 @@ public class DiscreteFormsPage extends BasePageObject{
         socialPage.clickBackToTheList();
         socialPage.clickCloseDialogButton();
 	}
+	
 	
 }
