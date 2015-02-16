@@ -10,9 +10,6 @@ import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by Adam W on 10.2.2015.
- */
 public class SiteGenSteps extends BaseTestNGWebDriver {
 
     public static void logSGLoginInfo(SitegenTestData testData) {
@@ -22,13 +19,14 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
         Log4jUtil.log("Automation Practice: " + testData.getAutomationPracticeName());
     }
 
-    public SiteGenPracticeHomePage 
-    	logInUserToSG(WebDriver driver, String login, String password) throws Exception {
+    public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password)
+            throws Exception {
     	return logInUserToSG(driver,login,password,"");
-    	
     }
     
-    public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password, String practiceName) throws Exception {
+    public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password,
+                                                 String practiceName)
+            throws Exception {
         log("step 1: Get Data from Excel ##########");
         Sitegen sitegen = new Sitegen();
         SitegenTestData testcasesData = new SitegenTestData(sitegen);
