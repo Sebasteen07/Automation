@@ -1426,7 +1426,11 @@ public class IHGUtil extends BasePageObject {
         
     public static void waitForLinkByText(WebDriver driver, final String text, int secondsToWait) {         
         WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
-        wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); // Won't get past here till timeout or element is found
+        wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); 
     }   
 
+    public static void waitForElementByXpath(WebDriver driver, final String expression, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+        wdw.until(ExpectedConditions.presenceOfElementLocated(By.xpath(expression)));
+    } 
 }

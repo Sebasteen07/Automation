@@ -35,6 +35,7 @@ public class MobileBasePage extends BasePageObject {
     @FindBy(xpath = "//*[@class='errorMsg']")
     private WebElement errorMsg;
 
+    private final int waitTimeout = 15;
     public MobileBasePage(WebDriver driver) {
 
         super(driver);
@@ -96,23 +97,18 @@ public class MobileBasePage extends BasePageObject {
         return url;
     }
 
-    public boolean verifyPageLoaded() throws InterruptedException {
-        Thread.sleep(5000);
+    public boolean verifyPageLoaded() {        
         boolean pageLoaded = false;
-        int count = 1;
-        do {
-            try {
-                driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-                driver.findElement(By.xpath("//*[@class='ui-mobile-viewport ui-overlay-c ui-mobile-viewport-transitioning viewport-slide']"));
-                count++;
-            } catch (NoSuchElementException e) {
-                //Suppress the error
-                pageLoaded = true;
-            }
-        } while (!pageLoaded && count <= 5);
-
+        try{
+        	IHGUtil.waitForElementByXpath(driver, "//*[@class='ui-mobile-viewport ui-overlay-c ui-mobile-viewport-transitioning viewport-slide']", waitTimeout);
+        	pageLoaded = true;
+        }
+        catch (Exception e){
+        	//If waitForElementByXpath throws any exception, it's obvious that the page isn't loaded 
+        	//- this'll fail anyway in places where we assert that it is, so there's no need to propagate any exception
+        	log("Something bad happened when waiting for the page to load! Step by step Login Logout please");
+        }
         return pageLoaded;
-
     }
 
     //div[contains(@class,'ui-page-active')]/div/h1

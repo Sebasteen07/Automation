@@ -348,7 +348,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		pMyPatientPage = pSubconfirm.clickClose();
 		pMyPatientPage.clickLogout();
-		Thread.sleep(2000);
+		//Let's leave this here just in case it falls apart on Jenkins
+		//Thread.sleep(2000);
 
 		log("step 6: Get Practice Test Data");
 		Practice practice = new Practice();
@@ -369,8 +370,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.getRequestDetails(reason);
 		assertNotNull(detailStep1,
 				"The submitted patient request was not found in the practice");
-		
-		Thread.sleep(3000);
+		//Let's leave this here just in case it falls apart on Jenkins
+		//Thread.sleep(3000);
 		log("step 10: Choose process option and respond to patient");
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
 
@@ -795,7 +796,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		pMyPatientPage = pRequestRenewalPage.clickClose();
 		pMyPatientPage.clickLogout();
-		Thread.sleep(2000);
+		
+		//Let's leave this here just in case it falls apart on Jenkins
+		//Thread.sleep(2000);
 
 		// Load up practice test data
 		Practice practice = new Practice();
