@@ -49,9 +49,9 @@ public class JalapenoHomePage extends BasePageObject {
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-		PageFactory.initElements(driver, this);
-		
-		}
+		driver.manage().window().maximize();
+		PageFactory.initElements(driver, this);	
+	}
 
 	public JalapenoLoginPage logout(WebDriver driver) {
 		
@@ -80,7 +80,7 @@ public class JalapenoHomePage extends BasePageObject {
 		for (WebElement w : webElementsList) {
 
 			try {
-				IHGUtil.waitForElement(driver, 30, w);
+				IHGUtil.waitForElement(driver, 20, w);
 				log("Checking WebElement" + w.toString());
 				if (w.isDisplayed()) {
 					log("WebElement " + w.toString() + "is displayed");
