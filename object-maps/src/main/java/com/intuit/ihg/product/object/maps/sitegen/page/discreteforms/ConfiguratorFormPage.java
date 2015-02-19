@@ -10,9 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
- * Created by Adam Warzel on 29.10.2014.
+ * @author Adam Warzel
+ * @ Date 29/10.2014.
  */
-public class FormConfigPage extends BasePageObject {
+public class ConfiguratorFormPage extends BasePageObject {
 
     @FindBy(className = "back")
     private WebElement backToTheList;
@@ -38,7 +39,7 @@ public class FormConfigPage extends BasePageObject {
     @FindBy(id = "loading")
     private WebElement loadingNotification;
 
-    public FormConfigPage(WebDriver driver) {
+    public ConfiguratorFormPage(WebDriver driver) {
         super(driver);
     }
 

@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.FormConfigPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class AllergiesPage extends FormConfigPage {
+public class AllergiesPage extends ConfiguratorFormPage {
 	
 	@FindBy(xpath="//li[@data-section='immunizations']/a")
 	private WebElement lnkVaccinations;

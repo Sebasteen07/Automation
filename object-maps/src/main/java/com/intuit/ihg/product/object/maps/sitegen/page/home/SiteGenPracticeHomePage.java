@@ -18,7 +18,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.ViewIntegrat
 import com.intuit.ihg.product.object.maps.sitegen.page.InterfaceSetUp.InterfaceAdministrationPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.MerchantAccount.MerchantAccountPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CreateCustomForms;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.DiscreteFormsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.location.ManageYourLocationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;
@@ -258,11 +258,11 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	 * @author bkrishnankutty
 	 * Description : Navigate to DiscreteFormPage
 	 */
-	public DiscreteFormsPage clickOnDiscreteForms() {
+	public DiscreteFormsList clickOnDiscreteForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, discreteFormsLink);
 		discreteFormsLink.click();
-		return PageFactory.initElements(driver,DiscreteFormsPage.class);
+		return PageFactory.initElements(driver,DiscreteFormsList.class);
 	}
 	
 	
@@ -275,7 +275,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	 */
 
 	//public DiscreteFormConfigurationUtilityPage clickLnkDiscreteForms() throws Exception {
-	public DiscreteFormsPage clickLnkDiscreteForms() throws Exception {
+	public DiscreteFormsList clickLnkDiscreteForms() throws Exception {
 
 		log("Clicking on Discrete forms");
 		IHGUtil.waitForElement(driver, 50, discreteFormsLink);
@@ -292,7 +292,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 			driver.manage().window().maximize();
 		}
 
-		return PageFactory.initElements(driver, DiscreteFormsPage.class);
+		return PageFactory.initElements(driver, DiscreteFormsList.class);
 
 	}
 

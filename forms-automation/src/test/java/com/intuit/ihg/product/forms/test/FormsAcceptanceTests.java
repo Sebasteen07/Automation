@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.forms.test;
 
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
@@ -29,7 +30,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormAdd
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLayoutPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.DiscreteFormsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.portal.tests.CheckOldCustomFormTest;
@@ -63,21 +64,32 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	private void fillOutputForm(String diacriticString) throws Exception {
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		FormBasicInfoPage basicInfoPage = welcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);		
-		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveAndContinueButton(FormCurrentSymptomsPage.class);
+		FormBasicInfoPage basicInfoPage = welcomePage.clickSaveContinue(FormBasicInfoPage.class);
+
+        FormCurrentSymptomsPage currentSymptomsPage =
+                basicInfoPage.clickSaveContinue(FormCurrentSymptomsPage.class);
 		currentSymptomsPage.setBasicSymptoms();
 		currentSymptomsPage.enterComment(diacriticString);
-		CurrentSymptomsSupplementalPage symptomsSupplemental = currentSymptomsPage.clickSaveAndContinueButton(CurrentSymptomsSupplementalPage.class);
+		CurrentSymptomsSupplementalPage symptomsSupplemental =
+                currentSymptomsPage.clickSaveContinue(CurrentSymptomsSupplementalPage.class);
 		symptomsSupplemental.fillLogicalAnswersForPdfTest();
-		FormMedicationsPage medicationsPage = symptomsSupplemental.clickSaveAndContinueButton(FormMedicationsPage.class);
+
+        FormMedicationsPage medicationsPage =
+                symptomsSupplemental.clickSaveContinue(FormMedicationsPage.class);
 		medicationsPage.setNoMedications();
-		IllnessesSupplementalPage illnessesPage = medicationsPage.clickSaveAndContinueButton(IllnessesSupplementalPage.class);
+
+        IllnessesSupplementalPage illnessesPage =
+                medicationsPage.clickSaveContinue(IllnessesSupplementalPage.class);
 		illnessesPage.fillOut();
-		FormFamilyHistoryPage familyPage = illnessesPage.clickSaveAndContinueButton(FormFamilyHistoryPage.class); 
+
+        FormFamilyHistoryPage familyPage =
+                illnessesPage.clickSaveContinue(FormFamilyHistoryPage.class);
 		familyPage.setNoFamilyHistory();
-		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveAndContinueButton(FormSocialHistoryPage.class);
+
+        FormSocialHistoryPage socialHistoryPage =
+                familyPage.clickSaveContinue(FormSocialHistoryPage.class);
 		socialHistoryPage.fillOutDefaultExerciseLength();
-		socialHistoryPage.clickSaveAndContinueButton();
+		socialHistoryPage.clickSaveContinue();
 		socialHistoryPage.submitForm();
 	}
 
@@ -90,12 +102,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
     private MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
         log("Get Portal Data from Excel ##########");
         Portal portal = new Portal();
-        TestcasesData portalTestcasesData = new TestcasesData(portal);
-        log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
+        TestcasesData portalData = new TestcasesData(portal);
+        log("Patient Portal URL: " + portalData.getFormsAltUrl());
 
         log("Log in to Patient Portal");
-        PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsAltUrl());
-        MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
+        PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsAltUrl());
+        MyPatientPage pMyPatientPage =
+                loginPage.login(portalData.getUsername(), portalData.getPassword());
 
         log("Go to forms page and open the \"" + formIdentifier + "\" form");
         HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
@@ -112,27 +125,28 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
                 practiceTestData.getFormPassword());
 
         log("Click CustomFormTab");
-        SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
-        verifyTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-        return pSearchPatientFormsPage;
+        SearchPatientFormsPage searchFormsPage = practiceHome.clickCustomFormTab();
+        verifyTrue(searchFormsPage.isPageLoaded(),
+                SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+        return searchFormsPage;
     }
 
     /**
      * Verifies that record of completed or partially completed form is from the current day and that
      * the pdf is downloadable
      */
-    private void verifyFormsDateAndPDF(ViewPatientFormPage pViewPatientFormPage)
+    private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage)
             throws Exception {
         String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd");
 
         log("Verify date and download code");
         // take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
-        String submittedDate = pViewPatientFormPage.getLastUpdatedDateFormatted();
+        String submittedDate = viewFormPage.getLastUpdatedDateFormatted();
         assertEquals(submittedDate, currentDate, "Form submitted today not found");
 
-        log("Download URL: " + pViewPatientFormPage.getDownloadURL());
+        log("Download URL: " + viewFormPage.getDownloadURL());
         URLStatusChecker status = new URLStatusChecker(driver);
-        assertEquals(status.getDownloadStatusCode(pViewPatientFormPage.getDownloadURL(), RequestMethod.GET), 200);
+        assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
     @Test(groups = {"smokeTest"})
@@ -141,7 +155,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         SiteGenSteps sgSteps = new SiteGenSteps();
 
         logTestEnvironmentInfo("formsConfigSmokeTest");
-        DiscreteFormsPage formsPage = sgSteps
+        DiscreteFormsList formsPage = sgSteps
                 .logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword())
                 .clickLnkDiscreteForms();
         assertTrue(formsPage.isPageLoaded());
@@ -155,12 +169,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Fill the form out with values containing quotes");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		SpecialCharFormFirstPage customPage1 = welcomePage.initializeFormToFirstPage(SpecialCharFormFirstPage.class);
+		SpecialCharFormFirstPage customPage1 =
+                welcomePage.initializeFormToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
-		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveAndContinueButton(SpecialCharFormSecondPage.class);
+
+        SpecialCharFormSecondPage customPage2 =
+                customPage1.clickSaveContinue(SpecialCharFormSecondPage.class);
 		customPage2.selectAnswerQuoteMark();
 		customPage2.signConsent();
-		customPage2.clickSaveAndContinueButton();
+		customPage2.clickSaveContinue();
 		customPage2.submitForm();
 	}
     
@@ -178,23 +195,27 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
      *      Delete the Form
      *      Test if it is displayed in Calculated Forms directory
      * === Prerequisite for the test case to run=========
-	 * Practice configured
-	 * Practices configured on: DEV3, DEMO, PROD
+	 *
+	 * Practices configured on: DEV3
 	 * ============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
+	@Test(enabled = true)
 	public void testCalculatedFormAddRemove() throws Exception {
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
         Sitegen sitegen = new Sitegen();
-        SitegenTestData testcasesData = new SitegenTestData(sitegen);
+        SitegenTestData testData = new SitegenTestData(sitegen);
         SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-                .logInUserToSG(driver, testcasesData.getadminUser(), testcasesData.getadminPassword(), testcasesData.getAutomationPracticeName());
-		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+                .logInUserToSG(driver,
+                        testData.getAdminUser(),
+                        testData.getAdminPassword(),
+                        testData.getAutomationPracticeName());
+		// Get the current window handle before opening new window
+		String parentHandle = driver.getWindowHandle();
 
 		log("step 1: Click on Patient Forms");
-		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 
 		log("step 2: Unpublish and delete all forms and add calculated form");
@@ -243,15 +264,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-		log("Patient Portal URL: " + portalTestcasesData.getFormsAltUrl());
+		TestcasesData portalData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalData.getFormsAltUrl());
 	
 		log("step 1: Click on Sign Up Fill detials in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(portalTestcasesData.getEmail());
+		String email = PortalUtil.createRandomEmailAddress(portalData.getEmail());
 		log("email:-" + email);
 		CreatePatientTest createPatient = new CreatePatientTest();
-		createPatient.setUrl(portalTestcasesData.getFormsAltUrl());
-		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalTestcasesData);
+		createPatient.setUrl(portalData.getFormsAltUrl());
+		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 		
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
@@ -268,8 +289,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
-		xml = CCDTest.getFormCCD(timestamp, portalTestcasesData.getRestUrl());
-		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
+		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
+		assertTrue(xml.contains(easyBruisingString),
+                "Symptom not found in the CCD, printing the CCD:\n" + xml);
 	}
 
 	@Test(enabled = true, groups = {"PatientForms"})
@@ -283,12 +305,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		FormBasicInfoPage demographPage = welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
-		FormMedicationsPage medsPage = demographPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+
+        FormBasicInfoPage demographPage =
+                welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
+
+        FormMedicationsPage medsPage =
+                demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
-		FormIllnessConditionsPage illsPage = medsPage.clickSaveAndContinueButton(FormIllnessConditionsPage.class);
+
+        FormIllnessConditionsPage illsPage =
+                medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
 		illsPage.checkMononucleosis();
-		illsPage.clickSaveAndContinueButton(null);
+		illsPage.clickSaveContinue(null);
 		illsPage.submitForm();
 
 		log("Step 3: Logout of patient portal");
@@ -349,17 +377,19 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
-        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString()
+                .substring(0, 4);
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
         Sitegen sitegen = new Sitegen();
-        SitegenTestData testcasesData = new SitegenTestData(sitegen);
+        SitegenTestData SGData = new SitegenTestData(sitegen);
         SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-                .logInUserToSG(driver, testcasesData.getFormUser(), testcasesData.getFormPassword());
-		String parentHandle = driver.getWindowHandle(); // Get the current window handle before opening new window
+                .logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
+		// Get the current window handle before opening new window
+		String parentHandle = driver.getWindowHandle();
 
 		log("step 1: Click on Patient Forms");
-		DiscreteFormsPage pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 
 		log("step 2: Unpublish and delete all forms and create a new one");
@@ -381,18 +411,47 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 6: Go to Patient Portal using the original window");
 		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-		log("URL: " + portalTestcasesData.getFormsUrl());
+		TestcasesData portalData = new TestcasesData(portal);
+		log("URL: " + portalData.getFormsUrl());
 
 		log("step 7: Log in to Patient Portal");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, portalTestcasesData.getFormsUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(portalTestcasesData.getUsername(),
-                portalTestcasesData.getPassword());
+		PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsUrl());
+		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(),
+                portalData.getPassword());
 
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		assertTrue( pFormWelcomePage.welcomeMessageContent( pManageDiscreteForms.getWelcomeMessage() ));
+		assertEquals(pFormWelcomePage.getMessageText(), pManageDiscreteForms.getWelcomeMessage());
 	}
+
+    /**
+     * @author: Adam W
+     * @Steps: Login to Site Generator, click on Patient Forms, open calculated form
+     *         change welcome screen, save the form, exit,
+     */
+    @Test(enabled = true)
+    public void testCalculatedFormEdit() throws Exception{
+        logTestEnvironmentInfo("testCalculatedFormEdit");
+        String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
+
+        Sitegen sitegen = new Sitegen();
+        SitegenTestData testData = new SitegenTestData(sitegen);
+        SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps()
+                .logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword());
+
+        DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
+
+        WelcomeScreenPage welcomePage =
+                formsConfigPage.openDiscreteForm("Patient Health Questionnaire (PHQ-9)");
+
+        welcomePage.setWelcomeMessage(newWelcomeMessage);
+        welcomePage.saveOpenedForm();
+        welcomePage.clickBackToTheList();
+
+        FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
+        PortalUtil.setquestionnarieFrame(driver);
+        assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
+    }
 
     /**
 	 * @Author: bkrishnankutty

@@ -46,6 +46,6 @@ public class FormIllnessConditionsPage extends PortalFormPage {
 	 */
 	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
 		setNoConditions();
-		return  clickSaveAndContinueButton(FormFamilyHistoryPage.class);
+		return  clickSaveContinue(FormFamilyHistoryPage.class);
 	}
 }

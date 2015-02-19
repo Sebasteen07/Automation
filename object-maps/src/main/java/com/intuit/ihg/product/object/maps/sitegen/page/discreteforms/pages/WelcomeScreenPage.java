@@ -1,13 +1,12 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-
-public class WelcomeScreenPage extends BasePageObject {
+public class WelcomeScreenPage extends ConfiguratorFormPage {
 	
 	public WelcomeScreenPage(WebDriver driver) {
 		super(driver);
@@ -31,7 +30,7 @@ public class WelcomeScreenPage extends BasePageObject {
 	
 	/**
 	 * Replace welcome message for the patient
-	 * @param message
+	 * @param message a message that will be set as welcome message
 	 */
 	public void setWelcomeMessage(String message) {
 		lnkWelcomeScreenText.clear();
@@ -54,15 +53,6 @@ public class WelcomeScreenPage extends BasePageObject {
 	public BasicInformationAboutYouPage clickLnkBasicInfoAboutYou() {
 		lnkBasicInformationAboutYou.click();
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
-	}
-	
-	/**
-	 * Clicks on the page 6. Current Symptoms
-	 * @return PageFactory initialization of the page
-	 */
-	public CurrentSymptomsPage clickLnkCurrentSymptoms() {
-		lnkCurrentSymptoms.click();
-		return PageFactory.initElements(driver, CurrentSymptomsPage.class);
 	}
 	
 	/**

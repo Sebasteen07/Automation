@@ -1236,7 +1236,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 			
 			log("Step 16: Click on Continue button ");
-			FormBasicInfoPage pFormBasicInfoPage=pFormWelcomePage.clickSaveAndContinueButton(FormBasicInfoPage.class);
+			FormBasicInfoPage pFormBasicInfoPage=pFormWelcomePage.clickSaveContinue(FormBasicInfoPage.class);
 			
 			log("Step 17: Set Basic Information Form Fields");
 			FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromField();
@@ -1246,7 +1246,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			
 			log("Step 19: Set Current Symptoms Form Fields");
 			pFormCurrentSymptomsPage.setNoSymptoms();
-			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.clickSaveAndContinueButton(FormMedicationsPage.class);
+			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.clickSaveContinue(FormMedicationsPage.class);
 			
 			log("Step 20: Set Medication Form Fields");
 			myPatientPage=pFormMedicationsPage.fillMedicationFormFields();	

@@ -194,7 +194,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		
 		if( IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
 		
-            loginpage.login(testData.getadminUser(), testData.getadminPassword());
+            loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
 
             log("step 3: navigate to SiteGen PracticeHomePage ##########");
             pSiteGenHomePage.searchPracticeFromSGAdmin("Bangalore Test Practice");

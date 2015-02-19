@@ -2,7 +2,7 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import static org.testng.AssertJUnit.assertTrue;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.FormConfigPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class SocialHistoryPage extends FormConfigPage {
+public class SocialHistoryPage extends ConfiguratorFormPage {
 	
 	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
@@ -129,7 +129,7 @@ public class SocialHistoryPage extends FormConfigPage {
 	}
 	
 	/**
-	 * Unselects the checkbox for hiding the page
+	 * Deselects the checkbox for hiding the page
 	 * Adds a tea-drinking question so that the page does not hide again
 	 */
 	public void showThisPage() {
