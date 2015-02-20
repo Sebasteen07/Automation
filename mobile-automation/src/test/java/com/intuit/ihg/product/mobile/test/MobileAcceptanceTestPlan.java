@@ -2,6 +2,7 @@ package com.intuit.ihg.product.mobile.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -43,6 +44,7 @@ import com.intuit.ihg.product.object.maps.mobile.page.solutions.pharmacy.Pharmac
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.pharmacy.PharmacyDetailsPage;
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.rxrenewal.RequestRenewalPage;
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.rxrenewal.SelectAMedicationPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.preferences.PreferencesPage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
@@ -783,8 +785,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("step 3: Click RxRenewalTab");
-		SelectAMedicationPage pSelectAMedicationPage = (SelectAMedicationPage) pMyPatientPage
-				.clickRXLink();
+		pMyPatientPage.clickRXLink();
+		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
 
 		log("step 4: select Medication");
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
@@ -886,8 +888,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("step 3: Click RxRenewalTab");
-		SelectAMedicationPage pSelectAMedicationPage = (SelectAMedicationPage) pMyPatientPage
-				.clickRXLink();
+		pMyPatientPage.clickRXLink();
+		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
+		  
 
 		log("step 4: select Medication");
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
