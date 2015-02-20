@@ -23,6 +23,10 @@ public class FormWelcomePage extends PortalFormPage {
 		super(driver);
 	}
 
+    public String getMessageText() {
+        return welcomeMessage.getText();
+    }
+
 	/**
 	 * Checks if the Welcome page of the form is loaded
 	 * @return True if Continue button (which is the main functional part of the page) is loaded, otherwise false
@@ -40,17 +44,9 @@ public class FormWelcomePage extends PortalFormPage {
 		return result;
 	}
 	
-	/**
-	 * Compares string from parameter with Welcome Page message text
-	 * @return True if Welcome page message is equal to the message entered as parameter
-	 */
-	public boolean welcomeMessageContent(String message) {		
-		return message.equals(welcomeMessage.getText());
-	}
-
 	@Override
-	public <T extends PortalFormPage> T clickSaveAndContinueButton(Class<T> nextPageClass) throws Exception {
-		return super.clickSaveAndContinueButton(nextPageClass, this.btnContinue);
+	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
+		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 	
 	/**
@@ -60,7 +56,7 @@ public class FormWelcomePage extends PortalFormPage {
 	 */
 	public <T extends PortalFormPage> T initializeFormToFirstPage(Class<T> nextPageClass) throws Exception {
 		if (isWelcomePageLoaded()) {
-			return clickSaveAndContinueButton(nextPageClass);
+			return clickSaveContinue(nextPageClass);
         }
 		else {
             goToFirstPage();

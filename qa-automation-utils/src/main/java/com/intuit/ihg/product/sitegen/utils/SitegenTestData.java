@@ -36,7 +36,7 @@ public class SitegenTestData {
 	/**
 	 * Returns site gen adminUser from excel sheet
 	 */
-	public String getadminUser() {
+	public String getAdminUser() {
 
 		return sitegenobj.adminUser;
 	}
@@ -45,7 +45,7 @@ public class SitegenTestData {
 	 * Returns site gen adminPassword from excel sheet
 	 */
 
-	public String getadminPassword() {
+	public String getAdminPassword() {
 		return sitegenobj.adminPassword;
 	}
 

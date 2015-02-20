@@ -119,7 +119,7 @@ public class FormEmergencyContactPage extends PortalFormPage
 
 		setPrimaryPhone("1234567890", PortalConstants.Mobile);
 
-		clickSaveAndContinueButton();
+		clickSaveContinue();
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
 	}

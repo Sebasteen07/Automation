@@ -4,8 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -237,7 +235,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
 		setSex(PortalConstants.Sex);
 
-		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
+		return clickSaveContinue(FormEmergencyContactPage.class);
 
 	}
 
@@ -249,7 +247,7 @@ public class FormBasicInfoPage extends PortalFormPage
 	public FormEmergencyContactPage setBasicInfoFromField() throws Exception
 	{ 
 		setStreetAddress();		
-		return clickSaveAndContinueButton(FormEmergencyContactPage.class);
+		return clickSaveContinue(FormEmergencyContactPage.class);
 
 	}
 

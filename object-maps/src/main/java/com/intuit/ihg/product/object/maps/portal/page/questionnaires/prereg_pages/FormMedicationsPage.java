@@ -48,7 +48,7 @@ public class FormMedicationsPage extends PortalFormPage
 	public FormAllergiesPage setMedicationFormFields() throws Exception {
 		setNoMedications();
 
-		return clickSaveAndContinueButton(FormAllergiesPage.class);
+		return clickSaveContinue(FormAllergiesPage.class);
 
 	}
 	

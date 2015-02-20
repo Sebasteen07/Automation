@@ -46,3 +46,7 @@ sitegen-automation/.gitignore
 # Eclipse specific
 *.classpath
 *.project
+
+# test failure output folder
+*/trust/*
+
