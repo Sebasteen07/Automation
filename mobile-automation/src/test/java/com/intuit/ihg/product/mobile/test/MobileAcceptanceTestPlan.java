@@ -372,8 +372,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.getRequestDetails(reason);
 		assertNotNull(detailStep1,
 				"The submitted patient request was not found in the practice");
-		//Let's leave this here just in case it falls apart on Jenkins
-		//Thread.sleep(3000);
+
 		log("step 10: Choose process option and respond to patient");
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
 

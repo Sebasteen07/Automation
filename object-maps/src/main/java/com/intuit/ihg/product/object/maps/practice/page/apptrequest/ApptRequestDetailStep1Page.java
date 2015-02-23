@@ -98,12 +98,11 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * @param entity use one of the other 'choose' helper methods or build your own ApptRequestEntity
 	 */
 	public void processApptAndSubmit(ApptRequestEntity entity) {
-		IHGUtil.PrintMethodName();
-		PracticeUtil.setPracticeFrame(driver);
-
-		// Select process option
+		IHGUtil.PrintMethodName();		
+		driver.switchTo().frame("iframe"); 
+		log(driver.getPageSource());
+		// Select process option		
 		for (WebElement action : processOptions) {
-
 			int actionValue = Integer.parseInt(action.getAttribute("value"));
 			if (entity.getProcessOption() == actionValue) {
 				action.click();
@@ -141,8 +140,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 				.setApptDate("01/01/2020")
 				.setSubject("Approved")
 				.setBody("This is a response from the Practice")
-				.setNoReply(false);
-		
+				.setNoReply(false);		
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
