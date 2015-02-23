@@ -4,36 +4,27 @@
     
 <!--This is a sample config file that can be used for testing. The OAuth library uses the DCPropertyManager so these config values should be included in the containing application-->
 
-    <entry key="oauth.keystore.file.path">./src/test/resources/config/qa1</entry>  
+    <entry key="oauth.keystore.file.path">D:/Work/BitBucket-Repo/integration-platform/oauth</entry>  
 
-   <entry key="oauth.consumer.keysecret.url">http://qa1vip-identity-svc.qhg.local/v1/oauth2/oauthapplication</entry>
-    <entry key="oauth.token.access.userpass.url">https://integration.qa1.medfusion.net/v1/oauth1/token</entry>
+   <entry key="oauth.consumer.keysecret.url">http://qa1vip-identity-svc.qhg.local/identity/services/v1/oauth2/oauthapplication/</entry>
+    <entry key="oauth.token.access.userpass.url">http://qa1vip-identity-svc.qhg.local/identity/services/v1/oauth2/token</entry>
         
    <entry key="resource.owner.baseurl">http://resource.owner.com</entry>	
 	<!--END: Client AND Service Filter Configuration-->
 
     <entry key="log.level">DEBUG</entry> 
 
-    <entry key="ihg.host.patient">https://integration.qa1.medfusion.net</entry>
-    <!-- entry key="ihg.host.patient">http://qa1-apollo-ejb01.ops.medfusion.net:8080</entry -->
+    <entry key="ihg.host.patient">http://qa1aapp11.mf.qhg.local:8080/rwsdk</entry>
     <entry key="ihg.host.amdc">http://qa1aapp11.mf.qhg.local:8080/am</entry>
-    <entry key="ihg.host.events">https://integration.qa1.medfusion.net</entry>
-    <entry key="ihg.host.ccd">https://integration.qa1.medfusion.net</entry>
-    <!--entry key="ihg.host.geccd">http://qa1-apollo-ejb02.ops.medfusion.net:8080/geehr</entry-->
-    <entry key="ihg.host.geccd">https://integration.qa1.medfusion.net</entry>
-  	<entry key="ihg.host.appointments">https://integration.qa1.medfusion.net</entry>
-    
-    
+    <entry key="ihg.host.events">http://qa1aapp01.mf.qhg.local:8080/events</entry>
+    <entry key="ihg.host.ccd">http://qa1aapp13.mf.qhg.local:8080/eh</entry>
+    <entry key="ihg.host.geccd">http://qa1aapp13.mf.qhg.local:8080/geehr</entry>
+  	<entry key="ihg.host.appointments">http://qa1aapp11.mf.qhg.local:8080/am</entry>
+      
 
-    <!-- <entry key="ihg.host.patient">https://integration.qa1.medfusion.net</entry>
-    <entry key="ihg.host.amdc">https://integration.qa1.medfusion.net</entry>
-    <entry key="ihg.host.events">https://integration.qa1.medfusion.net</entry>
-    <entry key="ihg.host.ccd">https://integration.qa1.medfusion.net</entry>
-    <entry key="ihg.host.geccd">https://integration.qa1.medfusion.net</entry> -->
-   
-    <entry key="ihg.practice.id">6d1e97ae-5fe7-425f-a622-7766e363a8f1</entry>
-    <entry key="oauth.apptoken">IHGTrustedDataServiceE2EAppToken</entry>
-    <entry key="oauth.username">79IHGQAAutomationIntegrated11328</entry>
-    <entry key="oauth.password">YBmxU6Ovdq8TdHeRkdZk</entry>
+    <entry key="ihg.practice.id">a100315f-c8e1-4eca-b87e-d13c630c5075</entry>    
+    <entry key="oauth.apptoken">qyprdAB0dCSTnWG4cEgYYcrg7Hzigs6muljYlE15</entry>
+    <entry key="oauth.username">79IHGQAAutomationElekta1026</entry>
+    <entry key="oauth.password">SYXbsWMDalbLUai2OHz4</entry>
     
 </properties>

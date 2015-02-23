@@ -9,8 +9,8 @@
 	</GECcdMessageHeaders>
 	<PatientDemographics xmlns="">
 		<PatientIdentifier>
-			<ExtPracticePatientId>Oauth2.qa1.patient5</ExtPracticePatientId>
-			<IntuitPatientId>1337</IntuitPatientId>
+			<ExtPracticePatientId>oauth2.qa1.patient</ExtPracticePatientId>
+			<IntuitPatientId>1243</IntuitPatientId>
 		</PatientIdentifier>
 		<Name>
 			<Prefix>Mr</Prefix>
@@ -29,14 +29,14 @@
 	</PatientDemographics>
 	<PracticeInformation xmlns="">
 		<PracticeIdentifier>
-			<PracticeId>fd8511b3-e5df-45a0-a980-52c4d6815de4</PracticeId>
-			<IntuitPracticeId>1024</IntuitPracticeId>
+			<PracticeId>6329c98e-eaf0-44af-9a78-6815db150c88</PracticeId>
+			<IntuitPracticeId>1014</IntuitPracticeId>
 		</PracticeIdentifier>
 		<PracticeName>GE Centricity PM</PracticeName>
 		<Provider>
 			<ProviderIdentifier>
-				<ExtPracticeProviderId>CentricityPM1349</ExtPracticeProviderId>
-				<IntuitProviderId>1349</IntuitProviderId>
+				<ExtPracticeProviderId>Centricity1345</ExtPracticeProviderId>
+				<IntuitProviderId>1345</IntuitProviderId>
 			</ProviderIdentifier>
 		</Provider>
 	</PracticeInformation>
