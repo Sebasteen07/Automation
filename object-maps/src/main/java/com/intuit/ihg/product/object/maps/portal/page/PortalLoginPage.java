@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPageOnBetaSite;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
@@ -102,14 +101,14 @@ public class PortalLoginPage extends BasePageObject {
 	public MyPatientPage login( String sUsername, String sPassword ) throws InterruptedException {	
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
-		log( "Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]" );	
+
+        new IHGUtil(driver).addCookieForGoogleAnalytics();
+		log("Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]");
 		log("Waiting for Username element, max wait time is 60 seconds");
 		IHGUtil.waitForElement(driver, 60, username);
 		username.sendKeys( sUsername );
 		password.sendKeys( sPassword );
 		login.click();
-//		Thread.sleep(10000);
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	

@@ -266,18 +266,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData portalData = new TestcasesData(portal);
 		log("Patient Portal URL: " + portalData.getFormsAltUrl());
-	
-		log("step 1: Click on Sign Up Fill detials in Create Account Page");
+
+		log("step 1: Click on Sign Up Fill details in Create Account Page");
 		String email = PortalUtil.createRandomEmailAddress(portalData.getEmail());
 		log("email:-" + email);
 		CreatePatientTest createPatient = new CreatePatientTest();
 		createPatient.setUrl(portalData.getFormsAltUrl());
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
-		
+
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		formsPage.openDiscreteForm("pdfForm");
-		
+
 		log("Step 3: Fill out the form");
 		fillOutputForm(diacriticString);
 		
@@ -430,8 +430,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
      *         change welcome screen, save the form, exit,
      */
     @Test(enabled = true)
-    public void testCalculatedFormEdit() throws Exception{
-        logTestEnvironmentInfo("testCalculatedFormEdit");
+    public void testCalculatedFormSGEdit() throws Exception{
+        logTestEnvironmentInfo("testCalculatedFormSGEdit");
         String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
 
         Sitegen sitegen = new Sitegen();

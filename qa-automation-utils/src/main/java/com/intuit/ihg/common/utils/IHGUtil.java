@@ -1432,5 +1432,27 @@ public class IHGUtil extends BasePageObject {
     public static void waitForElementByXpath(WebDriver driver, final String expression, int secondsToWait) {         
         WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
         wdw.until(ExpectedConditions.presenceOfElementLocated(By.xpath(expression)));
-    } 
+    }
+
+    /**
+     * Adds specific cookie so that automated tests won't be tracked by Google Analytics
+     * This has been implemented only for forms so far (as of 24/2/2015)
+     */
+    public void addCookieForGoogleAnalytics() {
+        log("Creating and adding cookie so that this test wont be tracked by Google Analytics");
+        if (driver.manage().getCookieNamed("MF_TEST") == null) {
+            // getting tomorrow's date
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, 1);
+            date = calendar.getTime();
+
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+            String domain = (String) jsExecutor.executeScript("return document.domain");
+
+            Cookie autoTestCookie = new Cookie("MF_TEST", "true", domain, "/", date);
+            driver.manage().addCookie(autoTestCookie);
+        }
+    }
 }
