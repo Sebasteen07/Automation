@@ -2,6 +2,7 @@ package com.intuit.ihg.product.object.maps.mobile.page;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -55,6 +56,7 @@ public class MobileBasePage extends BasePageObject {
     }
 
     public BasePageObject clickHome() throws InterruptedException {
+		Thread.sleep(1000);
         waitForHome(driver, 10);
         home.click();
         return PageFactory.initElements(driver, BasePageObject.class);
