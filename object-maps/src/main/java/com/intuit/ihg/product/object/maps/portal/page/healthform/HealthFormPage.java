@@ -29,7 +29,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "footer:submit")
 	private WebElement btnSubmit;
 
-	@FindBy(xpath = "//li[a[@title='Form output test']]/table/tbody/tr/td/a")
+	@FindBy(xpath = "//a[@class='pdf text']") //table/tbody/tr/td/a
 	private WebElement lnkclickForPdfDownload;
 
 	// Forms on the page
@@ -180,7 +180,8 @@ public class HealthFormPage extends BasePageObject {
 	public int clickInsuranceHealthFormDownloadText() throws Exception {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-
+		log(driver.getPageSource());
+		log(lnkclickForPdfDownload.getAttribute("href").toString());
 		return insuranceHealthFormDownloadCode(
 				lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
