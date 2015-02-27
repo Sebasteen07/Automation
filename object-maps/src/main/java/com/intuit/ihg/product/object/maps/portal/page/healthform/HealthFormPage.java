@@ -144,7 +144,7 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 20, middleName);
 
 		middleName.sendKeys("Middle");
-		Select selectstate1 = new Select(martialStatus);
+		Select selectstate1 = new Select(maritalStatus);
 		selectstate1.selectByVisibleText("Single");
 
 		if (driver.getPageSource().contains("Preferred Communication Method:")) {
