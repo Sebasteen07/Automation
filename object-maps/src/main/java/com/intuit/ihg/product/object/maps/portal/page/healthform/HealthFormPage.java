@@ -75,10 +75,10 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:1:field")
 	private WebElement middleName;
 
-	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:15:field")
-	private WebElement martialStatus;
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:14:field")
+	private WebElement maritalStatus;
 
-	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:19:field")
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:18:field")
 	private WebElement communicationMethod;
 
 	@FindBy(xpath = "//div[@class='sectionInfo']")
