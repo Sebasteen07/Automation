@@ -395,7 +395,9 @@ public class CreateAccountPage extends BasePageObject {
 		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
+		if(sSSN!=null){
 		txtssn.sendKeys(sSSN);
+		}
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
 		//txtEmail.sendKeys(sEmail);
 

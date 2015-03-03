@@ -622,7 +622,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 
 		log("Step 11: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), null);
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstName, lastName, testData.getBirthDay(), testData.getZipCode(), null, email, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), null);
 		
 		log("Step 12: Assert Webelements in MyPatientPage");
 		assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
