@@ -194,16 +194,16 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		customPage2.clickSaveContinue();
 		customPage2.submitForm();
 	}
-    
+
     /**
 	 * @Author: Adam Warzel
 	 * @Date: April-01-2014
 	 * @UserStory: US7083
-	 * 
+	 *
 	 * Tests if filling out a form generates a PDF, if link for downloading
 	 * the PDF appears in Patient Portal and if the link is working and also
 	 * whether corresponding CCD was generated.
-	 * 
+	 *
 	 * Creates new patient
 	 */
 	@Test(enabled = true, groups = {"PatientForms"})
@@ -213,7 +213,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		// easy bruising is mapped to following term in Forms Configurator in SiteGen
 		String easyBruisingString = "ABO donor$$$easy";
 		String diacriticString = "¿¡eñÑeŘ\"";
-		
+
 		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
 		TestcasesData portalData = new TestcasesData(portal);
@@ -228,10 +228,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Fill out the form");
 		fillOutputForm(diacriticString);
-		
+
 		log("Step 4: Test if PDF is downloadable");
 		checkPDF(formsPage);
-		
+
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
@@ -320,10 +320,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * ============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class, groups = {"PatientForms"})
+	@Test(enabled = true, groups = {"PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
-        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString()
-                .substring(0, 4);
+        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
         Sitegen sitegen = new Sitegen();
@@ -575,18 +574,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
 
 			pCustomFormPreview.waitForPublishLink();
-			
+
 			log("step 11: Custom Form Preview Page to click on publish");
 			verifyTrue(pCustomFormPreview.isSearchPageLoaded(), "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
 			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
 			verifyTrue(verifyTextPresent(driver,customFormTitle),"Vewing custom form is not expected custom form");
-			
+
 			//This assert statements can be changed after getting standard valid custom form from Richard/Don B
 			//verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
 			verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form preview");
 			//verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
 			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
-			
+
 			pCustomFormPreview.waitForUnpublishLink();
 
 			log("step 12: Manage your forms -Check custom Form published successfully");

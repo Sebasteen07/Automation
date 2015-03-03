@@ -15,13 +15,13 @@ import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 
 public class CreatePatientTest extends BaseTestNGWebDriver {
-	
+
 	private String email="";
 	private String password="";
 	private String url="";
 	private String firstName = "";
 	private String lastName = "";
-	
+
 	//Getters for getting the email and password value and reusing in other tests
 	public String getEmail() {
 		return email;
@@ -30,46 +30,46 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public void setUrl(String str) {
 		url = str;
 	}
-	
+
 	public void setFirstName(String str) {
 		firstName = str;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
-	
+
 	public void setLastName(String str) {
 		lastName = str;
 	}
-	
+
 	public String getLastName() {
 		return lastName;
 	}
 
 
-	public MyPatientPage createPatient(WebDriver driver,TestcasesData testcasesData) throws Exception {
+	public MyPatientPage createPatient(WebDriver driver, TestcasesData testcasesData) throws Exception {
 
 		log("Test Case: testCreatePatient");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		
-		/* Not very elegant way of changing URL the method uses 
+
+		/* Not very elegant way of changing URL the method uses
 		 * If someone sets the URL in the object before calling this method then the set URL is be used
 		 * otherwise (the default way) the URL from testcasesData.geturl() is used
 		 */
 		if ( url.isEmpty() ){
 			url = testcasesData.geturl();
 		}
-			
+
 		log("step 1: Get Data from Excel");
 		log("URL: " + url);
 
@@ -102,26 +102,27 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 		log("step 7: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-		
+
+		log("Patient successfully created");
+		log("Username: " + email);
+		log("Password: " + testcasesData.getPassword());
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-	
-	
-	
+
 	public MyPatientPage createPatientOnBetaSite(WebDriver driver,TestcasesData testcasesData) throws Exception {
 
 		log("Test Case: testCreatePatientOnBetaSite");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		
-		/* Not very elegant way of changing URL the method uses 
+
+		/* Not very elegant way of changing URL the method uses
 		 * If someone sets the URL in the object before calling this method then the set URL is be used
 		 * otherwise (the default way) the URL from testcasesData.geturl() is used
 		 */
 		if ( url.isEmpty() ){
 			url = testcasesData.getBetaUrl();
 		}
-			
+
 		log("step 1: Get Data from Excel");
 		log("URL: " + url);
 
@@ -139,7 +140,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 				testcasesData.getLastName(), email, testcasesData.getEmail(), testcasesData.getPhoneNumber(), testcasesData.getPhoneType(),
 				testcasesData.getDob_Month(), testcasesData.getDob_Day(), testcasesData.getDob_Year(), testcasesData.getZip(),
 				testcasesData.getSSN());
-		
+
 		log("step 4:Fill security detials in Create Account  Page 2");
 		MyPatientPage pMyPatientPage = pCreateAccountPasswordPage.createPasswordSecurityOnBeta(email, testcasesData.getPassword(),
 				testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getPreferredLocationBeta(), testcasesData.getPreferredDoctorBeta());
@@ -157,7 +158,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 		log("step 8:Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-		
+
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 

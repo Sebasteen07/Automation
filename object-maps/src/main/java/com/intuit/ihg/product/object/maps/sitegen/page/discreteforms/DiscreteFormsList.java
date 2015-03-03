@@ -20,7 +20,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.intuit.ihg.common.utils.IHGConstants;
 
 	/**
-	 * 
+	 *
 	 * @author bbinisha
 	 * @ Date : 11/12/2013
 	 */
@@ -33,7 +33,7 @@ public class DiscreteFormsList extends BasePageObject {
 	@FindBy(xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/" +
             "a[text() = 'Custom Form']")
 	private WebElement customFormButton;
-	
+
 	@FindBy(id = "addCalculatedForm")
 	private WebElement calculatedFormButton;
 
@@ -43,28 +43,28 @@ public class DiscreteFormsList extends BasePageObject {
 
 	@FindBy(xpath = "//a[contains(text(),'Registration & Health History Form')]")
 	private WebElement registrationHealthHistoryFormButton;
-	
+
 	@FindBy(linkText = "General Registration and Health History")
 	private WebElement lnkGeneralRegAndHealthHistory;
-	
+
 	@FindBy(xpath = ".//div[@class='admin_inner']//" +
             "table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")
 	private WebElement lnkAutomationPracticeDiscreteForm;
-	
+
 	@FindBy(name = "custom_form_name")
 	private WebElement lnkCustomForm;
-	
-	@FindBy(id="save_config_form") 
+
+	@FindBy(id="save_config_form")
 	private WebElement btnSaveForms;
-	
+
 	private final int waitingPeriodSeconds = 8;
-	
+
 	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
-	
+
 	public String getWelcomeMessage() {
 		return welcomeMessage;
 	}
-	
+
 	//Constructor
 	public DiscreteFormsList(WebDriver driver) {
 		super(driver);
@@ -83,7 +83,7 @@ public class DiscreteFormsList extends BasePageObject {
 		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :" + count);
-		
+
 		while (count > 0) {
 			deleteButtons = driver.findElements(By.xpath(xpath));
 			deleteButtons.get(0).click();
@@ -101,13 +101,13 @@ public class DiscreteFormsList extends BasePageObject {
 	public void unpublishAllForms() throws Exception {
 		List<WebElement> unpublishButtonList;
         IHGUtil utils = new IHGUtil(driver);
-		
+
 		IHGUtil.PrintMethodName();
-		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";	
+		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of Published rows is :" + count);
-		
-		while (count > 0) {		
+
+		while (count > 0) {
 			unpublishButtonList = driver.findElements(By.xpath(xpath));
             unpublishButtonList.get(0).click();
             utils.waitForElementToDisappear(unpublishButtonList.get(count-1), 1000, waitingPeriodSeconds);
@@ -160,8 +160,8 @@ public class DiscreteFormsList extends BasePageObject {
 		driver.findElement(By.xpath(".//a[text()='"+uniqueDiscreteFormName+"']/ancestor::td/following-sibling::td/a[@class='publish']")).click();
 		Thread.sleep(3000);
 	}
-	
-	
+
+
 	/**
 	 * Description : Open the newly created discrete Form.
 	 * @return
@@ -176,24 +176,24 @@ public class DiscreteFormsList extends BasePageObject {
 		SitegenlUtil.switchToNewWindow(driver);
 		return PageFactory.initElements(driver, WelcomeScreenPage.class);
 	}
-	
+
 	/**
-	 * Click on link - General Registration and Health History	
+	 * Click on link - General Registration and Health History
 	 * @return
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
-	
+
 	public BasicInformationAboutYouPage clicklnkAutomationPracticeDiscreteForm() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
-		
+
 		IHGUtil.waitForElement(driver, 30, lnkAutomationPracticeDiscreteForm);
 		lnkAutomationPracticeDiscreteForm.click();
-			
+
 		// Close the browser window
 		return PageFactory.initElements(driver,BasicInformationAboutYouPage.class);
 	}
-	
+
 	/**
 	 * Checks if the Patient Forms page is loaded by checking if crucial element of it is present
 	 * @return True if the button is present, false otherwise
@@ -207,12 +207,12 @@ public class DiscreteFormsList extends BasePageObject {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Prepares practice for automated test - unpublishes and deletes all forms and creates a new one
 	 * @return Name of the newly created form
 	 */
-	
+
 	public void createNewForm() throws Exception {
 		createNewDiscreteForm();
         try {
@@ -224,7 +224,7 @@ public class DiscreteFormsList extends BasePageObject {
         }
         log("A new form successfully created");
 	}
-	
+
 	public boolean addCalculatedForm(String calculatedFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		System.out.println("CLICK ON CALCULATED FORM BUTTON");
@@ -236,14 +236,14 @@ public class DiscreteFormsList extends BasePageObject {
 		{
 			pCalculatedFormDirectory.selectFound();
 			pCalculatedFormDirectory.addSelected();
-		}	
+		}
 
 		pCalculatedFormDirectory.closeDirectory();
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
-		
-		return foundForm;		
+
+		return foundForm;
 	}
-	
+
 	public boolean searchCalculatedForm(String calculatedFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		System.out.println("CLICK ON CALCULATED FORM BUTTON");
@@ -255,17 +255,17 @@ public class DiscreteFormsList extends BasePageObject {
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		return foundForm;
 	}
-	
+
 	public void initializePracticeForNewForm() throws Exception {
 		// name for the new form
-	
+
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		unpublishAllForms();
 		deleteAllUnPublishedForms();
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
 	}
-	
+
 	public void prepareFormForTest(String newFormName) throws Exception {
 		log("Open form and change welcome page text");
 		WelcomeScreenPage welcomePage = openDiscreteForm("General Registration and Health History");
@@ -273,7 +273,7 @@ public class DiscreteFormsList extends BasePageObject {
 		welcomePage.setWelcomeMessage(welcomeMessage);
 		log("Rename the form");
 		welcomePage.setFormName(newFormName);
-		
+
 		log("substep 1: Click on Basic Information About You");
 		BasicInformationAboutYouPage basicInfoPage = welcomePage.clickLnkBasicInfoAboutYou();
 		basicInfoPage.selectBasicInfo();
@@ -290,10 +290,10 @@ public class DiscreteFormsList extends BasePageObject {
 		SecondaryHealthInsurancePage secondaryInsurancePage =
                 insurancePage.clicklnkSecondaryInsurance();
 		secondaryInsurancePage.selectInsuranceCompanyQuestion();
-		
+
 		log("substep 4: Click on Other Doctors You Have Seen");
 		OtherDoctorsYouSeen otherDocspage = secondaryInsurancePage.clicklnkOtherDoctors();
-		
+
 		log("substep 5: Click on Current Symptoms");
 		CurrentSymptomsPage symptomsPage = otherDocspage.clicklnkCurrentSymptoms();
 		symptomsPage.selectBasicSymptoms();
@@ -306,11 +306,11 @@ public class DiscreteFormsList extends BasePageObject {
 		ExamsTestsAndProceduresPage proceduresPage = surgsHospsPage.clicklnkProcedures();
 		IllnessesAndConditionsPage conditionsPage = proceduresPage.clicklnkConditions();
 		FormFamilyHistoryPage familyMedicalHistoryPage = conditionsPage.clicklnkFamilyHistory();
-		
+
 		log("substep 7: Click on Social History the last page of discrete form");
 		SocialHistoryPage socialPage = familyMedicalHistoryPage.clicklnkSocialHistory();
 		socialPage.showThisPage();
-		
+
 		log("substep 8: Try to save the form with incomplete question");
 		testAddingQuestion(socialPage);
 
@@ -330,7 +330,8 @@ public class DiscreteFormsList extends BasePageObject {
 		socialPage.setQuestionType(QuestionType.multiSelect);
 		socialPage.clickSaveButton();
 //		socialPage.errorMessageAppearedTest();
-		socialPage.setMultiSelectAnswers("1, 2, 3, or 4");
+		socialPage.addPossibleAnswer("1 - 2");
+		socialPage.addPossibleAnswer("3 or 4");
         socialPage.clickBackToTheList();
         socialPage.clickCloseDialogButton();
 	}
