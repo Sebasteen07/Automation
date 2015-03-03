@@ -1244,7 +1244,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		log("step 4:Enter new password and submit");
 		ResetPasswordEnterSecurityCodePage pResetPasswordEnterSecurityCodePage = (ResetPasswordEnterSecurityCodePage) pResetPasswordEnterNewPasswordPage
-				.enterNewPasswordAndSubmit("Luke", testcasesData.getForgotPassword(), testcasesData.getForgotPassword());
+				.enterNewPasswordAndSubmit(testcasesData.getUserAnswer(), testcasesData.getForgotPassword(), testcasesData.getForgotPassword());
 		
 		log("step 5: Fecth Security code from the gmail");
 		String secCode = util.getSecurityCodeFromGmail(
