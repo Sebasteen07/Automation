@@ -192,27 +192,20 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
 		SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
 		
-		if( IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
-		
-            loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
+        loginpage.login(testData.getAutomationUser(), testData.getAutomationUserPassword());
+        assertTrue(pSiteGenHomePage.isSearchPageLoaded(), 
+        		"Expected the SiteGen HomePage  to be loaded, but it was not.");
 
-            log("step 3: navigate to SiteGen PracticeHomePage ##########");
-            pSiteGenHomePage.searchPracticeFromSGAdmin("Bangalore Test Practice");
-		
-		} else {
-			
-            loginpage.login(testData.getAutomationUser(), testData.getAutomationUserPassword());
-            assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
-
-            log("step 3: navigate to SiteGen PracticeHomePage ##########");
-            pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-            assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		}
+        log("step 3: navigate to SiteGen PracticeHomePage ##########");
+        pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), 
+        		"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 		
 		
 		log("step 4: click Link Physicians and navigate to Manage Your Physicians Page ##########");
 		ManageYourPhysiciansPage pManageYourPhysiciansPage=pSiteGenPracticeHomePage.clickLnkPhysicians();
-		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
+		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), 
+				"Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
 		log("#####CHECK IF TESTDATA IS CLEAN ##########");
 		pManageYourPhysiciansPage.cleanTestPhysiciansData();
