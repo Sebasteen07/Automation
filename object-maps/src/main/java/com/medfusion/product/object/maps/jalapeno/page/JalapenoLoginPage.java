@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 public class JalapenoLoginPage extends BasePageObject {
@@ -34,7 +35,7 @@ public class JalapenoLoginPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "paynow_button")
 	public WebElement payNowButton;
 	
-	@FindBy(how = How.ID, using = "forgotUserOrPasswordButton")
+	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "I forgot my user name and/or password.")
 	public WebElement forgotUserOrPasswordButton;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
@@ -107,6 +108,13 @@ public class JalapenoLoginPage extends BasePageObject {
 		log("Clicking on Join In button");
 		joinButton.click();
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
+	}
+	
+	public JalapenoForgotPasswordPage clickForgotPasswordButton() {
+		IHGUtil.PrintMethodName();
+		log("Clicking on Forgot Password button");
+		forgotUserOrPasswordButton.click();
+		return PageFactory.initElements(driver, JalapenoForgotPasswordPage.class);
 	}
 	
 	public boolean isTextVisible(String text) {

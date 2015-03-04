@@ -147,6 +147,10 @@ public class PropertyFileLoader {
 	public String getPortalUrl() {
 		return property.getProperty("portalUrl");	 
 	}
+	
+	public String getHarakiriUrl() {
+		return property.getProperty("harakiriUrl");
+	}
 
 	public PropertyFileLoader() throws IOException {
 

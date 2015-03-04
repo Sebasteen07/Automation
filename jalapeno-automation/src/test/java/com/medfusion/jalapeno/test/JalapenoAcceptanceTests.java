@@ -9,6 +9,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.intuit.ihg.common.utils.mail.Harakirimail;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
@@ -22,6 +23,10 @@ import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
 import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
 import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
+import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
+import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
+import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 
@@ -110,8 +115,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 		
 		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());	
-		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
-		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
+		//PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
+		//jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
@@ -121,6 +126,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
 
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		log("Getting Test Data");
@@ -164,6 +173,66 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testForgotPassword() throws Exception {
+		
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
+		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
+		
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Logout");
+		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		log("Login test of patient which has been created");
+		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());	
+		
+		/*
+		log("Choosing Preference Delivery");
+		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
+		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
+		*/
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Logout");
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		log("Clicking on forgot username or password");
+		JalapenoForgotPasswordPage jalapenoForgotPasswordPage = jalapenoLoginPage.clickForgotPasswordButton();
+		
+		assertTrue(jalapenoForgotPasswordPage.assessForgotPasswordPageElements());
+		
+		JalapenoForgotPasswordPage2 jalapenoForgotPasswordPage2 = jalapenoForgotPasswordPage.fillInDataPage(jalapenoCreatePatientTest.getEmail());		
+		log("Message was sent, closing");
+		jalapenoLoginPage = jalapenoForgotPasswordPage2.clickCloseButton();
+		
+		log("Logging into Harakirimail and getting ResetPassword url");
+		Harakirimail harakirimail = new Harakirimail(driver);
+		String[] mailAddress = jalapenoCreatePatientTest.getEmail().split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		
+		JalapenoForgotPasswordPage3 jalapenoForgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, harakirimail.email(mailAddress[0], emailSubject, inEmail));
+		log("Redirecting to patient portal, filling secret answer");
+		JalapenoForgotPasswordPage4 jalapenoForgotPasswordPage4 = jalapenoForgotPasswordPage3.fillInSecretAnswer(testData.getSecretAnswer());
+		
+		log("Filling new password");
+		jalapenoHomePage = jalapenoForgotPasswordPage4.fillInNewPassword(testData.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());	
+		
+		log("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}	
 	
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
