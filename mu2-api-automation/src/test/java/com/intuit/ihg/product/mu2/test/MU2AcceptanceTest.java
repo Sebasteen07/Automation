@@ -43,7 +43,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMU2PullAPI1() throws Exception {
-		log("Test Case (MU2PullAPI1): Appointment/Rx/Ask A Staff/Secure Message/Consolidated CCD related events verification in Pull Events");
+		log("Test Case (MU2PullAPI1): Consolidated CCD related events verification in Pull Events");
 	
 		log("Test case Environment: "+IHGUtil.getEnvironmentType());
 		log("Execution Browser: " +TestConfig.getBrowserType());
@@ -90,120 +90,26 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		
 		log("====== Consolidated CCD - VDT events generated successfully ======");
 		
-		pMyPatientPage=pMessageCenterInboxPage.clickMyPatientPage();
-		
-		log("====== Appointment related events generation Started ======");
-		
-		log("Step 9: Click on Appointment Button on My Patient Page");
-		AppointmentRequestStep1Page apptRequestStep1 = pMyPatientPage.clickAppointmentRequestTab();
-
-		log("Step 10: Complete Appointment Request Step1 Page  ");
-		AppointmentRequestStep2Page apptRequestStep2 = apptRequestStep1.requestAppointment(null,null,null,null);
-
-		log("Step 11: Complete Appointment Request Step2 Page  ");
-		AppointmentRequestStep3Page apptRequestStep3 = apptRequestStep2.fillInForm(PortalConstants.PreferredTimeFrame,
-				PortalConstants.PreferredDay, PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason,
-				PortalConstants.WhichIsMoreImportant, "1234567890");
-	    
-		log("Step 12: Complete Appointment Request Step3 Page  ");
-		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
-
-		log("Step 13: Complete Appointment Request Step4 Page  ");
-		pMyPatientPage = apptRequestStep4.clickBackToMyPatientPage();
-		
-		log("====== Appointment request event generated successfully ======");
-		
-		log("====== Rx related events generation Started ======");
-
-		log("Step 14: Click on PrescriptionRenewal Link ");
-		NewRxRenewalPage newRxRenewalPage = pMyPatientPage.clickPrescriptionRenewal();
-		
-		log("Step 15: Set Medication Fields in RxRenewal Page");
-		newRxRenewalPage.setMedicationDetails();
-
-		log("Step 16: Set Pharmacy Fields in RxRenewal Page");
-		newRxRenewalPage.setPharmacyFields();
-		
-		log("Step 17: Verify RxRenewal Confirmation Message");
-		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
-		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
-		
-		log("====== Rx Renewal event generated successfully ======");
-		
-		pMyPatientPage = apptRequestStep4.clickBackToMyPatientPage();
-		
-		log("====== Ask a staff event generation Started ======");
-		
-		log("Step 18: Click Ask A Staff");
-		AskAStaffStep1Page askStaff1 = pMyPatientPage.clickAskAStaffLink();
-
-		log("Step 19: Complete Step 1 of Ask A Staff");
-		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the AMDCAskQuestion automation test case.");
-
-		log("Step 20: Complete Step 2 of Ask A Staff");
-		AskAStaffStep3Page askStaff3 = askStaff2.submitUnpaidQuestion();
-
-		log("Step 21: Validate entry is on Ask A Staff History page");
-		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
-		verifyTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())), "Expected to see a subject containing "
-						+ askStaff1.getCreatedTimeStamp() + " on the Ask A Staff History page. None were found.");
-		
-		log("====== Ask a question event generated successfully ======");
-		
-		
-		Thread.sleep(2000);
-		log("Step 22: Go to my patient page");
-		pMyPatientPage=pMessageCenterInboxPage.clickMyPatientPage();
-		
-		log("Step 23: Logout of Patient Portal");
+		log("Step 9: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 		
-		log("====== AMDC secure Message event generation Started ======");
+		log("Step 10: Waiting for Events sync in DWH");
+		Thread.sleep(420000);	
 		
-		log("Step 24: Login with other patient");
-		loginpage = new PortalLoginPage(driver, testData.getPortalURL());
-		pMyPatientPage = loginpage.login(testData.getPortalUserName2(), testData.getPortalPassword());
-		
-		inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		
-		log("Step 25: Go to message inbox page");
-		MessagePage msg = inboxPage.openMessageInInbox("secure message without attachment");
-
-		log("Step 26: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated("secure message without attachment"));
-		
-		log("Step 27: Reply to the message");
-		msg.replyToMessage("REply",null);
-	
-		log("====== AMDC secure Message event generated successfully ======");
-		
-		log("Step 28: Logout of Patient Portal");
-		pMyPatientPage.logout(driver);
-		
-		log("Step 29: Waiting for Events sync in DWH");
-		Thread.sleep(420000);		
-						
-		// Setup oauth Client
-		log("Step 30: Setup Oauth client 2.O"); 
+		log("Step 11: Setup Oauth client 2.O"); 
 		RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
-		
-		
+				
 		// Build new Rest URL with epoch milliseconds 
 		log("Original PULL API URl: "+testData.getPullAPIURL());
 		  
 		String restPullUrl=new StringBuilder(testData.getPullAPIURL()).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
 		log("Updated PULL API URL: "+restPullUrl);
 		
-		log("Step 31: Send Pull API HTTP GET Request");
+		log("Step 12: Send Pull API HTTP GET Request");
 		RestUtils.setupHttpGetRequest(restPullUrl, testData.getResponsePath());
 		
 		String intuitPatientID1=testData.getIntuitPatientID();
 		log("First practicePatientID: "+intuitPatientID1);
-		
-		String intuitPatientID2=testData.getPatientID();
-		log("Second practicePatientID: "+intuitPatientID2);
 		
 		List<String> list=UtilityFunctions.eventList();
 		for(int i=0;i<list.size();i++)
@@ -216,31 +122,14 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		portalTime.add(eventTime);
 		log("CCD '"+list.get(i)+"' event portal Time: "+eventTime);
 		}
-	
-		// verify 'Transmit' event of Secure Message (Ask a Staff) in response XML
-		log("Verification of Ask a Staff 'Transmit' event present in Pull API response");
-		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.TRANSMIT_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
-		Assert.assertNotNull(ActionTimestamp, "'Transmit' event of Secure Message (Ask a Staff) is not found in Response XML");
 		
-		// verify "Transmit" event of Appointment Request in response XML
-		log("Verification of Appointment Request 'Transmit' present event in Pull API response");
-		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.APPOINTMENT_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
-		Assert.assertNotNull(ActionTimestamp, "'Transmit' event of Appointment Request is not found in Response XML");
+        log("Verification of event in Account activity");
 		
-		// verify "Transmit" event of Rx Renewal Request in response XML
-		log("Verification of Rx Request 'Transmit' event in Pull API response xml");
-		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.PRESCRIPTION_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
-		Assert.assertNotNull(ActionTimestamp, "'Transmit' present event of Rx Renewal Request is not found in Response XML");
-			
-		//again Login to patient portal and Verify  event in Account activity
-		
-		log("Verification of event in Account activity");
-		
-		log("Step 32: LogIn");
+		log("Step 13: LogIn");
 		PortalLoginPage ploginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage myPatientPage = ploginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
 
-		log("Step 33: Click on myaccountLink on MyPatientPage");
+		log("Step 14: Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage = myPatientPage.clickMyAccountLink();
 
 		ViewAccountActivityPage viewAccountActivity = pMyAccountPage.addAccountActivityLink();
@@ -282,6 +171,157 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 			 WebElement closeViewer = driver.findElement(By.linkText("Close Viewer"));
 			 closeViewer.click();
 			 
+		log("Step 15: Logout of Patient Portal");
+		pMyPatientPage.logout(driver);
+		
+	}
+	 @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMU2PullAPI2() throws Exception {
+		log("Test Case (MU2PullAPI2): Appointment/Rx/Ask A Staff/Secure Message events verification in Pull Events");
+			
+		log("Test case Environment: "+IHGUtil.getEnvironmentType());
+		log("Execution Browser: " +TestConfig.getBrowserType());
+			
+		long timestamp=System.currentTimeMillis();
+		log("TIME STAMP for MU2 Pull API SinceTime: "+Long.toString(timestamp));
+			
+		
+		String ActionTimestamp = null;
+		APITestData apitestData = new APITestData();
+		APIData testData = new APIData(apitestData);
+			
+		log("Step 1: LogIn");
+		log("Practice URL: "+testData.getPortalURL());
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
+		
+		log("====== Appointment related events generation Started ======");
+		
+		log("Step 2: Click on Appointment Button on My Patient Page");
+		AppointmentRequestStep1Page apptRequestStep1 = pMyPatientPage.clickAppointmentRequestTab();
+
+		log("Step 3: Complete Appointment Request Step1 Page  ");
+		AppointmentRequestStep2Page apptRequestStep2 = apptRequestStep1.requestAppointment(null,null,null,null);
+
+		log("Step 4: Complete Appointment Request Step2 Page  ");
+		AppointmentRequestStep3Page apptRequestStep3 = apptRequestStep2.fillInForm(PortalConstants.PreferredTimeFrame,
+				PortalConstants.PreferredDay, PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason,
+				PortalConstants.WhichIsMoreImportant, "1234567890");
+	    
+		log("Step 5: Complete Appointment Request Step3 Page  ");
+		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
+
+		log("Step 6: Complete Appointment Request Step4 Page  ");
+		pMyPatientPage = apptRequestStep4.clickBackToMyPatientPage();
+		
+		log("====== Appointment request event generated successfully ======");
+		
+		log("====== Rx related events generation Started ======");
+
+		log("Step 7: Click on PrescriptionRenewal Link ");
+		NewRxRenewalPage newRxRenewalPage = pMyPatientPage.clickPrescriptionRenewal();
+		
+		log("Step 8: Set Medication Fields in RxRenewal Page");
+		newRxRenewalPage.setMedicationDetails();
+
+		log("Step 9: Set Pharmacy Fields in RxRenewal Page");
+		newRxRenewalPage.setPharmacyFields();
+		
+		log("Step 10: Verify RxRenewal Confirmation Message");
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
+		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
+		
+		log("====== Rx Renewal event generated successfully ======");
+		
+		pMyPatientPage = apptRequestStep4.clickBackToMyPatientPage();
+		
+		log("====== Ask a staff event generation Started ======");
+		
+		log("Step 11: Click Ask A Staff");
+		AskAStaffStep1Page askStaff1 = pMyPatientPage.clickAskAStaffLink();
+
+		log("Step 12: Complete Step 1 of Ask A Staff");
+		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the AMDCAskQuestion automation test case.");
+
+		log("Step 13: Complete Step 2 of Ask A Staff");
+		AskAStaffStep3Page askStaff3 = askStaff2.submitUnpaidQuestion();
+
+		log("Step 14: Validate entry is on Ask A Staff History page");
+		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
+		verifyTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())), "Expected to see a subject containing "
+						+ askStaff1.getCreatedTimeStamp() + " on the Ask A Staff History page. None were found.");
+		
+		log("====== Ask a question event generated successfully ======");
+
+		log("Step 15: Logout of Patient Portal");
+		pMyPatientPage.logout(driver);
+		
+		log("====== AMDC secure Message event generation Started ======");
+		
+		log("Step 16: Login with other patient");
+		loginpage = new PortalLoginPage(driver, testData.getPortalURL());
+		pMyPatientPage = loginpage.login(testData.getPortalUserName2(), testData.getPortalPassword());
+		
+		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+		
+		log("Step 17: Go to message inbox page");
+		MessagePage msg = inboxPage.openMessageInInbox("secure message without attachment");
+
+		log("Step 18: Validate message loads and is the right message");
+		assertTrue(msg.isSubjectLocated("secure message without attachment"));
+		
+		log("Step 19: Reply to the message");
+		msg.replyToMessage("REply",null);
+	
+		log("====== AMDC secure Message event generated successfully ======");
+		
+		log("Step 20: Logout of Patient Portal");
+		pMyPatientPage.logout(driver);
+		
+		log("Step 21: Waiting for Events sync in DWH");
+		Thread.sleep(420000);		
+						
+		// Setup oauth Client
+		log("Step 22: Setup Oauth client 2.O"); 
+		RestUtils.oauthSetup(testData.getOauthKeyStore(),testData.getOauthProperty(), testData.getOauthAppToken(), testData.getOauthUsername(), testData.getOauthPassword());
+		
+		
+		// Build new Rest URL with epoch milliseconds 
+		log("Original PULL API URl: "+testData.getPullAPIURL());
+		  
+		String restPullUrl=new StringBuilder(testData.getPullAPIURL()).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
+		log("Updated PULL API URL: "+restPullUrl);
+		
+		log("Step 23: Send Pull API HTTP GET Request");
+		RestUtils.setupHttpGetRequest(restPullUrl, testData.getResponsePath());
+		
+		String intuitPatientID1=testData.getIntuitPatientID();
+		log("First practicePatientID: "+intuitPatientID1);
+		
+		String intuitPatientID2=testData.getPatientID();
+		log("Second practicePatientID: "+intuitPatientID2);
+		
+		
+		// verify 'Transmit' event of Secure Message (Ask a Staff) in response XML
+		log("Verification of Ask a Staff 'Transmit' event present in Pull API response");
+		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.TRANSMIT_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
+		Assert.assertNotNull(ActionTimestamp, "'Transmit' event of Secure Message (Ask a Staff) is not found in Response XML");
+		
+		// verify "Transmit" event of Appointment Request in response XML
+		log("Verification of Appointment Request 'Transmit' present event in Pull API response");
+		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.APPOINTMENT_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
+		Assert.assertNotNull(ActionTimestamp, "'Transmit' event of Appointment Request is not found in Response XML");
+		
+		// verify "Transmit" event of Rx Renewal Request in response XML
+		log("Verification of Rx Request 'Transmit' event in Pull API response xml");
+		ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.PRESCRIPTION_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID1);
+		Assert.assertNotNull(ActionTimestamp, "'Transmit' present event of Rx Renewal Request is not found in Response XML");
+			
+		//again Login to patient portal and Verify  event in Account activity
+		
+		
 			// verify "View" event of Secure Message Request in response XML
 		 log("Verification of Secure Message without attachment 'View' event present in Pull API response");
 		 ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.TRANSMIT_RESOURCE_TYPE,MU2Constants.VIEW_ACTION,timestamp,intuitPatientID2);
@@ -292,14 +332,14 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		 ActionTimestamp=UtilityFunctions.FindEventInResonseXML(testData.getResponsePath(),MU2Constants.EVENT,MU2Constants.TRANSMIT_RESOURCE_TYPE,MU2Constants.TRANSMIT_ACTION,timestamp,intuitPatientID2);
 		 Assert.assertNotNull(ActionTimestamp, "'Transmit' event of Secure Message is not found in Response XML");
 		
-		  log("Step 34: Logout of Patient Portal");
-		  pMyAccountPage.logout(driver);
+		  log("Step 24: Logout of Patient Portal");
+		  pMyPatientPage.logout(driver);
 			 
 			 
 	}		 
 	  @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	  public void testMU2PullAPI2() throws Exception {
-		  log("Test Case (testMU2PullAPI2): Secure Message related events verification in Pull Events");
+	  public void testMU2PullAPI3() throws Exception {
+		    log("Test Case (testMU2PullAPI3): Secure Message related events verification in Pull Events");
 			
 			log("Test case Environment: "+IHGUtil.getEnvironmentType());
 			log("Execution Browser: " +TestConfig.getBrowserType());
@@ -372,8 +412,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 	  
 	  
 	  @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-		public void testMU2PullAPI3() throws Exception {
-			log("Test Case (testMU2PullAPI3): Non Consolidated CCD related events verification in Pull Events");
+		public void testMU2PullAPI4() throws Exception {
+			log("Test Case (testMU2PullAPI4): Non Consolidated CCD related events verification in Pull Events");
 		
 			log("Test case Environment: "+IHGUtil.getEnvironmentType());
 			log("Execution Browser: " +TestConfig.getBrowserType());
