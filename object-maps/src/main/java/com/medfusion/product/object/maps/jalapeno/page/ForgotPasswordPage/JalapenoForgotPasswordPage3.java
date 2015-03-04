@@ -30,7 +30,7 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
 		driver.manage().window().maximize();
-		//PageFactory.initElements(driver, this);
+		PageFactory.initElements(driver, this);
 	}
 	
 	public boolean assessForgotPasswordPage3Elements() {

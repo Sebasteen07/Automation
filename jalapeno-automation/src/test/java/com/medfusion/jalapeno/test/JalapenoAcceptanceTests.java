@@ -20,8 +20,8 @@ import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
-import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
-import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
+//import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
+//import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
@@ -162,10 +162,11 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testDataFromProp.getPassword());
 		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());	
-		
+	/*	
 		log("Select PAPER delivery preference");
 		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
 		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.PAPER);
+	*/	
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
 		log("Logging out");
