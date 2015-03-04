@@ -131,7 +131,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 			j++;
 			if(amt.getText().contains(amont))
 			{
-				WebElement post=driver.findElement(By.xpath(".//tbody/tr["+j+"]/td[8]/span/span"));
+				WebElement post=driver.findElement(By.xpath(".//tbody/tr["+j+"]/td[4]/span"));
 				String title=post.getAttribute("title").toString();
 				return title;
 			}

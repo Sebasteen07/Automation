@@ -29,7 +29,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "footer:submit")
 	private WebElement btnSubmit;
 
-	@FindBy(xpath = "//li[a[@title='Form output test']]/table/tbody/tr/td/a")
+	@FindBy(xpath = "//a[@class='pdf text']") //table/tbody/tr/td/a
 	private WebElement lnkclickForPdfDownload;
 
 	// Forms on the page
@@ -75,10 +75,10 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:1:field")
 	private WebElement middleName;
 
-	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:15:field")
-	private WebElement martialStatus;
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:14:field")
+	private WebElement maritalStatus;
 
-	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:19:field")
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:18:field")
 	private WebElement communicationMethod;
 
 	@FindBy(xpath = "//div[@class='sectionInfo']")
@@ -96,14 +96,8 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "content:categories:0:questions:0:question:vitalsForm:inputFieldsContainer:inputFieldsPanel:submitContainer:inlineSubmit")
 	private WebElement vitalSave;
 
-	@FindBy(xpath = "//*[@id='solutions']/ul/li[4]/a")
+	@FindBy(xpath = "//td[@class='MT_2']//a[contains(text(), 'health forms')]")
 	private WebElement lnkHealthForms;
-	
-	@FindBy(xpath = "//*[@id='navigation1']/ul/li[7]/a")
-	private WebElement lnkHealthForms2;
-	
-	@FindBy(linkText = "Health Forms")
-	private WebElement lnkHealthForms3;
 
 	@FindBy(className = "delete")
 	private WebElement delete;
@@ -114,7 +108,7 @@ public class HealthFormPage extends BasePageObject {
 	public HealthFormPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
-		
+
 		// initializing forms dictionary
 		discreteForms = new HashMap<String, WebElement>();
 		discreteForms.put("pdfForm", pdfForm);
@@ -124,7 +118,7 @@ public class HealthFormPage extends BasePageObject {
 
 	/**
 	 * Gives an indication if the page loaded as expected
-	 * 
+	 *
 	 * @return true or false
 	 */
 	public boolean isPageLoaded() {
@@ -150,7 +144,7 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 20, middleName);
 
 		middleName.sendKeys("Middle");
-		Select selectstate1 = new Select(martialStatus);
+		Select selectstate1 = new Select(maritalStatus);
 		selectstate1.selectByVisibleText("Single");
 
 		if (driver.getPageSource().contains("Preferred Communication Method:")) {
@@ -180,13 +174,14 @@ public class HealthFormPage extends BasePageObject {
 	/**
 	 * Simulates Text Insurance HealthFormdownload link click by accessing the
 	 * link URL and downloading it via the URLStatusChecker class.
-	 * 
+	 *
 	 * @return the http status code from the download
 	 */
 	public int clickInsuranceHealthFormDownloadText() throws Exception {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-
+		log(driver.getPageSource());
+		log(lnkclickForPdfDownload.getAttribute("href").toString());
 		return insuranceHealthFormDownloadCode(
 				lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
@@ -197,7 +192,7 @@ public class HealthFormPage extends BasePageObject {
 	 * the cookie state of WebDriver (Defaults to true) This will enable you to
 	 * access files that are only available when logged in. Perform an HTTP
 	 * Status check and return the response code as int (200,300 etc)
-	 * 
+	 *
 	 * @param url
 	 * @param method
 	 * @return
@@ -256,7 +251,7 @@ public class HealthFormPage extends BasePageObject {
 	public boolean isPDFLinkPresent() {
 		boolean result;
 		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
-		
+
 		try {
 			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
 			result = lnkclickForPdfDownload.isDisplayed();
@@ -285,7 +280,6 @@ public class HealthFormPage extends BasePageObject {
 	}
 
 	public void clickNext() {
-
 		IHGUtil.waitForElement(driver, 20, btnNext);
 		btnNext.click();
 	}
@@ -306,7 +300,7 @@ public class HealthFormPage extends BasePageObject {
 
 	public void clickHealthForms() {
 		driver.switchTo().defaultContent();
-		driver.findElement(By.xpath("//*[contains(text(),'health forms')]")).click();
+		lnkHealthForms.click();
 	}
 
 }

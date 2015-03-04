@@ -29,12 +29,17 @@ public class AllDoctorsPage extends MobileBasePage {
     }
 
     public MobileBasePage searchForAndSelectDoc(String docName) throws InterruptedException {  //Bot, Doc      //Always AR submission page or select loc page ?
-    	Thread.sleep(1000);
     	try{
         	IHGUtil.waitForElement(driver,10, txtSearchDoctors);
-            txtSearchDoctors.sendKeys(docName);
+        	if(txtSearchDoctors.isDisplayed()){
+                txtSearchDoctors.sendKeys(docName);
+        	}
+        	else {
+        		log("!!!  Searchbox invisible, ADD MORE DOCTORS  !!!.");
+        		log("Moving on for now.");
+        	}
         }catch (TimeoutException e){
-            log("WARN : Searchbox not found. Confirm if due to lesser number of doc or page didnot load");
+            log("WARN : Searchbox not found. Did the page load correctly?");
         }
         
         WebElement element = driver.findElement( By.partialLinkText(docName) );

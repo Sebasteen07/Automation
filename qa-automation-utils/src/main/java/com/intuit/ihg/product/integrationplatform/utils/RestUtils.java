@@ -1328,9 +1328,10 @@ public class RestUtils {
 				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), "100.00", "Payment has different amount than expected. Amount is: " + amount.getTextContent());
 				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
 				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), "1111", "Payment has different last digit than expected. Amount is: " + digits.getTextContent());
-				/*Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
-				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa/Mastercard/American Express/Discover", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
-				Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
+				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
+				/*Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
 				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
 				*/
 				found = true ;
@@ -1516,16 +1517,17 @@ public class RestUtils {
 				Node paymentStatus=payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
 				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:" + paymentStatus.getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(paymentStatus.getTextContent(), status, "Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
-				/*Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
+				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele=(Element) cNode;
-				Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
+				/*Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
 				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), "100.00", "Payment has different amount than expected. Amount is: " + amount.getTextContent());
 				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
 				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), "1111", "Payment has different last digit than expected. Amount is: " + digits.getTextContent());*/
-				/*Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
-				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa/Mastercard/American Express/Discover", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
-				Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
+				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
+				/*Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
 				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
 				*/
 				found = true ;
