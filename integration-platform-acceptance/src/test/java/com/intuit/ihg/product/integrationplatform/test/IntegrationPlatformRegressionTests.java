@@ -111,7 +111,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			log("Step 7: Filling in user credentials and finishing the registration");
 			// Filing the User credentials
-			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstNameString, testData.getLastName(), testData.getBirthDay(), testData.getZipCode(), testData.getSSN(), emailAddressString, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),unlockcode);
+			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstNameString, testData.getLastName(), testData.getBirthDay(), testData.getZipCode(), null, emailAddressString, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),unlockcode);
 
 			log("Step 8: Assert Webelements in MyPatientPage");
 			assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
@@ -172,7 +172,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Update Data:"+updateData);
 			
     		log("Step 16: Start to add Insurance details");
-			pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(),testData.getInsurance_Type(),testData.getRelation(),updateData);
+  			pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(),testData.getInsurance_Type(),testData.getRelation(),updateData);
 
 			log("Step 17: Asserting for Insurance Name and Insurance Type");
 			Thread.sleep(60000);
