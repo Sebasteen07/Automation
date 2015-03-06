@@ -781,11 +781,19 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("step 3: Click RxRenewalTab");
-		pMyPatientPage.clickRXLink();
-		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
-
+		pMyPatientPage.clickRXLink();		
+		
 		log("step 4: select Medication");
+		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
+		Thread.sleep(2000);		
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
+		
+		if("QA1".equals(IHGUtil.getEnvironmentType().toString())){
+			log("QA1 found -> Step 4b: Select Provider");
+			SelectADoctorPage pSelPage = PageFactory.initElements(driver, SelectADoctorPage.class);
+			Thread.sleep(2000);
+			pSelPage.selectDoctor(40800);		
+		}
 		
 		log("step 5: select first Pharmacy");
 		pRequestRenewalPage.selectFirstPharmacy();
