@@ -1203,7 +1203,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 9:Login with userId");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
 		MobileHomePage pMyPatientPage = mloginpage.login(userID,
-				testcasesData.getPassword());
+				testcasesData.getForgotPassword());
 		pMyPatientPage.waitForlogoutLink(driver, 60);
 
 		log("step 10:Assert Welcome text");
