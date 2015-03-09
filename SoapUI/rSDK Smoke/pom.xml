@@ -30,6 +30,11 @@
 						<artifactId>reflections-maven</artifactId>  
 						<version>0.9.9-RC2</version>  
 					</dependency>  
+					<dependency>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+						<version>3.8.2</version>
+					</dependency>
 				</dependencies>    
 				<executions>
 					<execution>
@@ -46,24 +51,24 @@
 						</configuration>
 					</execution>
 				</executions>
-				</plugin>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.4.1</version>
-					<configuration>
-						<filesets>
-							<fileset>
-								<directory>.</directory>
-								<includes>
-									<include>**/*.log</include>
-								</includes>
-							</fileset>
-							<fileset>
-								<directory>./report</directory>
-							</fileset>
-						</filesets>
-					</configuration>
-				</plugin>			
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>.</directory>
+							<includes>
+								<include>**/*.log</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>./report</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>			
 		</plugins>
 	</build>	
 </project>
