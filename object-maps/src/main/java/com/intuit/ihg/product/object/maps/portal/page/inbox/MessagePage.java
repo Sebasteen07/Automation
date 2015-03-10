@@ -17,7 +17,7 @@ public class MessagePage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Consolidated Inbox Message Page";
 
-	@FindBy(xpath = ".//div[@class='messageArea']/div[@class='messageBody'][1]/div[@class='commMessageHeader']/div[@class='subject']")
+	@FindBy(xpath = "//div[@class='messageArea']/div[@class='messageBody']/div[@class='commMessageHeader']/div[@class='subject']")
 	private WebElement practiceResponseSubject;
 
 	@FindBy(name = "buttons:4:button")
@@ -98,7 +98,7 @@ public class MessagePage extends BasePageObject {
 	 */
 	public String getPracticeReplyMessageTitle() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
+		driver.switchTo().frame("iframebody"); 
 		IHGUtil.waitForElement(driver,30,practiceResponseSubject);
 		return practiceResponseSubject.getText();
 	}
