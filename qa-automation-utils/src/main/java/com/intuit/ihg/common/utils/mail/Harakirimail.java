@@ -15,6 +15,9 @@ public class Harakirimail {
 		System.out.println("Navigation to https://harakirimail.com/inbox/" + username);
 		driver.navigate().to("https://harakirimail.com/inbox/" + username);
 		
+		int maxCount = 12;
+		int count = 1;
+		
 		WebElement element;
 		while(true) {
 			try{
@@ -25,9 +28,16 @@ public class Harakirimail {
 				break;
 			}
 			catch(NoSuchElementException ex){
-				System.out.println("Refreshing page");
+				System.out.println("Refreshing page " + count + "/" + maxCount);
 				driver.navigate().refresh();
-			}		
+			}	
+			
+			if (count == maxCount) {
+				System.out.println("Error: Email was not found");
+				return null;
+			}
+			
+			count++;
 		}
 		
 		element = driver.findElement(By.linkText(findInEmail));

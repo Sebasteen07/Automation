@@ -221,8 +221,11 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = jalapenoCreatePatientTest.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
+		String url = harakirimail.email(mailAddress[0], emailSubject, inEmail);
 		
-		JalapenoForgotPasswordPage3 jalapenoForgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, harakirimail.email(mailAddress[0], emailSubject, inEmail));
+		assertTrue(url != null);
+		
+		JalapenoForgotPasswordPage3 jalapenoForgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
 		log("Redirecting to patient portal, filling secret answer");
 		JalapenoForgotPasswordPage4 jalapenoForgotPasswordPage4 = jalapenoForgotPasswordPage3.fillInSecretAnswer(testData.getSecretAnswer());
 		

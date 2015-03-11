@@ -56,11 +56,11 @@ public class JalapenoHomePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("Clicking on Logout button");
 		
-		try{
+		try {
 			WebElement signoutButton = driver.findElement(By.id("signout"));
 			signoutButton.click();
 		}
-		catch(Exception ex){
+		catch(Exception ex) {
 			WebElement open = driver.findElement(By.id("open-top-loggedIn-btn"));
 			open.click();
 			driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[2]/div[3]/ul/li[2]")).click();
