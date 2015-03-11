@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.jalapeno.page.HomePage;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,9 +14,6 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 
 public class JalapenoHomePage extends BasePageObject {
-	
-	@FindBy(how = How.ID, using = "signout")
-	private WebElement signOutButton;
 	
 	@FindBy(how = How.ID, using = "account")
 	private WebElement myAccount;
@@ -56,8 +54,17 @@ public class JalapenoHomePage extends BasePageObject {
 	public JalapenoLoginPage logout(WebDriver driver) {
 		
 		IHGUtil.PrintMethodName();
-		log("Clicking on Join In button");
-		signOutButton.click();
+		log("Clicking on Logout button");
+		
+		try{
+			WebElement signoutButton = driver.findElement(By.id("signout"));
+			signoutButton.click();
+		}
+		catch(Exception ex){
+			WebElement open = driver.findElement(By.id("open-top-loggedIn-btn"));
+			open.click();
+			driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[2]/div[3]/ul/li[2]")).click();
+		}
 		
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
@@ -67,8 +74,7 @@ public class JalapenoHomePage extends BasePageObject {
 		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(signOutButton);
-		webElementsList.add(myAccount);
+	
 		webElementsList.add(messages);
 		webElementsList.add(appointments);
 		webElementsList.add(home);
