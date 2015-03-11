@@ -708,7 +708,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 8: accept alert");
 			driver.switchTo().alert().accept();
-
+			//a couple of things to wait for here - popup opening, loading content, triggering OS print action...
+			Thread.sleep(3000);
 			IHGUtil.hadlePrintDialog();
 			
 			log("step 10: switch to active window");
