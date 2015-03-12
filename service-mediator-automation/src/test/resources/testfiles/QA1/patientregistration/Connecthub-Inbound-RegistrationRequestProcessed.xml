@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Header/>
+	<S:Body>	
+<AllscriptsMessageEnvelope xmlns="http://Allscripts.com/UAI/Schemas/2010/02/15" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <MessageDispatchHeader>
+        <ID xmlns="">0906b2b2-e690-459f-82f0-82d6c33e6e03</ID>
+        <Noun xmlns="">PortalRegistration</Noun>
+        <Verb xmlns="">Processed</Verb>
+        <TimeStamp xmlns="">9:36:36 PM</TimeStamp>
+        <Description xmlns="">Test Description</Description>
+        <Originator xmlns=""/>
+        <Destination xmlns=""/>
+    </MessageDispatchHeader>
+    <EntityContext>
+        <KeyedValues>
+            <KeyedValue>
+                <Key>AccountID</Key>
+                <Value>00000000000000099930</Value>
+            </KeyedValue>
+            <KeyedValue>
+                <Key>SiteID</Key>
+                <Value>2222222</Value>
+            </KeyedValue>
+            <KeyedValue>
+                <Key>ProductID</Key>
+                <Value>EEHR</Value>
+            </KeyedValue>
+            <KeyedValue>
+                <Key>ProductVersion</Key>
+                <Value>11.3</Value>
+            </KeyedValue>
+            <KeyedValue>
+                <Key>OrgID</Key>
+                <Value>5678</Value>
+            </KeyedValue>
+            <KeyedValue>
+                <Key>DestinationSiteID</Key>
+                <Value>??20971??</Value>
+            </KeyedValue>
+        </KeyedValues>
+    </EntityContext>
+    <MessageContent xmlns="">
+        <tns:RegistrationRequestProcessed xmlns="http://www.allscripts.com/schema/cedExtract/simpleTypes/2009/10/21" xmlns:bt="http://www.allscripts.com/schema/cedExtract/baseTypes/2009/10/21" xmlns:ci="http://www.allscripts.com/schema/cedExtract/clinicalItems/2009/10/21" xmlns:cxd="http://www.allscripts.com/schema/cedExtract/2009/10/21" xmlns:mombt="urn:Allscripts:mombt" xmlns:momst="urn:Allscripts:momst" xmlns:tns="urn:Allscripts:Hub:PatientMsg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:Allscripts:Hub:PatientMsg C:\ArchitecturePrototypes\ProtocolsAndMessagingProcessing\MUSchema\Portal\PortalPHRMsg.xsd">
+            <tns:RegistrationRequestID>string</tns:RegistrationRequestID>
+            <tns:AllscriptsPatientID>??2013080601??</tns:AllscriptsPatientID>
+            <tns:RequestorPatientID>??49317??</tns:RequestorPatientID>
+            <tns:Status>Accepted</tns:Status>
+            <tns:Comment>string</tns:Comment>
+            <tns:Datetime>2010-09-15</tns:Datetime>
+            <tns:Patient Audience="string">
+                <mombt:Mrn>2013080601</mombt:Mrn>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>???49317???</mombt:CodeValue>
+                    <mombt:CodeDescription>Patient</mombt:CodeDescription>
+                    <mombt:CodeType>Id</mombt:CodeType>
+                    <mombt:CodingSystem>Intuit</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeType>string</mombt:AlternativeCodeType>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>2013080601</mombt:CodeValue>
+                    <mombt:CodeDescription>Patient</mombt:CodeDescription>
+                    <mombt:CodeType>Id</mombt:CodeType>
+                    <mombt:CodingSystem>Allscripts</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodingSystem>string</mombt:AlternativeCodingSystem>
+                        <mombt:AssigningAuthority/>
+                        <mombt:AssigningFacility/>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>string</mombt:CodeValue>
+                    <mombt:CodeDescription>string</mombt:CodeDescription>
+                    <mombt:CodeType>string</mombt:CodeType>
+                    <mombt:CodingSystem>string</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeValue>string</mombt:AlternativeCodeValue>
+                        <mombt:AlternativeCodeDescription>string</mombt:AlternativeCodeDescription>
+                        <mombt:AlternativeCodingSystem>string</mombt:AlternativeCodingSystem>
+                        <mombt:AssigningAuthority/>
+                        <mombt:AssigningFacility/>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>string</mombt:CodeValue>
+                    <mombt:CodeDescription>string</mombt:CodeDescription>
+                    <mombt:CodeType>string</mombt:CodeType>
+                    <mombt:CodingSystem>string</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeValue>string</mombt:AlternativeCodeValue>
+                        <mombt:AlternativeCodeType>string</mombt:AlternativeCodeType>
+                        <mombt:CheckDigit>
+                            <mombt:CheckDigitType>M11</mombt:CheckDigitType>
+                        </mombt:CheckDigit>
+                        <mombt:AssigningFacility/>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>string</mombt:CodeValue>
+                    <mombt:CodeDescription>string</mombt:CodeDescription>
+                    <mombt:CodeType>string</mombt:CodeType>
+                    <mombt:CodingSystem>string</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeValue>string</mombt:AlternativeCodeValue>
+                        <mombt:AlternativeCodeDescription>string</mombt:AlternativeCodeDescription>
+                        <mombt:AlternativeCodingSystem>string</mombt:AlternativeCodingSystem>
+                        <mombt:AssigningAuthority/>
+                        <mombt:CheckDigit>
+                            <mombt:CheckDigitType>NPI</mombt:CheckDigitType>
+                        </mombt:CheckDigit>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:Name Audience="string">
+                    <mombt:Title>string</mombt:Title>
+                    <mombt:First>string</mombt:First>
+                    <mombt:Middle>string</mombt:Middle>
+                    <mombt:Last>string</mombt:Last>
+                    <mombt:Suffix>string</mombt:Suffix>
+                    <mombt:NameType>Adopted</mombt:NameType>
+                    <mombt:Degree>string</mombt:Degree>
+                </mombt:Name>
+                <mombt:Ssn>string</mombt:Ssn>
+                <mombt:DateOfBirth>2000-01-01</mombt:DateOfBirth>
+                <mombt:Gender>undifferentiated</mombt:Gender>
+            </tns:Patient>
+            <tns:Location Audience="string">
+                <mombt:Code>string</mombt:Code>
+                <mombt:Name>string</mombt:Name>
+                <mombt:Type>string</mombt:Type>
+                <mombt:Address Audience="string">
+                    <mombt:StructuredAddress/>
+                </mombt:Address>
+                <mombt:Contact>string</mombt:Contact>
+                <mombt:Phones Audience="string">
+                    <mombt:Type>4</mombt:Type>
+                    <mombt:Description>string</mombt:Description>
+                    <mombt:SimplePhoneNumber>string</mombt:SimplePhoneNumber>
+                    <mombt:TelecommunicationUse>HomeNumber</mombt:TelecommunicationUse>
+                    <mombt:TelecommunicationEquipmentType>Fax</mombt:TelecommunicationEquipmentType>
+                </mombt:Phones>
+                <mombt:Phones Audience="string">
+                    <mombt:Type>4</mombt:Type>
+                    <mombt:Description>string</mombt:Description>
+                    <mombt:TelecommunicationUse>CellularPhone</mombt:TelecommunicationUse>
+                    <mombt:TelecommunicationEquipmentType>Fax</mombt:TelecommunicationEquipmentType>
+                </mombt:Phones>
+                <mombt:Phones Audience="string">
+                    <mombt:Type>3</mombt:Type>
+                    <mombt:Description>string</mombt:Description>
+                    <mombt:StructuredPhoneNumber/>
+                    <mombt:TelecommunicationUse>AnsweringServiceNumber</mombt:TelecommunicationUse>
+                    <mombt:TelecommunicationEquipmentType>Telephone</mombt:TelecommunicationEquipmentType>
+                </mombt:Phones>
+                <mombt:Phones Audience="string">
+                    <mombt:Type>1</mombt:Type>
+                    <mombt:Description>string</mombt:Description>
+                    <mombt:TelecommunicationUse>CellularPhone</mombt:TelecommunicationUse>
+                    <mombt:TelecommunicationEquipmentType>Beeper</mombt:TelecommunicationEquipmentType>
+                </mombt:Phones>
+                <mombt:Phones Audience="string">
+                    <mombt:Type>1</mombt:Type>
+                    <mombt:Description>string</mombt:Description>
+                    <mombt:TelecommunicationUse>VacationHomeNumber</mombt:TelecommunicationUse>
+                    <mombt:TelecommunicationEquipmentType>Telephone</mombt:TelecommunicationEquipmentType>
+                </mombt:Phones>
+            </tns:Location>
+            <tns:Provider Audience="string">
+                <mombt:Npi>91171</mombt:Npi>
+                <mombt:Role>string</mombt:Role>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>??22393??</mombt:CodeValue>
+                    <mombt:CodeDescription>Provider</mombt:CodeDescription>
+                    <mombt:CodeType>Id</mombt:CodeType>
+                    <mombt:CodingSystem>Intuit</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeDescription>string</mombt:AlternativeCodeDescription>
+                        <mombt:AlternativeCodeType>string</mombt:AlternativeCodeType>
+                        <mombt:CheckDigit>
+                            <mombt:CheckDigitType>NPI</mombt:CheckDigitType>
+                        </mombt:CheckDigit>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:IDs Audience="string">
+                    <mombt:CodeValue>4556456</mombt:CodeValue>
+                    <mombt:CodeDescription>Provider</mombt:CodeDescription>
+                    <mombt:CodeType>Id</mombt:CodeType>
+                    <mombt:CodingSystem>Allscripts</mombt:CodingSystem>
+                    <mombt:Extended>
+                        <mombt:AlternativeCodeValue>string</mombt:AlternativeCodeValue>
+                        <mombt:AlternativeCodingSystem>string</mombt:AlternativeCodingSystem>
+                        <mombt:CheckDigit>
+                            <mombt:CheckDigitType>M10</mombt:CheckDigitType>
+                        </mombt:CheckDigit>
+                        <mombt:AssigningFacility/>
+                    </mombt:Extended>
+                </mombt:IDs>
+                <mombt:Name Audience="string">
+                    <mombt:Title>string</mombt:Title>
+                    <mombt:First>string</mombt:First>
+                    <mombt:Middle>string</mombt:Middle>
+                    <mombt:Last>string</mombt:Last>
+                    <mombt:Suffix>string</mombt:Suffix>
+                    <mombt:NameType>Maiden</mombt:NameType>
+                    <mombt:Degree>string</mombt:Degree>
+                </mombt:Name>
+                <mombt:Speciality>string</mombt:Speciality>
+            </tns:Provider>
+        </tns:RegistrationRequestProcessed>
+    </MessageContent>
+</AllscriptsMessageEnvelope>
+	</S:Body>
+</S:Envelope>

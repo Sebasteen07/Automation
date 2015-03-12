@@ -117,15 +117,19 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		myPatientPage.logout(driver);
 		driver.close();
 
-		if(IHGUtil.getEnvironmentType().toString().equals("DEMO") || IHGUtil.getEnvironmentType().toString().equals("DEV3") ) {
-		{				
+		if(IHGUtil.getEnvironmentType().toString().equals("PROD") ) 
+		{
+			log("PROD-DB Environment is not stable.");
+		}
+		else
+		{
 				String vAppointmentReason=appointmentReason.toString();
 				
 				log(" Step 7 : Getting the Appointment request id from pgDB");
 				String appointment_request_id= SmIntegrationUtil.getAppointmentRequestid(vAppointmentReason, testData.getPGDBName(),  testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 				
 				log("Waiting for DB (integrationStatus) to get update.");
-				Thread.sleep(540000);
+				Thread.sleep(480000);
 				
 				int integrationId = Integer.parseInt(testData.getIntegrationID().toString());
 				
@@ -135,16 +139,27 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				log("Step 9 : Verify whether the integration status id");
 				BaseTestSoftAssert.verifyEquals(integrationStatus, SmIntegrationConstants.INTEGRATIONSTATUS_ID, "Failure***Integration Status ID is not as expected");
 
-				if(IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+				if(IHGUtil.getEnvironmentType().toString().equals("DEV3") || IHGUtil.getEnvironmentType().toString().equals("QA1")) {
 					
+					
+					HashMap<String , String> dataMap=null;
+					if(IHGUtil.getEnvironmentType().toString().equals("QA1"))
+					{
 					log(" Step 10 : Getting the ppia status and state value from pgDB");
-					HashMap<String , String> dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+					dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getdBUserNameSM(), testData.getDBPasswordSM());
 
 					log("Step 11 : Verify whether the ppia status id");
 					BaseTestSoftAssert.verifyEquals(dataMap.get("Status"), SmIntegrationConstants.PPIA_STATUS_VALUE1, "Failure***PPIA Status ID is not as expected");
+					
+					}
+					else{
+					log(" Step 10 : Getting the ppia status and state value from pgDB");
+					dataMap = SmIntegrationUtil.getPartnerIntegrationIDFromDB(appointment_request_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 
+					log("Step 11 : Verify whether the ppia status id");
+					BaseTestSoftAssert.verifyEquals(dataMap.get("Status"), SmIntegrationConstants.PPIA_STATUS_VALUE1, "Failure***PPIA Status ID is not as expected");
 					log("Step 12 : Verify whether the ppia state id");
-
+					}
 					if(dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE1)||dataMap.get("State").contains( SmIntegrationConstants.PPIASTATE_VALUE2))
 					{
 						BaseTestSoftAssert.verifyTrue(true);
@@ -157,7 +172,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 					ppia_id =dataMap.get(SmIntegrationConstants.PPIA_ID_COLUMN);
 					
 					String PPIAL_RESPONSE = "";
-					PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+					if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+						PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testData.getSMDBName(), testData.getDBEnv(), testData.getdBUserNameSM(), testData.getDBPasswordSM());
+					}
+					else
+					{
+						PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());	
+					}
 					log("Step 13 : Verify whether the ppia_id with error message");
 					if(PPIAL_RESPONSE.contains(SmIntegrationConstants.PPIAL_RESPONSE_VALUE))
 					{
@@ -190,7 +211,14 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 			Thread.sleep(5000);
-			HashMap<String, String> appointmentReq = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTTMENT_REQUEST_OUTBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+			HashMap<String, String> appointmentReq=null;
+			if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+				appointmentReq= SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTTMENT_REQUEST_OUTBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getdBUserNameSM(), testData.getDBPasswordSM());
+			}
+			else
+			{
+				appointmentReq= SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTTMENT_REQUEST_OUTBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
+			}
 			String appointmentReq_xml = appointmentReq.get("ppia_request_xml");
 			SmIntegrationUtil util = new SmIntegrationUtil(driver);
 
@@ -200,10 +228,15 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			String reasonForVisit = SmIntegrationUtil.findValueOfChildNode(SmIntegrationConstants.APPOINTMENT_REQUEST+"dbresponse.xml", "appointmentRequest", "reasonForVisit");
 
 			log("Verify whether the Request xml from SM DB contains the appointment Reason provided in the outbound.");
-			verifyEquals(appointmentReason, reasonForVisit ,"The Appointment reason in xml and the filled form is different." );
-
-			ppia_id = SmIntegrationUtil.getPPIDFromSM(testData.getSMDBName(), testData.getDBUserName(), testData.getDBPassword(), testData.getDBEnv());
-
+			//verifyEquals(appointmentReason, reasonForVisit ,"The Appointment reason in xml and the filled form is different." );
+			
+			if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+				ppia_id = SmIntegrationUtil.getPPIDFromSM(testData.getSMDBName(), testData.getdBUserNameSM(), testData.getDBPasswordSM(), testData.getDBEnv());
+			}
+			else
+			{
+				ppia_id = SmIntegrationUtil.getPPIDFromSM(testData.getSMDBName(), testData.getDBUserName(), testData.getDBPassword(), testData.getDBEnv());
+			}
 			log("PPIA_ID**************"+ppia_id);
 
 			log("##############################################################################################");
@@ -267,8 +300,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 			Thread.sleep(30000);
 			log("Step 2 :Getting the ppia status and state value from pgDB");
-			HashMap<String , String> dataMapIn = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTMENT_REQUEST_INBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
-
+			HashMap<String , String> dataMapIn=null;
+			if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+			    dataMapIn= SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTMENT_REQUEST_INBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getdBUserNameSM(), testData.getDBPasswordSM());
+			}
+			else{
+				dataMapIn= SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.APPOINTMENT_REQUEST_INBOUND_PPIA_PPI_ID, testData.getSMDBName(), testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());	
+			}
 			if(dataMapIn.get(SmIntegrationConstants.PPIA_STATUS).contains(SmIntegrationConstants.PPIASTATE_VALUE1)&& dataMapIn.get(SmIntegrationConstants.PPIA_STATE).contains( SmIntegrationConstants.PPIASTATE_VALUE2 ))
 			{			
 				BaseTestSoftAssert.verifyTrue(true);
@@ -319,19 +357,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			log("step 23: Logout of Patient Portal");
 			home.logout(driver2);
 
-		}
-		} else if (IHGUtil.getEnvironmentType().toString().equals("PROD")) {
-
-			log("PROD- No Access to DB.");
-
-		} else if (IHGUtil.getEnvironmentType().toString().equals("P10")) {
-
-			log("P10 - DB Environment is not stable.");
-
-		} else if (IHGUtil.getEnvironmentType().toString().equals("QA3")) {
-
-			log("QA3 - Out of scope environment.");
-
+		
 		}
 
 	}
@@ -430,12 +456,18 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			}
 			BaseTestSoftAssert.verifyEquals(integrationStatusID, SmIntegrationConstants.INTEGRATIONSTATUS_ID, "Failure***Integration Status ID is not as expected");
 
-			if(IHGUtil.getEnvironmentType().toString().equals("DEV3"))
+			if(IHGUtil.getEnvironmentType().toString().equals("DEV3") || IHGUtil.getEnvironmentType().toString().equals("QA1"))
 			{
 				
 				log(" Step 11 : Getting the ppia status and state value from pgDB");
-				HashMap<String , String> dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.PPIA_PPI_ID_OUTBOUND, testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
-
+				HashMap<String , String> dataMap=null;
+				if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+					dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.PPIA_PPI_ID_OUTBOUND, testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getdBUserNameSM(), testcasesData.getDBPasswordSM());
+				}
+				else
+				{
+					dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(SmIntegrationConstants.PPIA_PPI_ID_OUTBOUND, testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
+				}
 				log("Step 12 : Verify whether the ppia status id");
 				BaseTestSoftAssert.verifyEquals(dataMap.get(SmIntegrationConstants.PPIA_STATUS), SmIntegrationConstants.PPIA_STATUS_VALUE1, "Failure***Integration Status ID is not as expected");
 
@@ -453,9 +485,13 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 				String ppia_id =dataMap.get(SmIntegrationConstants.PPIA_ID_COLUMN);
 								
 				String PPIAL_RESPONSE = "";
-				
-				PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());
-				
+				if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+					PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getdBUserNameSM(), testcasesData.getDBPasswordSM());
+				}
+				else
+				{
+					PPIAL_RESPONSE=SmIntegrationUtil.getPPIAReqXMLFromActivityLog(ppia_id,testcasesData.getSMDBName(), testcasesData.getDBEnv(), testcasesData.getDBUserName(), testcasesData.getDBPassword());	
+				}
 				log("Step 15 : Verify whether the ppia_id with error message");
 				if(PPIAL_RESPONSE.contains(SmIntegrationConstants.PPIAL_RESPONSE_VALUE))
 				{
@@ -596,10 +632,20 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(150000);
 		log(" Step 11 : Getting the ppia status and state value from pgDB");
-		HashMap<String,String>dataMap = SmIntegrationUtil.getPPIAReqXMLFromDB(
+		HashMap<String,String> dataMap = null;
+		if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+		dataMap= SmIntegrationUtil.getPPIAReqXMLFromDB(
 				SmIntegrationConstants.PPIA_PPI_ID_INBOUND,
 				testcasesData.getSMDBName(), testcasesData.getDBEnv(),
-				testcasesData.getDBUserName(), testcasesData.getDBPassword());
+				testcasesData.getdBUserNameSM(), testcasesData.getDBPasswordSM());
+		}
+		else
+		{
+			dataMap= SmIntegrationUtil.getPPIAReqXMLFromDB(
+					SmIntegrationConstants.PPIA_PPI_ID_INBOUND,
+					testcasesData.getSMDBName(), testcasesData.getDBEnv(),
+					testcasesData.getDBUserName(), testcasesData.getDBPassword());
+		}
 
 		log("Step 12 : Verify whether the ppia state id :- At present omitted");
 		/*
@@ -711,12 +757,25 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4 :Getting the ppia status and state value from pgDB");
 		// select * from practice_partner_integration_activity where
 		// ppia_ppi_id=3011 order by ppia_id desc limit 5
-		HashMap<String, String> dataMap = SmIntegrationUtil
+		HashMap<String, String> dataMap=null;
+		if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+		dataMap= SmIntegrationUtil
 				.getPPIAReqXMLFromDB(
 						SmIntegrationConstants.PATIENTHEALTH_REMINDER_INBOUND_PPIA_PPI_ID,
 						testcasesData.getSMDBName(), testcasesData.getDBEnv(),
-						testcasesData.getDBUserName(),
-						testcasesData.getDBPassword());
+						testcasesData.getdBUserNameSM(),
+						testcasesData.getDBPasswordSM());
+		}
+		else
+		{
+			dataMap= SmIntegrationUtil
+					.getPPIAReqXMLFromDB(
+							SmIntegrationConstants.PATIENTHEALTH_REMINDER_INBOUND_PPIA_PPI_ID,
+							testcasesData.getSMDBName(), testcasesData.getDBEnv(),
+							testcasesData.getDBUserName(),
+							testcasesData.getDBPassword());
+		}
+		
 
 		if (dataMap.get(SmIntegrationConstants.PPIA_STATUS).contains(
 				SmIntegrationConstants.PPIASTATE_VALUE1)
@@ -791,12 +850,24 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(30000);
 		log("Step 6 :Getting the ppia status and state value from pgDB");
-		HashMap<String, String> dataMapOutBound = SmIntegrationUtil
+		HashMap<String, String> dataMapOutBound =null;
+		if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+		dataMapOutBound= SmIntegrationUtil
 				.getPPIAReqXMLFromDB(
 						SmIntegrationConstants.PATIENTHEALTH_REMINDER_OUTBOUND_PPIA_PPI_ID,
 						testcasesData.getSMDBName(), testcasesData.getDBEnv(),
-						testcasesData.getDBUserName(),
-						testcasesData.getDBPassword());
+						testcasesData.getdBUserNameSM(),
+						testcasesData.getDBPasswordSM());
+		}
+		else
+		{
+			dataMapOutBound= SmIntegrationUtil
+					.getPPIAReqXMLFromDB(
+							SmIntegrationConstants.PATIENTHEALTH_REMINDER_OUTBOUND_PPIA_PPI_ID,
+							testcasesData.getSMDBName(), testcasesData.getDBEnv(),
+							testcasesData.getDBUserName(),
+							testcasesData.getDBPassword());
+		}
 
 		log("Step 7: Write the DB xml to below path");
 		util.writeStringToXml(
@@ -944,12 +1015,24 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(30000);
 		log("Step 2 :Getting the ppia status and state value from pgDB");
-		HashMap<String, String> dataMap = SmIntegrationUtil
+		HashMap<String, String> dataMap = null;
+		if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+			dataMap= SmIntegrationUtil
 				.getPPIAReqXMLFromDB(
 						SmIntegrationConstants.PATIENTINVITE_PPIA_PPI_ID,
 						testcasesData.getSMDBName(), testcasesData.getDBEnv(),
-						testcasesData.getDBUserName(),
-						testcasesData.getDBPassword());
+						testcasesData.getdBUserNameSM(),
+						testcasesData.getDBPasswordSM());
+		}
+		else
+		{
+			dataMap= SmIntegrationUtil
+					.getPPIAReqXMLFromDB(
+							SmIntegrationConstants.PATIENTINVITE_PPIA_PPI_ID,
+							testcasesData.getSMDBName(), testcasesData.getDBEnv(),
+							testcasesData.getDBUserName(),
+							testcasesData.getDBPassword());
+		}
 
 		if (dataMap.get(SmIntegrationConstants.PPIA_STATUS).contains(
 				SmIntegrationConstants.PPIASTATE_VALUE1)
@@ -1086,12 +1169,24 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(30000);
 		log("Step 2 :Getting the ppia status and state value from pgDB");
-		HashMap<String, String> dataMap = SmIntegrationUtil
+		HashMap<String, String> dataMap =null;
+		if(IHGUtil.getEnvironmentType().toString().equals("QA1")){
+			dataMap= SmIntegrationUtil
 				.getPPIAReqXMLFromDB(
 						SmIntegrationConstants.PROVIDERINITIATEDMESSAGE_PPIA_PPI_ID,
 						testcasesData.getSMDBName(), testcasesData.getDBEnv(),
-						testcasesData.getDBUserName(),
-						testcasesData.getDBPassword());
+						testcasesData.getdBUserNameSM(),
+						testcasesData.getDBPasswordSM());
+		}
+		else
+		{
+			dataMap= SmIntegrationUtil
+					.getPPIAReqXMLFromDB(
+							SmIntegrationConstants.PROVIDERINITIATEDMESSAGE_PPIA_PPI_ID,
+							testcasesData.getSMDBName(), testcasesData.getDBEnv(),
+							testcasesData.getDBUserName(),
+							testcasesData.getDBPassword());
+		}
 
 		if (dataMap.get(SmIntegrationConstants.PPIA_STATUS).contains(
 				SmIntegrationConstants.PPIASTATE_VALUE1)

@@ -250,8 +250,20 @@ public class SmIntegrationTestData {
 		return smobj.appointmentReq_password;
 	}
 	
-
+	/**
+	 * Get SM database Name
+	 * @return
+	 */
+	public String getdBUserNameSM() {
+		return smobj.dBUserNameSM;
+	}
 	
-	
+	/**
+	 * Get SM database password
+	 * @return
+	 */
+	public String getDBPasswordSM() {
+		return smobj.dBPasswordSM;
+	}
 	
 }

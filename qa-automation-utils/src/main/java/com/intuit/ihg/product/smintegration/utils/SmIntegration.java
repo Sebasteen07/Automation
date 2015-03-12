@@ -44,6 +44,7 @@ public class SmIntegration {
 	public String appointmentReq_patientID = "";
 	public String appointmentReq_user = "";
 	public String appointmentReq_password = "";
-	
+	public String dBUserNameSM = "";
+	public String dBPasswordSM="";
 
 }
