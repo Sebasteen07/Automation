@@ -1542,7 +1542,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			String Amount=IHGUtil.createRandomNumericString().substring(1, 4);
 			log("Step 3: Click on Charge Card ");
 			vcsPage.addCreditCardInfo("Test",
-					"5105105105105100", "MasterCard", "12", "2022", Amount,"110",
+					"5105105105105100", "Visa", "12", "2022", Amount,"110",
 					"12345", "comment");
 			
 			log("Step 4: Verify whether the payment is completed successfully.");
