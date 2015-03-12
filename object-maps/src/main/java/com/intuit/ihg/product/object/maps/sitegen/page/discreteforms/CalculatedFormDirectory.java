@@ -29,8 +29,11 @@ public class CalculatedFormDirectory extends BasePageObject {
 	@FindBy ( css = "a.closeDialog.red")
 	private WebElement closeButton;	
 	
-	@FindBy ( className = "markCalculated")
+	@FindBy(xpath = "//tr[@class='calculatedRow']/td/input[@class='markCalculated']")
 	private WebElement checkBox;
+
+	@FindBy(xpath = "//input[@class='markCalculated']")
+	private WebElement checkBox2;
 	
 	//Constructor
 	public CalculatedFormDirectory(WebDriver driver) {
@@ -42,10 +45,16 @@ public class CalculatedFormDirectory extends BasePageObject {
 		
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, searchField);
+		IHGUtil iHGUtil = new IHGUtil(driver);
 		searchField.sendKeys(formName);
 		searchButton.click();
-//		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		return checkBox.isDisplayed();
+		if (iHGUtil.exists(checkBox2)) {
+			log("Second xpath also works.");
+		} else {
+			log("Second xpath doesnt work!");
+		}
+		return iHGUtil.exists(checkBox);
+
 	}
 	
 	public void selectFound()	{

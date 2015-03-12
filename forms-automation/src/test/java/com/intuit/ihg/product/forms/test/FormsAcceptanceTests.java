@@ -1,7 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
@@ -52,7 +51,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
-	private void logTestEnvironmentInfo(String testName) {
+	protected void logTestEnvironmentInfo(String testName) {
 		log(testName);
 		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
@@ -93,13 +92,21 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		socialHistoryPage.submitForm();
 	}
 
+	protected MyPatientPage createPatient(TestcasesData portalData) throws Exception {
+		String email = PortalUtil.createRandomEmailAddress(portalData.getEmail());
+		log("email:-" + email);
+		CreatePatientTest createPatient = new CreatePatientTest();
+		createPatient.setUrl(portalData.getFormsAltUrl());
+		return createPatient.createPatient(driver, portalData);
+	}
+
     /**
      * Logs in to Patient Portal with default test patient and opens up a form selected by the identifier
      * @param formIdentifier
      * @return
      * @throws Exception
      */
-    private MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
+    protected MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
         log("Get Portal Data from Excel ##########");
         Portal portal = new Portal();
         TestcasesData portalData = new TestcasesData(portal);
@@ -149,6 +156,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
+	protected void checkPDF(HealthFormPage formsPage) throws Exception {
+		PortalUtil.setPortalFrame(driver);
+		URLStatusChecker status = new URLStatusChecker(driver);
+		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
+		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
+	}
+
     @Test(groups = {"smokeTest"})
     public void formsConfigSmokeTest() throws Exception {
         SitegenTestData testData = new SitegenTestData(new Sitegen());
@@ -182,68 +196,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
     
     /**
-     * Tect Case in TestLink: MF-1265
-     * @author phajek
-     * @Date: 13/02/2015
-	 * StepsToReproduce:
-     *      Log in to SG as SU
-     *      Go to Forms Config
-     *      Unpublish all forms
-     *      Delete all forms
-     *      Search and add a new Calculated form
-     *      Test if it is displayed in Calculated Forms directory
-     *      Delete the Form
-     *      Test if it is displayed in Calculated Forms directory
-     * === Prerequisite for the test case to run=========
-	 *
-	 * Practices configured on: DEV3
-	 * ============================================================
-	 * @throws Exception
-	 */
-	@Test(enabled = true)
-	public void testCalculatedFormAddRemove() throws Exception {
-
-		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
-        Sitegen sitegen = new Sitegen();
-        SitegenTestData testData = new SitegenTestData(sitegen);
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-                .logInUserToSG(driver,
-                        testData.getAdminUser(),
-                        testData.getAdminPassword(),
-                        testData.getAutomationPracticeName());
-		// Get the current window handle before opening new window
-		String parentHandle = driver.getWindowHandle();
-
-		log("step 1: Click on Patient Forms");
-		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-		assertTrue(pManageDiscreteForms.isPageLoaded());
-
-		log("step 2: Unpublish and delete all forms and add calculated form");
-        driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm();
-		assertTrue(
-				pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
-		
-
-		log("step 3: Check if the added form is no longer in the Calculated Form Directory ");
-		assertFalse(
-				pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
-		
-		log("step 4: Delete all Forms and check if the Calculated Form is back in Directory");
-		pManageDiscreteForms.initializePracticeForNewForm();
-		assertTrue(
-				pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
-
-		log("step 5: Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle descriptor
-		driver.close();
-		driver.switchTo().window(parentHandle);
-		pSiteGenPracticeHomePage.clicklogout();
-
-		
-	}
-
-	/**
 	 * @Author: Adam Warzel
 	 * @Date: April-01-2014
 	 * @UserStory: US7083
@@ -268,11 +220,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Patient Portal URL: " + portalData.getFormsAltUrl());
 
 		log("step 1: Click on Sign Up Fill details in Create Account Page");
-		String email = PortalUtil.createRandomEmailAddress(portalData.getEmail());
-		log("email:-" + email);
-		CreatePatientTest createPatient = new CreatePatientTest();
-		createPatient.setUrl(portalData.getFormsAltUrl());
-		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
+		MyPatientPage pMyPatientPage = createPatient(portalData);
 
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
@@ -282,10 +230,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		fillOutputForm(diacriticString);
 		
 		log("Step 4: Test if PDF is downloadable");
-		PortalUtil.setPortalFrame(driver);
-		URLStatusChecker status = new URLStatusChecker(driver);
-		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
-		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
+		checkPDF(formsPage);
 		
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
@@ -423,35 +368,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertEquals(pFormWelcomePage.getMessageText(), pManageDiscreteForms.getWelcomeMessage());
 	}
-
-    /**
-     * @author: Adam W
-     * @Steps: Login to Site Generator, click on Patient Forms, open calculated form
-     *         change welcome screen, save the form, exit,
-     */
-    @Test(enabled = true)
-    public void testCalculatedFormSGEdit() throws Exception{
-        logTestEnvironmentInfo("testCalculatedFormSGEdit");
-        String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
-
-        Sitegen sitegen = new Sitegen();
-        SitegenTestData testData = new SitegenTestData(sitegen);
-        SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps()
-                .logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword());
-
-        DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
-
-        WelcomeScreenPage welcomePage =
-                formsConfigPage.openDiscreteForm("Patient Health Questionnaire (PHQ-9)");
-
-        welcomePage.setWelcomeMessage(newWelcomeMessage);
-        welcomePage.saveOpenedForm();
-        welcomePage.clickBackToTheList();
-
-        FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
-        PortalUtil.setquestionnarieFrame(driver);
-        assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
-    }
 
     /**
 	 * @Author: bkrishnankutty

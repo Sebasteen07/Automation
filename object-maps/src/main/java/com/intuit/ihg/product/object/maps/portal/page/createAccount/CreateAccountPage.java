@@ -225,8 +225,8 @@ public class CreateAccountPage extends BasePageObject {
 	  /*Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default
 		chooseProvider();*/
 			  
-	    log("ENV " +IHGUtil.getEnvironmentType().toString());
-		if(("PROD".equals(IHGUtil.getEnvironmentType().toString()) || ("DEMO".equals(IHGUtil.getEnvironmentType().toString()))||("DEV3".equals(IHGUtil.getEnvironmentType().toString())))){		
+		IHGUtil iHGUtil = new IHGUtil(driver);
+		if (iHGUtil.exists(chkAgreePatientPrivacyInfo, 1)) {
 			chkAgreePatientPrivacyInfo.click();
 		}
 		

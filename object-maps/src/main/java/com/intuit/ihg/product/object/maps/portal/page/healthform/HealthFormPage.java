@@ -43,6 +43,15 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(linkText = "Quotation mark \" custom form")
 	private WebElement specialCustom;
 
+	@FindBy(partialLinkText = "PHQ-9")
+	private WebElement phq9Form;
+
+	@FindBy(partialLinkText = "PHQ-2")
+	private WebElement phq2Form;
+
+	@FindBy(partialLinkText = "Adult ADHD Self-Report Scale")
+	private WebElement adhdForm;
+
 	@FindBy(linkText = "Ivan Insurance Health Form ( Testing)")
 	private WebElement lnkInsuranceHealthForm;
 
@@ -114,6 +123,9 @@ public class HealthFormPage extends BasePageObject {
 		discreteForms.put("pdfForm", pdfForm);
 		discreteForms.put("practiceForm", practiceForm);
 		discreteForms.put("specialChars", specialCustom);
+		discreteForms.put("phq9", phq9Form);
+		discreteForms.put("phq2", phq2Form);
+		discreteForms.put("adhd", adhdForm);
 	}
 
 	/**
