@@ -22,6 +22,7 @@ public class IntegrationConstants {
 	public static final String PROCESSING_STATE = "State";
 	public static final String STATE_COMPLETED = "COMPLETED";
 	public static final String LOCATION_HEADER = "Location";
+	public static final String TIMESTAMP_HEADER = "Last-Timestamp";
 	public static final String PRACTICE_ID = "PracticePatientId";
 	public static final String HOME_ADDRESS = "HomeAddress";
 	public static final String LINE1 = "Line1";

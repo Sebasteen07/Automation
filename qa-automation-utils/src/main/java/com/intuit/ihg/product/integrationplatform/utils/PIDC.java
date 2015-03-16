@@ -40,4 +40,7 @@ public class PIDC {
 	public String MaritalStatus ="";
 	public String ChooseCommunication ="";
 	public String Batch_PatientPath ="";
+	public String PortalURL ="";
+	public String PortalRestUrl ="";
+	public String HealthKeyPatientUserName="";
 }

@@ -423,5 +423,34 @@ public class MyAccountPage extends BasePageObject {
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 		return changeValue;
 	}
+	/**
+	 * 
+	 * @param updateData
+	 */
+	public void updateDemographics(List<String> updateData)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		txtFirstName.clear();
+		txtFirstName.sendKeys(updateData.get(0));
+		txtLastName.clear();
+		txtLastName.sendKeys(updateData.get(1));
+		txtAddress1.clear();
+		txtAddress1.sendKeys(updateData.get(2));
+		txtAddress2.clear();
+		txtAddress2.sendKeys(updateData.get(3));
+		txtHomePhone.clear();
+		txtHomePhone.sendKeys(updateData.get(4));
+		dateOfBirth.clear();
+		dateOfBirth.sendKeys(updateData.get(5));
+		
+		Select raceDropDownElement=new Select(raceDropDown);
+		raceDropDownElement.selectByVisibleText(updateData.get(7));
+		
+		Select ethnicityDropDownElement=new Select(ethnicityDropDown);
+		ethnicityDropDownElement.selectByVisibleText(updateData.get(8));
+		btnSubmit.click();
+		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+	}
 	
 }

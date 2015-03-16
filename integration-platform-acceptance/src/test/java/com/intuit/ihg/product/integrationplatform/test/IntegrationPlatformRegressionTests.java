@@ -3,7 +3,6 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -750,6 +749,128 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			}
 			}
 			
+	}
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testHealthKeyPatientLogin() throws Exception {
+		log("Test Case: Patient logs in first time as healthkey patient in NEW practice​");
+
+		PIDCTestData testData = loadDataFromExcel();
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000;
+		
+		
+		log("Step 2: Click Sign-UP");
+		PortalLoginPage loginpage = new PortalLoginPage(driver,
+				testData.getPortalURL());
+		loginpage
+				.signUp();
+	
+		BetaCreateNewPatientPage createNewPatientPage = new BetaCreateNewPatientPage(
+				driver);
+		log("Step 3: Fill details in Create Account Page");
+		// Setting the variables for user in other tests
+		String email = PortalUtil.createRandomEmailAddress(testData
+				.getEmail());
+		log("Email as well as UserName:-" + email);
+		String FirstName="MFPatient"+IHGUtil.createRandomNumericString();
+		MyPatientPage pMyPatientPage = createNewPatientPage.BetaSiteCreateAccountPage(FirstName,
+						testData.getLastName(), email,
+						testData.getHomePhoneNo(),
+						"January", "11",
+						"1987", testData.getZipCode(),
+						testData.getSSN(), testData.getAddress1(),
+						testData.getPassword(),
+						testData.getSecretQuestion(),
+						testData.getSecretAnswer(),
+						testData.getState(),
+						testData.getCity());
+		
+		String firstName=createNewPatientPage.FName;
+		String lastName=createNewPatientPage.LName;
+		
+		List<String> updateData=new ArrayList<String>();
+		updateData.add(firstName);
+		updateData.add(lastName);
+		
+		log("Step 4: Assert Webelements in MyPatientPage");
+		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
+	
+		log("Step 5: Logout");
+		pMyPatientPage.clickLogout(driver);
+		
+		log("Step 6: Invoke Get PIDC for Practice in which patient is created (Practice 1) to verify patient details ");
+		String[] subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		
+		String lastTimeStamp=RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		
+		log("Step 7: Login to Second Patient Portal");
+		loginpage = new PortalLoginPage(driver, testData.getUrl());
+		pMyPatientPage = loginpage.login(email, testData.getPassword());
+		
+		log("Step 8: Assert Webelements in MyPatientPage");
+		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));  
+		
+		log("Step 9: Invoke Get PIDC for Practice in which patient has logged in (Practice 2) to verify patient details ");
+		subString=testData.getRestUrl().split("/");
+		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
+		lastTimeStamp=RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + lastTimeStamp, testData.getResponsePath());
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		
+		log("Step 10: Invoke Get PIDC for Practice to which patient updates should not be sent (Practice 1) ");
+		subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + lastTimeStamp, testData.getResponsePath());
+		
+		log("Step 11: Logout from Patient portal");
+		pMyPatientPage.logout(driver);
+		
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testHealthKeyPatientUpdate() throws Exception {
+		log("Test Case: Healthkey Patient updates demographics details in Practice 1 from Patient Portal");
 			
+		PIDCTestData testData = loadDataFromExcel();
+		Long timestamp = System.currentTimeMillis();
+		 
+		Long since = timestamp / 1000;
+		log("Step 2: LogIn Health Key patient into first practice");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
+		
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		
+		String randomData=IHGUtil.createRandomNumericString();
+		List<String> updateData=new ArrayList<String>();
+		updateData.add("FirstName"+randomData);
+		updateData.add("LastName"+randomData);
+		updateData.add("Street1 "+randomData);
+		updateData.add("Street2 "+randomData);
+		updateData.add("1"+IHGUtil.createRandomNumber());
+		updateData.add("01/01/2001");
+		updateData.add("2");
+		updateData.add(testData.getRace());
+		updateData.add(testData.getEthnicity());
+		
+		pMyAccountPage.updateDemographics(updateData);
+		
+		log("Step 4: Invoke Get PIDC for Practice to which patient updates should be sent (Practice 2) ");
+		String[] subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
+		
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		
+		log("Step 5: Invoke Get PIDC for Practice to which patient has updated details (Practice 1) ");
+		subString=testData.getRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		
+		log("Step 6: Logout from Patient portal");
+		pMyAccountPage.logout(driver);
 		}
 }

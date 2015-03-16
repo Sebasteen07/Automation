@@ -171,4 +171,16 @@ public class PIDCTestData {
 	public String getBatch_PatientPath(){
 		return PidcObj.Batch_PatientPath;
 	}
+	
+	public String getPortalURL(){
+		return PidcObj.PortalURL;
+	}
+	
+	public String getPortalRestUrl(){
+		return PidcObj.PortalRestUrl;
+	}
+	
+	public String getHealthKeyPatientUserName(){
+		return PidcObj.HealthKeyPatientUserName;
+	}
 }

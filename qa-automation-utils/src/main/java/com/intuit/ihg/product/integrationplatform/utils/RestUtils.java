@@ -496,6 +496,7 @@ public class RestUtils {
 		Assert.assertTrue(found, "Reply was not found in response XML");
 	}
 
+
 	public static void isPatientRegistered(String xmlFileName, String practicePatientId, String firstName, String lastName, String patientID) throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
@@ -1446,7 +1447,6 @@ public class RestUtils {
         Log4jUtil.log("Check for http 200 response");
 		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-
 		writeFile(responseFilePath, sResp);
 		       
    	}
@@ -1541,5 +1541,105 @@ public class RestUtils {
 		
 		
 	}
+	
+	/**
+	 * 
+	 * @param strUrl
+	 * @param responseFilePath
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static String setupHttpGetRequestExceptoAuth(String strUrl, String responseFilePath) throws IOException, URISyntaxException{
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+        Log4jUtil.log("Get Request Url: "+ strUrl);
+        
+        HttpGet httpGetReq = new HttpGet(strUrl);
+        httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+        .setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+        httpGetReq.setURI(new URI(strUrl));
+        httpGetReq.addHeader("Authentication-Type", "2wayssl");
+        httpGetReq.addHeader("Content-Type", "application/xml");
+        HttpResponse resp = client.execute(httpGetReq);
+        HttpEntity entity = resp.getEntity();
+        String sResp=null;
+        if(entity!=null){
+        sResp = EntityUtils.toString(entity);
+        Log4jUtil.log("Check for http 200 response");
+        Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of "+ 200 +". Response message received:\n" + sResp);
+        writeFile(responseFilePath, sResp);
+          
+        if(resp.containsHeader(IntegrationConstants.TIMESTAMP_HEADER)){
+			Header[] h=resp.getHeaders(IntegrationConstants.TIMESTAMP_HEADER);
+			return h[0].getValue();
+			}
+        }
+        else
+        {
+        	Log4jUtil.log("204 response found");
+        	
+        }
+        return null;
+		       
+   	}
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param practicePatientId
+	 * @param firstName
+	 * @param lastName
+	 * @param patientID
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public static void checkPatientRegistered(String xmlFileName, List<String> updateData) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList nfirstName = doc.getElementsByTagName(IntegrationConstants.FIRST_NAME);
+		boolean found = false;
+		for(int i = 0; i < nfirstName.getLength(); i++){
+			if(nfirstName.item(i).getTextContent().equals(updateData.get(0))){
+				Log4jUtil.log("Searching: Medfusion Patient First Name:" + updateData.get(0) + ", and Actual Medfusion Patient First Name is:" + nfirstName.item(i).getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(nfirstName.item(i).getTextContent(), updateData.get(0), "Medfusion Patient First Name has different than expected. First Name is: " + nfirstName.item(i).getTextContent());
+				Element nPatient = (Element) nfirstName.item(i).getParentNode().getParentNode();
+				Node nlastName = nPatient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(i);
+				Log4jUtil.log("Searching: Patient Last Name:" + updateData.get(1) + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(nlastName.getTextContent(), updateData.get(1), "Medfusion Patient Last Name has different than expected. Last Name is: " + nlastName.getTextContent());
+				try {
+					if (updateData.get(2)!=null)
+					{
+					Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(i);
+					Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2) + ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nAddress1.getTextContent(), updateData.get(2), "Medfusion Patient Address1 has different than expected. Address1 is: " + nAddress1.getTextContent());
+					Node nAddress2 = nPatient.getElementsByTagName(IntegrationConstants.LINE2).item(i);
+					Log4jUtil.log("Searching: Patient Address2 :" + updateData.get(3) + ", and Actual Patient Address2 is:" + nAddress2.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nAddress2.getTextContent(), updateData.get(3), "Medfusion Patient Address2 has different than expected. Address2 is: " + nAddress2.getTextContent());
+					Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(i);
+					Log4jUtil.log("Searching: Patient Home Phone :" + updateData.get(4) + ", and Actual Patient Home Phone is:" + nHomePhone.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nHomePhone.getTextContent(), updateData.get(4), "Medfusion Patient Home Phone has different than expected. HomePhone is: " + nHomePhone.getTextContent());
+					Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(i);
+					Log4jUtil.log("Searching: Patient Date of Birth :" + updateData.get(5) + ", and Actual Patient Date of Birth is:" + nDOB.getTextContent().toString());
+					Node nRace = nPatient.getElementsByTagName(IntegrationConstants.RACE).item(i);
+					Log4jUtil.log("Searching: Race Value :" + updateData.get(7) + ", and Actual Patient Date of Birth is:" + nRace.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nRace.getTextContent(), updateData.get(7), "Race has different than expected. Race is: " + nRace.getTextContent());
+					Node nEthinicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(i);
+					Log4jUtil.log("Searching: Ethinicity Value :" + updateData.get(8) + ", and Actual Ethinicity is:" + nEthinicity.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nEthinicity.getTextContent(), updateData.get(8), "Ethinicity has different than expected. Ethinicity is: " + nEthinicity.getTextContent());
+					
+					}
+				} catch (Exception e) {
+					Log4jUtil.log("#####");
+				}
+				found = true;
+				break;
+				}
+		}
+   		Assert.assertTrue(found, "Patient was not found in the response XML");
+		
+		
+				
+	}
+
 }
 
