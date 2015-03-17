@@ -1623,9 +1623,9 @@ public class RestUtils {
 					Node nRace = nPatient.getElementsByTagName(IntegrationConstants.RACE).item(i);
 					Log4jUtil.log("Searching: Race Value :" + updateData.get(7) + ", and Actual Patient Date of Birth is:" + nRace.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nRace.getTextContent(), updateData.get(7), "Race has different than expected. Race is: " + nRace.getTextContent());
-					Node nEthinicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(i);
-					Log4jUtil.log("Searching: Ethinicity Value :" + updateData.get(8) + ", and Actual Ethinicity is:" + nEthinicity.getTextContent().toString());
-					BaseTestSoftAssert.verifyEquals(nEthinicity.getTextContent(), updateData.get(8), "Ethinicity has different than expected. Ethinicity is: " + nEthinicity.getTextContent());
+					Node nEthnicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(i);
+					Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:" + nEthnicity.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nEthnicity.getTextContent(), updateData.get(8), "Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
 					
 					}
 				} catch (Exception e) {
