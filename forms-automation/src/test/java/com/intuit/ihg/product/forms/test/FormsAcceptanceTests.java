@@ -123,7 +123,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         return pMyPatientPage;
     }
 
-    private SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
+    protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
         Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 

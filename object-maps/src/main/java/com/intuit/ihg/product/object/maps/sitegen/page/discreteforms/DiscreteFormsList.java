@@ -231,7 +231,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, calculatedFormButton);
 		calculatedFormButton.click();
 		CalculatedFormDirectory pCalculatedFormDirectory = new CalculatedFormDirectory(driver);
-		boolean foundForm=pCalculatedFormDirectory.searchForm(calculatedFormName);
+		boolean foundForm = pCalculatedFormDirectory.isSearchedFormFound(calculatedFormName);
 		if (foundForm)
 		{
 			pCalculatedFormDirectory.selectFound();
@@ -250,7 +250,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, calculatedFormButton);
 		calculatedFormButton.click();
 		CalculatedFormDirectory pCalculatedFormDirectory = new CalculatedFormDirectory(driver);
-		boolean foundForm=pCalculatedFormDirectory.searchForm(calculatedFormName);
+		boolean foundForm = pCalculatedFormDirectory.isSearchedFormFound(calculatedFormName);
 		pCalculatedFormDirectory.closeDirectory();
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		return foundForm;

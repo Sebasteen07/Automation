@@ -12,7 +12,6 @@ import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
-
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -42,7 +41,8 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true)
+
+	@Test(groups = "calculatedForms")
 	public void testCalculatedFormAddRemove() throws Exception {
 
 		logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
@@ -82,7 +82,8 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 * @Steps: Login to Site Generator, click on Patient Forms, open calculated form
 	 *         change welcome screen, save the form, exit,
 	 */
-	@Test(enabled = true)
+
+	@Test(groups = "calculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
 		logTestEnvironmentInfo("testCalculatedFormSGEdit");
 		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
@@ -111,7 +112,8 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *         fill in the form, submit the form, check if PDF was generated
 	 *         Practices configured on: DEV3
 	 */
-	@Test(enabled = true)
+
+	@Test(groups = "calculatedForms")
 	public void testCalculatedFormPatientPortal() throws Exception {
 		logTestEnvironmentInfo("Test filling Calculated form in Patient Portal");
 		Portal portal = new Portal();
@@ -135,6 +137,47 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 
 		log("Step 4: Check if the PDF is downloadable");
 		checkPDF(formsPage);
+	}
+
+	/**
+	 * @author: Petr H
+	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form,
+	 *         try to save without any answer, try to save it with one answer missing
+	 *         and finally saves it with all the correct answers
+	 *         Practices configured on: DEV3
+	 */
+	@Test(groups = "calculatedForms")
+	public void testCalculatedFormValidation() throws Exception {
+		logTestEnvironmentInfo("Test filling Calculated form in Patient Portal");
+		Portal portal = new Portal();
+		TestcasesData portalData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalData.getFormsAltUrl());
+	
+		log("step 1: Click on Sign Up Fill details in Create Account Page");
+		MyPatientPage pMyPatientPage = createPatient(portalData);
+	
+		log("step 2: Click on forms and open the form");
+		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		formsPage.openDiscreteForm("phq9");
+	
+		log("Step 3: Try to Save and continue without any answer.");
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		CalculatedFormPage calculatedFormPage = welcomePage.initializeFormToFirstPage(CalculatedFormPage.class);
+		assertTrue(calculatedFormPage.isPageLoaded());
+		assertFalse(calculatedFormPage.isValidationErrorDisplayed());
+		calculatedFormPage.clickSaveContinue();
+		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
+	
+		log("Step 4: Try to Save and continue with one answer missing.");
+		assertTrue(calculatedFormPage.isPageLoaded());
+		calculatedFormPage.fillFormExcludingLastQuestion();
+		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
+		assertTrue(calculatedFormPage.isPageLoaded());
+	
+		log("Step 5: Fill all the answers and click Save and continue.");
+		calculatedFormPage.fillFormLeftmostAnswer();
+		calculatedFormPage.clickSaveContinue();
+		calculatedFormPage.submitForm();
 	}
 
 }

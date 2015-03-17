@@ -41,20 +41,18 @@ public class CalculatedFormDirectory extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}	
 	
-	public boolean searchForm(String formName) throws Exception	{
+	public boolean isSearchedFormFound(String formName) throws Exception	{
 		
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, searchField);
 		IHGUtil iHGUtil = new IHGUtil(driver);
 		searchField.sendKeys(formName);
 		searchButton.click();
-		if (iHGUtil.exists(checkBox2)) {
-			log("Second xpath also works.");
+		if (iHGUtil.exists(checkBox)) {
+			return checkBox.isDisplayed();
 		} else {
-			log("Second xpath doesnt work!");
+			return false;
 		}
-		return iHGUtil.exists(checkBox);
-
 	}
 	
 	public void selectFound()	{
