@@ -1,10 +1,5 @@
 package com.intuit.ihg.common.utils.ccd;
 
-
-//import java.util.UUID;
-
-//import junit.framework.Assert;
-
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-//import org.junit.Test;
+
 import org.openhealthtools.mdht.uml.cda.ClinicalDocument;
 import org.openhealthtools.mdht.uml.cda.util.CDADiagnostic;
 import org.openhealthtools.mdht.uml.cda.util.CDAUtil;
@@ -26,7 +21,7 @@ import com.intuit.ihg.rest.RestUtils;
 
 
 public class CCDTest {
-	
+
 
 	private static String completeRestUrl(String restUrl, long timeStamp) {
 		return restUrl + timeStamp + ",0&max=100";
@@ -45,17 +40,17 @@ public class CCDTest {
 				System.out.println(cdaDiagnostic.getMessage());
 				System.out.println("target: " + target);
 				System.out.println("");
-			}						
+			}
 		}
     }
-	
+
 	/**
-	 * @brief Retrieves CCD produced by form using rest call.
+	 * Retrieves CCD produced by form using rest call.
 	 * @param timeStamp The time (unix timestamp) to define when the form was submitted. The form should be
 	 * 					submitted sometime between the timestamp time and present time
-	 * @param restUrl	URL for the rest call (includes practice integration ID retrievable from - SiteGenerator > Interface Setup > External Systems) 
+	 * @param restUrl	URL for the rest call (includes practice integration ID retrievable from - SiteGenerator > Interface Setup > External Systems)
 	 * @return Method returns CCD in the form of xml as a String value
-	 */ 
+	 */
 	public static String getFormCCD(long timeStamp, String restUrl) throws Exception {
 		String xml;
 		restUrl = completeRestUrl(restUrl, timeStamp);
@@ -63,10 +58,10 @@ public class CCDTest {
 
 		headers.put("Authentication-Type", "2wayssl");
 		System.out.println("Generated url is " + restUrl);
-		
+
 		try {
 			xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
-		} 
+		}
 		catch (Exception requestException) {
             // Try to get response code from the exception message using regular expression
             int errorCode;
@@ -87,9 +82,9 @@ public class CCDTest {
                 }
             }
         }
-		
+
 		xml = StringEscapeUtils.unescapeXml(xml);
-		
+
 		return xml;
 	}
 }
