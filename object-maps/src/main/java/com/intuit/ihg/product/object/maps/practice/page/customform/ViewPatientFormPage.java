@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
-import java.util.InputMismatchException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +42,7 @@ public class ViewPatientFormPage extends BasePageObject {
 
 	public String getLastUpdatedDateFormatted() throws IllegalStateException {
         // tries to find and return date from last updated date text
-        Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d");
+		Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d|\\d\\d/\\d\\d/\\d\\d\\d\\d");
         Matcher matcher = pattern.matcher(getLastUpdatedDateText());
 
         if (matcher.find())

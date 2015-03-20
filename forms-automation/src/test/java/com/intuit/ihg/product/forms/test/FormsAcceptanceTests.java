@@ -144,11 +144,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
      */
     private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage)
             throws Exception {
-        String currentDate = IHGUtil.getFormattedCurrentDate("yyyy-MM-dd");
-
         log("Verify date and download code");
-        // take the year, month and day (yyyy-MM-dd - 10 chars) of form submission
+		// take the date of form submission
         String submittedDate = viewFormPage.getLastUpdatedDateFormatted();
+		// get current date in the same format as the date at the page
+		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
         assertEquals(submittedDate, currentDate, "Form submitted today not found");
 
         log("Download URL: " + viewFormPage.getDownloadURL());
