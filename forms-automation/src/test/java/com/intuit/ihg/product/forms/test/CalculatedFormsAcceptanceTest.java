@@ -42,7 +42,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 */
 
 
-	@Test(groups = "calculatedForms")
+	@Test
 	public void testCalculatedFormAddRemove() throws Exception {
 
 		logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
@@ -83,7 +83,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *         change welcome screen, save the form, exit,
 	 */
 
-	@Test(groups = "calculatedForms")
+	@Test
 	public void testCalculatedFormSGEdit() throws Exception {
 		logTestEnvironmentInfo("testCalculatedFormSGEdit");
 		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
