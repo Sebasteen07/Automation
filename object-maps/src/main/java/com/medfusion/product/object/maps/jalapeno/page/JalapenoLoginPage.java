@@ -96,7 +96,14 @@ public class JalapenoLoginPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		log("Login Credentials: [" + username + "] [" + password + "]");
-		inputUserId.sendKeys(username);
+		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
+		// try removing the try catch once newrelic is deprecated and fully removed
+		try{
+			inputUserId.sendKeys(username);
+		}
+		catch (org.openqa.selenium.WebDriverException e) {
+			inputUserId.sendKeys(username);
+		}
 		inputPassword.sendKeys(password);
 		signInButton.click();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);

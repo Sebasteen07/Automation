@@ -66,7 +66,14 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 	
 	public JalapenoForgotPasswordPage4 fillInSecretAnswer(String answer) {
 		
-		secretAnswer.sendKeys(answer);
+		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
+		// try removing the try catch once newrelic is deprecated and fully removed
+		try{
+			secretAnswer.sendKeys(answer);
+		}
+		catch (org.openqa.selenium.WebDriverException e){
+			secretAnswer.sendKeys(answer);
+		}
 		continueAndResetButton.click();
 		
 		return PageFactory.initElements(driver, JalapenoForgotPasswordPage4.class);

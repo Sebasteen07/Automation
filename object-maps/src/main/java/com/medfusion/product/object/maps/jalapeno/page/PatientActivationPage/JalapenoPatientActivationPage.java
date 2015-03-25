@@ -57,7 +57,14 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		
 		log("Setting User Name as " + userId);
-		inputUserId.sendKeys(userId);
+		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
+		// try removing the try catch once newrelic is deprecated and fully removed
+		try{
+			inputUserId.sendKeys(userId);
+		}
+		catch (org.openqa.selenium.WebDriverException e) {
+			inputUserId.sendKeys(userId);
+		}		
 		log("Setting Password as " + password);
 		inputPassword.sendKeys(password);
 		

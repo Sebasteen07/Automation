@@ -77,7 +77,15 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 
 
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
+		// try removing the try catch once newrelic is deprecated and fully removed
+		JalapenoCreateAccountPage jalapenoCreateAccountPage;
+		try {
+		jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		}
+		catch (org.openqa.selenium.WebDriverException e){	
+			jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		}
 		
 		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
 
