@@ -290,7 +290,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 			long EventRecordedTimestamp = Long.parseLong(actualTimeStamp);
 			Date date = new Date(EventRecordedTimestamp);
 			DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-			TimeZone estTime = TimeZone.getTimeZone("EST");
+			TimeZone estTime = TimeZone.getTimeZone("America/New_York");
 			gmtFormat.setTimeZone(estTime);
 			String data[]=gmtFormat.format(date).split(" ");		  	
 			String joinedDate=new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
