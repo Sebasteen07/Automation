@@ -10,7 +10,6 @@ import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Test;
 
 
 public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
