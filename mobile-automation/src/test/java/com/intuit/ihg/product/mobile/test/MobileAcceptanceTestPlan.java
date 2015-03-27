@@ -734,7 +734,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.selectDoctor(testcasesData.getAppointmentDoctor());
 
 		log("step 4:Fill data and submit");
-		MobileBasePage mbPage = (MobileBasePage) pARSubmit
+		MobileBasePage mbPage = pARSubmit
 				.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,
 						MobileConstants.APPOINTMENT_REASON,
 						MobileConstants.APPOINTMENT_TIME);
@@ -846,6 +846,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 12: LogIn to verify secure message in mobile");
 		log("step 1:LogIn");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+		pMyPatientPage = mloginpage.login(testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("subject##########################" + subject);
 		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
@@ -908,7 +909,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		}
 		
 		log("step 4: Click Add New Pharmacy");
-		AddPharmacyPage pAddPharmacyPage = (AddPharmacyPage) pRequestRenewalPage.addNewPharmacy();
+		AddPharmacyPage pAddPharmacyPage = pRequestRenewalPage.addNewPharmacy();
 		
 		log("step 5: Click Change current location");
 		ChooseLocationPage pChooseLocationPage = pAddPharmacyPage.selectLocation();
@@ -961,16 +962,16 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		SelectAPracticePage pMySelectAPracticePage = (SelectAPracticePage) pMyPatientPage.clickAAQLink();
 		
 		log("step 4: Select a practice");
-		SelectAQuestionPage pMySelectAQuestionPage = (SelectAQuestionPage) pMySelectAPracticePage.selectPractice(testcasesData.getAskAQuestionPractice());
+		SelectAQuestionPage pMySelectAQuestionPage = pMySelectAPracticePage.selectPractice(testcasesData.getAskAQuestionPractice());
 		
 		log("step 5: Select a Question");
 		SelectALocationPage pMySelectALocationPage = pMySelectAQuestionPage.selectQuestion(testcasesData.getAskAQuestionType());
 		
 		log("step 6: Select a Location");
-		AskAQuestionPage pMyAskAQuestionPage = (AskAQuestionPage) pMySelectALocationPage.selectLocation(testcasesData.getAskAQuestionLocation());
+		AskAQuestionPage pMyAskAQuestionPage = pMySelectALocationPage.selectLocation(testcasesData.getAskAQuestionLocation());
 		
 		log("step 7: Fill and submit a Question");
-		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pMyAskAQuestionPage.fillAndSubmitQuestion(testcasesData.getAskAQuestionDoctor(), 
+		SubmissionConfirmationPage pSubconfirm = pMyAskAQuestionPage.fillAndSubmitQuestion(testcasesData.getAskAQuestionDoctor(), 
 													"TestSubject", "TestBody");
 		
 		log("step 8: Close and logout");
@@ -1086,7 +1087,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.selectPracticeUsingString(testcasesData.getBillPayPracticeName());
 		
 		log("step 5: Select location");
-		MakeAPayment pMakeAPayment  = (MakeAPayment) pSelectALocation.selectLocationPayment(testcasesData.getBillPayPracticeLocation());
+		MakeAPayment pMakeAPayment  = pSelectALocation.selectLocationPayment(testcasesData.getBillPayPracticeLocation());
 
 		log("step 5: Add a new credit card");
 		NewCard pNewCard = pMakeAPayment.clicklnkAddNewCard();
@@ -1127,6 +1128,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		log("step 11: LogIn to verify secure message in mobile");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+		pMyPatientPage = mloginpage.login(testcasesData.getUserName(), testcasesData.getPassword());
 
 		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
 		MessageDetailsPage mDetails = mInbox.clickMessage(uniquePracticeResponse);
