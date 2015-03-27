@@ -826,6 +826,64 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Step 11: Logout from Patient portal");
 		pMyPatientPage.logout(driver);
 		
+		log("####### PIDC Inbound for ondemandprovision ​#######");
+		
+		log("Step 12: Login to Practice Portal to fetch Medfusion Member ID");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUserName(),testData.getPracticePassword());
+	
+		log("Step 13: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
+	
+		log("Step 14: Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
+	
+		log("Step 15: Verify the Search Result");
+		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
+		
+		log("Step 16: Click on Patient");
+		PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
+		
+		log("Step 17: Click on Edit Patient ID Link");
+		patientPage.editPatientLink();
+		String patientID=patientPage.medfusionID();
+		log("Medfusion Member ID:-"+patientID);
+					
+		log("Step 18: Logout of Practice Portal");
+		pPracticeHomePage.logOut();
+		
+		String practicePatientId=IHGUtil.createRandomNumericString();
+		String patient = RestUtils.preparePatient(testData.getHealthKeyPatientPath(), practicePatientId, firstName, lastName, email,patientID);
+
+		log("Step 19: Post PIDC with PracticePatientId (On Demand Provision)");
+		String processingUrl = RestUtils.setupHttpPostRequestExceptOauth(testData.getPortalRestUrl(), patient, testData.getResponsePath(),null);	
+	
+		log("Step 20: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequestExceptoAuth(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+		
+		log("Step 21: Invoke Get PIDC for Practice in which patient has set External Patient ID in (Practice 1) to verify patient details ");
+		subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + lastTimeStamp , testData.getResponsePath());
+		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,patientID);
+		
+		log("Step 22: Invoke Get PIDC for Practice to which patient updates should not be sent (Practice 2) ");
+		subString=testData.getRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + lastTimeStamp, testData.getResponsePath());
+		
+		
 		}
 		
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -872,5 +930,50 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		
 		log("Step 6: Logout from Patient portal");
 		pMyAccountPage.logout(driver);
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testHealthKeyPatientInsuranceUpdate() throws Exception {
+		log("Test Case: Healthkey Patient updates demographics details in Practice 1 from Patient Portal");
+			
+		PIDCTestData testData = loadDataFromExcel();
+		Long timestamp = System.currentTimeMillis();
+		 
+		Long since = timestamp / 1000;
+		log("Step 2: LogIn Health Key patient into first practice");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
+		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
+		
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		
+		List<String> updateData=new ArrayList<String>();
+		
+		log("Step 15: Click on insuranceLink on MyAccountPage");
+		InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		
+		updateData.add(testData.getRelation());
+		
+		log("Update Data:"+updateData);
+		
+		log("Step 16: Start to add Insurance details");
+		pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(),testData.getInsurance_Type(),testData.getRelation(),updateData);
+
+		log("Step 17: Asserting for Insurance Name and Insurance Type");
+		Thread.sleep(60000);
+		assertTrue(verifyTextPresent(driver, testData.getInsurance_Name()));
+		assertTrue(verifyTextPresent(driver, testData.getInsurance_Type()));
+		
+		log("Step 18: Again do a GET on PIDC to verify Patient Update & Insurance Details");
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		RestUtils.isPatientUpdated(testData.getResponsePath(), "patientIdString" , updateData.get(3), updateData.get(4));
+		
+		log("Step 19: Check patient Demographics Details & Insurance Details");
+		RestUtils.verifyPatientDetails(testData.getResponsePath(), "patientIdString",updateData,testData.getInsurance_Name());
+		
+		log("Step 20: Logout from Patient portal");
+		pMyAccountPage.logout(driver);
+		
 		}
 }
