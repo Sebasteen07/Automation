@@ -183,4 +183,8 @@ public class PIDCTestData {
 	public String getHealthKeyPatientUserName(){
 		return PidcObj.HealthKeyPatientUserName;
 	}
+	
+	public String getHealthKeyPatientPath(){
+		return PidcObj.HealthKeyPatientPath;
+	}
 }
