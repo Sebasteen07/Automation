@@ -1335,7 +1335,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
 		
 		log("Step 8: Getting messages since timestamp: " + timestamp);
-		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
+		String lastTimestamp=RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
 		
 		log("Step 9: Verify payment details");
 		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),accountNumber,IntegrationConstants.SUBMITTED);
@@ -1426,13 +1426,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 		log("Step 23: Logout of Practice Portal");
 		practiceHome.logOut();
 		
-		log("Verify Payment status in Get Response");
-		log("Step 24: Getting messages since timestamp: " + timestamp);
-		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
+		log("Step 24: Verify Payment status in Get Response using the Timestamp received in response of Step 8");
+		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + lastTimestamp, testcasesData.getResponsePath());
 				
-		log("Step 25: Verify payment details");
-		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),accountNumber,IntegrationConstants.POSTED);
-    }
+   }
 	
 	    @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testPayNow() throws Exception {
@@ -1467,7 +1464,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
 			
 			log("Step 7: Getting messages since timestamp: " + timestamp);
-			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+			String lastTimestamp=RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 			
 			log("Step 8: Verify payment details");
 			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.SUBMITTED,IntegrationConstants.PAYNOWPAYMENT);
@@ -1511,13 +1508,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Step 15: Logout of Practice Portal ");
 			practiceHome.logOut();
 			
-			log("Verify Payment status in Get Response");
-			log("Step 16: Getting messages since timestamp: " + timestamp);
-			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
-					
-			log("Step 17: Verify payment details");
-			RestUtils.verifyPayment(testcasesData.getResponsePath(),pNoLoginPaymentPage.GetAmountPrize() + ".00",IntegrationConstants.POSTED,IntegrationConstants.PAYNOWPAYMENT);
-			
+			log("Step 16: Verify Payment status in Get Response using the Timestamp received in response of Step 7");
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=payNowpayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+				
 			
 		}
 	 
@@ -1560,7 +1553,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(),testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(), testcasesData.getOAuthPassword());
 			
 			log("Step 7: Getting messages since timestamp: " + timestamp);
-			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+			String lastTimestamp=RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 			
 			log("Step 8: Verify payment details");
 			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.SUBMITTED,IntegrationConstants.VCSPAYMENT);
@@ -1605,13 +1598,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			log("Step 15: Logout of Practice Portal ");
 			practiceHome.logOut();
 			
-			log("Verify Payment status in Get Response");
-			log("Step 16: Getting messages since timestamp: " + timestamp);
-			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+			log("Step 16: Verify Payment status in Get Response using the Timestamp received in response of Step 7");
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl()+"=vcsPayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
 					
-			log("Step 17: Verify payment details");
-			RestUtils.verifyPayment(testcasesData.getResponsePath(),Amount + ".00",IntegrationConstants.POSTED,IntegrationConstants.VCSPAYMENT);
-			
 			
 	    }
 

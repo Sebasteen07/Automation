@@ -68,9 +68,10 @@ public class RestUtils {
 	 * Performs OAuth Get Request and saves the resposse
 	 * @param strUrl server Get url
 	 * @param responseFilePath path to save the response
+	 * @return 
 	 * @throws IOException 
 	 */
-	public static void setupHttpGetRequest(String strUrl, String responseFilePath)
+	public static String setupHttpGetRequest(String strUrl, String responseFilePath)
 			throws IOException {
 		IHGUtil.PrintMethodName();
 
@@ -83,14 +84,29 @@ public class RestUtils {
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
         //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
-        String sResp = EntityUtils.toString(entity);
-        
+        String sResp=null;
+        if(entity!=null){
+        sResp = EntityUtils.toString(entity);
         Log4jUtil.log("Check for http 200 response");
 		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
 
 		writeFile(responseFilePath, sResp);
-	}
+        
+		if(resp.containsHeader(IntegrationConstants.TIMESTAMP_HEADER)){
+			Header[] h=resp.getHeaders(IntegrationConstants.TIMESTAMP_HEADER);
+			return h[0].getValue();
+			
+			}
+        }
+        else
+        {
+        	Log4jUtil.log("204 response found");
+        	
+        }
+        return null;
+		
+    }
 
 	/**
 	 * Reads the contents from an InputStream and captures them in a String
@@ -1640,6 +1656,8 @@ public class RestUtils {
 		
 				
 	}
+	
+
 
 }
 
