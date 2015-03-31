@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,7 +15,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.NoSuchElementException;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -194,8 +195,7 @@ public class HealthFormPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		log(driver.getPageSource());
 		log(lnkclickForPdfDownload.getAttribute("href").toString());
-		return insuranceHealthFormDownloadCode(
-				lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
+		return insuranceHealthFormDownloadCode(lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
 
 	/**
@@ -230,8 +230,7 @@ public class HealthFormPage extends BasePageObject {
 		Thread.sleep(3000);
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
-		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='"
-				+ formName + "']"));
+		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='" + formName + "']"));
 		IHGUtil.waitForElement(driver, 10, formLink);
 		formLink.click();
 		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
@@ -257,7 +256,7 @@ public class HealthFormPage extends BasePageObject {
 	}
 
 	/**
-	 * @brief Looks for a link to download PDF
+	 * Looks for a link to download PDF
 	 * @return true if the link to pdf is found otherwise false
 	 */
 	public boolean isPDFLinkPresent() {
@@ -269,6 +268,10 @@ public class HealthFormPage extends BasePageObject {
 			result = lnkclickForPdfDownload.isDisplayed();
 		} catch (NoSuchElementException e) {
 			return false;
+		} catch (StaleElementReferenceException e) {
+			System.out.println("Stale element reference caught, retrying");
+			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
+			result = lnkclickForPdfDownload.isDisplayed();
 		}
 		return result;
 	}
@@ -281,7 +284,7 @@ public class HealthFormPage extends BasePageObject {
 	 * @return method returns initialized object for Welcome page of the form
 	 */
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 8);
+		WebDriverWait wait = new WebDriverWait(driver, 15);
 
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
 		wait.until(ExpectedConditions.visibilityOf(discreteForms

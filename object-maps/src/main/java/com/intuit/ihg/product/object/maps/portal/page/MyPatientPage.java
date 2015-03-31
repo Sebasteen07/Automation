@@ -36,18 +36,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 /**
- *  
+ *
  * @author bkrishnankutty
- * 
+ *
  */
 
 public class MyPatientPage  extends BasePageObject{
-	
+
 		public static final String PAGE_NAME = "My Patient Page";
-	
+
 	    @FindBy(xpath="//a[contains(@href, 'account.profile')]")
 	    private  WebElement myaccountLink;
-	
+
 		@FindBy(xpath = "//a[contains(@href,'aska.askadoc')][1]")
 		private WebElement askAStaffLink;
 
@@ -56,66 +56,65 @@ public class MyPatientPage  extends BasePageObject{
 
 		@FindBy(xpath = "//a[contains(@href,'paybill.start')]")
 		private WebElement makePayment;
-		
+
 	    @FindBy(xpath = "//a[contains(@href,'phr.muphr')]")
 		private WebElement phrLink;
-	    
+
 	    @FindBy(xpath = "//a[contains(@href,'pre-reg')]")
 	    private WebElement registrationForm;
-	    
+
 		@FindBy(css="a[href*='exit.cfm']")
 		private WebElement logout;
 
 		@FindBy(css=".newmailmessage.launch_questionnaire > small>a")
 		private WebElement btnViewallmessages;
-		
+
 		@FindBy(xpath="//a[contains(@href,'ars.start')]")
 		private WebElement appointmentRequestTab;
-		
+
 		@FindBy(xpath="//a[contains(@href,'ars.prereqs')]")
 		private WebElement lnkApptRequestHistory;
-		
+
 		@FindBy(xpath="//a[contains(@href,'vov.start')]")
 		private WebElement lnkVirtualOfficeVisit;
-		
+
 		@FindBy(linkText="Fill Out Forms")
 		private WebElement lnkFillOutForms;
-		
+
 		@FindBy(linkText="New Assessment")
 		private WebElement lnkNewSymptomAssessment;
-		
+
 		@FindBy(linkText="View Health Information")
 		private WebElement lnkViewMeaningfulUsePHR;
-		
+
 		@FindBy(xpath = "//a[@title='Prescription Renewal']")
 	    private WebElement lnkPrescriptionRenewal;
-		
+
 		@FindBy(xpath = "//div[@id='iframecontent']/div/h2")
 	    public WebElement txtMyPatientPage;
-		
+
 		@FindBy(css="button:contains('No thanks')")
 		private WebElement surveyNoThanks;
-		
+
 		@FindBy(xpath = "//a[@title='Make Payment']")
 	    private WebElement makePaymentlnk;
-		
-		@FindBy(xpath = ".//a[contains(@href , '/consumer/index.php/forms/start/pre-reg')]")
+
+		@FindBy(className = "launch_questionnaire")
 	    private WebElement startRegistrationlnk;
-		
+
 		@FindBy(xpath = "//a[@id='formsComplete']/big")
 	    private WebElement registrationConfirmationtext;
-		
+
 		@FindBy(linkText="My Messages")
 		private WebElement Mymessages;
 
-		
+
 	    PortalUtil pPortalUtil=new PortalUtil(driver);
-	    
+
 		public MyPatientPage(WebDriver driver) {
 			super(driver);
-			// TODO Auto-generated constructor stub
 		}
-		
+
 		public WebElement gettxtMyPatientPage()
 		{
 			return txtMyPatientPage;
@@ -133,33 +132,33 @@ public class MyPatientPage  extends BasePageObject{
 			myaccountLink.click();
       		return PageFactory.initElements(driver,MyAccountPage.class);
 		}
-		
+
 	    public PortalLoginPage logout(WebDriver driver) throws InterruptedException,IOException {
-			
+
 			IHGUtil.PrintMethodName();
 			//pPortalUtil.maximize(driver);
 			clickLogout(driver);
 	        // TODO - deal with random survey
 	        return PageFactory.initElements(driver, PortalLoginPage.class);
 	       }
-	
-	
+
+
 	/**
 	 * Verify if the ViewAll button presents on page or not
 	 * @param driver
 	 * @return
 	 * @throws InterruptedException
 	 */
-	
+
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException
 	{
 		PortalUtil.setPortalFrame(driver);
 		return IHGUtil.waitForElement(driver,6, myaccountLink);
 	}
-	
-	
+
+
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
-		
+
 		IHGUtil.PrintMethodName();
 		//IHGUtil.setDefaultFrame(driver);
 		driver.switchTo().defaultContent();
@@ -179,29 +178,29 @@ public class MyPatientPage  extends BasePageObject{
 				}
 			System.out.println( "### WARNING: LOGOUT ELEMENT NOT FOUND." );
 		}
-		
+
 		PortalLoginPage homePage = PageFactory.initElements(driver, PortalLoginPage.class);
-		
+
 		System.out.println( "### DELETE ALL COOKIES" );
 		driver.manage().deleteAllCookies();
 		return homePage;
 	}
-			
-	public AppointmentRequestStep1Page clickAppointmentRequestTab() {	
+
+	public AppointmentRequestStep1Page clickAppointmentRequestTab() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		appointmentRequestTab.click();
 		return PageFactory.initElements(driver, AppointmentRequestStep1Page.class);
 	}
-	
+
 	public ApptRequestHistoryPage clickApptRequestHistoryLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		lnkApptRequestHistory.click();		
+		lnkApptRequestHistory.click();
 		return PageFactory.initElements(driver, ApptRequestHistoryPage.class);
 	}
-	
+
 	public AskAStaffStep1Page clickAskAStaffLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -209,7 +208,7 @@ public class MyPatientPage  extends BasePageObject{
 		askAStaffLink.click();
 		return PageFactory.initElements(driver, AskAStaffStep1Page.class);
 	}
-	
+
 	/**
 	 * Click on Button Viewallmessages
 	 * @return
@@ -220,7 +219,7 @@ public class MyPatientPage  extends BasePageObject{
 		btnViewallmessages.click();
 		return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
 	}
-	
+
 	public MessageCenterInboxPage clickViewAllMessagesInMessageCenter() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -234,25 +233,25 @@ public class MyPatientPage  extends BasePageObject{
 		lnkVirtualOfficeVisit.click();
 		return PageFactory.initElements(driver, VirtualOfficeVisitProviderPage.class);
 	}
-	
+
 	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 15); // we need to wait until the form window disappears
-		
+
 		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
 		lnkFillOutForms.click();
 		return PageFactory.initElements(driver, HealthFormPage.class);
 	}
-	
+
 	public NewSymptomAssessmentPage clickNewSymptomAssessmentLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		lnkNewSymptomAssessment.click();
 		return PageFactory.initElements(driver, NewSymptomAssessmentPage.class);
 	}
-	
-	
+
+
 	/**
 	 * Click on PHR link and redirect to page AcceptPhrTermsandConditions
 	 * @return
@@ -263,7 +262,7 @@ public class MyPatientPage  extends BasePageObject{
 		lnkViewMeaningfulUsePHR.click();
 		return PageFactory.initElements(driver, AcceptPhrTermsandConditions.class);
 	}
-	
+
 	/**
 	 * Click on Prescription Renewal link and redirect to page New Rx Renewal Page
 	 * @return NewRxRenewalPage
@@ -274,30 +273,29 @@ public class MyPatientPage  extends BasePageObject{
 			lnkPrescriptionRenewal.click();
 			return PageFactory.initElements(driver, NewRxRenewalPage.class);
 	    }
-	
+
 	 /**
 		 * Click on Online Bill Pay link and redirect to Make Payment Page
 		 * @return MakePaymentPage
 		 */
 		 public MakePaymentPage clickMakePaymentLnk() {
 			 	IHGUtil.PrintMethodName();
-		    	
+
 				PortalUtil.setPortalFrame(driver);
 				makePaymentlnk.click();
 				return PageFactory.initElements(driver, MakePaymentPage.class);
 		    }
-	
 
-		
+
+
 			/**
-			 * @Description:Click on Start Registration Button 
+			 * @Description:Click on Start Registration Button
 			 * @param pdriver
 			 * @return
 			 * @throws InterruptedException
 			 */
 			public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws Exception
 			{
-				Thread.sleep(5000);
 				PortalUtil.setPortalFrame(pdriver);
 				IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
 				startRegistrationlnk.click();
@@ -323,7 +321,7 @@ public class MyPatientPage  extends BasePageObject{
 					Mymessages.click();
 					return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
 		    }
-			
+
 		/**
 			 * @Description:Click On PHR Link
 			 */
@@ -334,7 +332,7 @@ public class MyPatientPage  extends BasePageObject{
 				phrLink.click();
 				return PageFactory.initElements(pdriver,PHRPage.class);
 			}
-		
+
 		/**
 		 * @Description:Click On PHR Link
 		 */

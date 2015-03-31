@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -17,14 +18,18 @@ public class FormWelcomePage extends PortalFormPage {
 
 	@FindBy(xpath = "//section[@class='content indented']/p[1]")
 	private WebElement welcomeMessage;
-	
-	
+
+
 	public FormWelcomePage(WebDriver driver) {
 		super(driver);
 	}
 
     public String getMessageText() {
-        return welcomeMessage.getText();
+		try {
+        	return welcomeMessage.getText();
+		} catch (WebDriverException e) {
+			return welcomeMessage.getText();
+		}
     }
 
 	/**
@@ -33,7 +38,7 @@ public class FormWelcomePage extends PortalFormPage {
 	 */
 	public boolean isWelcomePageLoaded() {
 		boolean result = false;
-		
+
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		try {
 			result = btnContinue.isEnabled();
@@ -43,12 +48,12 @@ public class FormWelcomePage extends PortalFormPage {
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		return result;
 	}
-	
+
 	@Override
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
-	
+
 	/**
 	 * @param nextPageClass - class of the page that follows immediately after the welcome page
 	 * @return Initiated object for the next page
