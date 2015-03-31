@@ -4,6 +4,7 @@ import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartial
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -156,11 +157,25 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
+
 	protected void checkPDF(HealthFormPage formsPage) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
 		assertTrue(formsPage.isPDFLinkPresent(), "PDF link not found, PDF not generated");
 		assertEquals(status.getDownloadStatusCode(formsPage.getPDFDownloadLink(), RequestMethod.GET), 200);
+	}
+
+	protected void checkPDF(HealthFormPage formsPage, String formName) throws Exception {
+		PortalUtil.setPortalFrame(driver);
+		URLStatusChecker status = new URLStatusChecker(driver);
+		String pdfLink = new String();
+		try {
+			pdfLink = formsPage.getPDFDownloadLink(formName);
+		} catch (NoSuchElementException e) {
+			log("PDF not found!");
+			throw e;
+		}
+		assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 	}
 
     @Test(groups = {"smokeTest"})

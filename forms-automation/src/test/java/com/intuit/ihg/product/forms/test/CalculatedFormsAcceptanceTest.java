@@ -1,18 +1,20 @@
 package com.intuit.ihg.product.forms.test;
 
+import org.openqa.selenium.support.PageFactory;
+
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.CalculatedFormPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
-import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
@@ -113,8 +115,21 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *         Practices configured on: DEV3
 	 */
 
+	@Test
+	public void testAllCalculatedFormsPatientPortal() throws Exception {
+		String[] names = { "PHQ-2", "PHQ-9", "ADHD" };
+		testCalculatedFormPatientPortal(names);
+	}
+
 	@Test(groups = "calculatedForms")
-	public void testCalculatedFormPatientPortal() throws Exception {
+	public void testOneCalculatedFormPatientPortal() throws Exception {
+		String[] name = { "PHQ-2" };
+		testCalculatedFormPatientPortal(name);
+	}
+
+	@Test
+	private void testCalculatedFormPatientPortal(String[] formNames)
+			throws Exception {
 		logTestEnvironmentInfo("Test filling Calculated form in Patient Portal");
 		Portal portal = new Portal();
 		TestcasesData portalData = new TestcasesData(portal);
@@ -125,18 +140,24 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm("phq9");
+		for (String formName : formNames) {
+			log("Testing Form named " + formName);
+			formsPage.openDiscreteForm(formName);
 
-		log("Step 3: Fill in the form with all the required answers and submit.");
-		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		CalculatedFormPage calculatedFormPage = welcomePage.initializeFormToFirstPage(CalculatedFormPage.class);
-		assertTrue(calculatedFormPage.isPageLoaded());
-		calculatedFormPage.fillFormRightmostAnswer();
-		calculatedFormPage.clickSaveContinue();
-		calculatedFormPage.submitForm();
+			log("Step 3: Fill in the form with all the required answers and submit.");
+			FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+			CalculatedFormPage calculatedFormPage = welcomePage
+					.initializeFormToFirstPage(CalculatedFormPage.class);
+			assertTrue(calculatedFormPage.isPageLoaded());
+			calculatedFormPage.fillFormRightmostAnswer();
+			calculatedFormPage.clickSaveContinue();
+			calculatedFormPage.submitForm();
 
-		log("Step 4: Check if the PDF is downloadable");
-		checkPDF(formsPage);
+			log("Step 4: Check if the PDF is downloadable.");
+			checkPDF(formsPage, formName);
+
+
+		}
 	}
 
 	/**

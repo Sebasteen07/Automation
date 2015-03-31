@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -124,9 +123,9 @@ public class HealthFormPage extends BasePageObject {
 		discreteForms.put("pdfForm", pdfForm);
 		discreteForms.put("practiceForm", practiceForm);
 		discreteForms.put("specialChars", specialCustom);
-		discreteForms.put("phq9", phq9Form);
-		discreteForms.put("phq2", phq2Form);
-		discreteForms.put("adhd", adhdForm);
+		discreteForms.put("PHQ-9", phq9Form);
+		discreteForms.put("PHQ-2", phq2Form);
+		discreteForms.put("ADHD", adhdForm);
 	}
 
 	/**
@@ -276,6 +275,14 @@ public class HealthFormPage extends BasePageObject {
 		return result;
 	}
 
+	public String getPDFDownloadLink(String formName) {
+		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
+		return wait.until(
+				ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@title, '"
+						+ formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
+				.getAttribute("href");
+	}
+
 	/**
 	 * @brief Opens a form on the page selected by parameter and initializes its
 	 *        welcome page
@@ -287,9 +294,15 @@ public class HealthFormPage extends BasePageObject {
 		WebDriverWait wait = new WebDriverWait(driver, 15);
 
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
-		wait.until(ExpectedConditions.visibilityOf(discreteForms
-				.get(selectedForm)));
-		discreteForms.get(selectedForm).click();
+		WebElement form = discreteForms.get(selectedForm);
+		if (form != null) {
+			wait.until(ExpectedConditions.visibilityOf(form));
+
+		} else {
+			form = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+					.partialLinkText(selectedForm)));
+		}
+		form.click();
 		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
@@ -317,5 +330,6 @@ public class HealthFormPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		lnkHealthForms.click();
 	}
+
 
 }
