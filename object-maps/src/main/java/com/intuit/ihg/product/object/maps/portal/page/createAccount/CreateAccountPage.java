@@ -263,8 +263,6 @@ public class CreateAccountPage extends BasePageObject {
 		txtPatientFirstname.click();
 		log("PatientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("PatientSSN: " + patientSSN);
-		txtssn.sendKeys(patientSSN);
 		log("Email: " + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
