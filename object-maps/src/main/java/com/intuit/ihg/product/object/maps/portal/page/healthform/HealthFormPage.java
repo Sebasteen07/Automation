@@ -275,8 +275,8 @@ public class HealthFormPage extends BasePageObject {
 		return result;
 	}
 
-	public String getPDFDownloadLink(String formName) {
-		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
+	public String getPDFDownloadLink(String formName) throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		return wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@title, '"
 						+ formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
@@ -296,13 +296,13 @@ public class HealthFormPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
 		WebElement form = discreteForms.get(selectedForm);
 		if (form != null) {
-			wait.until(ExpectedConditions.visibilityOf(form));
+			wait.until(ExpectedConditions.visibilityOf(form)).click();
 
 		} else {
-			form = wait.until(ExpectedConditions.visibilityOfElementLocated(By
-					.partialLinkText(selectedForm)));
+			wait.until(
+					ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(selectedForm)))
+					.click();
 		}
-		form.click();
 		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
@@ -329,6 +329,27 @@ public class HealthFormPage extends BasePageObject {
 	public void clickHealthForms() {
 		driver.switchTo().defaultContent();
 		lnkHealthForms.click();
+	}
+
+	public String getSubmittedDate(String formName) throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebElement formDate;
+		try {
+			formDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+					.xpath("//a[contains(@title, '" + formName + "')]/../table/tbody/tr/td/span")));
+		} catch (Exception e) {
+			log("Element containing date not found!");
+			throw e;
+		}
+		String formattedDate;
+		try {
+			formattedDate = IHGUtil.extractDateFromText(formDate.getText());
+		} catch (Exception e) {
+			log("Date not found or it is in incorrect format!");
+			throw e;
+		}
+		return formattedDate;
+
 	}
 
 

@@ -147,7 +147,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
             throws Exception {
         log("Verify date and download code");
 		// take the date of form submission
-        String submittedDate = viewFormPage.getLastUpdatedDateFormatted();
+		String submittedDate = IHGUtil.extractDateFromText(viewFormPage.getLastUpdatedDateText());
 		// get current date in the same format as the date at the page
 		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
         assertEquals(submittedDate, currentDate, "Form submitted today not found");
@@ -157,6 +157,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
+	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName)
+			throws Exception {
+		String submittedDate = formsPage.getSubmittedDate(formName);
+		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
+		assertEquals(submittedDate, currentDate, "Form submitted today not found");
+	}
 
 	protected void checkPDF(HealthFormPage formsPage) throws Exception {
 		PortalUtil.setPortalFrame(driver);
@@ -252,6 +258,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
 		assertTrue(xml.contains(easyBruisingString),
                 "Symptom not found in the CCD, printing the CCD:\n" + xml);
+
+		log("Step 6: Test if the submission date is correct");
+		verifyFormsDatePatientPortal(formsPage, "output test");
+
 	}
 
 	@Test(enabled = true, groups = {"PatientForms"})

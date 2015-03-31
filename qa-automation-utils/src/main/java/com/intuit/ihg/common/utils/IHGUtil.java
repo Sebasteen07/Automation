@@ -20,6 +20,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Locale;
 
 import org.apache.log4j.Level;
@@ -292,6 +294,16 @@ public class IHGUtil extends BasePageObject {
 		return formattedCurrentDateTime;
 	}
 
+	public static String extractDateFromText(String text) throws IllegalStateException {
+		// tries to find and return date from last updated date text
+		Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d|\\d\\d/\\d\\d/\\d\\d\\d\\d");
+		Matcher matcher = pattern.matcher(text);
+
+		if (matcher.find())
+			return matcher.group();
+		else
+			throw new IllegalStateException("Date not found");
+	}
 
 	/**
 	 * Description : Method to add or subtract days from current date
@@ -496,6 +508,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public boolean elementIsNonexistent(final By bySelector, long timeout) throws InterruptedException {
 		return checkForCondition(new Condition() {
+			@Override
 			public boolean met() {
 				try {
 					driver.findElement(bySelector);
@@ -519,6 +532,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public boolean elementIsHidden(final By bySelector, long timeout) throws InterruptedException {
 		return checkForCondition(new Condition() {
+			@Override
 			public boolean met() {
 				WebElement element = driver.findElement(bySelector);
 				return !element.isDisplayed();
@@ -665,11 +679,11 @@ public class IHGUtil extends BasePageObject {
 			if (!sdate.equals("Pending")) {
 				DateFormat formatter;
 				formatter = new SimpleDateFormat("MM/dd/yyyy");
-				Date date1 = (Date) formatter.parse(sdate);
+				Date date1 = formatter.parse(sdate);
 				//log (""+date1);
 
-				Date fdate = (Date) formatter.parse(fromDate);
-				Date tdate = (Date) formatter.parse(toDate);
+				Date fdate = formatter.parse(fromDate);
+				Date tdate = formatter.parse(toDate);
 
 
 				// Check if date in between				
@@ -1315,6 +1329,7 @@ public class IHGUtil extends BasePageObject {
 			WebDriverWait wait = new WebDriverWait( driver, timeOutInSeconds );
 			
 			found = wait.until(new ExpectedCondition<Boolean>() {
+
 				public Boolean apply(WebDriver driver) {
 					
 					// This causes problems for some drivers - need to use plural (findElements) and check size.

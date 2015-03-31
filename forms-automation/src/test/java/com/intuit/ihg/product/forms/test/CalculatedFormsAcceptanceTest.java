@@ -156,6 +156,8 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 			log("Step 4: Check if the PDF is downloadable.");
 			checkPDF(formsPage, formName);
 
+			log("Step 5: Check if the date is correct");
+			verifyFormsDatePatientPortal(formsPage, formName);
 
 		}
 	}
@@ -179,7 +181,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm("phq9");
+		formsPage.openDiscreteForm("PHQ-9");
 	
 		log("Step 3: Try to Save and continue without any answer.");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
