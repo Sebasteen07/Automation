@@ -1315,7 +1315,7 @@ public class RestUtils {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String status) throws ParserConfigurationException, SAXException, IOException {
+	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String status, String confirmationNumber) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsePath);
 
@@ -1348,9 +1348,9 @@ public class RestUtils {
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
 				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
-				/*Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
-				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
-				*/
+				Node nconfirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				BaseTestSoftAssert.verifyEquals(nconfirmationNumber.getTextContent(), confirmationNumber, "Payment has different confirmation Number than expected. Confirmation Number is: " + nconfirmationNumber.getTextContent());
+				
 				found = true ;
 			    break;
 				}
@@ -1510,7 +1510,7 @@ public class RestUtils {
 		return domToString(doc);
 	}
 	
-	public static void verifyPayment(String responsePath,String amount, String status, String Type) throws ParserConfigurationException, SAXException, IOException {
+	public static void verifyPayment(String responsePath,String amount, String status, String Type, String confirmationNumber) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsePath);
 
@@ -1543,9 +1543,11 @@ public class RestUtils {
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
 				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
-				/*Node confirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
-				BaseTestSoftAssert.verifyEquals(confirmationNumber.getTextContent(), "XXXXXX", "Payment has different confirmation Number than expected. Amount is: " + confirmationNumber.getTextContent());
-				*/
+				if(confirmationNumber!=null){
+				Node nconfirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
+				Log4jUtil.log("Searching: Confirmation Number:" + confirmationNumber + ", and Actual CC Type is:" + nconfirmationNumber.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(nconfirmationNumber.getTextContent(), confirmationNumber, "Payment has different confirmation Number than expected. Amount is: " + nconfirmationNumber.getTextContent());
+				}
 				found = true ;
 			    break;
 				}

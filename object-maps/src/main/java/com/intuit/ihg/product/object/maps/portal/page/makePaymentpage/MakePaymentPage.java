@@ -75,6 +75,9 @@ public class MakePaymentPage extends BasePageObject {
 	
 	@FindBy(xpath = "//input[@class='button' and @value='Submit Payment']")
     private WebElement clickOnSubmitbtn;
+	
+	@FindBy(xpath = ".//td[@class='table_text']/span")
+    private WebElement txtConfirmationNumber;
 	/**
 	 * @Description:Set Make Payment Fields
 	 */
@@ -139,6 +142,19 @@ public class MakePaymentPage extends BasePageObject {
 		}
 		IHGUtil.waitForElement(driver,10,paymentConfirmation);
 		BaseTestSoftAssert.verifyEquals(paymentConfirmation.getText(),PortalConstants.PaymentConfirmation);
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String readConfirmationNumber()
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String confirmationNumber=txtConfirmationNumber.getText().toString();
+		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ")  + "confirmation number is ".length(), confirmationNumber.indexOf(". Please retain"));
 	}
 
 }

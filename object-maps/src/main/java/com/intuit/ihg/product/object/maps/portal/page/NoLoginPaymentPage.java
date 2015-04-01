@@ -57,6 +57,9 @@ public class NoLoginPaymentPage extends BasePageObject{
 	@FindBy(name="buttons:submit")
 	private WebElement btnsubmit;
 	
+	@FindBy(xpath = ".//td[@class='table_text']/span")
+    private WebElement txtConfirmationNumber;
+	
 	private String amountPrize;
 	
 	public NoLoginPaymentPage(WebDriver driver, String baseURL) {
@@ -110,5 +113,17 @@ public class NoLoginPaymentPage extends BasePageObject{
 	public String GetAmountPrize()
 	{
 		return amountPrize;
+	}
+
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String readConfirmationNumber() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String confirmationNumber=txtConfirmationNumber.getText().toString();
+		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ")  + "confirmation number is ".length(), confirmationNumber.indexOf(". Please retain"));
 	}
 }
