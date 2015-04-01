@@ -115,13 +115,13 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *         Practices configured on: DEV3
 	 */
 
-	@Test
+	@Test(groups = "calculatedForms")
 	public void testAllCalculatedFormsPatientPortal() throws Exception {
 		String[] names = { "PHQ-2", "PHQ-9", "ADHD" };
 		testCalculatedFormPatientPortal(names);
 	}
 
-	@Test(groups = "calculatedForms")
+	@Test
 	public void testOneCalculatedFormPatientPortal() throws Exception {
 		String[] name = { "PHQ-2" };
 		testCalculatedFormPatientPortal(name);
