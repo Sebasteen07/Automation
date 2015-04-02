@@ -21,22 +21,22 @@ public class JalapenoHomePage extends BasePageObject {
 	@FindBy(how = How.ID, using = "home")
 	private WebElement home;
 	
-	@FindBy(how = How.ID, using = "messages")
+	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
 	
-	@FindBy(how = How.ID, using = "appointments")
+	@FindBy(how = How.ID, using = "feature_appointment_request")
 	private WebElement appointments;
 	
-	@FindBy(how = How.ID, using = "aska")
+	@FindBy(how = How.ID, using = "feature_ask_a_practitioner")
 	private WebElement askAQuestion;
 	
-	@FindBy(how = How.ID, using = "prescriptions")
+	@FindBy(how = How.ID, using = "feature_rx_renewal")
 	private WebElement prescriptions;
 	
-	@FindBy(how = How.ID, using = "payments")
+	@FindBy(how = How.ID, using = "feature_bill_pay")
 	private WebElement payments;
 	
-	@FindBy(how = How.ID, using = "forms")
+	@FindBy(how = How.ID, using = "feature_discrete_forms")
 	private WebElement forms;
 	
 	/**
