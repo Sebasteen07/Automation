@@ -226,7 +226,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(url != null);
 		
 		JalapenoForgotPasswordPage3 jalapenoForgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
-		log("Redirecting to patient portal, filling secret answer");
+		log("Redirecting to patient portal, filling secret answer as: "+testData.getSecretAnswer());
 		JalapenoForgotPasswordPage4 jalapenoForgotPasswordPage4 = jalapenoForgotPasswordPage3.fillInSecretAnswer(testData.getSecretAnswer());
 		
 		log("Filling new password");

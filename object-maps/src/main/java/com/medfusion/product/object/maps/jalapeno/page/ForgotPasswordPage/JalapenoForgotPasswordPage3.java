@@ -16,7 +16,7 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 	@FindBy(how = How.LINK_TEXT, using = "Sign In Now.")
 	public WebElement signInButton;
 	
-	@FindBy(how = How.ID, using = "secretAnswer")
+	@FindBy(how = How.ID, using = "secretAnswer_forgot")
 	public WebElement secretAnswer;
 	
 	@FindBy(how = How.ID, using = "forgotEnterSecretAnswerFormContinueButton")

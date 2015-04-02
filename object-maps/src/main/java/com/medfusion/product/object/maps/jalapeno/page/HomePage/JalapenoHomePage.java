@@ -54,13 +54,14 @@ public class JalapenoHomePage extends BasePageObject {
 	public JalapenoLoginPage logout(WebDriver driver) {
 		
 		IHGUtil.PrintMethodName();
-		log("Clicking on Logout button");
+		log("Trying to click on Logout button - regular resolution");
 		
 		try {
 			WebElement signoutButton = driver.findElement(By.id("signout"));
 			signoutButton.click();
 		}
 		catch(Exception ex) {
+			log("Did not find Logout button, trying mobile version size");
 			WebElement open = driver.findElement(By.id("open-top-loggedIn-btn"));
 			open.click();
 			driver.findElement(By.id("signout_dropdown")).click();
