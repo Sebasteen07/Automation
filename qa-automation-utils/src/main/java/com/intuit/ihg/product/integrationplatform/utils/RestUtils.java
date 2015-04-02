@@ -63,6 +63,7 @@ public class RestUtils {
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
 	public static String paymentID;
+	public static int responseCode;
 	public static List<String> patientDatails=new ArrayList<String>(); 
 	/**
 	 * Performs OAuth Get Request and saves the resposse
@@ -1545,7 +1546,7 @@ public class RestUtils {
 				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
 				if(confirmationNumber!=null){
 				Node nconfirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
-				Log4jUtil.log("Searching: Confirmation Number:" + confirmationNumber + ", and Actual CC Type is:" + nconfirmationNumber.getTextContent().toString());
+				Log4jUtil.log("Searching: Confirmation Number:" + confirmationNumber + ", and Actual Confirmation Number is:" + nconfirmationNumber.getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(nconfirmationNumber.getTextContent(), confirmationNumber, "Payment has different confirmation Number than expected. Amount is: " + nconfirmationNumber.getTextContent());
 				}
 				found = true ;
@@ -1584,6 +1585,7 @@ public class RestUtils {
         if(entity!=null){
         sResp = EntityUtils.toString(entity);
         Log4jUtil.log("Check for http 200 response");
+        responseCode=resp.getStatusLine().getStatusCode();
         Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of "+ 200 +". Response message received:\n" + sResp);
         writeFile(responseFilePath, sResp);
@@ -1595,6 +1597,7 @@ public class RestUtils {
         }
         else
         {
+        	responseCode=204;
         	Log4jUtil.log("204 response found");
         	
         }
@@ -1659,6 +1662,52 @@ public class RestUtils {
 				
 	}
 	
+	/**
+	 * 
+	 * @param xmlFileName
+	 * @param patientID
+	 * @param insuranceData
+	 * @param insurance_Name
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	
+	public static void verifyHealthPatientInsuranceDetails(String xmlFileName,
+			String patientID, List<String> insuranceData, String insurance_Name) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		boolean found=false;
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID);
+		for(int i = 0; i < patients.getLength(); i++){
+			if(patients.item(i).getTextContent().equals(patientID)){
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				Log4jUtil.log("Checking Insurance PolicyNumber, Insurance Name");
+				Node cNode=patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
+				Element ele=(Element) cNode;
+				Node PolicyNumber = ele.getElementsByTagName(IntegrationConstants.POLICYNUMBER).item(0);
+				BaseTestSoftAssert.verifyEquals(PolicyNumber.getTextContent(), insuranceData.get(16), "Patient has different PolicyNumber than expected. PolicyNumber is: " + PolicyNumber.getTextContent());
+			    Node CompanyName = ele.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
+				BaseTestSoftAssert.verifyEquals(CompanyName.getTextContent(), insurance_Name, "Patient has different Insurance Name than expected. CompanyName is: " + CompanyName.getTextContent());
+				Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
+				Node InsuranceAddressLine1 = ele.getElementsByTagName(IntegrationConstants.LINE1).item(0);
+				BaseTestSoftAssert.verifyEquals(InsuranceAddressLine1.getTextContent(), insuranceData.get(3), "Patient has different InsuranceAddressLine1 than expected. InsuranceAddressLine1 is: " + InsuranceAddressLine1.getTextContent());
+				Node InsuranceAddressLine2 = ele.getElementsByTagName(IntegrationConstants.LINE2).item(0);
+				BaseTestSoftAssert.verifyEquals(InsuranceAddressLine2.getTextContent(), insuranceData.get(4), "Patient has different InsuranceAddressLine2 than expected. InsuranceAddressLine1 is: " + InsuranceAddressLine2.getTextContent());
+				Node InsuranceCity = ele.getElementsByTagName(IntegrationConstants.CITY).item(0);
+				BaseTestSoftAssert.verifyEquals(InsuranceCity.getTextContent(), insuranceData.get(5), "Patient has different InsuranceCity than expected. InsuranceCity is: " + InsuranceCity.getTextContent());
+				Node InsuranceZipCode = ele.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
+				BaseTestSoftAssert.verifyEquals(InsuranceZipCode.getTextContent(), insuranceData.get(6), "Patient has different InsuranceZipCode than expected. InsuranceZipCode is: " + InsuranceZipCode.getTextContent());
+				Log4jUtil.log("Checking Patient Group Number");
+				Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
+				BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), insuranceData.get(17), "Patient has different GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
+				found = true;
+				break;
+				}
+		}
+   		Assert.assertTrue(found, "Patient was not found in the response XML");
+	}
+
 
 
 }

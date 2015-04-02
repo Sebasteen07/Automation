@@ -187,4 +187,20 @@ public class PIDCTestData {
 	public String getHealthKeyPatientPath(){
 		return PidcObj.HealthKeyPatientPath;
 	}
+	
+	public String getInsuranceHealthKeyPatientUserName(){
+		return PidcObj.InsuranceHealthKeyPatientUserName;
+	}
+	
+	public String getInsurancePortalURL(){
+		return PidcObj.InsurancePortalURL;
+	}
+	
+	public String getInsurancePortalRestURL(){
+		return PidcObj.InsurancePortalRestURL;
+	}
+	
+	public String getInsurancePatientID(){
+		return PidcObj.InsurancePatientID;
+	}
 }

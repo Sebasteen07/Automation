@@ -44,4 +44,8 @@ public class PIDC {
 	public String PortalRestUrl ="";
 	public String HealthKeyPatientUserName="";
 	public String HealthKeyPatientPath="";
+	public String InsuranceHealthKeyPatientUserName="";
+	public String InsurancePortalURL="";
+	public String InsurancePortalRestURL="";
+	public String InsurancePatientID="";
 }

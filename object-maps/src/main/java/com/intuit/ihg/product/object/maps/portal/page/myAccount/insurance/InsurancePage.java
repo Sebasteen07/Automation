@@ -45,7 +45,7 @@ public class InsurancePage extends BasePageObject {
 	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:11:field']")
 	private WebElement txtinsuredSSN;
 	
-	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:13:field']")
+	@FindBy(xpath = "//input[@class='text' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:12:field']")
 	private WebElement txtgroupNumber;
 	
 	@FindBy(xpath = "//input[@class='text hasDatepicker' and @name='content:categories:0:questions:0:question:insuranceForm:insuranceFieldsContainer:insuranceFieldsPanel:fieldsContainer:fields:14:field']")
@@ -186,6 +186,7 @@ public class InsurancePage extends BasePageObject {
 		log("Select Insurance Type");
 		Select insuranceType = new Select(drpdwninsuranceType);
 		insuranceType.selectByVisibleText(Insurancetype);
+		Thread.sleep(4000);
 		
 		log("Select Insurance name");
 		Select insuranceName = new Select(drpdwnInsuranceName);
@@ -212,8 +213,8 @@ public class InsurancePage extends BasePageObject {
 		log("Enter Customer Service Phone Number");
 		txtcustomerServicePhoneNumber.sendKeys(insurancelist.get(14));
 		
-		log("Enter Insured SSN");
-		txtinsuredSSN.sendKeys(insurancelist.get(15));
+	/*	log("Enter Insured SSN");
+		txtinsuredSSN.sendKeys(insurancelist.get(15));*/
 				
 		log("Enter Insurance Policy Number");
 		txtpolicyNumber.sendKeys(insurancelist.get(16));
