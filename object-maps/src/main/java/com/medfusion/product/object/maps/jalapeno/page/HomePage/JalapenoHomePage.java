@@ -63,7 +63,7 @@ public class JalapenoHomePage extends BasePageObject {
 		catch(Exception ex) {
 			WebElement open = driver.findElement(By.id("open-top-loggedIn-btn"));
 			open.click();
-			driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[2]/div[3]/ul/li[2]")).click();
+			driver.findElement(By.id("signout_dropdown")).click();
 		}
 		
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
