@@ -11,6 +11,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.mail.Harakirimail;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
+import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
@@ -28,6 +31,7 @@ import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.Jalape
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 
 /**
@@ -237,6 +241,56 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}	
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMessaging() throws Exception {
+		
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		PropertyFileLoader testData = new PropertyFileLoader();
+
+		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
+		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
+		
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+				
+		//login to practice portal
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		patientMessagingPage.setQuickSendFields(jalapenoCreatePatientTest.getFirstName(), jalapenoCreatePatientTest.getLastName());
+		
+		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Click on messages solution");
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		
+		log("Waiting for message from practice portal");
+		assertTrue(jalapenoMessagesPage.isMessageFromDoctorDisplayed(driver));
+		
+		log("Response to the message");
+		jalapenoMessagesPage.replyToMessage(driver);
+		//TODO: system is unable to send a reply message, but message is sent
+		
+		log("Back to the practice portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		String patientName = jalapenoCreatePatientTest.getFirstName() + " " + jalapenoCreatePatientTest.getLastName();
+		assertTrue(patientMessagingPage.findMyMessage(patientName));
+	}
 	
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {

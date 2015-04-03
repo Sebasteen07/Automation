@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 
 public class JalapenoHomePage extends BasePageObject {
 	
@@ -68,6 +69,14 @@ public class JalapenoHomePage extends BasePageObject {
 		}
 		
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
+	}
+	
+	public JalapenoMessagesPage showMessages(WebDriver driver) {
+		
+		IHGUtil.PrintMethodName();
+		messages.click();
+		
+		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 	
 	public boolean assessHomePageElements() {
