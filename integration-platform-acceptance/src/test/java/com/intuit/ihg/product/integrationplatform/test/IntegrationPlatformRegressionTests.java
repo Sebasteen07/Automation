@@ -806,7 +806,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
 		
 		String lastTimeStamp=RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		if(RestUtils.responseCode==200){
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);}
 		
 		log("Step 7: Login to Second Patient Portal");
 		loginpage = new PortalLoginPage(driver, testData.getUrl());
@@ -819,7 +820,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		subString=testData.getRestUrl().split("/");
 		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
 		lastTimeStamp=RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + lastTimeStamp, testData.getResponsePath());
-		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		if(RestUtils.responseCode==200){
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);}
 		
 		log("Step 10: Invoke Get PIDC for Practice to which patient updates should not be sent (Practice 1) using the Timestamp received in response of Step 9. ");
 		subString=testData.getPortalRestUrl().split("/");
@@ -879,7 +881,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		subString=testData.getPortalRestUrl().split("/");
 		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
 		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + lastTimeStamp , testData.getResponsePath());
-		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,patientID);
+		if(RestUtils.responseCode==200){
+		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId,firstName,lastName,patientID);}
 		
 		log("Step 22: Invoke Get PIDC for Practice to which patient updates should not be sent (Practice 2) ");
 		subString=testData.getRestUrl().split("/");
@@ -923,63 +926,21 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
 		
 		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		if(RestUtils.responseCode==200){
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);}
 		
 		log("Step 5: Invoke Get PIDC for Practice to which patient has updated details (Practice 1) ");
 		subString=testData.getRestUrl().split("/");
 		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
 		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		if(RestUtils.responseCode==200){
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);}
 		
 		log("Step 6: Logout from Patient portal");
 		pMyAccountPage.logout(driver);
 		}
 		
-		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-		public void testHealthKeyPatientInsuranceUpdate() throws Exception {
-		log("Test Case: Healthkey Patient updates demographics details in Practice 1 from Patient Portal");
-			
-		PIDCTestData testData = loadDataFromExcel();
-		Long timestamp = System.currentTimeMillis();
-		 
-		Long since = timestamp / 1000;
-		log("Step 2: LogIn Health Key patient into first practice");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
-		
-		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
-		
-		List<String> updateData=new ArrayList<String>();
-		
-		log("Step 15: Click on insuranceLink on MyAccountPage");
-		InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
-		
-		updateData.add(testData.getRelation());
-		
-		log("Update Data:"+updateData);
-		
-		log("Step 16: Start to add Insurance details");
-		pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(),testData.getInsurance_Type(),testData.getRelation(),updateData);
-
-		log("Step 17: Asserting for Insurance Name and Insurance Type");
-		Thread.sleep(60000);
-		assertTrue(verifyTextPresent(driver, testData.getInsurance_Name()));
-		assertTrue(verifyTextPresent(driver, testData.getInsurance_Type()));
-		
-		log("Step 18: Again do a GET on PIDC to verify Patient Update & Insurance Details");
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-		
-		RestUtils.isPatientUpdated(testData.getResponsePath(), "patientIdString" , updateData.get(3), updateData.get(4));
-		
-		log("Step 19: Check patient Demographics Details & Insurance Details");
-		RestUtils.verifyPatientDetails(testData.getResponsePath(), "patientIdString",updateData,testData.getInsurance_Name());
-		
-		log("Step 20: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
-		
-		}
-		
+				
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testHealthKeyPatientAddInsurance() throws Exception {
 		log("Test Case: Practice 1 supports Insurance and Practice 2 does not support Insurance");
@@ -1058,7 +1019,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		RestUtils.setupHttpGetRequestExceptoAuth(testData.getInsurancePortalRestURL() + "?since=" + since + ",0", testData.getResponsePath());
 		
 		if(RestUtils.responseCode==200){
-		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID(), insuranceData, testData.getInsurance_Name());
+		insuranceData.set(3,""); //insurance address1
+		insuranceData.set(4,""); //insurance address2
+		insuranceData.set(5,""); //insurance city
+		insuranceData.set(6,""); //insurance zip
+		insuranceData.set(14,""); //insurance homephone
+		insuranceData.set(16,""); //insurance policy number
+		insuranceData.set(17,""); //insurance Group number
+		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID(), insuranceData, "");
 		}
 		
 		log("Step 16: Delete insurance");
@@ -1069,5 +1037,170 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		pMyAccountPage.logout(driver);
 		
 		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testHealthKeyPatientUpdateInsurance() throws Exception {
+		log("Test Case: HealthKey patient insurance update in practice A is only returned to Practice A");
+			
+		PIDCTestData testData = loadDataFromExcel();
+		Long timestamp = System.currentTimeMillis();
+		 
+		Long since = timestamp / 1000;
+		
+		log("Step 2: LogIn Health Key patient into second practice an update demographics so patient gets available in Get response");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
+		
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		
+		log("Step 4: Create random  addresses to update");
+		Random random = new Random();
+		String firstLine = "Street " + random.nextInt(1000);
+		String secondLine = "Street " + random.nextInt(1000);
+		
+		log("Address 1: " + firstLine + "\nAddress 2: " + secondLine);
+		
+		log("Step 5: Modify address line 1 and 2 on MyAccountPage");
+		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
+		
+		log("Step 6: Logout from Patient portal");
+		pMyAccountPage.logout(driver);
+		
+		log("Step 7: LogIn Health Key patient into first practice and add insurance '"+testData.getInsurance_Name() +"'");
+		loginpage = new PortalLoginPage(driver, testData.getUrl());
+		pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
+		
+		log("Step 8: Click on myaccountLink on MyPatientPage");
+		pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		
+		List<String> insuranceData=new ArrayList<String>();
+		insuranceData.addAll(Arrays.asList(new String[20]));
+		insuranceData.add(3,testData.getAddress1()); //insurance address1
+		insuranceData.add(4,testData.getAddress2()); //insurance address2
+		insuranceData.add(5,testData.getCity()); //insurance city
+		insuranceData.add(6,testData.getZipCode()); //insurance zip
+		insuranceData.add(14,testData.getHomePhoneNo()); //insurance homephone
+		insuranceData.add(16,IHGUtil.createRandomNumericString()); //insurance policy number
+		insuranceData.add(17,IHGUtil.createRandomNumericString()); //insurance Group number
+		
+		log("Step 9: Click on insuranceLink on MyAccountPage");
+		InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		
+		log("Step 10: Delete existing insurance");
+		pinsuranceDetailsPage.deleteAllInsurances();
+	
+		log("Step 11: Start to add Insurance details");
+		pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(),testData.getInsurance_Type(),testData.getRelation(),insuranceData);
+
+		log("Step 12: Asserting for Insurance Name ,Insurance Type and Policy number");
+		Thread.sleep(60000);
+		assertTrue(verifyTextPresent(driver, testData.getInsurance_Name()));
+		assertTrue(verifyTextPresent(driver, testData.getInsurance_Type()));
+		assertTrue(verifyTextPresent(driver, insuranceData.get(16)));
+		
+		log("Step 13: Invoke Get PIDC for Practice in which patient has add insurance in (Practice 1) to verify insurance details ");
+		String[] subString=testData.getRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		String lastTimestamp=RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("Step 14: Check patient Demographics Details & Insurance Details");
+		if(RestUtils.responseCode==200){
+		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID1(), insuranceData, testData.getInsurance_Name());
+		}
+		
+		log("Step 15: Invoke Get PIDC for Practice to which patient insurance updates should not be sent (Practice 2).");
+		subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
+		String lastTimestamp1=RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		
+		log("Step 16: Check patient Demographics Details & Insurance Details");
+		if(RestUtils.responseCode==200){
+			insuranceData.set(3,""); //insurance address1
+			insuranceData.set(4,""); //insurance address2
+			insuranceData.set(5,""); //insurance city
+			insuranceData.set(6,""); //insurance zip
+			insuranceData.set(14,""); //insurance homephone
+			insuranceData.set(16,""); //insurance policy number
+			insuranceData.set(17,""); //insurance Group number
+		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID1(), insuranceData, "");
+		}
+		
+		
+		log("Step 17: Delete insurance");
+		pinsuranceDetailsPage.deleteAllInsurances();
+		Thread.sleep(60000);
+		
+		log("Step 18: Logout from first Patient portal");
+		pMyAccountPage.logout(driver);
+		
+		
+		log("Step 19: LogIn Health Key patient into second practice and add insurance '"+testData.getSecondInsuranceName() +"'");
+		loginpage = new PortalLoginPage(driver, testData.getPortalURL());
+		pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
+		
+		log("Step 20: Click on myaccountLink on MyPatientPage");
+		pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		
+		insuranceData=new ArrayList<String>();
+		insuranceData.addAll(Arrays.asList(new String[20]));
+		insuranceData.set(3,testData.getAddress1()); //insurance address1
+		insuranceData.set(4,testData.getAddress2()); //insurance address2
+		insuranceData.set(5,testData.getCity()); //insurance city
+		insuranceData.set(6,testData.getZipCode()); //insurance zip
+		insuranceData.set(14,testData.getHomePhoneNo()); //insurance homephone
+		insuranceData.set(16,IHGUtil.createRandomNumericString()); //insurance policy number
+		insuranceData.set(17,IHGUtil.createRandomNumericString()); //insurance Group number
+		
+		log("Step 21: Click on insuranceLink on MyAccountPage");
+		pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		
+		log("Step 22: Delete existing insurance");
+		pinsuranceDetailsPage.deleteAllInsurances();
+	
+		log("Step 23: Start to add Insurance details");
+		pinsuranceDetailsPage.allInsuranceDetails(testData.getSecondInsuranceName(),testData.getInsurance_Type(),testData.getRelation(),insuranceData);
+
+		log("Step 24: Asserting for Insurance Name ,Insurance Type and Policy number");
+		Thread.sleep(60000);
+		assertTrue(verifyTextPresent(driver, testData.getSecondInsuranceName()));
+		assertTrue(verifyTextPresent(driver, testData.getInsurance_Type()));
+		assertTrue(verifyTextPresent(driver, insuranceData.get(16)));
+		
+		log("Step 25: Invoke Get PIDC for Practice in which patient has add insurance in (Practice 2) to verify insurance details using the Timestamp received in response of Step 15");
+		subString=testData.getPortalRestUrl().split("/");
+		log("Integration ID (Practice 2) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getPortalRestUrl() + "?since=" + lastTimestamp1 , testData.getResponsePath());
+		
+		log("Step 26: Check patient Demographics Details & Insurance Details");
+		if(RestUtils.responseCode==200){
+		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID1(), insuranceData, testData.getSecondInsuranceName());
+		}
+		
+		log("Step 27: Invoke Get PIDC for Practice to which patient insurance updates should not be sent (Practice 1) using the Timestamp received in response of Step 13");
+		subString=testData.getRestUrl().split("/");
+		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + lastTimestamp, testData.getResponsePath());
+		
+		log("Step 28: Check patient Demographics Details & Insurance Details");
+		if(RestUtils.responseCode==200){
+			insuranceData.set(3,""); //insurance address1
+			insuranceData.set(4,""); //insurance address2
+			insuranceData.set(5,""); //insurance city
+			insuranceData.set(6,""); //insurance zip
+			insuranceData.set(14,""); //insurance homephone
+			insuranceData.set(16,""); //insurance policy number
+			insuranceData.set(17,""); //insurance Group number
+		RestUtils.verifyHealthPatientInsuranceDetails(testData.getResponsePath(), testData.getInsurancePatientID1(), insuranceData, "");}
+		
+		log("Step 29: Delete insurance");
+		pinsuranceDetailsPage.deleteAllInsurances();
+		Thread.sleep(60000);
+		
+		log("Step 30: Logout from Patient portal");
+		pMyAccountPage.logout(driver);
+		
+		}
+		
 		
 }

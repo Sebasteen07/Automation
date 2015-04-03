@@ -203,4 +203,16 @@ public class PIDCTestData {
 	public String getInsurancePatientID(){
 		return PidcObj.InsurancePatientID;
 	}
+	
+	public String getInsuranceHealthKeyPatientUserName1(){
+		return PidcObj.InsuranceHealthKeyPatientUserName1;
+	}
+	
+	public String getInsurancePatientID1(){
+		return PidcObj.InsurancePatientID1;
+	}
+	
+	public String getSecondInsuranceName(){
+		return PidcObj.SecondInsuranceName;
+	}
 }
