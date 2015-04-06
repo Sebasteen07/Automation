@@ -1647,6 +1647,9 @@ public class RestUtils {
 					Node nEthnicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(i);
 					Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:" + nEthnicity.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nEthnicity.getTextContent(), updateData.get(8), "Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
+					Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+					Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9) + ", and Actual communication value is:" + nChooseCommunication.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nChooseCommunication.getTextContent(), updateData.get(9), "Patient has different ChooseCommunication than expected. ChooseCommunication is: " + nChooseCommunication.getTextContent());
 					
 					}
 				} catch (Exception e) {

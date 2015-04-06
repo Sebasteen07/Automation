@@ -571,18 +571,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Paient2 (PracticePatientId, FirstName, LastName):"+patientData.get(3)+","+patientData.get(4)+","+patientData.get(5));
 			log("Paient3 (PracticePatientId, FirstName, LastName):"+patientData.get(6)+","+patientData.get(7)+","+patientData.get(8));
 			
-			log("Step 3: Setup Oauth client"); 
-			RestUtils.oauthSetup(testData.getOAuthKeyStore(),testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(), testData.getOAuthPassword());
-
-			log("Step 4: POST PIDC with batch size 3");
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), batchPatient, testData.getResponsePath());
+			log("Step 3: POST PIDC with batch size 3");
+			String processingUrl = RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), batchPatient, testData.getResponsePath(),null);
 			
-			log("Step 5: Get processing status until it is completed");
+			log("Step 4: Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
-				Thread.sleep(240000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				Thread.sleep(180000);
+				RestUtils.setupHttpGetRequestExceptOauth(processingUrl, testData.getResponsePath());
 				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 					completed = true;
 					break;
@@ -590,24 +587,24 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			}
 			verifyTrue(completed, "Message processing was not completed in time");
 						
-			log("Step 6: Login to Practice Portal to verify Patient Info");
+			log("Step 5: Login to Practice Portal to verify Patient Info");
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 			PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUserName(),testData.getPracticePassword());
 		
 			for (int j=0; j < 3; j++)
 			{
 				
-			log("Step 7: Click on Patient Search Link");
+			log("Step 6: Click on Patient Search Link");
 			PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
 		
-			log("Step 8: Set Patient Search Fields");
+			log("Step 7: Set Patient Search Fields");
 			pPatientSearchPage.searchAllPatientInPatientSearch(patientData.get(1), patientData.get(2),2);
 		
-			log("Step 9: Verify the Search Result");
+			log("Step 8: Verify the Search Result");
 			IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(patientData.get(1)));
 			
-			log("Step 10: Click on Patient");
+			log("Step 9: Click on Patient");
 			PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(patientData.get(1), patientData.get(2));
 			patientPage.verifyDetails(patientData.get(0), patientData.get(1), patientData.get(2));
 			
@@ -617,7 +614,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 
 			}
 						
-			log("Step 11: Logout of Practice Portal");
+			log("Step 10: Logout of Practice Portal");
 			pPracticeHomePage.logOut();
 			
 			
@@ -898,6 +895,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 		PIDCTestData testData = loadDataFromExcel();
 		Long timestamp = System.currentTimeMillis();
+		boolean found=false;
 		 
 		Long since = timestamp / 1000;
 		log("Step 2: LogIn Health Key patient into first practice");
@@ -913,11 +911,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		updateData.add("LastName"+randomData);
 		updateData.add("Street1 "+randomData);
 		updateData.add("Street2 "+randomData);
-		updateData.add("1"+IHGUtil.createRandomNumber());
+		updateData.add("1"+IHGUtil.createRandomNumericString());
 		updateData.add("01/01/2001");
 		updateData.add("2");
 		updateData.add(testData.getRace());
 		updateData.add(testData.getEthnicity());
+		updateData.add(testData.getChooseCommunication());
 		
 		pMyAccountPage.updateDemographics(updateData);
 		
@@ -934,7 +933,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Integration ID (Practice 1) :"+subString[subString.length-2]);
 		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		if(RestUtils.responseCode==200){
-		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);}
+			found=true;
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
+		}
+		assertTrue(found, "Health Key Patient is not found in Get Response");
 		
 		log("Step 6: Logout from Patient portal");
 		pMyAccountPage.logout(driver);

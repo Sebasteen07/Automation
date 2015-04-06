@@ -52,10 +52,10 @@ public class PatientDashboardPage extends BasePageObject{
 	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[2]/td[2]")
 	private WebElement patientName;
 	
-	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[8]/td[2]")
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[7]/td[2]")
 	private WebElement lblPatientSource;
 	
-	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[9]/td[2]")
+	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[8]/td[2]")
 	private WebElement lblPatientStatus;
 	
 	private WebElement feedback;
