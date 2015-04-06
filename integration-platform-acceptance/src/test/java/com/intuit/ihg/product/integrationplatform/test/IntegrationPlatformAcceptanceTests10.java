@@ -108,7 +108,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 	   
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		OauthUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + sinceTime + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + "1428316536" + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
