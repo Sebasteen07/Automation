@@ -42,5 +42,37 @@ public class Harakirimail {
 		
 		element = driver.findElement(By.linkText(findInEmail));
 		return element.getAttribute("href");	
-	}		
+	}
+	public boolean isMessageInInbox(String username, String emailSubject, String findInEmail, int retries ) {		
+		
+		System.out.println("Navigation to https://harakirimail.com/inbox/" + username);
+		driver.navigate().to("https://harakirimail.com/inbox/" + username);
+		
+		int maxCount = retries;
+		int count = 1;
+		
+		WebElement element;
+		while(true) {
+			try{
+				System.out.println("Finding element");
+				element = driver.findElement(By.linkText(emailSubject));	
+				System.out.println("Element found, click");
+				element.click();
+				break;
+			}
+			catch(NoSuchElementException ex){
+				System.out.println("Refreshing page " + count + "/" + maxCount);
+				driver.navigate().refresh();
+			}	
+			
+			if (count == maxCount) {
+				System.out.println("Error: Email was not found");
+				return false;
+			}
+			
+			count++;
+		}		
+		element = driver.findElement(By.linkText(findInEmail));
+		return element.isEnabled();
+	}	
 }

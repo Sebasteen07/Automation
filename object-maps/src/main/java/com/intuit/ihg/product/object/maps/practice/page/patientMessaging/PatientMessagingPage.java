@@ -70,7 +70,9 @@ public class PatientMessagingPage extends BasePageObject{
 	
 	@FindBy(id="id19")
 	private WebElement searchButton;
-
+	
+	@FindBy(how = How.LINK_TEXT, using = "Quick Send")
+	private WebElement quickSendButton;
 	/**
 	 * @Description:Set Delivery Mode
 	 */
@@ -247,7 +249,7 @@ public class PatientMessagingPage extends BasePageObject{
              Select sel = new Select(messageType);
      		 sel.selectByVisibleText("Other");
      		 Select sel2 = new Select(template);
-     		 sel2.selectByVisibleText("TestingMessage");
+     		 sel2.selectByVisibleText("Happy Birthday");
              setSubject();
              
              Thread.sleep(2000);

@@ -37,6 +37,7 @@ import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestS
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.*;
 import com.intuit.ihg.product.object.maps.practice.page.messages.PracticeMessagePage;
 import com.intuit.ihg.product.object.maps.practice.page.messages.PracticeMessagesSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.symptomassessment.SymptomAssessmentDetailsPage;
 import com.intuit.ihg.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
@@ -71,6 +72,7 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.Harakirimail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 
@@ -1713,5 +1715,63 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 //		healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), "tester");
 
 	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSecureMessageNotification() throws Exception {
+		log("Test Case: TestSecureMessageNotification");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");
+
+		Portal portal = new Portal();
+		TestcasesData testcasesData = new TestcasesData(portal);
+
+		log("URL: " + testcasesData.geturl());
+		log("USER NAME: " + testcasesData.getSecureNotificationUser());
+		log("Password: " + testcasesData.getSecureNotificationUserPassword());
+
+		log("step 1: Login to Practice Portal");
+		// Load up practice test data
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+
+		log("step 2: Click Appt Request tab");
+		PatientMessagingPage patMessaging = practiceHome.clickPatientMessagingTab();
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
+		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1");
+				
+		log("step 3: Logout of Practice Portal");
+		practiceHome.logOut();
+
+		log("step 4:LogIn");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
+		MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getSecureNotificationUser(), testcasesData.getSecureNotificationUserPassword());
+		PerformanceReporter.getPageLoadDuration(driver, MyPatientPage.PAGE_NAME);
+		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver),
+				"There was an issue with login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");						
+
+		log("step 5: Go to Inbox");
+		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+
+		log("step 6: Find message in Inbox");
+		MessagePage message = inboxPage.openMessageInInbox("Quick Send");
+		log("step 7: Validate message loads and is the right message");
+		assertTrue(message.isSubjectLocated("Quick Send"));
+		
+		log("step 8:Logout");
+		loginpage = pMyPatientPage.logout(driver);
+		
+		log("step 9:Check harakirInbox");
+		Harakirimail haramail = new Harakirimail(driver);
+		String box = testcasesData.getSecureNotificationUser().split("@")[0];
+		assertTrue(haramail.isMessageInInbox(box, "New message from IHGQA Automation NonIntegrated","Sign in to view this message", 20));
+	}
+
 
 }
