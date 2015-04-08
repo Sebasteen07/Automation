@@ -1138,8 +1138,8 @@ public class RestUtils {
 				BaseTestSoftAssert.verifyEquals(FirstName.getTextContent(), list.get(0), "Patient has different FirstName than expected. FirstName is: " + FirstName.getTextContent());
 				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				BaseTestSoftAssert.verifyEquals(LastName.getTextContent(), list.get(1), "Patient has different LastName than expected. LastName is: " + LastName.getTextContent());
-				Node SSN = patient.getElementsByTagName(IntegrationConstants.SSN).item(0);
-				BaseTestSoftAssert.verifyEquals(SSN.getTextContent(), list.get(7), "Patient has different SSN than expected. Gender is: " + SSN.getTextContent());
+				/*Node SSN = patient.getElementsByTagName(IntegrationConstants.SSN).item(0);
+				BaseTestSoftAssert.verifyEquals(SSN.getTextContent(), list.get(7), "Patient has different SSN than expected. Gender is: " + SSN.getTextContent());*/
 				Node Gender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 				BaseTestSoftAssert.verifyEquals(Gender.getTextContent(), list.get(8), "Patient has different Gender than expected. Gender is: " + Gender.getTextContent());
 				Log4jUtil.log("Checking Patient HomePhone, Email Address");

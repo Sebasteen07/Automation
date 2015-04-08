@@ -246,9 +246,9 @@ public class PatientactivationPage extends BasePageObject{
 
 		lastName.sendKeys(testData.getLastName());
 		male.click();
-		SSN1.sendKeys(testData.getSSN().subSequence(0, 3));
+		/*SSN1.sendKeys(testData.getSSN().subSequence(0, 3));
 		SSN2.sendKeys(testData.getSSN().subSequence(3, 5));
-		SSN3.sendKeys(testData.getSSN().subSequence(5, 9));
+		SSN3.sendKeys(testData.getSSN().subSequence(5, 9));*/
 		Log4jUtil.log("Patientid is :"+patientIdString);
 		patientId.sendKeys(patientIdString);
 		Home_No1.sendKeys(testData.getHomePhoneNo().substring(0, 3));
