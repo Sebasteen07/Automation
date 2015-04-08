@@ -233,7 +233,10 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
 		//chkAgreePatientPrivacyInfo.click();
+		if(driver.getPageSource().contains("Preferred Provider"))
+		{
 		chooseProvider();
+		}
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 

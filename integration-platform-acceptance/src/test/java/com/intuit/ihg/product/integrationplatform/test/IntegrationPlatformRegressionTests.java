@@ -437,21 +437,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("Step 22: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
+		MessagePage pMessageCenterInboxPage = inboxPage.openMessageInInbox(IntegrationConstants.CCD_MESSAGE_SUBJECT);
 
-		log("Step 23: Validate message subject and send date");
+		log("Step 23: Validate message subject");
 		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
+		
 		log("Step 24: Click on link ReviewHealthInformation");
-		pMessage.clickBtnReviewHealthInformation();
+		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
 		
-		log("Step 25: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
-		
-		log("Step 26: Logout of Patient Portal");
+		log("Step 25: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 		
 		}
@@ -606,6 +601,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			log("Step 9: Click on Patient");
 			PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(patientData.get(1), patientData.get(2));
+			Thread.sleep(30000);
 			patientPage.verifyDetails(patientData.get(0), patientData.get(1), patientData.get(2));
 			
 			patientData.remove(0);

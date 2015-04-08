@@ -36,7 +36,7 @@
       <From></From>
       <To></To>
       <Subject></Subject>
-      <MessageThreadId>f8e85f99-0de8-45df-adb2-85475c438c0f</MessageThreadId>
+      <MessageThreadId>a74724ff-e449-4250-8f24-29bbff146b2e</MessageThreadId>
       <AllowReply>true</AllowReply>
       <Message>this is test msg generated from testAMDCSecureMessage() Automation to 2nd patient </Message>
    </SecureMessage>
