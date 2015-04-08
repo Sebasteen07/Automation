@@ -10,6 +10,7 @@
 	<classes>
 	    <class name="com.intuit.ihg.product.portal.test.PortalAcceptanceTests" />
 	    	<methods>
+	    		<include name="testSecureMessageNotification" />
 	    		<include name="testAddInsurance" />
 	    		<include name="testLoginLogout" />
         		<include name="testCreatePatient" />
