@@ -1200,15 +1200,15 @@ public class RestUtils {
 					BaseTestSoftAssert.verifyEquals(InsuranceCity.getTextContent(), list.get(5), "Patient has different InsuranceCity than expected. InsuranceCity is: " + InsuranceCity.getTextContent());
 					Node InsuranceZipCode = ele.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
 					BaseTestSoftAssert.verifyEquals(InsuranceZipCode.getTextContent(), list.get(6), "Patient has different InsuranceZipCode than expected. InsuranceZipCode is: " + InsuranceZipCode.getTextContent());
-					Log4jUtil.log("Checking Patient Relation To Subscriber, Subscriber Date Of Birth, Customer Service Number, SSN, Group Number");
+					Log4jUtil.log("Checking Patient Relation To Subscriber, Subscriber Date Of Birth, Group Number");
 					Node PatientRelationToSubscriber = ele.getElementsByTagName(IntegrationConstants.PATIENTRELATIONTOSUBSCRIBER).item(0);
 					BaseTestSoftAssert.verifyEquals(PatientRelationToSubscriber.getTextContent(), list.get(26).toUpperCase(), "Patient has different PatientRelationToSubscriber than expected. InsuranceZipCode is: " + PatientRelationToSubscriber.getTextContent());
 					Node SubscriberDateOfBirth = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERDATEOFBIRTH).item(0);
 					BaseTestSoftAssert.verifyEquals(SubscriberDateOfBirth.getTextContent(), birthdate, "Patient has different SubscriberDateOfBirth than expected. SubscriberDateOfBirth is: " + SubscriberDateOfBirth.getTextContent());
-					Node ClaimsPhone = ele.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
+					/*Node ClaimsPhone = ele.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
 					BaseTestSoftAssert.verifyEquals(ClaimsPhone.getTextContent(), list.get(14), "Patient has different ClaimsPhone than expected. ClaimsPhone is: " + ClaimsPhone.getTextContent());
 					Node SubscriberSocialSecurityNumber = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERSSN).item(0);
-					BaseTestSoftAssert.verifyEquals(SubscriberSocialSecurityNumber.getTextContent(), list.get(15), "Patient has different SubscriberSocialSecurityNumber than expected. SubscriberSocialSecurityNumber is: " + SubscriberSocialSecurityNumber.getTextContent());
+					BaseTestSoftAssert.verifyEquals(SubscriberSocialSecurityNumber.getTextContent(), list.get(15), "Patient has different SubscriberSocialSecurityNumber than expected. SubscriberSocialSecurityNumber is: " + SubscriberSocialSecurityNumber.getTextContent());*/
 					Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
 					BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), list.get(17), "Patient has different GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
 					break;

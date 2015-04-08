@@ -161,9 +161,9 @@ public class PatientDashboardPage extends BasePageObject{
 	public String externalID(String configExternalID)
 	{
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement( driver, 60, editPatientID );
+		IHGUtil.waitForElement( driver, 120, editPatientID );
 		editPatientID.click( );
-		IHGUtil.waitForElement( driver, 60, externalID );
+		IHGUtil.waitForElement( driver, 120, externalID );
 		String External_ID=externalID.getAttribute("value").toString()+externalID1.getAttribute("value").toString();
 		BaseTestSoftAssert.verifyEquals(External_ID, configExternalID, "Patient has different External patient ID than expected. External patient ID is: " + External_ID);
 		Assert.assertTrue("External patient ID is not set", External_ID.equalsIgnoreCase(configExternalID));

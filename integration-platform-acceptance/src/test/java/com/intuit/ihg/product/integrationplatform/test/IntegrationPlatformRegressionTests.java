@@ -372,12 +372,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 	
 		log("Step 9: Verify the Search Result");
-		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+		IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 		
 		log("Step 10: Click on Patient");
 		PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
 		
+		Thread.sleep(30000);
 		log("Step 11: Click on Edit Patient ID Link");
 		patientPage.editPatientLink();
 		String patientID=patientPage.medfusionID();
@@ -413,7 +414,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 	
 		log("Step 17: Verify the Search Result");
-		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+		IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 		
 		log("Step 18: Click on Patient");
@@ -425,6 +426,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Step 19: Logout of Practice Portal");
 		pPracticeHomePage.logOut();
 		
+		Thread.sleep(120000);
 		log("Step 20: Login to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
 				testData.getUrl());
@@ -504,12 +506,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 		
 			log("Step 9: Verify the Search Result");
-			IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+			IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 			
 			log("Step 10: Click on Patient");
 			PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
 			
+			Thread.sleep(30000);
 			log("Step 11: Click on Edit Patient ID Link");
 			patientPage.editPatientLink();
 			String patientID=patientPage.medfusionID();
@@ -596,7 +599,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			pPatientSearchPage.searchAllPatientInPatientSearch(patientData.get(1), patientData.get(2),2);
 		
 			log("Step 8: Verify the Search Result");
-			IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+			IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(patientData.get(1)));
 			
 			log("Step 9: Click on Patient");
@@ -619,7 +622,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testPIDCPatientDemographicsUpdate() throws Exception{
-			log("Test Case: PIDC Patient Update for Race, Ethnicity, Language, Preferred Communication and Marital Status all the values");
+			log("Test Case: PIDC Patient Update for Race, Ethnicity, Preferred Communication,Marital Status and Language all the values");
 			PIDCTestData testData = loadDataFromExcel();
 			 
 			Long timestamp = System.currentTimeMillis();
@@ -630,7 +633,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Step 3: Click on myaccountLink on MyPatientPage");
 			MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 			
-			String dropValues[]={"Race","Ethnicity","Language","Marital_Status","Communication_Method"};
+			String dropValues[]={"Race","Ethnicity","Marital_Status","Communication_Method","Language"};
 			for(int k=0;k<dropValues.length;k++)
 			{
 			log("Updating Values of '" + dropValues[k] +"' field");
@@ -642,7 +645,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			{
 				String updatedValue=pMyAccountPage.updateDropDownValue(i,dropValues[k].charAt(0));
 				log("Updated Value :"+updatedValue);
-				Thread.sleep(60000);
+				Thread.sleep(30000);
 				Long since = timestamp / 1000L - 60 * 24;
 				
 				if(!updatedValue.equalsIgnoreCase("Choose One")){
@@ -652,6 +655,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 				}
 				
 			}
+			pMyPatientPage.clickMyAccountLink();
 			}	
 			pMyPatientPage.logout(driver);
 		}

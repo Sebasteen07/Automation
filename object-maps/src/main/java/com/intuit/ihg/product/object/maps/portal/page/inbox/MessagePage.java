@@ -273,7 +273,7 @@ public class MessagePage extends BasePageObject {
 	 */
 	public String returnSenderName() throws InterruptedException{
 		IHGUtil.PrintMethodName();
-		Thread.sleep(120000);
+		Thread.sleep(60000);
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, lableFrom);
 		return lableFrom.getText().toString();	

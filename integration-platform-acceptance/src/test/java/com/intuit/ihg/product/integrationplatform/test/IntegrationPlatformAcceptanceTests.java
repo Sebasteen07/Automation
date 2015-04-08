@@ -1207,12 +1207,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver{
 			pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 		
 			log("Step 9: Verify the Search Result");
-			IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
+			IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 			
 			log("Step 10: Click on Patient");
 			PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
 			
+			Thread.sleep(60000);
 			log("Step 11: Set External Patient ID");
 			String externalPatientID=patientPage.setExternalPatientID();
 			
