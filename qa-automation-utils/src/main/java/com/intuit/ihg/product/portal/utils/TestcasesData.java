@@ -147,7 +147,13 @@ public class TestcasesData {
 	public String getPreferredLocationBeta() {		
 		return portalobj.preferredLocationBeta;
 	}
-	
+    public String getFormsAltUrl() {
+        return portalobj.formsAltUrl;
+    }
+        
+    public String getRestUrl() {
+        return portalobj.restUrl;
+    }
 	public String getSecureNotificationUser() {
 		return portalobj.secureMessageNotificationUserEmail;
 	}

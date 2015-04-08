@@ -1739,7 +1739,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
 
-		log("step 2: Click Appt Request tab");
+		log("step 2: Click Patient Messaging and Quick Send a message");
 		PatientMessagingPage patMessaging = practiceHome.clickPatientMessagingTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1");
