@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
@@ -580,20 +579,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 
 
-	/**
-	 * @Author:- pjhinjha
-	 * @Date:-7/10/2013
-	 * @User Story ID in Rally-US6324
-	 * @StepsToReproduce:
-	 * LogIn to PHR portal using ccduser from excel
-	 * Post CCD request with Medicines
-	 * Login to Patient Portal
-	 * Go to Prescription renewal
-	 * Click on it and see the medications part in prescription renewal
-	 * Click on logout
-	 * =============================================================
-	 * @throws Exception
-	 */
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedSyncToPortal() throws Exception {
 
@@ -607,49 +593,36 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		PhrTestcasesData phrtestcasesData=new PhrTestcasesData(phr);
 
 		log("URL: "+phrtestcasesData.geturl());
-		log("USER NAME: "+phrtestcasesData.getccdUserName());
-		log("Password: "+phrtestcasesData.getccdUserPassword());
+		log("USER NAME: "+phrtestcasesData.getElektaUser());
+		log("Password: "+phrtestcasesData.getElektaPassword());
 
-		log("step 3:LogIn");
+		log("step 3:LogIn to phr");
 		PhrLoginPage loginpage = new PhrLoginPage(driver,phrtestcasesData.geturl());
-		PhrHomePage pPhrHomePage = loginpage.login(phrtestcasesData.getccdUserName(),phrtestcasesData.getccdUserPassword());
-
-		log("step 4:Post NON_CONSOLIDATED_CCD request");
-		pPhrHomePage.postNonCCdRequest(phrtestcasesData.getallScriptAdapterURL());
+		PhrHomePage pPhrHomePage = loginpage.login(phrtestcasesData.getElektaUser(),phrtestcasesData.getElektaPassword());
+		log("step 4:Post ELEKTA_CCD request to " + phrtestcasesData.getElektaRestURL());
+		
+		pPhrHomePage.postElektaCCdRequest(phrtestcasesData.getElektaRestURL());
 
 		log("step :Wait for page to be loaded completely");
 		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 5:LogIn to Patient Portal ");
-		Portal portal = new Portal();
-		TestcasesData portalTestData = new TestcasesData(portal);
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
-				portalTestData.geturl());
+				phrtestcasesData.getElektaPracticeURL());
 		MyPatientPage pMyPatientPage = portalloginpage.login(
-				phrtestcasesData.getccdUserName(),
-				phrtestcasesData.getccdUserPassword());
+				phrtestcasesData.getElektaUser(),
+				phrtestcasesData.getElektaPassword());
 
 		log("step 6: Go to Prescription Renewal");
 		NewRxRenewalPage newRxRenewalPage = pMyPatientPage.clickPrescriptionRenewal();
 
-		log("step 7: Select provider");
-		newRxRenewalPage.chooseProvider("Geisel");
-
-		log("step 8: Click on continue button");
-		newRxRenewalPage.clickContinuebtn();
-
-		log("step 9: Check for medications");
+		log("step 7: Check for medications");
 		newRxRenewalPage.checkMedication();
-		if(IHGUtil.getEnvironmentType().equals(EnvironmentType.PROD)){
-			Assert.assertEquals(PortalConstants.MedicineNameOne, newRxRenewalPage.medicineName0.getText());
-			Assert.assertEquals(PortalConstants.MedicineNameTwo, newRxRenewalPage.medicineName1.getText());
-		}
-		else{
-			Assert.assertEquals(PortalConstants.MedicineName1, newRxRenewalPage.medicineName1.getText());
-			Assert.assertEquals(PortalConstants.MedicineName2, newRxRenewalPage.medicineName2.getText());
-		}
+		Assert.assertEquals(PortalConstants.MedicineNameOne, newRxRenewalPage.medicineName0.getText());
+		Assert.assertEquals(PortalConstants.MedicineNameTwo, newRxRenewalPage.medicineName1.getText());
 
-		log("step 10: Logout of Patient Portal");
+
+		log("step 8: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 	}
 
@@ -714,6 +687,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 			
 		}
 	}
+
 
 }
 

@@ -1071,7 +1071,10 @@ public class IHGUtil extends BasePageObject {
 	{
 		return CcdType.NON_CONSOLIDATED_CCD;
 	}
-
+	public static CcdType getElektaCCD()
+	{
+		return CcdType.ELEKTA_CCD;
+	}
 	public static String createRandomEmailAddress(String email) {
 
 		IHGUtil.PrintMethodName();

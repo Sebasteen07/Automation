@@ -87,7 +87,7 @@ public class PhrTestcasesData {
 	
 
 	/**
-	 * Returns secondaryUserZipCode from phr excel sheet
+	 * Returns ccdUserName from phr excel sheet
 	 */
 	public String getccdUserName() {
 		return phrobj.ccdUserName;
@@ -95,9 +95,34 @@ public class PhrTestcasesData {
 	
 	
 	/**
-	 * Returns allScriptAdapterURL from phr excel sheet
+	 * Returns ccdUserPassword from phr excel sheet
 	 */
 	public String getccdUserPassword() {
 		return phrobj.ccdUserPassword;
 	}
+	/**
+	 * Returns ElektaRestURL from phr excel sheet
+	 */
+	public String getElektaRestURL() {
+		return phrobj.elektaRestURL;
+	}
+	/**
+	 * Returns ElektaPracticeUrl from phr excel sheet
+	 */
+	public String getElektaPracticeURL() {
+		return phrobj.elektaPracticeURL;
+	}
+	/**
+	 * Returns ElektaUser from phr excel sheet
+	 */
+	public String getElektaUser() {
+		return phrobj.elektaUser;
+	}
+	/**
+	 * Returns ElektaPassword from phr excel sheet
+	 */
+	public String getElektaPassword() {
+		return phrobj.elektaPassword;
+	}
+	
 }

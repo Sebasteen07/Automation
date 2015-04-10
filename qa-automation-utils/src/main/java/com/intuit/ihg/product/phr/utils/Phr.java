@@ -14,4 +14,9 @@ public class Phr {
 	public String allScriptAdapterURL="";
 	public String ccdUserName="";
 	public String ccdUserPassword="";
+	public String elektaRestURL="";
+	public String elektaPracticeURL="";
+	public String elektaUser="";
+	public String elektaPassword="";
+	
 }
