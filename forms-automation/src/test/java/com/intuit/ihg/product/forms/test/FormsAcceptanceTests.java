@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.*;
@@ -159,6 +160,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName)
 			throws Exception {
+		PortalUtil.setPortalFrame(driver);
 		String submittedDate = formsPage.getSubmittedDate(formName);
 		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
 		assertEquals(submittedDate, currentDate, "Form submitted today not found");
@@ -220,12 +222,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Author: Adam Warzel
 	 * @Date: April-01-2014
 	 * @UserStory: US7083
-	 *
-	 * Tests if filling out a form generates a PDF, if link for downloading
-	 * the PDF appears in Patient Portal and if the link is working and also
-	 * whether corresponding CCD was generated.
-	 *
-	 * Creates new patient
+	 *             Creates a new user.
+	 *             Tests if filling out a form generates a PDF, if link for downloading
+	 *             the PDF appears in Patient Portal and if the link is working and also
+	 *             whether corresponding CCD was generated.
+	 *             Then it checks if the submitted date is accurate and if patient's DOB has not been changed
 	 */
 	@Test(enabled = true, groups = {"PatientForms"})
 	public void testFormPdfCcd() throws Exception {
@@ -261,6 +262,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Test if the submission date is correct");
 		verifyFormsDatePatientPortal(formsPage, "output test");
+
+		log("Step 7: Test if the DOB has not been changed");
+		driver.switchTo().defaultContent();
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy",
+				"MMMMM/dd/yyyy");
+		assertEquals(portalData.getDOB(), accountDOB, "Date of birth is not accurate!");
+
+
 
 	}
 

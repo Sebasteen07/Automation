@@ -453,4 +453,10 @@ public class MyAccountPage extends BasePageObject {
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 	
+	public String getDOB() throws Exception {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		return dateOfBirth.getAttribute("value");
+	}
+
 }

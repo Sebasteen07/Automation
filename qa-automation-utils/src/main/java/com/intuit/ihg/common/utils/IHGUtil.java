@@ -332,7 +332,7 @@ public class IHGUtil extends BasePageObject {
 	public static String convertDate(String srcDate, String srcDateFormat, String destDateformat) throws Exception {
 		SimpleDateFormat formatter = new SimpleDateFormat(srcDateFormat);
 		Date dateStr = formatter.parse(srcDate);
-		formatter = new SimpleDateFormat(destDateformat);
+		formatter = new SimpleDateFormat(destDateformat, Locale.ENGLISH);
 		String FormattedDate = formatter.format(dateStr);
 		System.out.println("FormattedDate" + FormattedDate);
 		return FormattedDate;
@@ -905,10 +905,11 @@ public class IHGUtil extends BasePageObject {
 	 *Desc:- Method will set the frame.Frist will set to default Content and then to str frame
 	 *
 	 */
-	public static void setFrame(WebDriver driver,String str) {
+	public static void setFrame(WebDriver driver, String frameName) {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame(str); 
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameName));
 	}
 
 	/**
@@ -1333,6 +1334,7 @@ public class IHGUtil extends BasePageObject {
 			
 			found = wait.until(new ExpectedCondition<Boolean>() {
 
+				@Override
 				public Boolean apply(WebDriver driver) {
 					
 					// This causes problems for some drivers - need to use plural (findElements) and check size.

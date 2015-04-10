@@ -78,6 +78,11 @@ public class TestcasesData {
 		return portalobj.patientDob_Year;
 	}
 	
+	public String getDOB() {
+		return portalobj.patientDob_Month + "/" + portalobj.patientDob_Day + "/"
+				+ portalobj.patientDob_Year;
+	}
+
 	public String getZip(){
 		return portalobj.patientZip;
 	}
