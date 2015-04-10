@@ -51,15 +51,15 @@ public class JalapenoMessagesPage extends BasePageObject {
 		
 		while(count <= maxCount){
 			try {
-				element = driver.findElement(By.linkText("This is testing URL"));
-				log("Message from doctor arrived");
-				return element.isDisplayed();
-			}
-			catch(Exception ex) {
-				log("Not arrived: " + count + "/" + maxCount + "| Refreshing page");
-				count++;
-				driver.navigate().refresh();
-			}
+				 driver.navigate().refresh();
+				 element = driver.findElement(By.xpath("(//*[contains(text(),'Quick Send')])[1]"));
+				 log("Message from doctor arrived");
+				 return element.isDisplayed();
+				 }
+			 catch(Exception ex) {
+				 log("Not arrived: " + count + "/" + maxCount + "| Refreshing page");
+				 count++; 
+			 }
 		}
 		
 		log("Message from doctor didn't arrive");

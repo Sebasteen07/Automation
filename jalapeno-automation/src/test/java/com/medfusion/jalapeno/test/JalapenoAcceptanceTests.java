@@ -15,9 +15,11 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.portal.utils.Portal;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
@@ -150,9 +152,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail(), 
 				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());	
 		
-		log("Finishing of patient activation");
+		log("Finishing of patient activation: step 1 - verifying identity");
 		JalapenoPatientActivationPage jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
+		jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
+				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 	
+		log("Finishing of patient activation: step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation("",
 			testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 			testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());

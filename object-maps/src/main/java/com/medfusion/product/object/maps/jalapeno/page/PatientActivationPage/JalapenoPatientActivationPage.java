@@ -40,6 +40,21 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	
 	@FindBy(how = How.ID, using = "finishStep")
 	private WebElement finishStep;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div[3]/div/form/div[1]/input")
+	private WebElement postalCode;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div[3]/div/form/div[2]/select")
+	private WebElement birthDate_month;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div[3]/div/form/div[2]/input[1]")
+	private WebElement birthDate_day;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div[3]/div/form/div[2]/input[2]")
+	private WebElement birthDate_year;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div[4]/div/ul[2]/li/button")
+	private WebElement nextStep;
 
 	public JalapenoPatientActivationPage(WebDriver driver, String url) {
 		super(driver);
@@ -51,6 +66,28 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		driver.manage().window().maximize();
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
+	}
+	
+	public void verifyPatientIdentity(String zipCode, String month, String day, String year) {
+		IHGUtil.PrintMethodName();
+		
+		log("Verifying identity");
+		
+		log("Setting zipCode as " + zipCode);
+		postalCode.sendKeys(zipCode);
+		
+		log("Setting DOB month as " + month);
+		birthDate_month.sendKeys(month);
+		
+		log("Setting DOB day as " + day);
+		birthDate_day.sendKeys(day);
+		
+		log("Setting DOB year as " + year);
+		birthDate_year.sendKeys(year);
+		
+		log("Click on continue button");
+		nextStep.click();
+		
 	}
 	
 	public JalapenoHomePage fillInPatientActivation(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
