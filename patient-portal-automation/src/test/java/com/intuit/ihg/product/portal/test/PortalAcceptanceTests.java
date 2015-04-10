@@ -1742,7 +1742,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Click Patient Messaging and Quick Send a message");
 		PatientMessagingPage patMessaging = practiceHome.clickPatientMessagingTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
-		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1");
+		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1","Happy Birthday");
 				
 		log("step 3: Logout of Practice Portal");
 		practiceHome.logOut();

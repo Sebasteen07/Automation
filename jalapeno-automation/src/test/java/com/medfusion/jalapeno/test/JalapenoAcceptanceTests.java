@@ -264,7 +264,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setQuickSendFields(jalapenoCreatePatientTest.getFirstName(), jalapenoCreatePatientTest.getLastName());
+		patientMessagingPage.setQuickSendFields(jalapenoCreatePatientTest.getFirstName(), jalapenoCreatePatientTest.getLastName(),"TestingMessage");
 		
 		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());

@@ -241,7 +241,7 @@ public class PatientMessagingPage extends BasePageObject{
       * @param lastName
       * @throws Exception
       */
-      public void setQuickSendFields(String firstName, String lastName) throws Exception
+      public void setQuickSendFields(String firstName, String lastName, String templateName) throws Exception
       {
              IHGUtil.PrintMethodName();
              Thread.sleep(5000);
@@ -249,7 +249,7 @@ public class PatientMessagingPage extends BasePageObject{
              Select sel = new Select(messageType);
      		 sel.selectByVisibleText("Other");
      		 Select sel2 = new Select(template);
-     		 sel2.selectByVisibleText("Happy Birthday");
+     		 sel2.selectByVisibleText(templateName);
              setSubject();
              
              Thread.sleep(2000);
@@ -265,8 +265,8 @@ public class PatientMessagingPage extends BasePageObject{
              Thread.sleep(12000);
              publishMessage.click();
              Thread.sleep(3000);
-      }
-
+      }      
+      
       public boolean findMyMessage(String patientName) throws Exception {
     	  IHGUtil.PrintMethodName();
     	  int maxCount = 10;
