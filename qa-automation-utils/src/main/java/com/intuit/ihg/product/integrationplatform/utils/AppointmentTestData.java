@@ -87,6 +87,18 @@ public class AppointmentTestData {
 	
 	public String getPracticePassword() {
 		return AppointmentObj.PracticePassword;
+	}
+	
+	public String getGmailUserName() {
+		return AppointmentObj.GmailUserName;
 	}	
+	
+	public String getGmailPassword() {
+		return AppointmentObj.GmailPassword;
+	}	
+	
+	public String getPracticeName() {
+		return AppointmentObj.PracticeName;
+	}
 	
 }

@@ -19,4 +19,7 @@ public class Payment {
 	public String PracticeURL ="";
 	public String PracticeUserName ="";
 	public String PracticePassword ="";
+	public String GmailUserName ="";
+	public String GmailPassword ="";
+	public String PracticeName ="";
 }

@@ -751,7 +751,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 	}
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-		public void testHealthKeyPatientLogin() throws Exception {
+		public void testHealthKeyPatientLoginAndOnDemandProvision() throws Exception {
 		log("Test Case: Patient logs in first time as healthkey patient in NEW practice");
 
 		PIDCTestData testData = loadDataFromExcel();

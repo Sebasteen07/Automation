@@ -90,5 +90,16 @@ public class PrescriptionTestData {
 		return PrescriptionObj.PracticePassword;
 	}	
 	
+	public String getGmailUserName() {
+		return PrescriptionObj.GmailUserName;
+	}	
+	
+	public String getGmailPassword() {
+		return PrescriptionObj.GmailPassword;
+	}	
+	
+	public String getPracticeName() {
+		return PrescriptionObj.PracticeName;
+	}
 	
 }

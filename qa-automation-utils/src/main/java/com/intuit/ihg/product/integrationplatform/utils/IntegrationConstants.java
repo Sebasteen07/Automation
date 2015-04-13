@@ -132,5 +132,8 @@ public class IntegrationConstants {
 	public static final String PAYNOWPAYMENT="Pay Now Payment";
 	public static final String VCSPAYMENT="VCS Payment";
 	public static final String BILLPAYMENT="BillPayment";
+	
+	//Email notification constant
+	public static final String EMAIL_BODY_LINK="fuseaction=com.start";
 }
 

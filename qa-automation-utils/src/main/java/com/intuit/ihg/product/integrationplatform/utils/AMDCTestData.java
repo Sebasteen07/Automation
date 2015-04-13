@@ -123,4 +123,12 @@ public class AMDCTestData {
 	public String getPatientName3(){
 		return AmdcObj.PatientName3;
 	}
+	
+	public String getGmailUserName(){
+		return AmdcObj.GmailUserName;
+	}
+	
+	public String getGmailPassword(){
+		return AmdcObj.GmailPassword;
+	}
 }

@@ -89,4 +89,16 @@ public class PaymentTestData {
 		return paymentObj.PracticePassword;
 	}
 	
+	public String getGmailUserName(){
+		return paymentObj.GmailUserName;
+	}
+	
+	public String getGmailPassword(){
+		return paymentObj.GmailPassword;
+	}
+	
+	public String getPracticeName(){
+		return paymentObj.PracticeName;
+	}
+	
 }

@@ -47,11 +47,13 @@ import org.xml.sax.SAXException;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
-import com.intuit.api.security.client.TokenManager;
+
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.GmailBot;
+
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 
 
@@ -1711,7 +1713,29 @@ public class RestUtils {
    		Assert.assertTrue(found, "Patient was not found in the response XML");
 	}
 
+	public static String verifyEmailNotification(String gmailUserName,String gmailPassword, String recipient,int minute ) throws Exception
+	{
+		GmailBot gBot = new GmailBot();
+		String emailMessageLink = null;
+		
+		Log4jUtil.log("Gmail User Name :"+ gmailUserName + "Password :"+gmailPassword);
+		try {
+			
+		emailMessageLink=gBot.findInboxEmailLink(gmailUserName,gmailPassword,"New message from "+recipient,IntegrationConstants.EMAIL_BODY_LINK, minute, false, true);
+		
+		} catch (Exception e) {
+			Log4jUtil.log("Error :"+e);
+		}
+		
+		BaseTestSoftAssert.verifyTrue(emailMessageLink.length()!=0,"New secure message was not found in patient inbox ");
+		
+		Log4jUtil.log("Delete all messages from Inbox");
+		gBot.deleteAllMessagesFromInbox(gmailUserName, gmailPassword);
+		
 
+		return emailMessageLink;
+		
+	}
 
 }
 

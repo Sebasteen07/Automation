@@ -71,4 +71,16 @@ public class EHDCTestData {
 		return EhdcObj.OAuthPassword;
 	}	
 	
+	public String getGmailUserName(){
+		return EhdcObj.GmailUserName;
+	}
+	
+	public String getGmailPassword(){
+		return EhdcObj.GmailPassword;
+	}
+	
+	public String getPracticeName(){
+		return EhdcObj.PracticeName;
+	}
+	
 }

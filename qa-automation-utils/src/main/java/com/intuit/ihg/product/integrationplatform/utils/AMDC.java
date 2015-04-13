@@ -27,4 +27,6 @@ public class AMDC {
 	public String PatientName1="";
 	public String PatientName2="";
 	public String PatientName3="";
+	public String GmailUserName="";
+	public String GmailPassword="";
 }

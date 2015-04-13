@@ -9,7 +9,19 @@
 <test name = "Integration-Platform-Regression" >
 	<classes>
 			<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
-				
+			<methods>
+	    		<include name="testAMDCBatch" />
+        		<include name="testAMDCRegression" />
+        		<include name="testOnDemandProvisionCCD" />
+        		<include name="testOnDemandProvisionPIDC" />
+        		<include name="testPatientRegistrationfromPractice" />
+        		<include name="testPIDCBatch" />
+        		<include name="testPIDCPatientDemographicsUpdate" />
+        		<include name="testHealthKeyPatientUpdate" />
+        		<!-- include name="testHealthKeyPatientLoginAndOnDemandProvision"  After 15.3 release test will run on PROD--> 
+        		<!--<include name="testHealthKeyPatientAddInsurance"  After 15.3 release test will run on PROD-->
+        		<!--<include name="testHealthKeyPatientUpdateInsurance"  After 15.3 release test will run on PROD-->
+      		</methods>
 	</classes>
 </test>
 </suite>
