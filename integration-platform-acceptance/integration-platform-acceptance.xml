@@ -23,6 +23,7 @@
         		<include name="testOnlineBillPayment" />
         		<include name="testPayNow" />
         		<include name="testVirtualCardSwiper" />
+        		<include name="testAMDCSecureMessageFromPractice" />
       		</methods>
 	</classes>
 </test>
