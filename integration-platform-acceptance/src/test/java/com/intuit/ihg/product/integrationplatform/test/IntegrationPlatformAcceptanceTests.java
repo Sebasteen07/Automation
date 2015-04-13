@@ -807,21 +807,19 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		 * { completed = true; break; } } verifyTrue(completed,
 		 * "Message processing was not completed in time");
 		 */
-		log("Step 4: Check secure message in patient gmail inbox");
-		String emailMessageLink = RestUtils.verifyEmailNotification(
-				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getPracticeName(), 3);
+		log("Step 4:LogIn to Patient Portal ");
+		  PortalLoginPage portalloginpage = new PortalLoginPage(driver,
+		    testData.getURL());
+		  MyPatientPage pMyPatientPage = portalloginpage.login(
+		    testData.getUserName(),
+		    testData.getPassword());
+		  
+		  log("Step 5: Go to Inbox");
+		  MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
+		  assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		log("Step 5: Login to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver,
-				emailMessageLink);
-		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(
-				testData.getUserName(), testData.getPassword());
-
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 6: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
+		  log("Step 6: Find message in Inbox");
+		  MessagePage pMessage = inboxPage.clickFirstMessageRow();
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
