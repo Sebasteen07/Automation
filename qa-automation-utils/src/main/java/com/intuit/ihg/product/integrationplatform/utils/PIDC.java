@@ -51,4 +51,5 @@ public class PIDC {
 	public String InsuranceHealthKeyPatientUserName1="";
 	public String InsurancePatientID1="";
 	public String SecondInsuranceName="";
+	public String TestPatientIDUserName="";
 }

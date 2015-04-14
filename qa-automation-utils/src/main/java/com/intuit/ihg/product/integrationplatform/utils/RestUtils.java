@@ -1632,6 +1632,9 @@ public class RestUtils {
 				try {
 					if (updateData.get(2)!=null)
 					{
+					Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(i);
+					Log4jUtil.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
+					BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10), "Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
 					Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(i);
 					Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2) + ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nAddress1.getTextContent(), updateData.get(2), "Medfusion Patient Address1 has different than expected. Address1 is: " + nAddress1.getTextContent());

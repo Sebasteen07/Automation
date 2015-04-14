@@ -215,4 +215,8 @@ public class PIDCTestData {
 	public String getSecondInsuranceName(){
 		return PidcObj.SecondInsuranceName;
 	}
+	
+	public String getTestPatientIDUserName(){
+		return PidcObj.TestPatientIDUserName;
+	}
 }

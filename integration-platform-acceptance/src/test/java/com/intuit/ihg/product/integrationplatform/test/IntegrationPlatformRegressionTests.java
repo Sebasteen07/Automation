@@ -917,6 +917,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		updateData.add(testData.getRace());
 		updateData.add(testData.getEthnicity());
 		updateData.add(testData.getChooseCommunication());
+		updateData.add("MiddleName"+randomData);
 		
 		pMyAccountPage.updateDemographics(updateData);
 		
@@ -1202,6 +1203,51 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		log("Step 30: Logout from Patient portal");
 		pMyAccountPage.logout(driver);
 		
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPatientDemographicsUpdateWithSpecialCharacter() throws Exception {
+			log("Test Case: PIDC Patient Update");
+			PIDCTestData testData = loadDataFromExcel();
+
+			Long timestamp = System.currentTimeMillis();
+			log("Step 2: LogIn");
+			PortalLoginPage loginpage = new PortalLoginPage(driver,
+					testData.getUrl());
+			MyPatientPage pMyPatientPage = loginpage.login(testData.getTestPatientIDUserName(),
+					testData.getPassword());
+
+			log("Step 3: Click on myaccountLink on MyPatientPage");
+			MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+			
+			
+			List<String> patientData=new ArrayList<String>();
+		
+			//String [] specialCharcterDate={"'","&","<",">","\""+IHGUtil.createRandomNumber()+"\""};
+			String randomString=IHGUtil.createRandomNumericString();
+			patientData.add("Fname"+"'"+randomString);
+			patientData.add("TestPatient"+"'"+randomString);
+			patientData.add("Line1"+"&"+randomString);
+			patientData.add('"' + randomString + '"');
+			patientData.add("1"+IHGUtil.createRandomNumericString());
+			patientData.add("01/01/2001");
+			patientData.add("2");
+			patientData.add(testData.getRace());
+			patientData.add(testData.getEthnicity());
+			patientData.add(testData.getChooseCommunication());
+			patientData.add("Mname"+"'"+randomString);
+			
+			log("Step 4: Update patient demographics datails with special charcters data");
+			pMyAccountPage.updateDemographics(patientData);
+					
+			Long since = timestamp / 1000L - 60 * 24;
+			
+			log("Step 5: Invoke Get PIDC and verify patient details");
+			RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			
+			RestUtils.checkPatientRegistered(testData.getResponsePath(),patientData );
+			
+			
 		}
 		
 		

@@ -433,6 +433,8 @@ public class MyAccountPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		txtFirstName.clear();
 		txtFirstName.sendKeys(updateData.get(0));
+		txtMiddleName.clear();
+		txtMiddleName.sendKeys(updateData.get(10));
 		txtLastName.clear();
 		txtLastName.sendKeys(updateData.get(1));
 		txtAddress1.clear();
