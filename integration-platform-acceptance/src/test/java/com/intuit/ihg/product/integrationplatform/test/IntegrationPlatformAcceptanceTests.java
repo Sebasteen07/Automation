@@ -837,7 +837,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo().defaultContent();
 
 		log("Step 10: Go to patient page");
-		MyPatientPage pMyPatientPage = pMessage.clickMyPatientPage();
+		pMyPatientPage = pMessage.clickMyPatientPage();
 
 		log("Step 11: Click PHR");
 		pMyPatientPage.clickPHRWithoutInit(driver);
