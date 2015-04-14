@@ -823,9 +823,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTimingWithTime());
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTimingWithTime(),
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
 				10000));
 
 		log("Step 8: Click on link ReviewHealthInformation");
@@ -1186,7 +1186,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: verify transport status in response xml");
 		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 1; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(10000);
 			if (RestUtils.isCCDProcessingCompleted(testData.getResponsePath())) {
@@ -1340,7 +1340,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 					lastName);
 
 			log("Step 9: Verify the Search Result");
-			Thread.sleep(60000);
+			Thread.sleep(120000);
 			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 			verifyEquals(true, pPatientSearchPage.searchResult.getText()
 					.contains(firstName));
@@ -1349,7 +1349,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			PatientDashboardPage patientPage = pPatientSearchPage
 					.clickOnPatient(firstName, lastName);
 
-			Thread.sleep(60000);
+			Thread.sleep(120000);
 			log("Step 11: Set External Patient ID");
 			String externalPatientID = patientPage.setExternalPatientID();
 
@@ -1909,12 +1909,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = Long.toString(timestamp);
 
-		log("Step 9: Log the message read time ");
-		long epoch = System.currentTimeMillis() / 1000;
-
 		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
 
-		log("Step 10: Validate message loads and is the right message");
+		log("Step 9: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated(messageIdentifier));
 		
 	}
