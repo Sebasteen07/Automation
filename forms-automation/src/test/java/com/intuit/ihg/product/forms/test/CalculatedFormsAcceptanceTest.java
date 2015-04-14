@@ -85,7 +85,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *         change welcome screen, save the form, exit,
 	 */
 
-	@Test
+	@Test(groups = "calculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
 		logTestEnvironmentInfo("testCalculatedFormSGEdit");
 		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
