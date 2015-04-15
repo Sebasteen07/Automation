@@ -84,6 +84,7 @@ public class JalapenoHomePage extends BasePageObject {
 		
 		log("Clicking on My Account button");
 		
+		IHGUtil.waitForElement(driver, 60, myAccount);
 		myAccount.click();
 				
 		return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
