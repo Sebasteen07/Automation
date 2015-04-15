@@ -173,7 +173,11 @@ public class PatientactivationPage extends BasePageObject{
 		confirmEmail.sendKeys(emailAddressString);
 		
 		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		
+		AddLine1.sendKeys("5501 Dillard Dr");
+		City.sendKeys("Cary");
 		zip.sendKeys(zipCodeString);
+		
 		clickregpatient();
 		clickverify();
 		

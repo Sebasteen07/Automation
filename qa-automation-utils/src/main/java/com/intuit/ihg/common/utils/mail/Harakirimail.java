@@ -40,9 +40,22 @@ public class Harakirimail {
 			count++;
 		}
 		
+		System.out.println("Finding patient email address");
+		element = driver.findElement(By.xpath("//*[@id=\"email_body\"]/table/tbody/tr/td/center/table[2]/tbody/tr[1]/td/p[4]/strong"));
+
+		if(!element.getText().equals(username + "@harakirimail.com")) {
+			System.out.println("Error: Patient email address is wrong - " + element.getText());
+			return null;
+		}
+		
+		System.out.println("Patient email address was found - " + element.getText());
+		
+		System.out.println("Finding patient reset password URL");
 		element = driver.findElement(By.linkText(findInEmail));
+		
 		return element.getAttribute("href");	
 	}
+	
 	public boolean isMessageInInbox(String username, String emailSubject, String findInEmail, int retries ) {		
 		
 		System.out.println("Navigation to https://harakirimail.com/inbox/" + username);

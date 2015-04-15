@@ -34,6 +34,7 @@ import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.Jalape
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 
 /**
@@ -164,6 +165,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Detecting if Home Page is opened");
 		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Checking if address in My Account is filled");
+		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
+		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
 		
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);

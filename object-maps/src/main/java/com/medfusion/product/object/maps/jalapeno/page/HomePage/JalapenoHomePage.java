@@ -13,10 +13,11 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 
 public class JalapenoHomePage extends BasePageObject {
 	
-	@FindBy(how = How.ID, using = "account")
+	@FindBy(how = How.LINK_TEXT, using = "My Account")
 	private WebElement myAccount;
 	
 	@FindBy(how = How.ID, using = "home")
@@ -77,6 +78,15 @@ public class JalapenoHomePage extends BasePageObject {
 		messages.click();
 		
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
+	}
+	
+	public JalapenoMyAccountPage clickOnMyAccount(WebDriver driver) {
+		
+		log("Clicking on My Account button");
+		
+		myAccount.click();
+				
+		return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
 	}
 	
 	public boolean assessHomePageElements() {
