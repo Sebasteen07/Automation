@@ -3,18 +3,18 @@
 	<CcdMessageHeaders xmlns="">
 		<Sender deviceName="Elekta:OIM" deviceVersion="MOSAIQ: Version ACC_2.50.02B2, OIM: Version 2.92B1" vendorName="Elekta" />
 		<LastUpdated>2012-11-21T04:49:50.6773194-08:00</LastUpdated>
-		<MessageId>961211943860148899</MessageId>
+		<MessageId>961211943860148901</MessageId>
 		<DataJob>
 			<DataJobId />
 		</DataJob>
 	</CcdMessageHeaders>
 	<PatientDemographics xmlns="">
 		<PatientIdentifier>
-			<PracticePatientId>sendpat</PracticePatientId>
+			<PracticePatientId>sendpat2</PracticePatientId>
 		</PatientIdentifier>
 		<Name>
 			<Prefix>Prefix</Prefix>
-			<FirstName>SendPat</FirstName>
+			<FirstName>sendpat2</FirstName>
 			<MiddleName>m</MiddleName>
 			<LastName>TestPatient1</LastName>
 		</Name>
