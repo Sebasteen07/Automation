@@ -61,13 +61,19 @@ public class OauthUtils {
         HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
         //Log4jUtil.log("Response" +resp);
         HttpEntity entity = resp.getEntity();
-        String sResp = EntityUtils.toString(entity);
-        
-        Log4jUtil.log("Check for http 200 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
-				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-
-		writeFile(responseFilePath, sResp);
+        String sResp=null;
+        if(entity!=null){
+        	sResp = EntityUtils.toString(entity);
+            Log4jUtil.log("Check for http 200 response");
+            Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+    				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of "+ 200 +". Response message received:\n" + sResp);
+             
+           }
+            else
+            {
+            	Log4jUtil.log("204 response found");
+            	
+            }
 	}
 
 	/**

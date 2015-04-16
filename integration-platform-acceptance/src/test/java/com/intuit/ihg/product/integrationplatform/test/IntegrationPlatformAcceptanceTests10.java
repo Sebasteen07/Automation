@@ -33,6 +33,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 	String processingUrl=null;
 	Long sinceTime=null;
     Long sixMonthAgo =null;
+    long epoch = System.currentTimeMillis()/1000;
 	/*
 	 * Read test-data from excel File
 	 */
@@ -53,6 +54,9 @@ public class IntegrationPlatformAcceptanceTests10 {
 		c.add(Calendar.WEEK_OF_MONTH, -24);
 		sixMonthAgo = c.getTime().getTime();
 		sinceTime=sixMonthAgo/1000;
+		
+	
+		
 		
 	}
 	
@@ -108,7 +112,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 	   
 		
 		Log4jUtil.log("Step 3: Do a Get call");
-		OauthUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + "1429162661" + ",0", testData.getCommonPath()+"/response.xml");
+		OauthUtils.setupHttpGetRequest(testData.getAMDCRestURL() + "?since=" + epoch + ",0", testData.getCommonPath()+"/response.xml");
 		
 	}
 	
