@@ -16,7 +16,7 @@
         		<include name="testOnDemandProvisionPIDC" />
         		<include name="testPatientRegistrationfromPractice" />
         		<include name="testPIDCBatch" />
-        		<include name="testPIDCPatientDemographicsUpdate" />
+        		<!-- <include name="testPIDCPatientDemographicsUpdate" /> -->
         		<include name="testHealthKeyPatientUpdate" />
         		<include name="testPatientDemographicsUpdateWithSpecialCharacter" />
         		<!-- include name="testHealthKeyPatientLoginAndOnDemandProvision"  After 15.3 release test will run on PROD--> 
