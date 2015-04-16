@@ -263,6 +263,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pWalletPage.addCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.CreditCardNumber,
 				testcasesData.getDob_Month(), PortalConstants.Year, testcasesData.getZip());
 
+		//if the behavior changes back and adding a credit card navigates back to wallet credit cards table, remove step 6b 
+		log("step 6b:Click on Wallet Link  on MyAccountPage again to refresh to wallet cards table");
+		pWalletPage = pMyAccountPage.clickWalletLink();
 		log("step 7:Verify correct CC details get added");
 		pWalletPage.verifyCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.Month,
 				PortalConstants.Year);
