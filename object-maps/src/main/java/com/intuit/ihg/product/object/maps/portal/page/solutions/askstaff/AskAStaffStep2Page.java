@@ -33,7 +33,8 @@ public class AskAStaffStep2Page extends BasePageObject {
 	
 	@FindBy(name="ccpanel:newccdetails:expirationYear")
 	private WebElement expirationDateYear;
-	
+	@FindBy(name="ccpanel:existingccdetailscontainer:ccRadioGroup:existingccdetails:existingCvvCode")
+	private WebElement cvvCodeExistingCard;	
 	@FindBy(name="ccpanel:newccdetails:newccdetailscvv:cvvCode")
 	private WebElement cvvCode;
 	
@@ -60,8 +61,8 @@ public class AskAStaffStep2Page extends BasePageObject {
 		boolean found = IHGUtil.waitForElement(driver,2, lnkEditCreditCard);
 		if (!found) {
 			payWithNewCreditCard();
-		}
-		
+		}		
+		cvvCodeExistingCard.sendKeys("123");
 		btnSubmit.click();
 		return PageFactory.initElements(driver, AskAStaffStep3Page.class);
 	}
