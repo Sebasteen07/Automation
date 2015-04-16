@@ -41,6 +41,12 @@ public class JalapenoHomePage extends BasePageObject {
 	@FindBy(how = How.ID, using = "feature_discrete_forms")
 	private WebElement forms;
 	
+	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
+	private WebElement rightDropdownButton;
+	
+	@FindBy(how = How.ID, using = "signout_dropdown")
+	private WebElement signoutDropdownButton;
+	
 	/**
 	 * @Author:Jakub Calabek
 	 * @Date:24.7.2013
@@ -64,9 +70,8 @@ public class JalapenoHomePage extends BasePageObject {
 		}
 		catch(Exception ex) {
 			log("Did not find Logout button, trying mobile version size");
-			WebElement open = driver.findElement(By.id("open-top-loggedIn-btn"));
-			open.click();
-			driver.findElement(By.id("signout_dropdown")).click();
+			rightDropdownButton.click();
+			signoutDropdownButton.click();
 		}
 		
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
@@ -82,11 +87,17 @@ public class JalapenoHomePage extends BasePageObject {
 	
 	public JalapenoMyAccountPage clickOnMyAccount(WebDriver driver) {
 		
-		log("Clicking on My Account button");
+		log("Trying to click on My Account button - regular resolution");
 		
-		IHGUtil.waitForElement(driver, 60, myAccount);
-		myAccount.click();
-				
+		try {
+			myAccount.click();
+		}
+		catch(Exception ex) {
+			log("Did not find MyAccount button, trying mobile version size");
+			rightDropdownButton.click();
+			myAccount.click();
+		}
+		
 		return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
 	}
 	

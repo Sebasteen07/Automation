@@ -41,14 +41,14 @@ public class Harakirimail {
 		}
 		
 		System.out.println("Finding patient email address");
-		element = driver.findElement(By.xpath("//*[@id=\"email_body\"]/table/tbody/tr/td/center/table[2]/tbody/tr[1]/td/p[4]/strong"));
+		element = driver.findElement(By.xpath("//*[contains(.,'" + username + "@harakirimail.com" + "')]"));
 
-		if(!element.getText().equals(username + "@harakirimail.com")) {
-			System.out.println("Error: Patient email address is wrong - " + element.getText());
+		if(element == null) {
+			System.out.println("Error: Patient email address is not showed");
 			return null;
 		}
 		
-		System.out.println("Patient email address was found - " + element.getText());
+		System.out.println("Patient email address was found");
 		
 		System.out.println("Finding patient reset password URL");
 		element = driver.findElement(By.linkText(findInEmail));
