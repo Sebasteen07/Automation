@@ -1579,6 +1579,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				.getResponsePath())) {
 			completed = true;
 		}
+		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Verify Payment status in Practice Portal");
 		log("Step 21: Login to Practice Portal");
