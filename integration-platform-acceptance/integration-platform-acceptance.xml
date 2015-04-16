@@ -12,18 +12,18 @@
 		<methods>
 	    		<include name="testAllScriptImportCCD" />
         		<include name="testEHDCsendCCD" />
-        		<!-- <include name="testAMDCAskQuestion" /> -->
+        		<include name="testAMDCAskQuestion" />
         		<include name="testAMDCSecureMessageWithReadCommnunication" />
-        		<!-- <include name="testPIDCPatientRegistration" />
-        		<include name="testPIDCPatientUpdate" /> -->
+        		<include name="testPIDCPatientRegistration" />
+        		<include name="testPIDCPatientUpdate" />
         		<include name="testGEAdaptersendCCD" />
-        		<!-- <include name="testE2EFormsExport" /> -->
+        		<include name="testE2EFormsExport" />
         		<include name="testE2EAppointmentRequest" />
-        		<!-- <include name="testE2ERxPrescription" /> -->
+        		<include name="testE2ERxPrescription" />
         		<include name="testOnlineBillPayment" />
         		<include name="testPayNow" />
-        		<!-- <include name="testVirtualCardSwiper" />
-        		<include name="testAMDCSecureMessageFromPractice" /> -->
+        		<include name="testVirtualCardSwiper" />
+        		<include name="testAMDCSecureMessageFromPractice" />
       		</methods>
 	</classes>
 </test>
