@@ -506,6 +506,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			pPatientSearchPage.searchForPatientInPatientSearch(firstName,lastName);
 		
 			log("Step 9: Verify the Search Result");
+			Thread.sleep(20000);
 			IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(firstName));
 			
@@ -599,6 +600,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			pPatientSearchPage.searchAllPatientInPatientSearch(patientData.get(1), patientData.get(2),2);
 		
 			log("Step 8: Verify the Search Result");
+			Thread.sleep(20000);
 			IHGUtil.waitForElement(driver,60,pPatientSearchPage.searchResult);
 			verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(patientData.get(1)));
 			
