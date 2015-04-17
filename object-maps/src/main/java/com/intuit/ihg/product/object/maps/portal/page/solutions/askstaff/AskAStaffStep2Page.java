@@ -61,8 +61,10 @@ public class AskAStaffStep2Page extends BasePageObject {
 		boolean found = IHGUtil.waitForElement(driver,2, lnkEditCreditCard);
 		if (!found) {
 			payWithNewCreditCard();
-		}		
-		cvvCodeExistingCard.sendKeys("123");
+		}
+		else {
+			cvvCodeExistingCard.sendKeys("123");
+		}
 		btnSubmit.click();
 		return PageFactory.initElements(driver, AskAStaffStep3Page.class);
 	}
