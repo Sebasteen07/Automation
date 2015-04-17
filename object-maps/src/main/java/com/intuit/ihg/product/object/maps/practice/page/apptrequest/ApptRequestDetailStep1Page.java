@@ -99,8 +99,12 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 */
 	public void processApptAndSubmit(ApptRequestEntity entity) {
 		IHGUtil.PrintMethodName();		
-		driver.switchTo().frame("iframe"); 
-		log(driver.getPageSource());
+		
+		//For one reason or another, diving further into another iframe is no longer required.
+		//If you encounter element not found etc exceptions inside this method, uncomment the following 
+		
+		//driver.switchTo().frame("iframebody");
+		
 		// Select process option		
 		for (WebElement action : processOptions) {
 			int actionValue = Integer.parseInt(action.getAttribute("value"));
