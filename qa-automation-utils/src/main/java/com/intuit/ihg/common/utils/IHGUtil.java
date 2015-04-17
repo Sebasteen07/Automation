@@ -908,7 +908,7 @@ public class IHGUtil extends BasePageObject {
 	public static void setFrame(WebDriver driver, String frameName) {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebDriverWait wait = new WebDriverWait(driver, 40);
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameName));
 	}
 
