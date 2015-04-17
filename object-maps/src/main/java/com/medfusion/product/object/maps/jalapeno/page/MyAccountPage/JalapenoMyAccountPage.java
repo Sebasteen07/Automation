@@ -87,4 +87,25 @@ public class JalapenoMyAccountPage extends BasePageObject {
 			
 		return true;	
 	}
+	
+public boolean checkForAddress(WebDriver driver, String zipCode) {
+		
+		log("Finding Address Line 1 textbox");
+		IHGUtil.setFrame(driver, "iframebody");
+		log("I am in iframe");
+		
+		String savedZipCode = zipCodeTextbox.getAttribute("value");
+		
+		if(savedZipCode.isEmpty()) {
+			log("ZipCode is missing");
+			return false;
+		}
+		
+		log("ZipCode value: " + savedZipCode);
+
+		log("Going out of frame");
+		IHGUtil.setDefaultFrame(driver);
+			
+		return true;	
+	}
 }

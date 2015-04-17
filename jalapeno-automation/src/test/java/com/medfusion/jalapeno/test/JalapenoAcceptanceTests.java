@@ -120,7 +120,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Checking if zipCode in My Account is filled");
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
-		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "", "", testData.getZipCode()));
+		assertTrue(jalapenoMyAccountPage.checkForAddress(driver,testData.getZipCode()));
 		
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
