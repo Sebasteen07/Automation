@@ -10,7 +10,6 @@
         <groups>
             <run>
                 <include name="PatientForms" />
-                <include name="CustomForms" />
             </run>
         </groups>
 
