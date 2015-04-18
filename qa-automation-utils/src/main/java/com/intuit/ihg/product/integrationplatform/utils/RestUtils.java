@@ -1286,10 +1286,11 @@ public class RestUtils {
 			NodeList nameNode = ele1.getElementsByTagName(IntegrationConstants.NName);
 			Element ele=(Element) nameNode.item(0);
 			{
-				String fName="FName"+randomNo;
+				String fName="FNAME"+randomNo;
 				Node fnameNode = ele.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 				fnameNode.setTextContent(fName);
 				testData(fName);
+				
 				String lName="TestPatient1"+randomNo;
 				Node LnameNode = ele.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				LnameNode.setTextContent(lName);
@@ -1307,9 +1308,7 @@ public class RestUtils {
 	public static void testData(String data) {
 		patientDatails.add(data);
 	}
-
-
-
+	
 	/**
 	 * 
 	 * @param responsePath
@@ -1626,30 +1625,30 @@ public class RestUtils {
 				Log4jUtil.log("Searching: Medfusion Patient First Name:" + updateData.get(0) + ", and Actual Medfusion Patient First Name is:" + nfirstName.item(i).getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(nfirstName.item(i).getTextContent(), updateData.get(0), "Medfusion Patient First Name has different than expected. First Name is: " + nfirstName.item(i).getTextContent());
 				Element nPatient = (Element) nfirstName.item(i).getParentNode().getParentNode();
-				Node nlastName = nPatient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(i);
+				Node nlastName = nPatient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient Last Name:" + updateData.get(1) + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
 				BaseTestSoftAssert.verifyEquals(nlastName.getTextContent(), updateData.get(1), "Medfusion Patient Last Name has different than expected. Last Name is: " + nlastName.getTextContent());
 				try {
 					if (updateData.get(2)!=null)
 					{
-					Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(i);
+					Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
 					Log4jUtil.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10), "Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
-					Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(i);
+					Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
 					Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2) + ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nAddress1.getTextContent(), updateData.get(2), "Medfusion Patient Address1 has different than expected. Address1 is: " + nAddress1.getTextContent());
-					Node nAddress2 = nPatient.getElementsByTagName(IntegrationConstants.LINE2).item(i);
+					Node nAddress2 = nPatient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
 					Log4jUtil.log("Searching: Patient Address2 :" + updateData.get(3) + ", and Actual Patient Address2 is:" + nAddress2.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nAddress2.getTextContent(), updateData.get(3), "Medfusion Patient Address2 has different than expected. Address2 is: " + nAddress2.getTextContent());
-					Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(i);
+					Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
 					Log4jUtil.log("Searching: Patient Home Phone :" + updateData.get(4) + ", and Actual Patient Home Phone is:" + nHomePhone.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nHomePhone.getTextContent(), updateData.get(4), "Medfusion Patient Home Phone has different than expected. HomePhone is: " + nHomePhone.getTextContent());
-					Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(i);
+					Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
 					Log4jUtil.log("Searching: Patient Date of Birth :" + updateData.get(5) + ", and Actual Patient Date of Birth is:" + nDOB.getTextContent().toString());
-					Node nRace = nPatient.getElementsByTagName(IntegrationConstants.RACE).item(i);
+					Node nRace = nPatient.getElementsByTagName(IntegrationConstants.RACE).item(0);
 					Log4jUtil.log("Searching: Race Value :" + updateData.get(7) + ", and Actual Patient Date of Birth is:" + nRace.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nRace.getTextContent(), updateData.get(7), "Race has different than expected. Race is: " + nRace.getTextContent());
-					Node nEthnicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(i);
+					Node nEthnicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
 					Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:" + nEthnicity.getTextContent().toString());
 					BaseTestSoftAssert.verifyEquals(nEthnicity.getTextContent(), updateData.get(8), "Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
 					Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
@@ -1739,6 +1738,6 @@ public class RestUtils {
 		return emailMessageLink;
 		
 	}
-
+	
 }
 
