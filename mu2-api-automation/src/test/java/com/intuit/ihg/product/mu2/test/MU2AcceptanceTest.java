@@ -70,7 +70,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		MessagePage pMessageCenterInboxPage = inboxPage.openMessageInInbox(IntegrationConstants.CCD_MESSAGE_SUBJECT);
 
 		log("Step 4: Validate message subject");
-		Thread.sleep(1000);
+		Thread.sleep(9000);
 		assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
 		
 		log("====== Consolidated CCD related events generation Started ======");
@@ -272,6 +272,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("Step 17: Go to message inbox page");
 		MessagePage msg = inboxPage.openMessageInInbox("secure message without attachment");
 
+		Thread.sleep(9000);
 		log("Step 18: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated("secure message without attachment"));
 		
@@ -370,7 +371,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 			log("====== AMDC secure Message with attachment event generation Started ======");
 			
 			MessagePage msg = inboxPage.openMessageInInbox("secure message with attachment");
-
+			
+			Thread.sleep(9000);
 			log("Step 3: Validate message loads and is the right message");
 			assertTrue(msg.isSubjectLocated("secure message with attachment"));
 			
@@ -442,7 +444,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 			MessagePage pMessageCenterInboxPage = inboxPage.openMessageInInbox(IntegrationConstants.CCD_MESSAGE_SUBJECT);
 
 			log("Step 4: Validate message subject");
-			Thread.sleep(1000);
+			Thread.sleep(9000);
 			assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
 			
 			log("Non Consolidated CCD related events generation Started ======");
