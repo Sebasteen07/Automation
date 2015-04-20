@@ -16,7 +16,6 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
         Log4jUtil.log("URL: " + testData.getSiteGenUrl());
         Log4jUtil.log("Username: " + testData.getAutomationUser());
         Log4jUtil.log("Password: " + testData.getAutomationUserPassword());
-        Log4jUtil.log("Automation Practice: " + testData.getAutomationPracticeName());
     }
 
     public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password)
@@ -37,7 +36,7 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
         SiteGenHomePage sHomePage = sloginPage.login(login, password);
 
         log("step 3: navigate to SiteGen PracticeHomePage ##########");
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+        SiteGenPracticeHomePage pSiteGenPracticeHomePage;
         if (practiceName.isEmpty())  {
         	// log in as normal user
             pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();

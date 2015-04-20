@@ -32,18 +32,20 @@ public class WelcomeScreenPage extends ConfiguratorFormPage {
 	 * Replace welcome message for the patient
 	 * @param message a message that will be set as welcome message
 	 */
-	public void setWelcomeMessage(String message) {
+	public WelcomeScreenPage setWelcomeMessage(String message) {
 		lnkWelcomeScreenText.clear();
 		lnkWelcomeScreenText.sendKeys(message);
+		return this;
 	}
 
 	/**
 	 * Set the name of the form
 	 * @param newFormName - the name for the form
 	 */
-	public void setFormName(String newFormName) {
+	public WelcomeScreenPage setFormName(String newFormName) {
 		formNameField.clear();
 		formNameField.sendKeys(newFormName);
+		return this;
 	}
 	
 	/**

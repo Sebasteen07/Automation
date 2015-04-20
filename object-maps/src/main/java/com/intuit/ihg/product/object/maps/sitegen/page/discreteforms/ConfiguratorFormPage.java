@@ -69,11 +69,12 @@ public class ConfiguratorFormPage extends BasePageObject {
         closeDialogButton.click();
     }
 
-    public void saveOpenedForm() throws InterruptedException {
+    public ConfiguratorFormPage saveOpenedForm() throws InterruptedException {
         IHGUtil utils = new IHGUtil(driver);
 
         clickSaveButton();
-        utils.waitForElementToDisappear(loadingNotification, 2000, 8);
+        utils.waitForElementToDisappear(loadingNotification, 1500, 8);
+        return this;
     }
 
 }

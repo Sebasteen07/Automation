@@ -18,8 +18,10 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage.QuestionType;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.intuit.ihg.common.utils.IHGConstants;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-	/**
+/**
 	 *
 	 * @author bbinisha
 	 * @ Date : 11/12/2013
@@ -65,17 +67,26 @@ public class DiscreteFormsList extends BasePageObject {
 		return welcomeMessage;
 	}
 
-	//Constructor
 	public DiscreteFormsList(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
+	}
+
+	private static String getPublishedFormsXpath(String uniqueDiscreteFormName) {
+		return ".//a[text()='" + uniqueDiscreteFormName
+				+ "']/ancestor::td/following-sibling::td/a[@class='unpublish']";
+	}
+
+	private static String getUnpublishedFormsXpath(String uniqueDiscreteFormName) {
+		return ".//a[text()='" + uniqueDiscreteFormName
+				+ "']/ancestor::td/following-sibling::td/a[@class='publish']";
 	}
 
 	/**
 	 * Description: Deletes all the unpublished forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
-	public void deleteAllUnPublishedForms() throws Exception {
+	public DiscreteFormsList deleteAllUnPublishedForms() throws Exception {
 		List<WebElement> deleteButtons;
         IHGUtil utils = new IHGUtil(driver);
 
@@ -88,17 +99,17 @@ public class DiscreteFormsList extends BasePageObject {
 			deleteButtons = driver.findElements(By.xpath(xpath));
 			deleteButtons.get(0).click();
 			yesDeleteButton.click();
-//			waitForFormToDisappear(xpath, count);
             utils.waitForElementToDisappear(deleteButtons.get(count - 1), 1000, waitingPeriodSeconds);
 			count--;
 		}
+		return this;
 	}
 
 	/**
 	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
 	 * @throws Exception
 	 */
-	public void unpublishAllForms() throws Exception {
+	public DiscreteFormsList unpublishAllForms() throws Exception {
 		List<WebElement> unpublishButtonList;
         IHGUtil utils = new IHGUtil(driver);
 
@@ -113,6 +124,7 @@ public class DiscreteFormsList extends BasePageObject {
             utils.waitForElementToDisappear(unpublishButtonList.get(count-1), 1000, waitingPeriodSeconds);
 			count--;
 		}
+		return this;
 	}
 
 	/**
@@ -126,21 +138,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	/**
-	 * Description : Open the newly created custom form.
-	 * @return
-	 * @throws Exception
-	 */
-	public CustomFormPage openCustomForm() throws Exception {
-		IHGUtil.PrintMethodName();
-		Thread.sleep(5000);
-		driver.findElement(By.xpath(".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")).click();
-		Thread.sleep(5000);
-		SitegenlUtil.switchToNewWindow(driver);
-		return PageFactory.initElements(driver, CustomFormPage.class);
-	}
-
-	/**
-	 *  Description : Creates new discrete form
+	 * Description : Creates new discrete form
 	 * @throws Exception
 	 */
 	public void createNewDiscreteForm() throws Exception {
@@ -155,12 +153,15 @@ public class DiscreteFormsList extends BasePageObject {
 	 * @param uniqueDiscreteFormName : Form name of the form which needs to be deleted.
 	 * @throws Exception
 	 */
-	public void publishTheSavedForm(String uniqueDiscreteFormName) throws Exception {
+	public DiscreteFormsList publishForm(String uniqueDiscreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
-		driver.findElement(By.xpath(".//a[text()='"+uniqueDiscreteFormName+"']/ancestor::td/following-sibling::td/a[@class='publish']")).click();
-		Thread.sleep(3000);
-	}
+		driver.findElement( By.xpath(getUnpublishedFormsXpath(uniqueDiscreteFormName)) ).click();
 
+		new WebDriverWait(driver, 15).until(ExpectedConditions
+				.presenceOfElementLocated(By.xpath(getPublishedFormsXpath(uniqueDiscreteFormName))));
+
+		return this;
+	}
 
 	/**
 	 * Description : Open the newly created discrete Form.
@@ -169,10 +170,8 @@ public class DiscreteFormsList extends BasePageObject {
 	 */
 	public WelcomeScreenPage openDiscreteForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(1000);
 		// Find the form by name
 		driver.findElement(By.xpath("//a[contains(text(), '" + formName + "')]")).click();
-		Thread.sleep(1000);
 		SitegenlUtil.switchToNewWindow(driver);
 		return PageFactory.initElements(driver, WelcomeScreenPage.class);
 	}
@@ -340,4 +339,12 @@ public class DiscreteFormsList extends BasePageObject {
         calculatedFormPreview.click();
         return PageFactory.initElements(driver, FormWelcomePage.class);
     }
+
+	public DiscreteFormsList editFormsWelcomePage(String formName, String newWelcomeMessage) throws Exception {
+		WelcomeScreenPage welcomePage = openDiscreteForm(formName);
+		welcomePage.setWelcomeMessage(newWelcomeMessage)
+				.saveOpenedForm()
+				.clickBackToTheList();
+		return this;
+	}
 }

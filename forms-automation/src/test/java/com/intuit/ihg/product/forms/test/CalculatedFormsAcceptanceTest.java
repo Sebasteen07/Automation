@@ -13,7 +13,6 @@ import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.CalculatedFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -42,8 +41,6 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	 *        ============================================================
 	 * @throws Exception
 	 */
-
-
 	@Test
 	public void testCalculatedFormAddRemove() throws Exception {
 
@@ -62,14 +59,14 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		log("step 2: Unpublish and delete all forms and add calculated form");
 		driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
-		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 3: Check if the added form is no longer in the Calculated Form Directory ");
-		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 4: Delete all Forms and check if the Calculated Form is back in Directory");
 		pManageDiscreteForms.initializePracticeForNewForm();
-		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATEDFORMNAME));
+		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 5: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle descriptor
@@ -80,11 +77,11 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	}
 
 	/**
-	 * @author: Adam W
-	 * @Steps: Login to Site Generator, click on Patient Forms, open calculated form
-	 *         change welcome screen, save the form, exit,
+	 * @author Adam W
+	 * Steps: Login to Site Generator, click on Patient Forms, open calculated form
+	 *        change welcome screen, save the form, exit, publish it, test changes in preview
+	 *		  do the same for a second form
 	 */
-
 	@Test(groups = "calculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
 		logTestEnvironmentInfo("testCalculatedFormSGEdit");
@@ -97,11 +94,11 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 
 		DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
 		driver.manage().window().maximize();
-		WelcomeScreenPage welcomePage = formsConfigPage.openDiscreteForm(SitegenConstants.CALCULATEDFORMNAME);
-
-		welcomePage.setWelcomeMessage(newWelcomeMessage);
-		welcomePage.saveOpenedForm();
-		welcomePage.clickBackToTheList();
+		formsConfigPage.unpublishAllForms()
+				.editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
+				.editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage)
+				.publishForm(SitegenConstants.CALCULATED_PHQ9_FORM)
+				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
 
 		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		PortalUtil.setquestionnarieFrame(driver);

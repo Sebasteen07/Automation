@@ -145,7 +145,7 @@ public class IHGUtil extends BasePageObject {
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			log("Where on the page is the top left-hand corner of the rendered element"+p);
+			log("Where on the page is the top left-hand corner of the rendered element" + p);
 			return true;
 		} catch (Exception e) {
 			return false;

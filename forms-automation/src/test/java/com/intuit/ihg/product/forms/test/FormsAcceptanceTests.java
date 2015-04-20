@@ -380,7 +380,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		pManageDiscreteForms.prepareFormForTest(newFormName);
 
 		log("step 4: Publish the saved Discrete Form");
-		pManageDiscreteForms.publishTheSavedForm(newFormName);
+		pManageDiscreteForms.publishForm(newFormName);
 
 		log("step 5: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle descriptor

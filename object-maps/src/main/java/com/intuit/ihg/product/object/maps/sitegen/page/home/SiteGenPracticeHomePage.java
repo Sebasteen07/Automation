@@ -74,7 +74,6 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	public SiteGenPracticeHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

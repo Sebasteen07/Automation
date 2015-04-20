@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -246,11 +247,8 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
 
-	public void clickLnkForPdfDownload() {
-		lnkclickForPdfDownload.click();
-	}
-
 	public String getPDFDownloadLink() {
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(lnkclickForPdfDownload));
 		return lnkclickForPdfDownload.getAttribute("href");
 	}
 
