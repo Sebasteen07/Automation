@@ -12,6 +12,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.GW;
@@ -37,6 +38,7 @@ import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDas
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 
@@ -1209,7 +1211,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 		
 		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientDemographicsUpdateWithSpecialCharacter() throws Exception {
-			log("Test Case: PIDC Patient Update");
+			log("Test Case: Patient Update with special character data");
 			PIDCTestData testData = loadDataFromExcel();
 
 			Long timestamp = System.currentTimeMillis();
@@ -1250,6 +1252,88 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			RestUtils.checkPatientRegistered(testData.getResponsePath(),patientData );
 			
 			
+		}
+		
+		@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCWithSpecialCharacterData() throws Exception {
+			
+			log("Test Case: POST PIDC with special character data");
+			PIDCTestData testData = loadDataFromExcel();
+			log("Patient Payload: " + testData.getPatientPath());
+			Long timestamp = System.currentTimeMillis();
+			String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+			String practicePatientId = "Patient" + timestamp;
+			log("Created Email address: " +email);
+			log("PracticePatientId :"+practicePatientId);
+			log("FirstName: "+testData.getFnameSC());
+			log("Middle Name: "+testData.getMnameSC());
+			log("LastName: "+testData.getLnameSC());
+			log("Address 1:"+testData.getAddress1SC());
+			log("Address 2"+testData.getAddress2SC());
+			
+			log("Step 2 : Generate POST PIDC payload with special character data");
+			String patient=RestUtils.generatePIDCSpecialCharacter(testData.getPatientPath(),practicePatientId,
+					testData.getFnameSC(),testData.getMnameSC(),testData.getLnameSC(),testData.getAddress1SC(),
+					testData.getAddress2SC(),email);
+			
+			List<String> patientData=RestUtils.patientDatails;
+		
+			log("Step 3: POST PIDC payload");
+			String processingUrl = RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), patient, testData.getResponsePath(),null);
+			
+			log("Step 4: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 1; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(90000);
+				RestUtils.setupHttpGetRequestExceptOauth(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
+			
+			GmailBot gBot = new GmailBot();
+			log("Step 5: Checking for the activation link inside the patient Gmail inbox");
+
+			// Searching for the link for patient activation in the Gmail Inbox
+			String activationUrl = gBot
+					.findInboxEmailLink(testData.getGmailUsername(),
+							testData.getGmailPassword(),
+							PortalConstants.NewPatientActivationMessage,
+							PortalConstants.NewPatientActivationMessageLink, 3,
+							false, true);
+
+			log("Step 6: Moving to the link obtained from the email message");
+			// Moving to the Link from email
+			driver.get(activationUrl);
+			
+			CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver)
+			.loadUnlockLink(activationUrl);
+
+			log("Step 7: Filling in user credentials and finishing the registration");
+			// Filing the User credentials
+			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(
+			patientData.get(1), patientData.get(3), testData.getBirthDay(),
+			testData.getZipCode(), null, email,
+			testData.getPatientPassword(), testData.getSecretQuestion(),
+			testData.getSecretAnswer(), null);
+
+			log("Step 8: Assert Webelements in MyPatientPage");
+			assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
+			
+			
+			log("Step 9: Click on My account link ");
+			MyAccountPage myAccountPage=myPatientPage.clickMyAccountLink();
+			
+			log("Step 10: Verify patient details");
+			myAccountPage.verifyPatientDemographicsOnMyAccount(patientData);	
+					
+			log("Step 11: Signing out of the Patient Portal");
+			myPatientPage.clickLogout(driver);
+
+						
 		}
 		
 		

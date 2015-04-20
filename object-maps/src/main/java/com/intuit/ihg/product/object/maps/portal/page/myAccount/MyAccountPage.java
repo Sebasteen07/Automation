@@ -461,4 +461,19 @@ public class MyAccountPage extends BasePageObject {
 		return dateOfBirth.getAttribute("value");
 	}
 
+	/** Verify patient details in the My Account page of the Patient Portal
+ 	 * 
+	 * @param patientData 
+	 */
+	public void verifyPatientDemographicsOnMyAccount(List<String> patientData)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		Assert.assertTrue(txtFirstName.getAttribute("value").toString().contains(patientData.get(1)),"Actual Patient First Name is"+txtFirstName.getAttribute("value").toString());
+		Assert.assertTrue(txtMiddleName.getAttribute("value").toString().contains(patientData.get(2)),"Actual Patient Middle Name is"+txtMiddleName.getAttribute("value").toString());
+		Assert.assertTrue(txtLastName.getAttribute("value").toString().contains(patientData.get(3)),"Actual Patient Last Name is"+txtLastName.getAttribute("value").toString());
+		Assert.assertTrue(txtAddress1.getAttribute("value").toString().contains(patientData.get(4)),"Actual Patient Address1 Name is"+txtAddress1.getAttribute("value").toString());
+		Assert.assertTrue(txtAddress2.getAttribute("value").toString().contains(patientData.get(5)),"Actual Patient Address2 Name is"+txtAddress2.getAttribute("value").toString());	
+		
+	}
 }

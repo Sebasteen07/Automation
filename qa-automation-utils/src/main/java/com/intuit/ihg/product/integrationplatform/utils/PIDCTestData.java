@@ -219,4 +219,24 @@ public class PIDCTestData {
 	public String getTestPatientIDUserName(){
 		return PidcObj.TestPatientIDUserName;
 	}
+	
+	public String getFnameSC(){
+		return PidcObj.FnameSC;
+	}
+	
+	public String getMnameSC(){
+		return PidcObj.MnameSC;
+	}
+	
+	public String getLnameSC(){
+		return PidcObj.LnameSC;
+	}
+	
+	public String getAddress1SC(){
+		return PidcObj.Address1SC;
+	}
+	
+	public String getAddress2SC(){
+		return PidcObj.Address1SC;
+	}
 }

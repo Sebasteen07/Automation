@@ -52,4 +52,9 @@ public class PIDC {
 	public String InsurancePatientID1="";
 	public String SecondInsuranceName="";
 	public String TestPatientIDUserName="";
+	public String FnameSC="";
+	public String MnameSC="";
+	public String LnameSC="";
+	public String Address1SC="";
+	public String Address2SC="";
 }

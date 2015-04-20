@@ -1286,15 +1286,15 @@ public class RestUtils {
 			NodeList nameNode = ele1.getElementsByTagName(IntegrationConstants.NName);
 			Element ele=(Element) nameNode.item(0);
 			{
-				String fName="FNAME"+randomNo;
+				String fName="FNAME&apos;"+randomNo;
 				Node fnameNode = ele.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 				fnameNode.setTextContent(fName);
-				testData(fName);
 				
-				String lName="TestPatient1"+randomNo;
+				testData(escapeXml(fName));
+				String lName="TestPatient1&amp;"+randomNo;
 				Node LnameNode = ele.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				LnameNode.setTextContent(lName);
-				testData(lName);
+				testData(escapeXml(lName));
 			}
 			
 		}
@@ -1309,6 +1309,16 @@ public class RestUtils {
 		patientDatails.add(data);
 	}
 	
+	/** remove the special characters from string and return normal string
+	 * 
+	 * @param specialDataString - Given string with special character
+	 * @return
+	 */
+	public static String escapeXml(String specialDataString) {
+	    return specialDataString.replaceAll("&amp;", "&").replaceAll("&gt;", ">").replaceAll("&lt;", "<").replaceAll("&quot;", "\"").replaceAll("&apos;", "'");
+	}
+
+
 	/**
 	 * 
 	 * @param responsePath
@@ -1739,5 +1749,86 @@ public class RestUtils {
 		
 	}
 	
+	/** Generate PIDC payload with contains special characters data in given parameter except practice patient ID.
+	 * 
+	 * @param xmlFileName
+	 * @param practicePatientId
+	 * @param fName
+	 * @param mName
+	 * @param lName
+	 * @param address1
+	 * @param address2
+	 * @param email
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static String generatePIDCSpecialCharacter(String xmlFileName, String practicePatientId, String fName, String mName, String lName, String address1, String address2, String email) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList pnode=doc.getElementsByTagName(IntegrationConstants.PATIENT);
+		Node pidNode = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(0);
+		pidNode.setTextContent(practicePatientId);
+		Node emailNode = doc.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
+		emailNode.setTextContent(email);
+		testData(practicePatientId);
+		Element ele1=(Element) pnode.item(0);
+		NodeList nameNode = ele1.getElementsByTagName(IntegrationConstants.NName);
+		Element ele=(Element) nameNode.item(0);
+		Node fnameNode = ele.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+	    fnameNode.setTextContent(fName);
+		testData(escapeXml(fName));
+		Node mnameNode = ele.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
+		mnameNode.setTextContent(mName);
+		testData(escapeXml(mName));
+		Node LnameNode = ele.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+		LnameNode.setTextContent(lName);
+		testData(escapeXml(lName));
+			 
+		NodeList homeAddressNode=ele1.getElementsByTagName(IntegrationConstants.HOME_ADDRESS);
+		ele=(Element) homeAddressNode.item(0);
+		Node line1Node = ele.getElementsByTagName(IntegrationConstants.LINE1).item(0);
+		line1Node.setTextContent(address1);
+		testData(escapeXml(address1));
+		Node line2Node = ele.getElementsByTagName(IntegrationConstants.LINE2).item(0);
+		line2Node.setTextContent(address2);
+		testData(escapeXml(address2));
+		
+		
+		return domToString(doc);
+			
+		}
+	
+	/** Verify recent CCD message in patient portal.
+	 * 
+	 * @param ccdDate //actual CCD date displayed in patient portal
+	 * @param ccdSendTimestamp  //POST CCD send timestamp
+	 * @return
+	 * @throws ParseException
+	 */
+	public static boolean verifyCCDMessageDate(String ccdDate, long ccdSendTimestamp) throws ParseException
+	{
+		IHGUtil.PrintMethodName();
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
+		TimeZone estTime = TimeZone.getTimeZone("America/New_York");
+		sdf.setTimeZone(estTime);
+		Date requiredDate=sdf.parse(ccdDate);
+		if(requiredDate.getTime()>ccdSendTimestamp)
+		{
+			Log4jUtil.log("CCD sent date & time is :"+ccdDate);
+			return true;
+		}
+		else
+		{
+			Log4jUtil.log("Recent CCD is not availble in patient Portal . Last CCD sent date & time is: "+ccdDate);
+			return false;
+		}
+				
+		
+			
+	}
+
 }
 

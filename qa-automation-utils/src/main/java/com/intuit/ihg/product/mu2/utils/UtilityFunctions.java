@@ -286,10 +286,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		 */
 		
 		public static String generateDate(String actualTimeStamp) throws ParseException{
-			
 			long EventRecordedTimestamp = Long.parseLong(actualTimeStamp);
 			Date date = new Date(EventRecordedTimestamp);
-			DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm ");
 			TimeZone estTime = TimeZone.getTimeZone("America/New_York");
 			gmtFormat.setTimeZone(estTime);
 			String data[]=gmtFormat.format(date).split(" ");		  	

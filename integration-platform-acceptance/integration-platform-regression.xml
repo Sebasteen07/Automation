@@ -19,6 +19,7 @@
         		<include name="testPIDCPatientDemographicsUpdate" />
         		<include name="testHealthKeyPatientUpdate" />
         		<include name="testPatientDemographicsUpdateWithSpecialCharacter" />
+        		<include name="testPIDCWithSpecialCharacterData" />
         		<!-- include name="testHealthKeyPatientLoginAndOnDemandProvision"  After 15.3 release test will run on PROD--> 
         		<!--<include name="testHealthKeyPatientAddInsurance"  After 15.3 release test will run on PROD-->
         		<!--<include name="testHealthKeyPatientUpdateInsurance"  After 15.3 release test will run on PROD-->

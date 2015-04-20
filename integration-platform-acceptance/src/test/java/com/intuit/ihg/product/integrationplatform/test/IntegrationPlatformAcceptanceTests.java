@@ -772,6 +772,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: send a CCD and check in patient Portal");
 		EHDC EHDCData = new EHDC();
 		EHDCTestData testData = new EHDCTestData(EHDCData);
+		Long timestamp = System.currentTimeMillis();
 
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
@@ -823,10 +824,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
+		//log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
-				10000));
+		/*assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
+				10000));*/
+		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 8: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
@@ -1060,6 +1062,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
 		GE EHDCData = new GE();
 		GETestData testData = new GETestData(EHDCData);
+		Long timestamp = System.currentTimeMillis();
 
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
@@ -1112,9 +1115,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Validate message subject and send date");
 		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
+		//log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
+		/*assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));*/
+		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 9: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
@@ -1169,6 +1173,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
 		AllScript allScriptData = new AllScript();
 		AllScriptTestData testData = new AllScriptTestData(allScriptData);
+		Long timestamp = System.currentTimeMillis();
 
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
@@ -1188,7 +1193,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		boolean completed = false;
 		for (int i = 0; i < 1; i++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(10000);
+			Thread.sleep(120000);
 			if (RestUtils.isCCDProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
 				break;
@@ -1212,9 +1217,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
+//		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
+		//assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
+		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 8: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();

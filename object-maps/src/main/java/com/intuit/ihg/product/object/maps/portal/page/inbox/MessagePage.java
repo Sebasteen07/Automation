@@ -75,6 +75,9 @@ public class MessagePage extends BasePageObject {
 	@FindBy(xpath = "//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[2]/div[2]")
 	private WebElement lableFrom;
 	
+	@FindBy(xpath = ".//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[4]/div[2]")
+	private WebElement lableSent;
+	
 	@FindBy(css = "div.commMessageText")
 	private WebElement txtMessage;
 		
@@ -301,4 +304,15 @@ public class MessagePage extends BasePageObject {
 		return txtMessage.getText().toString();	
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public String returnMessageSentDate(){
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lableSent);
+		return lableSent.getText().toString();	
+	}
+
 }
