@@ -1815,7 +1815,7 @@ public class RestUtils {
 		TimeZone estTime = TimeZone.getTimeZone("America/New_York");
 		sdf.setTimeZone(estTime);
 		Date requiredDate=sdf.parse(ccdDate);
-		if(requiredDate.getTime()>ccdSendTimestamp)
+		if(requiredDate.getTime()>=ccdSendTimestamp)
 		{
 			Log4jUtil.log("CCD sent date & time is :"+ccdDate);
 			return true;
