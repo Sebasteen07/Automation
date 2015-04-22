@@ -95,8 +95,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	protected MyPatientPage createPatient(TestcasesData portalData) throws Exception {
-		String email = PortalUtil.createRandomEmailAddress(portalData.getEmail());
-		log("email:-" + email);
 		CreatePatientTest createPatient = new CreatePatientTest();
 		createPatient.setUrl(portalData.getFormsAltUrl());
 		return createPatient.createPatient(driver, portalData);
@@ -239,10 +237,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
 		TestcasesData portalData = new TestcasesData(portal);
-		log("Patient Portal URL: " + portalData.getFormsAltUrl());
+		String url = portalData.getFormsAltUrl();
+		log("Patient Portal URL: " + url);
 
 		log("step 1: Click on Sign Up Fill details in Create Account Page");
-		MyPatientPage pMyPatientPage = createPatient(portalData);
+		CreatePatientTest createPatient = new CreatePatientTest();
+		createPatient.setUrl(url);
+		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
@@ -263,8 +264,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Test if the submission date is correct");
 		verifyFormsDatePatientPortal(formsPage, "output test");
 
-		log("Step 7: Test if the DOB has not been changed");
+		log("Step 7: Log out and in again");
 		driver.switchTo().defaultContent();
+		PortalLoginPage loginpage = pMyPatientPage.clickLogout(driver);
+		loginpage.navigateTo(driver, url);
+		pMyPatientPage = loginpage.login(createPatient.getEmail(), createPatient.getPassword());
+
+		log("Step 8: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy",
 				"MMMMM/dd/yyyy");
