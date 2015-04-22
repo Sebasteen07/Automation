@@ -327,9 +327,9 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 		
 		assertTrue(jalapenoCcdPage.assessCcdElements());
-		//assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
-		//assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
-		assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
+		assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
+		assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
+		//assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
 		
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 		assertTrue(jalapenoMessagesPage.assessMessagesElements());
