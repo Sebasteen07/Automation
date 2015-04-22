@@ -1811,16 +1811,13 @@ public class RestUtils {
 	public static boolean verifyCCDMessageDate(String ccdDate, long ccdSendTimestamp) throws ParseException
 	{
 		IHGUtil.PrintMethodName();
-		ccdDate="04/22/2015 03:27 AM";
+
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
 		Date requiredDate=sdf.parse(ccdDate);
 		Log4jUtil.log("Before Set TimeZone "+requiredDate.getTime());
-		TimeZone estTime = TimeZone.getTimeZone("America/New_York");
-		sdf.setTimeZone(estTime);
+		sdf.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		requiredDate=sdf.parse(ccdDate);
-		Log4jUtil.log("Timestamp1 :"+ccdSendTimestamp);
-		Log4jUtil.log("Timestamp2 :"+requiredDate.getTime());
 		if(requiredDate.getTime()>=ccdSendTimestamp)
 		{
 			Log4jUtil.log("CCD sent date & time is :"+ccdDate);
