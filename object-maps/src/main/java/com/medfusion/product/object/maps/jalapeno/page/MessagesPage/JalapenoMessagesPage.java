@@ -12,10 +12,12 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 public class JalapenoMessagesPage extends BasePageObject {
 	
-	@FindBy(how = How.ID, using = "askquestion")
+	@FindBy(how = How.ID, using = "askatitle_link")
 	private WebElement askAQuestionButton;
 	
 	@FindBy(how = How.ID, using = "inboxFolder")
@@ -33,8 +35,11 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "replyBody")
 	private WebElement replyBody;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[5]/div/div[2]/div[3]/div/div/div[4]/div[3]/div/div[2]/div[2]/div[2]/div[2]/form/button[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"signin_form\"]/button[2]")
 	private WebElement sendButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/h6/a")
+	private WebElement ccdDocument;
 		
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -77,6 +82,22 @@ public class JalapenoMessagesPage extends BasePageObject {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		log("Message sent");
+	}
+	
+	public JalapenoCcdPage findCcdMessage(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+
+		ccdDocument.click();
+		
+		return PageFactory.initElements(driver, JalapenoCcdPage.class);
+	}
+	
+	public JalapenoHomePage backToHomePage(WebDriver driver) {
+		log("Get back to Home Page");
+		
+		driver.findElement(By.id("home")).click();
+		
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
 	public boolean assessMessagesElements() {

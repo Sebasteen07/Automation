@@ -28,6 +28,7 @@ import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
 //import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
 //import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
@@ -304,6 +305,40 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		patientMessagingPage = practiceHome.clickPatientMessagingTab();
 		String patientName = jalapenoCreatePatientTest.getFirstName() + " " + jalapenoCreatePatientTest.getLastName();
 		assertTrue(patientMessagingPage.findMyMessage(patientName));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testViewCCD() throws Exception {
+		
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		log("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
+		
+		assertTrue(jalapenoCcdPage.assessCcdElements());
+		//assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
+		//assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
+		assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
+		
+		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
+		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		
+		jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
+		
+		log("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

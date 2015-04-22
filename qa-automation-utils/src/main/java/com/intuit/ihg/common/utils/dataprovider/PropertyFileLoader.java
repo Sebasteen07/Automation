@@ -151,6 +151,10 @@ public class PropertyFileLoader {
 	public String getHarakiriUrl() {
 		return property.getProperty("harakiriUrl");
 	}
+	
+	public String getCCDPatientUsername() {
+		return property.getProperty("ccdPatientUsername");
+	}
 
 	public PropertyFileLoader() throws IOException {
 
