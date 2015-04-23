@@ -798,7 +798,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Processing URL: " + processingUrl);
 		log("Step 3: Get processing status until it is completed");
-		Thread.sleep(180000);
+		Thread.sleep(60000);
 		/*
 		 * boolean completed = false; for (int i = 0; i < 3; i++) { // wait 10
 		 * seconds so the message can be processed Thread.sleep(180000);
@@ -824,11 +824,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
-		//log("######  Message Date :: " + IHGUtil.getEstTiming());
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		/*assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
-				10000));*/
-		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
+				10000));
+		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
+		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 8: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
@@ -1115,10 +1116,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Validate message subject and send date");
 		Thread.sleep(1000);
-		//log("######  Message Date :: " + IHGUtil.getEstTiming());
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		/*assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));*/
-		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
+		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
+		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 9: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
@@ -1217,10 +1219,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
-//		log("######  Message Date :: " + IHGUtil.getEstTiming());
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
-		//assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
-		assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
+		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
+		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
 		log("Step 8: Click on link ReviewHealthInformation");
 		pMessage.clickBtnReviewHealthInformation();
