@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -247,36 +245,11 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
 
-	public String getPDFDownloadLink() {
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(lnkclickForPdfDownload));
-		return lnkclickForPdfDownload.getAttribute("href");
-	}
-
-	/**
-	 * Looks for a link to download PDF
-	 * @return true if the link to pdf is found otherwise false
-	 */
-	public boolean isPDFLinkPresent() {
-		boolean result;
-		WebDriverWait wait = new WebDriverWait(driver, 5, 1000);
-
-		try {
-			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
-			result = lnkclickForPdfDownload.isDisplayed();
-		} catch (NoSuchElementException e) {
-			return false;
-		} catch (StaleElementReferenceException e) {
-			System.out.println("Stale element reference caught, retrying");
-			wait.until(ExpectedConditions.visibilityOf(lnkclickForPdfDownload));
-			result = lnkclickForPdfDownload.isDisplayed();
-		}
-		return result;
-	}
 
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		return wait.until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@title, '"
+				ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@title, '"
 						+ formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
 				.getAttribute("href");
 	}
@@ -331,20 +304,22 @@ public class HealthFormPage extends BasePageObject {
 
 	public String getSubmittedDate(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		WebElement formDate;
-		try {
-			formDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By
-					.xpath("//a[contains(@title, '" + formName + "')]/../table/tbody/tr/td/span")));
-		} catch (Exception e) {
-			log("Element containing date not found!");
-			throw e;
-		}
 		String formattedDate;
 		try {
-			formattedDate = IHGUtil.extractDateFromText(formDate.getText());
+			formattedDate = IHGUtil.extractDateFromText(wait.until(
+					ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@title, '"
+							+ formName + "')]/../table/tbody/tr/td/span"))).getText());
 		} catch (Exception e) {
-			log("Date not found or it is in incorrect format!");
-			throw e;
+			try {
+				formattedDate = IHGUtil.extractDateFromText(wait.until(
+						ExpectedConditions.visibilityOfElementLocated(By
+								.xpath("//a[contains(@title, '" + formName
+										+ "')]/../table/tbody/tr/td/span"))).getText());
+			} catch (Exception f) {
+				log("Date not found or it is in incorrect format!");
+				throw f;
+			}
+
 		}
 		return formattedDate;
 
