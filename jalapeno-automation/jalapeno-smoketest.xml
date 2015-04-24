@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "Medfusion" verbose = "2" >
+<suite name = "IHG-AUTOMATION-Suite" verbose = "2" >
 <listeners>
   <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
  	
-	<test name="Jalapeno-SmokeTests">
-		<classes>
-			<class name="com.medfusion.jalapeno.test.JalapenoAcceptanceTests" />
-			<methods>
-				<include name="TBD" />
-			</methods>
-		</classes>
-
-	</test>
+<test name = "Jalapeno-Automation" >
+	<classes>
+	    <class name="com.medfusion.jalapeno.test.JalapenoAcceptanceTests" />
+	    	<methods>
+	    		<include name="testLoginValidCredentials" />
+      		</methods>
+  </classes>
+	
+	
+</test>
 </suite>
