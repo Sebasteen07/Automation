@@ -155,7 +155,12 @@ public class PropertyFileLoader {
 	public String getCCDPatientUsername() {
 		return property.getProperty("ccdPatientUsername");
 	}
-
+	public String getRcmStatementRest() {
+		return property.getProperty("rcmStatementRest");
+	}
+	public String getStatementBalanceDue() {
+		return property.getProperty("statementBalanceDue");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

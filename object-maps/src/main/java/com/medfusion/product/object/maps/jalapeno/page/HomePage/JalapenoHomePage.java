@@ -14,6 +14,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
 public class JalapenoHomePage extends BasePageObject {
 	
@@ -99,6 +100,21 @@ public class JalapenoHomePage extends BasePageObject {
 		}
 		
 		return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
+	}
+	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) {
+		
+		log("Trying to click on My Account button - regular resolution");
+		
+		try {
+			payments.click();
+		}
+		catch(Exception ex) {
+			log("Did not find MyAccount button, trying mobile version size");
+			rightDropdownButton.click();
+			myAccount.click();
+		}
+		
+		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
 	}
 	
 	public boolean assessHomePageElements() {

@@ -14,6 +14,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
 public class JalapenoMessagesPage extends BasePageObject {
 	
@@ -41,6 +42,10 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/h6/a")
 	private WebElement ccdDocument;
 		
+	@FindBy(how = How.XPATH, using = "//button/img[@src='img/messages/archive.png']/..")
+	private WebElement archiveMessageButton;
+	
+	
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -68,6 +73,29 @@ public class JalapenoMessagesPage extends BasePageObject {
 		}
 		
 		log("Message from doctor didn't arrive");
+		return false;
+	}
+	public boolean isMessageFromEstatementsDisplayed(WebDriver driver) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		int count = 1;
+		int maxCount = 10;
+		WebElement element;
+		
+		while(count <= maxCount){
+			try {				
+				element = driver.findElement(By.partialLinkText("Your Statement is Ready"));
+				log("Message from eStatement found");
+				return element.isDisplayed();				
+			}
+			 catch(Exception ex) {
+				 log("Not found: " + count + "/" + maxCount + "| Refreshing page");
+				 driver.navigate().refresh();
+				 Thread.sleep(1000);
+				 count++; 
+			 }
+		}		
+		log("Couldn't find eStatement secure message!");
+		log(driver.getPageSource());
 		return false;
 	}
 	
@@ -98,6 +126,14 @@ public class JalapenoMessagesPage extends BasePageObject {
 		driver.findElement(By.id("home")).click();
 		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	public JalapenoPayBillsStatementPage goToPayBillsPage(WebDriver driver) {
+		log("Go to Pay Bills page");
+		
+		driver.findElement(By.xpath("//li[@id='payments_lhn']/a")).click();
+		
+		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
 	}
 	
 	public boolean assessMessagesElements() {
@@ -131,5 +167,11 @@ public class JalapenoMessagesPage extends BasePageObject {
 
 		}
 		return allElementsDisplayed;
+	}
+
+	public void archiveOpenMessage() {		
+		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
+		archiveMessageButton.click();				
+				
 	}
 }
