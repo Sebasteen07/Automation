@@ -25,45 +25,6 @@ public class RCMUtil extends IHGUtil {
 		return driver;
 	}
 
-	/*
-	 * 
-	 */
-	public static void DeleteAllBrowsingDataIE(WebDriver driver) throws Exception {
-		
-		if (TestConfig.getBrowserType() == BrowserType.iexplore) {
-			
-		//driver.navigate().to("");
-		
-		System.out.println("Browser is IE");
-		
-		Runtime rt = Runtime.getRuntime();
-		// Clear temporary Internet files
-		Process proc8 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 8");
-		proc8.waitFor();
-		// Clear Cookies
-		Process proc2 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 2");
-		proc2.waitFor();
-		// Clear History
-		Process proc1 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 1");
-		proc1.waitFor();
-		
-		//Delete ALL
-		Process proc255 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255");
-		proc255.waitFor();
-		
-		//Delete Password
-		Process proc32 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 32");
-		proc32.waitFor();
-		
-		//Delete Form data
-		Process proc16 = rt.exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 16");
-		proc16.waitFor();
-			
-		}
-		
-		else
-		System.out.println("Browser is NOT IE");
-	}
 	public void postStatementToPatient(String rcmStatementRest,String env) throws Exception {
 
 		IHGUtil.PrintMethodName();

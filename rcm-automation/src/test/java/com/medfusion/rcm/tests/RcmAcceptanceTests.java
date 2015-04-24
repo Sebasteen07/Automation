@@ -65,28 +65,28 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();	
-		/*
+		
 		log("Post eStatement");
 		util.postStatementToPatient(testData.getRcmStatementRest(), IHGUtil.getEnvironmentType().toString());
 		
 		log("Check email notification");
 		String box = testData.getEmail().split("@")[0];
 		assertTrue(mail.isMessageInInbox(box, "Your patient eStatement is now available","Visit our website", 20));		
-		*/
+		
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());		
 		
 		log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-		/*
+		
 		assertTrue(jalapenoMessagesPage.assessMessagesElements());
 		
 		log("Expect an estatement message");
 		assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));
 		
 		jalapenoMessagesPage.archiveOpenMessage();
-		*/			
+					
 		JalapenoPayBillsStatementPage statementPage = jalapenoMessagesPage.goToPayBillsPage(driver);
 		log("Balance due :" + statementPage.getBalanceDue(driver));
 		assertTrue(testData.getStatementBalanceDue().equals(statementPage.getBalanceDue(driver)));
