@@ -2,9 +2,6 @@ package com.intuit.ihg.product.object.maps.portal.page.healthform;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,28 +30,8 @@ public class HealthFormPage extends BasePageObject {
 
 	// Forms on the page
 
-	@FindBy(linkText = "Form output test")
-	private WebElement pdfForm;
-
-	@FindBy(linkText = "Form for Practice view test")
-	private WebElement practiceForm;
-
-	@FindBy(linkText = "Quotation mark \" custom form")
-	private WebElement specialCustom;
-
-	@FindBy(partialLinkText = "PHQ-9")
-	private WebElement phq9Form;
-
-	@FindBy(partialLinkText = "PHQ-2")
-	private WebElement phq2Form;
-
-	@FindBy(partialLinkText = "Adult ADHD Self-Report Scale")
-	private WebElement adhdForm;
-
 	@FindBy(linkText = "Ivan Insurance Health Form ( Testing)")
 	private WebElement lnkInsuranceHealthForm;
-
-	private Map<String, WebElement> discreteForms;
 
 	@FindBy(xpath = "//div[@class='heading1']")
 	public WebElement InsuranceHelthform;
@@ -117,14 +94,6 @@ public class HealthFormPage extends BasePageObject {
 		super(driver);
 		PageFactory.initElements(driver, this);
 
-		// initializing forms dictionary
-		discreteForms = new HashMap<String, WebElement>();
-		discreteForms.put("pdfForm", pdfForm);
-		discreteForms.put("practiceForm", practiceForm);
-		discreteForms.put("specialChars", specialCustom);
-		discreteForms.put("PHQ-9", phq9Form);
-		discreteForms.put("PHQ-2", phq2Form);
-		discreteForms.put("ADHD", adhdForm);
 	}
 
 	/**
@@ -249,7 +218,7 @@ public class HealthFormPage extends BasePageObject {
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		return wait.until(
-				ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@title, '"
+				ExpectedConditions.elementToBeClickable(By.xpath("//a[starts-with(@title, '"
 						+ formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
 				.getAttribute("href");
 	}
@@ -262,18 +231,10 @@ public class HealthFormPage extends BasePageObject {
 	 * @return method returns initialized object for Welcome page of the form
 	 */
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 15);
-
+		WebDriverWait wait = new WebDriverWait(driver, 20);
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
-		WebElement form = discreteForms.get(selectedForm);
-		if (form != null) {
-			wait.until(ExpectedConditions.visibilityOf(form)).click();
-
-		} else {
-			wait.until(
-					ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(selectedForm)))
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm)))
 					.click();
-		}
 		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}

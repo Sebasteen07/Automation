@@ -4,6 +4,8 @@ import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartial
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -169,13 +171,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		String pdfLink = new String();
 		try {
 			pdfLink = formsPage.getPDFDownloadLink(formName);
-		} catch (Exception e) {
-			try {
-				pdfLink = formsPage.getPDFDownloadLink(formName);
-			} catch (Exception f) {
-				log("PDF not found!");
-				throw f;
-			}
+		} catch (StaleElementReferenceException e) {
+			pdfLink = formsPage.getPDFDownloadLink(formName);
+		} catch (NoSuchElementException f) {
+			log("PDF not found!");
+			throw f;
 		}
 		assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 	}
@@ -196,7 +196,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testQuotationMarksInForm() throws Exception {
 		logTestEnvironmentInfo("testQuotationMarksInForm");
 
-        openFormOnPatientPortal("specialChars");
+		openFormOnPatientPortal(SitegenConstants.SPECIAL_CHARS_FORM);
 
 		log("Step 5: Fill the form out with values containing quotes");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
@@ -243,13 +243,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm("pdfForm");
+		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 3: Fill out the form");
 		fillOutputForm(diacriticString);
 
 		log("Step 4: Test if PDF is downloadable");
-		checkPDF(formsPage, "output test");
+		checkPDF(formsPage, SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
@@ -258,7 +258,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
                 "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 6: Test if the submission date is correct");
-		verifyFormsDatePatientPortal(formsPage, "output test");
+		verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 7: Log out and in again");
 		driver.switchTo().defaultContent();
@@ -278,12 +278,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"PatientForms"})
 	public void testFormPracticePortal() throws Exception {
-		String discreteFormName = "Form for Practice view test";
 
 		logTestEnvironmentInfo("testFormPracticePortal");
 
         log("Step 1: Open the form");
-        MyPatientPage pMyPatientPage = openFormOnPatientPortal("practiceForm");
+		MyPatientPage pMyPatientPage = openFormOnPatientPortal(SitegenConstants.PRACTICE_FORM);
 
 		log("Step 2: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
@@ -307,8 +306,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
 
 		log("step 6: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage =
-                pSearchPatientFormsPage.SearchDiscreteFormsWithOpenStatus(discreteFormName);
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage
+				.SearchDiscreteFormsWithOpenStatus(SitegenConstants.PRACTICE_FORM);
 
 		log("step 7: View the Result");
 		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
@@ -322,7 +321,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         logTestEnvironmentInfo("testFormPracticePortal");
 
         log("Step 1: Open the form");
-        MyPatientPage myPatientPage = openFormOnPatientPortal("practiceForm");
+		MyPatientPage myPatientPage = openFormOnPatientPortal(SitegenConstants.PRACTICE_FORM);
 
         log("Step 2: Fill out the form");
         FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);

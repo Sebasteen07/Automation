@@ -127,6 +127,11 @@ public class SitegenConstants {
 
 	public final static String CALCULATED_PHQ9_FORM = "Patient Health Questionnaire-9 (PHQ-9)";
 	public final static String CALCULATED_ADHD_FORM = "Adult ADHD Self-Report Scale (ASRS-v1.1) Symptom Checklist";
+	public final static String CALCULATED_PHQ2_FORM = "Patient Health Questionnaire-2 (PHQ-2)";
+
+	public final static String PDF_CCD_FORM = "Form output test";
+	public final static String PRACTICE_FORM = "Form for Practice view test";
+	public final static String SPECIAL_CHARS_FORM = "Quotation mark \" custom form";
 
 }
 

@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
@@ -114,13 +115,14 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 
 	@Test(groups = "calculatedForms")
 	public void testAllCalculatedFormsPatientPortal() throws Exception {
-		String[] names = { "PHQ-2", "PHQ-9", "ADHD" };
+		String[] names = { SitegenConstants.CALCULATED_PHQ2_FORM,
+				SitegenConstants.CALCULATED_PHQ9_FORM, SitegenConstants.CALCULATED_ADHD_FORM };
 		testCalculatedFormPatientPortal(names);
 	}
 
 	@Test
 	public void testOneCalculatedFormPatientPortal() throws Exception {
-		String[] name = { "PHQ-2" };
+		String[] name = { SitegenConstants.CALCULATED_PHQ2_FORM };
 		testCalculatedFormPatientPortal(name);
 	}
 
@@ -135,12 +137,16 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		log("step 1: Click on Sign Up Fill details in Create Account Page");
 		MyPatientPage pMyPatientPage = createPatient(portalData);
 
-		log("step 2: Click on forms and open the form");
+		log("step 2: Click on forms");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		for (String formName : formNames) {
-			log("Testing Form named " + formName);
-			formsPage.openDiscreteForm(formName);
-
+			log("Opening Form named " + formName);
+			try {
+				formsPage.openDiscreteForm(formName);
+			} catch (StaleElementReferenceException e) {
+				formsPage.openDiscreteForm(formName);
+			}
+			
 			log("Step 3: Fill in the form with all the required answers and submit.");
 			FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 			CalculatedFormPage calculatedFormPage = welcomePage
@@ -178,7 +184,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	
 		log("step 2: Click on forms and open the form");
 		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm("PHQ-9");
+		formsPage.openDiscreteForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 	
 		log("Step 3: Try to Save and continue without any answer.");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
