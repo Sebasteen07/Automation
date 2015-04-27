@@ -24,11 +24,13 @@ import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
 import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
-import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
+//import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
 //import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
 //import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage2;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
@@ -99,8 +101,9 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
-		assertFalse(jalapenoHomePage.assessHomePageElements());
+		//JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
+		//assertFalse(jalapenoHomePage.assessHomePageElements());
+		jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
@@ -114,8 +117,21 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
-		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
+		log("Initiate patient data");
+		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+		createPatient.initPatientData(driver, testData);
+		
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+				testData.getDOBYear(), true, testData.getZipCode());
+		
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(null, createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 		
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
@@ -123,10 +139,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
 		assertTrue(jalapenoMyAccountPage.checkForAddress(driver,testData.getZipCode()));
 		
-		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 		
-		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());	
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());	
 		//PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
 		//jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.ELECTRONIC);
 		assertTrue(jalapenoHomePage.assessHomePageElements());
@@ -203,17 +219,31 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
-		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
+		log("Initiate patient data");
+		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+		createPatient.initPatientData(driver, testData);
+		
+		log("Load Login Page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+				testData.getDOBYear(), true, testData.getZipCode());
+		
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(null, createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 		
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
 		log("Logout");
-		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 		
 		log("Login test of patient which has been created");
-		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());	
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());	
 		
 		/*
 		log("Choosing Preference Delivery");
@@ -231,13 +261,13 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		assertTrue(jalapenoForgotPasswordPage.assessForgotPasswordPageElements());
 		
-		JalapenoForgotPasswordPage2 jalapenoForgotPasswordPage2 = jalapenoForgotPasswordPage.fillInDataPage(jalapenoCreatePatientTest.getEmail());		
+		JalapenoForgotPasswordPage2 jalapenoForgotPasswordPage2 = jalapenoForgotPasswordPage.fillInDataPage(createPatient.getEmail());		
 		log("Message was sent, closing");
 		jalapenoLoginPage = jalapenoForgotPasswordPage2.clickCloseButton();
 		
 		log("Logging into Harakirimail and getting ResetPassword url");
 		Harakirimail harakirimail = new Harakirimail(driver);
-		String[] mailAddress = jalapenoCreatePatientTest.getEmail().split("@");
+		String[] mailAddress = createPatient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
 		String url = harakirimail.email(mailAddress[0], emailSubject, inEmail);
@@ -266,12 +296,26 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		PropertyFileLoader testData = new PropertyFileLoader();
 
-		JalapenoCreatePatientTest jalapenoCreatePatientTest = new JalapenoCreatePatientTest();
-		JalapenoHomePage jalapenoHomePage = jalapenoCreatePatientTest.createPatient(driver, testData);		
+		log("Initiate patient data");
+		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+		createPatient.initPatientData(driver, testData);
+		
+		log("Load Login Page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+				testData.getDOBYear(), true, testData.getZipCode());
+		
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(null, createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 		
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
-		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 				
 		//login to practice portal
@@ -279,12 +323,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setQuickSendFields(jalapenoCreatePatientTest.getFirstName(), jalapenoCreatePatientTest.getLastName(),"TestingMessage");
+		patientMessagingPage.setQuickSendFields(createPatient.getFirstName(), createPatient.getLastName(),"TestingMessage");
 		
 		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 		
-		jalapenoHomePage = jalapenoLoginPage.login(jalapenoCreatePatientTest.getEmail(), jalapenoCreatePatientTest.getPassword());
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 		
 		log("Click on messages solution");
@@ -303,7 +347,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
 		patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		String patientName = jalapenoCreatePatientTest.getFirstName() + " " + jalapenoCreatePatientTest.getLastName();
+		String patientName = createPatient.getFirstName() + " " + createPatient.getLastName();
 		assertTrue(patientMessagingPage.findMyMessage(patientName));
 	}
 	
@@ -341,6 +385,54 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
+
+	log(this.getClass().getName());
+	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+	log("Execution Browser: " + TestConfig.getBrowserType());
+
+	log("Getting Test Data");
+	PropertyFileLoader testData = new PropertyFileLoader();
+	
+	log("Initiate patient data");
+	JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+	createPatient.initPatientData(driver, testData);
+	
+	log("Load Login Page");
+	JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	
+	JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+	assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+	JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+			createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+			testData.getDOBYear(), true, testData.getZipCode());
+	
+	assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+	JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(null, createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
+	
+	assertTrue(jalapenoHomePage.assessHomePageElements());
+	
+	log("Checking if zipCode in My Account is filled");
+	JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
+	assertTrue(jalapenoMyAccountPage.checkForAddress(driver, testData.getZipCode()));
+	
+	jalapenoLoginPage = jalapenoHomePage.logout(driver);
+	assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	
+	log("Try to create the same patient");
+	jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+	assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+	
+	jalapenoLoginPage = jalapenoCreateAccountPage.fillInTheSameData(createPatient.getFirstName(), 
+			createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+			testData.getDOBYear(), true, testData.getZipCode());
+	
+	assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
+	
+	/*
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
@@ -355,6 +447,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHealthKey6Of6SamePractice.healthKey6Of6SamePractice(driver, testData);
 			
 	}
+	*/
 	
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {

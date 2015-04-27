@@ -90,7 +90,7 @@ public class JalapenoMyAccountPage extends BasePageObject {
 	
 public boolean checkForAddress(WebDriver driver, String zipCode) {
 		
-		log("Finding Address Line 1 textbox");
+		log("Finding ZipCode textbox");
 		IHGUtil.setFrame(driver, "iframebody");
 		log("I am in iframe");
 		

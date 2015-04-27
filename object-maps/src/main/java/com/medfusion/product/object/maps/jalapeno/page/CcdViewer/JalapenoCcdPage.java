@@ -3,7 +3,9 @@ package com.medfusion.product.object.maps.jalapeno.page.CcdViewer;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -103,11 +105,25 @@ public class JalapenoCcdPage extends BasePageObject {
 		
 		try {
 			Thread.sleep(10000);
+			try {
+				if(driver.findElement(By.xpath("(//*[contains(text(),'Service temporarily unavailable.')])")) != null){
+					log("Message wasn't sent due to error");
+					return false;
+				}
+			}
+			catch (NoSuchElementException e) {
+				if(driver.findElement(By.xpath("(//*[contains(text(),'Message was sent')])")) != null) {
+					log("Message was sent to " + emailAddress);
+					return true;
+				}
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+			log("Something went wrong with Thread.sleep");
 			e.printStackTrace();
-		}		
-		return true;
+		}
+		
+		return false;
 	}
 	
 	public boolean checkPdfToDownload(WebDriver driver) throws IOException, URISyntaxException {

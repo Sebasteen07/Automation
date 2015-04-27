@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -92,6 +93,15 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 		buttonChooseUserId.click();
 
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage2.class);
+	}
+	
+	public JalapenoLoginPage fillInTheSameData(String firstName, String lastName, String email, String month, String day, String year, boolean gender,
+			String zipCode) {
+		IHGUtil.PrintMethodName();
+		
+		fillInDataPage1(firstName, lastName, email, month, day, year, gender, zipCode);
+		
+		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
 	
 	public boolean assessCreateAccountPageElements() {
