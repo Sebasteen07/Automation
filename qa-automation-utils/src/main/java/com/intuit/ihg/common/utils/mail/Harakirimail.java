@@ -87,5 +87,83 @@ public class Harakirimail {
 		}		
 		element = driver.findElement(By.linkText(findInEmail));
 		return element.isEnabled();
-	}	
+	}
+	/** A method to catch new email messages even if the harakiri inbox fills up.
+	* accepts inbox name, message subject, link text to find in email and link url to verify against found link.
+	* if the inbox is full (10) of messages with the desired subject, tracks change in the first email date column
+	* caveat: will crash if an undesired message is received if the inbox was full to start with (a case I need not cover for our current need)
+	**/
+	public boolean catchNewMessageCheckLinkUrl(String username, String emailSubject, String findInEmail, String targetUrl, int retries ) {		
+		
+		System.out.println("Navigation to https://harakirimail.com/inbox/" + username);
+		driver.navigate().to("https://harakirimail.com/inbox/" + username);
+		
+		int maxCount = retries;
+		int count = 1;
+		boolean pagefull = false;
+		String lastmessagedate = "";
+		
+		WebElement element;		
+		int elementCount = driver.findElements(By.linkText(emailSubject)).size();
+		System.out.println("Matching messages count = " + elementCount);
+		if (elementCount == 10){
+			pagefull = true;
+			System.out.println("Inbox full of statement messages! Need to verify message date changing!");
+			lastmessagedate = driver.findElement(By.xpath("//td[@class='time_column']")).getText();
+			System.out.println("Date check running: Current is " + lastmessagedate);
+		}
+		while(true) {
+			if(count == 1) {
+				System.out.println("Messages identified, waiting the initial 15s ");
+				if (pagefull == true){
+					
+				}
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			try{
+				driver.navigate().refresh();
+				System.out.println("Checking for new message");				
+				int currentCount = driver.findElements(By.linkText(emailSubject)).size();
+				if(elementCount == 10 && currentCount == 10) {
+					String newmessagedate = driver.findElement(By.xpath("//td[@class='time_column']")).getText();
+					System.out.println("First message date found: " + newmessagedate);
+					if (!newmessagedate.equals(lastmessagedate)){
+						System.out.println("Matching message with different date found in first slot!");
+						element = driver.findElement(By.linkText(emailSubject));
+						element.click();
+						break;
+					}
+				}
+				if ((!pagefull)&&(currentCount > elementCount))
+				{
+					System.out.println("New message found!");
+					element = driver.findElement(By.linkText(emailSubject));
+					element.click();
+					break;	
+				}				
+			}
+			catch(NoSuchElementException ex){
+				System.out.println("No messages found?" + count + "/" + maxCount);
+			}	
+			
+			if (count == maxCount) {
+				System.out.println("Error: no new matching message was not found");
+				return false;
+			}
+			System.out.println("No new message, need to refresh " + count + "/" + maxCount);
+			count++;
+		}		
+		element = driver.findElement(By.linkText(findInEmail));
+		System.out.println(element.getAttribute("href"));
+		System.out.println();
+		if ((element.isEnabled())&&(targetUrl.equals(element.getAttribute("href")))) {
+			element.click();
+			return true;
+		}
+		return false;
+	}
 }
