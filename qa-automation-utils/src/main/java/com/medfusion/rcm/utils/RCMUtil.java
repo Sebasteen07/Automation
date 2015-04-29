@@ -37,7 +37,7 @@ public class RCMUtil extends IHGUtil {
 		poster.setServiceUrl( rcmStatementRest.trim() );
 		
 		poster.setContentType( "application/xml;" );
-		poster.addHeader( "requestId", "3ab8ce87-5725-4849-ab03-7e03b5912b3f" );
+		poster.addHeader( "requestId", "3ab8ce87-5725-4849-ab03-7e03b5912b4a" );
 		poster.addHeader( "Authentication-Type", "2wayssl" );
 		log("Expected Status Code =#####");
 		poster.setExpectedStatusCode( 202 );	// HTTP Status Code
@@ -45,10 +45,7 @@ public class RCMUtil extends IHGUtil {
 		poster.postFromResourceFile( 
 					"testfiles/" 
 					+ env
-					+ "/statement.xml" );
-			
-		log("sleep(10000) :- Need time to let system process the Statement #####");
-		Thread.sleep(10000); 
+					+ "/statement.xml" );			
 				
 		
 	}

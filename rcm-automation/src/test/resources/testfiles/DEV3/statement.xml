@@ -1,16 +1,16 @@
 <p:Statements xmlns:p="http://schema.medfusion.com/statements/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema">
     <StatementMessageHeaders>
-        <Sender DeviceLocalTime="2015-04-24T08:50:19" DeviceName="Mirth" DeviceVersion="15.2" VendorName="Mirth"/>
+        <Sender DeviceLocalTime="2015-04-28T08:50:19" DeviceName="Mirth" DeviceVersion="15.2" VendorName="Mirth"/>
     </StatementMessageHeaders>
-    <Statement id="3ab8ce87-5725-4849-ab03-7e03b5912b40">
-        <FileId>decad4ac-c142-4518-a717-4e646fa20ba5_04242015134155002.est</FileId>
-        <PracticeManagementStatementId>007-000388-20150424084155</PracticeManagementStatementId>
-        <StatementBillingAccountNumber>43</StatementBillingAccountNumber>
-        <PracticePatientId>rcmauto</PracticePatientId>
+    <Statement id="3ab8ce87-5725-4849-ab03-7e03b60ab000">
+        <FileId>decad4ac-c142-4518-a717-4e646fa20ba5_04272015144155002.est</FileId>
+        <PracticeManagementStatementId>rcmauto3-000388-20150424084161</PracticeManagementStatementId>
+        <StatementBillingAccountNumber>47</StatementBillingAccountNumber>
+        <PracticePatientId>rcmauto3</PracticePatientId>
         <GuarantorInformation>
-            <GuarantorID>43</GuarantorID>
-            <GuarantorFirstName>GoGreen1</GuarantorFirstName>
-            <GuarantorLastName>March</GuarantorLastName>
+            <GuarantorID>44</GuarantorID>
+            <GuarantorFirstName>rcmauto3</GuarantorFirstName>
+            <GuarantorLastName>TestPatient1</GuarantorLastName>
             <GuarantorRelationshiptoPatient/>
             <GuarantorAddress>
                 <Address1>4106 Flintridge Drive</Address1>
@@ -21,8 +21,8 @@
                 <ZipCode>60221</ZipCode>
             </GuarantorAddress>
         </GuarantorInformation>
-        <StatementDate>2015-04-24T08:41:55</StatementDate>
-        <PaymentDueDate>2015-05-15T08:41:55</PaymentDueDate>
+        <StatementDate>2015-04-27T08:41:55</StatementDate>
+        <PaymentDueDate>2015-05-30T08:41:55</PaymentDueDate>
         <NewCharges>0.00</NewCharges>
         <TotalCharges>2558.00</TotalCharges>
         <OutstandingBalance>2548.00</OutstandingBalance>
