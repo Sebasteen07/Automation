@@ -68,8 +68,8 @@ public class JalapenoPayBillsStatementPage extends BasePageObject {
 			log("Displayed? " + balance.isDisplayed() + " amount? " + balance.getText());
 			return balance.getText();
 		}
-		catch (Exception ex)
-		{
+		catch (Exception ex) {
+			log("Exception from element caught, rechecking");
 			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
 			log("Displayed? " + balance.isDisplayed() + " amount? " + balance.getText());
 			return balance.getText();

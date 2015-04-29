@@ -101,10 +101,10 @@ public class Harakirimail {
 		int maxCount = retries;
 		int count = 1;
 		boolean pagefull = false;
-		String lastmessagedate = "";
-		
+		String lastmessagedate = "";		
 		WebElement element;		
 		int elementCount = driver.findElements(By.linkText(emailSubject)).size();
+		
 		System.out.println("Matching messages count = " + elementCount);
 		if (elementCount == 10){
 			pagefull = true;
@@ -112,23 +112,20 @@ public class Harakirimail {
 			lastmessagedate = driver.findElement(By.xpath("//td[@class='time_column']")).getText();
 			System.out.println("Date check running: Current is " + lastmessagedate);
 		}
+		
+		System.out.println("Messages identified, waiting the initial 15s ");				
+		try { Thread.sleep(15000);} catch (InterruptedException e) {e.printStackTrace();}
+		
 		while(true) {
-			if(count == 1) {
-				System.out.println("Messages identified, waiting the initial 15s ");
-				if (pagefull == true){
-					
-				}
-				try {
-					Thread.sleep(15000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
 			try{
 				driver.navigate().refresh();
 				System.out.println("Checking for new message");				
 				int currentCount = driver.findElements(By.linkText(emailSubject)).size();
-				if(elementCount == 10 && currentCount == 10) {
+				
+				/* if a new message that does NOT match is received while inbox is full,
+				*  current count will fall to 9 and not increase again even if the next would match = crash
+				*/
+				if(pagefull && currentCount == 10) {
 					String newmessagedate = driver.findElement(By.xpath("//td[@class='time_column']")).getText();
 					System.out.println("First message date found: " + newmessagedate);
 					if (!newmessagedate.equals(lastmessagedate)){
@@ -159,9 +156,8 @@ public class Harakirimail {
 		}		
 		element = driver.findElement(By.linkText(findInEmail));
 		System.out.println(element.getAttribute("href"));
-		System.out.println();
+		System.out.println("Checking if link is enabled and targets as expected");
 		if ((element.isEnabled())&&(targetUrl.equals(element.getAttribute("href")))) {
-			element.click();
 			return true;
 		}
 		return false;

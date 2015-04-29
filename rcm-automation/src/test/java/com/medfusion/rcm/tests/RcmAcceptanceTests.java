@@ -66,7 +66,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoMessagesPage.archiveOpenMessage();
 					
 		JalapenoPayBillsStatementPage statementPage = jalapenoMessagesPage.goToPayBillsPage(driver);
-		log("Balance due :" + statementPage.getBalanceDue(driver));
+		log("Check expected balance");
 		assertTrue(testData.getStatementBalanceDue().equals(statementPage.getBalanceDue(driver)));
 		log("Balance checks out!");
 		
