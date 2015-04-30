@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -64,14 +66,17 @@ public class JalapenoPayBillsStatementPage extends BasePageObject {
 	
 	public String getBalanceDue(WebDriver driver){
 		try{
+			log("Waiting for balance element.");
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='balanceDue']/span/span")));
 			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
-			log("Displayed? " + balance.isDisplayed() + " amount? " + balance.getText());
+			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
 			return balance.getText();
 		}
 		catch (Exception ex) {
 			log("Exception from element caught, rechecking");
 			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
-			log("Displayed? " + balance.isDisplayed() + " amount? " + balance.getText());
+			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
 			return balance.getText();
 		}
 	}
