@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>ihg-depot-trunk-SNAPSHOT</version>
+        <version>15.3.0-SNAPSHOT</version>
     </parent>
 
 	<artifactId>mobile-automation</artifactId>
@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>ihg-depot-trunk-SNAPSHOT</ihg.version>
+        <ihg.version>15.3.0-SNAPSHOT</ihg.version>
         <suite.xml>mobile-testng.xml</suite.xml>
     </properties>
 
@@ -37,12 +37,12 @@
          		<dependency>
          			<groupId>com.intuit.ihg</groupId>
          			<artifactId>object-maps</artifactId>
-         			<version>ihg-depot-trunk-SNAPSHOT</version>
+         			<version>${ihg.version}</version>
          		</dependency>
          		<dependency>
          			<groupId>com.intuit.ihg</groupId>
          			<artifactId>common-steps</artifactId>
-         			<version>ihg-depot-trunk-SNAPSHOT</version>
+         			<version>${ihg.version}</version>
          		</dependency>
      </dependencies>
 
