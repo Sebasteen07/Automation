@@ -35,7 +35,7 @@
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
         	<artifactId>common-steps</artifactId>
-        	<version>${ihg.version}</version>
+        	<version>${qa-automation-utils.version}</version>
         </dependency>
     </dependencies>
     <build>
