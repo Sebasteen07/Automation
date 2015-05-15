@@ -1,5 +1,10 @@
 package com.medfusion.rcm.tests;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -65,11 +70,28 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Archive the message");
 		jalapenoMessagesPage.archiveOpenMessage();
 					
-		JalapenoPayBillsStatementPage statementPage = jalapenoMessagesPage.goToPayBillsPage(driver);
+		jalapenoMessagesPage.goToPayBillsPage(driver);
 		log("Check expected balance");
-		assertTrue(testData.getStatementBalanceDue().equals(statementPage.getBalanceDue(driver)));
+		String balance  = getBalanceDue(driver);
+		assertTrue(testData.getStatementBalanceDue().equals(balance));
 		log("Balance checks out!");
 		
 	}
 	
+	public String getBalanceDue(WebDriver driver){
+		try{
+			log("Waiting for balance element.");
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='balanceDue']/span/span")));
+			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
+			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
+			return balance.getText();
+		}
+		catch (Exception ex) {
+			log("Exception from element caught, rechecking");
+			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
+			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
+			return balance.getText();
+		}
+	}
 }
