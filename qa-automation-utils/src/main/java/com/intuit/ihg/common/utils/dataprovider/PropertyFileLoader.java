@@ -152,6 +152,10 @@ public class PropertyFileLoader {
 		return property.getProperty("harakiriUrl");
 	}
 	
+	public String getPractice2Url() {
+		return property.getProperty("practice2Url");
+	}
+	
 	public String getCCDPatientUsername() {
 		return property.getProperty("ccdPatientUsername");
 	}
