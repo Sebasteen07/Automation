@@ -264,9 +264,8 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 
 		log("step 17: Validate message loads and is the right message");
 		String actualSubject = message.getPracticeReplyMessageTitle();
-		assertTrue(message.getPracticeReplyMessageTitle().contains(practiceResponse), "Expected subject containting [" + practiceResponse
-				+ "but actual subject was [" + actualSubject + "]");
-		
+		assertTrue(actualSubject.contains(practiceResponse), "Expected subject containting ["
+				+ practiceResponse + "but actual subject was [" + actualSubject + "]");
 
 	}
 	
