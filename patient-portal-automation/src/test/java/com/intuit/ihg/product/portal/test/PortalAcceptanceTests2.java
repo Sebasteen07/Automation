@@ -238,7 +238,7 @@ public class PortalAcceptanceTests2 extends BaseTestNGWebDriver{
 		SymptomAssessmentDetailsPage pSymptomAssessmentDetailsPage = pSymptomAssessmentFilter.searchSymptomAssessment();
 
 		log("step 11: Verification on SymptomAssessmentDetailsPage");
-		assertTrue(verifyTextPresent(driver, "Date of Birth : 01/11/1987"));
+		assertTrue(verifyTextPresent(driver, "01/11/1987"));
 		/*
 		 * assertTrue(verifyTextPresent(driver,
 		 * "Home Phone : (958) 963-1234"));
