@@ -40,6 +40,7 @@ public class FormWelcomePage extends PortalFormPage {
 		boolean result = false;
 
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		driver.switchTo().activeElement();
 		try {
 			result = btnContinue.isEnabled();
 		} catch (NoSuchElementException e) {
