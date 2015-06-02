@@ -1773,7 +1773,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 9:Check harakirInbox");
 		Harakirimail haramail = new Harakirimail(driver);
 		String box = testcasesData.getSecureNotificationUser().split("@")[0];
-		assertTrue(haramail.isMessageInInbox(box, "New message from IHGQA Automation NonIntegrated","Sign in to view this message", 20));
+		assertTrue(haramail.isMessageInInbox(box,
+				"New message from IHGQA Automation NonIntegrated", "Sign in to view this message",
+				10));
 	}
 
 
