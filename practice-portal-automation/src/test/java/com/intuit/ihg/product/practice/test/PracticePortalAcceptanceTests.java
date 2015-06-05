@@ -78,7 +78,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 4: Click sign out");
 		practiceLogin = practiceHome.logOut();
-		assertTrue(practiceLogin.isLoginPageLoad(), "Expected to see login page");
+		assertTrue(practiceLogin.isLoginPageLoaded(), "Expected to see login page");
 
 	}
 

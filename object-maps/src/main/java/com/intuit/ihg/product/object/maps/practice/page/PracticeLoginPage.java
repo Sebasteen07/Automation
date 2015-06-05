@@ -85,7 +85,7 @@ public class PracticeLoginPage extends BasePageObject {
 	 * 
 	 * @return true or false
 	 */
-	public boolean isLoginPageLoad() {
+	public boolean isLoginPageLoaded() {
 		IHGUtil.PrintMethodName();
 
 		boolean result = false;

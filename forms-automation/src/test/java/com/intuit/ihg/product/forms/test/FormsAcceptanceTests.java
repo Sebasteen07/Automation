@@ -52,6 +52,8 @@ import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
+import java.util.concurrent.TimeUnit;
+
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	protected void logTestEnvironmentInfo(String testName) {
@@ -134,8 +136,17 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
         log("Click CustomFormTab");
         SearchPatientFormsPage searchFormsPage = practiceHome.clickCustomFormTab();
-        verifyTrue(searchFormsPage.isPageLoaded(),
-                SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+
+		// check if the page is loaded, sometimes the test ends up on login page at this point
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		if (!searchFormsPage.isPageLoaded() && practiceLogin.isLoginPageLoaded()) {
+				searchFormsPage = practiceLogin
+						.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword())
+						.clickCustomFormTab();
+		}
+		driver.manage().timeouts().implicitlyWait(SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+
+				verifyTrue(searchFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
         return searchFormsPage;
     }
 
@@ -272,8 +283,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				"MMMMM/dd/yyyy");
 		assertEquals(portalData.getDOB(), accountDOB, "Date of birth is not accurate!");
 
-
-
 	}
 
 	@Test(enabled = true, groups = {"PatientForms"})
@@ -318,7 +327,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
     public void testPartiallyCompletedForm() throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, 5);
 
-        logTestEnvironmentInfo("testFormPracticePortal");
+        logTestEnvironmentInfo("testPartiallyCompletedForm");
 
         log("Step 1: Open the form");
 		MyPatientPage myPatientPage = openFormOnPatientPortal(SitegenConstants.PRACTICE_FORM);
