@@ -277,32 +277,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pWalletPage.logout(driver);
 	}
 
-	/**
-	 * @Author:- bkrishnankutty, refactored by Prokop Rehacek
-	 * @Date:-2/6/2013
-	 * @User Story ID in Rally
-	 * @StepsToReproduce: Click Sign-UP Fill detials in Create Account Page
-	 *                    Click Wallet Link Fill security detials in Create
-	 *                    Account Page 2 Logout LogIn with the New User ======
-	 *                    ==============================================
-	 *                    =========
-	 * @throws Exception
-	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCreatePatientOnBetaSite() throws Exception {
-		
-		// Instancing CreatePatientTest
-		CreatePatientTest createPatientTest = new CreatePatientTest();
-		
-		// Setting data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
-		
-		// Executing Test
-		createPatientTest.createPatientOnBetaSite(driver, testcasesData);
 
-	}
 
 	/**
 	 * @Author:- bkrishnankutty

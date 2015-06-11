@@ -134,13 +134,13 @@ public class JalapenoTestCaseData {
 		return jalapeno.formsUrl;
 	}
 	
-	public String getBetaUrl() {	
-		return jalapeno.betaUrl;
+	public String getPIFormsUrl() {	
+		return jalapeno.formsPIUrl;
 	}
 	
-	public String getPreferredDoctorBeta() {
+	public String getPIFormsAltUrl() {
 		
-		return jalapeno.preferredDoctorBeta;
+		return jalapeno.formsAltPIUrl;
 	}
 	
 	public String getPreferredLocationBeta() {		

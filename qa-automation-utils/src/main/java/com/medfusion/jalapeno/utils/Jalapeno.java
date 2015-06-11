@@ -29,8 +29,8 @@ public class Jalapeno {
 	public String Relationship="";
 	public String healthKeyPracticeUrl="";
 	public String formsUrl="";
-	public String betaUrl="";
-	public String preferredDoctorBeta="";
+	public String formsPIUrl="";
+	public String formsAltPIUrl="";
 	public String preferredLocationBeta="";
 	public String formsAltUrl;
 	public String restUrl;

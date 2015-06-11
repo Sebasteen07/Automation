@@ -1,25 +1,20 @@
 package com.medfusion.product.object.maps.jalapeno.page.HomePage;
 
 import java.util.ArrayList;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
+import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
-public class JalapenoHomePage extends BasePageObject {
-	
-	@FindBy(how = How.LINK_TEXT, using = "My Account")
-	private WebElement myAccount;
+public class JalapenoHomePage extends JalapenoPage {
 	
 	@FindBy(how = How.ID, using = "home")
 	private WebElement home;
@@ -42,12 +37,9 @@ public class JalapenoHomePage extends BasePageObject {
 	@FindBy(how = How.ID, using = "feature_discrete_forms")
 	private WebElement forms;
 	
-	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
-	private WebElement rightDropdownButton;
-	
-	@FindBy(how = How.ID, using = "signout_dropdown")
-	private WebElement signoutDropdownButton;
-	
+	@FindBy(how = How.CSS, using = ".button.ng-binding")
+	private WebElement startRegistrationButton;
+
 	/**
 	 * @Author:Jakub Calabek
 	 * @Date:24.7.2013
@@ -59,64 +51,38 @@ public class JalapenoHomePage extends BasePageObject {
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);	
 	}
-
-	public JalapenoLoginPage logout(WebDriver driver) {
-		
-		IHGUtil.PrintMethodName();
-		log("Trying to click on Logout button - regular resolution");
-		
-		try {
-			WebElement signoutButton = driver.findElement(By.id("signout"));
-			signoutButton.click();
-		}
-		catch(Exception ex) {
-			log("Did not find Logout button, trying mobile version size");
-			rightDropdownButton.click();
-			signoutDropdownButton.click();
-		}
-		
-		return PageFactory.initElements(driver, JalapenoLoginPage.class);
-	}
 	
-	public JalapenoMessagesPage showMessages(WebDriver driver) {
+	public JalapenoMessagesPage showMessages(WebDriver driver) throws Exception {
 		
 		IHGUtil.PrintMethodName();
 		messages.click();
 		
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
-	
-	public JalapenoMyAccountPage clickOnMyAccount(WebDriver driver) {
+
+
+	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) throws Exception {
 		
-		log("Trying to click on My Account button - regular resolution");
-		
-		try {
-			myAccount.click();
-		}
-		catch(Exception ex) {
-			log("Did not find MyAccount button, trying mobile version size");
-			rightDropdownButton.click();
-			myAccount.click();
-		}
-		
-		return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
-	}
-	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) {
-		
-		log("Trying to click on My Account button - regular resolution");
-		
-		try {
-			payments.click();
-		}
-		catch(Exception ex) {
-			log("Did not find MyAccount button, trying mobile version size");
-			rightDropdownButton.click();
-			myAccount.click();
-		}
-		
+		log("Clicking on Payments button");
+		payments.click();
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
 	}
 	
+	public JalapenoHealthFormsListPage clickOnHealthForms(WebDriver driver) throws Exception {
+
+		log("Clicking on Health Forms button");
+		forms.click();
+		return PageFactory.initElements(driver, JalapenoHealthFormsListPage.class);
+	}
+
+	public FormWelcomePage clickStartRegistrationButton(WebDriver driver) throws Exception {
+		log("Clicking on Start Registration button.");
+		startRegistrationButton.click();
+		log("Switch to the Forms iframe.");
+		IHGUtil.setFrame(driver, "iframe");
+		return PageFactory.initElements(driver.switchTo().frame(0), FormWelcomePage.class);
+	}
+
 	public boolean assessHomePageElements() {
 
 		boolean allElementsDisplayed = false;
@@ -151,6 +117,10 @@ public class JalapenoHomePage extends BasePageObject {
 
 		}
 		return allElementsDisplayed;
+	}
+	
+	public boolean isMessagesButtonDisplayed(WebDriver driver) {
+		return IHGUtil.waitForElement(driver, 60, messages);
 	}
 	
 }
