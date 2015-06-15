@@ -14,7 +14,6 @@
 	    		<include name="testAddInsurance" />
 	    		<include name="testLoginLogout" />
         		<include name="testCreatePatient" />
-        		<include name="testCreatePatientOnBetaSite" />
         		<include name="testAppointmentRequestEnd2End" />
         		<include name="testRxRenewalEnd2End" />
         		<include name="testAddandRemovePreferences" />

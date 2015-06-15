@@ -358,6 +358,24 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = {"PatientForms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
+
+		String welcomeMessage = createFormSG();
+		log("step 6: Go to Patient Portal using the original window");
+		Portal portal = new Portal();
+		TestcasesData portalData = new TestcasesData(portal);
+		log("URL: " + portalData.getFormsUrl());
+
+		log("step 7: Log in to Patient Portal");
+		PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsUrl());
+		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(),
+				portalData.getPassword());
+
+		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
+		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
+		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
+	}
+
+	protected String createFormSG() throws Exception {
         String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
@@ -389,19 +407,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 
-		log("step 6: Go to Patient Portal using the original window");
-		Portal portal = new Portal();
-		TestcasesData portalData = new TestcasesData(portal);
-		log("URL: " + portalData.getFormsUrl());
+		return pManageDiscreteForms.getWelcomeMessage();
 
-		log("step 7: Log in to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsUrl());
-		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(),
-                portalData.getPassword());
-
-		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
-		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		assertEquals(pFormWelcomePage.getMessageText(), pManageDiscreteForms.getWelcomeMessage());
 	}
 
     /**

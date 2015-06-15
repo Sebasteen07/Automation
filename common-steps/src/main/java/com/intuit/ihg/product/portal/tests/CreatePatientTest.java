@@ -9,8 +9,6 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPageOnBetaSite;
-import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPasswordPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 
@@ -106,59 +104,6 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		log("Patient successfully created");
 		log("Username: " + email);
 		log("Password: " + testcasesData.getPassword());
-		return PageFactory.initElements(driver, MyPatientPage.class);
-	}
-
-	public MyPatientPage createPatientOnBetaSite(WebDriver driver,TestcasesData testcasesData) throws Exception {
-
-		log("Test Case: testCreatePatientOnBetaSite");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		/* Not very elegant way of changing URL the method uses
-		 * If someone sets the URL in the object before calling this method then the set URL is be used
-		 * otherwise (the default way) the URL from testcasesData.geturl() is used
-		 */
-		if ( url.isEmpty() ){
-			url = testcasesData.getBetaUrl();
-		}
-
-		log("step 1: Get Data from Excel");
-		log("URL: " + url);
-
-		log("step 2: Click Sign Up");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, url);
-		CreateAccountPageOnBetaSite pCreateAccountPage = loginpage.signUpToBetaSite();
-
-		log("step 3:Fill detials in Create Account Page");
-		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
-		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
-		lastName = testcasesData.getLastName() + PortalUtil.createRandomNumber();
-		password = testcasesData.getPassword();
-		log("email:-" + email);
-		CreateAccountPasswordPage pCreateAccountPasswordPage = pCreateAccountPage.createAccount(testcasesData.getFirstName(),
-				testcasesData.getLastName(), email, testcasesData.getEmail(), testcasesData.getPhoneNumber(), testcasesData.getPhoneType(),
-				testcasesData.getDob_Month(), testcasesData.getDob_Day(), testcasesData.getDob_Year(), testcasesData.getZip(),
-				testcasesData.getSSN());
-
-		log("step 4:Fill security detials in Create Account  Page 2");
-		MyPatientPage pMyPatientPage = pCreateAccountPasswordPage.createPasswordSecurityOnBeta(email, testcasesData.getPassword(),
-				testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getPreferredLocationBeta(), testcasesData.getPreferredDoctorBeta());
-
-
-		log("step 5:Assert Webelements in MyPatientPage");
-		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
-		log("step 6:Logout");
-		pMyPatientPage.clickLogout(driver);
-
-		log("step 7:Login as new user");
-		loginpage.navigateTo(driver, testcasesData.getBetaUrl());
-		pMyPatientPage = loginpage.login(email, testcasesData.getPassword());
-
-		log("step 8:Assert Webelements in MyPatientPage");
-		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 

@@ -140,13 +140,13 @@ public class TestcasesData {
 		return portalobj.formsUrl;
 	}
 	
-	public String getBetaUrl() {	
-		return portalobj.betaUrl;
+	public String getPIFormsUrl() {	
+		return portalobj.formsPIUrl;
 	}
 	
-	public String getPreferredDoctorBeta() {
+	public String getPIFormsAltUrl() {
 		
-		return portalobj.preferredDoctorBeta;
+		return portalobj.formsAltPIUrl;
 	}
 	
 	public String getPreferredLocationBeta() {		
