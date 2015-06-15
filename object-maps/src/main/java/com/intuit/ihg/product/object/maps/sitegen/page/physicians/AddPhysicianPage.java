@@ -123,7 +123,6 @@ public class AddPhysicianPage extends BasePageObject {
 		txtPassword.sendKeys(password);
 		txtConfirmPassword.sendKeys(password);
 		btnAddPhysican.click();
-		driver.switchTo().alert().accept();
 		return PageFactory.initElements(driver,
 				AddPhysicianStep2EditLocationInfoPage.class);
 

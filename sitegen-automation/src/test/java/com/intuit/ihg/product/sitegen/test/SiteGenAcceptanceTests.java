@@ -176,7 +176,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer=RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testPhysician() throws Exception {
 
 		logTestEvironmentInfo("testPhysician");
@@ -192,12 +192,12 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
 		SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
 		
-        loginpage.login(testData.getAutomationUser(), testData.getAutomationUserPassword());
+		loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
         assertTrue(pSiteGenHomePage.isSearchPageLoaded(), 
         		"Expected the SiteGen HomePage  to be loaded, but it was not.");
 
         log("step 3: navigate to SiteGen PracticeHomePage ##########");
-        pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
         assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), 
         		"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 		
