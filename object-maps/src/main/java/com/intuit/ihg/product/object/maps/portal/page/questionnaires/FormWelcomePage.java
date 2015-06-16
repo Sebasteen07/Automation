@@ -40,6 +40,7 @@ public class FormWelcomePage extends PortalFormPage {
 		boolean result = false;
 
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		// this is to avoid WebDriverException, WebDriver defect
 		driver.switchTo().activeElement();
 		try {
 			result = btnContinue.isEnabled();
@@ -51,8 +52,13 @@ public class FormWelcomePage extends PortalFormPage {
 	}
 
 	@Override
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
+	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
+	}
+
+	@Override
+	public <T extends PortalFormPage> T clickSaveContinue() {
+		return super.clickSaveContinue(null, this.btnContinue);
 	}
 
 	/**

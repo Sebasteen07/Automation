@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
+import org.testng.annotations.Test;
+
 
 public class FormCurrentSymptomsPage extends PortalFormPage 
 {
@@ -18,25 +20,28 @@ public class FormCurrentSymptomsPage extends PortalFormPage
 	}
 
 	@FindBy(id = "idonot_symptoms_general_group")
-	WebElement noSymptoms;
+	private WebElement noGeneralSymptoms;
+
+	@FindBy(id = "idonot_symptoms_eyes")
+	private WebElement noEyeSymptoms;
 	
 	@FindBy(id = "chills_symptom_general")
-	WebElement checkChills;
+	private WebElement checkChills;
 	
 	@FindBy(id = "insomnia_symptom_general")
-	WebElement checkInsomnia;
+	private WebElement checkInsomnia;
 	
 	@FindBy(id = "bruising_symptom_blood")
-	WebElement checkBruising;
+	private WebElement checkBruising;
 	
 	@FindBy(id = "earache_sumptom_ent")
-	WebElement checkEarache;
+	private WebElement checkEarache;
 
 	@FindBy(id = "symptoms_anythingelse")
-	WebElement commentsField;
+	private WebElement commentsField;
 	
 	@FindBy(linkText = "Save and finish another time")
-	WebElement saveAndFinishLater;
+	private WebElement saveAndFinishLater;
 	
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
@@ -52,20 +57,19 @@ public class FormCurrentSymptomsPage extends PortalFormPage
 		wait.until(ExpectedConditions.visibilityOf(commentsField));
 		return commentsField.getText();
 	}
-	
+
 	/**
-	 * @Description:Set No Symptoms
+	 * Set No Symptoms
 	 * @throws Exception
 	 */
-	public void setNoSymptoms() throws Exception {
+	public void setNoGeneralSymptoms() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		noSymptoms.click();
+		noGeneralSymptoms.click();
 	}
 
 	/**
-	 * @Description: Set some basic symptom for later PDF test
-	 * @throws: Exception
+	 * Set some basic symptom for later PDF test
+	 * @throws Exception
 	 */
 	public void setBasicSymptoms() throws Exception {
 		checkChills.click();
@@ -77,8 +81,18 @@ public class FormCurrentSymptomsPage extends PortalFormPage
 	public void enterComment(String comment) {
 		commentsField.sendKeys(comment);
 	}
-	
-	public void closeForm() {
-		saveAndFinishLater.click();
+
+	@Override
+	public void testValidation() throws InterruptedException {
+		assertErrorMessageAfterContinuing();
+
+		noGeneralSymptoms.click();
+		noEyeSymptoms.click();
+
+		assertErrorMessageAfterContinuing();
+
+		checkBruising.click();
+		log("Validation test passed");
 	}
+
 }
