@@ -181,7 +181,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 	
 		log("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation("",
+		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getPatientIdString(),
 			testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 			testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
 		
@@ -433,7 +433,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
 		log(this.getClass().getName());
@@ -477,12 +477,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getDOBYear(), true, testData.getZipCode());
 		
 		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		log("Patient with same demographics was allowed");
 		
 		jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(createPatient.getEmail(), createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
 
-		assertTrue(jalapenoHomePage.assessHomePageElements());
-		jalapenoLoginPage = jalapenoHomePage.logout(driver);
-		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		log("Username match was found");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
