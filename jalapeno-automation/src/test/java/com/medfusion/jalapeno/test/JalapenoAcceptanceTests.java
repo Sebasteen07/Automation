@@ -9,7 +9,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
-import com.intuit.ihg.common.utils.mail.Harakirimail;
+import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -266,12 +266,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Message was sent, closing");
 		jalapenoLoginPage = jalapenoForgotPasswordPage2.clickCloseButton();
 		
-		log("Logging into Harakirimail and getting ResetPassword url");
-		Harakirimail harakirimail = new Harakirimail(driver);
+		log("Logging into Mailinator and getting ResetPassword url");
+		Mailinator mailinator = new Mailinator();
 		String[] mailAddress = createPatient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = harakirimail.email(mailAddress[0], emailSubject, inEmail);
+		String url = mailinator.email(mailAddress[0], emailSubject, inEmail);
 		
 		assertTrue(url != null);
 		

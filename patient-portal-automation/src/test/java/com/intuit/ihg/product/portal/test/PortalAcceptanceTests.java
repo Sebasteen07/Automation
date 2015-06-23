@@ -72,7 +72,7 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.mail.Harakirimail;
+import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 
@@ -988,12 +988,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
 
-		log("step 2: Clean the Gmail Inbox");
-		String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),
-				PortalConstants.PORTAL_TITLE.trim());
-		PortalUtil pPortalUtil = new PortalUtil(driver);
-		pPortalUtil.emailMessageRemover(testcasesData.getUsername(), testcasesData.getPassword(), sSubject);
-
+		log("step 2: Go to the Patient Portal");
 		log("URL++++++++++++++++" + testcasesData.geturl());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
 
@@ -1001,7 +996,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ResetYourPasswordPage pResetYourPasswordPage = loginpage.clickForgotYourPasswordLink();
 
 		log("step 4:Enter your gmail,security Answer and check your gmail account");
-		ActivatePasswordChangePage pActivatePasswordChangePage = pResetYourPasswordPage.resetYourPasswordPage(testcasesData.getUsername(),
+		ActivatePasswordChangePage pActivatePasswordChangePage = pResetYourPasswordPage
+				.resetYourPasswordPage(testcasesData.getEmail(),
 				testcasesData.getAnswer(), testcasesData.getPassword());
 
 		log("step 5:reactivate  your new password");
@@ -1746,10 +1742,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8:Logout");
 		loginpage = pMyPatientPage.logout(driver);
 		
-		log("step 9:Check harakirInbox");
-		Harakirimail haramail = new Harakirimail(driver);
+		log("step 9:Check Mailinator");
+		Mailinator mailinator = new Mailinator();
 		String box = testcasesData.getSecureNotificationUser().split("@")[0];
-		assertTrue(haramail.isMessageInInbox(box,
+		assertTrue(mailinator.isMessageInInbox(box,
 				"New message from IHGQA Automation NonIntegrated", "Sign in to view this message",
 				10));
 	}

@@ -24,9 +24,9 @@ public class PortalConstants {
 	public final static String InsuranceRelation = "Self";
 
 	public final static String Symptom = "Cough";
-	public final static String EMAIL_ForgotPassword_SUBJECT = "Password reset requested for %s";
+	public final static String EMAIL_ForgotPassword_SUBJECT = "Password reset response from %s";
 	public final static String PORTAL_TITLE = "IHGQA Automation NonIntegrated";
-	public final static String TextInForgotPasswordEmailLink = "home.activatePasswordChange";
+	public final static String TextInForgotPasswordEmailLink = "Confirm my password";
 
 	// Medication Fields
 	public final static String MedicineName1 = "FiberCon 1 Tablet";

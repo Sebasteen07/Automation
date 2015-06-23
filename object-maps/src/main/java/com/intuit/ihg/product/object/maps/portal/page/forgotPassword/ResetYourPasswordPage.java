@@ -11,6 +11,7 @@ import static org.testng.Assert.*;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
@@ -76,6 +77,25 @@ public class ResetYourPasswordPage extends BasePageObject{
 		txtConfirmPassword.sendKeys(password);
 		btnSendMail.click();
 		
+		String strurl = checkYourMailinator(userId);
+		driver.navigate().to(strurl);
+		return PageFactory.initElements(driver, ActivatePasswordChangePage.class);
+
+	}
+
+	private String checkYourMailinator(String email) throws Exception {
+		Mailinator mail = new Mailinator();
+		String[] mailAddress = email.split("@");
+		String emailSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),
+				PortalConstants.PORTAL_TITLE.trim());
+		String url = mail.catchNewMessage(mailAddress[0], emailSubject,
+				PortalConstants.TextInForgotPasswordEmailLink, null, 10);
+		assertTrue((url != null), "Reset password email not found.");
+		return url;
+	}
+
+	private String checkyourGmail(String userId, String password) throws Exception {
+
 		//Validate Check your email 
 		String strurl="";
 		int count=1;
@@ -105,11 +125,10 @@ public class ResetYourPasswordPage extends BasePageObject{
 		{
 		log("+++++++++++++++URL+++++++++NOT FOUND AFTER 10 MIN");
 		}
-		driver.navigate().to(strurl);
-		return PageFactory.initElements(driver,ActivatePasswordChangePage.class);
-		
+		return strurl;
+
 	}
-	
+
 	public SecretAnswerDoesntMatchPage sendBadAnswerTwice( String userId, String securityAnswer ) {
 		IHGUtil.PrintMethodName();
 	    PortalUtil.setPortalFrame(driver);

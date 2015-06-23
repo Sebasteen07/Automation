@@ -1085,11 +1085,10 @@ public class IHGUtil extends BasePageObject {
 		int rnd = randomNumbers.nextInt(999999999);
 
 		String[] tmp = email.split("@");
+		String randomEmail = tmp[0] + "." + rnd + "@" + tmp[1];
+		System.out.println("dynamic Email address" + randomEmail);
 
-		System.out.println("dynamic Email address" + tmp[0] + "+" + rnd + "@"
-				+ tmp[1]);
-
-		return tmp[0] + "+" + rnd + "@" + tmp[1];
+		return randomEmail;
 	}
 
 	public static int createRandomNumber() {

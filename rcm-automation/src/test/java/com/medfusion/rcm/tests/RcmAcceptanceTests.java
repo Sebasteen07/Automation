@@ -38,7 +38,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
-import com.intuit.ihg.common.utils.mail.Harakirimail;
+import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -73,7 +73,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 		log(this.getClass().getName());
 		RCMUtil util = new RCMUtil(driver);
-		Harakirimail mail = new Harakirimail(driver);
+		Mailinator mail = new Mailinator();
 		
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
