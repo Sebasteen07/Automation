@@ -152,6 +152,22 @@ public class IHGUtil extends BasePageObject {
 		}
 	}
 
+	/**
+	 * Will return true if Element exist else false
+	 * @param element :- WebElement
+	 * @return boolean
+	 */
+
+	public static boolean exists(WebDriver driver, WebElement element) {
+		try {
+			Actions builder = new Actions(driver);
+			builder.moveToElement(element).build().perform();
+			element.getLocation();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	/**
 	 * Desc:-Will fisrt wait implicitly then will check if element exist or not . Will return true if Element exist else false
@@ -161,16 +177,28 @@ public class IHGUtil extends BasePageObject {
 	 */
 
 	public boolean exists(WebElement element, long maxTimeInSecondsToWait) {
+		return exists(driver, maxTimeInSecondsToWait, element);
+	}
+
+	/**
+	 * Desc:-Will fisrt wait implicitly then will check if element exist or not . Will return true if Element exist else false
+	 * @param driver
+	 * @param maxTimeInSecondsToWait
+	 * @param element Element that is checked
+	 * @return
+	 */
+
+	public static boolean exists(WebDriver driver, long maxTimeInSecondsToWait, WebElement element) {
 		boolean bexists = false;
 		try {
 			driver.manage().timeouts().implicitlyWait(maxTimeInSecondsToWait, TimeUnit.SECONDS);
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			log("Where on the page is the top left-hand corner of the rendered element"+p);
+			System.out.println("Where on the page is the top left-hand corner of the rendered element"+p);
 			bexists = true;
 		} catch (Exception e) {
-			log("Element was not found.");
+			System.out.println("Element was not found.");
 		}
 
 		finally {
