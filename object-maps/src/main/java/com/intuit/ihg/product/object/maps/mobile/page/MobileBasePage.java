@@ -2,14 +2,10 @@ package com.intuit.ihg.product.object.maps.mobile.page;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,7 +19,7 @@ public class MobileBasePage extends BasePageObject {
     @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div/h1")
     private WebElement heading;
 
-    @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[@href='#home']")
+    @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[contains(@href,'#home')]")
     private WebElement home;
 
     @FindBy(xpath = "//div[contains(@class,'ui-page-active')]/div[@role='banner']/a[not(@href='#home') and not(@href='#')]")
@@ -35,6 +31,7 @@ public class MobileBasePage extends BasePageObject {
     @FindBy(xpath = "//*[@class='errorMsg']")
     private WebElement errorMsg;
 
+    private final int waitTimeout = 15;
     public MobileBasePage(WebDriver driver) {
 
         super(driver);
@@ -48,12 +45,13 @@ public class MobileBasePage extends BasePageObject {
 
     public String getErrorMsg() {
         IHGUtil iUtil = new IHGUtil(driver);
-        if (iUtil.isExists(errorMsg)) {
+        if (iUtil.exists(errorMsg)) {
             return errorMsg.getText();
         } else return null;
     }
 
     public BasePageObject clickHome() throws InterruptedException {
+		Thread.sleep(1000);
         waitForHome(driver, 10);
         home.click();
         return PageFactory.initElements(driver, BasePageObject.class);
@@ -72,7 +70,7 @@ public class MobileBasePage extends BasePageObject {
     public String getInstruction() {
         IHGUtil iUtil = new IHGUtil(driver);
 
-        if (iUtil.isExists(instruction)) {
+        if (iUtil.exists(instruction)) {
             return instruction.getText();
         } else return null;
     }
@@ -80,7 +78,7 @@ public class MobileBasePage extends BasePageObject {
     public boolean isErrorMsgPresent() throws InterruptedException {
         Thread.sleep(5000);
         IHGUtil iUtil = new IHGUtil(driver);
-        return iUtil.isExists(errorMsg);
+        return iUtil.exists(errorMsg);
     }
 
     public String processUrlForEnv(String url, String env) {
@@ -96,23 +94,18 @@ public class MobileBasePage extends BasePageObject {
         return url;
     }
 
-    public boolean verifyPageLoaded() throws InterruptedException {
-        Thread.sleep(5000);
+    public boolean verifyPageLoaded() {        
         boolean pageLoaded = false;
-        int count = 1;
-        do {
-            try {
-                driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-                driver.findElement(By.xpath("//*[@class='ui-mobile-viewport ui-overlay-c ui-mobile-viewport-transitioning viewport-slide']"));
-                count++;
-            } catch (NoSuchElementException e) {
-                //Suppress the error
-                pageLoaded = true;
-            }
-        } while (!pageLoaded && count <= 5);
-
+        try{
+        	IHGUtil.waitForElementByXpath(driver, "//*[@class='ui-mobile-viewport ui-overlay-c ui-mobile-viewport-transitioning viewport-slide']", waitTimeout);
+        	pageLoaded = true;
+        }
+        catch (Exception e){
+        	//If waitForElementByXpath throws any exception, it's obvious that the page isn't loaded 
+        	//- this'll fail anyway in places where we assert that it is, so there's no need to propagate any exception
+        	log("Something bad happened when waiting for the page to load! Step by step Login Logout please");
+        }
         return pageLoaded;
-
     }
 
     //div[contains(@class,'ui-page-active')]/div/h1

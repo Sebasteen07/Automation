@@ -34,7 +34,7 @@ public class WalletPage extends BasePageObject{
 	@FindBy(how= How.NAME,using ="ccpanel:newccdetails:addressZip")
 	private WebElement txtZipCode;
 	
-	@FindBy(how= How.NAME,using ="buttonWrapper:_body:button")
+	@FindBy(name = "button")
 	private WebElement btnAddCard;
 	
 	@FindBy(how= How.XPATH,using="//table[@class='recent']/tbody/tr[2]/td[6]/a[2]")

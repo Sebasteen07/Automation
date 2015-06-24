@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>    
+    
+<!--This is a sample config file that can be used for testing. The OAuth library uses the DCPropertyManager so these config values should be included in the containing application-->
+
+    <entry key="oauth.keystore.file.path">./src/test/resources/config/qa1</entry>
+    <entry key="oauth.keystore.file.name">oauth2.keystore</entry>	    
+    <entry key="oauth.consumer.keysecret.url">http://qa1aapp05.mf.qhg.local:8080/identity/services/v1/oauth2/oauthapplication/</entry>
+    <entry key="oauth.token.access.userpass.url">http://qa1aapp05.mf.qhg.local:8080/identity/services/v1/oauth2/token</entry>
+        
+    <entry key="ihg.host.patient">http://qa1aapp11.mf.qhg.local:8080/rwsdk</entry>
+    <entry key="ihg.host.amdc">http://qa1aapp11.mf.qhg.local:8080/am</entry>
+    <entry key="ihg.host.events">http://qa1aapp01.mf.qhg.local:8080</entry>
+    <entry key="ihg.host.ccd">http://qa1-int.dev.medfusion.net</entry>
+    <entry key="ihg.host.geccd">http://qa1-int.dev.medfusion.net</entry>
+	
+</properties>

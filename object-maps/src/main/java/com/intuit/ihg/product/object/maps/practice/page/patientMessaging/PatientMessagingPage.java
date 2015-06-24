@@ -1,9 +1,12 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientMessaging;
 
 import java.net.URL;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -58,7 +61,18 @@ public class PatientMessagingPage extends BasePageObject{
 
 	@FindBy(xpath="//div[@class='feedbackContainer']/div/div/ul/li")
 	public WebElement publishedSuccessfullyMessage;
-
+	
+	@FindBy(xpath="/html/body/div[2]/table/tbody/tr/td/div[1]/form/fieldset[3]/table[1]/tbody/tr[1]/td[1]/table/tbody/tr[1]/td/input")
+	public WebElement patientCanReplyButton;
+	
+	@FindBy(how = How.LINK_TEXT, using = "My Messages")
+	private WebElement myMessages;
+	
+	@FindBy(id="id19")
+	private WebElement searchButton;
+	
+	@FindBy(how = How.LINK_TEXT, using = "Quick Send")
+	private WebElement quickSendButton;
 	/**
 	 * @Description:Set Delivery Mode
 	 */
@@ -142,6 +156,17 @@ public class PatientMessagingPage extends BasePageObject{
 		firstName.clear();
 		firstName.sendKeys(PracticeConstants.PatientFirstName);
 	}
+	
+	/**
+	 * @Description:Set First Name
+	 */
+	public void setFirstName(String fname)
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		firstName.clear();
+		firstName.sendKeys(fname);
+	}
 
 	/**
 	 * @Description:Set Last Name
@@ -154,6 +179,17 @@ public class PatientMessagingPage extends BasePageObject{
 		lastName.sendKeys(PracticeConstants.PatientLastName);
 	}
 
+	/**
+	 * @Description:Set Last Name
+	 */
+	public void setLastName(String lname)
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		lastName.clear();
+		lastName.sendKeys(lname);
+	}
+	
 	/**
 	 * @Description:Set Email
 	 */
@@ -198,7 +234,68 @@ public class PatientMessagingPage extends BasePageObject{
             Thread.sleep(3000);
 
      }
-
+     
+     /**
+      * @Description:Set Quick Send Fields
+      * @param firstName
+      * @param lastName
+      * @throws Exception
+      */
+      public void setQuickSendFields(String firstName, String lastName, String templateName) throws Exception
+      {
+             IHGUtil.PrintMethodName();
+             Thread.sleep(5000);
+             IHGUtil.setFrame(driver,PracticeConstants.frameName);
+             Select sel = new Select(messageType);
+     		 sel.selectByVisibleText("Other");
+     		 Select sel2 = new Select(template);
+     		 sel2.selectByVisibleText(templateName);
+             setSubject();
+             
+             Thread.sleep(2000);
+             patientCanReplyButton.click();
+             setRecipientType();
+             setFirstName(firstName);
+             setLastName(lastName);
+             searchForPatients.click();
+             Thread.sleep(5000);
+             IHGUtil.setFrame(driver,PracticeConstants.frameName);
+             IHGUtil.waitForElement(driver,60,searchResult);
+             searchResult.click();
+             Thread.sleep(12000);
+             publishMessage.click();
+             Thread.sleep(3000);
+      }      
+      
+      public boolean findMyMessage(String patientName) throws Exception {
+    	  IHGUtil.PrintMethodName();
+    	  int maxCount = 10;
+    	  int count = 1;
+    	  WebElement element;
+    	  
+    	  myMessages.click();
+    	  
+          IHGUtil.setFrame(driver,PracticeConstants.frameName);
+    	  
+    	  while(count <= maxCount) {
+    		  try {
+    			  log("Click on Search button");
+    			  searchButton.click();
+    			  element = driver.findElement(By.linkText(patientName));
+    			  element.click();
+    			  log("Message from patient found");
+    			  return element.isDisplayed();
+    		  }
+    		  catch(Exception ex) {
+    			  log("Searching for message: " + count + "/" + maxCount);
+    			  count++;
+    			  searchButton.click();
+    		  }
+    	  }
+    	  
+    	  log("Message from patient not found");
+    	  return false;
+      }
 
 
 }

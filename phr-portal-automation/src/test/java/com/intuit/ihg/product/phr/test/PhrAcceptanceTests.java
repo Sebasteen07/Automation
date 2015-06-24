@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
@@ -24,8 +23,8 @@ import com.intuit.ihg.product.object.maps.phr.page.portaltophr.IntuitAcceptPriva
 import com.intuit.ihg.product.object.maps.phr.page.profile.PhrProfilePage;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxMessage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
 import com.intuit.ihg.product.object.maps.portal.page.portaltophr.AcceptPhrTermsandConditions;
@@ -226,12 +225,14 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		driver = pAcceptPhrTermsandConditions.clickbtnAccept();
 
 		log("step 11:Accept the Intuit terms and condition  from PHR side");
+		//Since the back check is not active on QA1
+		PhrHomePage pPhrHomePage;		
 		IntuitAcceptPrivacyPolicy pIntuitAcceptPrivacyPolicy = PageFactory
-		.initElements(driver, IntuitAcceptPrivacyPolicy.class);
-		Thread.sleep(20000);//this thread.sleep is purposeful otherwise script  can fail here
-		PhrHomePage pPhrHomePage = pIntuitAcceptPrivacyPolicy
-		.acceptIntuitTermsAndCondition();
-
+				.initElements(driver, IntuitAcceptPrivacyPolicy.class);
+		Thread.sleep(20000);
+		//this thread.sleep is purposeful otherwise script  can fail here
+		pPhrHomePage = pIntuitAcceptPrivacyPolicy
+				.acceptIntuitTermsAndCondition();
 		log("step 12:Assert profile link on PHR HOme page");
 		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 		assertTrue(pPhrHomePage.waitforbtnProfile(driver, 6),
@@ -395,7 +396,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 		Phr phr = new Phr();
 		PhrTestcasesData phrtestcasesData = new PhrTestcasesData(phr);
-
+		
 		log("URL: " + phrtestcasesData.geturl());
 		log("USER NAME: " + phrtestcasesData.getccdUserName());
 		log("Password: " + phrtestcasesData.getccdUserPassword());
@@ -451,27 +452,24 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 				phrtestcasesData.getccdUserPassword());
 
 		log("step 13: Go to Inbox");
-		ConsolidatedInboxPage inboxPage = pMyPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 14: Find message in Inbox");
-		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
-		.clickFirstMessageRow();
+		MessagePage pNewInboxMessage = inboxPage.clickFirstMessageRow();
 
 		log("step 15: Validate message subject and send date");
-		Thread.sleep(1000);
-		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
+		assertEquals(pNewInboxMessage.getPracticeReplyMessageTitle(),
 				"New Health Information Import",
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("step 16: Click on link ReviewHealthInformation");
-		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
+		pNewInboxMessage.clickBtnReviewHealthInformation();
 
 		log("step 17:Share the address with the Doctor and click Close Viewer");
-		pConsolidatedInboxMessage.closeViewer();
-
+		pNewInboxMessage.closeViewer();
 
 	}
 
@@ -505,11 +503,11 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("step 2: Get Data from Excel");
-
+		log("step 2: Get Data from Excel");		
+		
 		Phr phr=new Phr();
 		PhrTestcasesData phrtestcasesData=new PhrTestcasesData(phr);
-
+		
 		log("URL: "+phrtestcasesData.geturl());
 		log("USER NAME: "+phrtestcasesData.getccdUserName());
 		log("Password: "+phrtestcasesData.getccdUserPassword());
@@ -547,7 +545,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 11:Click Logout");
 		loginpage = pPhrDocumentsPage.clickLogout();
-
+		
 		log("step 12:LogIn to Patient Portal ");
 		Portal portal = new Portal();
 		TestcasesData portalTestData = new TestcasesData(portal);
@@ -558,44 +556,30 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 				phrtestcasesData.getccdUserPassword());
 
 		log("step 13: Go to Inbox");
-		ConsolidatedInboxPage inboxPage  = pMyPatientPage.clickViewAllMessages();
+		MessageCenterInboxPage inboxPage  = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("step 14: Find message in Inbox");
-		ConsolidatedInboxMessage pConsolidatedInboxMessage = inboxPage
-		.clickFirstMessageRow();
+		MessagePage pInboxMessage = inboxPage.clickFirstMessageRow();
 
 		log("step 15: Validate message subject and send date");
 		Thread.sleep(1000);
-		assertEquals(pConsolidatedInboxMessage.getMessageSubject(),
+		assertEquals(pInboxMessage.getPracticeReplyMessageTitle(),
 				"New Health Information Import",
 		"### Assertion failed for Message subject");
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
 
 		log("step 15: Click on link ReviewHealthInformation");
-		pConsolidatedInboxMessage.clickBtnReviewHealthInformation();
+		pInboxMessage.clickBtnReviewHealthInformation();
 
 		log("step 10:Share the address with the Doctor and click Close Viewer");
-		pConsolidatedInboxMessage.closeViewer();
+		pInboxMessage.closeViewer();
 	}
 
 
 
-	/**
-	 * @Author:- pjhinjha
-	 * @Date:-7/10/2013
-	 * @User Story ID in Rally-US6324
-	 * @StepsToReproduce:
-	 * LogIn to PHR portal using ccduser from excel
-	 * Post CCD request with Medicines
-	 * Login to Patient Portal
-	 * Go to Prescription renewal
-	 * Click on it and see the medications part in prescription renewal
-	 * Click on logout
-	 * =============================================================
-	 * @throws Exception
-	 */
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedSyncToPortal() throws Exception {
 
@@ -609,49 +593,36 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		PhrTestcasesData phrtestcasesData=new PhrTestcasesData(phr);
 
 		log("URL: "+phrtestcasesData.geturl());
-		log("USER NAME: "+phrtestcasesData.getccdUserName());
-		log("Password: "+phrtestcasesData.getccdUserPassword());
+		log("USER NAME: "+phrtestcasesData.getElektaUser());
+		log("Password: "+phrtestcasesData.getElektaPassword());
 
-		log("step 3:LogIn");
+		log("step 3:LogIn to phr");
 		PhrLoginPage loginpage = new PhrLoginPage(driver,phrtestcasesData.geturl());
-		PhrHomePage pPhrHomePage = loginpage.login(phrtestcasesData.getccdUserName(),phrtestcasesData.getccdUserPassword());
-
-		log("step 4:Post NON_CONSOLIDATED_CCD request");
-		pPhrHomePage.postNonCCdRequest(phrtestcasesData.getallScriptAdapterURL());
+		PhrHomePage pPhrHomePage = loginpage.login(phrtestcasesData.getElektaUser(),phrtestcasesData.getElektaPassword());
+		log("step 4:Post ELEKTA_CCD request to " + phrtestcasesData.getElektaRestURL());
+		
+		pPhrHomePage.postElektaCCdRequest(phrtestcasesData.getElektaRestURL());
 
 		log("step :Wait for page to be loaded completely");
 		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 5:LogIn to Patient Portal ");
-		Portal portal = new Portal();
-		TestcasesData portalTestData = new TestcasesData(portal);
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver,
-				portalTestData.geturl());
+				phrtestcasesData.getElektaPracticeURL());
 		MyPatientPage pMyPatientPage = portalloginpage.login(
-				phrtestcasesData.getccdUserName(),
-				phrtestcasesData.getccdUserPassword());
+				phrtestcasesData.getElektaUser(),
+				phrtestcasesData.getElektaPassword());
 
 		log("step 6: Go to Prescription Renewal");
 		NewRxRenewalPage newRxRenewalPage = pMyPatientPage.clickPrescriptionRenewal();
 
-		log("step 7: Select provider");
-		newRxRenewalPage.chooseProvider("Geisel");
-
-		log("step 8: Click on continue button");
-		newRxRenewalPage.clickContinuebtn();
-
-		log("step 9: Check for medications");
+		log("step 7: Check for medications");
 		newRxRenewalPage.checkMedication();
-		if(IHGUtil.getEnvironmentType().equals(EnvironmentType.PROD)){
-			Assert.assertEquals(PortalConstants.MedicineNameOne, newRxRenewalPage.medicineName0.getText());
-			Assert.assertEquals(PortalConstants.MedicineNameTwo, newRxRenewalPage.medicineName1.getText());
-		}
-		else{
-			Assert.assertEquals(PortalConstants.MedicineName1, newRxRenewalPage.medicineName1.getText());
-			Assert.assertEquals(PortalConstants.MedicineName2, newRxRenewalPage.medicineName2.getText());
-		}
+		Assert.assertEquals(PortalConstants.MedicineNameOne, newRxRenewalPage.medicineName0.getText());
+		Assert.assertEquals(PortalConstants.MedicineNameTwo, newRxRenewalPage.medicineName1.getText());
 
-		log("step 10: Logout of Patient Portal");
+
+		log("step 8: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 	}
 
@@ -701,7 +672,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 8: accept alert");
 			driver.switchTo().alert().accept();
-
+			//a couple of things to wait for here - popup opening, loading content, triggering OS print action...
+			Thread.sleep(3000);
 			IHGUtil.hadlePrintDialog();
 			
 			log("step 10: switch to active window");
@@ -715,6 +687,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 			
 		}
 	}
+
 
 }
 

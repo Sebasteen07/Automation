@@ -84,14 +84,12 @@ public class SiteGenHomePage extends BasePageObject {
 
 	
 	public SiteGenPracticeHomePage searchPracticeFromSGAdmin(String practiceName) throws Exception {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,10,this.searchPratciceField);
+		log("Automation Practice: " + practiceName);
+		IHGUtil.waitForElement(driver, 10, this.searchPratciceField);
 		searchPratciceField.sendKeys(practiceName);
 		searchPratciceButton.click();
-		Thread.sleep(4000);
-		String xpath = "//*[contains(text(),'"+practiceName+"')]";
+		String xpath = "//*[contains(text(),'" + practiceName + "')]";
 		driver.findElement(By.xpath(xpath)).click();
-		Thread.sleep(10000);
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
 	}
 }

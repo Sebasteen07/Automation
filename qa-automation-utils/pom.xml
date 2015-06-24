@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>ihg-depot-trunk-SNAPSHOT</version>
+        <version>15.3.0</version>
     </parent>
 	
 	<artifactId>qa-automation-utils</artifactId>
@@ -25,12 +25,20 @@
 		<dependency>
 			<groupId>com.intuit.ifs.csscat.core</groupId>
 			<artifactId>Core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.1</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-io</artifactId>
 					<groupId>org.apache.commons</groupId>
 				</exclusion>
+				<exclusion> 
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-jdk14</artifactId>
+		      	</exclusion>
+		      	<exclusion> 
+			        <groupId>log4j</groupId>
+			        <artifactId>log4j</artifactId>
+      			</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -65,21 +73,21 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>ihg-depot-trunk-SNAPSHOT</version>
+	      <version>15.3.0</version>
 	      <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 	      <groupId>com.intuit.health.eh.adapters</groupId>
 	      <artifactId>allscripts-ehr-adapter-dto</artifactId>
-	      <version>ihg-depot-trunk-SNAPSHOT</version>
+	      <version>15.3.0</version>
 	      <scope>compile</scope>
     	</dependency>
     	
     	<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>ihg-depot-trunk-SNAPSHOT</version>
+			<version>15.3.0</version>
 		</dependency>
 		
   		<dependency>
@@ -91,7 +99,7 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>ihg-depot-trunk-SNAPSHOT</version>
+	  		<version>15.3.0</version>
 	  	</dependency>
 	  	
 	  	<dependency>
@@ -99,7 +107,27 @@
 	  		<artifactId>connecthub-schemas</artifactId>
 	  		<version>1.0.0</version>
   		</dependency>
-	   
+
+	  	<dependency>
+	  		<groupId>org.openhealthtools.mdht</groupId>
+	  		<artifactId>org.openhealthtools.mdht.uml.cda</artifactId>
+	  		<version>1.1.0.201205021531</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.eclipse.emf</groupId>
+	  		<artifactId>org.eclipse.emf.common</artifactId>
+	  		<version>2.9.1-v20130827-0309</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.eclipse.emf</groupId>
+	  		<artifactId>org.eclipse.emf.ecore</artifactId>
+	  		<version>2.9.1-v20130827-0309</version>
+	  	</dependency>
+                <dependency>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                        <version>4.3.5</version>
+                </dependency>
 	</dependencies>
 	<build>
 		<plugins>

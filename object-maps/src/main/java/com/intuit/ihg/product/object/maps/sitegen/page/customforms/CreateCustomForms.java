@@ -16,7 +16,7 @@ public class CreateCustomForms extends BasePageObject{
 	@FindBy(linkText="Create a Custom Form")
 	private WebElement lnkCreateCustomForm;
 	
-	@FindBy( xpath = "//a[contains(@href,'../action/doManageQuestionnaire?method')]")
+	@FindBy( xpath = "//*[contains(text(),'Manage Your Forms')]")
 	private WebElement lnkManageYourForms;
 		
 

@@ -16,7 +16,7 @@ public class AskAStaffStep2Page extends BasePageObject {
 	
 	public static final String PAGE_NAME = "Ask A Staff Page - Step 2";
 
-	@FindBy(name="buttonsField:_body:buttons:submit")
+	@FindBy(name="buttons:submit")
 	private WebElement btnSubmit;
 	
 	@FindBy(name="ccpanel:newccdetails:nameOnCreditCard")
@@ -33,7 +33,8 @@ public class AskAStaffStep2Page extends BasePageObject {
 	
 	@FindBy(name="ccpanel:newccdetails:expirationYear")
 	private WebElement expirationDateYear;
-	
+	@FindBy(name="ccpanel:existingccdetailscontainer:ccRadioGroup:existingccdetails:existingCvvCode")
+	private WebElement cvvCodeExistingCard;	
 	@FindBy(name="ccpanel:newccdetails:newccdetailscvv:cvvCode")
 	private WebElement cvvCode;
 	
@@ -61,7 +62,9 @@ public class AskAStaffStep2Page extends BasePageObject {
 		if (!found) {
 			payWithNewCreditCard();
 		}
-		
+		else {
+			cvvCodeExistingCard.sendKeys("123");
+		}
 		btnSubmit.click();
 		return PageFactory.initElements(driver, AskAStaffStep3Page.class);
 	}

@@ -82,7 +82,7 @@ public class SymptomAssessmentFilterPage extends BasePageObject {
 		
 		log("click on view button");
 		lnkView.click();
-		Thread.sleep(10000);
+//		Thread.sleep(10000);
 		
 		return PageFactory.initElements(driver, SymptomAssessmentDetailsPage.class);
 	}

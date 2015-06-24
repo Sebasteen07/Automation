@@ -20,10 +20,13 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Locale;
 
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
@@ -31,10 +34,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.common.entities.CcdType;
-import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -121,13 +124,13 @@ public class IHGUtil extends BasePageObject {
 
 	/**
 	 * Description : This method will return true if the webElemnt exists in the page. 
-	 * This method calls isExists (By by, long maxTimeInSecondsToWait) with a default wait period of 2 seconds
-	 * @param webelements : example "sdputil.isExists(By.xpath("//input[@name='email']"))"
+	 * This method calls exists (By by, long maxTimeInSecondsToWait) with a default wait period of 2 seconds
+	 * @param webelements : example "sdputil.exists(By.xpath("//input[@name='email']"))"
 	 * @return boolean
 	 */
-	public boolean isExists(By by) {
+	public boolean exists(By by) {
 		long maxTimeInSecondsToWait = 2;
-		return this.isExists(by, maxTimeInSecondsToWait);
+		return this.exists(by, maxTimeInSecondsToWait);
 	}
 
 
@@ -137,12 +140,12 @@ public class IHGUtil extends BasePageObject {
 	 * @return boolean
 	 */
 
-	public boolean isExists(WebElement element) {
+	public boolean exists(WebElement element) {
 		try {
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			log("Where on the page is the top left-hand corner of the rendered element"+p);
+			log("Where on the page is the top left-hand corner of the rendered element" + p);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -157,7 +160,7 @@ public class IHGUtil extends BasePageObject {
 	 * @return
 	 */
 
-	public boolean isExists(WebElement element, long maxTimeInSecondsToWait) {
+	public boolean exists(WebElement element, long maxTimeInSecondsToWait) {
 		boolean bexists = false;
 		try {
 			driver.manage().timeouts().implicitlyWait(maxTimeInSecondsToWait, TimeUnit.SECONDS);
@@ -179,14 +182,14 @@ public class IHGUtil extends BasePageObject {
 	/**
 	 * Description : This method will return true if the webelemnt exists in the page. User has to provide the 
 	 * element as webelements for example  to test if the element with xpath "//input[@name='email']" is present or not 
-	 * user has to write the code like "sdputil.isExists(By.xpath("//input[@name='email']"))"
+	 * user has to write the code like "sdputil.exists(By.xpath("//input[@name='email']"))"
 	 * The function will wait till the element is displayed or till the timeout which ever comes first.
 	 * 
 	 * @param webelements
 	 * @param maxTimeInSecondsToWait : timeout for the function. Max time to wait.
 	 * @return boolean
 	 */
-	public boolean isExists(By by, long maxTimeInSecondsToWait) {
+	public boolean exists(By by, long maxTimeInSecondsToWait) {
 		boolean bexists = false;
 
 		List<WebElement> webelements;
@@ -291,6 +294,16 @@ public class IHGUtil extends BasePageObject {
 		return formattedCurrentDateTime;
 	}
 
+	public static String extractDateFromText(String text) throws IllegalStateException {
+		// tries to find and return date from last updated date text
+		Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d|\\d\\d/\\d\\d/\\d\\d\\d\\d");
+		Matcher matcher = pattern.matcher(text);
+
+		if (matcher.find())
+			return matcher.group();
+		else
+			throw new IllegalStateException("Date not found");
+	}
 
 	/**
 	 * Description : Method to add or subtract days from current date
@@ -319,7 +332,7 @@ public class IHGUtil extends BasePageObject {
 	public static String convertDate(String srcDate, String srcDateFormat, String destDateformat) throws Exception {
 		SimpleDateFormat formatter = new SimpleDateFormat(srcDateFormat);
 		Date dateStr = formatter.parse(srcDate);
-		formatter = new SimpleDateFormat(destDateformat);
+		formatter = new SimpleDateFormat(destDateformat, Locale.ENGLISH);
 		String FormattedDate = formatter.format(dateStr);
 		System.out.println("FormattedDate" + FormattedDate);
 		return FormattedDate;
@@ -495,6 +508,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public boolean elementIsNonexistent(final By bySelector, long timeout) throws InterruptedException {
 		return checkForCondition(new Condition() {
+			@Override
 			public boolean met() {
 				try {
 					driver.findElement(bySelector);
@@ -518,6 +532,7 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public boolean elementIsHidden(final By bySelector, long timeout) throws InterruptedException {
 		return checkForCondition(new Condition() {
+			@Override
 			public boolean met() {
 				WebElement element = driver.findElement(bySelector);
 				return !element.isDisplayed();
@@ -664,11 +679,11 @@ public class IHGUtil extends BasePageObject {
 			if (!sdate.equals("Pending")) {
 				DateFormat formatter;
 				formatter = new SimpleDateFormat("MM/dd/yyyy");
-				Date date1 = (Date) formatter.parse(sdate);
+				Date date1 = formatter.parse(sdate);
 				//log (""+date1);
 
-				Date fdate = (Date) formatter.parse(fromDate);
-				Date tdate = (Date) formatter.parse(toDate);
+				Date fdate = formatter.parse(fromDate);
+				Date tdate = formatter.parse(toDate);
 
 
 				// Check if date in between				
@@ -890,10 +905,11 @@ public class IHGUtil extends BasePageObject {
 	 *Desc:- Method will set the frame.Frist will set to default Content and then to str frame
 	 *
 	 */
-	public static void setFrame(WebDriver driver,String str) {
+	public static void setFrame(WebDriver driver, String frameName) {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame(str); 
+		WebDriverWait wait = new WebDriverWait(driver, 40);
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameName));
 	}
 
 	/**
@@ -996,7 +1012,7 @@ public class IHGUtil extends BasePageObject {
 
 	public static String getEstTiming(){
 		Date now = new Date();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("M/d/yyyy", Locale.ENGLISH);
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("EST"));
 		String expectedPST = dateFormatGmt.format(now);
 		return expectedPST;
@@ -1056,7 +1072,10 @@ public class IHGUtil extends BasePageObject {
 	{
 		return CcdType.NON_CONSOLIDATED_CCD;
 	}
-
+	public static CcdType getElektaCCD()
+	{
+		return CcdType.ELEKTA_CCD;
+	}
 	public static String createRandomEmailAddress(String email) {
 
 		IHGUtil.PrintMethodName();
@@ -1107,7 +1126,7 @@ public class IHGUtil extends BasePageObject {
 		ArrayList<String> myArr_actual = new ArrayList<String>();
 		WebElement table =pDriver.findElement(By.xpath(pTableXpath));
 		List<WebElement> rows=table.findElements(By.tagName("tr"));
-		mainLoop:for(WebElement row:rows){	
+		mainLoop:for(WebElement row:rows){
 			i++;
 			myArr_actual.clear();
 			List<WebElement> columns = row.findElements(By.tagName("td"));
@@ -1134,6 +1153,49 @@ public class IHGUtil extends BasePageObject {
 		return list;
 	}
 
+
+	/**
+	 * Description: This method searches for the appropriate case in the case table based on the filtration criteria (a substring)
+	 * @param Xpath of the table,List of case search criteria
+	 * @return Row number where the exact case matching with the search criteria is present
+	 */	
+	public static List<Object> searchResultsSubstring(WebDriver pDriver,String pTableXpath,ArrayList<String> pMyArr_expected){
+		int i=0;
+		int rowNumber=0;
+		boolean flag=false;
+		List<Object> list = new ArrayList<Object>();	
+		ArrayList<String> myArr_actual = new ArrayList<String>();
+		WebElement table =pDriver.findElement(By.xpath(pTableXpath));
+		List<WebElement> rows=table.findElements(By.tagName("tr"));
+		mainLoop:for(WebElement row:rows){	
+			i++;
+			myArr_actual.clear();
+			List<WebElement> columns = row.findElements(By.tagName("td"));
+			for(WebElement column: columns){
+				myArr_actual.add(column.getText().toString());				
+			}
+			for(int j=0;j<pMyArr_expected.size();j++){
+				if(!myArr_actual.contains(pMyArr_expected.get(j))){
+					flag=false;
+					break;	
+				}				
+				else{
+					flag=true;
+					if(myArr_actual.get(2).contains(pMyArr_expected.get(1))){
+					     Log4jUtil.log (pMyArr_expected.get(j)+"is present in row :"+i, Level.INFO);  
+					     break;		
+					     }		
+				}				
+			}
+			if(flag==true){
+				rowNumber=i;
+				list.add(rowNumber);
+				list.add(flag);
+				break mainLoop;
+			}	
+		}
+		return list;
+	}
 
 
 	/**
@@ -1271,6 +1333,8 @@ public class IHGUtil extends BasePageObject {
 			WebDriverWait wait = new WebDriverWait( driver, timeOutInSeconds );
 			
 			found = wait.until(new ExpectedCondition<Boolean>() {
+
+				@Override
 				public Boolean apply(WebDriver driver) {
 					
 					// This causes problems for some drivers - need to use plural (findElements) and check size.
@@ -1322,4 +1386,93 @@ public class IHGUtil extends BasePageObject {
 		}
 		
 	}
+	
+	public static void printCookies(WebDriver driver) {
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		System.out.println("Printing Cookies -------");
+		for (Cookie c : cookies) {
+			System.out.println(c.toString());
+		}
+		System.out.println("--------------------------");
+	}
+
+    /**
+     * A method that will just wait until an element disappears for dynamic pages
+     * @param element WebElement that will be disappearing
+     * @param periodInMilliseconds determines how long is one waiting cycle
+     * @param maxWaitingTimeInSeconds maximal waiting time in seconds
+     * @throws InterruptedException, TimeoutException
+     */
+    public <U> void waitForElementToDisappear(
+            U element, long periodInMilliseconds, long maxWaitingTimeInSeconds)
+            throws InterruptedException, TimeoutException {
+
+        long sum = 0;
+        long maxWaitInMillis = TimeUnit.MILLISECONDS.convert(maxWaitingTimeInSeconds, TimeUnit.SECONDS);
+
+        // while the element exists - be it specified by By class or by WebElement class
+        while (By.class.isAssignableFrom(element.getClass()) ? exists((By) element) : exists((WebElement) element)) {
+            sum += periodInMilliseconds;
+            if (sum > maxWaitInMillis)
+                throw new TimeoutException(
+                        "Waiting for element to disappear is taking too long and exceeded the limit");
+
+            TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
+        }
+    }
+    public static void waitForElementByClassAndText(WebDriver driver,final String classToFind, final String textToFind, int secondsToWait){
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+        	@Override
+        	public Boolean apply(WebDriver d) {
+        		WebElement result = d.findElement(By.className(classToFind));
+        		return textToFind.equals(result.getText());
+        	}
+        };
+        wdw.until(condition); // Won't get past here till timeout or element is found
+    }
+    public static void waitForElementByClassAndValue(WebDriver driver,final String classToFind, final String valueToFind, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+        	@Override
+            public Boolean apply(WebDriver d) {
+            	WebElement result = d.findElement(By.className(classToFind));  
+                return valueToFind.equals(result.getAttribute("value"));
+            }
+        };
+        wdw.until(condition); // Won't get past here till timeout or element is found
+    }
+        
+    public static void waitForLinkByText(WebDriver driver, final String text, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+        wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); 
+    }   
+
+    public static void waitForElementByXpath(WebDriver driver, final String expression, int secondsToWait) {         
+        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+        wdw.until(ExpectedConditions.presenceOfElementLocated(By.xpath(expression)));
+    }
+
+    /**
+     * Adds specific cookie so that automated tests won't be tracked by Google Analytics
+     * This has been implemented only for forms so far (as of 24/2/2015)
+     */
+    public void addCookieForGoogleAnalytics() {
+        log("Creating and adding cookie so that this test wont be tracked by Google Analytics");
+        if (driver.manage().getCookieNamed("MF_TEST") == null) {
+            // getting tomorrow's date
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, 1);
+            date = calendar.getTime();
+
+            JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+            String domain = (String) jsExecutor.executeScript("return document.domain");
+
+            Cookie autoTestCookie = new Cookie("MF_TEST", "true", domain, "/", date);
+            driver.manage().addCookie(autoTestCookie);
+        }
+    }
 }

@@ -72,5 +72,63 @@ public class AMDCTestData {
 		return AmdcObj.OAuthPassword;
 	}	
 	
+	public String getReadCommunicationURL(){
+		return AmdcObj.ReadCommuniationURL;
+	}
 	
+	public String getSecureMessage_AskaStaffXML(){
+		return AmdcObj.SecureMessage_AskaStaffXML;
+	}
+	
+	public String getBatch_SecureMessage(){
+		return AmdcObj.Batch_SecureMessage;
+	} 
+	
+	public String getUserName1(){
+		return AmdcObj.UserName1;
+	}
+	
+	public String getFrom1(){
+		return AmdcObj.From1;
+	}
+	
+	public String getUserName2(){
+		return AmdcObj.UserName2;
+	}
+	
+	public String getSender1(){
+		return AmdcObj.Sender1;
+	}
+	
+	public String getSender2(){
+		return AmdcObj.Sender2;
+	}
+	
+	public String getSender3(){
+		return AmdcObj.Sender3;
+	}
+	
+	public String getIntegrationPracticeID(){
+		return AmdcObj.IntegrationPracticeID;
+	}
+	
+	public String getPatientName1(){
+		return AmdcObj.PatientName1;
+	}
+	
+	public String getPatientName2(){
+		return AmdcObj.PatientName2;
+	}
+	
+	public String getPatientName3(){
+		return AmdcObj.PatientName3;
+	}
+	
+	public String getGmailUserName(){
+		return AmdcObj.GmailUserName;
+	}
+	
+	public String getGmailPassword(){
+		return AmdcObj.GmailPassword;
+	}
 }

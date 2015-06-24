@@ -31,10 +31,10 @@ public class MakePaymentPage extends BasePageObject {
 	@FindBy(xpath = "//select[@name='availCreditCardsWrapper:_body:availCreditCards']")
     private WebElement creditCard;
 	
-	@FindBy(xpath = "//input[@class='button' and @value='Continue']")
+	@FindBy(name = ":submit")
     private WebElement clickContinuebtn;
 	
-	@FindBy(xpath = "//input[@class='button' and @value='Submit']")
+	@FindBy(name = "submitButton")
     private WebElement clickSubmitbtn;
 	
 	@FindBy(xpath = "//form[@id='form']/table//div[@class='heading1']")
@@ -73,17 +73,26 @@ public class MakePaymentPage extends BasePageObject {
 	@FindBy(xpath = "//input[@name='wrapper:cardZip']")
     private WebElement billingaddressZipCode;
 	
+	@FindBy(xpath = "//input[@class='button' and @value='Submit Payment']")
+    private WebElement clickOnSubmitbtn;
 	
+	@FindBy(xpath = ".//td[@class='table_text']/span")
+    private WebElement txtConfirmationNumber;
 	/**
 	 * @Description:Set Make Payment Fields
 	 */
 	
-	public void setMakePaymentFields()
+	public void setMakePaymentFields(String accountNumber)
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		patientAccountNumber.clear();
-		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);
+		if(accountNumber!=null)
+		{
+		patientAccountNumber.sendKeys(accountNumber);	
+		}
+		else{
+		patientAccountNumber.sendKeys(PortalConstants.PatientAccountNumber);}
 		paymentAmount.clear();
 		paymentAmount.sendKeys(PortalConstants.PaymentAmount);
 		try
@@ -121,10 +130,31 @@ public class MakePaymentPage extends BasePageObject {
 			billingaddressZipCode.sendKeys("94043");
 		}
 		clickContinuebtn.click();
+		//This is temporary fix for Dev3 and need to be made generic after element value change is available in Demo and Production after 15.1 deployment 
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
+		{
+			IHGUtil.waitForElement(driver,10,clickOnSubmitbtn);
+			clickOnSubmitbtn.click();
+		}
+		else{
 		IHGUtil.waitForElement(driver,10,clickSubmitbtn);
 		clickSubmitbtn.click();
+		}
 		IHGUtil.waitForElement(driver,10,paymentConfirmation);
 		BaseTestSoftAssert.verifyEquals(paymentConfirmation.getText(),PortalConstants.PaymentConfirmation);
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String readConfirmationNumber()
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String confirmationNumber=txtConfirmationNumber.getText().toString();
+		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ")  + "confirmation number is ".length(), confirmationNumber.indexOf(". Please retain"));
 	}
 
 }

@@ -1,9 +1,8 @@
 package com.intuit.ihg.product.mobile.test;
 
 import static org.testng.Assert.assertNotNull;
-
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -293,7 +292,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 3: Click Bill Pay Tab");
 		MobileBasePage mobileBasePage = pMyPatientPage.clickBillPayLink();
 
-		log("step 4: Click Home");
+		log("step 4: Click Home");		
 		mobileBasePage.clickHome();
 
 		log("step 5:LogOut");
@@ -348,7 +347,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		pMyPatientPage = pSubconfirm.clickClose();
 		pMyPatientPage.clickLogout();
-		Thread.sleep(2000);
+		//Let's leave this here just in case it falls apart on Jenkins
+		//Thread.sleep(2000);
 
 		log("step 6: Get Practice Test Data");
 		Practice practice = new Practice();
@@ -369,8 +369,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.getRequestDetails(reason);
 		assertNotNull(detailStep1,
 				"The submitted patient request was not found in the practice");
-		
-		Thread.sleep(3000);
+
 		log("step 10: Choose process option and respond to patient");
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
 
@@ -735,7 +734,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.selectDoctor(testcasesData.getAppointmentDoctor());
 
 		log("step 4:Fill data and submit");
-		MobileBasePage mbPage = (MobileBasePage) pARSubmit
+		MobileBasePage mbPage = pARSubmit
 				.fillWithDataAndSubmit(MobileConstants.APPOINTMENT_DATE,
 						MobileConstants.APPOINTMENT_REASON,
 						MobileConstants.APPOINTMENT_TIME);
@@ -782,11 +781,19 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("step 3: Click RxRenewalTab");
-		SelectAMedicationPage pSelectAMedicationPage = (SelectAMedicationPage) pMyPatientPage
-				.clickRXLink();
-
+		pMyPatientPage.clickRXLink();		
+		
 		log("step 4: select Medication");
+		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
+		Thread.sleep(2000);		
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
+		
+		if("QA1".equals(IHGUtil.getEnvironmentType().toString())){
+			log("QA1 found -> Step 4b: Select Provider");
+			SelectADoctorPage pSelPage = PageFactory.initElements(driver, SelectADoctorPage.class);
+			Thread.sleep(2000);
+			pSelPage.selectDoctor(40800);		
+		}
 		
 		log("step 5: select first Pharmacy");
 		pRequestRenewalPage.selectFirstPharmacy();
@@ -795,7 +802,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		pMyPatientPage = pRequestRenewalPage.clickClose();
 		pMyPatientPage.clickLogout();
-		Thread.sleep(2000);
+		
+		//Let's leave this here just in case it falls apart on Jenkins
+		//Thread.sleep(2000);
 
 		// Load up practice test data
 		Practice practice = new Practice();
@@ -837,6 +846,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 12: LogIn to verify secure message in mobile");
 		log("step 1:LogIn");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+		pMyPatientPage = mloginpage.login(testcasesData.getUserName(), testcasesData.getPassword());
 
 		log("subject##########################" + subject);
 		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
@@ -876,32 +886,41 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		logTestInfo(testcasesData);
 
-		log("step 1:LogIn");
+		log("step 1: LogIn");
 		MobileSignInPage mloginpage = new MobileSignInPage(driver,
 				testcasesData.getUrl());
 		MobileHomePage pMyPatientPage = mloginpage.login(
 				testcasesData.getUserName(), testcasesData.getPassword());
+		
+		log("step 2: Click RxRenewalTab");
+		pMyPatientPage.clickRXLink();
+		SelectAMedicationPage pSelectAMedicationPage = PageFactory.initElements(driver, SelectAMedicationPage.class);
+		  
 
-		log("step 3: Click RxRenewalTab");
-		SelectAMedicationPage pSelectAMedicationPage = (SelectAMedicationPage) pMyPatientPage
-				.clickRXLink();
-
-		log("step 4: select Medication");
+		log("step 3: select Medication");
+		Thread.sleep(2000);
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
 		
-		log("step 5: Click Add New Pharmacy");
-		AddPharmacyPage pAddPharmacyPage = (AddPharmacyPage) pRequestRenewalPage.addNewPharmacy();
+		if("QA1".equals(IHGUtil.getEnvironmentType().toString())){
+			log("QA1 found -> Step 3b: Select Provider");
+			SelectADoctorPage pSelPage = PageFactory.initElements(driver, SelectADoctorPage.class);
+			Thread.sleep(2000);
+			pSelPage.selectDoctor(40800);		
+		}
 		
-		log("step 6: Click Change current location");
+		log("step 4: Click Add New Pharmacy");
+		AddPharmacyPage pAddPharmacyPage = pRequestRenewalPage.addNewPharmacy();
+		
+		log("step 5: Click Change current location");
 		ChooseLocationPage pChooseLocationPage = pAddPharmacyPage.selectLocation();
 		
-		log("step 7: Search for location");
+		log("step 6: Search for location");
 		pAddPharmacyPage = pChooseLocationPage.selectLocation("Cupertino 95014");
 		
-		log("step 8: Search for Pharmacies");
+		log("step 7: Search for Pharmacies");
 		PharmaciesListPage pPharmaciesListPage = pAddPharmacyPage.searchPharmacies();
 		
-		log("step 9: Select first Pharmacy");
+		log("step 8: Select first Pharmacy");
 		PharmacyDetailsPage pPharmacyDetailsPage = pPharmaciesListPage.selectFirstPharmacy();
 		
 		verifyTrue(pPharmacyDetailsPage.verifyPharmacyDetails(),
@@ -943,16 +962,16 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		SelectAPracticePage pMySelectAPracticePage = (SelectAPracticePage) pMyPatientPage.clickAAQLink();
 		
 		log("step 4: Select a practice");
-		SelectAQuestionPage pMySelectAQuestionPage = (SelectAQuestionPage) pMySelectAPracticePage.selectPractice(testcasesData.getAskAQuestionPractice());
+		SelectAQuestionPage pMySelectAQuestionPage = pMySelectAPracticePage.selectPractice(testcasesData.getAskAQuestionPractice());
 		
 		log("step 5: Select a Question");
 		SelectALocationPage pMySelectALocationPage = pMySelectAQuestionPage.selectQuestion(testcasesData.getAskAQuestionType());
 		
 		log("step 6: Select a Location");
-		AskAQuestionPage pMyAskAQuestionPage = (AskAQuestionPage) pMySelectALocationPage.selectLocation(testcasesData.getAskAQuestionLocation());
+		AskAQuestionPage pMyAskAQuestionPage = pMySelectALocationPage.selectLocation(testcasesData.getAskAQuestionLocation());
 		
 		log("step 7: Fill and submit a Question");
-		SubmissionConfirmationPage pSubconfirm = (SubmissionConfirmationPage) pMyAskAQuestionPage.fillAndSubmitQuestion(testcasesData.getAskAQuestionDoctor(), 
+		SubmissionConfirmationPage pSubconfirm = pMyAskAQuestionPage.fillAndSubmitQuestion(testcasesData.getAskAQuestionDoctor(), 
 													"TestSubject", "TestBody");
 		
 		log("step 8: Close and logout");
@@ -1068,7 +1087,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 				.selectPracticeUsingString(testcasesData.getBillPayPracticeName());
 		
 		log("step 5: Select location");
-		MakeAPayment pMakeAPayment  = (MakeAPayment) pSelectALocation.selectLocationPayment(testcasesData.getBillPayPracticeLocation());
+		MakeAPayment pMakeAPayment  = pSelectALocation.selectLocationPayment(testcasesData.getBillPayPracticeLocation());
 
 		log("step 5: Add a new credit card");
 		NewCard pNewCard = pMakeAPayment.clicklnkAddNewCard();
@@ -1109,6 +1128,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		log("step 11: LogIn to verify secure message in mobile");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
+		pMyPatientPage = mloginpage.login(testcasesData.getUserName(), testcasesData.getPassword());
 
 		MessageInboxPage mInbox = pMyPatientPage.clickMyMessages();
 		MessageDetailsPage mDetails = mInbox.clickMessage(uniquePracticeResponse);
@@ -1185,7 +1205,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 9:Login with userId");
 		mloginpage = new MobileSignInPage(driver, testcasesData.getUrl());
 		MobileHomePage pMyPatientPage = mloginpage.login(userID,
-				testcasesData.getPassword());
+				testcasesData.getForgotPassword());
 		pMyPatientPage.waitForlogoutLink(driver, 60);
 
 		log("step 10:Assert Welcome text");
@@ -1242,7 +1262,7 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		log("step 4:Enter new password and submit");
 		ResetPasswordEnterSecurityCodePage pResetPasswordEnterSecurityCodePage = (ResetPasswordEnterSecurityCodePage) pResetPasswordEnterNewPasswordPage
-				.enterNewPasswordAndSubmit("Luke", testcasesData.getForgotPassword(), testcasesData.getForgotPassword());
+				.enterNewPasswordAndSubmit(testcasesData.getUserAnswer(), testcasesData.getForgotPassword(), testcasesData.getForgotPassword());
 		
 		log("step 5: Fecth Security code from the gmail");
 		String secCode = util.getSecurityCodeFromGmail(

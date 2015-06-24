@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.object.maps.portal.page.createAccount;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.common.utils.IHGConstants;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -24,6 +26,9 @@ public class CreateAccountPage extends BasePageObject {
 
 	@FindBy(name = "lastname")
 	private WebElement txtLastname;
+	
+	@FindBy(name = "gender")
+	private WebElement radioButtGender;
 
 	@FindBy(name = "birthday")
 	private WebElement txtbirthday;
@@ -60,6 +65,13 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "tou")
 	private WebElement checkIntuitTerms;
+	
+	@FindBy(name = "addOption")
+	private WebElement prefferedProvider;
+	
+	@FindBy(name = "editAccountPref:border:editForm:inputs:0:input:input")
+	private WebElement prefferedProviderQA1;
+
 
 	// ===========Full page=======================
 
@@ -73,9 +85,6 @@ public class CreateAccountPage extends BasePageObject {
 	private WebElement txtDoB;
 
 	@FindBy(name = "editPersonalInfo:border:editForm:inputs:4:input:input")
-	private WebElement txtSSN;
-
-	@FindBy(name = "editPersonalInfo:border:editForm:inputs:5:input:input")
 	private WebElement chkGender;
 
 	@FindBy(name = "editMailingAddress:border:editForm:inputs:0:input:input")
@@ -134,6 +143,13 @@ public class CreateAccountPage extends BasePageObject {
 	
 	@FindBy(name = "birthday:year")
 	private WebElement birthdayYear;
+	
+	@FindBy(name = "cont:questioninput")
+	private WebElement txtActivationCode;
+	
+	@FindBy(name = "buttons:submit")
+	private WebElement btnActivate;
+	
 
 	public CreateAccountPage(WebDriver driver) {
 		super(driver);
@@ -143,15 +159,14 @@ public class CreateAccountPage extends BasePageObject {
 	/**
 	 * creating a new user in Beta patient portal
 	 * 
+	 * @param patientDob_Month
+	 * @param patientDob_Day
+	 * @param patientDob_Year
 	 * @param patientFirstName
 	 * @param patientLastName
 	 * @param email
 	 * @param patientPhoneNumber
-	 * @param patientDob_Month
-	 * @param patientDob_Day
-	 * @param patientDob_Year
 	 * @param patientZip
-	 * @param patientSSN
 	 * @param address
 	 * @param password
 	 * @param Question
@@ -160,33 +175,23 @@ public class CreateAccountPage extends BasePageObject {
 	 * @param city
 	 * @return
 	 */
-	public MyPatientPage createAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
-					 String patientZip, String patientSSN,
-					String address, String password, String Question, String answer, String state, String city) {
+	public MyPatientPage createAccountPage(String patientFirstName, String patientLastName, String email,
+										   String patientPhoneNumber, String patientZip, String address,
+										   String password, String Question, String answer, String state, String city) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 
-		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
 		log("patientFirstName: " + patientFirstName);
 		txtPatientFirstname.sendKeys(patientFirstName);
-		patientLastName = patientLastName + PortalUtil.createRandomNumber();
 		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate();
 		
-		//Setting Date of birth
-		Select birthdaySelect = new Select(birthdayMonth);
-		birthdaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
-		
-		txtPatientFirstname.click();// This a fix given for chrome browser
-						// for dealing date drop down
+		txtPatientFirstname.click();
 		log("PatientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("PatientSSN: " + patientSSN);
-		txtssn.sendKeys(patientSSN);
 		log("Email: " + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
@@ -196,10 +201,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtFirstName.sendKeys(patientFirstName);
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
-		txtLastName.click();// This a fix given for chrome browser for
-					// dealing date drop down
-		txtSSN.clear();
-		txtSSN.sendKeys(patientSSN);
+		txtLastName.click();
 		chkGender.click();
 		txtAddress.sendKeys(address);
 		txtCity.sendKeys(city);
@@ -217,20 +219,109 @@ public class CreateAccountPage extends BasePageObject {
 		txtUserID.sendKeys(email);
 		txtPassword.sendKeys(password);
 		txtConfirmpassword.sendKeys(password);
-		/*
-		 * Select secretQuestion=new Select(dropDownSecretQuestion);
-		 * secretQuestion.selectByVisibleText(Question);
-		 */
-		chooseProvider(Question);
+		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
-		chkAgreePatientPrivacyInfo.click();
+		
+	  /*Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default
+		chooseProvider();*/
+			  
+		IHGUtil iHGUtil = new IHGUtil(driver);
+		if (iHGUtil.exists(chkAgreePatientPrivacyInfo, 1)) {
+			chkAgreePatientPrivacyInfo.click();
+		}
+		
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 
+		log("Clicked submit, returning");
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
+	
+	/**
+	 * try to create existing user in same practice
+	 * @param patientFirstName
+	 * @param patientLastName
+	 * @param gender
+	 * @param patientZip
+	 * @param patientSSN 
+	 * @param email
+	 * @return
+	 */
+	public CreateAccountExistingUserPage tryCreateExistingUser(String patientFirstName, String patientLastName, String patientZip, String patientSSN,
+					String email, String bMonth, String bDay, String bYear) {
 
-	public void chooseProvider(String pProvider) {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		
+		log("patientFirstName: " + patientFirstName);
+		txtPatientFirstname.sendKeys(patientFirstName);
+		log("patientLastName: " + patientLastName);
+		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate(bMonth, bDay, bYear);
+		
+		txtPatientFirstname.click();
+		log("PatientZip: " + patientZip);
+		txtzipcode.sendKeys(patientZip);
+		log("Email: " + email);
+		txtEmail.sendKeys(email);
+		btnContinue.click();
+		
+		return PageFactory.initElements(driver, CreateAccountExistingUserPage.class);
+	}
+	
+	/**
+	 * try to create existing user in different practice
+	 * @param patientFirstName
+	 * @param patientLastName
+	 * @param gender
+	 * @param patientZip
+	 * @param patientSSN 
+	 * @param email
+	 * @return
+	 */
+	public CreateAccountHealthKeyPage tryCreateExistingUserDiffPrac(String patientFirstName, String patientLastName, String patientZip, String patientSSN,
+					String email, String bMonth, String bDay, String bYear) {
+
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		
+		log("patientFirstName: " + patientFirstName);
+		txtPatientFirstname.sendKeys(patientFirstName);
+		log("patientLastName: " + patientLastName);
+		txtLastname.sendKeys(patientLastName);
+		radioButtGender.click();
+		setBirthDate(bMonth, bDay, bYear);
+		
+		txtPatientFirstname.click();
+		log("PatientZip: " + patientZip);
+		txtzipcode.sendKeys(patientZip);
+		log("PatientSSN: " + patientSSN);
+		txtssn.sendKeys(patientSSN);
+		log("Email: " + email);
+		txtEmail.sendKeys(email);
+		btnContinue.click();
+		
+		return PageFactory.initElements(driver, CreateAccountHealthKeyPage.class);
+	}
+	
+
+	private void setBirthDate(String Month, String Day, String Year) {
+		Select birthdaySelect = new Select(birthdayMonth);
+		birthdaySelect.selectByVisibleText(Month);
+		birthdayDay.sendKeys(Day);
+		birthdayYear.sendKeys(Year);
+	}
+	
+	private void setBirthDate() {
+		setBirthDate(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+	}
+
+	/**
+	 * @brief Chooses secret question. This method used to have a different name (choose provider) which did not make sense
+	 * @author Adam + someone mysterious
+	 */
+	public void chooseSecretQuestion(String pProvider) {
 		PortalUtil.setPortalFrame(driver);
 		List<WebElement> list = driver.findElements(By.xpath("//select[@name='editLoginInfo:border:editForm:inputs:6:input:input']/option"));
 		for (WebElement li : list) {
@@ -242,9 +333,31 @@ public class CreateAccountPage extends BasePageObject {
 			}
 			count++;
 		}
-
 	}
 
+	/**
+	 * @brief If the option to select a preffered provider is displayed then this method does so
+	 * @author Adam
+	 */
+	public void chooseProvider() {
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+		
+		// check if there is preffered provider option
+		if (driver.findElements(By.name("addOption")).size() > 0) {
+				Select provider = new Select(prefferedProvider); // and if so, select the first one
+				provider.selectByIndex(1);
+			}
+		//For QA1 environmet there is another name of preffered provide drop down name.
+		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1"))
+		{
+			Select provider = new Select(prefferedProviderQA1); // and if so, select the first one
+			provider.selectByIndex(1);
+		}
+		
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+	}
+	
 	public MyPatientPage fillInShortPatientCreation(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
 					String sSSN, String sEmail) {
 		
@@ -255,44 +368,41 @@ public class CreateAccountPage extends BasePageObject {
 		txtPatientFirstname.sendKeys(sPatientFirstName);
 		txtLastname.sendKeys(sPatientLastName);
 		
-		//Setting Date of birth
-		Select birthDaySelect = new Select(birthdayMonth);
-		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		//birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		radioButtGender.click();
+		
+		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
 		txtssn.sendKeys(sSSN);
-		txtEmail.sendKeys(sEmail);
-
+		
 		btnSubmit.click();
-
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
-	public MyPatientPage fillEmailActivaion(String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer) {
+	public MyPatientPage fillPatientActivaion(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
+					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 30, birthdayDay);
+/*		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
 
-		//txtLastname.sendKeys(sPatientLastName);----> commented by Bala
-		//Setting Date of birth
-		//To support 14.2 Create An Account - Patient Birthdate improvements
-		Select birthDaySelect = new Select(birthdayMonth);
-		birthDaySelect.selectByVisibleText(PortalConstants.DateOfBirthMonth);
-		/*birthdayMonth.sendKeys(PortalConstants.DateOfBirthMonth);*/
-		birthdayDay.sendKeys(PortalConstants.DateOfBirthDay);
-		birthdayYear.sendKeys(PortalConstants.DateOfBirthYear);
+		txtPatientFirstname.sendKeys(sPatientFirstName);
+		txtLastname.sendKeys(sPatientLastName);
+		IHGUtil.waitForElement(driver, 30, birthdayDay);
+		radioButtGender.click();*/
+		setBirthDate();
 		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
+		if(sSSN!=null){
 		txtssn.sendKeys(sSSN);
+		}
 		//txtEmail.sendKeys(sEmail);----> commented by Bala
+		//txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
-		
+		/*IHGUtil.waitForElement(driver, 30, txtActivationCode);
+		txtActivationCode.sendKeys(activationCode);
+		btnActivate.click();*/
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
@@ -305,7 +415,7 @@ public class CreateAccountPage extends BasePageObject {
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
 		//Accepting license agreements
-		
+		chooseProvider();
 		checkPrivacyInformation.click();
 		checkIntuitTerms.click();
 		btnSubmit.click();

@@ -34,6 +34,12 @@ public class AppointmentRequestStep2Page extends BasePageObject{
 	@FindBy( how = How.NAME, using="homephoneWrapper:_body:homephone")
 	private WebElement homePhone;
 	
+	@FindBy(xpath = "//div[@class = 'pane_header']")
+	private WebElement prefrDay;
+	
+	@FindBy( name ="preftimeWrapper:_body:preftime:container:panes:0:pane_content:content")
+	private WebElement prefrDayPart;
+	
 	// @FindBy( how = How.NAME, using="buttonpanel:submit")
 	@FindBy(xpath="//input[contains(@name,':submit')]")
 	private WebElement btnContinue;
@@ -66,10 +72,19 @@ public class AppointmentRequestStep2Page extends BasePageObject{
 		Select selectPreferredTimeFrame = new Select(dropDownPreferredTimeFrame);
 		selectPreferredTimeFrame.selectByIndex(1);	// TODO - use parameter
 		
-		Select selectPreferredDay = new Select(dropDownPreferredDay);
-		selectPreferredDay.selectByIndex(1);		// TODO - use parameter
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
+			{
+				prefrDay.click();
+				prefrDayPart.click();
+			}
+		else
+			{
+				Select selectPreferredDay = new Select(dropDownPreferredDay);
+				selectPreferredDay.selectByIndex(1);		// TODO - use parameter
+				choosePreferredTime.sendKeys( sChoosePreferredTime );
+			}
 		
-		choosePreferredTime.sendKeys( sChoosePreferredTime );
+		
 		apptReason.sendKeys( sApptReason + " " + createdTs );
 		
 		Select selectWhichIsMoreImportant = new Select(dropDownWhichIsMoreImportant);

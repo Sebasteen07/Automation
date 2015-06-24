@@ -103,7 +103,10 @@ public class IntegrationUtil extends IHGUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws Exception {
+	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws IllegalArgumentException,InterruptedException {
+		if (waitTime == 0){
+			throw new IllegalArgumentException("YOU CAN'T DO THIS USING THIS METHOD");
+		}
 		Thread.sleep(waitTime);
 		return driver.getPageSource().contains(value);
 	}

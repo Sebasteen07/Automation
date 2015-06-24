@@ -137,6 +137,44 @@ public class PhrUtil extends IHGUtil {
 
 		
 	}
+	public void ccdImportFromElekta(CcdType ccdType,String EHDCAdapterURL,String env) throws Exception {
+
+		IHGUtil.PrintMethodName();
+
+		WebPoster poster = new WebPoster();
+				
+		Assert.assertNotNull( 
+				"### Test property PHR_EHDC_ADAPTER_URL not defined", 
+				EHDCAdapterURL);
+			
+		log("Before setting the EHDC adapter url#####");
+		poster.setServiceUrl( EHDCAdapterURL.trim() );
+		
+		log("Before setting the content type#####");
+		poster.setContentType( "application/xml;" );
+
+		log("Before setting Expected codee#####");
+		poster.setExpectedStatusCode( 202 );	// HTTP Status Code
+
+		log("Add headers #####");
+		poster.addHeader( "ExternalSystemId", "79" );
+		poster.addHeader( "Authentication-Type", "2wayssl" );
+
+		if(ccdType == CcdType.ELEKTA_CCD){
+			
+			log("send Elekta CCD #####");
+			poster.postFromResourceFile( 
+					"testfiles/" 
+					+ env
+					+ "/ccd/Elekta-ccd.xml" );
+			
+			log("sleep(10000) :- Need time to let system process CCD #####");
+			Thread.sleep(10000); 
+			
+		}
+
+		
+	}
 	
 	/**
 	 * @author bbinisha

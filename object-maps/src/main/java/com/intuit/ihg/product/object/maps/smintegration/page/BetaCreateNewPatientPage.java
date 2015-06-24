@@ -17,6 +17,9 @@ import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 public class BetaCreateNewPatientPage extends BasePageObject{
 
+	public String LName = null;
+	public String FName = null;
+
 	@FindBy(name = "firstname")
 	private WebElement txtPatientFirstname;
 
@@ -126,6 +129,20 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 
 	@FindBy(className = "iframecontainer")
 	private WebElement pageContent;
+	
+	@FindBy(name = "birthday:month")
+	private WebElement birthdayMonth;
+	
+	@FindBy(name = "birthday:day")
+	private WebElement birthdayDay;
+	
+	@FindBy(name = "birthday:year")
+	private WebElement birthdayYear;
+	
+	@FindBy(name = "gender")
+	private WebElement radioButtGender;
+	
+	
 
 	public BetaCreateNewPatientPage(WebDriver driver) {
 		super(driver);
@@ -160,35 +177,41 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 		PortalUtil.setPortalFrame(driver);
 
 		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
-		log("patientFirstName" + patientFirstName);
+		log("patientFirstName: " + patientFirstName);
 		txtPatientFirstname.sendKeys(patientFirstName);
+		firstName(patientFirstName);
 		patientLastName = patientLastName + PortalUtil.createRandomNumber();
-		log("patientLastName" + patientLastName);
+		log("patientLastName: " + patientLastName);
 		txtLastname.sendKeys(patientLastName);
-		String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
-		txtbirthday.sendKeys(birthday);
+		lastName(patientLastName);
+		radioButtGender.click();
+		setBirthDate();
+		//String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
+		/*txtbirthday.sendKeys(birthday);*/
 		txtPatientFirstname.click();// This a fix given for chrome browser
 						// for dealing date drop down
-		log("patientZip" + patientZip);
+		log("patientZip: " + patientZip);
 		txtzipcode.sendKeys(patientZip);
-		log("patientSSN" + patientSSN);
-		txtssn.sendKeys(patientSSN);
+		/*log("patientSSN: " + patientSSN);
+		txtssn.sendKeys(patientSSN); */
+		
 		log("email" + email);
 		txtEmail.sendKeys(email);
 		btnContinue.click();
 
 		log("I am on the second Page :======");
-		txtFirstName.clear();
+		/*txtFirstName.clear();
 		txtFirstName.sendKeys(patientFirstName);
 		txtLastName.clear();
 		txtLastName.sendKeys(patientLastName);
 		txtDoB.clear();
+		//setBirthDate();
 		txtDoB.sendKeys(birthday);
 		txtLastName.click();// This a fix given for chrome browser for
 					// dealing date drop down
 		txtSSN.clear();
 		txtSSN.sendKeys(patientSSN);
-		chkGender.click();
+		chkGender.click();*/
 		txtAddress.sendKeys(address);
 		txtCity.sendKeys(city);
 		Select selectstate = new Select(dropDownState);
@@ -209,8 +232,11 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 		 */
 		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
-//		chkAgreePatientPrivacyInfo.click();
+		//chkAgreePatientPrivacyInfo.click();
+		if(driver.getPageSource().contains("Preferred Provider"))
+		{
 		chooseProvider();
+		}
 		chkAgreeIntuitTAndC.click();
 		btnSubmit.click();
 
@@ -238,6 +264,27 @@ public class BetaCreateNewPatientPage extends BasePageObject{
 		Select secretQuestion = new Select(preferredProvider);
 		secretQuestion.selectByIndex(1);
 	}
-
-
+	
+	private void setBirthDate(String Month, String Day, String Year) {
+		Select birthdaySelect = new Select(birthdayMonth);
+		birthdaySelect.selectByVisibleText(Month);
+		birthdayDay.sendKeys(Day);
+		birthdayYear.sendKeys(Year);
+	}
+	
+	private void setBirthDate() {
+		setBirthDate(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+	}
+	
+	public String firstName(String name)
+	{
+		FName=name;
+		return FName;
+	}
+	
+	public String lastName(String name)
+	{
+		LName=name;
+		return LName;
+	}
 }

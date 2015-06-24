@@ -49,16 +49,22 @@ public class SitegenConstants {
 	//for Custom Forms
 	public final static String FORMTYPE = "Custom Health Form";
 	public final static String FORMTITLE = "Auto CustomForm";
-	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instrcutions";
+	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instructions";
 	public final static String FORMMESSAGE = "Automation Custom Health Form Message";
 	public final static String FORMCATEGORY = "Insurance and Referrals";
+	public final static String FORMCATEGORY2 = "Demographics";
+    public final static String FORMCATEGORY3 = "Vital Signs";
 	public final static String FORMQUESTION1 = "Provide Insurance Information";
-	public final static String FORMQUESTION2 = "Patient Name"; 
+    public final static String FORMQUESTION2 = "Provide Demographics information"; 
 	public final static String FORMQUESTION3 = "Vitals information";
 	public final static String FORMANSWERSET1 = "Insurance";
 	public final static String FORMANSWERSET2 = "Demographics" ;
 	public final static String FORMANSWERSET3 = "Vitals";
-	public final static String FORMLAYOUTPAGE = "1";
+    public final static String FORMLAYOUTPAGE = "3";
+    public final static String FORMLAYOUTPAGE2 = "1";
+    public final static String FORMLAYOUTPAGE3 = "2";
+    public final static String FORMLAYOUTPAGE0 = "0";
+
 
 	//for Merchant AccountSetup for Practise through Paypal
 	public final static String PROCESSORVALUE1 = "PayPal";
@@ -118,6 +124,14 @@ public class SitegenConstants {
 	public final static String DISCRETEFORM_PATIENT_DOBDAY = "1";
 	public final static String DISCRETEFORM_PATIENT_DOBYEAR = "1987";
 	public final static String DISCRETEFORM_WELCOME_MESSAGE = "New welcome message for patien.";
+
+	public final static String CALCULATED_PHQ9_FORM = "Patient Health Questionnaire-9 (PHQ-9)";
+	public final static String CALCULATED_ADHD_FORM = "Adult ADHD Self-Report Scale (ASRS-v1.1) Symptom Checklist";
+	public final static String CALCULATED_PHQ2_FORM = "Patient Health Questionnaire-2 (PHQ-2)";
+
+	public final static String PDF_CCD_FORM = "Form output test";
+	public final static String PRACTICE_FORM = "Form for Practice view test";
+	public final static String SPECIAL_CHARS_FORM = "Quotation mark \" custom form";
 
 }
 

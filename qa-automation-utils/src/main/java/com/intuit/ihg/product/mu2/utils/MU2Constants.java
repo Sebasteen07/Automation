@@ -17,7 +17,13 @@ public interface MU2Constants {
 		public static final String RESOURCE_TYPE_NODE = "ResourceType";
 		public static final String ACTION_NODE = "Action";
 		public static final String PULL_API_EXPECTED_RESPONSE = "HTTP/1.1 200 OK";
+		public static final String APPOINTMENT_RESOURCE_TYPE = "AppointmentRequest";
+		public static final String PRESCRIPTION_RESOURCE_TYPE = "PrescriptionRenewalRequest";
 	
+		//MU2 Pull Events
+		public static final String EVENT_RECORDED_TIMESTAMP = "EventRecordedTimestamp";
+		public static final String INTUIT_PATIENT_ID = "IntuitPatientId";
+		public static final String ACTION_TIMESTAMP = "ActionTimestamp";
 		
 		// Push API
 		public static final String PUSH_API_ACTIVITY_NODE = "ns4:UserActivities";

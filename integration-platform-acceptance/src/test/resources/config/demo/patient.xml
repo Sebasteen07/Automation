@@ -33,7 +33,7 @@
     </PatientIdentifier>
     <PracticeIdentifier>
       <PracticeId>PracticeId</PracticeId>
-      <IntuitPracticeId>6d1e97ae-5fe7-425f-a622-7766e363a8f1</IntuitPracticeId>
+      <IntuitPracticeId>fbca8599-277f-41bf-9e63-633d334ec650</IntuitPracticeId>
     </PracticeIdentifier>
     <LastUpdateDate>2001-12-31T12:00:00</LastUpdateDate>
     <ResourceRequestId>ResourceRequestId</ResourceRequestId>
@@ -44,14 +44,14 @@
       <LastName>Franicky</LastName>
       <Suffix>Suffix</Suffix>
     </Name>
-    <DateOfBirth>1980-12-31T12:00:01</DateOfBirth>
+    <DateOfBirth>1987-01-11T12:00:01</DateOfBirth>
     <Race>American Indian or Alaska Native</Race>
     <Ethnicity>Hispanic or Latino</Ethnicity>
     <Gender>MALE</Gender>
     <PreferredLanguage>English</PreferredLanguage>
     <PreferredCommunication>US Mail</PreferredCommunication>
     <SocialSecurityNumber>123456789</SocialSecurityNumber>
-    <EmailAddress>ihgqa.demo@gmail.com</EmailAddress>
+    <EmailAddress>medqa.demo@gmail.com</EmailAddress>
     <HomeAddress>
       <Line1>Line1</Line1>
       <Line2>Line2</Line2>
@@ -99,7 +99,7 @@
         <City></City>
         <State></State>
         <Country></Country>
-        <ZipCode></ZipCode>
+        <ZipCode>27560</ZipCode>
       </Address>
       <Phone>Phone</Phone>
     </Employment>

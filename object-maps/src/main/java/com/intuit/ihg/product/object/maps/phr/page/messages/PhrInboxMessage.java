@@ -3,17 +3,19 @@ package com.intuit.ihg.product.object.maps.phr.page.messages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
 
 public class PhrInboxMessage extends BasePageObject{
 
-	@FindBy(xpath = ".//*[@id='msgDetail']/div[@class='msgHeader'][1]/div[@class='msgTitle']")
+	@FindBy(xpath = ".//*[@class='msg4']")
 	private WebElement practiceResponseSubject;
 	
-	@FindBy(linkText = "Review Health Information")
+	@FindBy(xpath ="//a[contains(text(),'Review health information')]")
 	private WebElement btnReviewHealthInformation;
 	
 	@FindBy(id = "basicInfo")
@@ -37,17 +39,18 @@ public class PhrInboxMessage extends BasePageObject{
 	 {
 		 IHGUtil.PrintMethodName();
 		 driver.switchTo().defaultContent();
-		 driver.switchTo().frame("externalframe");
+		 //driver.switchTo().frame("externalframe");
 		 return practiceResponseSubject.getText().toString().trim();
 	 }
 	 
-		public void clickBtnReviewHealthInformationPhr() throws InterruptedException {
+		public PhrDocumentsPage clickBtnReviewHealthInformationPhr() throws InterruptedException {
 			IHGUtil.PrintMethodName();
 			driver.switchTo().defaultContent();
-			driver.switchTo().frame("externalframe");
+			//driver.switchTo().frame("externalframe");
 			//PortalUtil.setConsolidatedInboxFramePhr(driver);
 			btnReviewHealthInformation.click();
 			Thread.sleep(2000);
+			return PageFactory.initElements(driver, PhrDocumentsPage.class);
 		}
 		
 		public void verifyCCDViewerAndClosePhr() throws InterruptedException {

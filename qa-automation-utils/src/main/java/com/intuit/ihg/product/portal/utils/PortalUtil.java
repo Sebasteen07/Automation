@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.portal.utils;
 
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -153,7 +148,7 @@ public class PortalUtil extends IHGUtil {
 
 	/**
 	 * Robot script for copying content
-	 * 
+	 *
 	 * @throws Exception
 	 */
 
@@ -202,12 +197,12 @@ public class PortalUtil extends IHGUtil {
 //		driver.manage().deleteAllCookies();
 //		return homePage;
 //	}
-	
+
 	/**
-	 * 
+	 *
 	 * Will return the URL to reset your password
-	 * 
-	 * 
+	 *
+	 *
 	 * @param userId
 	 * @param password
 	 * @param sSubject
@@ -239,15 +234,18 @@ public class PortalUtil extends IHGUtil {
 		gbot.deleteMessagesFromInbox(userId, password, sSubject);
 
 	}
-	
+
 	public static void setquestionnarieFrame(WebDriver pDriver) throws Exception {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(1000);
 		pDriver.switchTo().defaultContent();
-		pDriver.switchTo().frame(pDriver.findElement(By.xpath("//div[@id='lightbox']/iframe[@title='Forms']"))); 
+		try {
+			pDriver.switchTo().frame(pDriver.findElement(By.xpath("//div[@id='lightbox']/iframe[@title='Forms']")));
+		} catch (StaleElementReferenceException e) {
+			System.out.println("Stale element exception caught as expected. Frame should be correctly switched");
+		}
 	}
-	
-	
+
+
 	public static String createRandomNumericString() {
 
 		PortalUtil.PrintMethodName();
@@ -271,7 +269,7 @@ public class PortalUtil extends IHGUtil {
             return nums.substring(0,length);
         }
     }
-    
+
 	/**
 	 * REMOVE ALL EMAILS FROM INBOX
 	 * @param userId

@@ -7,6 +7,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,9 +37,9 @@ import com.intuit.ihg.common.utils.IHGUtil;
 
 	public class UtilityFunctions {
 		
-		
+		public static List<String> eventList=new ArrayList<String>();
 	/**
-	 * Sends HTTP Get request and writes response sinto response.xml	
+	 * Sends HTTP Get request and writes response into response.xml	
 	 * @param strUrl
 	 * @param xmlFilePath
 	 * @throws IOException
@@ -108,9 +115,10 @@ import com.intuit.ihg.common.utils.IHGUtil;
 	 * @param action
 	 * @return
 	 */
-	public static boolean FindEventInResonseXML(String xmlFileName,String event,String resourceType,String action) {
+	public static String FindEventInResonseXML(String xmlFileName,String event,String resourceType,String action,Long timeStamp,String practicePatientID) {
 		IHGUtil.PrintMethodName();
-		boolean isEventPresent = false;
+
+		String ActionTimestamp = null;
 		try {
 		
 		File stocks = new File(xmlFileName);
@@ -125,16 +133,31 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		Node node = nodes.item(i);
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 		Element element = (Element) node;
-		if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)){
-			isEventPresent= true;
+		String readValue;
+		readValue=getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP,element);
+		Long recordedTimeStamp=Long.valueOf(readValue);
+		if(recordedTimeStamp >= timeStamp)
+		{
+			
+		if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)&&getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID))
+			{
+			
+			ActionTimestamp=getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP,element);
+			
 			break;
+			}
+		}
+		else
+		{
+			//Log4jUtil.log("Event is not found in the pull events response XML");
 		}
 		}
 		}
 		} catch (Exception ex) {
 		ex.printStackTrace();
 		}
-	return isEventPresent;
+	return ActionTimestamp;
+	
 	}
 
 		private static String getValue(String tag, Element element) {
@@ -255,10 +278,29 @@ import com.intuit.ihg.common.utils.IHGUtil;
 		}
 		
 		
+		/**
+		 * Generate Portal event time [GMT to EST] 
+		 * @param actualTimeStamp
+		 * @throws ParseException 
+		 * 
+		 */
 		
-	
-
-
+		public static String generateDate(String actualTimeStamp) throws ParseException{
+			long EventRecordedTimestamp = Long.parseLong(actualTimeStamp);
+			Date date = new Date(EventRecordedTimestamp);
+			DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm ");
+			TimeZone estTime = TimeZone.getTimeZone("America/New_York");
+			gmtFormat.setTimeZone(estTime);
+			String data[]=gmtFormat.format(date).split(" ");		  	
+			String joinedDate=new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
+			return joinedDate;
+		}
 		
-	
+		public static List<String> eventList() {
+			eventList.add(MU2Constants.VIEW_ACTION);
+			eventList.add(MU2Constants.DOWNLOAD_ACTION);
+			eventList.add(MU2Constants.TRANSMIT_ACTION);
+			return eventList;
+		}  
+		
 }

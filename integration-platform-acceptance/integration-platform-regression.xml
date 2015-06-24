@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Integration-Platform-Acceptance" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "Integration-Platform-Regression" >
+	<classes>
+			<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+			<methods>
+	    		<include name="testAMDCBatch" />
+        		<include name="testAMDCRegression" />
+        		<include name="testOnDemandProvisionCCD" />
+        		<include name="testOnDemandProvisionPIDC" />
+        		<include name="testPatientRegistrationfromPractice" />
+        		<include name="testPIDCBatch" />
+        		<include name="testPIDCPatientDemographicsUpdate" />
+        		<include name="testHealthKeyPatientUpdate" />
+        		<include name="testPatientDemographicsUpdateWithSpecialCharacter" />
+        		<include name="testPIDCWithSpecialCharacterData" />
+        		<!-- include name="testHealthKeyPatientLoginAndOnDemandProvision"  After 15.3 release test will run on PROD--> 
+        		<!--<include name="testHealthKeyPatientAddInsurance"  After 15.3 release test will run on PROD-->
+        		<!--<include name="testHealthKeyPatientUpdateInsurance"  After 15.3 release test will run on PROD-->
+      		</methods>
+	</classes>
+</test>
+</suite>

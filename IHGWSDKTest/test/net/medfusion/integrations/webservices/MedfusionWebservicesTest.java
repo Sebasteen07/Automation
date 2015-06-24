@@ -335,8 +335,7 @@ public class MedfusionWebservicesTest {
                     WebServiceConstants.FIELD_AR_STATUS_OPEN);
             ApptReq[] resultApptReqs = service.getApptReqsByCriteria(
                     WebServiceConstants.FIELD_INT_NONE, arCriteria);
-            WebserviceUtils.dumpResults(resultApptReqs);
-            assertTrue(resultApptReqs.length > 0);
+            WebserviceUtils.dumpResults(resultApptReqs);            
 
             if (resultApptReqs != null && resultApptReqs.length > 0) {
                 System.out

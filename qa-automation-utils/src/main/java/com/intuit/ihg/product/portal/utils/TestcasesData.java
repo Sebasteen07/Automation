@@ -78,6 +78,11 @@ public class TestcasesData {
 		return portalobj.patientDob_Year;
 	}
 	
+	public String getDOB() {
+		return portalobj.patientDob_Month + "/" + portalobj.patientDob_Day + "/"
+				+ portalobj.patientDob_Year;
+	}
+
 	public String getZip(){
 		return portalobj.patientZip;
 	}
@@ -135,17 +140,31 @@ public class TestcasesData {
 		return portalobj.formsUrl;
 	}
 	
-	public String getBetaUrl() {
-		
-		return portalobj.betaUrl;
+	public String getPIFormsUrl() {	
+		return portalobj.formsPIUrl;
 	}
 	
-	public String getPreferredDoctorBeta() {
+	public String getPIFormsAltUrl() {
 		
-		return portalobj.preferredDoctorBeta;
+		return portalobj.formsAltPIUrl;
 	}
 	
 	public String getPreferredLocationBeta() {		
 		return portalobj.preferredLocationBeta;
 	}
+    public String getFormsAltUrl() {
+        return portalobj.formsAltUrl;
+    }
+        
+    public String getRestUrl() {
+        return portalobj.restUrl;
+    }
+	public String getSecureNotificationUser() {
+		return portalobj.secureMessageNotificationUserEmail;
+	}
+	public String getSecureNotificationUserPassword() {
+		return portalobj.secureMessageNotificationUserPassword;
+	}
+	
+	
 }

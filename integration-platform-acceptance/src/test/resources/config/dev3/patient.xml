@@ -33,7 +33,7 @@
     </PatientIdentifier>
     <PracticeIdentifier>
       <PracticeId>PracticeId</PracticeId>
-      <IntuitPracticeId>e7fb00ce-d9ea-43c2-b4f5-f48bd61d68af</IntuitPracticeId>
+      <IntuitPracticeId>6251d3a5-be36-4772-975b-b875658ac877</IntuitPracticeId>
     </PracticeIdentifier>
     <LastUpdateDate>2001-12-31T12:00:00</LastUpdateDate>
     <ResourceRequestId>ResourceRequestId</ResourceRequestId>
@@ -44,14 +44,14 @@
       <LastName>Franicky</LastName>
       <Suffix>Suffix</Suffix>
     </Name>
-    <DateOfBirth>1980-12-31T12:00:01</DateOfBirth>
+    <DateOfBirth>1987-01-11T12:00:01</DateOfBirth>
     <Race>American Indian or Alaska Native</Race>
     <Ethnicity>Hispanic or Latino</Ethnicity>
     <Gender>MALE</Gender>
     <PreferredLanguage>English</PreferredLanguage>
     <PreferredCommunication>US Mail</PreferredCommunication>
     <SocialSecurityNumber>123456789</SocialSecurityNumber>
-    <EmailAddress>ihgqa.dev3+integrated1@gmail.com</EmailAddress>
+    <EmailAddress>medfusiontesting@gmail.com</EmailAddress>
     <HomeAddress>
       <Line1>Line1</Line1>
       <Line2>Line2</Line2>
@@ -99,7 +99,7 @@
         <City></City>
         <State></State>
         <Country></Country>
-        <ZipCode></ZipCode>
+        <ZipCode>27560</ZipCode>
       </Address>
       <Phone>Phone</Phone>
     </Employment>

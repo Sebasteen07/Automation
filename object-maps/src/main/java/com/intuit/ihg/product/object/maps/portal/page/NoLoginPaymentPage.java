@@ -54,8 +54,11 @@ public class NoLoginPaymentPage extends BasePageObject{
 	@FindBy(name="emailAddrWrapper:_body:emailAddr")
 	private WebElement emailField;
 	
-	@FindBy(name="buttonsField:_body:buttons:submit")
-	private WebElement btnSubmit;
+	@FindBy(name="buttons:submit")
+	private WebElement btnsubmit;
+	
+	@FindBy(xpath = ".//td[@class='table_text']/span")
+    private WebElement txtConfirmationNumber;
 	
 	private String amountPrize;
 	
@@ -102,13 +105,25 @@ public class NoLoginPaymentPage extends BasePageObject{
 		paymentComment.sendKeys("Payment");
 		}
 		emailField.sendKeys(email);
-		
-		btnSubmit.click();
+		btnsubmit.click();	
+
 		
 	}
 	
 	public String GetAmountPrize()
 	{
 		return amountPrize;
+	}
+
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String readConfirmationNumber() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String confirmationNumber=txtConfirmationNumber.getText().toString();
+		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ")  + "confirmation number is ".length(), confirmationNumber.indexOf(". Please retain"));
 	}
 }

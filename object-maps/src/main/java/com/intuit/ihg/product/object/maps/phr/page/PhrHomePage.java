@@ -254,6 +254,11 @@ public class PhrHomePage extends BasePageObject{
 		PhrUtil pPhrUtil=new PhrUtil(driver);
 		pPhrUtil.ccdImportFromAllScripts(IHGUtil.getNonConsolidatedCCD(), allScriptAdapterURL, IHGUtil.getEnvironmentType().toString());
 	}
+	public void postElektaCCdRequest(String EHDCAdapterURL) throws Exception
+	{
+		PhrUtil pPhrUtil=new PhrUtil(driver);
+		pPhrUtil.ccdImportFromElekta(IHGUtil.getElektaCCD(), EHDCAdapterURL, IHGUtil.getEnvironmentType().toString());
+	}
 	
 	/**
 	 * @Description: Click on Medications Link

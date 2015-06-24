@@ -9,11 +9,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPageOnBetaSite;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotuserid.ForgotUserIdEnterEmailPage;
+import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -76,6 +76,7 @@ public class PortalLoginPage extends BasePageObject {
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
 		driver.manage().window().maximize();
+		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}
 	
@@ -101,14 +102,14 @@ public class PortalLoginPage extends BasePageObject {
 	public MyPatientPage login( String sUsername, String sPassword ) throws InterruptedException {	
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
-		log( "Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]" );	
+
+        new IHGUtil(driver).addCookieForGoogleAnalytics();
+		log("Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]");
 		log("Waiting for Username element, max wait time is 60 seconds");
 		IHGUtil.waitForElement(driver, 60, username);
 		username.sendKeys( sUsername );
 		password.sendKeys( sPassword );
 		login.click();
-		Thread.sleep(10000);
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
@@ -215,5 +216,27 @@ public class PortalLoginPage extends BasePageObject {
 		System.out.println("### DELETE ALL COOKIES");
 		driver.manage().deleteAllCookies();
 		return homePage;
+	}
+	
+	/**Added new method for login because if patients try to access secure message using Email notification link.
+	 * It directly moves to Patient Message Inbox page.
+	 * 
+	 * @param sUsername
+	 * @param sPassword
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public MessageCenterInboxPage loginNavigateToInboxPage( String sUsername, String sPassword ) throws InterruptedException {	
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+
+        new IHGUtil(driver).addCookieForGoogleAnalytics();
+		log("Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]");
+		log("Waiting for Username element, max wait time is 60 seconds");
+		IHGUtil.waitForElement(driver, 60, username);
+		username.sendKeys( sUsername );
+		password.sendKeys( sPassword );
+		login.click();
+		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
 	}
 }

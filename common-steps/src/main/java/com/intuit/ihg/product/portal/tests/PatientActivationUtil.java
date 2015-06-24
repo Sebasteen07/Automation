@@ -41,10 +41,10 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 
 		log("Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillEmailActivaion(patientActivationTest.getLastNameString(),
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(patientActivationTest.getLastNameString(),
 				PortalConstants.DateOfBirtSlashFormat, patientActivationTest.getZipCodeString(), testcasesData.getSSN(),
 				patientActivationTest.getEmailAddressString(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
-				testcasesData.getAnswer());
+				testcasesData.getAnswer(), activationCode, activationCode);
 
 		log("Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
@@ -63,7 +63,7 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 						patientActivationSearchTest.getEmailAddressString());
 
 		log("Checking for the activation link inside the patient Gmail inbox");
-		Thread.sleep(10000);
+//		Thread.sleep(10000);
 		GmailBot gBot = new GmailBot();
 
 		// Searching for the link for password reset in the Gmail Trash
@@ -78,10 +78,10 @@ public class PatientActivationUtil extends BaseTestNGWebDriver {
 
 		log("Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillEmailActivaion(patientActivationSearchTest.getLastNameString(),
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(patientActivationSearchTest.getLastNameString(),
 				PortalConstants.DateOfBirtSlashFormat, patientActivationSearchTest.getZipCodeString(), testcasesData.getSSN(),
 				patientActivationSearchTest.getEmailAddressString(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
-				testcasesData.getAnswer());
+				testcasesData.getAnswer(), activationCode, activationCode);
 
 		log("Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
