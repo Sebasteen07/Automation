@@ -141,29 +141,34 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, "eStMf@harakirimail.com", 
 				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
 		JalapenoPatientActivationPage jalapenoPatientActivationPage;
-		JalapenoHomePage jalapenoHomePage;
+		JalapenoHomePage jalapenoHomePage;		
 		try	{
 			log("Finishing of patient activation: step 1 - verifying identity");
 			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
+			log("  Waiting up to 50 sec for 1st step activation page to load");
+			WebElement activationZipCode = (new WebDriverWait(driver, 50))
+					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 			PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation("",
+			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getFirstNameString(),
 				testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 				testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			log("Retrying");
-			log("Finishing of patient activation: step 1 - verifying identity");
+			log("Finishing of patient activation: step 1 - verifying identity AGAIN.");
 			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
-			Thread.sleep(5000);
+			log("  Waiting up to 50 sec for 1st step activation page to load.");
+			WebElement activationZipCode = (new WebDriverWait(driver, 50))
+					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getPatientIdString(),
+			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getFirstNameString(),
 					testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 					testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
 			
@@ -225,7 +230,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Log in");
 		jalapenoLoginPage = new JalapenoLoginPage(driver,testDataFromProp.getUrl());
-		jalapenoHomePage = jalapenoLoginPage.login(testDataFromProp.getUserId(), testDataFromProp.getPassword());		
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getFirstNameString(), testDataFromProp.getPassword());		
 		
 		log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
