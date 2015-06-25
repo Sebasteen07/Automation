@@ -2,8 +2,8 @@ package com.intuit.ihg.common.utils.mail;
 
 import javax.ws.rs.core.MediaType;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

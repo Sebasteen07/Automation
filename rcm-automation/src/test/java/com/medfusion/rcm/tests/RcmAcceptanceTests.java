@@ -121,7 +121,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		//RCMUtil util = new RCMUtil(driver);
-		Harakirimail mail = new Harakirimail(driver);
+		Mailinator mail = new Mailinator();
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		log("Getting Test Data");
