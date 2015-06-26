@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.sitegen.test;
 
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
+
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
@@ -162,97 +163,138 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Date:-6/18/2013
 	 * @User Story ID in Rally : US6145
 	 * @StepsToReproduce:
-	 *Go to siteGen 
-	 *Enter the credentials
-	 *Search for the practice
-	 *Click on Physician/Providers
-	 *Add a physician
-	 *Enter the details of physician
-	 *Assert if  physician is added or not
-
-	 * =============================================================
-	 * @AreaImpacted :- 
-	 * Description
+	 *                    Go to siteGen
+	 *                    Enter the credentials
+	 *                    Click on Physician/Providers
+	 *                    Add a physician
+	 *                    Enter the details of physician
+	 *                    Assert if physician is added or not
 	 * @throws Exception
 	 */
 
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
-	public void testPhysician() throws Exception {
+	@Test
+	private void testPhysicianBoth(boolean su) throws Exception {
 
 		logTestEvironmentInfo("testPhysician");
 
 		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen=new Sitegen();
-		SitegenTestData testData=new SitegenTestData(sitegen);
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testData = new SitegenTestData(sitegen);
 
 		logSGLoginInfo(testData);
 
 		log("step 2:LogIn ##########");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testData.getSiteGenUrl());
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getSiteGenUrl());
 		SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
-		
-		loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
-        assertTrue(pSiteGenHomePage.isSearchPageLoaded(), 
-        		"Expected the SiteGen HomePage  to be loaded, but it was not.");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		if (su) {
+			pSiteGenHomePage = loginpage
+					.login(testData.getAdminUser(), testData.getAdminPassword());
+			assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
+					"Expected the SiteGen HomePage  to be loaded, but it was not.");
+			log("step 3: navigate to SiteGen PracticeHomePage ##########");
+			pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
+		} else {
+			pSiteGenHomePage = loginpage.login(testData.getAutomationUser(),
+					testData.getAutomationUserPassword());
+			log("step 3: navigate to SiteGen PracticeHomePage ##########");
+			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		}
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-        log("step 3: navigate to SiteGen PracticeHomePage ##########");
-		pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
-        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), 
-        		"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		
-		
 		log("step 4: click Link Physicians and navigate to Manage Your Physicians Page ##########");
-		ManageYourPhysiciansPage pManageYourPhysiciansPage=pSiteGenPracticeHomePage.clickLnkPhysicians();
-		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), 
+		ManageYourPhysiciansPage pManageYourPhysiciansPage = pSiteGenPracticeHomePage
+				.clickLnkPhysicians();
+		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(),
 				"Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
 		log("#####CHECK IF TESTDATA IS CLEAN ##########");
 		pManageYourPhysiciansPage.cleanTestPhysiciansData();
 
 		log("step 5: click Link Add Physicians and navigate to Add Physicians Page ##########");
-		AddPhysicianPage pAddPhysicianPage=pManageYourPhysiciansPage.clicklnkAddPhysician();
-		assertTrue(pAddPhysicianPage.isSearchPageLoaded(), "Expected the Add Physician Page to be loaded, but it was not.");
+		AddPhysicianPage pAddPhysicianPage = pManageYourPhysiciansPage.clicklnkAddPhysician();
+		assertTrue(pAddPhysicianPage.isSearchPageLoaded(),
+				"Expected the Add Physician Page to be loaded, but it was not.");
 
-		//creating dynamic last name , user Id and email , Sp case so adding logic in testcase itself
+		// creating dynamic last name , user Id and email , Sp case so adding logic in testcase itself
 		String lastName = SitegenConstants.LASTNAME + IHGUtil.createRandomNumber();
-		String email= IHGUtil.createRandomEmailAddress(SitegenConstants.EMAIL);
+		String email = IHGUtil.createRandomEmailAddress(SitegenConstants.EMAIL);
 
 		log("step 6: Add Physicians details ##########");
-		AddPhysicianStep2EditLocationInfoPage pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.addPhysician(SitegenConstants.FIRSTNAME, lastName, SitegenConstants.TITLE, SitegenConstants.DEANUMBER, email, lastName, SitegenConstants.PASSWORD);
-		assertTrue(pAddPhysicianStep2EditLocationInfoPage.isSearchPageLoaded(), "Expected the Add Physician Step2 Edit Location Information Page  to be loaded, but it was not.");
+		if (su) {
+			assertFalse(pAddPhysicianPage.isActiveGroupMemberYesOptionDisabled(),
+					"Activating Physician should be enabled");
+		} else {
+			assertTrue(pAddPhysicianPage.isActiveGroupMemberYesOptionDisabled(),
+					"Activating Physician should be disabled");
+		}
+
+		AddPhysicianStep2EditLocationInfoPage pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage
+				.addPhysician(SitegenConstants.FIRSTNAME, lastName, SitegenConstants.TITLE,
+						SitegenConstants.DEANUMBER, email, lastName, SitegenConstants.PASSWORD);
+		assertTrue(pAddPhysicianStep2EditLocationInfoPage.isSearchPageLoaded(),
+				"Expected the Add Physician Step2 Edit Location Information Page  to be loaded, but it was not.");
 
 		log("step 7: Assert if  Physicians added or not ##########");
-		assertTrue(verifyTextPresent(driver,"Information Updated"));
-		String provider= SitegenConstants.FIRSTNAME + " " + lastName; 
-		assertTrue(verifyTextPresent(driver,"Edit Location Information for "+provider));
+		assertTrue(verifyTextPresent(driver, "Information Updated"));
+		String provider = SitegenConstants.FIRSTNAME + " " + lastName;
+		assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider));
 
 		log("####### PHYSICAN ADDED AND TEST CASE PASSED ##########");
 		log("####### TEST DATA CLEANING PROCESS  IS GOING START ##########");
 
 		log("step 8: click Button GoBackToManagePhysicians ##########");
-		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.clickBtnGoBackToManagePhysicians();
+		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage
+				.clickBtnGoBackToManagePhysicians();
 
 		log("step 9:click link EditPhysician ##########");
 		pAddPhysicianPage = pManageYourPhysiciansPage.clicklnkEditPhysician();
-		assertTrue(pAddPhysicianPage.isSearchPageLoaded(), "Expected the Add Physician Page  to be loaded, but it was not.");
+		assertTrue(pAddPhysicianPage.isSearchPageLoaded(),
+				"Expected the Add Physician Page  to be loaded, but it was not.");
 
 		log("step 10:click on button Delete Physician ##########");
-		pAddPhysicianStep2EditLocationInfoPage=pAddPhysicianPage.deletePhysician();
-		/*log("Are you sure you wish to permanently delete: "+ provider+"?");
-		assertTrue(verifyTextPresent(driver,"Are you sure you wish to permanently delete: "+ provider+"?"));*/
+		pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.deletePhysician();
+		/*
+		 * log("Are you sure you wish to permanently delete: "+ provider+"?");
+		 * assertTrue(verifyTextPresent(driver,"Are you sure you wish to permanently delete: "+ provider+"?"));
+		 */
 
 		log("step 11:give Confirmation to delete operation ##########");
 		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.deletePhysican();
-		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
+		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(),
+				"Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
 		log("step 12:Assert if deleted or not ##########");
-		assertTrue(verifyTextPresent(driver,"Information Updated"));
-//		assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName, SitegenConstants.FIRSTNAME, SitegenConstants.TITLE)));
-		verifyTextPresent(driver,"Edit Physician");
+		assertTrue(verifyTextPresent(driver, "Information Updated"));
+		// assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,
+		// SitegenConstants.FIRSTNAME, SitegenConstants.TITLE)));
+		verifyTextPresent(driver, "Edit Physician");
 	}
 
+	/**
+	 * @author phajek
+	 *         Run testPhysician as non-SU and check if activating is disabled
+	 * @throws Exception
+	 */
 
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	public void testPhysician() throws Exception {
+
+		testPhysicianBoth(false);
+	}
+
+	/**
+	 * @author phajek
+	 *         Run testPhysician as SU and check if activating is enabled
+	 * @throws Exception
+	 */
+
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	public void testPhysicianSU() throws Exception {
+
+		testPhysicianBoth(true);
+	}
 
 
 	/**
