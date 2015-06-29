@@ -1,5 +1,7 @@
 package com.medfusion.jalapeno.test;
 
+import static org.testng.Assert.assertNotNull;
+
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -10,9 +12,13 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.mail.Mailinator;
+import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
@@ -22,12 +28,8 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
-//import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6DifferentPractice;
-//import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6Inactive;
-//import com.medfusion.product.jalapeno.JalapenoHealthKey6Of6SamePractice;
-//import com.medfusion.product.jalapeno.PreferenceDeliverySelection;
-//import com.medfusion.product.jalapeno.PreferenceDeliverySelection.Method;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage2;
@@ -52,7 +54,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
-
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
@@ -139,6 +141,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Checking if zipCode in My Account is filled");
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
 		assertTrue(jalapenoMyAccountPage.checkForAddress(driver,testData.getZipCode()));
+		
+		jalapenoHomePage = jalapenoMyAccountPage.returnToHomePage(driver);
 		
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
@@ -520,5 +524,82 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
 	}
+		
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequest() throws Exception {
+		
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		log("Initiate patient data");
+		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+		createPatient.initPatientData(driver, testData);
+		
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+				testData.getDOBYear(), true, testData.getZipCode());
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		
+		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(createPatient.getEmail(), createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());
+		
+		JalapenoAppointmentRequestPage jalapenoAppointmentRequestPage = jalapenoHomePage.clickOnAppointment(driver);
+		jalapenoAppointmentRequestPage.clickOnContinueButton(driver);
+		assertTrue(jalapenoAppointmentRequestPage.fillAndSendTheAppointmentRequest(driver));
+		
+		jalapenoHomePage = jalapenoAppointmentRequestPage.returnToHomePage(driver);			
+		jalapenoHomePage.logout(driver);
+		
+		log("Login to Practice Portal");
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
+
+		log("Search for appt requests");
+		apptSearch.searchForApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails("Illness");
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
+
+		log("Choose process option and respond to patient");
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep2Page.PAGE_NAME);
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
 				
+		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());	
+				
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		
+		log("Looking for appointment approval from doctor");
+		assertTrue(jalapenoMessagesPage.isAppointmentDisplayed(driver));
+	} 
+	
 }

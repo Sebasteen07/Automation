@@ -53,6 +53,29 @@ public class JalapenoMessagesPage extends BasePageObject {
 		PageFactory.initElements(driver, this);	
 	}
 	
+	public boolean isAppointmentDisplayed(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		int count = 1;
+		int maxCount = 10;
+		WebElement element;
+		
+		while(count <= maxCount){
+			try {
+				 driver.navigate().refresh();
+				 element = driver.findElement(By.xpath("(//*[contains(text(),'Approved')])[1]"));
+				 log("Message from doctor arrived");
+				 return element.isDisplayed();
+				 }
+			 catch(Exception ex) {
+				 log("Not arrived: " + count + "/" + maxCount + "| Refreshing page");
+				 count++; 
+			 }
+		}
+		
+		log("Message from doctor didn't arrive");
+		return false;
+	}
+	
 	public boolean isMessageFromDoctorDisplayed(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		int count = 1;
@@ -75,6 +98,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 		log("Message from doctor didn't arrive");
 		return false;
 	}
+	
 	public boolean isMessageFromEstatementsDisplayed(WebDriver driver) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		int count = 1;

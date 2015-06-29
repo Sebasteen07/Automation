@@ -99,6 +99,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
 		// try removing the try catch once newrelic is deprecated and fully removed
 		try{
+			inputUserId.clear();
 			inputUserId.sendKeys(username);
 		}
 		catch (org.openqa.selenium.WebDriverException e) {
