@@ -82,12 +82,14 @@ public class Mailinator {
 		return catchNewMessage(username, emailSubject, findInEmail, targetUrl, retries) != null;
 	}
 
-	/*
-	 * @Author Petr H
-	 * This method first checks the inbox for number of emails.
-	 * Then it waits for a new mail to arrive and checks it for a link with text specified in finInEmail
-	 * if target url is specified it compares it and return the url only if it contains the target url
-	 * If target url isn't specified it returns the url
+	/**
+	 * @author phajek
+	 *         This method first checks the inbox for number of emails.
+	 *         Then it waits for a new mail with specified subject to arrive.
+	 * @return If findInEmail is not specified it returns full subject of the e-mail.
+	 *         Else it checks it for a link with text specified in finInEmail:
+	 * @return If target url is specified it compares it and returns the url only if it contains the target url
+	 * @return If target url isn't specified it returns the url found using findInEmail value
 	 */
 	public String catchNewMessage(String username, String emailSubject, String findInEmail,
 			String targetUrl, int retries) throws Exception {
@@ -108,23 +110,30 @@ public class Mailinator {
 			int currentMailCount = inboxArray.length();
 			if (currentMailCount > initialMailCount) {
 				JSONObject emailInInbox = inboxArray.getJSONObject(currentMailCount - 1);
-				if (emailInInbox.get("subject").toString().contains(emailSubject)) {
-					String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL
-							+ emailInInbox.get("id").toString();
-					System.out.println("GET e-mail from: " + emailUrl);
-					JSONObject email = new JSONObject(RestUtils.get(emailUrl, String.class,
-							MediaType.APPLICATION_XML));
-					JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
-					for (int k = 0; k < parts.length(); k++) {
-						Document emailContent = Jsoup.parse(parts.getJSONObject(k)
-								.getString("body"));
-						Elements links = emailContent.body().getElementsContainingText(findInEmail);
-						String href = links.attr("href");
-						if ((targetUrl == null && !href.isEmpty())
-								|| (targetUrl != null && href.contains(targetUrl))) {
-							System.out.println("URL found: " + href);
-							return href;
+				String fullSubject = emailInInbox.get("subject").toString();
+				if (fullSubject.contains(emailSubject)) {
+					if (findInEmail != null) {
+						String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL
+								+ emailInInbox.get("id").toString();
+						System.out.println("GET e-mail from: " + emailUrl);
+						JSONObject email = new JSONObject(RestUtils.get(emailUrl, String.class,
+								MediaType.APPLICATION_XML));
+						JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
+						for (int k = 0; k < parts.length(); k++) {
+							Document emailContent = Jsoup.parse(parts.getJSONObject(k).getString(
+									"body"));
+							Elements links = emailContent.body().getElementsContainingText(
+									findInEmail);
+							String href = links.attr("href");
+							if ((targetUrl == null && !href.isEmpty())
+									|| (targetUrl != null && href.contains(targetUrl))) {
+								System.out.println("URL found: " + href);
+								return href;
+							}
 						}
+					} else {
+						System.out.println("Email with subject: \"" + fullSubject + "\" found.");
+						return fullSubject;
 					}
 				}
 			}
@@ -132,6 +141,37 @@ public class Mailinator {
 
 		}
 		return null;
+	}
+
+	/**
+	 * @author phajek
+	 *         Catch a new mail received and get some url from it specified by findInEmail
+	 *         See previous method - case when targetUrl is not specified
+	 * @return Url found in the link found using findInEmail value
+	 */
+	public String catchNewMessage(String username, String emailSubject, String findInEmail,
+			int retries) throws Exception {
+		return catchNewMessage(username, emailSubject, findInEmail, null, retries);
+	}
+
+	/**
+	 * @author phajek
+	 *         Catch new email - Subject of it must contain the emailSubject
+	 *         See previous methods - case when findInEmail is not specified
+	 * @return Full subject of the email found (containing emailSUbject)
+	 */
+	public String catchNewMessage(String username, String emailSubject, int retries)
+			throws Exception {
+		return catchNewMessage(username, emailSubject, null, null, retries);
+	}
+
+	/**
+	 * @author phajek
+	 *         Checks if any new email arrives
+	 * @return Full subject of the email found
+	 */
+	public String catchNewMessage(String username, int retries) throws Exception {
+		return catchNewMessage(username, "", null, null, retries);
 	}
 
 
