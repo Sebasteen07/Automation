@@ -172,7 +172,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test
+
 	private void testPhysicianBoth(boolean su) throws Exception {
 
 		logTestEvironmentInfo("testPhysician");
