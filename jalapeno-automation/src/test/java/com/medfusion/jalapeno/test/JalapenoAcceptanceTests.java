@@ -340,12 +340,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		assertTrue(jalapenoMessagesPage.assessMessagesElements());
 		
-		log("Waiting for message from practice portal");
-		assertTrue(jalapenoMessagesPage.isMessageFromDoctorDisplayed(driver));
+		log("Waiting for message from practice portal");	
+		assertTrue(jalapenoMessagesPage.isMessageDisplayed(driver, "Quick Send"));
 		
 		log("Response to the message");
 		jalapenoMessagesPage.replyToMessage(driver);
-		//TODO: system is unable to send a reply message, but message is sent
+		//TODO: "system is unable to send a reply" message, even if the message is sent
 		
 		log("Back to the practice portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -599,7 +599,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoMessagesPage.assessMessagesElements());
 		
 		log("Looking for appointment approval from doctor");
-		assertTrue(jalapenoMessagesPage.isAppointmentDisplayed(driver));
+		assertTrue(jalapenoMessagesPage.isMessageDisplayed(driver, "Approved"));
 	} 
 	
 }

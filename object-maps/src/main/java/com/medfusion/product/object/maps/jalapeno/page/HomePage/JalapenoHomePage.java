@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.jalapeno.page.HomePage;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -51,8 +50,7 @@ public class JalapenoHomePage extends JalapenoPage {
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-		//driver.manage().window().maximize();
-		driver.manage().window().setSize(new Dimension(1200, 768));
+		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);	
 	}
 	

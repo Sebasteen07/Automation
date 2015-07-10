@@ -1,7 +1,6 @@
 package com.medfusion.product.object.maps.jalapeno.page.MessagesPage;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -53,49 +53,25 @@ public class JalapenoMessagesPage extends BasePageObject {
 		PageFactory.initElements(driver, this);	
 	}
 	
-	public boolean isAppointmentDisplayed(WebDriver driver) {
+	public boolean isMessageDisplayed(WebDriver driver, String subject) {
 		IHGUtil.PrintMethodName();
 		int count = 1;
 		int maxCount = 10;
 		WebElement element;
 		
-		while(count <= maxCount){
+		while(count <= maxCount) {
 			try {
-				 driver.navigate().refresh();
-				 element = driver.findElement(By.xpath("(//*[contains(text(),'Approved')])[1]"));
-				 log("Message from doctor arrived");
-				 return element.isDisplayed();
-				 }
-			 catch(Exception ex) {
-				 log("Not arrived: " + count + "/" + maxCount + "| Refreshing page");
-				 count++; 
-			 }
+				element = driver.findElement(By.xpath("(//*[contains(text(),'" + subject + "')])[1]"));
+				log("Message with subject \"" + subject + "\" arrived");
+				return element.isDisplayed();
+			}
+			catch(Exception ex) {
+				log("Message didn't arrive. Attempt " + count++ + "/" + maxCount + ". Refreshing page.");
+				driver.navigate().refresh();
+			}
 		}
 		
-		log("Message from doctor didn't arrive");
-		return false;
-	}
-	
-	public boolean isMessageFromDoctorDisplayed(WebDriver driver) {
-		IHGUtil.PrintMethodName();
-		int count = 1;
-		int maxCount = 10;
-		WebElement element;
-		
-		while(count <= maxCount){
-			try {
-				 driver.navigate().refresh();
-				 element = driver.findElement(By.xpath("(//*[contains(text(),'Quick Send')])[1]"));
-				 log("Message from doctor arrived");
-				 return element.isDisplayed();
-				 }
-			 catch(Exception ex) {
-				 log("Not arrived: " + count + "/" + maxCount + "| Refreshing page");
-				 count++; 
-			 }
-		}
-		
-		log("Message from doctor didn't arrive");
+		log("Message with subject \"" + subject + "\" didn't arrive at all.");
 		return false;
 	}
 	
@@ -131,7 +107,13 @@ public class JalapenoMessagesPage extends BasePageObject {
 		replyBody.sendKeys("This is response to doctor's message");
 		
 		sendButton.click();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		log("Message sent");
 	}
