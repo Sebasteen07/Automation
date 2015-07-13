@@ -171,6 +171,21 @@ public class PropertyFileLoader {
 	public String getDoctorBase64AuthString() {
 		return property.getProperty("doctorBase64AuthString");
 	}
+	public String getBearerOAuthString() {
+		return property.getProperty("bearerOAuthString");
+	}
+	public String getRcmMerchantRest() {
+		return property.getProperty("rcmMerchantRest");
+	}
+	public String getRcmMerchantLogoRest() {
+		return property.getProperty("rcmMerchantLogoRest");
+	}
+	public String getRcmMerchantID() {
+		return property.getProperty("rcmMerchantID");
+	}
+	public String getBillingAccountNumber() {
+		return property.getProperty("billingAccountNumber");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

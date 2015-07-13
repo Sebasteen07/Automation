@@ -205,10 +205,13 @@ public class WebPoster {
 
 	}
 	public void get() {
+		get(contentType);
+	}
+	public void get(String type) {
 		  try {
 	 
 			ClientRequest request = new ClientRequest(serviceUrl);
-			request.accept(contentType);
+			request.accept(type);
 			// adding headers to request
 			for (Map.Entry<String, String> entry : headerMap.entrySet()) {
 
