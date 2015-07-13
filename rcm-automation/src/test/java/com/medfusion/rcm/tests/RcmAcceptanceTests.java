@@ -69,6 +69,61 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testRcmDedicatedRestsGET() throws Exception {
+
+		log(this.getClass().getName());		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();	
+		
+		String doctorAuth = testData.getDoctorBase64AuthString();
+		String bearerAuth = testData.getBearerOAuthString();
+		String billingAccountRest = testData.getRcmBillingAccountRest();
+		String merchantRest = testData.getRcmMerchantRest();
+		String merchantLogoRest = testData.getRcmMerchantLogoRest();
+		String merchantID = testData.getRcmMerchantID();			
+		
+		
+		WebPoster billingAccountsPractice = new WebPoster();
+		//WebPoster billingAccountsSyslevel = new WebPoster();
+		WebPoster merchantPractice = new WebPoster();
+		WebPoster merchantSyslevel = new WebPoster();
+		WebPoster merchantLogo = new WebPoster();
+		WebPoster statementsPractice = new WebPoster();
+		WebPoster statementsSyslevel = new WebPoster();
+		
+		billingAccountsPractice.setServiceUrl(billingAccountRest.trim()+merchantID);		
+		billingAccountsPractice.setContentType( "application/json;" );
+		billingAccountsPractice.addHeader( "Authorization", "Basic " + doctorAuth );
+		log("Set Expected Status Code = 200");
+		billingAccountsPractice.setExpectedStatusCode( 200 );
+		//assertTrue is used to verify expected status code, in effect, no exception thrown from .get() means the expected status was returned
+		billingAccountsPractice.get();
+		
+		merchantPractice.setServiceUrl(merchantRest.trim()+"me");		
+		merchantPractice.setContentType( "application/json;" );
+		merchantPractice.addHeader( "Authorization", "Basic " + doctorAuth );
+		log("Set Expected Status Code = 200");
+		merchantPractice.setExpectedStatusCode( 200 );		
+		merchantPractice.get();
+		
+		merchantSyslevel.setServiceUrl(merchantRest.trim()+merchantID);		
+		merchantSyslevel.setContentType( "application/json;" );
+		merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
+		log("Set Expected Status Code = 200");
+		merchantSyslevel.setExpectedStatusCode( 200 );		
+		merchantSyslevel.get();
+		
+		merchantLogo.setServiceUrl(merchantLogoRest);		
+		merchantLogo.setContentType( "application/json;" );		
+		log("Set Expected Status Code = 200");
+		merchantLogo.setExpectedStatusCode( 200 );		
+		merchantLogo.get();					
+		//if no exception was thrown by now, it passed (all status codes returned as expected)
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendStmtVerifyNotificationsMessagesBalance() throws Exception {
 
 		log(this.getClass().getName());
@@ -111,8 +166,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		
 	}
 	
-	//It's ugly, I'm very, very aware of that, on the other hand keeping in intact lets us react and modify the test much faster and easier.
-	//Will be split under utilities with only the main steps here, once the logic is stable for at least a whole release. 
+	//Will be split under utilities with only the main steps here, once the logic is stable for at least a whole release.
+	//That means *maybe* after format2 and multilocations...
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testActivatePatientSendStatement() throws Exception {	    
 		
@@ -256,7 +311,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Balance checks out, yay!");
 		log("Does it match from practice PoV as well though?");
 		assertTrue(getBillingAccountInfoComparePatientBalance(testDataFromProp.getRcmBillingAccountRest(),Integer.toString(billingNumber),testDataFromProp.getDoctorBase64AuthString(),"\"customerBalance\":"+ newBal));
-		log("Great success!");		
+		log("It also checks out with practice admin!");		
 		
 	}
 	
