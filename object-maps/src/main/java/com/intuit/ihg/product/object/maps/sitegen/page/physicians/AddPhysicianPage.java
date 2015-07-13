@@ -44,6 +44,9 @@ public class AddPhysicianPage extends BasePageObject {
 	@FindBy(name = "active")
 	private WebElement dropDownActiveGroupMember;
 
+	@FindBy(xpath = "//select[@name='active']/option[@value='1']")
+	private WebElement yesActive;
+
 	@FindBy(id = "userID")
 	private WebElement txtUserID;
 
@@ -125,6 +128,13 @@ public class AddPhysicianPage extends BasePageObject {
 		btnAddPhysican.click();
 		return PageFactory.initElements(driver,
 				AddPhysicianStep2EditLocationInfoPage.class);
+
+	}
+
+	public boolean isActiveGroupMemberYesOptionDisabled() {
+		IHGUtil.PrintMethodName();
+		SitegenlUtil.setSiteGenFrame(driver);
+		return yesActive.getAttribute("disabled") != null;
 
 	}
 

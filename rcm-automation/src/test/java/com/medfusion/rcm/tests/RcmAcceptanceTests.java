@@ -38,7 +38,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
-import com.intuit.ihg.common.utils.mail.Harakirimail;
+import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
@@ -73,7 +73,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 		log(this.getClass().getName());
 		RCMUtil util = new RCMUtil(driver);
-		Harakirimail mail = new Harakirimail(driver);
+		Mailinator mail = new Mailinator();
 		
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -121,7 +121,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		//RCMUtil util = new RCMUtil(driver);
-		Harakirimail mail = new Harakirimail(driver);
+		Mailinator mail = new Mailinator();
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		log("Getting Test Data");
@@ -131,14 +131,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		//Randomize balance, insert decimal dot
 		Random rand = new Random();
 		int minBal = 100;
-		int maxBal = 150000;
+		int maxBal = 99900;
 		String newBal = Integer.toString((rand.nextInt(maxBal - minBal) + minBal + 1));	
 		newBal = new StringBuffer(newBal).insert(newBal.length()-2, ".").toString();
 		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
 	
 		log("Patient Activation on Practice Portal");
-		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, "eStMf@harakirimail.com", 
+		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, "eStMf@mailinator.com", 
 				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
 		JalapenoPatientActivationPage jalapenoPatientActivationPage;
 		JalapenoHomePage jalapenoHomePage;		
@@ -146,8 +146,10 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			log("Finishing of patient activation: step 1 - verifying identity");
 			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load");
+			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
 					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
+			driver.manage().window().maximize();
 			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 			PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
@@ -162,8 +164,10 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			log("Finishing of patient activation: step 1 - verifying identity AGAIN.");
 			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load.");
+			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
 					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
+			driver.manage().window().maximize();
 			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
@@ -180,14 +184,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		driver.findElement(By.id("paymentPreference_Electronic")).click();
 		driver.findElement(By.id("updateStatementPrefButton")).click();
 		
-		
+		/*
 		log("Detecting if Home Page is opened");
 		assertTrue(jalapenoHomePage.assessHomePageElements());
 	
 		log("Checking if address in My Account is filled");
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
 		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-	
+	    */
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		
@@ -220,7 +224,9 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated"));				
 			
 		log("Setting up a modified statement");
-		postModifiedStatementToPatient(testDataFromProp.getRcmStatementRest(), IHGUtil.getEnvironmentType().toString(),patientActivationSearchTest.getFirstNameString(),newBal,true);
+		int billingNumber = postModifiedStatementToPatient(testDataFromProp.getRcmStatementRest(), IHGUtil.getEnvironmentType().toString(),patientActivationSearchTest.getFirstNameString(),newBal,true);
+		assertFalse(billingNumber == -1);
+		log("Statement was successfuly posted to pm/emr, to the following billing account number: " + billingNumber);
 		log("Checking mail");
 		
 		log("Check email notification and URL");
@@ -247,8 +253,11 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Check expected balance");
 		String balance  = getBalanceDue(driver);
 		assertTrue(("$"+newBal).equals(balance));
-		
 		log("Balance checks out, yay!");
+		log("Does it match from practice PoV as well though?");
+		assertTrue(getBillingAccountInfoComparePatientBalance(testDataFromProp.getRcmBillingAccountRest(),Integer.toString(billingNumber),testDataFromProp.getDoctorBase64AuthString(),"\"customerBalance\":"+ newBal));
+		log("Great success!");		
+		
 	}
 	
 	protected String getBalanceDue(WebDriver driver){
@@ -267,11 +276,24 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			return balance.getText();
 		}
 	}
-	protected void postModifiedStatementToPatient(String rcmStatementRest, String env, String practicePatientId, String patientBalance, boolean randomize) throws Exception {
-
+	protected boolean getBillingAccountInfoComparePatientBalance(String rcmBillingAccountRest, String billingAccountNumber, String staffAuthString, String balanceToFind){
+		WebPoster poster = new WebPoster();		
+		poster.setServiceUrl(rcmBillingAccountRest.trim()+billingAccountNumber);		
+		poster.setContentType( "application/json;" );
+		poster.addHeader( "Authorization", "Basic " + staffAuthString );
+		log("Set Expected Status Code = 200");
+		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
+		return poster.getAndSearchForMatch(balanceToFind);
+	}
+	protected int postModifiedStatementToPatient(String rcmStatementRest, String env, String practicePatientId, String patientBalance, boolean randomize) throws Exception {
+		Assert.assertNotNull( 
+				"### Test property rcmStatementRest not defined", 
+				rcmStatementRest);
 		IHGUtil.PrintMethodName();
 		int min = 111111;
 		int max = 999999;
+		Random rand = new Random();
+		String newBillingNumber = Integer.toString((rand.nextInt((max - min) + 1) + min));
 		try {
 			System.out.println("Modifying XML resource for " + env + " , setting patient to " + practicePatientId + ", balance " + patientBalance);
 			URL url = ClassLoader.getSystemResource("testfiles/"+ env + "/statementEdited.xml");
@@ -294,9 +316,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			System.out.println("###  PatientBalance found: " + patientBalanceNode.getTextContent());
 			patientBalanceNode.setTextContent(patientBalance);			
 			System.out.println("###    changing to: " + patientBalanceNode.getTextContent());
-			if(randomize){				
-				Random rand = new Random();
-				String newBillingNumber = Integer.toString((rand.nextInt((max - min) + 1) + min));
+			if(randomize){								
 				System.out.println("###  New billing account number: " + newBillingNumber);
 				billingAccountNumberNode.setTextContent(newBillingNumber);
 			}
@@ -327,33 +347,34 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
             System.out.println("### Great success!");
 			
 		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();			
+			pce.printStackTrace();
+			return -1;
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
+			return -1;
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+			return -1;
 		} catch (SAXException sae) {
-			sae.printStackTrace();			
+			sae.printStackTrace();
+			return -1;
 		}
 		
 		WebPoster poster = new WebPoster();
-				
-		Assert.assertNotNull( 
-				"### Test property rcmStatementRest not defined", 
-				rcmStatementRest);
+						
 		poster.setServiceUrl( rcmStatementRest.trim() );
 		
 		poster.setContentType( "application/xml;" );
 		poster.addHeader( "requestId", "d3baaa87-1010-1010-1010-123456789000" );
 		poster.addHeader( "Authentication-Type", "2wayssl" );
-		log("Expected Status Code =#####");
+		log("Expected Status Code = 202");
 		poster.setExpectedStatusCode( 202 );	// HTTP Status Code
 		log("send Statement to patient #####");
 		poster.postFromResourceFile( 
 					"testfiles/" 
 					+ env
-					+ "/statementEdited.xml" );			
-				
-		
+					+ "/statementEdited.xml" );
+	
+		return Integer.parseInt(newBillingNumber);		
 	}
 }

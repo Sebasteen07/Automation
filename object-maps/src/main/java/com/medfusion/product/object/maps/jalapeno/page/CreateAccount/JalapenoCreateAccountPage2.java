@@ -65,7 +65,7 @@ public class JalapenoCreateAccountPage2 extends BasePageObject {
 		inputUserId.sendKeys(userId);
 		log("Setting Password as " + password);
 		inputPassword.sendKeys(password);
-		
+				
 		log("Secret Question as " + secretQuestion);
 		inputSecretQuestion.sendKeys(secretQuestion);
 		

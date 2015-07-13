@@ -18,6 +18,7 @@
         		<include name="testAddInsurance" />
         		<include name="testAddandChangeCreditCard" />
         		<include name="testPatientForgotUserId" />
+        		<include name="testPatientForgotUserIdCaseInsensitiveEmail" />
         		<include name="testForgotPassword" />
         		<include name="testMyMessagesRefreshButton" />
       		</methods>

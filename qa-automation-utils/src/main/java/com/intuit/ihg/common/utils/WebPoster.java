@@ -2,12 +2,14 @@ package com.intuit.ihg.common.utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.testng.Assert;
@@ -202,4 +204,95 @@ public class WebPoster {
 		}
 
 	}
+	public void get() {
+		  try {
+	 
+			ClientRequest request = new ClientRequest(serviceUrl);
+			request.accept(contentType);
+			// adding headers to request
+			for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+
+				String key = entry.getKey();
+				String value = entry.getValue();
+
+				System.out.println("... HEADER[" + key + "] = [" + value + "]");
+
+				request.header(key, value);
+			}
+			ClientResponse<String> response = request.get(String.class);
+	 
+			Assert.assertEquals( response.getStatus(),expectedStatusCode,"HTTP Status not what expected" );
+	 
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				new ByteArrayInputStream(response.getEntity().getBytes())));
+	 
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+	 
+		  } catch (ClientProtocolException e) {
+	 
+			e.printStackTrace();
+	 
+		  } catch (IOException e) {
+	 
+			e.printStackTrace();
+	 
+		  } catch (Exception e) {
+	 
+			e.printStackTrace();
+	 
+		  }
+	 
+		}
+	public boolean getAndSearchForMatch(String lookFor) {
+		  try {
+	 
+			ClientRequest request = new ClientRequest(serviceUrl);
+			request.accept(contentType);
+			// adding headers to request
+			for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+
+				String key = entry.getKey();
+				String value = entry.getValue();
+
+				System.out.println("... HEADER[" + key + "] = [" + value + "]");
+
+				request.header(key, value);
+			}
+			ClientResponse<String> response = request.get(String.class);
+	 
+			Assert.assertEquals( response.getStatus(),expectedStatusCode,"HTTP Status not what expected" );
+	 
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				new ByteArrayInputStream(response.getEntity().getBytes())));
+	 
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+				if (output.indexOf(lookFor) != -1) {
+					System.out.println("Target found! returning \n");
+					return true;
+				}
+			}
+	 
+		  } catch (ClientProtocolException e) {
+	 
+			e.printStackTrace();
+	 
+		  } catch (IOException e) {
+	 
+			e.printStackTrace();
+	 
+		  } catch (Exception e) {
+	 
+			e.printStackTrace();
+	 
+		  }
+		return false;
+	 
+		}
 }

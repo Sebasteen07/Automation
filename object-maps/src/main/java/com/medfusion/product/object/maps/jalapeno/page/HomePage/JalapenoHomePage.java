@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.jalapeno.page.HomePage;
 
 import java.util.ArrayList;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -59,7 +61,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
-
+	
+	public JalapenoAppointmentRequestPage clickOnAppointment(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		appointments.click();
+		
+		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
+	}
 
 	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) throws Exception {
 		

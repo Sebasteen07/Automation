@@ -165,6 +165,12 @@ public class PropertyFileLoader {
 	public String getStatementBalanceDue() {
 		return property.getProperty("statementBalanceDue");
 	}
+	public String getRcmBillingAccountRest() {
+		return property.getProperty("rcmBillingAccountRest");
+	}
+	public String getDoctorBase64AuthString() {
+		return property.getProperty("doctorBase64AuthString");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();
