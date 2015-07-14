@@ -89,7 +89,7 @@ public class ResetYourPasswordPage extends BasePageObject{
 		String emailSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),
 				PortalConstants.PORTAL_TITLE.trim());
 		String url = mail.catchNewMessage(mailAddress[0], emailSubject,
-				PortalConstants.TextInForgotPasswordEmailLink, null, 10);
+				PortalConstants.TextInForgotPasswordEmailLink, 20);
 		assertTrue((url != null), "Reset password email not found.");
 		return url;
 	}
