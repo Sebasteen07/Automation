@@ -110,14 +110,18 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		merchantPractice.setExpectedStatusCode( 200 );		
 		merchantPractice.get();
 		
-		log("Requesting from merchant info - system level");
-		merchantSyslevel.setServiceUrl(merchantRest.trim()+merchantID);		
-		merchantSyslevel.setContentType( "application/json;" );
-		merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
-		log("Set Expected Status Code = 200");
-		merchantSyslevel.setExpectedStatusCode( 200 );		
-		merchantSyslevel.get();
-		
+		if (IHGUtil.getEnvironmentType().toString().equals("PROD")){
+			log("Prod system oath inaccessible, skipping");
+		}		
+		else {
+			log("Requesting from merchant info - system level");
+			merchantSyslevel.setServiceUrl(merchantRest.trim()+merchantID);		
+			merchantSyslevel.setContentType( "application/json;" );
+			merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
+			log("Set Expected Status Code = 200");
+			merchantSyslevel.setExpectedStatusCode( 200 );		
+			merchantSyslevel.get();
+		}
 		log("Requesting from merchant logo");
 		merchantLogo.setServiceUrl(merchantLogoRest);		
 		merchantLogo.setContentType( "application/json;" );		
@@ -242,15 +246,9 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(elem.isEnabled());		
 		driver.findElement(By.id("paymentPreference_Electronic")).click();
 		driver.findElement(By.id("updateStatementPrefButton")).click();
+		//since there are no other actions on the page, a small pause is needed, not having a delay produces inconsistent saving on prod (since it's fortunately faster than demo and dev3) 
+		Thread.sleep(1000);
 		
-		/*
-		log("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.assessHomePageElements());
-	
-		log("Checking if address in My Account is filled");
-		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
-		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-	    */
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		
@@ -335,6 +333,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			return balance.getText();
 		}
 	}
+	
 	protected boolean getBillingAccountInfoComparePatientBalance(String rcmBillingAccountRest, String billingAccountNumber, String staffAuthString, String balanceToFind){
 		WebPoster poster = new WebPoster();		
 		poster.setServiceUrl(rcmBillingAccountRest.trim()+billingAccountNumber);		
@@ -344,6 +343,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
 		return poster.getAndSearchForMatch(balanceToFind);
 	}
+	
 	protected int postModifiedStatementToPatient(String rcmStatementRest, String env, String practicePatientId, String patientBalance, boolean randomize) throws Exception {
 		Assert.assertNotNull( 
 				"### Test property rcmStatementRest not defined", 
