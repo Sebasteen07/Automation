@@ -52,7 +52,6 @@ import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 import com.medfusion.rcm.utils.RCMUtil;
 /**
@@ -79,21 +78,25 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		
 		String doctorAuth = testData.getDoctorBase64AuthString();
 		String bearerAuth = testData.getBearerOAuthString();
+		String practiceAuth = testData.getPracticeOAuthString();
 		String billingAccountRest = testData.getRcmBillingAccountRest();
+		String billingAccountGeneral = testData.getRcmBillingAccountGeneralRest();
 		String merchantRest = testData.getRcmMerchantRest();
 		String merchantLogoRest = testData.getRcmMerchantLogoRest();
 		String merchantID = testData.getRcmMerchantID();			
+		String billingNumber = testData.getBillingAccountNumber();
+		String statementPDFRest = testData.getRcmStatementsPDFRest();
 		
 		
 		WebPoster billingAccountsPractice = new WebPoster();
-		//WebPoster billingAccountsSyslevel = new WebPoster();
+		WebPoster billingAccountsSyslevel = new WebPoster();
 		WebPoster merchantPractice = new WebPoster();
 		WebPoster merchantSyslevel = new WebPoster();
 		WebPoster merchantLogo = new WebPoster();
-		WebPoster statementsPractice = new WebPoster();
-		WebPoster statementsSyslevel = new WebPoster();
+		WebPoster statementsPractice = new WebPoster();		
 		
-		billingAccountsPractice.setServiceUrl(billingAccountRest.trim()+merchantID);		
+		log("Requesting from billing accounts - practice user");
+		billingAccountsPractice.setServiceUrl(billingAccountRest.trim()+billingNumber);		
 		billingAccountsPractice.setContentType( "application/json;" );
 		billingAccountsPractice.addHeader( "Authorization", "Basic " + doctorAuth );
 		log("Set Expected Status Code = 200");
@@ -101,6 +104,15 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		//assertTrue is used to verify expected status code, in effect, no exception thrown from .get() means the expected status was returned
 		billingAccountsPractice.get();
 		
+		log("Requesting from billing accounts - practice oauth");
+		billingAccountsSyslevel.setServiceUrl(billingAccountGeneral);		
+		billingAccountsSyslevel.setContentType( "application/json;" );
+		billingAccountsSyslevel.addHeader( "Authorization", "bearer " + practiceAuth );
+		log("Set Expected Status Code = 200");
+		billingAccountsSyslevel.setExpectedStatusCode( 200 );		
+		billingAccountsSyslevel.get();
+		
+		log("Requesting from merchant info - practice");
 		merchantPractice.setServiceUrl(merchantRest.trim()+"me");		
 		merchantPractice.setContentType( "application/json;" );
 		merchantPractice.addHeader( "Authorization", "Basic " + doctorAuth );
@@ -108,18 +120,33 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		merchantPractice.setExpectedStatusCode( 200 );		
 		merchantPractice.get();
 		
-		merchantSyslevel.setServiceUrl(merchantRest.trim()+merchantID);		
-		merchantSyslevel.setContentType( "application/json;" );
-		merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
-		log("Set Expected Status Code = 200");
-		merchantSyslevel.setExpectedStatusCode( 200 );		
-		merchantSyslevel.get();
-		
+		if (IHGUtil.getEnvironmentType().toString().equals("PROD")){
+			log("Prod system oath inaccessible, skipping");
+		}		
+		else {
+			log("Requesting from merchant info - system level");
+			merchantSyslevel.setServiceUrl(merchantRest.trim()+merchantID);		
+			merchantSyslevel.setContentType( "application/json;" );
+			merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
+			log("Set Expected Status Code = 200");
+			merchantSyslevel.setExpectedStatusCode( 200 );		
+			merchantSyslevel.get();
+		}
+		log("Requesting from merchant logo");
 		merchantLogo.setServiceUrl(merchantLogoRest);		
 		merchantLogo.setContentType( "application/json;" );		
 		log("Set Expected Status Code = 200");
 		merchantLogo.setExpectedStatusCode( 200 );		
-		merchantLogo.get();					
+		merchantLogo.get("image/jpeg");		
+		
+		log("Requesting from statements PDF fetch");
+		statementsPractice.setServiceUrl(statementPDFRest);		
+		statementsPractice.addHeader( "Authorization", "bearer " + practiceAuth );
+		statementsPractice.setContentType( "application/json;" );		
+		log("Set Expected Status Code = 200");
+		statementsPractice.setExpectedStatusCode( 200 );		
+		statementsPractice.get("application/pdf");	
+		
 		//if no exception was thrown by now, it passed (all status codes returned as expected)
 	}
 	
@@ -238,15 +265,9 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(elem.isEnabled());		
 		driver.findElement(By.id("paymentPreference_Electronic")).click();
 		driver.findElement(By.id("updateStatementPrefButton")).click();
+		//since there are no other actions on the page, a small pause is needed, not having a delay produces inconsistent saving on prod (since it's fortunately faster than demo and dev3) 
+		Thread.sleep(1000);
 		
-		/*
-		log("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.assessHomePageElements());
-	
-		log("Checking if address in My Account is filled");
-		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
-		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-	    */
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		
@@ -331,6 +352,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			return balance.getText();
 		}
 	}
+	
 	protected boolean getBillingAccountInfoComparePatientBalance(String rcmBillingAccountRest, String billingAccountNumber, String staffAuthString, String balanceToFind){
 		WebPoster poster = new WebPoster();		
 		poster.setServiceUrl(rcmBillingAccountRest.trim()+billingAccountNumber);		
@@ -340,6 +362,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
 		return poster.getAndSearchForMatch(balanceToFind);
 	}
+	
 	protected int postModifiedStatementToPatient(String rcmStatementRest, String env, String practicePatientId, String patientBalance, boolean randomize) throws Exception {
 		Assert.assertNotNull( 
 				"### Test property rcmStatementRest not defined", 

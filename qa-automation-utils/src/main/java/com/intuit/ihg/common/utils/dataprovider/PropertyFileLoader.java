@@ -168,20 +168,32 @@ public class PropertyFileLoader {
 	public String getRcmBillingAccountRest() {
 		return property.getProperty("rcmBillingAccountRest");
 	}
+	public String getRcmBillingAccountGeneralRest() {
+		return property.getProperty("rcmBillingAccountGeneralRest");
+	}
 	public String getDoctorBase64AuthString() {
 		return property.getProperty("doctorBase64AuthString");
 	}
 	public String getBearerOAuthString() {
 		return property.getProperty("bearerOAuthString");
 	}
+	public String getPracticeOAuthString() {
+		return property.getProperty("practiceOAuthString");
+	}	
 	public String getRcmMerchantRest() {
 		return property.getProperty("rcmMerchantRest");
 	}
 	public String getRcmMerchantLogoRest() {
-		return property.getProperty("rcmMerchantLogoRest");
+		return property.getProperty("rcmMerchantLogoRest");			
+	}
+	public String getRcmStatementsPDFRest() {
+		return property.getProperty("rcmStatementsPDFRest");			
 	}
 	public String getRcmMerchantID() {
 		return property.getProperty("rcmMerchantID");
+	}
+	public String getBillingAccountNumber() {
+		return property.getProperty("billingAccountNumber");
 	}
 	public PropertyFileLoader() throws IOException {
 
