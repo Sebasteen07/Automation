@@ -78,22 +78,24 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		
 		String doctorAuth = testData.getDoctorBase64AuthString();
 		String bearerAuth = testData.getBearerOAuthString();
+		String practiceAuth = testData.getPracticeOAuthString();
 		String billingAccountRest = testData.getRcmBillingAccountRest();
+		String billingAccountGeneral = testData.getRcmBillingAccountGeneralRest();
 		String merchantRest = testData.getRcmMerchantRest();
 		String merchantLogoRest = testData.getRcmMerchantLogoRest();
 		String merchantID = testData.getRcmMerchantID();			
 		String billingNumber = testData.getBillingAccountNumber();
+		String statementPDFRest = testData.getRcmStatementsPDFRest();
 		
 		
 		WebPoster billingAccountsPractice = new WebPoster();
-		//WebPoster billingAccountsSyslevel = new WebPoster();
+		WebPoster billingAccountsSyslevel = new WebPoster();
 		WebPoster merchantPractice = new WebPoster();
 		WebPoster merchantSyslevel = new WebPoster();
 		WebPoster merchantLogo = new WebPoster();
-		//WebPoster statementsPractice = new WebPoster();
-		//WebPoster statementsSyslevel = new WebPoster();
+		WebPoster statementsPractice = new WebPoster();		
 		
-		log("Requesting from billing accounts - practice");
+		log("Requesting from billing accounts - practice user");
 		billingAccountsPractice.setServiceUrl(billingAccountRest.trim()+billingNumber);		
 		billingAccountsPractice.setContentType( "application/json;" );
 		billingAccountsPractice.addHeader( "Authorization", "Basic " + doctorAuth );
@@ -101,6 +103,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		billingAccountsPractice.setExpectedStatusCode( 200 );
 		//assertTrue is used to verify expected status code, in effect, no exception thrown from .get() means the expected status was returned
 		billingAccountsPractice.get();
+		
+		log("Requesting from billing accounts - practice oauth");
+		billingAccountsSyslevel.setServiceUrl(billingAccountGeneral);		
+		billingAccountsSyslevel.setContentType( "application/json;" );
+		billingAccountsSyslevel.addHeader( "Authorization", "bearer " + practiceAuth );
+		log("Set Expected Status Code = 200");
+		billingAccountsSyslevel.setExpectedStatusCode( 200 );		
+		billingAccountsSyslevel.get();
 		
 		log("Requesting from merchant info - practice");
 		merchantPractice.setServiceUrl(merchantRest.trim()+"me");		
@@ -127,7 +137,16 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		merchantLogo.setContentType( "application/json;" );		
 		log("Set Expected Status Code = 200");
 		merchantLogo.setExpectedStatusCode( 200 );		
-		merchantLogo.get("image/jpeg");					
+		merchantLogo.get("image/jpeg");		
+		
+		log("Requesting from statements PDF fetch");
+		statementsPractice.setServiceUrl(statementPDFRest);		
+		statementsPractice.addHeader( "Authorization", "bearer " + practiceAuth );
+		statementsPractice.setContentType( "application/json;" );		
+		log("Set Expected Status Code = 200");
+		statementsPractice.setExpectedStatusCode( 200 );		
+		statementsPractice.get("application/pdf");	
+		
 		//if no exception was thrown by now, it passed (all status codes returned as expected)
 	}
 	
