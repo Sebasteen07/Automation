@@ -45,10 +45,10 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	
 	/**
 	 * Indicates if the search page is loaded
-	 *
+	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded()
+	public boolean isSearchPageLoaded() 
 	{
 
 		IHGUtil.PrintMethodName();
@@ -63,7 +63,7 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 
 		return result;
 	}
-
+	
 	/**
 	 * Click on link - Basic Information About You
 	 */
@@ -96,11 +96,11 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 	/**
 	 * Selects more attributes for patient information
 	 */
-	public void selectAdditionalInfo()
+	public void selectAdditionalInfo() 
 	{
 		selectBasicInfo();
-
-
+		
+		
 	}
 	
 	

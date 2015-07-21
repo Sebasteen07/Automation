@@ -1398,7 +1398,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 					.fillEmergencyContactFormFields();
 
 			log("Step 19: Set Current Symptoms Form Fields");
-			pFormCurrentSymptomsPage.setNoGeneralSymptoms();
+			pFormCurrentSymptomsPage.setNoSymptoms();
 			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage
 					.clickSaveContinue(FormMedicationsPage.class);
 

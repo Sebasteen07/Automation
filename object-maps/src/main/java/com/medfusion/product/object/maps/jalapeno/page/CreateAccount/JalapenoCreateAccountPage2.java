@@ -11,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
-import org.openqa.selenium.support.ui.Select;
 
 public class JalapenoCreateAccountPage2 extends BasePageObject {
 
@@ -49,15 +48,12 @@ public class JalapenoCreateAccountPage2 extends BasePageObject {
 	
 	@FindBy(how = How.ID, using = "finishStep")
 	private WebElement finishStep;
-
-	@FindBy(how = How.ID, using = "preferredLocationId")
-	private WebElement primaryLocationElement;
-
+	
 	public JalapenoCreateAccountPage2(WebDriver driver) {
 		super(driver);
 	}
 	
-
+	
 	public JalapenoHomePage fillInDataPage2(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
 		IHGUtil.PrintMethodName();
 		
@@ -82,13 +78,7 @@ public class JalapenoCreateAccountPage2 extends BasePageObject {
 		inputPhone1.sendKeys(phone1);
 		inputPhone2.sendKeys(phone2);
 		inputPhone3.sendKeys(phone3);
-
-		// if there is a dropdown for selecting location, pick the first one
-		if ( IHGUtil.exists(driver, 2, primaryLocationElement) ) {
-			Select primaryLocationSelect = new Select(primaryLocationElement);
-			primaryLocationSelect.selectByIndex(1);
-		}
-
+		
 		finishStep.click();
 		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
