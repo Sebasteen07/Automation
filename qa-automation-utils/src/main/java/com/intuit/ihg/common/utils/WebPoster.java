@@ -204,10 +204,10 @@ public class WebPoster {
 		}
 
 	}
-	public boolean get() {
-		return get(contentType);
+	public void get() {
+		get(contentType);
 	}
-	public boolean get(String type) {
+	public void get(String type) {
 		  try {
 	 
 			ClientRequest request = new ClientRequest(serviceUrl);
@@ -234,7 +234,6 @@ public class WebPoster {
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
 			}
-			return true;
 	 
 		  } catch (ClientProtocolException e) {
 	 
@@ -249,7 +248,6 @@ public class WebPoster {
 			e.printStackTrace();
 	 
 		  }
-		  return false;
 	 
 		}
 	public boolean getAndSearchForMatch(String lookFor) {

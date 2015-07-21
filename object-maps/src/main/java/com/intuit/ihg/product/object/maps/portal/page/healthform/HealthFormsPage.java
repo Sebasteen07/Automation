@@ -2,7 +2,9 @@ package com.intuit.ihg.product.object.maps.portal.page.healthform;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,20 +20,24 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 
-public class HealthFormPage extends BasePageObject {
+public class HealthFormsPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Insurance Health Form Page";
 
 	@FindBy(name = "footer:submit")
 	private WebElement btnSubmit;
 
-	@FindBy(xpath = "//a[@class='pdf text']") //table/tbody/tr/td/a
+	@FindBy(xpath = "//a[@class='pdf text']")
 	private WebElement lnkclickForPdfDownload;
 
 	// Forms on the page
 
+	@FindBy(xpath = "//ul[@class='customforms']/li/a")
+	private List<WebElement> formsLinks;
+
 	@FindBy(linkText = "Ivan Insurance Health Form ( Testing)")
 	private WebElement lnkInsuranceHealthForm;
+
 
 	@FindBy(xpath = "//div[@class='heading1']")
 	public WebElement InsuranceHelthform;
@@ -90,7 +96,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(className = "add")
 	private WebElement add;
 
-	public HealthFormPage(WebDriver driver) {
+	public HealthFormsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 
@@ -111,6 +117,13 @@ public class HealthFormPage extends BasePageObject {
 			// Catch element not found error
 		}
 		return result;
+	}
+
+	public WebElement getFormLink(String formName) {
+		for (WebElement formLink : formsLinks) {
+			if (formLink.getText().equals(formName)) return formLink;
+		}
+		throw new NoSuchElementException("Form called " + formName + " not found");
 	}
 
 	/**

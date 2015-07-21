@@ -7,7 +7,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
+import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormsPage;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
 import org.openqa.selenium.support.PageFactory;
 
@@ -24,7 +24,7 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 		url = str;
 	}
 
-    public HealthFormPage checkOldCustomForm    (WebDriver driver,TestcasesData testcasesData, String formName) throws Exception {
+    public HealthFormsPage checkOldCustomForm    (WebDriver driver,TestcasesData testcasesData, String formName) throws Exception {
 
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -46,7 +46,7 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
 		
 		log("step 2: Click on CustomForm");
-		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormsPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
 		pHealthForm.selectOldCustomForm(formName);
 		
 	//	verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form on Portal");
@@ -66,11 +66,11 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
         Thread.sleep(8000);
         
         verifyEquals(verifyTextPresent(driver,"completed 2 of 3 pages"),true, "Partialy completed form not saved correctly");
-        return PageFactory.initElements(driver, HealthFormPage.class);
+        return PageFactory.initElements(driver, HealthFormsPage.class);
             
 	}
     
-    public void checkDeletedPages(WebDriver driver, HealthFormPage page, String formName) throws Exception {
+    public void checkDeletedPages(WebDriver driver, HealthFormsPage page, String formName) throws Exception {
         
         page.clickHealthForms();
         Thread.sleep(8000);
