@@ -54,9 +54,13 @@ public class IHGUtil extends BasePageObject {
 
 	public static Properties properties = new Properties();
 
+	public enum Gender {
+		MALE,
+		FEMALE
+	}
+
 	public IHGUtil(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 

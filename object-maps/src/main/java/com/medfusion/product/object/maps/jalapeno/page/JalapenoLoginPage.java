@@ -98,7 +98,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		log("Login Credentials: [" + username + "] [" + password + "]");
 		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
 		// try removing the try catch once newrelic is deprecated and fully removed
-		try{
+		try {
 			inputUserId.clear();
 			inputUserId.sendKeys(username);
 		}

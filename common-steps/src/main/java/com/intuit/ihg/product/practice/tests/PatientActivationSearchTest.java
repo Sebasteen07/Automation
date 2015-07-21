@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.practice.tests;
 
+import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -44,7 +45,7 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		return emailAddressString;
 	}
 
-	public String PatientActivation(WebDriver driver, PracticeTestData practiceTestData,String email, 
+	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email,
 			String doctorLogin, String doctorPassword, String url) throws Exception {
 		
 		log("Test Case: Patient Activation");
@@ -71,17 +72,22 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		patientactivationPage.setinitialdetails(email);
 				
 		log("Moving to linkUrl to finish Create Patient procedure");
-			
 		unlockLink = patientactivationPage.getUnlockLink();
-		firstNameString=patientactivationPage.getFirstNameString();
-		lastNameString=patientactivationPage.getLastNameString();
-		patientIdString=patientactivationPage.getPatientIdString();
-		zipCodeString=patientactivationPage.getZipCodeString();
-		emailAddressString=patientactivationPage.getEmailAddressString();
+		firstNameString = patientactivationPage.getFirstNameString();
+		lastNameString = patientactivationPage.getLastNameString();
+		patientIdString = patientactivationPage.getPatientIdString();
+		zipCodeString = patientactivationPage.getZipCodeString();
+		emailAddressString = patientactivationPage.getEmailAddressString();
 		
 		driver.switchTo().defaultContent();
 		
 		return unlockLink;	
+	}
+
+	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData,
+			String email, PropertyFileLoader testData) throws Exception {
+		return getPatientActivationLink(driver, practiceTestData, email, testData.getDoctorLogin(),
+				testData.getDoctorPassword(), testData.getUrl());
 	}
  
 }

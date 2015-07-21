@@ -70,8 +70,8 @@ public class PropertyFileLoader {
 		return property.getProperty("SecretAnswer");
 	}
 
-	public String getphoneNumer() {
-		return property.getProperty("phoneNumer");
+	public String getPhoneNumber() {
+		return property.getProperty("phoneNumber");
 	}
 
 	public String getHealthKey6Of6FirstnameSamePractice() {

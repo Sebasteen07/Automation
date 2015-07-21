@@ -74,8 +74,13 @@ public class JalapenoHealthKey6Of6Inactive extends BaseTestNGWebDriver{
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
 
-		jalapenoCreateAccountPage.fillInDataPage1(testData.getHealthKey6Of6FirstnameInactive(), testData.getHealthKey6Of6LastnameInactive(), testData.getHealthKey6Of6EmailInactive(),
-				testData.getHealthKey6Of6DOBMonthInactive(), testData.getHealthKey6Of6DOBDayInactive(), testData.getHealthKey6Of6DOBYearInactive(), true, testData.getHealthKey6Of6ZipInactive());
+		jalapenoCreateAccountPage.fillInDataPage(testData.getHealthKey6Of6FirstnameInactive(),
+				testData.getHealthKey6Of6LastnameInactive(),
+				testData.getHealthKey6Of6EmailInactive(),
+				testData.getHealthKey6Of6DOBMonthInactive(),
+				testData.getHealthKey6Of6DOBDayInactive(),
+				testData.getHealthKey6Of6DOBYearInactive(), IHGUtil.Gender.MALE,
+				testData.getHealthKey6Of6ZipInactive());
 		driver.findElement(By.xpath("// * [contains(text(),'" + JalapenoConstants.HEALTHKEY_MATCH_SAME_PRACTICE_INACTIVE_MESSAGES + "')]")).isDisplayed();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
