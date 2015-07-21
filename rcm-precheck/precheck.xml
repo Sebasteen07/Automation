@@ -8,7 +8,7 @@
  	
 <test name="Precheck-Automation">
 		<classes>
-			<class name="om.medfusion.precheck.tests.PrecheckAceptanceTests" />
+			<class name="com.medfusion.precheck.tests.PrecheckAceptanceTests" />
 		</classes>
 	</test>
 </suite>
