@@ -75,6 +75,7 @@ public class NoLoginPaymentPage extends BasePageObject{
 
 	public void FillNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email)
 	{
+		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 10, nameOnCard);
 		nameOnCard.sendKeys("Visa");

@@ -100,40 +100,50 @@ public class Mailinator {
 		JSONArray inboxArray = inbox.getJSONArray("messages");
 		int initialMailCount = inboxArray.length();
 		System.out.println("Initial mail count: " + initialMailCount);
+		String initialLastMailId;
+		if (initialMailCount > 0) {
+			initialLastMailId = inboxArray.getJSONObject(initialMailCount - 1).get("id").toString();
+		}
+		else {
+			initialLastMailId = null;
+		}
 		for (int j = 0; j != retries; j++) {
 			System.out
-					.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
+			.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
 			Thread.sleep(TIME_TO_WAIT_MS);
 			System.out.println("GET inbox from: " + inboxUrl);
 			inbox = new JSONObject(RestUtils.get(inboxUrl, String.class, MediaType.APPLICATION_XML));
 			inboxArray = inbox.getJSONArray("messages");
 			int currentMailCount = inboxArray.length();
-			if (currentMailCount > initialMailCount) {
-				JSONObject emailInInbox = inboxArray.getJSONObject(currentMailCount - 1);
-				String fullSubject = emailInInbox.get("subject").toString();
-				if (fullSubject.contains(emailSubject)) {
-					if (findInEmail != null) {
-						String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL
-								+ emailInInbox.get("id").toString();
-						System.out.println("GET e-mail from: " + emailUrl);
-						JSONObject email = new JSONObject(RestUtils.get(emailUrl, String.class,
-								MediaType.APPLICATION_XML));
-						JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
-						for (int k = 0; k < parts.length(); k++) {
-							Document emailContent = Jsoup.parse(parts.getJSONObject(k).getString(
-									"body"));
-							Elements links = emailContent.body().getElementsContainingText(
-									findInEmail);
-							String href = links.attr("href");
-							if ((targetUrl == null && !href.isEmpty())
-									|| (targetUrl != null && href.contains(targetUrl))) {
-								System.out.println("URL found: " + href);
-								return href;
+			if (currentMailCount > 0) {
+				JSONObject lastMailInInbox = inboxArray.getJSONObject(currentMailCount - 1);
+				String currentLastMailId = lastMailInInbox.get("id").toString();
+				if (!currentLastMailId.equals(initialLastMailId)) {			
+					String fullSubject = lastMailInInbox.get("subject").toString();
+					if (fullSubject.contains(emailSubject)) {
+						if (findInEmail != null) {
+							String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL
+									+  currentLastMailId;
+							System.out.println("GET e-mail from: " + emailUrl);
+							JSONObject email = new JSONObject(RestUtils.get(emailUrl, String.class,
+									MediaType.APPLICATION_XML));
+							JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
+							for (int k = 0; k < parts.length(); k++) {
+								Document emailContent = Jsoup.parse(parts.getJSONObject(k).getString(
+										"body"));
+								Elements links = emailContent.body().getElementsContainingText(
+										findInEmail);
+								String href = links.attr("href");
+								if ((targetUrl == null && !href.isEmpty())
+										|| (targetUrl != null && href.contains(targetUrl))) {
+									System.out.println("URL found: " + href);
+									return href;
+								}
 							}
+						} else {
+							System.out.println("Email with subject: \"" + fullSubject + "\" found.");
+							return fullSubject;
 						}
-					} else {
-						System.out.println("Email with subject: \"" + fullSubject + "\" found.");
-						return fullSubject;
 					}
 				}
 			}
