@@ -214,7 +214,9 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		Random rand = new Random();
 		int minBal = 100;
 		int maxBal = 99900;
-		String newBal = Integer.toString((rand.nextInt(maxBal - minBal) + minBal + 1));	
+		int ran = ((rand.nextInt(maxBal - minBal) + minBal + 1));
+		if (ran % 10 == 0) ran++;
+		String newBal = Integer.toString(ran);	
 		newBal = new StringBuffer(newBal).insert(newBal.length()-2, ".").toString();
 		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
