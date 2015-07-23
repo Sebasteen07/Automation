@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.PortalFormPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -71,7 +72,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		address.clear();
-		address.sendKeys(PortalUtil.createRandomNumericString(4)+"Required St");
+		address.sendKeys(IHGUtil.createRandomStreet());
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		city.clear();
-		city.sendKeys(PortalUtil.createRandomNumericString(4)+"-City");
+		city.sendKeys(IHGUtil.createRandomCity());
 	}
 	
 	
@@ -109,7 +110,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		zip.clear();
-		zip.sendKeys(PortalUtil.createRandomNumericString(5));
+		zip.sendKeys(IHGUtil.createRandomZip());
 	}
 	
 	/**
@@ -121,7 +122,7 @@ public class FormBasicInfoPage extends PortalFormPage
 		PortalUtil.PrintMethodName();
 		PortalUtil.setquestionnarieFrame(driver);
 		primaryPhone.clear();
-		primaryPhone.sendKeys("919-555-"+PortalUtil.createRandomNumericString(4));
+		primaryPhone.sendKeys("919-555-"+IHGUtil.createRandomNumericString(4));
 	}
 	
 	/**

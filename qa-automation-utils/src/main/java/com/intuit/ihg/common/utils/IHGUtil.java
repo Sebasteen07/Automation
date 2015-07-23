@@ -43,6 +43,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * Description : IHG Util will contain the methods for utilities those are specific to IHG.
@@ -652,9 +653,9 @@ public class IHGUtil extends BasePageObject {
 		}
 
 		final double dbl =
-			((random == null ? new Random() : random).nextDouble() //
-					* (upperBound - lowerBound))
-					+ lowerBound;
+				((random == null ? new Random() : random).nextDouble() //
+						* (upperBound - lowerBound))
+				+ lowerBound;
 		return String.format("%." + decimalPlaces + "f", dbl);
 
 	}
@@ -672,7 +673,7 @@ public class IHGUtil extends BasePageObject {
 	 * @throws Exception
 	 */
 	public boolean Dates_in_Range(List<String> dateList, String fromDate, String toDate) throws Exception {
-//		IHGUtil sdputil = new IHGUtil(driver);
+		//		IHGUtil sdputil = new IHGUtil(driver);
 		boolean bret = true;
 
 		for (String sdate : dateList) {
@@ -1077,41 +1078,45 @@ public class IHGUtil extends BasePageObject {
 		return CcdType.ELEKTA_CCD;
 	}
 	public static String createRandomEmailAddress(String email) {
-
 		IHGUtil.PrintMethodName();
-
-		Random randomNumbers = new Random();
-
-		int rnd = randomNumbers.nextInt(999999999);
-
 		String[] tmp = email.split("@");
-		String randomEmail = tmp[0] + "." + rnd + "@" + tmp[1];
+		String randomEmail = tmp[0] + "." + createRandomNumber() + "@" + tmp[1];
 		System.out.println("dynamic Email address" + randomEmail);
-
 		return randomEmail;
 	}
 
-	public static int createRandomNumber() {
+	public static String createRandomZip() {
+		return RandomStringUtils.randomNumeric(5);
+	}
 
+	public static String createRandomCity() {
 		IHGUtil.PrintMethodName();
+		return RandomStringUtils.randomAlphabetic(4) + " " + RandomStringUtils.randomAlphabetic(8);
+	}
 
+	public static String createRandomStreet() {
+		IHGUtil.PrintMethodName();
+		return RandomStringUtils.randomNumeric(3) + " " + RandomStringUtils.randomAlphabetic(10) + " " + RandomStringUtils.randomAlphabetic(5);
+	}
+	
+
+	public static int createRandomNumber() {
+		IHGUtil.PrintMethodName();
 		Random randomNumbers = new Random();
-
 		int rnd = randomNumbers.nextInt(999999999);
-
 		return rnd;
 	}
 
-	public static String createRandomNumericString() {
-
-		IHGUtil.PrintMethodName();
-
-		Random randomNumbers = new Random();
-
-		int rnd = randomNumbers.nextInt(999999999);
-
-		return ( "" + rnd );
+	public static String createRandomNumericString(int length){
+		PrintMethodName();
+		return RandomStringUtils.randomNumeric(length);
 	}
+
+	public static String createRandomNumericString() {
+		IHGUtil.PrintMethodName();
+		return createRandomNumericString(9);
+	}	
+
 	/**
 	 * Description: This method searches for the appropriate case in the case table based on the filtration criteria
 	 * @param Xpath of the table,List of case search criteria
@@ -1181,9 +1186,9 @@ public class IHGUtil extends BasePageObject {
 				else{
 					flag=true;
 					if(myArr_actual.get(2).contains(pMyArr_expected.get(1))){
-					     Log4jUtil.log (pMyArr_expected.get(j)+"is present in row :"+i, Level.INFO);  
-					     break;		
-					     }		
+						Log4jUtil.log (pMyArr_expected.get(j)+"is present in row :"+i, Level.INFO);  
+						break;		
+					}		
 				}				
 			}
 			if(flag==true){
@@ -1242,7 +1247,7 @@ public class IHGUtil extends BasePageObject {
 		if (earlier.get(Calendar.DAY_OF_YEAR) != later
 				.get(Calendar.DAY_OF_YEAR)) {
 			tempDifference = later.get(Calendar.DAY_OF_YEAR)
-			- earlier.get(Calendar.DAY_OF_YEAR);
+					- earlier.get(Calendar.DAY_OF_YEAR);
 			difference += tempDifference;
 
 			earlier.add(Calendar.HOUR_OF_DAY, tempDifference);
@@ -1251,7 +1256,7 @@ public class IHGUtil extends BasePageObject {
 		if (earlier.get(Calendar.HOUR_OF_DAY) != later
 				.get(Calendar.HOUR_OF_DAY)) {
 			tempDifference = later.get(Calendar.HOUR_OF_DAY)
-			- earlier.get(Calendar.HOUR_OF_DAY);
+					- earlier.get(Calendar.HOUR_OF_DAY);
 			difference += tempDifference;
 
 			earlier.add(Calendar.HOUR_OF_DAY, tempDifference);
@@ -1261,7 +1266,7 @@ public class IHGUtil extends BasePageObject {
 		return difference;
 	}
 
-	
+
 	/**
 	 * @Description:Pick the Random String
 	 * @param array
@@ -1275,15 +1280,15 @@ public class IHGUtil extends BasePageObject {
 
 		return array[r.nextInt(array.length)];
 	}
-	
-	
+
+
 	public boolean isFoundBasedOnCssSelector(final String cssPath ) throws InterruptedException {
 
 		return isFoundBasedOnCssSelector( cssPath,IHGConstants.FIND_ELEMENTS_MAX_WAIT_SECONDS );
 	}
 
 	public boolean isFoundBasedOnCssSelector(final String cssPath, int timeOutInSeconds )
-	throws InterruptedException {
+			throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
 
@@ -1316,49 +1321,49 @@ public class IHGUtil extends BasePageObject {
 		 * return (elementList.size() > 0);
 		 */
 	}
-	
+
 	public boolean isFoundBy(final By by, int timeOutInSeconds ) {
 
 		IHGUtil.PrintMethodName();
-		
+
 		driver.manage()
 		.timeouts()
 		.implicitlyWait( 0, TimeUnit.SECONDS);
 
 		Boolean found = false;
-		
+
 		try {
 
 			WebDriverWait wait = new WebDriverWait( driver, timeOutInSeconds );
-			
+
 			found = wait.until(new ExpectedCondition<Boolean>() {
 
 				@Override
 				public Boolean apply(WebDriver driver) {
-					
+
 					// This causes problems for some drivers - need to use plural (findElements) and check size.
-					
+
 					// return driver.findElement(by) != null;
-					
+
 					List<WebElement> list = driver.findElements(by);
-					
+
 					if( list != null ) {
-						
+
 						if( list.size() > 0 ) return true;
 					}
-					
+
 					return false;
 				}
 
 			});
-			
+
 		} catch (TimeoutException ex) {
 
 			System.out.println("### element not found: " + ex.getMessage());
 		}
-		
+
 		// Restore implicit wait.
-		
+
 		driver.manage()
 		.timeouts()
 		.implicitlyWait(
@@ -1372,9 +1377,9 @@ public class IHGUtil extends BasePageObject {
 	 * @Description:Handling print dialog by pressing ESC key
 	 */
 	public static void hadlePrintDialog() {
-		
+
 		Robot r;
-		
+
 		try {
 			r = new Robot();
 			r.keyPress(KeyEvent.VK_ESCAPE);
@@ -1383,11 +1388,11 @@ public class IHGUtil extends BasePageObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public static void printCookies(WebDriver driver) {
-		
+
 		Set<Cookie> cookies = driver.manage().getCookies();
 		System.out.println("Printing Cookies -------");
 		for (Cookie c : cookies) {
@@ -1396,82 +1401,85 @@ public class IHGUtil extends BasePageObject {
 		System.out.println("--------------------------");
 	}
 
-    /**
-     * A method that will just wait until an element disappears for dynamic pages
-     * @param element WebElement that will be disappearing
-     * @param periodInMilliseconds determines how long is one waiting cycle
-     * @param maxWaitingTimeInSeconds maximal waiting time in seconds
-     * @throws InterruptedException, TimeoutException
-     */
-    public <U> void waitForElementToDisappear(
-            U element, long periodInMilliseconds, long maxWaitingTimeInSeconds)
-            throws InterruptedException, TimeoutException {
+	/**
+	 * A method that will just wait until an element disappears for dynamic pages
+	 * @param element WebElement that will be disappearing
+	 * @param periodInMilliseconds determines how long is one waiting cycle
+	 * @param maxWaitingTimeInSeconds maximal waiting time in seconds
+	 * @throws InterruptedException, TimeoutException
+	 */
+	public <U> void waitForElementToDisappear(
+			U element, long periodInMilliseconds, long maxWaitingTimeInSeconds)
+					throws InterruptedException, TimeoutException {
 
-        long sum = 0;
-        long maxWaitInMillis = TimeUnit.MILLISECONDS.convert(maxWaitingTimeInSeconds, TimeUnit.SECONDS);
+		long sum = 0;
+		long maxWaitInMillis = TimeUnit.MILLISECONDS.convert(maxWaitingTimeInSeconds, TimeUnit.SECONDS);
 
-        // while the element exists - be it specified by By class or by WebElement class
-        while (By.class.isAssignableFrom(element.getClass()) ? exists((By) element) : exists((WebElement) element)) {
-            sum += periodInMilliseconds;
-            if (sum > maxWaitInMillis)
-                throw new TimeoutException(
-                        "Waiting for element to disappear is taking too long and exceeded the limit");
+		// while the element exists - be it specified by By class or by WebElement class
+		while (By.class.isAssignableFrom(element.getClass()) ? exists((By) element) : exists((WebElement) element)) {
+			sum += periodInMilliseconds;
+			if (sum > maxWaitInMillis)
+				throw new TimeoutException(
+						"Waiting for element to disappear is taking too long and exceeded the limit");
 
-            TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
-        }
-    }
-    public static void waitForElementByClassAndText(WebDriver driver,final String classToFind, final String textToFind, int secondsToWait){
-        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
-        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
-        	@Override
-        	public Boolean apply(WebDriver d) {
-        		WebElement result = d.findElement(By.className(classToFind));
-        		return textToFind.equals(result.getText());
-        	}
-        };
-        wdw.until(condition); // Won't get past here till timeout or element is found
-    }
-    public static void waitForElementByClassAndValue(WebDriver driver,final String classToFind, final String valueToFind, int secondsToWait) {         
-        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
-        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
-        	@Override
-            public Boolean apply(WebDriver d) {
-            	WebElement result = d.findElement(By.className(classToFind));  
-                return valueToFind.equals(result.getAttribute("value"));
-            }
-        };
-        wdw.until(condition); // Won't get past here till timeout or element is found
-    }
-        
-    public static void waitForLinkByText(WebDriver driver, final String text, int secondsToWait) {         
-        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
-        wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); 
-    }   
+			TimeUnit.MILLISECONDS.sleep(periodInMilliseconds);
+		}
+	}
+	public static void waitForElementByClassAndText(WebDriver driver,final String classToFind, final String textToFind, int secondsToWait){
+		WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+		ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver d) {
+				WebElement result = d.findElement(By.className(classToFind));
+				return textToFind.equals(result.getText());
+			}
+		};
+		wdw.until(condition); // Won't get past here till timeout or element is found
+	}
+	public static void waitForElementByClassAndValue(WebDriver driver,final String classToFind, final String valueToFind, int secondsToWait) {         
+		WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);
+		ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver d) {
+				WebElement result = d.findElement(By.className(classToFind));  
+				return valueToFind.equals(result.getAttribute("value"));
+			}
+		};
+		wdw.until(condition); // Won't get past here till timeout or element is found
+	}
 
-    public static void waitForElementByXpath(WebDriver driver, final String expression, int secondsToWait) {         
-        WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
-        wdw.until(ExpectedConditions.presenceOfElementLocated(By.xpath(expression)));
-    }
+	public static void waitForLinkByText(WebDriver driver, final String text, int secondsToWait) {         
+		WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+		wdw.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(text))); 
+	}   
 
-    /**
-     * Adds specific cookie so that automated tests won't be tracked by Google Analytics
-     * This has been implemented only for forms so far (as of 24/2/2015)
-     */
-    public void addCookieForGoogleAnalytics() {
-        log("Creating and adding cookie so that this test wont be tracked by Google Analytics");
-        if (driver.manage().getCookieNamed("MF_TEST") == null) {
-            // getting tomorrow's date
-            Date date = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.add(Calendar.DATE, 1);
-            date = calendar.getTime();
+	public static void waitForElementByXpath(WebDriver driver, final String expression, int secondsToWait) {         
+		WebDriverWait wdw = new WebDriverWait(driver, secondsToWait);       
+		wdw.until(ExpectedConditions.presenceOfElementLocated(By.xpath(expression)));
+	}
 
-            JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-            String domain = (String) jsExecutor.executeScript("return document.domain");
+	/**
+	 * Adds specific cookie so that automated tests won't be tracked by Google Analytics
+	 * This has been implemented only for forms so far (as of 24/2/2015)
+	 */
+	public void addCookieForGoogleAnalytics() {
+		log("Creating and adding cookie so that this test wont be tracked by Google Analytics");
+		if (driver.manage().getCookieNamed("MF_TEST") == null) {
+			// getting tomorrow's date
+			Date date = new Date();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.DATE, 1);
+			date = calendar.getTime();
 
-            Cookie autoTestCookie = new Cookie("MF_TEST", "true", domain, "/", date);
-            driver.manage().addCookie(autoTestCookie);
-        }
-    }
+			JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+			String domain = (String) jsExecutor.executeScript("return document.domain");
+
+			Cookie autoTestCookie = new Cookie("MF_TEST", "true", domain, "/", date);
+			driver.manage().addCookie(autoTestCookie);
+		}
+	}
+
+
+
 }
