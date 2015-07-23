@@ -13,6 +13,7 @@ import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.familyAccount.PatientsOnThisAccountPage;
@@ -42,6 +43,9 @@ public class MyAccountPage extends BasePageObject {
 
 	@FindBy(linkText = "Manage Health Information")
 	private WebElement lnkManageHealthInfo;
+	
+	@FindBy(linkText = "My Patient Page")
+	private WebElement lnkMyPatientPage;
 
 	@FindBy(xpath = "//a[contains(@href, 'ins.details')]")
 	private WebElement insuranceLink;
@@ -130,6 +134,15 @@ public class MyAccountPage extends BasePageObject {
 		lnkPreferences.click();
 		return PageFactory.initElements(driver, PreferencesPage.class);
 	}
+	
+	public MyPatientPage clickMyPatientPage() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setDefaultFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lnkMyPatientPage);
+		lnkMyPatientPage.click();
+		return PageFactory.initElements(driver, MyPatientPage.class);
+	}
+	
 
 	public PatientsOnThisAccountPage clickfamilyLink() {
 		IHGUtil.PrintMethodName();
@@ -148,15 +161,6 @@ public class MyAccountPage extends BasePageObject {
 		return PageFactory.initElements(driver, WalletPage.class);
 	}
 
-	public ManageHealthInfoPage clickManageHealthInfoLink() {
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 60, lnkManageHealthInfo);
-		lnkManageHealthInfo.click();
-
-		return PageFactory.initElements(driver, ManageHealthInfoPage.class);
-	}
-
 	public InsurancePage addInsuranceLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -169,6 +173,15 @@ public class MyAccountPage extends BasePageObject {
 	
 	
 	
+	public ManageHealthInfoPage clickManageHealthInfoLink() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lnkManageHealthInfo);
+		lnkManageHealthInfo.click();
+	
+		return PageFactory.initElements(driver, ManageHealthInfoPage.class);
+	}
+
 	public ViewAccountActivityPage addAccountActivityLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
@@ -179,60 +192,39 @@ public class MyAccountPage extends BasePageObject {
 	
 	
 
-	/**
-	 * The method compare data in the Portal with excel sheet.
-	 * If not proper, will update and force the script to fail 
-	 * 
-	 * @param city [the data is from Portal sheet]
-	 * @param zip [the data is from Portal sheet]
-	 */
-
-	public void  assertDataWithExcel(String primarycity,String primaryzip)
-	{
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		if((!txtCity.getAttribute("value").equals(primarycity)) || (!txtZipCode.getAttribute("value").equals(primaryzip)))
-		{
-			log("##### Warning :- The test data city and Zip code is not in sink with that in Excel ##### ");
-			log("##### Script will automatically upadate data ##### ");
-			log("##### Re-Run your Script. Best of luck! #####");
-
-			String strCity=txtCity.getAttribute("value").toString();
-			log("###########strCity :-"+strCity);
-			String stryZip=txtZipCode.getAttribute("value").toString();
-			log("###########stryZip :-"+stryZip);
-
-			txtCity.clear();
-			log("###########City :-"+primarycity);
-			txtCity.sendKeys(primarycity);
-			txtZipCode.clear();
-			log("###########zip :-"+primaryzip);
-			txtZipCode.sendKeys(primaryzip);
-			btnSubmit.click();
-			Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "The values City and zip code doesnt got updated###");
-
-			//force Test case failuare
-			Assert.assertEquals(strCity,primarycity, "The test data City is not in sink with that in Excel ##### ");
-			Assert.assertEquals(stryZip, primaryzip, "The test data zip code is not in sink with that in Excel ##### ");
-		}
-	}
 
 	/**
-	 * The method will modify data in the portal site with
-	 * secondary User Data ie from PHR sheet
+	 * The method will modify data in the portal site
 	 * 
-	 * @param secondayCity [the data is from PHR sheet]
-	 * @param secondaryzip [the data is from PHR sheet]
+	 * @param secondayCity
+	 * @param secondaryzip
 	 */
 
-	public void modifyCityAndZip(String secondayCity, String secondaryzip) {
+	public void modifyCityAndZip(String city, String zip) {
 		IHGUtil.PrintMethodName();
+		log("Setting city to " + city);
+		log("Setting Zip to " + zip);
 		PortalUtil.setPortalFrame(driver);
 		txtCity.clear();
-		txtCity.sendKeys(secondayCity);
+		txtCity.sendKeys(city);
 		txtZipCode.clear();
-		txtZipCode.sendKeys(secondaryzip);
-//		btnSubmit.click();
+		txtZipCode.sendKeys(zip);		
+	}
+	
+	public void modifyMobilePhone(String phoneNumber) {
+		IHGUtil.PrintMethodName();
+		log("Setting Phone number to " + phoneNumber);
+		PortalUtil.setPortalFrame(driver);
+		txtMobilePhone.clear();		
+		txtMobilePhone.sendKeys(phoneNumber);
+	}
+	
+	public void modifyHomePhone(String phoneNumber) {
+		IHGUtil.PrintMethodName();
+		log("Setting Phone number to " + phoneNumber);
+		PortalUtil.setPortalFrame(driver);
+		txtHomePhone.clear();		
+		txtHomePhone.sendKeys(phoneNumber);
 	}
 	
 	public void modifyAndSubmitAddressLines(String firstLine, String secondLine) {
@@ -242,8 +234,7 @@ public class MyAccountPage extends BasePageObject {
 		txtAddress1.sendKeys(firstLine);
 		txtAddress2.clear();
 		txtAddress2.sendKeys(secondLine);
-		btnSubmit.click();
-		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "The address values didnt get updated");
+		this.submit();
 	}
 
 	/**
@@ -265,18 +256,39 @@ public class MyAccountPage extends BasePageObject {
 	 * The method asserts patient data in the portal site
 	 * After modification in the PHR site
 	 * 
-	 * @param portalcity [the data is from Portal sheet]
-	 * @param portalzip [the data is from Portal sheet]
+	 * @param city
+	 * @param zip
 	 */
-	public void  assertDataCityAndZipInPortal(String portalcity,String portalzip)
+	public void  assertDataCityAndZip(String city, String zip)
 	{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		log("###########Value of City :-"+txtCity.getAttribute("value").toString());
-		log("###########Value of Zip  :-"+txtZipCode.getAttribute("value").toString());
-		Assert.assertEquals(txtCity.getAttribute("value").toString(),portalcity, "The City is not updated in PHR ##### ");
-		Assert.assertEquals(txtZipCode.getAttribute("value"), portalzip, "The Zip code is not updated in PHR  ##### ");
+		log("Value of City: " + txtCity.getAttribute("value"));
+		log("Value of Zip: " + txtZipCode.getAttribute("value"));
+		Assert.assertEquals(txtCity.getAttribute("value"),city, "The City is not updated in PHR ##### ");
+		Assert.assertEquals(txtZipCode.getAttribute("value"), zip, "The Zip code is not updated in PHR  ##### ");
 	}
+	
+	public void  assertMobilePhoneNumber(String phoneNumber)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String portalMobileNumber = txtMobilePhone.getAttribute("value");
+		log("Value of Mobile Phone number: " + portalMobileNumber);
+
+		Assert.assertEquals(portalMobileNumber.replaceAll("\\D", ""), phoneNumber, "The Mobile Phone number is not updated in PHR ##### ");
+	}
+	
+	public void  assertHomePhoneNumber(String phoneNumber)
+	{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String portalHomeNumber = txtHomePhone.getAttribute("value");
+		log("Value of Home Phone number: " + portalHomeNumber);
+
+		Assert.assertEquals(portalHomeNumber.replaceAll("\\D", ""), phoneNumber, "The Home Phone number is not updated in PHR ##### ");
+	}
+		
 
 	public void chooseCommunicationMethod(String pCommunicationOption)
 	{
@@ -295,7 +307,7 @@ public class MyAccountPage extends BasePageObject {
 			count++;
 		}
 		IHGUtil.waitForElement(driver,10,btnSubmit);
-		btnSubmit.click();
+		this.submit();
 	}
 	/**
 	 * 
@@ -344,8 +356,7 @@ public class MyAccountPage extends BasePageObject {
 		
 		Select chooseCommunicationDropDrownElement=new Select(chooseCommunicationDropDrown);
 		chooseCommunicationDropDrownElement.selectByVisibleText(list.get(24));
-		btnSubmit.click();
-		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+		this.submit();
 		
 	}
 	/**Count the no of values of the drop down
@@ -419,8 +430,7 @@ public class MyAccountPage extends BasePageObject {
 		select.selectByIndex(i);
 		WebElement option=select.getFirstSelectedOption();
 		changeValue = option.getText();
-		btnSubmit.click();
-		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+		this.submit();
 		return changeValue;
 	}
 	/**
@@ -451,8 +461,7 @@ public class MyAccountPage extends BasePageObject {
 		
 		Select ethnicityDropDownElement=new Select(ethnicityDropDown);
 		ethnicityDropDownElement.selectByVisibleText(updateData.get(8));
-		btnSubmit.click();
-		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+		this.submit();
 	}
 	
 	public String getDOB() throws Exception {
@@ -475,5 +484,10 @@ public class MyAccountPage extends BasePageObject {
 		Assert.assertTrue(txtAddress1.getAttribute("value").toString().contains(patientData.get(4)),"Actual Patient Address1 Name is"+txtAddress1.getAttribute("value").toString());
 		Assert.assertTrue(txtAddress2.getAttribute("value").toString().contains(patientData.get(5)),"Actual Patient Address2 Name is"+txtAddress2.getAttribute("value").toString());	
 		
+	}
+	
+	public void submit() {
+		btnSubmit.click();
+		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 }

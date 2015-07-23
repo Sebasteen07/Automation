@@ -249,7 +249,6 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	/**
-	 * Note :- Two Testcases are combined together.
 	 * 
 	 * @Author:- bkrishnankutty
 	 * @Date:-2/6/2013
@@ -268,28 +267,30 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void demographicSyncBetweenPortalAndPHR() throws Exception {
+	public void demographicSyncFromPortalToPHR() throws Exception {		
 
-		log("Test Case: demographicSyncBetweenPortalAndPHR");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		String city = "";
+		String zip = "";
+
+		// This will not be used until son-555 is fixed
+		//city = IHGUtil.createRandomCity();
+		//zip = IHGUtil.createRandomZip();
+		String phoneNumber = IHGUtil.createRandomNumericString(10);
 
 		log("step 1: Get Data from  Excel");
 
 		log("step A: Get Data from  PHR Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData phrTestData = new PhrTestcasesData(phr);
-
-		log("step A: Get Data from  PORTAL Excel");
 		Portal portal = new Portal();
 		TestcasesData portalTestData = new TestcasesData(portal);
+
+		log("step 2:LogIn to Patient Portal ");
 
 		log("URL: " + portalTestData.geturl());
 		log("USER NAME: " + phrTestData.getsecondaryUser());
 		log("Password: " + phrTestData.getsecondaryUserPwd());
 
-
-		log("step 2:LogIn to Patient Portal ");
 		PortalLoginPage loginpage = new PortalLoginPage (driver,portalTestData.geturl());
 		MyPatientPage pMyPatientPage= loginpage.login(phrTestData.getsecondaryUser(),
 				phrTestData.getsecondaryUserPwd());
@@ -297,64 +298,118 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 3:Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage=pMyPatientPage.clickMyAccountLink();
 
-		log("step 4: Compare Excel data and Application data");
-		System.out.println("portal address is"+portalTestData.getAddressCity());
-		System.out.println("portal zip is"+portalTestData.getZip());
-//		pMyAccountPage.assertDataWithExcel(portalTestData.getAddressCity(), portalTestData.getZip());
 
-		log("step 5: Change City and Zipcode");
-		pMyAccountPage.modifyCityAndZip(phrTestData.getsecondaryCity(), phrTestData.getsecondaryUserZipCode());
-		log("Step: update communication method");
+		if (!city.isEmpty() && !zip.isEmpty()) {
+			log("Optional Step A : Change City and Zipcode");
+			pMyAccountPage.modifyCityAndZip(city, zip);
+		}
+
+		if (!phoneNumber.isEmpty())  {			
+			log("Optional Step B : Change Home Phone Number");
+			pMyAccountPage.modifyHomePhone(phoneNumber);
+		}		
+
+		log("Step 4: update communication method");
 		pMyAccountPage.chooseCommunicationMethod("US mail");
-		log("Step: updated communication method successfully");
-		//assertTrue(verifyTextPresent(driver,"Profile"));
-		
-		
-		log("step 6: logout from patient portal");
-		pMyAccountPage.logout(driver);
-		
-		Thread.sleep(12000);
 
-		log("step 7:LogIn to PHR Portal");
-		PhrLoginPage phrloginpage = new PhrLoginPage(driver,
-				phrTestData.geturl());
-		PhrHomePage pPhrHomePage = phrloginpage.login(phrTestData.getsecondaryUser(),phrTestData.getsecondaryUserPwd());	
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		log("step 5: Redirect to PHR Portal");
+
+		pMyPatientPage = pMyAccountPage.clickMyPatientPage();
+		pMyPatientPage.clickViewMeaningfulUsePHRLink();
+		PhrHomePage pPhrHomePage = new PhrHomePage(driver);
+		assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 		pPhrHomePage.waitforbtnProfile(driver, 6);
-				
-		log("step 8:Click on Profile Button in PHR HOME PAGE");
+
+		log("step 6:Click on Profile Button in PHR HOME PAGE");
 		PhrProfilePage pPhrProfilePage=pPhrHomePage.clickProfileButton();
 
-		log("step 9:Assert If the data in PHR got updated with Portal modification");
-		pPhrProfilePage.assertDataCityAndZip(phrTestData.getsecondaryCity(), phrTestData.getsecondaryUserZipCode());
 
-		log("step 10:Modify Patient Data in PHR side");
-		pPhrProfilePage.modifyPatientInfoInPhr(portalTestData.getAddressCity(), portalTestData.getZip());
-		assertTrue(verifyTextPresent(driver,"Registration Information Updated Successfully"));
-		System.out.println("Registration Information Updated Successfully");
+		log("step 7:Assert If the data in PHR got updated with Portal modification");
+		if (!city.isEmpty() && !zip.isEmpty()) {
+			log("Optional Step A: Assert City and Zip");
+			pPhrProfilePage.assertDataCityAndZip(city, zip);
+		}
+		if (!phoneNumber.isEmpty())  {
+			log("Optional Step B: Assert Phone Number");
+			pPhrProfilePage.assertHomePhoneNumber(phoneNumber);
+		}
 
-		log("step 11:Log out from PHR");
+		log("step 8: Log out");
 		pPhrProfilePage.clickLogout();
-		
-		Thread.sleep(8000);
-
-		log("step 12:LogIn to portal site");
-		loginpage = new PortalLoginPage (driver,portalTestData.geturl());
-		pMyPatientPage= loginpage.login(phrTestData.getsecondaryUser(),
-				phrTestData.getsecondaryUserPwd());
-
-		log("step 13:Click on myaccountLink on MyPatientPage");
-		pMyAccountPage=pMyPatientPage.clickMyAccountLink();
-
-		log("step 14:Assert If the data in PORTAL got updated with PHR modification");
-		pMyAccountPage.assertDataCityAndZipInPortal(portalTestData.getAddressCity(), portalTestData.getZip());
-
-		log("step 15:Logout");
-		pMyAccountPage.logout(driver);
 
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void demographicSyncFromPHRtoPortal() throws Exception {		
 
+		String city = "";
+		String zip = "";
+
+		//This will not be used until son-555 is fixed
+		//city = IHGUtil.createRandomCity();
+		//zip = IHGUtil.createRandomZip();
+		String phoneNumber = IHGUtil.createRandomNumericString(10);
+
+
+
+		log("step 1: Get Data from  Excel");
+
+		log("step A: Get Data from  PHR Excel");
+		Phr phr = new Phr();
+		PhrTestcasesData phrTestData = new PhrTestcasesData(phr);
+		Portal portal = new Portal();
+		TestcasesData portalTestData = new TestcasesData(portal);
+
+		log("step 2: LogIn to PHR Portal");
+		PhrLoginPage phrloginpage = new PhrLoginPage(driver, phrTestData.geturl());
+		PhrHomePage pPhrHomePage = phrloginpage.login(phrTestData.getsecondaryUser(), phrTestData.getsecondaryUserPwd());	
+		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		pPhrHomePage.waitforbtnProfile(driver, 6);
+
+		log("step 3:Click on Profile Button in PHR HOME PAGE");
+		PhrProfilePage pPhrProfilePage=pPhrHomePage.clickProfileButton();
+
+		log("step 4:Modify Patient Data in PHR side");
+
+		if (!city.isEmpty() && !zip.isEmpty()) {
+			log("Optional Step A : Change City and Zipcode");
+			pPhrProfilePage.setCityZip(city, zip);
+		}
+
+		if (!phoneNumber.isEmpty()) {			
+			log("Optional Step B : Change Mobile Phone Number");
+			pPhrProfilePage.setMobilePhoneNumber(phoneNumber);
+		}
+		Thread.sleep(10000);
+		assertTrue(verifyTextPresent(driver,"Registration Information Updated Successfully"));
+		System.out.println("Registration Information Updated Successfully");
+
+		log("step 5:Log out from PHR");
+		pPhrProfilePage.clickLogout();
+
+		log("step 6:LogIn to portal site");
+		PortalLoginPage loginpage = new PortalLoginPage (driver,portalTestData.geturl());
+		MyPatientPage pMyPatientPage = loginpage.login(phrTestData.getsecondaryUser(),
+				phrTestData.getsecondaryUserPwd());
+
+		log("step 7:Click on myaccountLink on MyPatientPage");
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+
+		log("step 8:Assert If the data in PORTAL got updated with PHR modification");
+		if (!city.isEmpty() && !zip.isEmpty()) {
+			log("Optional Step A: Assert City and Zip");
+			pMyAccountPage.assertDataCityAndZip(city, zip);
+		}
+
+		if (!phoneNumber.isEmpty()) {
+			log("Optional Step B: Assert Phone Number");
+			pMyAccountPage.assertMobilePhoneNumber(phoneNumber);
+		}
+
+		log("step 9:Logout");
+		pMyAccountPage.logout(driver);
+
+	}
 
 
 	/**
