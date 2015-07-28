@@ -195,6 +195,9 @@ public class PropertyFileLoader {
 	public String getBillingAccountNumber() {
 		return property.getProperty("billingAccountNumber");
 	}
+	public String getReportingUrl() {
+		return property.getProperty("reportingUrl");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();
