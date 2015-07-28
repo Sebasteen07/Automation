@@ -198,6 +198,12 @@ public class PropertyFileLoader {
 	public String getReportingUrl() {
 		return property.getProperty("reportingUrl");
 	}
+	public String getLocationName() {
+		return property.getProperty("locationName");
+	}
+	public String getProviderName() {
+		return property.getProperty("providerName");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

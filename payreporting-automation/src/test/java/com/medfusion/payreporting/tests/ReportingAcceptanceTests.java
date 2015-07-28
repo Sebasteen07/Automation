@@ -1,7 +1,5 @@
 package com.medfusion.payreporting.tests;
 
-import java.util.Random;
-
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -16,9 +14,7 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingDailyReportPage;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingLoginPage;
 /**
@@ -57,39 +53,53 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCodenameSkexis() throws Exception {
+	public void testPayForPatientVerifyDailyReport() throws Exception {
 		log("Test Case: Practice -> OBP for patient -> Verify in reporting");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
-		String amount = IHGUtil.createRandomNumericString().substring(0, 2);	
-			
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		String formattedAmount = new StringBuffer(amount).insert(amount.length(), ".00").insert(0, "$").toString();
+		log(formattedAmount);
+		int retries = 30;
+		
 		log("step 1: Login to Practice Portal");	
 
 		//Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-		log("step 2:Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
+		log("step 2: Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
 
-		log("step 3:Search For Patient");
+		log("step 3: Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(testData.getFirstName(), testData.getLastName());
 
-		log("step 4:Set Patient Transaction Fields");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess("Billing","All, Payments", testData.getBillingAccountNumber(),
+		log("step 4: Set Patient Transaction Fields");
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
 					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
 
-		log("step 5:Verify the Payment Confirmation text");
+		log("step 5: Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
 		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 		
-		log("step 6:Log in to ISO Reporting");
+		log("step 6: Log in to ISO Reporting");
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
-		loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("step 7: Click search and check the last value");
+		dailyPage.clickSearch();
+		
+		for (int i = 0; i < retries; i++){
+			log("Validating latest submission, attempt " + (i+1) + "/" + retries);
+			if (formattedAmount.equals(dailyPage.getLastRowAmount())) return;
+			else dailyPage.clickSearch();						
+			
+		}		
+		log("Latest found " +dailyPage.getLastRowAmount() + " expected " + formattedAmount +" => Failure");
 		
 	}
 	
