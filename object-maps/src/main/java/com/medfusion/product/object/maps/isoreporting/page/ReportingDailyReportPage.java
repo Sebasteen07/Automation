@@ -4,7 +4,6 @@ package com.medfusion.product.object.maps.isoreporting.page;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.practice.utils.PracticeConstants;
 
 public class ReportingDailyReportPage extends BasePageObject {
 
@@ -191,28 +189,24 @@ public class ReportingDailyReportPage extends BasePageObject {
 		}
 		
 		for (WebElement elem : payList){
-			String[] cut = elem.getText().substring(1).split("\\.");
-			payInt = Integer.parseInt(cut[0])*100 + Integer.parseInt(cut[1]);
+			payInt = IHGUtil.deformatNumber(elem.getText());
 			tmPayment += payInt;
 			if ( payInt > 0) payCount++;					
 		}
-		paySum = "$" + Integer.toString(tmPayment);
-		paySum = new StringBuffer(paySum).insert(paySum.length()-2, ".").toString();
+		paySum = IHGUtil.formatNumber(tmPayment);
 		log("  Payments + " + payCount + " + Sum  --> " + paySum);
-		for (WebElement elem : refundList){			
-			String[] cut = elem.getText().substring(1).split("\\.");
-			refInt = Integer.parseInt(cut[0])*100 + Integer.parseInt(cut[1]);
+		for (WebElement elem : refundList){						
+			refInt = IHGUtil.deformatNumber(elem.getText());
 			tmRefund += refInt;
 			if (refInt > 0) refCount++;
 			
 		}
 		
-		refSum = "$" + Integer.toString(tmRefund);
-		refSum = new StringBuffer(refSum).insert(refSum.length()-2, ".").toString();
+		refSum = IHGUtil.formatNumber(tmRefund);
 		log("  Refunds + " + refCount + " + Sum  --> " + refSum);
 		
-		stringSum = "$" + Integer.toString(tmPayment - tmRefund);
-		stringSum = new StringBuffer(stringSum).insert(stringSum.length()-2, ".").toString();
+		stringSum = IHGUtil.formatNumber(tmPayment - tmRefund);
+		
 		log("  Net Sum  --> " + stringSum);
 		if (integrityCheck){
 			log("  Checking table contents vs totals integrity !");
@@ -242,6 +236,5 @@ public class ReportingDailyReportPage extends BasePageObject {
 	public boolean checkTableTotalsOnly(String expectedPaySum, String expectedPayCount, String expectedRefSum, String expectedRefCount){
 		return checkTableContents(false,true,expectedPaySum,expectedPayCount,expectedRefSum,expectedRefCount);
 	}
-
 
 }

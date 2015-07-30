@@ -31,7 +31,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testReportingLoginCheckTableLogout() throws Exception {
+	public void testReportingLoginCheckTableLogout() throws Exception {		
 		log("Test Case: Login & Data Smoke");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -43,7 +43,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage.assessLoginPageElements();
 		
 		log("step 2: Log in");		
-		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());	
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 				
 		log("step 3: Verify table presence and integrity for default time interval");
 		dailyPage.clickSearch();
@@ -66,6 +66,10 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		while (amount.charAt(0) == '0'){
+			log("Leading zero, generating single digit payment");
+			amount = IHGUtil.createRandomNumericString().substring(0, 1);
+		}
 		String formattedAmount = new StringBuffer(amount).insert(amount.length(), ".00").insert(0, "$").toString();
 		log(formattedAmount);
 		int retries = 30;
@@ -95,16 +99,22 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
-		log("step 7: Click search and check the last value");
+		log("step 7: Click search and validate table");
 		dailyPage.clickSearch();
+		assertTrue(dailyPage.checkTableIntegrityOnly());
 		
 		for (int i = 0; i < retries; i++){
 			log("Validating latest submission, attempt " + (i+1) + "/" + retries);
-			if (formattedAmount.equals(dailyPage.getLastRowAmount())) return;
+			if (formattedAmount.equals(dailyPage.getLastRowAmount())) {
+				log("Paid amount found! Checking table totals refresh");
+				assertTrue(dailyPage.checkTableIntegrityOnly());
+				return;	
+			}
 			else dailyPage.clickSearch();						
 			
 		}		
 		log("Latest found " +dailyPage.getLastRowAmount() + " expected " + formattedAmount +" => Failure");
+		assertTrue(false);
 		
 	}
 	

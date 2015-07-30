@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +44,9 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
+
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Description : IHG Util will contain the methods for utilities those are specific to IHG.
@@ -1479,7 +1482,38 @@ public class IHGUtil extends BasePageObject {
 			driver.manage().addCookie(autoTestCookie);
 		}
 	}
-
+	/**
+	 * @brief parses an integer from a positive US locale value string - e.g. $1,590.00  = 159000 ; $1.00 = 100 ; $00.10 = 10
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public static int deformatNumber(String input){
+		String tmp = input.substring(1);
+		String[] bits = tmp.split("\\.");
+		tmp = StringUtils.join(bits,"");
+		if (tmp.contains(",")){
+			bits = tmp.split(","); 
+			tmp = StringUtils.join(bits,"");
+		}		
+		return Integer.parseInt(tmp);
+	}
+	
+	/**
+	 * @brief creates a US locale formatted string from input integer, last two digits for cents - e.g. $1,590.00  = 159000 ; $1.00 = 100 ; $00.10 = 10
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public static String formatNumber(int input){
+		if(input < 0) throw new IllegalArgumentException("Only formats positive integers, insert - as necessary");
+		if(input < 100) return "$00." + input;
+		String tmp = Integer.toString(input);
+		String cents = tmp.substring(tmp.length()-2);
+		String dollars = NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(tmp.substring(0,tmp.length()-2)));		
+		String res = "$" + dollars + "." + cents;		
+		return res;		
+	}
 
 
 }
