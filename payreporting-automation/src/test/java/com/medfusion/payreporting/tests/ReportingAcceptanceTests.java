@@ -31,8 +31,8 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testReportingLoginLogout() throws Exception {
-		log("Test Case: Login Smoke");
+	public void testReportingLoginCheckTableLogout() throws Exception {
+		log("Test Case: Login & Data Smoke");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Getting Test Data");
@@ -43,7 +43,12 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage.assessLoginPageElements();
 		
 		log("step 2: Log in");		
-		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());			
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());	
+				
+		log("step 3: Verify table presence and integrity for default time interval");
+		dailyPage.clickSearch();
+		assertTrue(dailyPage.checkTableIntegrityOnly());
+		
 		
 		log("step 2: Log out");
 		dailyPage.logout(driver);
