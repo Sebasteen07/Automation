@@ -79,7 +79,7 @@ public class PhrHomePage extends BasePageObject{
 	
 	public PhrHomePage(WebDriver driver) {
 		super(driver);
-		// Auto-generated constructor stub
+		PageFactory.initElements(driver, this);
 	}
 	
 	/**
@@ -91,15 +91,8 @@ public class PhrHomePage extends BasePageObject{
 
 		IHGUtil.PrintMethodName();
 		log("Waiting for the element btnProfile, max wait time is 60 seconds");
-		IHGUtil.waitForElement(driver, 60, btnProfile);
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 60, btnProfile);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
+		return IHGUtil.waitForElement(driver, 60, btnProfile);
 
-		return result;
 	}
 	
 	
