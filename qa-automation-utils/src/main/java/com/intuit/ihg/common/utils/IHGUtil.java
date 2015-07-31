@@ -1507,7 +1507,8 @@ public class IHGUtil extends BasePageObject {
 	 */
 	public static String formatNumber(int input){
 		if(input < 0) throw new IllegalArgumentException("Only formats positive integers, insert - as necessary");
-		if(input < 100) return "$00." + input;
+		if(input < 10) return "$0.0" + input;
+		if(input < 100) return "$0." + input;
 		String tmp = Integer.toString(input);
 		String cents = tmp.substring(tmp.length()-2);
 		String dollars = NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(tmp.substring(0,tmp.length()-2)));		
