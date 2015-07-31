@@ -96,11 +96,13 @@ public class ReportingDailyReportPage extends BasePageObject {
 	
 	public void fillDateFrom(String date){
 		IHGUtil.PrintMethodName();
+		dateFrom.clear();
 		dateFrom.sendKeys(date);
 	}
 	
 	public void fillDateTo(String date){
 		IHGUtil.PrintMethodName();
+		dateTo.clear();
 		dateTo.sendKeys(date);
 	}
 	
@@ -171,16 +173,16 @@ public class ReportingDailyReportPage extends BasePageObject {
 		if (compare){
 			log("Comparing totals against input");
 			tmRes = (pagePaySum.getText().equals(expectedPaySum));
-			log("    Payment sum valid? -- > " + tmRes);
+			log("    Payment sum valid? " + pagePaySum.getText() + " = " + expectedPaySum +"? -- > " + tmRes);
 			if (!tmRes) result = false;
 			tmRes = (pagePayCount.getText().equals(expectedPayCount));
-			log("    Payment count valid? -- > " + tmRes);
+			log("    Payment count valid? " + pagePayCount.getText() + " = " + expectedPayCount +"? -- > " + tmRes);
 			if (!tmRes) result = false;
 			tmRes = (pageRefSum.getText().equals(expectedRefSum));
-			log("    Refund sum valid? -- > " + tmRes);
+			log("    Refund sum valid? " + pageRefSum.getText() + " = " + expectedRefSum +"? -- > " + tmRes);
 			if (!tmRes) result = false;
 			tmRes = (pageRefCount.getText().equals(expectedRefCount));
-			log("    Refund count valid? -- > " + tmRes);
+			log("    Refund count valid? " + pageRefCount.getText() + " = " + expectedRefCount +"? -- > " + tmRes);
 			if (!tmRes) result = false;
 			if (!integrityCheck){
 				log("Verified totals only!");

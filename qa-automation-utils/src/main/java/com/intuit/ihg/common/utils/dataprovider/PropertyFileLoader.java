@@ -204,6 +204,24 @@ public class PropertyFileLoader {
 	public String getProviderName() {
 		return property.getProperty("providerName");
 	}
+	public String getHistoricDateFrom() {
+		return property.getProperty("historicDateFrom");
+	}
+	public String getHistoricDateTo() {
+		return property.getProperty("historicDateTo");
+	}
+	public String getHistoricPaySum() {
+		return property.getProperty("historicPaySum");
+	}
+	public String getHistoricPayCount() {
+		return property.getProperty("historicPayCount");
+	}
+	public String getHistoricRefSum() {
+		return property.getProperty("historicRefSum");
+	}
+	public String getHistoricRefCount() {
+		return property.getProperty("historicRefCount");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

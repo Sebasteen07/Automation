@@ -117,6 +117,32 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(false);
 		
 	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHistoricalData() throws Exception {		
+		log("Test Case: Historic data check");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String from = testData.getHistoricDateFrom();
+		String to = testData.getHistoricDateTo();
+		log("Date from : " + from);
+		log("Date to : " + to);
+		log("step 1: Assess login elements");
+		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
+		loginPage.assessLoginPageElements();
+		
+		log("step 2: Log in");		
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("step 2: Set dates and click search");
+		dailyPage.fillDateFrom(from);
+		dailyPage.fillDateTo(to);
+		dailyPage.clickSearch();
+		
+		log("step 4: Verify table presence and integrity, compare with expected values");		
+		assertTrue(dailyPage.checkTableContents(true,true,IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricPaySum())),testData.getHistoricPayCount(),IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricRefSum())),testData.getHistoricRefCount()));		
+	}
 	
 		
 }
