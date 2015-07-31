@@ -49,6 +49,25 @@ public class ReportingDailyReportPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[@class='glyphicon glyphicon-log-out']")
 	private WebElement signoutButton;
 
+	//Payment detail modal elements
+	@FindBy(how = How.ID, using = "refBtn")
+	private WebElement refundButton;
+	
+	@FindBy(how = How.ID, using = "creditSubmit")
+	private WebElement refundSubmitButton;
+	
+	@FindBy(how = How.ID, using = "amount")
+	private WebElement refundAmount;
+	
+	@FindBy(how = How.ID, using = "voidBtn")
+	private WebElement voidButton;
+	
+	@FindBy(how = How.ID, using = "voidSubmit")
+	private WebElement voidSubmitButton;
+	
+	@FindBy(how = How.ID, using = "closeBtn")
+	private WebElement closeButton;
+		
 	public ReportingDailyReportPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -132,6 +151,32 @@ public class ReportingDailyReportPage extends BasePageObject {
 	public String getLastRowAmount(){
 		IHGUtil.PrintMethodName();
 		return driver.findElement(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr[last()]/td[13]")).getText();
+	}
+	
+	public void clickVoidButton(){
+		IHGUtil.PrintMethodName();
+		voidButton.click();
+	}
+	
+	public void clickRefundButton(){
+		IHGUtil.PrintMethodName();
+		refundButton.click();
+	}
+	
+	public void clickVoidSubmitButton(){
+		IHGUtil.PrintMethodName();
+		voidSubmitButton.click();
+	}
+	
+	public void clickRefundSubmitButton(){
+		IHGUtil.PrintMethodName();
+		refundSubmitButton.click();
+	}
+	
+	public void fillRefundAmount(String amount){
+		IHGUtil.PrintMethodName();
+		refundAmount.clear();
+		refundAmount.sendKeys(amount);
 	}
 	
 	public boolean checkTableContents(boolean integrityCheck, boolean compare, String expectedPaySum, String expectedPayCount, String expectedRefSum, String expectedRefCount) {
