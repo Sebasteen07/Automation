@@ -144,5 +144,200 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(dailyPage.checkTableContents(true,true,IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricPaySum())),testData.getHistoricPayCount(),IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricRefSum())),testData.getHistoricRefCount()));		
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDownloadAndCompareHistoricalCsv() throws Exception {
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayAndVoid() throws Exception {
+		log("Test Case: Practice -> OBP for patient -> Verify in reporting -> Void");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		while (amount.charAt(0) == '0'){
+			log("Leading zero, generating single digit payment");
+			amount = IHGUtil.createRandomNumericString().substring(0, 1);
+		}
+		String formattedAmount = new StringBuffer(amount).insert(amount.length(), ".00").insert(0, "$").toString();
+		log(formattedAmount);
+		int retries = 30;
+		
+		log("step 1: Login to Practice Portal");	
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("step 2: Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
+
+		log("step 3: Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(testData.getFirstName(), testData.getLastName());
+
+		log("step 4: Set Patient Transaction Fields");
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
+					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
+
+		log("step 5: Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
+		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		
+		log("step 6: Log in to ISO Reporting");
+		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("step 7: Click search and validate table");
+		dailyPage.clickSearch();
+		assertTrue(dailyPage.checkTableIntegrityOnly());
+		try{
+			dailyPage.getLastRowAmount();
+		}
+		catch(Exception e){
+			log("Exception when accessing last row payment amount! \n"
+			  + "Waiting 30s for first payment in two days.");
+			Thread.sleep(30000);
+			
+		}
+		
+		int i = 0;
+		for (; i < retries; i++){
+			log("Validating latest submission, attempt " + (i+1) + "/" + retries);
+			if (formattedAmount.equals(dailyPage.getLastRowAmount())) {
+				log("Paid amount found! Checking table totals refresh");
+				assertTrue(dailyPage.checkTableIntegrityOnly());
+				break;	
+			}
+			else dailyPage.clickSearch();						
+			
+		}		
+		log("step 8: Void the payment");
+		String refSum = dailyPage.getRefundSum();
+		log("Current refund sum is :" + refSum);		
+		refSum = IHGUtil.formatNumber(IHGUtil.deformatNumber(refSum) + IHGUtil.deformatNumber(formattedAmount));
+		log("Expected after void : " + refSum);	
+		dailyPage.clickDetailsLast();
+		log("p1");
+		Thread.sleep(500);
+		dailyPage.clickRefundButton();
+		log("p2");
+		Thread.sleep(500);
+		dailyPage.clickVoidSubmitButton();
+		log("p3");
+		Thread.sleep(500);
+		dailyPage.clickSearch();
+		for (int j = 0; j < retries; j++){
+			log("Validating latest refund, attempt " + (j+1) + "/" + retries);
+			if (formattedAmount.equals(dailyPage.getLastRowRefund())) {
+				log("Refund amount found! Checking table totals refresh");
+				assertTrue(dailyPage.checkTableContents(true,true,"","",refSum,""));
+				break;	
+			}
+			else dailyPage.clickSearch();						
+			
+		}
+		log("step 9: Check last status changed to void");
+		assertTrue(("Void").equals(dailyPage.getLastStatus()));
+		
+	}
+	
+	public void testPayAndRefund() throws Exception {
+		log("Test Case: Practice -> OBP for patient -> Verify in reporting -> Refund");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String amount = IHGUtil.createRandomNumericString().substring(0, 3);
+		while (amount.charAt(0) == '0' && amount.charAt(0) == '0'){
+			log("Leading zeros, regenerating payment");
+			amount = IHGUtil.createRandomNumericString().substring(0, 3);
+		}
+		String formattedAmount = new StringBuffer(amount).insert(amount.length(), ".00").insert(0, "$").toString();
+		log(formattedAmount);
+		int retries = 30;
+		
+		log("step 1: Login to Practice Portal");	
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("step 2: Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
+
+		log("step 3: Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(testData.getFirstName(), testData.getLastName());
+
+		log("step 4: Set Patient Transaction Fields");
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
+					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
+
+		log("step 5: Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
+		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		
+		log("step 6: Log in to ISO Reporting");
+		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
+		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("step 7: Click search and validate table");
+		dailyPage.clickSearch();
+		assertTrue(dailyPage.checkTableIntegrityOnly());
+		try{
+			dailyPage.getLastRowAmount();
+		}
+		catch(Exception e){
+			log("Exception when accessing last row payment amount! \n"
+			  + "Waiting 30s for first payment in two days.");
+			Thread.sleep(30000);
+			
+		}
+		
+		int i = 0;
+		for (; i < retries; i++){
+			log("Validating latest submission, attempt " + (i+1) + "/" + retries);
+			if (formattedAmount.equals(dailyPage.getLastRowAmount())) {
+				log("Paid amount found! Checking table totals refresh");
+				assertTrue(dailyPage.checkTableIntegrityOnly());
+				break;	
+			}
+			else dailyPage.clickSearch();						
+			
+		}		
+		log("step 8: Refund the payment");
+		String refSum = dailyPage.getRefundSum();
+		log("Current refund sum is :" + refSum);		
+		refSum = IHGUtil.formatNumber(IHGUtil.deformatNumber(refSum) + 314);
+		log("Expected after void : " + refSum);	
+		dailyPage.clickDetailsLast();
+		log("Details !");
+		Thread.sleep(500);
+		dailyPage.clickVoidButton();
+		log("Refund $3.14!");
+		dailyPage.fillRefundAmount(IHGUtil.formatNumber(314));		
+		Thread.sleep(500);
+		dailyPage.clickRefundSubmitButton();
+		log("Click!");
+		Thread.sleep(500);		
+		dailyPage.clickSearch();
+		dailyPage.clickCloseButton();
+		for (int j = 0; j < retries; j++){
+			log("Validating latest refund, attempt " + (j+1) + "/" + retries);
+			if (IHGUtil.formatNumber(314).equals(dailyPage.getLastRowRefund())) {
+				log("Refund amount found! Checking table totals refresh");
+				assertTrue(dailyPage.checkTableContents(true,true,"","",refSum,""));
+				break;	
+			}
+			else dailyPage.clickSearch();						
+			
+		}					
+			
+	}
+	
+	
 		
 }

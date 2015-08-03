@@ -67,6 +67,10 @@ public class ReportingDailyReportPage extends BasePageObject {
 	
 	@FindBy(how = How.ID, using = "closeBtn")
 	private WebElement closeButton;
+	
+	@FindBy(how = How.XPATH, using = "//table[@id='dailyTransactionsTable']/tbody/tr[last()]/td[15]/a")
+	private WebElement lastDetailsButton;
+	
 		
 	public ReportingDailyReportPage(WebDriver driver) {
 		super(driver);
@@ -152,10 +156,18 @@ public class ReportingDailyReportPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return driver.findElement(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr[last()]/td[13]")).getText();
 	}
+	public String getLastRowRefund(){
+		IHGUtil.PrintMethodName();
+		return driver.findElement(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr[last()]/td[14]")).getText();
+	}
 	
 	public void clickVoidButton(){
 		IHGUtil.PrintMethodName();
 		voidButton.click();
+	}
+	public void clickCloseButton(){
+		IHGUtil.PrintMethodName();
+		closeButton.click();
 	}
 	
 	public void clickRefundButton(){
@@ -178,6 +190,25 @@ public class ReportingDailyReportPage extends BasePageObject {
 		refundAmount.clear();
 		refundAmount.sendKeys(amount);
 	}
+	
+	public void clickDetailsLast(){
+		IHGUtil.PrintMethodName();
+		lastDetailsButton.click();
+	}
+		
+	public void clickDetails(int row){
+		IHGUtil.PrintMethodName();
+		List<WebElement> payList = driver.findElements(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr/td[15]/a"));
+		payList.get(row).click();
+	}
+	
+	public String getRefundSum(){
+		return driver.findElement(By.xpath("//table[@id='dailyTotalTable']/tbody/tr/td[4]")).getText();
+	}
+	public String getLastStatus(){
+		return driver.findElement(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr[last()]/td[12]")).getText();
+	}
+	
 	
 	public boolean checkTableContents(boolean integrityCheck, boolean compare, String expectedPaySum, String expectedPayCount, String expectedRefSum, String expectedRefCount) {
 		IHGUtil.PrintMethodName();
@@ -211,24 +242,32 @@ public class ReportingDailyReportPage extends BasePageObject {
 		int payCount = 0;
 		int refCount = 0;
 		boolean result = true;
-		boolean tmRes = false;		
+		boolean tmRes = true;		
 		int tmPayment = 0;
 		int tmRefund = 0; 
 		
 		if (compare){
 			log("Comparing totals against input");
-			tmRes = (pagePaySum.getText().equals(expectedPaySum));
-			log("    Payment sum valid? " + pagePaySum.getText() + " = " + expectedPaySum +"? -- > " + tmRes);
-			if (!tmRes) result = false;
-			tmRes = (pagePayCount.getText().equals(expectedPayCount));
-			log("    Payment count valid? " + pagePayCount.getText() + " = " + expectedPayCount +"? -- > " + tmRes);
-			if (!tmRes) result = false;
-			tmRes = (pageRefSum.getText().equals(expectedRefSum));
-			log("    Refund sum valid? " + pageRefSum.getText() + " = " + expectedRefSum +"? -- > " + tmRes);
-			if (!tmRes) result = false;
-			tmRes = (pageRefCount.getText().equals(expectedRefCount));
-			log("    Refund count valid? " + pageRefCount.getText() + " = " + expectedRefCount +"? -- > " + tmRes);
-			if (!tmRes) result = false;
+			if (expectedPaySum != ""){ 
+				tmRes = (pagePaySum.getText().equals(expectedPaySum));
+			    log("    Payment sum valid? " + pagePaySum.getText() + " = " + expectedPaySum +"? -- > " + tmRes);
+			    if (!tmRes) result = false;
+			}
+			if (expectedPayCount != ""){
+				tmRes = (pagePayCount.getText().equals(expectedPayCount));
+				log("    Payment count valid? " + pagePayCount.getText() + " = " + expectedPayCount +"? -- > " + tmRes);
+				if (!tmRes) result = false;
+			}
+			if (expectedRefSum != ""){
+				tmRes = (pageRefSum.getText().equals(expectedRefSum));
+				log("    Refund sum valid? " + pageRefSum.getText() + " = " + expectedRefSum +"? -- > " + tmRes);
+				if (!tmRes) result = false;
+			}
+			if (expectedRefCount != ""){
+				tmRes = (pageRefCount.getText().equals(expectedRefCount));
+				log("    Refund count valid? " + pageRefCount.getText() + " = " + expectedRefCount +"? -- > " + tmRes);
+				if (!tmRes) result = false;
+			}
 			if (!integrityCheck){
 				log("Verified totals only!");
 				return result;			
@@ -277,11 +316,15 @@ public class ReportingDailyReportPage extends BasePageObject {
 		if (result) log("Yay!");
 		return result;
 	}
+	
 	public boolean checkTableIntegrityOnly(){
 		return checkTableContents(true,false,"","","","");
 	}
+	
 	public boolean checkTableTotalsOnly(String expectedPaySum, String expectedPayCount, String expectedRefSum, String expectedRefCount){
 		return checkTableContents(false,true,expectedPaySum,expectedPayCount,expectedRefSum,expectedRefCount);
 	}
+	
+	
 
 }
