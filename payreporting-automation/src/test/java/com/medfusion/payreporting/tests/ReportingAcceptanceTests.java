@@ -18,7 +18,10 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
+import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
+import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
+import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingDailyReportPage;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingLoginPage;
 /**
@@ -404,41 +407,30 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
-		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
-		while (amount.charAt(0) == '0'){
-			log("Leading zero, generating single digit payment");
-			amount = IHGUtil.createRandomNumericString().substring(0, 1);
-		}
-		String formattedAmount = new StringBuffer(amount).insert(amount.length(), ".00").insert(0, "$").toString();
-		log(formattedAmount);
+				
 		int retries = 30;
 		
-		log("step 1: Login to Practice Portal");	
+		log("step A1: Login to Practice Portal");	
 
-		//Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-		log("step 2: Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
-		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
-
-		log("step 3: Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient(testData.getFirstName(), testData.getLastName());
-
-		log("step 4: Set Patient Transaction Fields");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
-					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
-
-		log("step 5: Verify the Payment Confirmation text");
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		//Utilizing older test, let's construct a practiceTestData object
+		Practice prax = new Practice();
+		prax.url = testData.getPortalUrl();
+		prax.username = testData.getDoctorLogin();
+		prax.password = testData.getDoctorPassword();
+		PracticeTestData ptestData = new PracticeTestData();
+		ptestData.setPractice(prax);
 		
-		log("step 6: Log in to ISO Reporting");
+		log("step A2: Generic payment using portal constants");
+		VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
+		// Executing Test
+		String formattedAmount = virtualCardSwiperTest.virtualCardSwipeTest(driver, ptestData);
+		log("Payment done : " + formattedAmount);
+		
+		log("step A3: Log in to ISO Reporting");
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
-		log("step 7: Click search and validate table");
+		log("step A4: Click search and validate table");
 		dailyPage.clickSearch();
 		assertTrue(dailyPage.checkTableIntegrityOnly());
 		

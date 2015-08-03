@@ -45,14 +45,14 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		log("verify whether Virtual Card Swiper page is displayed.");
 		verifyTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");
 
-		String Amount = IHGUtil.createRandomNumericString().substring(0,2);
+		String amount = IHGUtil.createRandomNumericString().substring(0,2);
 
 		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
 		if (swipeString.isEmpty()){
 			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth, PracticeConstants.expYear, 
-					Amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
+					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
 		} else {
-			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, Amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
+			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
 		log("Verify whether the payment is completed successfully.");
 		verifyEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
@@ -60,6 +60,48 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		
 		
 	}
+	/**	
+	 * @brief Returns the generated amount, formatted as $ amount displayed
+	 * @param driver
+	 * @param practiceTestData
+	 * @return
+	 * @throws Exception
+	 */
+	public String virtualCardSwipeTest(WebDriver driver, PracticeTestData practiceTestData) throws Exception {
+		
+		log("Test Case: TestLoginLogout");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Get Data from Excel");	
+
+		log("step 2: Navigate to Login page"); 
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+
+		log("step 3: Enter credentials and login");
+		PracticeHomePage practiceHome;
+		practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());		
+
+		log("Step 4 : Navigate to Virtual Card Swiper page.");
+		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
+
+		log("verify whether Virtual Card Swiper page is displayed.");
+		verifyTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");
+
+		String amount = IHGUtil.createRandomNumericString().substring(0,2);
+
+		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
+		if (swipeString.isEmpty()){
+			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth, PracticeConstants.expYear, 
+					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
+		} else {
+			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
+		}
+		log("Verify whether the payment is completed successfully.");
+		verifyEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
+				true, "The payment is completed properly.");
+		return IHGUtil.formatNumber(Integer.parseInt(amount)*100);
+		
+	}
 	
- 
 }
