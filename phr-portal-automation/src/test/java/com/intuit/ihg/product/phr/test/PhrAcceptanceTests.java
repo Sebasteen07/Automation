@@ -440,7 +440,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 	//Note testcase is not working on prod because step 13 :- css :- Identifer for View All message has a small diiference ['>a' not there]
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDImportThroughEHDC() throws Exception {
 
 		log("Test Case: testCCDImportThroughEHDC");
@@ -551,7 +551,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	 * =============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testNonCCDImportThroughEHDC() throws Exception {
 
 		log("Test Case: testNonCCDImportThroughEHDC");
