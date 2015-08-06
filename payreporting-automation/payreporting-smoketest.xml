@@ -10,10 +10,8 @@
 	<classes>
 	    <class name="com.medfusion.payreporting.tests.ReportingAcceptanceTests" />
 	    	<methods>
-	    		<include name="testReportingLoginLogout" />
+	    		<include name="testHistoricalData" />
       		</methods>
-  </classes>
-	
-	
+  	</classes>		
 </test>
 </suite>

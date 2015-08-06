@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.isoreporting.page;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -273,11 +274,14 @@ public class ReportingDailyReportPage extends BasePageObject {
 				return result;			
 			}
 		}
-		
+		int i = 0;
 		for (WebElement elem : payList){
-			payInt = IHGUtil.deformatNumber(elem.getText());
-			tmPayment += payInt;
-			if ( payInt > 0) payCount++;					
+			i++;
+			payInt = IHGUtil.deformatNumber(elem.getText());			
+			if ( payInt > 0 && (!driver.findElement(By.xpath("//table[@id='dailyTransactionsTable']/tbody/tr[" + i +"]/td[12]")).getText().equals("Declined"))) {
+				payCount++;
+				tmPayment += payInt;
+			}
 		}
 		paySum = IHGUtil.formatNumber(tmPayment);
 		log("  Payments + " + payCount + " + Sum  --> " + paySum);
@@ -325,6 +329,8 @@ public class ReportingDailyReportPage extends BasePageObject {
 		return checkTableContents(false,true,expectedPaySum,expectedPayCount,expectedRefSum,expectedRefCount);
 	}
 	
-	
-
+	public void pushDateFrom(){
+		dateFrom.click();
+		dateFrom.sendKeys(Keys.ARROW_RIGHT);
+	}
 }

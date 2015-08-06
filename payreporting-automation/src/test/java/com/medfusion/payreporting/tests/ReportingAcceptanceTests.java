@@ -64,6 +64,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage.assessLoginPageElements();
 	}
 	
+	//done on one date only!
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayForPatientVerifyDailyReport() throws Exception {
 		log("Test Case: Practice -> OBP for patient -> Verify in reporting");
@@ -107,6 +108,8 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
 		log("step 7: Click search and validate table");
+		log("SETTING DATE FROM = DATE TO");
+		dailyPage.pushDateFrom();
 		dailyPage.clickSearch();
 		assertTrue(dailyPage.checkTableIntegrityOnly());
 		
@@ -150,11 +153,12 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4: Verify table presence and integrity, compare with expected values");		
 		assertTrue(dailyPage.checkTableContents(true,true,IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricPaySum())),testData.getHistoricPayCount(),IHGUtil.formatNumber(Integer.parseInt(testData.getHistoricRefSum())),testData.getHistoricRefCount()));		
 	}
-	
+	/*
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDownloadAndCompareHistoricalCsv() throws Exception {
 		
 	}
+	*/
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayAndVoid() throws Exception {

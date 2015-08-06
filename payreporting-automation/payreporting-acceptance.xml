@@ -9,10 +9,13 @@
 		<classes>
 			<class name="com.medfusion.payreporting.tests.ReportingAcceptanceTests" />
 			<methods>
-				<include name="" />
-				<include name="" />
+				<include name="testHistoricalData" />
+				<include name="testPayForPatientVerifyDailyReport" />
+				<include name="testPayAsPatientVerifyDailyReport" />
+				<include name="testPayAndVoid" />
+				<include name="testPayAndRefund" />
+				<include name="testPayVCSVerifyDailyReport" />				
 			</methods>
 		</classes>
-
 	</test>
 </suite>
