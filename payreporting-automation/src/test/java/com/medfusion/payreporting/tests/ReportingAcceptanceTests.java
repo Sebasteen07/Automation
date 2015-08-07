@@ -97,17 +97,12 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4: Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
 					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
-
-		log("step 5: Verify the Payment Confirmation text");
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 		
-		log("step 6: Log in to ISO Reporting");
+		log("step 5: Log in to ISO Reporting");
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
-		log("step 7: Click search and validate table");
+		log("step 6: Click search and validate table");
 		log("SETTING DATE FROM = DATE TO");
 		dailyPage.pushDateFrom();
 		dailyPage.clickSearch();
@@ -191,17 +186,13 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4: Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
 					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
-
-		log("step 5: Verify the Payment Confirmation text");
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 		
-		log("step 6: Log in to ISO Reporting");
+		
+		log("step 5: Log in to ISO Reporting");
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
-		log("step 7: Click search and validate table");
+		log("step 6: Click search and validate table");
 		dailyPage.clickSearch();
 		assertTrue(dailyPage.checkTableIntegrityOnly());
 		try{
@@ -225,7 +216,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 			else dailyPage.clickSearch();						
 			
 		}		
-		log("step 8: Void the payment");
+		log("step 7: Void the payment");
 		String refSum = dailyPage.getRefundSum();
 		log("Current refund sum is :" + refSum);		
 		refSum = IHGUtil.formatNumber(IHGUtil.deformatNumber(refSum) + IHGUtil.deformatNumber(formattedAmount));
@@ -250,7 +241,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 			else dailyPage.clickSearch();						
 			
 		}
-		log("step 9: Check last status changed to void");
+		log("step 8: Check last status changed to void");
 		assertTrue(("Void").equals(dailyPage.getLastStatus()));
 		
 	}
@@ -288,16 +279,12 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
 					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
 
-		log("step 5: Verify the Payment Confirmation text");
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 		
-		log("step 6: Log in to ISO Reporting");
+		log("step 5: Log in to ISO Reporting");
 		ReportingLoginPage loginPage = new ReportingLoginPage(driver, testData.getReportingUrl());
 		ReportingDailyReportPage dailyPage = loginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
-		log("step 7: Click search and validate table");
+		log("step 6: Click search and validate table");
 		dailyPage.clickSearch();
 		assertTrue(dailyPage.checkTableIntegrityOnly());
 		try{
@@ -321,7 +308,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 			else dailyPage.clickSearch();						
 			
 		}		
-		log("step 8: Refund the payment");
+		log("step 7: Refund the payment");
 		String refSum = dailyPage.getRefundSum();
 		log("Current refund sum is :" + refSum);		
 		refSum = IHGUtil.formatNumber(IHGUtil.deformatNumber(refSum) + 314);
