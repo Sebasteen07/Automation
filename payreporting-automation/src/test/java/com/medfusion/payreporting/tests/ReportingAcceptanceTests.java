@@ -263,8 +263,14 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		String formattedAmount = "$18.31";
-		log("Static payment of " + formattedAmount);
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		while (amount.charAt(0) == '0'){
+			log("Leading zero, generating single digit payment");
+			amount = IHGUtil.createRandomNumericString().substring(0, 1);
+		}
+		amount = amount + ".31";
+		String formattedAmount = new StringBuffer(amount).insert(0, "$").toString();
+		log("Payment of " + formattedAmount);
 		int retries = 30;
 		
 		log("step 1: Login to Practice Portal");	
@@ -280,7 +286,7 @@ public class ReportingAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 4: Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(testData.getLocationName(),testData.getProviderName(), testData.getBillingAccountNumber(),
-					"18.31", testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
+					amount, testData.getFirstName() + " " + testData.getLastName(), PortalConstants.CreditCardNumber, PortalConstants.CreditCardType);
 
 		log("step 5: Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
