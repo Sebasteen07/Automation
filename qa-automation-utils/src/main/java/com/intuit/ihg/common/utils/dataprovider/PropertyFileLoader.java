@@ -11,6 +11,9 @@ public class PropertyFileLoader {
 
 	private Properties property = new Properties();
 
+	public String getPhoneNumber() {
+		return property.getProperty("phoneNumber");
+	}
 	public String getUrl() {
 		return property.getProperty("url");
 	}
