@@ -127,7 +127,7 @@ public class CreatePatient extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
 
-		patientActivationSearchTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail(), null, null, null);
+		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, testcasesData.getEmail(), null, null, null);
 
 		// Moving to the Unlock Link get from the Creation on the
 		// PracticePortal
