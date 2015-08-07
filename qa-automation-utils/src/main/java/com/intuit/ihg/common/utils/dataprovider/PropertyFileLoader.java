@@ -70,8 +70,8 @@ public class PropertyFileLoader {
 		return property.getProperty("SecretAnswer");
 	}
 
-	public String getPhoneNumber() {
-		return property.getProperty("phoneNumber");
+	public String getphoneNumer() {
+		return property.getProperty("phoneNumer");
 	}
 
 	public String getHealthKey6Of6FirstnameSamePractice() {
@@ -194,6 +194,33 @@ public class PropertyFileLoader {
 	}
 	public String getBillingAccountNumber() {
 		return property.getProperty("billingAccountNumber");
+	}
+	public String getReportingUrl() {
+		return property.getProperty("reportingUrl");
+	}
+	public String getLocationName() {
+		return property.getProperty("locationName");
+	}
+	public String getProviderName() {
+		return property.getProperty("providerName");
+	}
+	public String getHistoricDateFrom() {
+		return property.getProperty("historicDateFrom");
+	}
+	public String getHistoricDateTo() {
+		return property.getProperty("historicDateTo");
+	}
+	public String getHistoricPaySum() {
+		return property.getProperty("historicPaySum");
+	}
+	public String getHistoricPayCount() {
+		return property.getProperty("historicPayCount");
+	}
+	public String getHistoricRefSum() {
+		return property.getProperty("historicRefSum");
+	}
+	public String getHistoricRefCount() {
+		return property.getProperty("historicRefCount");
 	}
 	public PropertyFileLoader() throws IOException {
 
