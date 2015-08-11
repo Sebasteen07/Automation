@@ -603,8 +603,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
 				testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		log("Step 8: Wait 60 seconds, so that patient-outbound can be processed");
+		Thread.sleep(60000);
 
-		log("Step 8: Do a GET on PIDC");
+		log("Step 9: Do a GET on PIDC");
 		// this Step assumes that the updated patient is the patient from first
 		// ten registered patients, so we can save traffic
 		// if max argument is ommited patient should be in first 100 patients
@@ -614,7 +617,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
 				+ ",0", testData.getResponsePath());
 
-		log("Step 9: Check changes of address lines");
+		log("Step 10: Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(),
 				testData.getUserName(), firstLine, secondLine);
 
@@ -630,7 +633,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Patient" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());				
 		log("Created Email address: " + email);
 		log("Practice Patient ID: " + practicePatientId);
 		String patient = RestUtils.preparePatient(testData.getPatientPath(),
