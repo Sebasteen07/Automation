@@ -15,6 +15,7 @@ import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestD
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
+import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
@@ -502,6 +503,83 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved"));
-	} 
-	
+	} 	
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrescriptionRenewal() throws Exception {
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		log("Initiate patient data");
+		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
+		createPatient.initPatientData(driver, testData);
+		
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
+
+		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
+				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
+				testData.getDOBYear(), true, testData.getZipCode());
+		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
+		
+		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(createPatient.getEmail(), createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		JalapenoPrescriptionsPage jalapenoPrescriptionsPage = jalapenoHomePage.clickOnPrescriptions(driver);
+		jalapenoPrescriptionsPage.clickContinueButton(driver);
+		jalapenoHomePage = jalapenoPrescriptionsPage.fillThePrescription(driver, "XANAX", "pills", 10);
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		jalapenoHomePage.logout(driver);
+		
+		log("Login to Practice Portal");
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+
+		log("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday();
+
+		log("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		log("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();
+
+		log("Click On Process RxRenewal Button in Practice Portal");
+		rxRenewalSearchPage.clickProcessRxRenewal();
+
+		String subject = rxRenewalSearchPage.getSubject();
+		log("Verify Prescription Confirmation in Practice Portal");
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
+
+		log("Set Action Radio Button in Practice Portal");
+		rxRenewalSearchPage.setActionRadioButton();
+
+		log("Verify Process Completed Text in Practice Portal");
+		rxRenewalSearchPage.verifyProcessCompleted();
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());
+				
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		
+		log("Looking for appointment approval from doctor");
+		assertTrue(jalapenoMessagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
+	}
 }
