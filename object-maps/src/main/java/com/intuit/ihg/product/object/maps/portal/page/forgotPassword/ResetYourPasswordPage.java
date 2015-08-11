@@ -5,8 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-
 import static org.testng.Assert.*;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -94,40 +92,6 @@ public class ResetYourPasswordPage extends BasePageObject{
 		return url;
 	}
 
-	private String checkyourGmail(String userId, String password) throws Exception {
-
-		//Validate Check your email 
-		String strurl="";
-		int count=1;
-		do
-		{
-			Thread.sleep(2000);
-			Assert.assertEquals(verifyMessage.getText().trim(),"Check your email", "The Text Check your email is missing");
-			Thread.sleep(60000);
-			
-			//retrive the Url from ur gmail
-			PortalUtil pPortalUtil=new PortalUtil(driver);
-			String sSubject = String.format(PortalConstants.EMAIL_ForgotPassword_SUBJECT.trim(),PortalConstants.PORTAL_TITLE.trim() );
-			String url = pPortalUtil.gmailVerification(userId,password,sSubject,PortalConstants.TextInForgotPasswordEmailLink);
-			strurl=url;
-			//Navigate to that URL
-			if(strurl!="")
-			{
-				log("++++++URL++++++++"+ url);
-				break;
-			}
-			else
-			{
-				count++;
-			}
-		}while(count<=20);	
-		if(strurl=="")
-		{
-		log("+++++++++++++++URL+++++++++NOT FOUND AFTER 10 MIN");
-		}
-		return strurl;
-
-	}
 
 	public SecretAnswerDoesntMatchPage sendBadAnswerTwice( String userId, String securityAnswer ) {
 		IHGUtil.PrintMethodName();

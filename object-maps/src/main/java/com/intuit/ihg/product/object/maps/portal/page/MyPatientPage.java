@@ -4,7 +4,7 @@ package com.intuit.ihg.product.object.maps.portal.page;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormsPage;
+import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.ConsolidatedInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
 import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
@@ -232,14 +232,14 @@ public class MyPatientPage  extends BasePageObject{
 		return PageFactory.initElements(driver, VirtualOfficeVisitProviderPage.class);
 	}
 
-	public HealthFormsPage clickFillOutFormsLink() {
+	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 15); // we need to wait until the form window disappears
 
 		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
 		lnkFillOutForms.click();
-		return PageFactory.initElements(driver, HealthFormsPage.class);
+		return PageFactory.initElements(driver, HealthFormPage.class);
 	}
 
 	public NewSymptomAssessmentPage clickNewSymptomAssessmentLink() {

@@ -101,8 +101,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		billingAccountsPractice.addHeader( "Authorization", "Basic " + doctorAuth );
 		log("Set Expected Status Code = 200");
 		billingAccountsPractice.setExpectedStatusCode( 200 );
-		//assertTrue is used to verify expected status code, in effect, no exception thrown from .get() means the expected status was returned
-		billingAccountsPractice.get();
+		assertTrue(billingAccountsPractice.get());
 		
 		log("Requesting from billing accounts - practice oauth");
 		billingAccountsSyslevel.setServiceUrl(billingAccountGeneral);		
@@ -110,7 +109,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		billingAccountsSyslevel.addHeader( "Authorization", "bearer " + practiceAuth );
 		log("Set Expected Status Code = 200");
 		billingAccountsSyslevel.setExpectedStatusCode( 200 );		
-		billingAccountsSyslevel.get();
+		assertTrue(billingAccountsSyslevel.get());
 		
 		log("Requesting from merchant info - practice");
 		merchantPractice.setServiceUrl(merchantRest.trim()+"me");		
@@ -118,7 +117,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		merchantPractice.addHeader( "Authorization", "Basic " + doctorAuth );
 		log("Set Expected Status Code = 200");
 		merchantPractice.setExpectedStatusCode( 200 );		
-		merchantPractice.get();
+		assertTrue(merchantPractice.get());
 		
 		if (IHGUtil.getEnvironmentType().toString().equals("PROD")){
 			log("Prod system oath inaccessible, skipping");
@@ -130,14 +129,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			merchantSyslevel.addHeader( "Authorization", "Bearer " + bearerAuth );
 			log("Set Expected Status Code = 200");
 			merchantSyslevel.setExpectedStatusCode( 200 );		
-			merchantSyslevel.get();
+			assertTrue(merchantSyslevel.get());
 		}
 		log("Requesting from merchant logo");
 		merchantLogo.setServiceUrl(merchantLogoRest);		
 		merchantLogo.setContentType( "application/json;" );		
 		log("Set Expected Status Code = 200");
 		merchantLogo.setExpectedStatusCode( 200 );		
-		merchantLogo.get("image/jpeg");		
+		assertTrue(merchantLogo.get("image/jpeg"));		
 		
 		log("Requesting from statements PDF fetch");
 		statementsPractice.setServiceUrl(statementPDFRest);		
@@ -145,9 +144,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		statementsPractice.setContentType( "application/json;" );		
 		log("Set Expected Status Code = 200");
 		statementsPractice.setExpectedStatusCode( 200 );		
-		statementsPractice.get("application/pdf");	
+		assertTrue(statementsPractice.get("application/pdf"));	
 		
-		//if no exception was thrown by now, it passed (all status codes returned as expected)
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

@@ -154,6 +154,21 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		}
 		
 	}
+	public void setLocation(String name)
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		Select sel=new Select(location);
+		try{
+			sel.selectByVisibleText(name);
+		}
+		catch(Exception e)
+		{
+			log("Exception caught! Retrying");
+			sel.selectByVisibleText(name);
+		}
+		
+	}
 	
 	
 	
@@ -387,10 +402,10 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	}
 
 
-	public void setTransactionsForOnlineBillPayProcess(String acctNum, String amount, String cardHolderName, String cardNum, String cardTyp) throws Exception {
+	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount, String cardHolderName, String cardNum, String cardTyp) throws Exception {
 		IHGUtil.PrintMethodName();
-		setLocation();
-		chooseProvider(PracticeConstants.Provider);
+		setLocation(location);
+		chooseProvider(provider);
 		setPatientAccountNumber(acctNum);
 		setPaymentAmount(amount);
 

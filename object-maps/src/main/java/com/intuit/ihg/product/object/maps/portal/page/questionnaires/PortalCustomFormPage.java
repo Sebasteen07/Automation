@@ -20,7 +20,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	@Override
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) {
+	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 	
@@ -30,7 +30,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	@Override
-	public <T extends PortalFormPage> T clickSaveContinue() {
+	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);
 	}
 }

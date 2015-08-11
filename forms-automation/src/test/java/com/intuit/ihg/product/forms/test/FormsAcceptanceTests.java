@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormsPage;
+import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
@@ -110,18 +110,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
      * @throws Exception
      */
     protected MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
-		log("Step 1: Get Portal Data from Excel ##########");
+        log("Get Portal Data from Excel ##########");
         Portal portal = new Portal();
         TestcasesData portalData = new TestcasesData(portal);
         log("Patient Portal URL: " + portalData.getFormsAltUrl());
 
-		log("Step 2: Log in to Patient Portal");
+        log("Log in to Patient Portal");
         PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsAltUrl());
         MyPatientPage pMyPatientPage =
                 loginPage.login(portalData.getUsername(), portalData.getPassword());
 
-		log("Step 3: Go to the forms page and open the form: \"" + formIdentifier + "\"");
-        HealthFormsPage formPage = pMyPatientPage.clickFillOutFormsLink();
+        log("Go to forms page and open the \"" + formIdentifier + "\" form");
+        HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
         formPage.openDiscreteForm(formIdentifier);
         return pMyPatientPage;
     }
@@ -168,7 +168,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
     }
 
-	protected void verifyFormsDatePatientPortal(HealthFormsPage formsPage, String formName)
+	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName)
 			throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		String submittedDate = formsPage.getSubmittedDate(formName);
@@ -176,10 +176,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(submittedDate, currentDate, "Form submitted today not found");
 	}
 
-	protected void checkPDF(HealthFormsPage formsPage, String formName) throws Exception {
+	protected void checkPDF(HealthFormPage formsPage, String formName) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
-		String pdfLink;
+		String pdfLink = new String();
 		try {
 			pdfLink = formsPage.getPDFDownloadLink(formName);
 		} catch (StaleElementReferenceException e) {
@@ -244,7 +244,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		openFormOnPatientPortal(SitegenConstants.SPECIAL_CHARS_FORM);
 
-		log("Step 4: Fill the form out with values containing quotes");
+		log("Step 5: Fill the form out with values containing quotes");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		SpecialCharFormFirstPage customPage1 = welcomePage.initToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
@@ -255,61 +255,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		customPage2.signConsent();
 		customPage2.clickSaveContinue();
 		customPage2.submitForm();
-	}
-
-	@Test(enabled = true)
-	public void testFormValidation() throws Exception {
-		logTestEnvironmentInfo("TestFormValidation");
-		Portal portal = new Portal();
-		TestcasesData portalData = new TestcasesData(portal);
-		log("Patient Portal URL: " + portalData.getFormsAltUrl());
-
-		log("step 1: Click on Sign Up Fill details in Create Account Page");
-		MyPatientPage pMyPatientPage = createPatient(portalData);
-
-		log("step 2: Click on forms and open the form");
-		HealthFormsPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		FormWelcomePage welcomePage = formsPage.openDiscreteForm("Validation test form");
-		welcomePage.clickSaveContinue(FormWelcomePage.class);
-
-		log("step 2: Test validation for various pages");
-		PortalFormPage formPages[] = {
-				new FormBasicInfoPage(driver), new FormInsurancePage(driver), new FormCurrentSymptomsPage(driver),
-				new FormAllergiesPage(driver)
-		};
-
-		for (int i = 0; i < formPages.length; i++) {
-			formPages[i] = PageFactory.initElements(driver, formPages[i].getClass());
-			formPages[i].testValidation();
-			formPages[i].clickSaveContinue();
-		}
-
-		formPages[formPages.length - 1].submitForm();
-	}
-
-	/**
-	 * @Author: Petr Hajek
-	 * @Date: April-28-2015
-	 */
-	@Test(enabled = true)
-	public void testCustomFormValidation() throws Exception {
-		logTestEnvironmentInfo("TestCustomFormValidation");
-		Portal portal = new Portal();
-		TestcasesData portalData = new TestcasesData(portal);
-		log("Patient Portal URL: " + portalData.getFormsAltUrl());
-
-		log("step 1: Click on Sign Up Fill details in Create Account Page");
-		MyPatientPage pMyPatientPage = createPatient(portalData);
-
-		log("step 2: Click on forms and open the form");
-		HealthFormsPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		ValidationFormPage firstPage = formsPage.openDiscreteForm("Validation test Custom form")
-				.clickSaveContinue(ValidationFormPage.class);
-
-		log("Step 3: Validate");
-		firstPage.testValidation();
-		PortalFormPage lastPage = firstPage.clickSaveContinue(PortalFormPage.class);
-		lastPage.submitForm();
 	}
 
     /**
@@ -342,7 +287,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 
 		log("step 2: Click on forms and open the form");
-		HealthFormsPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 3: Fill out the form");
@@ -486,7 +431,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = {"CustomForms"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testOldCustomForms() throws Exception {
+	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -505,7 +450,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
 
 		log("step 2: Click on CustomForm");
-		HealthFormsPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
 
 		log("step 3: Fill CustomForm");
 		pHealthForm.fillInsuranceHealthForm();
@@ -581,7 +526,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = {"CustomForms"})
-	public void testOldCustomFormPublished() throws Exception {
+	public void testCustomFormPublished() throws Exception {
 
 		logTestEnvironmentInfo("testCustomFormPublished");
 
@@ -706,7 +651,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			// Executing Test
 			checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
 			String winHandlePatientPortal = driver.getWindowHandle();
-			HealthFormsPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
+			HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
 
 
 			driver.switchTo().window(winHandleCustomBuilder);

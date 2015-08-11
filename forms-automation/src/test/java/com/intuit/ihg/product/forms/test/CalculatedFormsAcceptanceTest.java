@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormsPage;
+import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.CalculatedFormPage;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
@@ -138,7 +138,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		MyPatientPage pMyPatientPage = createPatient(portalData);
 
 		log("step 2: Click on forms");
-		HealthFormsPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		for (String formName : formNames) {
 			log("Opening Form named " + formName);
 			try {
@@ -183,7 +183,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		MyPatientPage pMyPatientPage = createPatient(portalData);
 	
 		log("step 2: Click on forms and open the form");
-		HealthFormsPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
 		formsPage.openDiscreteForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 	
 		log("Step 3: Try to Save and continue without any answer.");
