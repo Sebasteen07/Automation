@@ -5,6 +5,7 @@
     <Statement id="3ab8ce87-5725-4849-ab03-7e03b60ab000">
         <FileId>decad4ac-c142-4518-a717-4e646fa20ba5_04272015144155002.est</FileId>
         <PracticeManagementStatementId>rcmauto3-000388-20150424084161</PracticeManagementStatementId>
+        <StatementFormat>FORMAT1</StatementFormat>
         <StatementBillingAccountNumber>47</StatementBillingAccountNumber>
         <PracticePatientId>rcmauto3</PracticePatientId>
         <GuarantorInformation>
@@ -23,8 +24,14 @@
         </GuarantorInformation>
         <StatementDate>2015-04-27T08:41:55</StatementDate>
         <PaymentDueDate>2015-05-30T08:41:55</PaymentDueDate>
-        <NewCharges>0.00</NewCharges>
+        <NewCharges>66.66</NewCharges>
         <TotalCharges>2558.00</TotalCharges>
+        <BalancesForward>
+        	<BalanceForward>
+				<BalanceForwardType>Patient</BalanceForwardType>
+				<BalanceForwardAmount>500000.00</BalanceForwardAmount>
+			</BalanceForward>			
+		</BalancesForward>
         <OutstandingBalance>2548.00</OutstandingBalance>
         <AgingBalances>
             <AgingBalance>
@@ -95,7 +102,7 @@
         <OtherAdjustments>0.00</OtherAdjustments>
         <PatientPayments>10.00</PatientPayments>
         <OtherBalances>0.00</OtherBalances>
-        <PatientBalance>466.60</PatientBalance>
+        <PatientBalance>666.61</PatientBalance>       
         <Encounters>
             <Encounter>
                 <PatientInformation>

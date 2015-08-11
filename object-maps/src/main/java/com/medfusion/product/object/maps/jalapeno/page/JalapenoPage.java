@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.jalapeno.page;
 
 
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -57,6 +58,10 @@ public class JalapenoPage extends BasePageObject {
 			signoutButton.click();
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
+			rightDropdownButton.click();
+			signoutDropdownButton.click();
+		} catch (ElementNotVisibleException ex) {
+			log("Element is not currently visible, trying mobile version size");
 			rightDropdownButton.click();
 			signoutDropdownButton.click();
 		}

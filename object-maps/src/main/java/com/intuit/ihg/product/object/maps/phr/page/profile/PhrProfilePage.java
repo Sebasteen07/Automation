@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.object.maps.phr.page.profile;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,6 +20,12 @@ public class PhrProfilePage extends BasePageObject{
 	@FindBy(id="city")
 	private WebElement txtCity;
 	
+	@FindBy(id="phone3")
+	private WebElement txtMobile;
+	
+	@FindBy(id="phone2")
+	private WebElement txtHomePhone;
+	
 	@FindBy(id="zipCode")
 	private WebElement txtzipCode;
 	
@@ -39,18 +44,33 @@ public class PhrProfilePage extends BasePageObject{
 	 * The method asserts patient data in the PHR site
 	 * After modification in the Portal site
 	 * 
-	 * @param secondarycity [the data is from PHR sheet]
-	 * @param secondarycity [the data is from PHR sheet]
+	 * @param city
+	 * @param zip
 	 */
-	public void assertDataCityAndZip(String secondarycity,String secondaryzip)
+	public void assertDataCityAndZip(String city,String zip)
 	{
 		IHGUtil.PrintMethodName();
-		log("###########Value of City :-"+txtCity.getAttribute("value").toString());
-		log("###########Value of Zip  :-"+txtzipCode.getAttribute("value").toString());
+		log("Value of City: " + txtCity.getAttribute("value"));
+		log("Value of Zip: " + txtzipCode.getAttribute("value")); 
 		
-		//force Test case failuare
-		Assert.assertEquals(txtCity.getAttribute("value").toString(),secondarycity, "The City is not updated in PHR ##### ");
-		Assert.assertEquals(txtzipCode.getAttribute("value"), secondaryzip, "The Zip code is not updated in PHR  ##### ");
+		Assert.assertEquals(txtCity.getAttribute("value"),city, "The City is not updated in PHR ##### ");
+		Assert.assertEquals(txtzipCode.getAttribute("value"), zip, "The Zip code is not updated in PHR  ##### ");
+	}
+	
+	public void assertMobilePhoneNumber(String phoneNumber)
+	{
+		IHGUtil.PrintMethodName();
+		log("Value of Phone number: " + txtMobile.getAttribute("value"));
+		
+		Assert.assertEquals(txtMobile.getAttribute("value").replaceAll("-", ""), phoneNumber, "Mobile Phone number is not updated in PHR ##### ");
+	}
+	
+	public void assertHomePhoneNumber(String phoneNumber)
+	{
+		IHGUtil.PrintMethodName();
+		log("Value of Phone number: " + txtHomePhone.getAttribute("value"));
+		
+		Assert.assertEquals(txtHomePhone.getAttribute("value").replaceAll("-", ""), phoneNumber, "Home Phone number is not updated in PHR ##### ");
 	}
 	
 	
@@ -63,17 +83,34 @@ public class PhrProfilePage extends BasePageObject{
 	 * @throws Exception 
 	 */
 	
-	public void modifyPatientInfoInPhr(String portalCity,String portalZip) throws Exception
+	public void setCityZip(String portalCity,String portalZip) throws Exception
 	{
 		IHGUtil.PrintMethodName();
+		log("Setting the City to " + portalCity);
+		log("Setting the ZIP to " + portalZip);
 		txtCity.clear();
 		txtCity.sendKeys(portalCity);
 		txtzipCode.clear();
 		txtzipCode.sendKeys(portalZip);
-		btnSaveChanges.click();
-		Thread.sleep(5000);
-		WebElement msg = driver.findElement(By.xpath(".//*[@class='info']"));
-		IHGUtil.waitForElement(driver, 30, msg);
+		saveChanges();
+	}
+	
+	public void setMobilePhoneNumber(String phoneNumber) throws Exception
+	{
+		IHGUtil.PrintMethodName();
+		log("Setting the Mobile Phone number to " + phoneNumber);
+		txtMobile.clear();
+		txtMobile.sendKeys(phoneNumber.substring(0,3) + "-" + phoneNumber.substring(3,6) + "-" + phoneNumber.substring(6));
+		saveChanges();
+	}
+	
+	public void setHomePhoneNumber(String phoneNumber) throws Exception
+	{
+		IHGUtil.PrintMethodName();
+		log("Setting the Home Phone number to " + phoneNumber);
+		txtHomePhone.clear();
+		txtHomePhone.sendKeys(phoneNumber.substring(0,3) + "-" + phoneNumber.substring(3,6) + "-" + phoneNumber.substring(6));
+		saveChanges();
 	}
 	
 	
@@ -86,6 +123,11 @@ public class PhrProfilePage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		btnLogout.click();
 		return PageFactory.initElements(driver, PhrLoginPage.class);
+	}
+	
+	public void saveChanges() {
+		btnSaveChanges.click();
+		IHGUtil.waitForElementByXpath(driver, ".//*[@class='info']", 30);
 	}
 
 }

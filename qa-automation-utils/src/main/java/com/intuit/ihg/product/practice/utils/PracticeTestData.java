@@ -10,6 +10,10 @@ public class PracticeTestData {
 	private Practice practiceData = null;
 	private ExcelSheetReader excelReader = null;
 	
+	public PracticeTestData(){
+		//stub
+	}
+	
 	public PracticeTestData(Practice practice) throws Exception {
 		// Find the environment
 		String temp= IHGUtil.getEnvironmentType().toString();
@@ -58,5 +62,9 @@ public class PracticeTestData {
 	
 	public String getPayPalPassword() {
 		return practiceData.payPalPassword;
+	}
+	
+	public void setPractice(Practice practice) {
+		this.practiceData = practice;
 	}
 }

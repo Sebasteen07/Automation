@@ -165,6 +165,63 @@ public class PropertyFileLoader {
 	public String getStatementBalanceDue() {
 		return property.getProperty("statementBalanceDue");
 	}
+	public String getRcmBillingAccountRest() {
+		return property.getProperty("rcmBillingAccountRest");
+	}
+	public String getRcmBillingAccountGeneralRest() {
+		return property.getProperty("rcmBillingAccountGeneralRest");
+	}
+	public String getDoctorBase64AuthString() {
+		return property.getProperty("doctorBase64AuthString");
+	}
+	public String getBearerOAuthString() {
+		return property.getProperty("bearerOAuthString");
+	}
+	public String getPracticeOAuthString() {
+		return property.getProperty("practiceOAuthString");
+	}	
+	public String getRcmMerchantRest() {
+		return property.getProperty("rcmMerchantRest");
+	}
+	public String getRcmMerchantLogoRest() {
+		return property.getProperty("rcmMerchantLogoRest");			
+	}
+	public String getRcmStatementsPDFRest() {
+		return property.getProperty("rcmStatementsPDFRest");			
+	}
+	public String getRcmMerchantID() {
+		return property.getProperty("rcmMerchantID");
+	}
+	public String getBillingAccountNumber() {
+		return property.getProperty("billingAccountNumber");
+	}
+	public String getReportingUrl() {
+		return property.getProperty("reportingUrl");
+	}
+	public String getLocationName() {
+		return property.getProperty("locationName");
+	}
+	public String getProviderName() {
+		return property.getProperty("providerName");
+	}
+	public String getHistoricDateFrom() {
+		return property.getProperty("historicDateFrom");
+	}
+	public String getHistoricDateTo() {
+		return property.getProperty("historicDateTo");
+	}
+	public String getHistoricPaySum() {
+		return property.getProperty("historicPaySum");
+	}
+	public String getHistoricPayCount() {
+		return property.getProperty("historicPayCount");
+	}
+	public String getHistoricRefSum() {
+		return property.getProperty("historicRefSum");
+	}
+	public String getHistoricRefCount() {
+		return property.getProperty("historicRefCount");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

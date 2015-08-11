@@ -78,7 +78,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 4: Click sign out");
 		practiceLogin = practiceHome.logOut();
-		assertTrue(practiceLogin.isLoginPageLoad(), "Expected to see login page");
+		assertTrue(practiceLogin.isLoginPageLoaded(), "Expected to see login page");
 
 	}
 
@@ -702,7 +702,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("amount: "+amount);
 
 		log("Step 6 : Set all the transaction details");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess ( PracticeConstants.processCardNum, amount, PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum , PracticeConstants.processCardType);
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess ( PracticeConstants.Location, PracticeConstants.Provider, PracticeConstants.processCardNum, amount, PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum , PracticeConstants.processCardType);
 
 		log("Step 7: Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);

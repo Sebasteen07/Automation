@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.jalapeno.page.MyAccountPage;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 public class JalapenoMyAccountPage extends BasePageObject {
 
@@ -108,4 +110,11 @@ public boolean checkForAddress(WebDriver driver, String zipCode) {
 			
 		return true;	
 	}
+
+public JalapenoHomePage returnToHomePage(WebDriver driver) {
+	log("Return to dashboard");
+	driver.findElement(By.id("home")).click();
+	
+	return PageFactory.initElements(driver, JalapenoHomePage.class);	
+}
 }
