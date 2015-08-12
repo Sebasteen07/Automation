@@ -50,9 +50,9 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 import com.medfusion.rcm.utils.RCMUtil;
 /**
  * @Author:Jakub Odvarka
