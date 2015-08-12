@@ -50,3 +50,7 @@ sitegen-automation/.gitignore
 # test failure output folder
 */trust/*
 
+patient-portal-automation/test-output/
+jalapeno-automation/test-output/
+mobile-automation/test-output/
+mu2-api-automation/test-output/
