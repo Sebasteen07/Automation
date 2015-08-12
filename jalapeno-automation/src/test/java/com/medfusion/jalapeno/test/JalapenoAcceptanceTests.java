@@ -23,6 +23,7 @@ import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
+import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
@@ -36,6 +37,7 @@ import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
+
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
