@@ -71,6 +71,41 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 
 		return goToNextPage();
 	}
+	
+	public JalapenoCreateAccountPage2 fillInDataPage1(String firstName, String lastName, String email, String month, String day, String year, boolean gender,
+			String zipCode) {
+		IHGUtil.PrintMethodName();
+		
+		log("Setting Firstname as " + firstName);
+		inputPatientFirstName.sendKeys(firstName);
+		log("Setting LastName as " + lastName);
+		inputPatientLastName.sendKeys(lastName);
+		log("Setting email address as " + email);
+		inputEmailAddresss.sendKeys(email);
+
+		log("Setting up month of birth as " + month);
+		Select selectMonth = new Select(inputDateOfBirthMonth);
+		selectMonth.selectByValue(month);
+
+		log("Setting up day of birth as " + day);
+		inputDateOfBirthDay.sendKeys(day);
+		log("Setting up day of year as " + year);
+		inputDateOfBirthYear.sendKeys(year);
+
+		log("Setting up gender as " + gender);
+		if (gender) {
+			maleGender.click();
+		} else {
+			femaleGender.click();
+		}
+		
+		log("Setting up ZipCode as " + zipCode);
+		inputZipCode.sendKeys(zipCode);
+		
+		buttonChooseUserId.click();
+
+		return PageFactory.initElements(driver, JalapenoCreateAccountPage2.class);
+	}
 
 	public JalapenoPatientActivationPage fillInDataPage(String firstName, String lastName,
 			String email, PropertyFileLoader testData) {
