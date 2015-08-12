@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>15.4.0</version>
+        <version>15.5.0rc-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>payreporting-automation</artifactId>
@@ -23,7 +23,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>15.4.0</ihg.version>
+		<ihg.version>15.5.0rc-SNAPSHOT</ihg.version>
 	</properties>
 	
 	<dependencies>
