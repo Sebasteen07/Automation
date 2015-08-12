@@ -28,6 +28,7 @@ import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage2;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
@@ -37,6 +38,7 @@ import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestResult;
