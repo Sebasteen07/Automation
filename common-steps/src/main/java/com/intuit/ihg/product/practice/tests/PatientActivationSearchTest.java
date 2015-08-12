@@ -44,6 +44,46 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 	public String getEmailAddressString() {
 		return emailAddressString;
 	}
+	
+	public String PatientActivation(WebDriver driver, PracticeTestData practiceTestData,String email, 
+			String doctorLogin, String doctorPassword, String url) throws Exception {
+		
+		log("Test Case: Patient Activation");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("step 1: Login to Practice Portal");
+		
+		String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
+		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
+		String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPassword() : doctorPassword;
+		
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(tempDocLogin, tempDocPassword);
+
+		log("step 2: Click on Patient Search");
+		PatientSearchPage patientSearchPage=practiceHome.clickPatientSearchLink();
+
+		log("step 3: Click on Add new Patient");
+		PatientactivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("step 4: Enter all the details and click on Register");
+		patientactivationPage.setinitialdetails(email);
+				
+		log("Moving to linkUrl to finish Create Patient procedure");
+			
+		unlockLink = patientactivationPage.getUnlockLink();
+		firstNameString=patientactivationPage.getFirstNameString();
+		lastNameString=patientactivationPage.getLastNameString();
+		patientIdString=patientactivationPage.getPatientIdString();
+		zipCodeString=patientactivationPage.getZipCodeString();
+		emailAddressString=patientactivationPage.getEmailAddressString();
+		
+		driver.switchTo().defaultContent();
+		
+		return unlockLink;	
+	}
 
 	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email,
 			String doctorLogin, String doctorPassword, String url) throws Exception {
