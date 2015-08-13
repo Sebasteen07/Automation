@@ -71,19 +71,18 @@ public class AppointmentRequestStep2Page extends BasePageObject{
 				
 		Select selectPreferredTimeFrame = new Select(dropDownPreferredTimeFrame);
 		selectPreferredTimeFrame.selectByIndex(1);	// TODO - use parameter
+
 		
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3"))
-			{
+/* Preparation for transfering to ProvidersHoursConfiguration set.		
+
 				prefrDay.click();
 				prefrDayPart.click();
-			}
-		else
-			{
+
+*/
 				Select selectPreferredDay = new Select(dropDownPreferredDay);
 				selectPreferredDay.selectByIndex(1);		// TODO - use parameter
 				choosePreferredTime.sendKeys( sChoosePreferredTime );
-			}
-		
+
 		
 		apptReason.sendKeys( sApptReason + " " + createdTs );
 		
