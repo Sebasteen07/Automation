@@ -1,6 +1,5 @@
 package com.medfusion.payprovisioning.tests;
 
-import org.junit.After;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
