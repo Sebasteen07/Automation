@@ -198,6 +198,9 @@ public class PropertyFileLoader {
 	public String getBillingAccountNumber() {
 		return property.getProperty("billingAccountNumber");
 	}
+	public String getProvisioningUrl() {
+		return property.getProperty("provisioningUrl");
+	}
 	public String getReportingUrl() {
 		return property.getProperty("reportingUrl");
 	}
