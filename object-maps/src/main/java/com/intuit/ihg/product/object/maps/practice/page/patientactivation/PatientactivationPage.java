@@ -157,7 +157,7 @@ public class PatientactivationPage extends BasePageObject{
 		firstNameString="Beta" + IHGUtil.createRandomNumericString();
 		lastNameString="Tester";	
 		zipCodeString=PracticeConstants.Zipcode;
-		emailAddressString=IHGUtil.createRandomEmailAddress(sEmail);
+		emailAddressString=IHGUtil.createRandomEmailAddress(sEmail,'.');
 		patientIdString=emailAddressString;
 		
 		IHGUtil.PrintMethodName();
