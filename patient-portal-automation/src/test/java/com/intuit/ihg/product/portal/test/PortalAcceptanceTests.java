@@ -1206,7 +1206,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
 
 		log("step 5: Enter Details");
-		newRxRenewalPage.chooseProvider(testcasesData.getpreferredprovider());
+		newRxRenewalPage.chooseProvider(testcasesData.getPreferredProvider());
 
 		log("set Medication Fields in NewRxRenewal Page");
 		newRxRenewalPage.setMedicationFields();

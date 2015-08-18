@@ -36,7 +36,7 @@ public class TestcasesData {
 		return portalobj.password;
 	}
 	
-	public String getpreferredprovider(){
+	public String getPreferredProvider(){
 		return portalobj.preferredprovider;
 	}
 	

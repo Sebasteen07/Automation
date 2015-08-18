@@ -36,7 +36,7 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -98,15 +98,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 
 			log("Step 4: Click on Add new Patient");
-			PatientactivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
+			PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 			
 			log("Step 5: Enter all the details and click on Register");
-			String unlockcode=patientactivationPage.setFullDetails(testData);
+			String unlockcode= patientActivationPage.setFullDetails(testData);
 
-			String firstNameString = patientactivationPage.getFirstNameString();
-			String patientIdString = patientactivationPage.getPatientIdString();
-			String emailAddressString = patientactivationPage.getEmailAddressString();
-			String unlocklink =patientactivationPage.getUnlockLink();
+			String firstNameString = patientActivationPage.getFirstNameString();
+			String patientIdString = patientActivationPage.getPatientIdString();
+			String emailAddressString = patientActivationPage.getEmailAddressString();
+			String unlocklink = patientActivationPage.getUnlockLink();
 			log("Step 6: Logout of Practice Portal");
 			practiceHome.logOut();
 			

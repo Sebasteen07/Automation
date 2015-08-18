@@ -7,7 +7,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 
 public class PatientActivationTest extends BaseTestNGWebDriver{
@@ -56,13 +56,13 @@ public class PatientActivationTest extends BaseTestNGWebDriver{
 		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
 
 		log("step 2: Click on Patient Activation");
-		PatientactivationPage patientactivation=practiceHome.clickPatientactivationTab();
+		PatientActivationPage patientactivation=practiceHome.clickPatientactivationTab();
 
 		log("step 3: Click on New Patent link");
 		patientactivation.clickAddNewPatient();
 
 		log("step 3: Enter all the details and click on Register");
-		patientactivation.setinitialdetails(email);
+		patientactivation.setInitialDetails(email);
 		
 		log("Moving to linkUrl to finish Create Patient procedure");
 			

@@ -143,7 +143,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
-
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -189,14 +188,9 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ "
 				+ testDataFromProp.getPassword());
-		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());	
-	/*	
-		log("Select PAPER delivery preference");
-		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
-		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.PAPER);
-	*/	
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());
+
 		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
 		log("Logging out");
 		
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);

@@ -9,7 +9,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 
 public class PatientActivationSearchTest extends BaseTestNGWebDriver{
@@ -66,10 +66,10 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		PatientSearchPage patientSearchPage=practiceHome.clickPatientSearchLink();
 
 		log("step 3: Click on Add new Patient");
-		PatientactivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
+		PatientActivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
 
 		log("step 4: Enter all the details and click on Register");
-		patientactivationPage.setinitialdetails(email);
+		patientactivationPage.setInitialDetails(email);
 				
 		log("Moving to linkUrl to finish Create Patient procedure");
 			
@@ -106,18 +106,18 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 		PatientSearchPage patientSearchPage=practiceHome.clickPatientSearchLink();
 
 		log("step 3: Click on Add new Patient");
-		PatientactivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
 		log("step 4: Enter all the details and click on Register");
-		patientactivationPage.setinitialdetails(email);
+		patientActivationPage.setInitialDetails(email);
 				
 		log("Moving to linkUrl to finish Create Patient procedure");
-		unlockLink = patientactivationPage.getUnlockLink();
-		firstNameString = patientactivationPage.getFirstNameString();
-		lastNameString = patientactivationPage.getLastNameString();
-		patientIdString = patientactivationPage.getPatientIdString();
-		zipCodeString = patientactivationPage.getZipCodeString();
-		emailAddressString = patientactivationPage.getEmailAddressString();
+		unlockLink = patientActivationPage.getUnlockLink();
+		firstNameString = patientActivationPage.getFirstNameString();
+		lastNameString = patientActivationPage.getLastNameString();
+		patientIdString = patientActivationPage.getPatientIdString();
+		zipCodeString = patientActivationPage.getZipCodeString();
+		emailAddressString = patientActivationPage.getEmailAddressString();
 		
 		driver.switchTo().defaultContent();
 		
@@ -127,7 +127,7 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData,
 			String email, PropertyFileLoader testData) throws Exception {
 		return getPatientActivationLink(driver, practiceTestData, email, testData.getDoctorLogin(),
-				testData.getDoctorPassword(), testData.getUrl());
+				testData.getDoctorPassword(), practiceTestData.getUrl());
 	}
  
 }

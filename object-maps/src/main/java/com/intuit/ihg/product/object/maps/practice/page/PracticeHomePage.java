@@ -16,7 +16,7 @@ import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBill
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.intuit.ihg.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
@@ -188,7 +188,7 @@ public class PracticeHomePage extends BasePageObject {
 	 * 
 	 * @throws Exception
 	 */
-	public PatientactivationPage clickPatientactivationTab() throws Exception {
+	public PatientActivationPage clickPatientactivationTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, patientactivation);
 
@@ -202,7 +202,7 @@ public class PracticeHomePage extends BasePageObject {
 		}
 
 		patientactivation.click();
-		return PageFactory.initElements(driver, PatientactivationPage.class);
+		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
 /**
 	 * Will take the staff member to the Online Bill Pay search page
@@ -238,7 +238,7 @@ public class PracticeHomePage extends BasePageObject {
 	 * 
 	 * @throws Exception
 	 */
-	public PatientactivationPage clickFileSharingTab() throws Exception {
+	public PatientActivationPage clickFileSharingTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, fileSharingTab);
 		
@@ -251,7 +251,7 @@ public class PracticeHomePage extends BasePageObject {
 		}
 		
 		fileSharingTab.click();
-		return PageFactory.initElements(driver, PatientactivationPage.class);
+		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
 	/**
 	 * Will take the staff member to the Rx Renewal Pay search page
