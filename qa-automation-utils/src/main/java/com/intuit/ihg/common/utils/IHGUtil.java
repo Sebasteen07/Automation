@@ -1113,12 +1113,16 @@ public class IHGUtil extends BasePageObject {
 	{
 		return CcdType.ELEKTA_CCD;
 	}
-	public static String createRandomEmailAddress(String email) {
+	public static String createRandomEmailAddress(String email, char delimiter) {
 		IHGUtil.PrintMethodName();
 		String[] tmp = email.split("@");
-		String randomEmail = tmp[0] + "." + createRandomNumber() + "@" + tmp[1];
+		String randomEmail = tmp[0] + delimiter + createRandomNumber() + "@" + tmp[1];
 		System.out.println("dynamic Email address" + randomEmail);
 		return randomEmail;
+	}
+	
+	public static String createRandomEmailAddress(String email) {
+		return createRandomEmailAddress(email, '+');
 	}
 
 	public static String createRandomZip() {

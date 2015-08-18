@@ -62,7 +62,7 @@ public class JalapenoPatient extends BaseTestNGWebDriver {
 		int randomize = PortalUtil.createRandomNumber();
 		
 		//Setting data according to test purpose
-		if (email.isEmpty()) { email = IHGUtil.createRandomEmailAddress(testData.getEmail()); }
+		if (email.isEmpty()) { email = IHGUtil.createRandomEmailAddress(testData.getEmail(),'.'); }
 		if (firstName.isEmpty()) { firstName = testData.getFirstName() + randomize; }
 		if (lastName.isEmpty()) { lastName = "TestPatient1"; }
 		if (password.isEmpty()) { password = testData.getPassword(); }
