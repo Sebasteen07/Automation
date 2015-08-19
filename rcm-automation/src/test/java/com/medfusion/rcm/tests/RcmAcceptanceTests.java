@@ -238,7 +238,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			log("Finishing of patient activation: step 2 - filling patient data");
 			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getFirstNameString(),
 				testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
-				testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
+				testDataFromProp.getSecretAnswer(), "1234567890");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -258,15 +258,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 					testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 					testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
 			
-		}
-		log("Expecting preference dialog, waiting up to 40s");
-		WebElement elem = (new WebDriverWait(driver, 40))
-				  .until(ExpectedConditions.presenceOfElementLocated(By.id("paymentPreference_Paper")));
-		assertTrue(elem.isEnabled());		
-		driver.findElement(By.id("paymentPreference_Electronic")).click();
-		driver.findElement(By.id("updateStatementPrefButton")).click();
-		//since there are no other actions on the page, a small pause is needed, not having a delay produces inconsistent saving on prod (since it's fortunately faster than demo and dev3) 
-		Thread.sleep(1000);
+		}		
 		
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
