@@ -18,12 +18,9 @@
 <classes>
 	<class name="com.intuit.ihg.product.practice.test.PracticePortalAcceptanceTests" />
       <methods>
-          <include name="testVirtualCardSwiper"/>
           <include name="testEStatementUpload"/>
           <include name="testFileSharing"/>
-          <include name="testMakePaymentForPatient"/>
           <include name="testOnlineBillPayProcess"/>
-          <include name="testChangePatientEmail"/>
       </methods>    
 </classes>     
 </test>
