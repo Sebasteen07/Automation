@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -39,32 +40,31 @@ public class eStatementUploadPage extends BasePageObject {
 	@FindBy( xpath =".//input[@name='dueAmount']")
 	private WebElement dueAmountField;
 	
-	@FindBy( xpath = ".//select[@name='statementDate:month']")
-	private WebElement statementDateDropDwn;
+	@FindBy( xpath = "//select[@name='statementDate:month']/option[@selected='selected']")
+	private WebElement statementMonthDropDwnSelected;
 		
-	@FindBy( xpath = ".//select[@name='statementDate:day']")
-	private WebElement statementMonthDropDwn;
+	@FindBy( xpath = "//select[@name='statementDate:day']/option[@selected='selected']")
+	private WebElement statementDateDropDwnSelected;
 	
-	@FindBy( xpath = ".//select[@name='statementDate:year']")
-	private WebElement statementYearDropDwn;
+	@FindBy( xpath = "//select[@name='statementDate:year']/option[@selected='selected']")
+	private WebElement statementYearDropDwnSelected;
 	
 	@FindBy( xpath ="//input[@value='Upload Statement']")
 	private WebElement uploadStatementButton;
 	
-	@FindBy( xpath = ".//input[@name='fileName:fileField']")
-	private WebElement browseButton;
+	
 	
 //	@FindBy(xpath ="//span[text() ='eStatement successfully uploaded']")
 	@FindBy(xpath = ".//*[@class='info']//span")
 	private WebElement successMsg;
 	
-	@FindBy( xpath = ".//select[@name='paymentDueDate:month']")
+	@FindBy( xpath = "//select[@name='paymentDueDate:month']")
 	private WebElement paymentDueMonthDropDwn;
 		
-	@FindBy( xpath = ".//select[@name='paymentDueDate:day']")
+	@FindBy( xpath = "//select[@name='paymentDueDate:day']")
 	private WebElement paymentDueDateDropDwn;
 	
-	@FindBy( xpath = ".//select[@name='paymentDueDate:year']")
+	@FindBy( xpath = "//select[@name='paymentDueDate:year']")
 	private WebElement paymentDueYearDropDwn;
 	
 	public eStatementUploadPage(WebDriver driver) {
@@ -73,8 +73,6 @@ public class eStatementUploadPage extends BasePageObject {
 	}
 
 	public void enterPatientDetails(String firstName, String lastName, String patientID) {
-		IHGUtil.PrintMethodName();
-
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
@@ -113,67 +111,41 @@ public class eStatementUploadPage extends BasePageObject {
 		
 		log("Enter location ID");;
 		Select selLoc = new Select(locationIDDropDwn);
-		selLoc.selectByIndex(1);
-		
-		
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
+		selLoc.selectByIndex(1);		
+
 		log("Enter Unique ID and Due amout.");
 		uniqueIDField.sendKeys(uniqueID);
-		dueAmountField.sendKeys(dueAmt);
+		dueAmountField.sendKeys(dueAmt);		
+
+		log("eStatement date remains today");
+				
+		log("Enter the payment due date next year");
+
+		Select dueDate = new Select (paymentDueDateDropDwn);
+		dueDate.selectByValue(statementDateDropDwnSelected.getAttribute("value"));
+		Select dueMonth = new Select (paymentDueMonthDropDwn);
+		dueMonth.selectByValue(statementMonthDropDwnSelected.getAttribute("value"));
 		
-		
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		log("Enter the eStatement  date");
-		Select selDate = new Select(statementDateDropDwn);
-		selDate.selectByValue("1");
-		
-		
-		Select selMonth = new Select(statementMonthDropDwn);
-		selMonth.selectByValue("1");
-		
-		
-		Select selYear = new Select(statementYearDropDwn);
-		selYear.selectByValue("2013");
-		
-		
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		log("Enter the payment due date");
-		Select selDueDate = new Select(paymentDueMonthDropDwn);
-		selDueDate.selectByIndex(5);
-		
-		
-		Select selDueMonth = new Select(paymentDueDateDropDwn);
-		selDueMonth.selectByIndex(1);
-		
-		
-		Select selDueYear = new Select(paymentDueYearDropDwn);
-		selDueYear.selectByValue("2013");
-		Thread.sleep(2000);
+		int thisYear = Integer.valueOf(statementYearDropDwnSelected.getAttribute("value"));
+		String nextYear = Integer.valueOf(thisYear + 1).toString();
+		Select dueYear = new Select (paymentDueYearDropDwn);
+		dueYear.selectByValue(nextYear);
 		
 	}
 	
 	public void browseFile() throws Exception {
-
-		IHGUtil.PrintMethodName();
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		IHGUtil.waitForElement(driver, 10, browseButton);
-		
+		IHGUtil.PrintMethodName();				
 		URL eStatementPath = ClassLoader.getSystemResource(PracticeConstants.eStatementFilePath);
+		log("########################File Path " + eStatementPath);
+		Assert.assertNotNull(eStatementPath);
 		//Providing FullPath to the eStatementPDF
-		browseButton.sendKeys(eStatementPath.getPath());
-
+		WebElement browseButton = driver.findElement(By.xpath("//input[@name='fileName:fileField']"));
+		browseButton.sendKeys(eStatementPath.toString());
 	}
 	
 	public void clickOnUploadStatementButton() throws Exception {
 		IHGUtil.PrintMethodName();
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
 		uploadStatementButton.click();
-		Thread.sleep(2000);
 	}
 	
 	public boolean isEStatementUploadedSuccessfully() throws Exception {

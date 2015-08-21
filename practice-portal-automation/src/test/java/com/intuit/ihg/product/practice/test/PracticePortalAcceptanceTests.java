@@ -644,7 +644,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		eStatementPage.clickOnUploadStatementButton();
 
 		log("Verify whether the EStatement is uploaded successfully.");
-		verifyTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
+		assertTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
 	}
 
 
