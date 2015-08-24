@@ -15,6 +15,18 @@ public class ProvisioningDashboardPage extends BasePageObject{
 	@FindBy(how = How.XPATH, using="//nav[@id='top-nav']//button[contains(@data-ng-click,'logout()')]")
 	public WebElement logoutButton;
 	
+	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[3]/a")
+	public WebElement searchMerchantButton;
+	
+	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[4]/a")
+	public WebElement addMerchantButton;
+	
+	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[6]/a")
+	public WebElement searchUserButton;
+	
+	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[7]/a")
+	public WebElement addUserButton;
+	
 	public ProvisioningDashboardPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -56,5 +68,14 @@ public class ProvisioningDashboardPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		logoutButton.click();
 		return PageFactory.initElements(driver, ProvisioningLoginPage.class);
-	}	
+	}
+	
+	public ProvisioningAddMerchantPage clickAddMerchant(){
+		addMerchantButton.click();
+		return PageFactory.initElements(driver, ProvisioningAddMerchantPage.class);
+	}
+	public ProvisioningSearchMerchantPage clickSearchMerchant(){
+		searchMerchantButton.click();
+		return PageFactory.initElements(driver, ProvisioningSearchMerchantPage.class);
+	}
 }
