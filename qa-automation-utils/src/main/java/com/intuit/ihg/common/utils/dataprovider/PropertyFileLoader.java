@@ -228,6 +228,18 @@ public class PropertyFileLoader {
 	public String getHistoricRefCount() {
 		return property.getProperty("historicRefCount");
 	}
+	public String getRegex() {
+		return property.getProperty("regex");
+	}
+	public String getStaticMerchantMID() {
+		return property.getProperty("staticMerchantMID");
+	}
+	public String getStaticExternalId() {
+		return property.getProperty("staticExternalId");
+	}
+	public String getStaticMerchantName() {
+		return property.getProperty("staticMerchantName");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();

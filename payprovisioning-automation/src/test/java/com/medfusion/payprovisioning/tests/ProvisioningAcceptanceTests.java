@@ -1,5 +1,8 @@
 package com.medfusion.payprovisioning.tests;
 
+import java.util.Random;
+
+import org.openqa.selenium.By;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -10,6 +13,7 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.medfusion.product.object.maps.provisioning.page.ProvisioningAddMerchantPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningDashboardPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningLoginPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningMerchantDetailPage;
@@ -24,7 +28,7 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testProvisioningLoginCheckDashboardLogout() throws Exception {
-		log("Test Caser: Login & Data Smoke");
+		log("Test Case : Login & Data Smoke");
 		log("Execution Environment:" + IHGUtil.getEnvironmentType());
 		log("Execution Browser" + TestConfig.getBrowserType());
 		log("Getting Test Data");
@@ -50,8 +54,8 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testProvisioningStaticSearch() throws Exception {
-		log("Test Caser: Login & Data Smoke");
-		log("Execution Environment:" + IHGUtil.getEnvironmentType());
+		log("Test Case : Static Search");
+		log("Execution Environment :" + IHGUtil.getEnvironmentType());
 		log("Execution Browser" + TestConfig.getBrowserType());
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();		
@@ -64,14 +68,63 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		ProvisioningSearchMerchantPage pSearchPage = pDashboardPage.clickSearchMerchant();
 		
 		log("Step 3: Search for a static merchant, verify search table");
-		assertTrue(pSearchPage.searchVerifyDetails("asdf", "2560785077", "3", "[ASDF]"));
+		assertTrue(pSearchPage.searchVerifyDetails(testData.getRegex(), testData.getStaticMerchantMID(), testData.getStaticExternalId(), testData.getStaticMerchantName()));
 		
 		log("Step 4: Navigate to merchant details and reverify");
 		ProvisioningMerchantDetailPage pMerchantDetailPage = pSearchPage.clickFirstResultMerchantDetail();
-		Thread.sleep(1000);
-		assertTrue(pMerchantDetailPage.verifyBasicInfo("2560785077", "3", "[ASDF]"));
+		pMerchantDetailPage.waitTillLoaded();
+		assertTrue(pMerchantDetailPage.verifyBasicInfo(testData.getStaticMerchantMID(), testData.getStaticExternalId(), testData.getStaticMerchantName()));
 		log("Step 5: Logout");
 		pDashboardPage.logout();		
 		
 	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateMerchantVerifySearchAndDetails() throws Exception {
+		log("Test Case : Create and Verify");
+		log("Execution Environment:" + IHGUtil.getEnvironmentType());
+		log("Execution Browser" + TestConfig.getBrowserType());
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();	
+		String randNum = IHGUtil.createRandomNumericString(8);
+		String newName = "[AUTO]"+ randNum;
+		Random rBool = new Random();
+		boolean amex = rBool.nextBoolean();
+		boolean visa = rBool.nextBoolean();
+		boolean discover = rBool.nextBoolean();
+		boolean carecred = true;
+		//TODO
+		String newExternalId = "0"; 
+		String newVantiv = IHGUtil.createRandomNumericString(3);
+		String newElement = IHGUtil.createRandomNumericString(3);
+		String newZip = IHGUtil.createRandomNumericString(5);
+		
+		
+		String newRemitName = "{REMIT}" + randNum;
+		log("Creating merchant : " + newName);
+		log("Step 1: Log in");
+		ProvisioningLoginPage loginPage = new ProvisioningLoginPage(driver, testData.getProvisioningUrl());
+		ProvisioningDashboardPage pDashboardPage =  loginPage.login(testData.getUserId(), testData.getPassword());
+				
+		log("Step 2: Click add a merchant");
+		ProvisioningAddMerchantPage pAddMerchantPage = pDashboardPage.clickAddMerchant();
+		ProvisioningMerchantDetailPage pMerchantDetailPage = pAddMerchantPage.fillAndSubmit(newName, newExternalId, newVantiv, newElement, "1 Randomstreet", "", "Randotown", newZip, "United States", "Alabama",
+				newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska", amex, visa, discover, carecred);
+		
+		
+		log("Step 3: Verify merchant details");
+		pMerchantDetailPage.waitTillLoaded();
+		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newVantiv, newElement, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
+		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, carecred));
+		
+		log("Step 3: Search for created merchant, verify search table");
+		
+		pMerchantDetailPage.searchMerchantButton.click();
+		ProvisioningSearchMerchantPage pSearchPage = new ProvisioningSearchMerchantPage(driver);
+		pSearchPage.searchForMerchant(newName);
+		assertTrue(pSearchPage.getFirstResultMerchantName().equals(newName)&&pSearchPage.getFirstResultExternalID().equals(newExternalId));
+	
+		
+		
+	}
 }
+ 
