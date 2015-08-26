@@ -21,46 +21,46 @@ public class ProvisioningAddMerchantPage extends BasePageObject {
 	}
 
 	//General Merchant Info	
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[1]/div[2]/div[1]/input")
+	@FindBy(how = How.ID, using="merchantName")
 	public WebElement merchantName;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[1]/div[3]/div[1]/div[1]/div[1]/input")
+	@FindBy(how = How.ID, using="externalMerchantId")
 	public WebElement externalId;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[1]/div[4]/div[1]/input")
+	@FindBy(how = How.ID, using="litleId")
 	public WebElement vantivLitleId;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[1]/div[5]/div[1]/input")
+	@FindBy(how = How.ID, using="elementPsId")
 	public WebElement elementId;
 		
 	//Merchant Address
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[1]/div[1]/input")
+	@FindBy(how = How.ID, using="addressLine1")
 	public WebElement address1;	
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[2]/div[1]/input")
+	@FindBy(how = How.ID, using="addressLine2")
 	public WebElement address2;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[3]/div[1]/input")
+	@FindBy(how = How.ID, using="city")
 	public WebElement city;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[4]/div[1]/div[1]/div[1]/input")
+	@FindBy(how = How.ID, using="zip")
 	public WebElement zipcode;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[5]/div[1]/div[1]/div[1]/select")
+	@FindBy(how = How.ID, using="country")
 	public WebElement country;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[2]/div[6]/div[1]/div[1]/div[1]/select")
+	@FindBy(how = How.ID, using="state")
 	public WebElement state;
 	
 	//Remit-to Address
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/legend/input")
+	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']//input[@name='enableRemitToAddress']")
 	public WebElement remitToCheckbox;
 	
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[1]/div[1]/input")
+	@FindBy(how = How.ID, using="remitMerchantName")
 	public WebElement remitMerchantName;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[2]/div[1]/input")
+	@FindBy(how = How.ID, using="remitAddressLine1")
 	public WebElement remitAddress1;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[3]/div[1]/input")
+	@FindBy(how = How.ID, using="remitAddressLine2")
 	public WebElement remitAddress2;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[4]/div[1]/input")
+	@FindBy(how = How.ID, using="remitCity")
 	public WebElement remitCity;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[5]/div[1]/div[1]/div[1]/input")
+	@FindBy(how = How.ID, using="remitZip")
 	public WebElement remitZipcode;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[6]/div[1]/div[1]/div[1]/select")
+	@FindBy(how = How.ID, using="remitCountry")
 	public WebElement remitCountry;
-	@FindBy(how = How.XPATH, using="//form[@name='addMerchant']/fieldset[3]/div[1]/div[7]/div[1]/div[1]/div[1]/select")
+	@FindBy(how = How.ID, using="remitState")
 	public WebElement remitState;
 		
 	// Cards
