@@ -66,9 +66,7 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 		driver.switchTo().frame("iframebody");
 		
 		log("Checking if there're location options");
-		IHGUtil ihgUtil = new IHGUtil(driver);
-		if (ihgUtil.exists(locationDropdown, 2)) {
-			
+		if(IHGUtil.exists(driver, 2, locationDropdown)) {
 			log("Selecting location and provider");
 			Select locationSelect = new Select(locationDropdown);
 			locationSelect.selectByIndex(1);
@@ -97,6 +95,8 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 		
 		log("Return to Home Dashboard");
 		homeButton.click();
+		
+		driver.switchTo().defaultContent();
 		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}

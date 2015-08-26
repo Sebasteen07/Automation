@@ -127,7 +127,7 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver{
 	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData,
 			String email, PropertyFileLoader testData) throws Exception {
 		return getPatientActivationLink(driver, practiceTestData, email, testData.getDoctorLogin(),
-				testData.getDoctorPassword(), practiceTestData.getUrl());
+				testData.getDoctorPassword(), testData.getPortalUrl());
 	}
  
 }

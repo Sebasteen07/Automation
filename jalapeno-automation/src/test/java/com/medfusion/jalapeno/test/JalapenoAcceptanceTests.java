@@ -23,12 +23,10 @@ import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
-import com.medfusion.product.jalapeno.JalapenoCreatePatientTest;
 import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
-import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage2;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
@@ -40,7 +38,6 @@ import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMess
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
-import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -512,30 +509,17 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		log("Initiate patient data");
-		JalapenoCreatePatientTest createPatient = new JalapenoCreatePatientTest();
-		createPatient.initPatientData(driver, testData);
+		log("Creating a new patient");
+		JalapenoPatient patient = new JalapenoPatient();
+		JalapenoHomePage homePage = patient.createAndLogInPatient(driver, testData);
+		assertTrue(homePage.assessHomePageElements());
+				
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		prescriptionsPage.clickContinueButton(driver);
+		homePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
+		assertTrue(homePage.assessHomePageElements());
 		
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(jalapenoLoginPage.assessLoginPageElements());
-		
-		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
-		assertTrue(jalapenoCreateAccountPage.assessCreateAccountPageElements());
-
-		JalapenoCreateAccountPage2 jalapenoCreateAccountPage2 = jalapenoCreateAccountPage.fillInDataPage1(createPatient.getFirstName(), 
-				createPatient.getLastName(), createPatient.getEmail(), testData.getDOBMonth(), testData.getDOBDay(), 
-				testData.getDOBYear(), true, testData.getZipCode());
-		assertTrue(jalapenoCreateAccountPage2.assessCreateAccountPage2Elements());
-		
-		JalapenoHomePage jalapenoHomePage = jalapenoCreateAccountPage2.fillInDataPage2(createPatient.getEmail(), createPatient.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getphoneNumer());
-		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
-		JalapenoPrescriptionsPage jalapenoPrescriptionsPage = jalapenoHomePage.clickOnPrescriptions(driver);
-		jalapenoPrescriptionsPage.clickContinueButton(driver);
-		jalapenoHomePage = jalapenoPrescriptionsPage.fillThePrescription(driver, "XANAX", "pills", 10);
-		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
-		jalapenoHomePage.logout(driver);
+		homePage.logout(driver);
 		
 		log("Login to Practice Portal");
 
@@ -571,13 +555,13 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
 		
-		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		jalapenoHomePage = jalapenoLoginPage.login(createPatient.getEmail(), createPatient.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getEmail(), patient.getPassword());
 				
-		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.assessMessagesElements());
 		
 		log("Looking for appointment approval from doctor");
-		assertTrue(jalapenoMessagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
+		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	}
 }

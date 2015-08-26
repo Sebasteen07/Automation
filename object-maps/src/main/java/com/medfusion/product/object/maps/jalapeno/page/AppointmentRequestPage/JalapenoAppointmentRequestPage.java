@@ -1,7 +1,6 @@
 package com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -93,11 +92,11 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 		continueButton.click();
 		
 		log("Submit the request");
-		int i = 0;
-		while(i < 5) {
+		int i = 1;
+		while(i <= 5) {
 			try{
 				log("Find Submit the Request button " + i);
-				new WebDriverWait(driver, 10).until(
+				new WebDriverWait(driver, 20).until(
 						ExpectedConditions.elementToBeClickable(By.name(":submit"))).click();
 				log("Click on Submit the Request was successful");
 				i = 5;

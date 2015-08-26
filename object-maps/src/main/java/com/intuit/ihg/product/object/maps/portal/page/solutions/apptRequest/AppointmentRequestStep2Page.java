@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
 
 
 public class AppointmentRequestStep2Page extends BasePageObject{
@@ -58,42 +57,36 @@ public class AppointmentRequestStep2Page extends BasePageObject{
 	}
 	
 	public AppointmentRequestStep3Page fillInForm( 
-				String sPreferredTimeFrame,
-				String sPreferredDay,
-				String sChoosePreferredTime,	// Morning, Afternoon, 8AM - 11AM
-				String sApptReason,
-				String sWhichIsMoreImportant,	// Specific Provider, Day of Week, Time of Day
-				String sHomePhone
+			String sPreferredTimeFrame,
+			String sPreferredDay,
+			String sChoosePreferredTime,	// Morning, Afternoon, 8AM - 11AM
+			String sApptReason,
+			String sWhichIsMoreImportant,	// Specific Provider, Day of Week, Time of Day
+			String sHomePhone
 			) throws InterruptedException {
-		
+
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-				
+		IHGUtil.setFrame(driver,"iframe");
+
 		Select selectPreferredTimeFrame = new Select(dropDownPreferredTimeFrame);
 		selectPreferredTimeFrame.selectByIndex(1);	// TODO - use parameter
 
-		
-/* Preparation for transfering to ProvidersHoursConfiguration set.		
 
-				prefrDay.click();
-				prefrDayPart.click();
 
-*/
-				Select selectPreferredDay = new Select(dropDownPreferredDay);
-				selectPreferredDay.selectByIndex(1);		// TODO - use parameter
-				choosePreferredTime.sendKeys( sChoosePreferredTime );
+		Select selectPreferredDay = new Select(dropDownPreferredDay);
+		selectPreferredDay.selectByIndex(1);		// TODO - use parameter
+		choosePreferredTime.sendKeys( sChoosePreferredTime );
 
-		
 		apptReason.sendKeys( sApptReason + " " + createdTs );
-		
+
 		Select selectWhichIsMoreImportant = new Select(dropDownWhichIsMoreImportant);
 		selectWhichIsMoreImportant.selectByIndex(1);	// TODO - use parameter
-		
+
 		if( sHomePhone != null ) {
 			homePhone.clear();	// May be filled in if user set default.
 			homePhone.sendKeys( sHomePhone );
 		}
-		
+
 		btnContinue.click();
 		return PageFactory.initElements(driver, AppointmentRequestStep3Page.class);
 	}
