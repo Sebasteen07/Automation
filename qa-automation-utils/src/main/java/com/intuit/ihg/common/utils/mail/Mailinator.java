@@ -25,7 +25,7 @@ public class Mailinator {
 	 * This method checks the mailbox for an email with specified emailSubject starting from the most recent.
 	 * If it finds some url in the link which contains text specified in findInEmail it will return it
 	 */
-	private String email(String username, String emailSubject, String findInEmail, int retries)
+	public String email(String username, String emailSubject, String findInEmail, int retries)
 			throws Exception {
 
 		for (int j = 0; j != retries; j++) {

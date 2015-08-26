@@ -1117,7 +1117,7 @@ public class IHGUtil extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		String[] tmp = email.split("@");
 		String randomEmail = tmp[0] + delimiter + createRandomNumber() + "@" + tmp[1];
-		System.out.println("dynamic Email address" + randomEmail);
+		System.out.println("dynamic Email address " + randomEmail);
 		return randomEmail;
 	}
 	

@@ -179,7 +179,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	protected void checkPDF(HealthFormPage formsPage, String formName) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
-		String pdfLink = new String();
+		String pdfLink;
 		try {
 			pdfLink = formsPage.getPDFDownloadLink(formName);
 		} catch (StaleElementReferenceException e) {

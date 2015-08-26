@@ -151,14 +151,21 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
 		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
-		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-		
+		String email = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+
 		log("Patient Activation on Practice Portal");
-		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver,
-				practiceTestData, testcasesData.getEmail(), testDataFromProp);
+		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email,
+				testDataFromProp);
+
+		log("Logging into Mailinator and getting Patient Activation url");
+		String[] mailAddress = email.split("@");
+		String emailSubject = "You're invited to create a Patient Portal account at "
+				+ testDataFromProp.getPracticeName();
+		String inEmail = "Sign Up!";
+		String unlockLink = new Mailinator().email(mailAddress[0], emailSubject, inEmail, 10);
+		assertNotNull(unlockLink, "Error: Activation link not found.");
+		log("Retrieved activation link is " + unlockLink);
 
 		log("Finishing of patient activation: step 1 - verifying identity");
 		JalapenoPatientActivationPage patientActivationPage =
@@ -196,13 +203,13 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
-		
+
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
-		
+
 		log("Initiate patient data");
 		JalapenoPatient createPatient = new JalapenoPatient();
 		JalapenoHomePage homePage = createPatient.createAndLogInPatient(driver, testData);

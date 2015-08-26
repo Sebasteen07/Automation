@@ -148,18 +148,18 @@ public class PatientActivationPage extends BasePageObject{
 		firstNameString = "Beta" + IHGUtil.createRandomNumericString();
 		lastNameString = "Tester";
 		zipCodeString = PracticeConstants.Zipcode;
-		emailAddressString = IHGUtil.createRandomEmailAddress(sEmail, '.');
+		emailAddressString = sEmail;
 		patientIdString = emailAddressString;
 
 		IHGUtil.PrintMethodName();
-		Log4jUtil.log("New Random First Name is" + firstNameString);
+		Log4jUtil.log("New Random First Name is " + firstNameString);
 		firstName.sendKeys(firstNameString);
 		lastName.sendKeys(lastNameString);
 		male.click();
-		Log4jUtil.log("New Random patientid is" + patientIdString);
+		Log4jUtil.log("New Random patientid is " + patientIdString);
 		patientId.sendKeys(patientIdString);
 
-		Log4jUtil.log("New Random Email is" + emailAddressString);
+		Log4jUtil.log("New Random Email is " + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
 
@@ -178,7 +178,7 @@ public class PatientActivationPage extends BasePageObject{
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", unlocklink != "");
+		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
 
 		Log4jUtil.log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();

@@ -240,6 +240,9 @@ public class PropertyFileLoader {
 	public String getStaticMerchantName() {
 		return property.getProperty("staticMerchantName");
 	}
+	public String getPracticeName() {
+		return property.getProperty("practiceName");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();
