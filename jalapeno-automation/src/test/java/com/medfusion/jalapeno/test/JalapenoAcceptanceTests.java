@@ -60,9 +60,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -76,9 +74,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginValidCredentials() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -95,9 +91,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginInvalidCredentials() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -113,10 +107,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
-
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -140,56 +131,49 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 		
-		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-
 		log("Getting Test Data");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		// Creating data provider
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-		String email = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
 
 		log("Patient Activation on Practice Portal");
-		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email,
-				testDataFromProp);
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		patientActivationSearchTest
+				.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
 
 		log("Logging into Mailinator and getting Patient Activation url");
-		String[] mailAddress = email.split("@");
 		String emailSubject = "You're invited to create a Patient Portal account at "
 				+ testDataFromProp.getPracticeName();
 		String inEmail = "Sign Up!";
-		String unlockLink = new Mailinator().email(mailAddress[0], emailSubject, inEmail, 10);
+		String unlockLink = new Mailinator().getLinkFromEmail(patientsEmail, emailSubject, inEmail, 10);
 		assertNotNull(unlockLink, "Error: Activation link not found.");
 		log("Retrieved activation link is " + unlockLink);
 
 		log("Finishing of patient activation: step 1 - verifying identity");
 		JalapenoPatientActivationPage patientActivationPage =
 				new JalapenoPatientActivationPage(driver, unlockLink);
-
 		patientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
-	
+
 		log("Finishing of patient activation: step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = patientActivationPage.fillInPatientActivation(
 				patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(),
 				testDataFromProp);
-		
+
 		log("Detecting if Home Page is opened");
 		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
+
 		log("Checking if address in My Account is filled");
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
 		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-		
+
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
-		
+
 		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ "
 				+ testDataFromProp.getPassword());
 		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());
@@ -200,13 +184,17 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
-	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testForgotPassword() throws Exception {
 
+	private void logTestEnvironment() {
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testForgotPassword() throws Exception {
+
+		logTestEnvironment();
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -232,7 +220,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = createPatient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = mailinator.email(mailAddress[0], emailSubject, inEmail);
+		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail);
 		
 		assertTrue(url != null);
 		
@@ -252,10 +240,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 		
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -302,10 +288,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 		
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -337,9 +321,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -370,9 +352,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 	
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -410,9 +390,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
@@ -448,10 +426,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequest() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -509,9 +485,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrescriptionRenewal() throws Exception {
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
