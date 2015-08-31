@@ -143,7 +143,7 @@ public class PatientSearchPage extends BasePageObject{
 
 	public boolean isTransactionPresent(String amount, String fName, String lName) {
 		IHGUtil.PrintMethodName();
-		log("Ammmmmmountttt*******:"+amount);
+		log("Amount searched for: "+amount);
 		return driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '"+amount+"')]/ancestor::tr/td//a/span[contains(text(), '"+lName+", "+fName+"')]")).isDisplayed();
 	}
 	

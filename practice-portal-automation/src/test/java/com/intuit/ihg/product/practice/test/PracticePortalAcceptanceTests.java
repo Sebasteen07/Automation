@@ -95,7 +95,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * Verify whether document is uploaded successfully.
 	 * @deprecated
 	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"} )
+	@Test(enabled = false )
 	public void testUploadDoc() throws Exception {
 
 		log("Test Case: TestLoginLogout");
@@ -143,7 +143,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * Verify whether document is uploaded successfully.
 	 * @deprecated
 	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"} )
+	@Test(enabled = false)
 	public void testFileSharing() throws Exception {
 
 		log("Test Case: TestLoginLogout");
@@ -550,7 +550,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */	
-	@Test (enabled = true, groups = {"AcceptanceTests"},retryAnalyzer=RetryAnalyzer.class)
+	@Test (enabled = true, groups = {"AcceptanceTests"})
 	public void testMakePaymentForPatient() throws Exception {
 
 		log("Test Case: testMakePaymentForPatient");
@@ -577,7 +577,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 5:Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
 
 	}
@@ -698,8 +698,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5 : Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
-		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
-		log("amount: "+amount);
+		String amount = IHGUtil.createRandomNumericStringInRange(5,500);
+		log("Amount: " + amount);
 
 		log("Step 6 : Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess ( PracticeConstants.Location, PracticeConstants.Provider, PracticeConstants.processCardNum, amount, PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum , PracticeConstants.processCardType);
@@ -707,7 +707,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		assertEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
 		log("Step 7 : Navigate to Patient Search Page.");
 		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
@@ -717,20 +717,21 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		patientsearchPage.searchPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
 		log(" Step 9 :Verify whether the transaction is present.");
-		patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+		assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName));
 
 		log("Step 10 : Select the particular Transaction from the Search Result.");
 		patientsearchPage.selectTheTransaction(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
 		log("Step 11 : Click on Void Payment Link and void the transaction.");
-		String errorText = pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
+		pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
+		assertTrue(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
-		log("Step 12 :verify the Error displayed while voiding the payment");
-		verifyTrue(errorText.contains(PracticeConstants.errorForVoidPayment), "Error is not displayed while voiding the payment.");
-
+/*
+		This needs to be checked if it can work after QB is working again
 		log("Step 13 : Click on Refund Payment and give comments and amount to refund");
 		pPayMyBillOnlinePage.refundPayment(amount, PracticeConstants.refundComment);
-
+*/
 
 		//Checking email needs to be completed
 	}
