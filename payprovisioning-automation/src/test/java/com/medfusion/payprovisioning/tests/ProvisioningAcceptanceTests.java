@@ -116,15 +116,11 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newVantiv, newElement, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
 		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, carecred));
 		
-		log("Step 3: Search for created merchant, verify search table");
-		
+		log("Step 4: Search for created merchant, verify search table");		
 		pMerchantDetailPage.searchMerchantButton.click();
 		ProvisioningSearchMerchantPage pSearchPage = new ProvisioningSearchMerchantPage(driver);
 		pSearchPage.searchForMerchant(newName);
-		assertTrue(pSearchPage.getFirstResultMerchantName().equals(newName)&&pSearchPage.getFirstResultExternalID().equals(newExternalId));
-	
-		
-		
+		assertTrue(pSearchPage.getFirstResultMerchantName().equals(newName)&&pSearchPage.getFirstResultExternalID().equals(newExternalId));				
 	}
 }
  
