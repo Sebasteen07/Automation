@@ -139,4 +139,8 @@ public class JalapenoHomePage extends JalapenoPage {
 		return IHGUtil.waitForElement(driver, 60, messages);
 	}
 	
+	public boolean isHomeButtonPresent(WebDriver driver) {
+		return IHGUtil.waitForElement(driver, 60, home);
+	}
+	
 }
