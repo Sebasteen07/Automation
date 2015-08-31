@@ -4,6 +4,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -159,11 +160,19 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	}
 
 	public void selectStatementIfRequired() {
+
 		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
 			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
 			electronicPaymentPreference.click();
 			okButton.click();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 	public boolean assessPatientActivationPageElements() {
