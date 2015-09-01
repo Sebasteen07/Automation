@@ -47,7 +47,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+
 
 /**
  * Description : IHG Util will contain the methods for utilities those are specific to IHG.
@@ -1150,6 +1150,16 @@ public class IHGUtil extends BasePageObject {
 	public static String createRandomNumericString(int length){
 		PrintMethodName();
 		return RandomStringUtils.randomNumeric(length);
+	}
+	
+	public static String createRandomNumericStringInRange(int min, int max) throws Exception {
+		PrintMethodName();
+		if (max < min) {
+			throw new IllegalArgumentException(); 
+		}
+		Random rand = new Random();
+	    Integer randomNum = rand.nextInt(max - min)  + min;
+	    return randomNum.toString();
 	}
 
 	public static String createRandomNumericString() {

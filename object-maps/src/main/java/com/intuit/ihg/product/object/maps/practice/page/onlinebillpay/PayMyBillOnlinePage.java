@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class PayMyBillOnlinePage extends BasePageObject{
 	
@@ -84,10 +83,10 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy(xpath = "//div[@id='content']/div[2]/strong/div/p")
 	public WebElement paymentConfirmationText;
 	
-	@FindBy( xpath = ".//form/input[@name = 'voidPayment' and @value ='Void Payment']")
+	@FindBy( name = "voidPayment")
 	private WebElement voidPaymentButton;
 
-	@FindBy( xpath = ".//textarea[@name='comment']")
+	@FindBy( name = "comment")
 	private WebElement commentForVoid;
 	
 	@FindBy( xpath = ".//input[@value='Void']")
@@ -100,20 +99,24 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy( xpath = ".//input[@name = 'refundPayment' and @value='Refund Payment']")
 	private WebElement refundPayment;
 	
-	@FindBy( xpath = ".//input[@name ='amount']")
+	@FindBy( xpath = "//input[@name ='amount']")
 	private WebElement amountToRefundField;
 	
-	@FindBy( xpath = ".//textarea[@name ='comment']")
+	@FindBy( xpath = "//textarea[@name ='comment']")
 	private WebElement commentForRefund;
 	
-	@FindBy( xpath = ".//input[@value='Refund']")
+	@FindBy( xpath = "//input[@value='Refund']")
 	private WebElement refundButton;
 	
 	@FindBy( xpath = ".//*[@id='_wicket_window_15']/a")
 	private WebElement closeRefundPopUp;
 	
-	@FindBy( xpath = ".//iframe[contains(@id,'_wicket_window_')]")
+	@FindBy( xpath = "//iframe[contains(@id,'_wicket_window_')]")
 	private WebElement iFrameRefundWindow;
+	
+	@FindBy( id = "table-1")
+	private WebElement transactionsList;
+	
 	
 	/**
 	 * @Description:Set First name
@@ -455,54 +458,39 @@ public class PayMyBillOnlinePage extends BasePageObject{
 
 	}
 	
-	public String voidPayment(String voidComment) throws Exception {
+	public void voidPayment(String voidComment) throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, voidPaymentButton);
-		driver.switchTo().frame("iframe");
+		IHGUtil.setFrame(driver, "iframe");
+		IHGUtil.waitForElement(driver, 30, voidPaymentButton);		
 		voidPaymentButton.click();
 	
-		Thread.sleep(5000);
 		driver.switchTo().activeElement();
-//		driver.switchTo().frame("_wicket_window_3");
 		driver.switchTo().frame(iFrameRefundWindow);
 		commentForVoid.sendKeys(voidComment);
 		voidButton.click();
-		Thread.sleep(8000);
-		driver.switchTo().frame("iframe");
-		String errorText =driver.findElement(By.xpath(".//form//div/ul/li[@class='feedbackPanelERROR']/span")).getText();
-		log("Error*******" +errorText);
-		
-		
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		log("active****"+driver.switchTo().activeElement().getAttribute("name"));
-		driver.switchTo().defaultContent();
-		driver.switchTo().activeElement();
-		Thread.sleep(5000);
-		pUtil.tabBrowsing(1);
-		pUtil.tabBack(2);
-		pUtil.pressEnterKey();
-		Thread.sleep(3000);
-		return errorText;
 	}
-
-
 	
 	public void refundPayment(String refundAmount, String refundComment) throws Exception {
 		IHGUtil.PrintMethodName();
-		driver.switchTo().frame("iframe");
+		IHGUtil.setFrame(driver, "iframe");
 		refundPayment.click();
 		driver.switchTo().activeElement();
-		Thread.sleep(3000);
-//		driver.switchTo().frame("_wicket_window_16");
 		driver.switchTo().frame(iFrameRefundWindow);
-		Thread.sleep(3000);
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		pUtil.tabBack(2);
 		amountToRefundField.sendKeys(refundAmount);
 		commentForRefund.sendKeys(refundComment);
 		refundButton.click();
-		Thread.sleep(5000);
 	}
+	
+	public boolean isVoidTransactionPresent () {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, "iframe");
+		if (IHGUtil.exists(driver, transactionsList)) {
+			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
+		}
+		else return false;
+		
+	}
+	
 	
 
 }
