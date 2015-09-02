@@ -93,7 +93,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 		
 		log("Submit the request");
 		int i = 1;
-		while(i <= 5) {
+		while(i < 5) {
 			try{
 				log("Find Submit the Request button " + i);
 				new WebDriverWait(driver, 20).until(
