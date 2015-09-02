@@ -1,13 +1,14 @@
 package com.intuit.ihg.product.object.maps.practice.page.onlinebillpay;
 
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -182,21 +183,12 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void chooseProvider(String pProvider)
 	{
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,10,provider);
-		List<WebElement> list = driver.findElements(By.xpath("//select[@name='providerList']/option"));
-		for(WebElement li : list)
-		{
-			int count=1;
-			if(li.getText().contains(pProvider))
-			{
-				Select selectProvider=new Select(provider);
-				selectProvider.selectByIndex(count);
-				break;
-			}
-			count++;
-		}
-		
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver, 20, provider);
+		String providerXpath = "//option//text()[contains(.,'" + pProvider + "')]/..";
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		driver.findElement(By.xpath(providerXpath)).click();
+		wait.until(ExpectedConditions.elementToBeSelected(By.xpath(providerXpath)));
 	}
 	
 	/**
@@ -352,8 +344,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void setPatientTransactionFields() throws Exception
 	{
 		IHGUtil.PrintMethodName();
-		setLocation();
-		chooseProvider(PracticeConstants.Provider);
+		setLocation();		
 		setPatientAccountNumber(IHGUtil.createRandomNumericString().substring(0,5));
 		setPaymentAmount(IHGUtil.createRandomNumericString().substring(0, 2));
 		try
@@ -382,6 +373,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 			log("Card details is already added");
 		}
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		chooseProvider(PracticeConstants.Provider);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		submitPaymentButton.click();
@@ -408,7 +400,6 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount, String cardHolderName, String cardNum, String cardTyp) throws Exception {
 		IHGUtil.PrintMethodName();
 		setLocation(location);
-		chooseProvider(provider);
 		setPatientAccountNumber(acctNum);
 		setPaymentAmount(amount);
 
@@ -451,6 +442,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		zipCode.sendKeys(PracticeConstants.ZipCode);
 
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		chooseProvider(provider);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		submitPaymentButton.click();
