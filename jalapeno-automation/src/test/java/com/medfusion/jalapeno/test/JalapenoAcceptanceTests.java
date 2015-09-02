@@ -344,7 +344,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 		createAccountPage.fillInDataPage(patient.getFirstName(), patient.getLastName(),
 				patient.getEmail(), testData);
-		createAccountPage.goToNextPage();
 
 		assertTrue(loginPage.assessLoginPageElements());
 	}
