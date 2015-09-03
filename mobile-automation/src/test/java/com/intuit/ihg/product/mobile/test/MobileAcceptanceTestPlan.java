@@ -788,13 +788,6 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		Thread.sleep(2000);		
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
 		
-		if("QA1".equals(IHGUtil.getEnvironmentType().toString())){
-			log("QA1 found -> Step 4b: Select Provider");
-			SelectADoctorPage pSelPage = PageFactory.initElements(driver, SelectADoctorPage.class);
-			Thread.sleep(2000);
-			pSelPage.selectDoctor(40800);		
-		}
-		
 		log("step 5: select first Pharmacy");
 		pRequestRenewalPage.selectFirstPharmacy();
 		pRequestRenewalPage.clickButtonSubmit();
@@ -900,13 +893,6 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		log("step 3: select Medication");
 		Thread.sleep(2000);
 		RequestRenewalPage pRequestRenewalPage = pSelectAMedicationPage.selFirstMedication();
-		
-		if("QA1".equals(IHGUtil.getEnvironmentType().toString())){
-			log("QA1 found -> Step 3b: Select Provider");
-			SelectADoctorPage pSelPage = PageFactory.initElements(driver, SelectADoctorPage.class);
-			Thread.sleep(2000);
-			pSelPage.selectDoctor(40800);		
-		}
 		
 		log("step 4: Click Add New Pharmacy");
 		AddPharmacyPage pAddPharmacyPage = pRequestRenewalPage.addNewPharmacy();
