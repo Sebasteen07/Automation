@@ -220,7 +220,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
 	
 		log("Patient Activation on Practice Portal");
-		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, "eStMf@mailinator.com", 
+		String patMail = "eStMf."+IHGUtil.createRandomNumericString(6)+"@mailinator.com";
+		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, patMail, 
 				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
 		JalapenoPatientActivationPage jalapenoPatientActivationPage;
 		JalapenoHomePage jalapenoHomePage;		
@@ -276,9 +277,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Open Patient Dashboard");
 		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString());
 
-		//save email
-		WebElement patMailElement = driver.findElement(By.xpath("//table[@class='demographics']/tbody/tr[6]/td[2]"));
-		String patMail = patMailElement.getText().trim();
+		//save email		;
 		log("@@@@@@@@@@@@@@@@@ " + patMail);
 		
 		log("Click Edit ID");
