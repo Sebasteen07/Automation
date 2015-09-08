@@ -99,7 +99,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	// ////////@Test (enabled = true, groups = {"AcceptanceTests"},
+	//@Test (enabled = true, groups = {"AcceptanceTests"},
 	// retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
@@ -775,8 +775,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: send a CCD and check in patient Portal");
 		EHDC EHDCData = new EHDC();
 		EHDCTestData testData = new EHDCTestData(EHDCData);
-		Long timestamp = System.currentTimeMillis();
-
+		
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
@@ -828,13 +827,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
 				10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 8: Click on link ReviewHealthInformation");
+		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
@@ -870,7 +869,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PhrDocumentsPage phrDocuments = phrInboxMessage
 				.clickBtnReviewHealthInformationPhr();
 
-		log("step 16:Click on View Health Information");
+		log("step 16:Click on View health data");
 		phrDocuments.clickViewHealthInformation();
 
 		log("step 17:click Close Viewer");
@@ -1066,9 +1065,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
 		GE EHDCData = new GE();
 		GETestData testData = new GETestData(EHDCData);
-		Long timestamp = System.currentTimeMillis();
-
-		log("UserName: " + testData.getUserName());
+		
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
 		log("CCD Path: " + testData.getCCDPath());
@@ -1120,12 +1117,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 9: Click on link ReviewHealthInformation");
+		log("Step 9: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 10: Verify if CCD Viewer is loaded and click Close Viewer");
@@ -1178,8 +1175,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
 		AllScript allScriptData = new AllScript();
 		AllScriptTestData testData = new AllScriptTestData(allScriptData);
-		Long timestamp = System.currentTimeMillis();
-
+		
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
@@ -1223,12 +1219,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 8: Click on link ReviewHealthInformation");
+		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 9: Click on PDF download Link");
@@ -1271,7 +1267,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PhrDocumentsPage phrDocuments = phrInboxMessage
 				.clickBtnReviewHealthInformationPhr();
 
-		log("step 18:Click on View Health Information");
+		log("step 18:Click on View health data");
 		phrDocuments.clickViewHealthInformation();
 
 		log("step 19:click Close Viewer");
