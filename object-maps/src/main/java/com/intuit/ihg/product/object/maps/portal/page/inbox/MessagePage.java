@@ -30,7 +30,7 @@ public class MessagePage extends BasePageObject {
 	@FindBy(name = "buttons:0:button")
 	private WebElement btnSend;
 	
-	@FindBy(linkText = "Review Health Information")
+	@FindBy(linkText = "View health data")
 	private WebElement btnReviewHealthInformation;
 
 	@FindBy(linkText = "Close")

@@ -15,7 +15,7 @@ public class PhrInboxMessage extends BasePageObject{
 	@FindBy(xpath = ".//*[@class='msg4']")
 	private WebElement practiceResponseSubject;
 	
-	@FindBy(xpath ="//a[contains(text(),'Review health information')]")
+	@FindBy(xpath ="//a[contains(text(),'View health data')]")
 	private WebElement btnReviewHealthInformation;
 	
 	@FindBy(id = "basicInfo")
