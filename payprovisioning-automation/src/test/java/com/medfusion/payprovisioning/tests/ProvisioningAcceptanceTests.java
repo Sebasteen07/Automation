@@ -86,7 +86,7 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();	
 		String randNum = IHGUtil.createRandomNumericString(8);
-		String newName = "[AUTO]"+ randNum;
+		String newName = "[Automation]TestPatient"+ randNum;
 		Random rBool = new Random();
 		boolean amex = rBool.nextBoolean();
 		boolean visa = rBool.nextBoolean();
