@@ -27,7 +27,7 @@ public class IntegrationConstants {
 	public static final String HOME_ADDRESS = "HomeAddress";
 	public static final String LINE1 = "Line1";
 	public static final String LINE2 = "Line2";
-	public static final String MESSAGE_REPLY = "Reply";
+	public static final String MESSAGE_REPLY = "This is response to doctor's message";
 	public static final String PRACTICE_PATIENT_ID = "PracticePatientId";
 	public static final String PATIENT = "Patient";
 	public static final Object NAME = "Name";
@@ -37,6 +37,7 @@ public class IntegrationConstants {
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "You have new health data";
+	public static final String CCD_MESSAGE_SUBJECT_old = "New Health Information Import";
 	//Appointment Request constants
 	public static final String REASON = "Reason";
 	public static final String CREATED_TIME = "CreatedDateTime";
