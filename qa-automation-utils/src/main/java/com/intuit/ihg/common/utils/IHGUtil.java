@@ -879,7 +879,7 @@ public class IHGUtil extends BasePageObject {
 		try {
 			found = wait.until(new WaitForWEIsDisplayedEnabled(ele));
 		} catch (Exception e) {
-			// 
+			e.printStackTrace(); 
 		}
 		return found;
 	}

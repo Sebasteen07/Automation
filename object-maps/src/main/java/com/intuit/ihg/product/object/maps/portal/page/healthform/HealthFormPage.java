@@ -127,10 +127,10 @@ public class HealthFormPage extends BasePageObject {
 		Select selectstate1 = new Select(maritalStatus);
 		selectstate1.selectByVisibleText("Single");
 
-		if (driver.getPageSource().contains("Preferred Communication Method:")) {
+		/*if (driver.getPageSource().contains("Preferred Communication Method:")) {*/
 			Select selectstate2 = new Select(communicationMethod);
 			selectstate2.selectByVisibleText("US mail");
-		}
+		//}
 
 		blindPartial.click();
 		colorBlue.click();
