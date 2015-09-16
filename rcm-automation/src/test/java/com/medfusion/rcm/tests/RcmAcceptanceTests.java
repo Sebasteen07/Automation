@@ -289,21 +289,25 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
         rsdkId.sendKeys(patientActivationSearchTest.getFirstNameString());
         driver.findElement(By.name("submitted")).click();;
 		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated"));				
-			
+		
+		//send statementEdited.xml for env
 		log("Setting up a modified statement");
 		int billingNumber = postModifiedStatementToPatient(testDataFromProp.getRcmStatementRest(), IHGUtil.getEnvironmentType().toString(),patientActivationSearchTest.getFirstNameString(),newBal,true);
 		assertFalse(billingNumber == -1);
 		log("Statement was successfuly posted to pm/emr, to the following billing account number: " + billingNumber);
-		log("Checking mail");
 		
-		log("Check email notification and URL");
-		
-		String box = patMail.split("@")[0];		
-		assertTrue(mail.catchNewMessageCheckLinkUrl(box, "Your patient eStatement is now available","Visit our website",testDataFromProp.getUrl(), 50));
-		
-		log("Log in");
+		log("Waiting out 20s for the statement to arrive");
+		Thread.sleep(20000);
+						
+		log("Log in back to patient portal");
 		jalapenoLoginPage = new JalapenoLoginPage(driver,testDataFromProp.getUrl());
-		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getFirstNameString(), testDataFromProp.getPassword());		
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getFirstNameString(), testDataFromProp.getPassword());
+		
+		//check presence of badge (last payment date < newest statement date || (no payments present && statement arrived))
+		log("No payments present, expect a badge with balance on Pay Bills");
+		String badge = driver.findElement(By.xpath("//a[@id='feature_bill_pay']/span[@class='badge amountDue ng-binding']")).getText();
+		log("Badge retrieved, expected balance: $" + newBal  + " , found balance: " + badge);		
+		assertTrue(badge.trim().equals("$"+newBal));					
 		
 		log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
@@ -323,7 +327,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Balance checks out, yay!");
 		log("Does it match from practice PoV as well though?");
 		assertTrue(getBillingAccountInfoComparePatientBalance(testDataFromProp.getRcmBillingAccountRest(),Integer.toString(billingNumber),testDataFromProp.getDoctorBase64AuthString(),"\"customerBalance\":"+ newBal));
-		log("It also checks out with practice admin!");		
+		log("It also checks out with practice admin!");	
 		
 	}
 	
