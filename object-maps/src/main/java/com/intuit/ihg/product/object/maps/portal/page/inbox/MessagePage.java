@@ -239,7 +239,7 @@ public class MessagePage extends BasePageObject {
 	
 	public boolean isSubjectLocated(String subject) throws InterruptedException{
 		IHGUtil.PrintMethodName();
-		Thread.sleep(1000); //tu
+		Thread.sleep(1000); //wait for loaded
 		PortalUtil.setPortalFrame(driver);
 		log("Looking for message with Header "+subject);
 		wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
