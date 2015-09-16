@@ -9,12 +9,13 @@ import com.intuit.ihg.product.object.maps.mobile.page.solutions.common.SelectAPr
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.inbox.MessageInboxPage;
 import com.intuit.ihg.product.object.maps.mobile.page.solutions.rxrenewal.SelectAMedicationPage;
 
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.TimeoutException;
 
 /**
@@ -29,7 +30,7 @@ public class MobileHomePage extends MobileBasePage {
     @FindBy(xpath = "//a[@id='signout' or contains(@*,'doSignOut') or contains(@onclick,'doSignOut') or contains(@href,'doSignOut')]")
     private WebElement logout;
 
-    @FindBy(css = "#msgsLink")
+    @FindBy(id = "msgsLink")
     private WebElement myMessages;
 
     @FindBy(css = "#arLink")
@@ -44,10 +45,10 @@ public class MobileHomePage extends MobileBasePage {
     @FindBy(css = "#billPayLink")
     private WebElement billPay;
 
-    @FindBy(css = "#feedbackLink")
-    private WebElement feedBack;
+    @FindBy(id = "feedbackSubmit")
+    private WebElement feedbackSubmit;
 
-    @FindBy(css = "#count")
+    @FindBy(id = "count")
     private WebElement count;
 
     @FindBy(how = How.ID, using = "pswrdRestMsg")
@@ -63,41 +64,25 @@ public class MobileHomePage extends MobileBasePage {
         super(driver);
     }
 
-    //TODO - This has work around for rally defect DE6529 (SignOut not working if redirect to Survey on web app)
-    //Need to fix once the defect is fixed.
-   public MobileSignInPage clickLogout() throws InterruptedException {
-        waitForlogoutLink(driver, 10);
-        IHGUtil.PrintMethodName();
-        logout.click();
-        Thread.sleep(2500);
-         String header = this.getHeaderText();
-        if (header!=null){
-            if (header.contains("Feedback")){
-               MobileFeedbackPage mfbPage = new MobileFeedbackPage(driver);
-                mfbPage.clickHome();
-                Thread.sleep(1000);
-                try{
-               if (this.welcome.getText().contains("Welcome")){
-                 logout.click();
-                 Thread.sleep(2500);
-               }
-                }catch (NoSuchElementException e){
-                    //Do nothing
-                }catch (Exception e){
-                    //Do nothing
-                }
-           }
-        }
-        return PageFactory.initElements(driver, MobileSignInPage.class);
+    public MobileSignInPage clickLogout() throws InterruptedException {
+    	IHGUtil.PrintMethodName();
+    	waitForlogoutLink(driver, 20);
+    	Thread.sleep(1000); //without this it simply doesn't click it >:(
+    	logout.click();
+    	IHGUtil.waitForElement(driver, 20, feedbackSubmit);
+    	feedbackSubmit.click();
+    	return PageFactory.initElements(driver, MobileSignInPage.class);
     }
 
     public void waitForlogoutLink(WebDriver driver, int n) throws InterruptedException {
         IHGUtil.PrintMethodName();
-        IHGUtil.waitForElement(driver, n, logout);
+        WebDriverWait wait = new WebDriverWait(driver, n);
+        wait.until(ExpectedConditions.elementToBeClickable(logout));
     }
 
     public MessageInboxPage clickMyMessages() throws InterruptedException {
         waitForCount(driver, 20);
+        log("Number of messages: " + count.getText());
         IHGUtil.PrintMethodName();
         Thread.sleep(2000);
         myMessages.click();

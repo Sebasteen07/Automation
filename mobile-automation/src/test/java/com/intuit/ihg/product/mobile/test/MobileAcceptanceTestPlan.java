@@ -794,7 +794,8 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 		
 		
 		pMyPatientPage = pRequestRenewalPage.clickClose();
-		pMyPatientPage.clickLogout();
+		mloginpage = pMyPatientPage.clickLogout();
+		mloginpage.waitforLoginLink(driver, 30);
 		
 		//Let's leave this here just in case it falls apart on Jenkins
 		//Thread.sleep(2000);
@@ -1088,9 +1089,10 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 						"123 XYZ Ave", "Mountain View", "94043");
 
 		log("step 8: Enter the amount and account details");
-		String accountNumber = IHGUtil.createRandomNumericString().substring(0,5);
+		String accountNumber = IHGUtil.createRandomNumericString(6);
+		String amount =  IHGUtil.createRandomNumericString(3);
 		PaymentConfirmationPage pPaymentConfirmationPage = pMakeAPayment
-				.makePayment("30", accountNumber);
+				.makePayment(amount, accountNumber);
 
 		log("step 9: Assert confirm message");
 		assertTrue(pPaymentConfirmationPage.isPageLoaded(),
@@ -1101,7 +1103,9 @@ public class MobileAcceptanceTestPlan extends BaseTestNGWebDriver {
 
 		log("step 10: Close the project and log out");
 		MobileHomePage pMobileHomePage = pPaymentConfirmationPage.clickClose();
-		pMobileHomePage.clickLogout();
+		mloginpage = pMobileHomePage.clickLogout();
+		mloginpage.waitforLoginLink(driver, 30);
+
 		
 		// Instancing virtualCardSwiperTest
 		BillPaymentTest billPaymentTest = new BillPaymentTest();
