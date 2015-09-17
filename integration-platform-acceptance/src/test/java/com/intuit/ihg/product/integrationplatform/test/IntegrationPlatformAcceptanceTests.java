@@ -1066,6 +1066,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		GE EHDCData = new GE();
 		GETestData testData = new GETestData(EHDCData);
 		
+		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
 		log("CCD Path: " + testData.getCCDPath());
