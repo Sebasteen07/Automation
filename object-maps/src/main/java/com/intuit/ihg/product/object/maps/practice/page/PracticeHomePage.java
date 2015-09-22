@@ -10,8 +10,6 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
-import com.intuit.ihg.product.object.maps.practice.page.documentManagement.documentManagementpage;
-import com.intuit.ihg.product.object.maps.practice.page.fileSharing.FileSharingUploadPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
@@ -355,30 +353,6 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElement(driver,20,apptRequestTab);
 		return util.isRendered(this.apptRequestTab);
 
-	}
-
-	/**
-	 * @author bbinisha
-	 * @Desc : To Navigate to Document Management Page.
-	 * @return
-	 */
-	public documentManagementpage clickOnDocManagement() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver, 30, docManagement);
-		docManagement.click();
-		return PageFactory.initElements(driver, documentManagementpage.class);
-	}
-
-	/**
-	 * @author bbinisha
-	 * @Desc : To Navigate to File Sharing Page.
-	 * @return
-	 */
-	public FileSharingUploadPage clickOnFileSharing() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver, 30, fileSharing);
-		fileSharing.click();
-		return PageFactory.initElements(driver, FileSharingUploadPage.class);
 	}
 
 	/**

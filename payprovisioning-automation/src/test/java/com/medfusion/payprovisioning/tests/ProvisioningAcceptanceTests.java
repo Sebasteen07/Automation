@@ -2,7 +2,6 @@ package com.medfusion.payprovisioning.tests;
 
 import java.util.Random;
 
-import org.openqa.selenium.By;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
