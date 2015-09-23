@@ -32,6 +32,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[7]/a")
 	public WebElement addUserButton;
 	
+	//Detail buttons
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[1]")
+	public WebElement merchantInfoButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[2]")
+	public WebElement accountsIdsButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[3]")
+	public WebElement statementOptionsButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[4]")
+	public WebElement usersRolesButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[5]")
+	public WebElement ratesContractInfoButton;
+	
+
+	
+	
 	//General Merchant Info
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[1]/div[2]")
 	public WebElement merchantId;	
@@ -86,6 +101,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement carecredImg;
 	
 	
+	
+	
 	//Edit merchant
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[@class='row actions']/div[1]/a")
 	public WebElement editMerchantButton;	
@@ -103,7 +120,7 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			String zipcode, String country, String state, String remitMerchantName, 
 			String remitAddress1, String remitAddress2, String remitCity, String remitZipcode, 
 			String remitCountry, String remitState){
-		IHGUtil.PrintMethodName();
+		IHGUtil.PrintMethodName();		
 		if (externalId.equals(this.externalId.getText().trim()) 
 				&& merchantName.equals(this.merchantName.getText().trim()) 
 				&& vantivLitleId.equals(this.vantivLitleId.getText().trim())
@@ -171,6 +188,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 		if(discover) if(!isDiscoverOn()) return false;
 		if(carecred) if(!isCarecredOn()) return false;
 		return true;
+	}
+	
+	public ProvisioningEditStatementOptionsPage clickStatementOptionsAddOrEdit(){
+		IHGUtil.PrintMethodName();
+		statementOptionsButton.click();		
+		return PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
 	}
 
 }

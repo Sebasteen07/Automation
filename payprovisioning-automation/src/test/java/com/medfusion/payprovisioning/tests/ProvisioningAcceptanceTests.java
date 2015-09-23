@@ -2,6 +2,7 @@ package com.medfusion.payprovisioning.tests;
 
 import java.util.Random;
 
+import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -14,6 +15,7 @@ import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningAddMerchantPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningDashboardPage;
+import com.medfusion.product.object.maps.provisioning.page.ProvisioningEditStatementOptionsPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningLoginPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningMerchantDetailPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningSearchMerchantPage;
@@ -87,11 +89,31 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		String randNum = IHGUtil.createRandomNumericString(8);
 		String newName = "[Automation]TestPatient"+ randNum;
 		Random rBool = new Random();
+		//we need at least one true
+		boolean carecred = true;
 		boolean amex = rBool.nextBoolean();
 		boolean visa = rBool.nextBoolean();
 		boolean discover = rBool.nextBoolean();
-		boolean carecred = true;
-		//TODO
+		
+		//Statement options, we have a merchant name to check for even if all were to be false
+		//merchantName = newName
+		//statementLogoName = ''
+		String payByPhoneNum = "+1234567890";
+		String payByPhoneHours = "10-11";
+		String billQueryPhoneNum = "+9876543210";
+		String billQueryHours = "11-11:01";
+		boolean agingBoxes = rBool.nextBoolean();
+		boolean insuranceBoxes = false; 
+		if(agingBoxes) insuranceBoxes = rBool.nextBoolean();
+		boolean displayDetails = rBool.nextBoolean();
+		boolean payByCheck = rBool.nextBoolean();
+		boolean payByMoneyOrder = rBool.nextBoolean();
+		boolean displayDetach = false;
+		if(payByMoneyOrder) displayDetach = rBool.nextBoolean();
+		boolean displayMerchantName = rBool.nextBoolean();
+
+		
+		//Set static externalId of 0 for testing merchants
 		String newExternalId = "0"; 
 		String newVantiv = IHGUtil.createRandomNumericString(3);
 		String newElement = IHGUtil.createRandomNumericString(3);
@@ -115,7 +137,26 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newVantiv, newElement, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
 		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, carecred));
 		
-		log("Step 4: Search for created merchant, verify search table");		
+		//TODO step4 accounts and Ids 
+		
+		log("Step 5: Add Statement Options");
+		//DEMO+PROD difference, fix to button order once deployed		
+		pMerchantDetailPage.accountsIdsButton.click();
+		ProvisioningEditStatementOptionsPage statementPage = PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
+		statementPage.fillSettingsAndSubmit(false, newName, payByPhoneNum, payByPhoneHours, billQueryPhoneNum, billQueryHours, agingBoxes, insuranceBoxes, displayDetails, payByCheck, payByMoneyOrder, displayDetach, displayMerchantName);
+		//post and load merchant detail
+		Thread.sleep(2000);
+		
+		log("Step 6: Back to edit Statement Options and verify");
+		//DEMO+PROD difference, fix to button order once deployed		
+		pMerchantDetailPage.accountsIdsButton.click();
+		statementPage = PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
+		assertTrue(statementPage.verifySettings(newName, payByPhoneNum, payByPhoneHours, billQueryPhoneNum, billQueryHours, agingBoxes, insuranceBoxes, displayDetails, payByCheck, payByMoneyOrder, displayDetach, displayMerchantName));
+		pMerchantDetailPage = statementPage.clickCancel();
+		
+		
+		
+		log("Step L: Search for created merchant, verify search table");		
 		pMerchantDetailPage.searchMerchantButton.click();
 		ProvisioningSearchMerchantPage pSearchPage = new ProvisioningSearchMerchantPage(driver);
 		pSearchPage.searchForMerchant(newName);
