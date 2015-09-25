@@ -19,6 +19,7 @@ import com.medfusion.product.object.maps.provisioning.page.ProvisioningEditState
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningLoginPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningMerchantDetailPage;
 import com.medfusion.product.object.maps.provisioning.page.ProvisioningSearchMerchantPage;
+import com.medfusion.product.object.maps.provisioning.page.ProvisioningUsersRolesPage;
 
 public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -162,5 +163,57 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		pSearchPage.searchForMerchant(newName);
 		assertTrue(pSearchPage.getFirstResultMerchantName().equals(newName)&&pSearchPage.getFirstResultExternalID().equals(newExternalId));				
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddUserDeleteUser() throws Exception {
+		log("Test Case : Add User and delete user");
+		log("Execution Environment:" + IHGUtil.getEnvironmentType());
+		log("Execution Browser" + TestConfig.getBrowserType());
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();	
+		String randNum = IHGUtil.createRandomNumericString(5);
+		//Can't be read from UI
+		String newName = "[Automation]User"+ randNum;
+		
+		//TODO
+		log("Step 1: Log in");
+		ProvisioningLoginPage loginPage = new ProvisioningLoginPage(driver, testData.getProvisioningUrl());
+		ProvisioningDashboardPage pDashboardPage =  loginPage.login(testData.getUserId(), testData.getPassword());
+
+		log("Step 2: Search for a static merchant, verify search table");
+		ProvisioningSearchMerchantPage pSearchPage = pDashboardPage.clickSearchMerchant();
+		assertTrue(pSearchPage.searchVerifyDetails(testData.getRegex(), testData.getStaticMerchantMID(), testData.getStaticExternalId(), testData.getStaticMerchantName()));
+		
+		log("Step 3: Navigate to merchant details");
+		ProvisioningMerchantDetailPage pMerchantDetailPage = pSearchPage.clickFirstResultMerchantDetail();
+		pMerchantDetailPage.waitTillLoaded();
+		
+		log("Step 4: Navigate to Add Users and Roles");
+		ProvisioningUsersRolesPage 	pUsersRolesPage = pMerchantDetailPage.clickUsersRolesAddOrEdit();
+		
+		log("Step 5: Delete user/s if there is/are");
+		pUsersRolesPage.deleteOldUsers();
+		
+		log("Step 6: Create new user and verify on Users and Roles page");
+		assertTrue(pUsersRolesPage.addNewUserAndVerify(randNum, newName));
+		
+		log("Step 7: Verify on Merchant Page");
+		pUsersRolesPage.clickCancle();
+		pMerchantDetailPage.waitTillLoaded();
+		assertTrue(pMerchantDetailPage.verifyExistenceOfUser(randNum));
+		
+		log("Step 8: Delete new user and verify on Users and Roles page");
+		pMerchantDetailPage.clickUsersRolesAddOrEdit();
+		assertTrue(pUsersRolesPage.deleteUserAndVerify());
+		
+		log("Step 9: Verify on Merchant Page");
+		pUsersRolesPage.clickCancle();
+		pMerchantDetailPage.waitTillLoaded();
+		assertTrue(pMerchantDetailPage.verifyNonexistenceOfUser());
+		
+		log("Step 10: Logout");
+		pDashboardPage.logout();
+	}	
+	
 }
  

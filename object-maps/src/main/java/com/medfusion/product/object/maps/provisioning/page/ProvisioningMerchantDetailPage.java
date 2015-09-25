@@ -90,6 +90,22 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
 	public WebElement remitState;
 	
+	//Users and Roles
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[2]/div/div/a")
+	public WebElement buttonUsersAndRoles;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]")
+	public WebElement valueUserId2;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]/div/span")
+	public WebElement valueRoles2;
+	
+	public boolean verifyExistenceOfUser (String userId){
+		return valueUserId2.getText().equals(userId + " - Void/Refund");
+	}
+	
+	public boolean verifyNonexistenceOfUser (){
+		return valueRoles2.getText().equals("No roles have been added.");
+	}
+	
 	//Cards
 	@FindBy(how = How.XPATH, using="//img[@title='American Express']")
 	public WebElement amexImg;
@@ -194,6 +210,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		statementOptionsButton.click();		
 		return PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
+	}
+	
+	public ProvisioningUsersRolesPage clickUsersRolesAddOrEdit(){
+		IHGUtil.PrintMethodName();
+		buttonUsersAndRoles.click();		
+		return PageFactory.initElements(driver, ProvisioningUsersRolesPage.class);
 	}
 
 }
