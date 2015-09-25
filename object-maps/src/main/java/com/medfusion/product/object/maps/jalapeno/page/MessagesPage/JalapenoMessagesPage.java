@@ -45,6 +45,8 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button/img[@src='img/messages/archive.png']/..")
 	private WebElement archiveMessageButton;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
+	private WebElement lableSent;
 	
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -179,5 +181,11 @@ public class JalapenoMessagesPage extends BasePageObject {
 		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
 		archiveMessageButton.click();				
 				
+	}
+	public String returnMessageSentDate(){
+		IHGUtil.PrintMethodName();
+		//PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, lableSent);
+		return lableSent.getText().toString();	
 	}
 }

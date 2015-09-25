@@ -9,6 +9,8 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.EHDC;
+import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
@@ -17,6 +19,8 @@ import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
+
 
 import static org.testng.Assert.assertNotNull;
 
@@ -256,6 +260,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		messagesPage.replyToMessage(driver);
 		//TODO: "system is unable to send a reply" message, even if the message is sent
 
+		log("Logging out");
+		homePage.logout(driver);
+		
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
@@ -265,6 +272,108 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCsendCCD() throws Exception {
+
+		log("Test Case: send a CCD and check in patient Portal");
+		EHDC EHDCData = new EHDC();
+		EHDCTestData testData = new EHDCTestData(EHDCData);
+		
+		log("UserName: " + testData.getUserName());
+		log("Password:" + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("CCD Path: " + testData.getCCDPath());
+		log("Response Path: " + testData.getResponsePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
+				testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+
+		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
+
+		log("Step 2: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(
+				testData.getRestUrl(), ccd, testData.getResponsePath());
+
+		log("Processing URL: " + processingUrl);
+		log("Step 3: Get processing status until it is completed");
+		Thread.sleep(60000);
+				
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+		
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		log("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+
+		log("Step 5: Validate message subject and send date");
+		Thread.sleep(1000);
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
+		assertTrue(messagesPage.isMessageDisplayed(driver, "You have new health data"));
+		log("CCD sent date & time is : "+messagesPage.returnMessageSentDate());
+		
+		JalapenoCcdPage jalapenoCcdPage = new JalapenoCcdPage(driver);
+					
+		log("Step 6: Click on link View health data");
+		jalapenoCcdPage.clickBtnViewHealthData();
+		
+		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		jalapenoCcdPage.verifyCCDViewerAndClose();
+		
+		log("Logging out");
+		homePage.logout(driver);
+		/*
+		log("Step 10: Go to patient page");
+		pMyPatientPage = pMessage.clickMyPatientPage();
+
+		log("Step 11: Click PHR");
+		pMyPatientPage.clickPHRWithoutInit(driver);
+		PhrHomePage phrPage = PageFactory.initElements(driver,
+				PhrHomePage.class);
+
+		log("Step 12: Go to PHR Inbox");
+		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
+		// assertTrue(phrMessagesPage.isInboxLoaded(),
+		// "Inbox failed to load properly.");
+
+		log("Step 13: Click first message");
+		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
+
+		log("Step 14: Validate message subject and send date");
+		Thread.sleep(1000);
+		assertEquals(phrInboxMessage.getPhrMessageSubject(),
+				IntegrationConstants.CCD_MESSAGE_SUBJECT,
+				"### Assertion failed for Message subject");
+		log("######  Message Date :: " + IHGUtil.getEstTiming());
+		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+
+		log("Step 15: Click on link ReviewHealthInformation");
+		PhrDocumentsPage phrDocuments = phrInboxMessage
+				.clickBtnReviewHealthInformationPhr();
+
+		log("step 16:Click on View health data");
+		phrDocuments.clickViewHealthInformation();
+
+		log("step 17:click Close Viewer");
+		phrDocuments.closeViewer();
+
+		log("step 18:Click Logout");
+		phrDocuments.clickLogout();
+*/
+		// driver.switchTo().defaultContent();
 
 	}
 

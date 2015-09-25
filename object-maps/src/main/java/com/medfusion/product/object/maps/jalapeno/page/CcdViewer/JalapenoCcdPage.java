@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -77,6 +78,11 @@ public class JalapenoCcdPage extends BasePageObject {
 	
 	@FindBy(how = How.ID, using = "idp6454816")
 	private WebElement insurance;
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/div[1]/div/a")
+	private WebElement BtnViewHealthData;
+	
+	@FindBy(id = "basicInfo")
+	private WebElement ccdBasicInfo;
 	
 	public JalapenoCcdPage(WebDriver driver) {
 		super(driver);
@@ -210,5 +216,27 @@ public class JalapenoCcdPage extends BasePageObject {
 
 		}
 		return allElementsDisplayed;
+	}
+	
+	
+	/**
+	 * Click on the View health data 
+	 */
+	public void clickBtnViewHealthData() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		//PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 60, BtnViewHealthData);
+		BtnViewHealthData.click();	
+	}	
+	
+	public void verifyCCDViewerAndClose() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		
+		if (ccdBasicInfo.isDisplayed() && closeButton.isDisplayed()) {
+			closeButton.click();
+		} else {
+			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
+		}
 	}
 }
