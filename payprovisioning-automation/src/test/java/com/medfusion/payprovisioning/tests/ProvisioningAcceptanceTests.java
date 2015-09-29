@@ -115,9 +115,7 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 
 		
 		//Set static externalId of 0 for testing merchants
-		String newExternalId = "0"; 
-		String newVantiv = IHGUtil.createRandomNumericString(3);
-		String newElement = IHGUtil.createRandomNumericString(3);
+		String newExternalId = "0";
 		String newZip = IHGUtil.createRandomNumericString(5);
 		
 		
@@ -129,20 +127,20 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 				
 		log("Step 2: Click add a merchant");
 		ProvisioningAddMerchantPage pAddMerchantPage = pDashboardPage.clickAddMerchant();
-		ProvisioningMerchantDetailPage pMerchantDetailPage = pAddMerchantPage.fillAndSubmit(newName, newExternalId, newVantiv, newElement, "1 Randomstreet", "", "Randotown", newZip, "United States", "Alabama",
+		ProvisioningMerchantDetailPage pMerchantDetailPage = pAddMerchantPage.fillAndSubmit(newName, newExternalId, "1000", "1 Randomstreet", "", "Randotown", newZip, "United States", "Alabama",
 				newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska", amex, visa, discover, carecred);
 		
 		
 		log("Step 3: Verify merchant details");
 		pMerchantDetailPage.waitTillLoaded();
-		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newVantiv, newElement, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
+		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, "1000", "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
 		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, carecred));
 		
 		//TODO step4 accounts and Ids 
 		
 		log("Step 5: Add Statement Options");
 		//DEMO+PROD difference, fix to button order once deployed		
-		pMerchantDetailPage.accountsIdsButton.click();
+		pMerchantDetailPage.statementOptionsButton.click();
 		ProvisioningEditStatementOptionsPage statementPage = PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
 		statementPage.fillSettingsAndSubmit(false, newName, payByPhoneNum, payByPhoneHours, billQueryPhoneNum, billQueryHours, agingBoxes, insuranceBoxes, displayDetails, payByCheck, payByMoneyOrder, displayDetach, displayMerchantName);
 		//post and load merchant detail
@@ -150,7 +148,7 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 6: Back to edit Statement Options and verify");
 		//DEMO+PROD difference, fix to button order once deployed		
-		pMerchantDetailPage.accountsIdsButton.click();
+		pMerchantDetailPage.statementOptionsButton.click();
 		statementPage = PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
 		assertTrue(statementPage.verifySettings(newName, payByPhoneNum, payByPhoneHours, billQueryPhoneNum, billQueryHours, agingBoxes, insuranceBoxes, displayDetails, payByCheck, payByMoneyOrder, displayDetach, displayMerchantName));
 		pMerchantDetailPage = statementPage.clickCancel();

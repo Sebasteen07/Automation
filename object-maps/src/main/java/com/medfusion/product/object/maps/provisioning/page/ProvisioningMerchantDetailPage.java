@@ -54,10 +54,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement externalId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantName;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[4]/div[2]")
-	public WebElement vantivLitleId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[5]/div[2]")
-	public WebElement elementId;
+	public WebElement txLimit;
 	
 	//Merchant Address
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[1]/div[2]")
@@ -91,8 +89,6 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement remitState;
 	
 	//Users and Roles
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[2]/div/div/a")
-	public WebElement buttonUsersAndRoles;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]")
 	public WebElement valueUserId2;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]/div/span")
@@ -131,16 +127,14 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			 return true;
 		else return false;	
 	}
-	public boolean verifyInfoWithoutMid(String externalId, String merchantName, 
-			String vantivLitleId, String elementId, String address1, String address2, 
-			String zipcode, String country, String state, String remitMerchantName, 
-			String remitAddress1, String remitAddress2, String remitCity, String remitZipcode, 
-			String remitCountry, String remitState){
+	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String transactionLimit,
+		    String address1, String address2, String zipcode, String country,
+			String state, String remitMerchantName, String remitAddress1, String remitAddress2,
+			 String remitCity, String remitZipcode, String remitCountry, String remitState){			
 		IHGUtil.PrintMethodName();		
 		if (externalId.equals(this.externalId.getText().trim()) 
 				&& merchantName.equals(this.merchantName.getText().trim()) 
-				&& vantivLitleId.equals(this.vantivLitleId.getText().trim())
-				&& elementId.equals(this.elementId.getText().trim())
+				&& transactionLimit.equals(this.txLimit.getText().trim())
 				&& address1.equals(this.address1.getText().trim())
 				&& address2.equals(this.address2.getText().trim())
 				&& zipcode.equals(this.zipcode.getText().trim())
@@ -214,7 +208,7 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	
 	public ProvisioningUsersRolesPage clickUsersRolesAddOrEdit(){
 		IHGUtil.PrintMethodName();
-		buttonUsersAndRoles.click();		
+		usersRolesButton.click();		
 		return PageFactory.initElements(driver, ProvisioningUsersRolesPage.class);
 	}
 
