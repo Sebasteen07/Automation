@@ -38,7 +38,7 @@ public class PracticeLoginPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("URL: " + baseURL);
 		driver.get(baseURL);
-		maxWindow();
+		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
 

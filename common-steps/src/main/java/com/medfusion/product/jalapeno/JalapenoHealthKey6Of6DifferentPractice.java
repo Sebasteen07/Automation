@@ -73,8 +73,13 @@ public class JalapenoHealthKey6Of6DifferentPractice extends BaseTestNGWebDriver{
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getDifferentUrl());
 		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
 
-		jalapenoCreateAccountPage.fillInDataPage1(testData.getHealthKey6Of6FirstnameSamePractice(), testData.getHealthKey6Of6LastnameSamePractice(), testData.getHealthKey6Of6EmailSamePractice(),
-				testData.getHealthKey6Of6DOBMonthSamePractice(), testData.getHealthKey6Of6DOBDaySamePractice(), testData.getHealthKey6Of6DOBYearSamePractice(), true, testData.getHealthKey6Of6ZipSamePractice());
+		jalapenoCreateAccountPage.fillInDataPage(testData.getHealthKey6Of6FirstnameSamePractice(),
+				testData.getHealthKey6Of6LastnameSamePractice(),
+				testData.getHealthKey6Of6EmailSamePractice(),
+				testData.getHealthKey6Of6DOBMonthSamePractice(),
+				testData.getHealthKey6Of6DOBDaySamePractice(),
+				testData.getHealthKey6Of6DOBYearSamePractice(), IHGUtil.Gender.MALE,
+				testData.getHealthKey6Of6ZipSamePractice());
 		assertTrue(jalapenoLoginPage.isTextVisible(JalapenoConstants.HEALTHKEY_MATCH_DIFFERENT_PRACTICE_MESSAGES));
 		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);

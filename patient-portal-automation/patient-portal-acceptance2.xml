@@ -15,7 +15,6 @@
         		<include name="testVirtualOfficeVisitEnd2End" />
         		<include name="testAskAStaffEnd2End" />
         		<include name="testFamilyAccount" />
-        		<include name="testAddInsurance" />
         		<include name="testAddandChangeCreditCard" />
         		<include name="testPatientForgotUserId" />
         		<include name="testPatientForgotUserIdCaseInsensitiveEmail" />

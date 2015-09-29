@@ -5,6 +5,7 @@
     <Statement id="aaa8ce87-5725-4849-ab03-7e03b6aaedf0">
         <FileId>937a8809_5003_4fbc_96a7_eb6d66d7da42_04272015144155011.est</FileId>
         <PracticeManagementStatementId>rcmauto-000388-20150424084175</PracticeManagementStatementId>
+        <StatementFormat>FORMAT1</StatementFormat>
         <StatementBillingAccountNumber>1</StatementBillingAccountNumber>
         <PracticePatientId>rcmauto</PracticePatientId>
         <GuarantorInformation>

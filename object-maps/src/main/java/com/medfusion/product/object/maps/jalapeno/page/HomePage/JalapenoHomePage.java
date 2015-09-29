@@ -15,6 +15,7 @@ import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.Ja
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
+import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
 public class JalapenoHomePage extends JalapenoPage {
 	
@@ -81,6 +82,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		log("Clicking on Health Forms button");
 		forms.click();
 		return PageFactory.initElements(driver, JalapenoHealthFormsListPage.class);
+	}
+	
+	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
+		
+		log("Clicking on Prescriptions button on dashboard");
+		prescriptions.click();
+		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
 
 	public FormWelcomePage clickStartRegistrationButton(WebDriver driver) throws Exception {

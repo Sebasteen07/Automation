@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -98,7 +99,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	// ////////@Test (enabled = true, groups = {"AcceptanceTests"},
+	//@Test (enabled = true, groups = {"AcceptanceTests"},
 	// retryAnalyzer=RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 
@@ -602,8 +603,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
 				testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		log("Step 8: Wait 60 seconds, so that patient-outbound can be processed");
+		Thread.sleep(60000);
 
-		log("Step 8: Do a GET on PIDC");
+		log("Step 9: Do a GET on PIDC");
 		// this Step assumes that the updated patient is the patient from first
 		// ten registered patients, so we can save traffic
 		// if max argument is ommited patient should be in first 100 patients
@@ -613,7 +617,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
 				+ ",0", testData.getResponsePath());
 
-		log("Step 9: Check changes of address lines");
+		log("Step 10: Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(),
 				testData.getUserName(), firstLine, secondLine);
 
@@ -629,7 +633,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Patient" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());				
 		log("Created Email address: " + email);
 		log("Practice Patient ID: " + practicePatientId);
 		String patient = RestUtils.preparePatient(testData.getPatientPath(),
@@ -771,8 +775,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: send a CCD and check in patient Portal");
 		EHDC EHDCData = new EHDC();
 		EHDCTestData testData = new EHDCTestData(EHDCData);
-		Long timestamp = System.currentTimeMillis();
-
+		
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
@@ -824,7 +827,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(),
 				10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
@@ -987,6 +990,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 12: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(
 				testData.getRestUrl(), postXML, testData.getResponsePath());
+
 		log("Step 13: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
@@ -1061,8 +1065,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
 		GE EHDCData = new GE();
 		GETestData testData = new GETestData(EHDCData);
-		Long timestamp = System.currentTimeMillis();
-
+		
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
@@ -1115,7 +1118,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
@@ -1173,8 +1176,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
 		AllScript allScriptData = new AllScript();
 		AllScriptTestData testData = new AllScriptTestData(allScriptData);
-		Long timestamp = System.currentTimeMillis();
-
+		
 		log("UserName: " + testData.getUserName());
 		log("Password:" + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
@@ -1218,7 +1220,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessage.isSubjectLocated("You have new health data"));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
@@ -1905,17 +1907,23 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
 				testData.getSender3(), 3);
+
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver,
 				emailMessageLink);
 		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(
 				testData.getUserName(), testData.getPassword());
+
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = Long.toString(timestamp);
+
 		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+
 		log("Step 9: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated(messageIdentifier));
 		
 	}
+
 }

@@ -37,6 +37,12 @@ public class JalapenoLoginPage extends BasePageObject {
 	
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "I forgot my user name and/or password.")
 	public WebElement forgotUserOrPasswordButton;
+	
+	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
+	private WebElement electronicPaymentPreference;
+	
+	@FindBy(how = How.ID, using = "updateMissingInfoButton")
+	private WebElement okButton;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 
@@ -98,7 +104,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		log("Login Credentials: [" + username + "] [" + password + "]");
 		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
 		// try removing the try catch once newrelic is deprecated and fully removed
-		try{
+		try {
 			inputUserId.clear();
 			inputUserId.sendKeys(username);
 		}
@@ -107,6 +113,9 @@ public class JalapenoLoginPage extends BasePageObject {
 		}
 		inputPassword.sendKeys(password);
 		signInButton.click();
+		
+		selectStatementIfRequired();
+		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
@@ -127,6 +136,13 @@ public class JalapenoLoginPage extends BasePageObject {
 	
 	public boolean isTextVisible(String text) {
 		return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
+	}
+	
+	private void selectStatementIfRequired() {
+		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			electronicPaymentPreference.click();
+			okButton.click();
+		}
 	}
 
 }

@@ -36,7 +36,7 @@ public class IntegrationConstants {
 	public static final String EMAIL_ADDRESS = "EmailAddress";
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
-	public static final String CCD_MESSAGE_SUBJECT = "New Health Information Import";
+	public static final String CCD_MESSAGE_SUBJECT = "You have new health data";
 	//Appointment Request constants
 	public static final String REASON = "Reason";
 	public static final String CREATED_TIME = "CreatedDateTime";

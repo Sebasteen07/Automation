@@ -50,3 +50,8 @@ sitegen-automation/.gitignore
 # test failure output folder
 */trust/*
 
+*/test-output/
+
+# Idea Files
+.idea/
+*.iml

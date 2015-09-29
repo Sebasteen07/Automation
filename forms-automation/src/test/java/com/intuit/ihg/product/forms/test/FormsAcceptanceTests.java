@@ -191,6 +191,41 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 	}
 
+	protected String createFormSG() throws Exception {
+		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+
+		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData SGData = new SitegenTestData(sitegen);
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
+				.logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
+		// Get the current window handle before opening new window
+		String parentHandle = driver.getWindowHandle();
+
+		log("step 1: Click on Patient Forms");
+		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		assertTrue(pManageDiscreteForms.isPageLoaded());
+
+		log("step 2: Unpublish and delete all forms and create a new one");
+		driver.manage().window().maximize();
+		pManageDiscreteForms.initializePracticeForNewForm();
+		pManageDiscreteForms.createNewForm();
+
+		log("step 3: Initialize the new form");
+		pManageDiscreteForms.prepareFormForTest(newFormName);
+
+		log("step 4: Publish the saved Discrete Form");
+		pManageDiscreteForms.publishForm(newFormName);
+
+		log("step 5: Close the window and logout from SiteGenerator");
+		// Switching back to original window using previously saved handle descriptor
+		driver.close();
+		driver.switchTo().window(parentHandle);
+		pSiteGenPracticeHomePage.clicklogout();
+
+		return pManageDiscreteForms.getWelcomeMessage();
+	}
+
     @Test(groups = {"smokeTest"})
     public void formsConfigSmokeTest() throws Exception {
         SitegenTestData testData = new SitegenTestData(new Sitegen());
@@ -211,8 +246,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Fill the form out with values containing quotes");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		SpecialCharFormFirstPage customPage1 =
-                welcomePage.initializeFormToFirstPage(SpecialCharFormFirstPage.class);
+		SpecialCharFormFirstPage customPage1 = welcomePage.initToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
 
         SpecialCharFormSecondPage customPage2 =
@@ -296,11 +330,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 
-        FormBasicInfoPage demographPage =
-                welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
+        FormBasicInfoPage demographPage = welcomePage.initToFirstPage(FormBasicInfoPage.class);
 
-        FormMedicationsPage medsPage =
-                demographPage.clickSaveContinue(FormMedicationsPage.class);
+        FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 
         FormIllnessConditionsPage illsPage =
@@ -334,7 +366,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
         log("Step 2: Fill out the form");
         FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-        welcomePage.initializeFormToFirstPage(FormBasicInfoPage.class);
+        welcomePage.initToFirstPage(FormBasicInfoPage.class);
         welcomePage.clickSaveAndFinishAnotherTime();
         driver.switchTo().defaultContent();
         wait.until( ExpectedConditions.elementToBeClickable(myPatientPage.getLogoutLink()) );
@@ -382,42 +414,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
-	}
-
-	protected String createFormSG() throws Exception {
-        String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
-
-		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
-        Sitegen sitegen = new Sitegen();
-        SitegenTestData SGData = new SitegenTestData(sitegen);
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-                .logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
-		// Get the current window handle before opening new window
-		String parentHandle = driver.getWindowHandle();
-
-		log("step 1: Click on Patient Forms");
-		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-		assertTrue(pManageDiscreteForms.isPageLoaded());
-
-		log("step 2: Unpublish and delete all forms and create a new one");
-        driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm();
-		pManageDiscreteForms.createNewForm();
-
-		log("step 3: Initialize the new form");
-		pManageDiscreteForms.prepareFormForTest(newFormName);
-
-		log("step 4: Publish the saved Discrete Form");
-		pManageDiscreteForms.publishForm(newFormName);
-
-		log("step 5: Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle descriptor
-		driver.close();
-		driver.switchTo().window(parentHandle);
-		pSiteGenPracticeHomePage.clicklogout();
-
-		return pManageDiscreteForms.getWelcomeMessage();
-
 	}
 
     /**

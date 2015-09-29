@@ -11,6 +11,9 @@ public class PropertyFileLoader {
 
 	private Properties property = new Properties();
 
+	public String getPhoneNumber() {
+		return property.getProperty("phoneNumber");
+	}
 	public String getUrl() {
 		return property.getProperty("url");
 	}
@@ -195,6 +198,9 @@ public class PropertyFileLoader {
 	public String getBillingAccountNumber() {
 		return property.getProperty("billingAccountNumber");
 	}
+	public String getProvisioningUrl() {
+		return property.getProperty("provisioningUrl");
+	}
 	public String getReportingUrl() {
 		return property.getProperty("reportingUrl");
 	}
@@ -221,6 +227,18 @@ public class PropertyFileLoader {
 	}
 	public String getHistoricRefCount() {
 		return property.getProperty("historicRefCount");
+	}
+	public String getRegex() {
+		return property.getProperty("regex");
+	}
+	public String getStaticMerchantMID() {
+		return property.getProperty("staticMerchantMID");
+	}
+	public String getStaticExternalId() {
+		return property.getProperty("staticExternalId");
+	}
+	public String getStaticMerchantName() {
+		return property.getProperty("staticMerchantName");
 	}
 	public PropertyFileLoader() throws IOException {
 

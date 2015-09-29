@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -46,7 +47,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+
 
 /**
  * Description : IHG Util will contain the methods for utilities those are specific to IHG.
@@ -58,9 +59,13 @@ public class IHGUtil extends BasePageObject {
 
 	public static Properties properties = new Properties();
 
+	public enum Gender {
+		MALE,
+		FEMALE
+	}
+
 	public IHGUtil(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 
@@ -156,6 +161,22 @@ public class IHGUtil extends BasePageObject {
 		}
 	}
 
+	/**
+	 * Will return true if Element exist else false
+	 * @param element :- WebElement
+	 * @return boolean
+	 */
+
+	public static boolean exists(WebDriver driver, WebElement element) {
+		try {
+			Actions builder = new Actions(driver);
+			builder.moveToElement(element).build().perform();
+			element.getLocation();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	/**
 	 * Desc:-Will fisrt wait implicitly then will check if element exist or not . Will return true if Element exist else false
@@ -165,16 +186,28 @@ public class IHGUtil extends BasePageObject {
 	 */
 
 	public boolean exists(WebElement element, long maxTimeInSecondsToWait) {
+		return exists(driver, maxTimeInSecondsToWait, element);
+	}
+
+	/**
+	 * Desc:-Will fisrt wait implicitly then will check if element exist or not . Will return true if Element exist else false
+	 * @param driver
+	 * @param maxTimeInSecondsToWait
+	 * @param element Element that is checked
+	 * @return
+	 */
+
+	public static boolean exists(WebDriver driver, long maxTimeInSecondsToWait, WebElement element) {
 		boolean bexists = false;
 		try {
 			driver.manage().timeouts().implicitlyWait(maxTimeInSecondsToWait, TimeUnit.SECONDS);
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			log("Where on the page is the top left-hand corner of the rendered element"+p);
+			System.out.println("Where on the page is the top left-hand corner of the rendered element"+p);
 			bexists = true;
 		} catch (Exception e) {
-			log("Element was not found.");
+			System.out.println("Element was not found.");
 		}
 
 		finally {
@@ -1080,12 +1113,16 @@ public class IHGUtil extends BasePageObject {
 	{
 		return CcdType.ELEKTA_CCD;
 	}
-	public static String createRandomEmailAddress(String email) {
+	public static String createRandomEmailAddress(String email, char delimiter) {
 		IHGUtil.PrintMethodName();
 		String[] tmp = email.split("@");
-		String randomEmail = tmp[0] + "." + createRandomNumber() + "@" + tmp[1];
+		String randomEmail = tmp[0] + delimiter + createRandomNumber() + "@" + tmp[1];
 		System.out.println("dynamic Email address" + randomEmail);
 		return randomEmail;
+	}
+	
+	public static String createRandomEmailAddress(String email) {
+		return createRandomEmailAddress(email, '+');
 	}
 
 	public static String createRandomZip() {
@@ -1113,6 +1150,16 @@ public class IHGUtil extends BasePageObject {
 	public static String createRandomNumericString(int length){
 		PrintMethodName();
 		return RandomStringUtils.randomNumeric(length);
+	}
+	
+	public static String createRandomNumericStringInRange(int min, int max) throws Exception {
+		PrintMethodName();
+		if (max < min) {
+			throw new IllegalArgumentException(); 
+		}
+		Random rand = new Random();
+	    Integer randomNum = rand.nextInt(max - min)  + min;
+	    return randomNum.toString();
 	}
 
 	public static String createRandomNumericString() {

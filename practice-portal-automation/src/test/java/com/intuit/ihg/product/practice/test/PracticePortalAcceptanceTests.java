@@ -14,8 +14,6 @@ import com.intuit.ihg.common.utils.mail.Gmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.documentManagement.documentManagementpage;
-import com.intuit.ihg.product.object.maps.practice.page.fileSharing.FileSharingUploadPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.eStatementUploadPage;
@@ -80,103 +78,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		practiceLogin = practiceHome.logOut();
 		assertTrue(practiceLogin.isLoginPageLoaded(), "Expected to see login page");
 
-	}
-
-
-	/**
-	 * @author bbinisha
-	 * @Date : 07-12-2013
-	 * @UserStory : US6420
-	 * @Steps To Reproduce : 
-	 * Login to Practice Portal
-	 * Navigate to "Document Management".
-	 * Add a new Patient
-	 * Click on "Browse" and upload a doc.
-	 * Verify whether document is uploaded successfully.
-	 * @deprecated
-	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"} )
-	public void testUploadDoc() throws Exception {
-
-		log("Test Case: TestLoginLogout");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");	
-
-		// Load up practice test data
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData =new PracticeTestData(practice);
-
-		log("step 2: Navigate to Login page"); 
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-		log("step 3: Enter credentials and login");
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("Step 4 : Navigate to Document Management page and click on Upload Document Link");
-		documentManagementpage docManagement = practiceHome.clickOnDocManagement();
-		docManagement.clickOnUploadDocLink();
-
-		log("Step 5 : Adding a New Patient ");
-		docManagement.addNewPatient(PracticeConstants.firstName, PracticeConstants.lastName, PracticeConstants.patientID, PracticeConstants.email,PracticeConstants.value, PracticeConstants.year, PracticeConstants.zipCode);
-
-		log("Step 6 : Getting the document to upload from filepath");
-
-		log("Step 7 : Uploading the document.");
-		docManagement.browseFile();
-		docManagement.uploadDocument();
-
-		log("verify whether the document uploaded successfully.");
-		verifyTrue(docManagement.checkUploadSuccessMessage());
-	}
-
-	/**
-	 * @author bbinisha
-	 * @Date : 07-12-2013
-	 * @UserStory : US6419
-	 * @Steps To Reproduce : 
-	 * Login to Practice Portal
-	 * Navigate to "File Sharing" page.
-	 * Add a new Patient
-	 * Click on "Browse" and upload a doc.
-	 * Verify whether document is uploaded successfully.
-	 * @deprecated
-	 */
-	@Test(enabled = false, groups = {"AcceptanceTests"} )
-	public void testFileSharing() throws Exception {
-
-		log("Test Case: TestLoginLogout");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");	
-
-		// Load up practice test data
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData =new PracticeTestData(practice);
-
-		log("step 2: Navigate to Login page"); 
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-		log("step 3: Enter credentials and login");
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-		FileSharingUploadPage fileShare = practiceHome.clickOnFileSharing();
-
-		log("Step 4 : deleting all existing files");
-		fileShare.deleteAllExistingFiles();
-
-		log("step 5: Browse and upload the file ");
-		fileShare.clickOnUploadFileButton();
-
-		log("Step 6 : Uploading the file.");
-		fileShare.browseAndUpload();
-
-		fileShare.clickOnFileCheckBox();
-		fileShare.addFile();
-
-		log("Verify whether the file is uploaded successfully.");
-		verifyEquals(verifyTextPresent(driver,PracticeConstants.filename), true, "File is not uploaded properly.");
 	}
 
 
@@ -550,7 +451,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */	
-	@Test (enabled = true, groups = {"AcceptanceTests"},retryAnalyzer=RetryAnalyzer.class)
+	@Test (enabled = true, groups = {"AcceptanceTests"})
 	public void testMakePaymentForPatient() throws Exception {
 
 		log("Test Case: testMakePaymentForPatient");
@@ -577,7 +478,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 5:Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
 
 	}
@@ -644,7 +545,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		eStatementPage.clickOnUploadStatementButton();
 
 		log("Verify whether the EStatement is uploaded successfully.");
-		verifyTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
+		assertTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
 	}
 
 
@@ -698,8 +599,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5 : Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
-		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
-		log("amount: "+amount);
+		String amount = IHGUtil.createRandomNumericStringInRange(5,500);
+		log("Amount: " + amount);
 
 		log("Step 6 : Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess ( PracticeConstants.Location, PracticeConstants.Provider, PracticeConstants.processCardNum, amount, PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum , PracticeConstants.processCardType);
@@ -707,7 +608,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver,20,pPayMyBillOnlinePage.paymentConfirmationText);
-		verifyEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+		assertEquals(true,pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
 		log("Step 7 : Navigate to Patient Search Page.");
 		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
@@ -717,20 +618,21 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		patientsearchPage.searchPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
 		log(" Step 9 :Verify whether the transaction is present.");
-		patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+		assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName));
 
 		log("Step 10 : Select the particular Transaction from the Search Result.");
 		patientsearchPage.selectTheTransaction(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
 		log("Step 11 : Click on Void Payment Link and void the transaction.");
-		String errorText = pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
+		pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
+		assertTrue(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
-		log("Step 12 :verify the Error displayed while voiding the payment");
-		verifyTrue(errorText.contains(PracticeConstants.errorForVoidPayment), "Error is not displayed while voiding the payment.");
-
+/*
+		This needs to be checked if it can work after QB is working again
 		log("Step 13 : Click on Refund Payment and give comments and amount to refund");
 		pPayMyBillOnlinePage.refundPayment(amount, PracticeConstants.refundComment);
-
+*/
 
 		//Checking email needs to be completed
 	}

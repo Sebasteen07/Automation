@@ -19,7 +19,7 @@ public class PaymentConfirmationPage extends MobileBasePage{
 
 	public PaymentConfirmationPage(WebDriver driver) {
 		super(driver);
-		IHGUtil.waitForElement(driver, 20, closeBtn);
+		IHGUtil.waitForElement(driver, 60, closeBtn);
 		// TODO Auto-generated constructor stub
 	}
 	

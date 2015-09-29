@@ -1,18 +1,18 @@
 package com.intuit.ihg.product.object.maps.practice.page.onlinebillpay;
 
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class PayMyBillOnlinePage extends BasePageObject{
 	
@@ -84,10 +84,10 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy(xpath = "//div[@id='content']/div[2]/strong/div/p")
 	public WebElement paymentConfirmationText;
 	
-	@FindBy( xpath = ".//form/input[@name = 'voidPayment' and @value ='Void Payment']")
+	@FindBy( name = "voidPayment")
 	private WebElement voidPaymentButton;
 
-	@FindBy( xpath = ".//textarea[@name='comment']")
+	@FindBy( name = "comment")
 	private WebElement commentForVoid;
 	
 	@FindBy( xpath = ".//input[@value='Void']")
@@ -100,20 +100,24 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	@FindBy( xpath = ".//input[@name = 'refundPayment' and @value='Refund Payment']")
 	private WebElement refundPayment;
 	
-	@FindBy( xpath = ".//input[@name ='amount']")
+	@FindBy( xpath = "//input[@name ='amount']")
 	private WebElement amountToRefundField;
 	
-	@FindBy( xpath = ".//textarea[@name ='comment']")
+	@FindBy( xpath = "//textarea[@name ='comment']")
 	private WebElement commentForRefund;
 	
-	@FindBy( xpath = ".//input[@value='Refund']")
+	@FindBy( xpath = "//input[@value='Refund']")
 	private WebElement refundButton;
 	
 	@FindBy( xpath = ".//*[@id='_wicket_window_15']/a")
 	private WebElement closeRefundPopUp;
 	
-	@FindBy( xpath = ".//iframe[contains(@id,'_wicket_window_')]")
+	@FindBy( xpath = "//iframe[contains(@id,'_wicket_window_')]")
 	private WebElement iFrameRefundWindow;
+	
+	@FindBy( id = "table-1")
+	private WebElement transactionsList;
+	
 	
 	/**
 	 * @Description:Set First name
@@ -179,21 +183,12 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void chooseProvider(String pProvider)
 	{
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver,PracticeConstants.frameName);
-		IHGUtil.waitForElement(driver,10,provider);
-		List<WebElement> list = driver.findElements(By.xpath("//select[@name='providerList']/option"));
-		for(WebElement li : list)
-		{
-			int count=1;
-			if(li.getText().contains(pProvider))
-			{
-				Select selectProvider=new Select(provider);
-				selectProvider.selectByIndex(count);
-				break;
-			}
-			count++;
-		}
-		
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.waitForElement(driver, 20, provider);
+		String providerXpath = "//option//text()[contains(.,'" + pProvider + "')]/..";
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		driver.findElement(By.xpath(providerXpath)).click();
+		wait.until(ExpectedConditions.elementToBeSelected(By.xpath(providerXpath)));
 	}
 	
 	/**
@@ -349,8 +344,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void setPatientTransactionFields() throws Exception
 	{
 		IHGUtil.PrintMethodName();
-		setLocation();
-		chooseProvider(PracticeConstants.Provider);
+		setLocation();		
 		setPatientAccountNumber(IHGUtil.createRandomNumericString().substring(0,5));
 		setPaymentAmount(IHGUtil.createRandomNumericString().substring(0, 2));
 		try
@@ -379,6 +373,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 			log("Card details is already added");
 		}
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		chooseProvider(PracticeConstants.Provider);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		submitPaymentButton.click();
@@ -405,7 +400,6 @@ public class PayMyBillOnlinePage extends BasePageObject{
 	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount, String cardHolderName, String cardNum, String cardTyp) throws Exception {
 		IHGUtil.PrintMethodName();
 		setLocation(location);
-		chooseProvider(provider);
 		setPatientAccountNumber(acctNum);
 		setPaymentAmount(amount);
 
@@ -448,6 +442,7 @@ public class PayMyBillOnlinePage extends BasePageObject{
 		zipCode.sendKeys(PracticeConstants.ZipCode);
 
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
+		chooseProvider(provider);
 		payBillButton.click();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		submitPaymentButton.click();
@@ -455,54 +450,39 @@ public class PayMyBillOnlinePage extends BasePageObject{
 
 	}
 	
-	public String voidPayment(String voidComment) throws Exception {
+	public void voidPayment(String voidComment) throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, voidPaymentButton);
-		driver.switchTo().frame("iframe");
+		IHGUtil.setFrame(driver, "iframe");
+		IHGUtil.waitForElement(driver, 30, voidPaymentButton);		
 		voidPaymentButton.click();
 	
-		Thread.sleep(5000);
 		driver.switchTo().activeElement();
-//		driver.switchTo().frame("_wicket_window_3");
 		driver.switchTo().frame(iFrameRefundWindow);
 		commentForVoid.sendKeys(voidComment);
 		voidButton.click();
-		Thread.sleep(8000);
-		driver.switchTo().frame("iframe");
-		String errorText =driver.findElement(By.xpath(".//form//div/ul/li[@class='feedbackPanelERROR']/span")).getText();
-		log("Error*******" +errorText);
-		
-		
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		log("active****"+driver.switchTo().activeElement().getAttribute("name"));
-		driver.switchTo().defaultContent();
-		driver.switchTo().activeElement();
-		Thread.sleep(5000);
-		pUtil.tabBrowsing(1);
-		pUtil.tabBack(2);
-		pUtil.pressEnterKey();
-		Thread.sleep(3000);
-		return errorText;
 	}
-
-
 	
 	public void refundPayment(String refundAmount, String refundComment) throws Exception {
 		IHGUtil.PrintMethodName();
-		driver.switchTo().frame("iframe");
+		IHGUtil.setFrame(driver, "iframe");
 		refundPayment.click();
 		driver.switchTo().activeElement();
-		Thread.sleep(3000);
-//		driver.switchTo().frame("_wicket_window_16");
 		driver.switchTo().frame(iFrameRefundWindow);
-		Thread.sleep(3000);
-		PracticeUtil pUtil = new PracticeUtil(driver);
-		pUtil.tabBack(2);
 		amountToRefundField.sendKeys(refundAmount);
 		commentForRefund.sendKeys(refundComment);
 		refundButton.click();
-		Thread.sleep(5000);
 	}
+	
+	public boolean isVoidTransactionPresent () {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, "iframe");
+		if (IHGUtil.exists(driver, transactionsList)) {
+			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
+		}
+		else return false;
+		
+	}
+	
 	
 
 }

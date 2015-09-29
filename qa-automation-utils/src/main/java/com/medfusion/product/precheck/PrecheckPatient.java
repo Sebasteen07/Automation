@@ -1,0 +1,53 @@
+package com.medfusion.product.precheck;
+
+
+import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.portal.utils.PortalUtil;
+
+public class PrecheckPatient {
+	
+	private String email = "";
+	private String firstName = "";
+	private String lastName = "";
+	private String patientId = "";
+	private String middleName = "";
+
+	// Getters for getting the email and password value and reusing in other
+	// tests
+	public String getEmail() {
+		return email;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getPatientId() {
+		return patientId;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public String getMiddleName() {
+		return middleName;
+	}
+	
+	public void initPatientData() {
+		IHGUtil.PrintMethodName();
+		
+		int randomize = PortalUtil.createRandomNumber();
+		
+		//Setting data according to test purpose
+
+			email = "pr" + randomize + "@mailinator.com";	
+			firstName = "pr" + randomize + "First";
+			lastName = "pr" + randomize + "Last";
+			middleName = "pr" + randomize + "Middle";
+			patientId = "pr" + randomize;
+	
+
+		}
+
+}

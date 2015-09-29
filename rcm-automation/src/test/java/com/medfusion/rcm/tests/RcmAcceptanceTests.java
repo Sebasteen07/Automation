@@ -50,9 +50,9 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.PatientActivationPage.JalapenoPatientActivationPage;
 import com.medfusion.rcm.utils.RCMUtil;
 /**
  * @Author:Jakub Odvarka
@@ -220,7 +220,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
 	
 		log("Patient Activation on Practice Portal");
-		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, "eStMf@mailinator.com", 
+		String patMail = "eStMf."+IHGUtil.createRandomNumericString(6)+"@mailinator.com";
+		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, patMail, 
 				testDataFromProp.getDoctorLogin(), testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
 		JalapenoPatientActivationPage jalapenoPatientActivationPage;
 		JalapenoHomePage jalapenoHomePage;		
@@ -238,7 +239,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			log("Finishing of patient activation: step 2 - filling patient data");
 			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientActivationSearchTest.getFirstNameString(),
 				testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
-				testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
+				testDataFromProp.getSecretAnswer(), "1234567890");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -258,15 +259,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 					testDataFromProp.getPassword(), testDataFromProp.getSecretQuestion(), 
 					testDataFromProp.getSecretAnswer(), testDataFromProp.getphoneNumer());
 			
-		}
-		log("Expecting preference dialog, waiting up to 40s");
-		WebElement elem = (new WebDriverWait(driver, 40))
-				  .until(ExpectedConditions.presenceOfElementLocated(By.id("paymentPreference_Paper")));
-		assertTrue(elem.isEnabled());		
-		driver.findElement(By.id("paymentPreference_Electronic")).click();
-		driver.findElement(By.id("updateStatementPrefButton")).click();
-		//since there are no other actions on the page, a small pause is needed, not having a delay produces inconsistent saving on prod (since it's fortunately faster than demo and dev3) 
-		Thread.sleep(1000);
+		}		
 		
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
@@ -284,9 +277,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Open Patient Dashboard");
 		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString());
 
-		//save email
-		WebElement patMailElement = driver.findElement(By.xpath("//table[@class='demographics']/tbody/tr[6]/td[2]"));
-		String patMail = patMailElement.getText().trim();
+		//save email		;
 		log("@@@@@@@@@@@@@@@@@ " + patMail);
 		
 		log("Click Edit ID");
@@ -298,21 +289,25 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
         rsdkId.sendKeys(patientActivationSearchTest.getFirstNameString());
         driver.findElement(By.name("submitted")).click();;
 		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated"));				
-			
+		
+		//send statementEdited.xml for env
 		log("Setting up a modified statement");
 		int billingNumber = postModifiedStatementToPatient(testDataFromProp.getRcmStatementRest(), IHGUtil.getEnvironmentType().toString(),patientActivationSearchTest.getFirstNameString(),newBal,true);
 		assertFalse(billingNumber == -1);
 		log("Statement was successfuly posted to pm/emr, to the following billing account number: " + billingNumber);
-		log("Checking mail");
 		
-		log("Check email notification and URL");
-		
-		String box = patMail.split("@")[0];		
-		assertTrue(mail.catchNewMessageCheckLinkUrl(box, "Your patient eStatement is now available","Visit our website",testDataFromProp.getUrl(), 50));
-		
-		log("Log in");
+		log("Waiting out 20s for the statement to arrive");
+		Thread.sleep(20000);
+						
+		log("Log in back to patient portal");
 		jalapenoLoginPage = new JalapenoLoginPage(driver,testDataFromProp.getUrl());
-		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getFirstNameString(), testDataFromProp.getPassword());		
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getFirstNameString(), testDataFromProp.getPassword());
+		
+		//check presence of badge (last payment date < newest statement date || (no payments present && statement arrived))
+		log("No payments present, expect a badge with balance on Pay Bills");
+		String badge = driver.findElement(By.xpath("//a[@id='feature_bill_pay']/span[@class='badge amountDue ng-binding']")).getText();
+		log("Badge retrieved, expected balance: $" + newBal  + " , found balance: " + badge);		
+		assertTrue(badge.trim().equals("$"+newBal));					
 		
 		log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
@@ -332,7 +327,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Balance checks out, yay!");
 		log("Does it match from practice PoV as well though?");
 		assertTrue(getBillingAccountInfoComparePatientBalance(testDataFromProp.getRcmBillingAccountRest(),Integer.toString(billingNumber),testDataFromProp.getDoctorBase64AuthString(),"\"customerBalance\":"+ newBal));
-		log("It also checks out with practice admin!");		
+		log("It also checks out with practice admin!");	
 		
 	}
 	

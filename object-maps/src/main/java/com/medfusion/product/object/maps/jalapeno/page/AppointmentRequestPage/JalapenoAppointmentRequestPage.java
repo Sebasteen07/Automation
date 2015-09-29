@@ -9,11 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class JalapenoAppointmentRequestPage extends BasePageObject{
 
@@ -61,7 +63,8 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 	public JalapenoHomePage returnToHomePage(WebDriver driver) {
 		log("Return to dashboard");
 		homeButton.click();
-		
+		IHGUtil.setDefaultFrame(driver);
+
 		return PageFactory.initElements(driver, JalapenoHomePage.class);	
 	}
 	
@@ -89,11 +92,12 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 		continueButton.click();
 		
 		log("Submit the request");
-		int i = 0;
+		int i = 1;
 		while(i < 5) {
 			try{
 				log("Find Submit the Request button " + i);
-				driver.findElement(By.name(":submit")).click();
+				new WebDriverWait(driver, 20).until(
+						ExpectedConditions.elementToBeClickable(By.name(":submit"))).click();
 				log("Click on Submit the Request was successful");
 				i = 5;
 			}
@@ -108,7 +112,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 			if (homeButton.isDisplayed()) {
 				log(homeButton.toString() + "is displayed");
 				log("Request was succesfully submitted");
-				return true;			
+				return true;
 			} else {
 				log(homeButton.toString() + "is NOT displayed");
 				return false;

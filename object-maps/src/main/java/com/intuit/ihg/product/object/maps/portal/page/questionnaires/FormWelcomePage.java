@@ -60,7 +60,7 @@ public class FormWelcomePage extends PortalFormPage {
 	 * @return Initiated object for the next page
 	 * @throws Exception
 	 */
-	public <T extends PortalFormPage> T initializeFormToFirstPage(Class<T> nextPageClass) throws Exception {
+	public <T extends PortalFormPage> T initToFirstPage(Class<T> nextPageClass) throws Exception {
 		if (isWelcomePageLoaded()) {
 			return clickSaveContinue(nextPageClass);
         }

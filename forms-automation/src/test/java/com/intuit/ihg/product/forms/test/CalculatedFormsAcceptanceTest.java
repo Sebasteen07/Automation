@@ -150,7 +150,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 			log("Step 3: Fill in the form with all the required answers and submit.");
 			FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 			CalculatedFormPage calculatedFormPage = welcomePage
-					.initializeFormToFirstPage(CalculatedFormPage.class);
+					.initToFirstPage(CalculatedFormPage.class);
 			assertTrue(calculatedFormPage.isPageLoaded());
 			calculatedFormPage.fillFormRightmostAnswer();
 			calculatedFormPage.clickSaveContinue();
@@ -188,7 +188,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	
 		log("Step 3: Try to Save and continue without any answer.");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		CalculatedFormPage calculatedFormPage = welcomePage.initializeFormToFirstPage(CalculatedFormPage.class);
+		CalculatedFormPage calculatedFormPage = welcomePage.initToFirstPage(CalculatedFormPage.class);
 		assertTrue(calculatedFormPage.isPageLoaded());
 		assertFalse(calculatedFormPage.isValidationErrorDisplayed());
 		calculatedFormPage.clickSaveContinue();
