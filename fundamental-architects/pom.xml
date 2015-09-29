@@ -4,7 +4,7 @@
 	<parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>15.6.0-SNAPSHOT</version>
+	  <version>15.5.0</version>
 	</parent>
 	
 	<artifactId>fundamental-architects</artifactId>
@@ -13,7 +13,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>15.6.0-SNAPSHOT</ihg.version>
+        <ihg.version>15.5.0</ihg.version>
     </properties>
     
     <repositories>
