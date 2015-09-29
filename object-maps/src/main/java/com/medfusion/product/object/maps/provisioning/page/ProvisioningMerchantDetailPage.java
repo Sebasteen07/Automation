@@ -32,6 +32,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//nav[@id='menu']/ul/li[7]/a")
 	public WebElement addUserButton;
 	
+	//Detail buttons
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[1]")
+	public WebElement merchantInfoButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[2]")
+	public WebElement accountsIdsButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[3]")
+	public WebElement statementOptionsButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[4]")
+	public WebElement usersRolesButton;
+	@FindBy(how = How.XPATH, using="(//a[@class='btn btn-primary ng-binding'])[5]")
+	public WebElement ratesContractInfoButton;
+	
+
+	
+	
 	//General Merchant Info
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[1]/div[2]")
 	public WebElement merchantId;	
@@ -39,10 +54,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement externalId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantName;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[4]/div[2]")
-	public WebElement vantivLitleId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[5]/div[2]")
-	public WebElement elementId;
+	public WebElement txLimit;
 	
 	//Merchant Address
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[1]/div[2]")
@@ -75,6 +88,20 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
 	public WebElement remitState;
 	
+	//Users and Roles
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]")
+	public WebElement valueUserId2;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]/div/span")
+	public WebElement valueRoles2;
+	
+	public boolean verifyExistenceOfUser (String userId){
+		return valueUserId2.getText().equals(userId + " - Void/Refund");
+	}
+	
+	public boolean verifyNonexistenceOfUser (){
+		return valueRoles2.getText().equals("No roles have been added.");
+	}
+	
 	//Cards
 	@FindBy(how = How.XPATH, using="//img[@title='American Express']")
 	public WebElement amexImg;
@@ -84,6 +111,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement discoverImg;
 	@FindBy(how = How.XPATH, using="//img[@title='Care Credit']")
 	public WebElement carecredImg;
+	
+	
 	
 	
 	//Edit merchant
@@ -98,16 +127,14 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			 return true;
 		else return false;	
 	}
-	public boolean verifyInfoWithoutMid(String externalId, String merchantName, 
-			String vantivLitleId, String elementId, String address1, String address2, 
-			String zipcode, String country, String state, String remitMerchantName, 
-			String remitAddress1, String remitAddress2, String remitCity, String remitZipcode, 
-			String remitCountry, String remitState){
-		IHGUtil.PrintMethodName();
+	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String transactionLimit,
+		    String address1, String address2, String zipcode, String country,
+			String state, String remitMerchantName, String remitAddress1, String remitAddress2,
+			 String remitCity, String remitZipcode, String remitCountry, String remitState){			
+		IHGUtil.PrintMethodName();		
 		if (externalId.equals(this.externalId.getText().trim()) 
 				&& merchantName.equals(this.merchantName.getText().trim()) 
-				&& vantivLitleId.equals(this.vantivLitleId.getText().trim())
-				&& elementId.equals(this.elementId.getText().trim())
+				&& transactionLimit.equals(this.txLimit.getText().trim())
 				&& address1.equals(this.address1.getText().trim())
 				&& address2.equals(this.address2.getText().trim())
 				&& zipcode.equals(this.zipcode.getText().trim())
@@ -171,6 +198,18 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 		if(discover) if(!isDiscoverOn()) return false;
 		if(carecred) if(!isCarecredOn()) return false;
 		return true;
+	}
+	
+	public ProvisioningEditStatementOptionsPage clickStatementOptionsAddOrEdit(){
+		IHGUtil.PrintMethodName();
+		statementOptionsButton.click();		
+		return PageFactory.initElements(driver, ProvisioningEditStatementOptionsPage.class);
+	}
+	
+	public ProvisioningUsersRolesPage clickUsersRolesAddOrEdit(){
+		IHGUtil.PrintMethodName();
+		usersRolesButton.click();		
+		return PageFactory.initElements(driver, ProvisioningUsersRolesPage.class);
 	}
 
 }

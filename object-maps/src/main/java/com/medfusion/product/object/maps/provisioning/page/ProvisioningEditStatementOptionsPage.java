@@ -28,49 +28,55 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//button[@class='btn btn-secondary actionButton']")
 	public WebElement cancelButton;
 	
-	//General Merchant Info
-	@FindBy(how = How.XPATH, using="//div[@id='merchantTagLine']")
+	//Statement options
+	@FindBy(how = How.XPATH, using="//*[@id='merchantTagLine']")
 	public WebElement merchantTagline;	
-	@FindBy(how = How.XPATH, using="//div[@id='merchantLogoFilename']")
+	@FindBy(how = How.XPATH, using="//*[@id='merchantLogoFilename']")
 	public WebElement statementLogoName;
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillByPhoneNumber']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillByPhoneNumber']")
 	public WebElement payByPhoneNumber;	
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillByPhoneHours']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillByPhoneHours']")
 	public WebElement payByPhoneHours;
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillBillQueryNumber']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillBillQueryNumber']")
 	public WebElement billQueryPhoneNumber;
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillBillQueryHours']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillBillQueryHours']")
 	public WebElement billQueryHours;
-	@FindBy(how = How.XPATH, using="//div[@id='detailsAgingBoxes']")
+	@FindBy(how = How.XPATH, using="//*[@id='detailsAgingBoxes']")
 	public WebElement displayAgingBoxes;
-	@FindBy(how = How.XPATH, using="//div[@id='detailsInsuranceAgingBoxes']")
+	@FindBy(how = How.XPATH, using="//*[@id='detailsInsuranceAgingBoxes']")
 	public WebElement displayInsuranceBoxes;
-	//TODO TODO WON'T WORK UNTIL CHECKBOX INSTEAD OF RADIO
-	@FindBy(how = How.XPATH, using="//div[@id='']")
+	@FindBy(how = How.XPATH, using="//*[@id='detailsStatementDetail']")
 	public WebElement displayDetails;	
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillByCheck']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillByCheck']")
 	public WebElement payByCheck;
-	@FindBy(how = How.XPATH, using="//div[@id='payOrBillByMoneyOrder']")
+	@FindBy(how = How.XPATH, using="//*[@id='payOrBillByMoneyOrder']")
 	public WebElement payByMoneyOrder;
-	@FindBy(how = How.XPATH, using="//div[@id='detailsDetachReturnByMail']")
+	@FindBy(how = How.XPATH, using="//*[@id='detailsDetachReturnByMail']")
 	public WebElement displayDetachReturnByMail;
-	@FindBy(how = How.XPATH, using="//div[@id='detailsMerchantName']")
+	@FindBy(how = How.XPATH, using="//*[@id='detailsMerchantName']")
 	public WebElement displayMerchantName;
 	
 	
 		
 	
-	public boolean verifySettings(String merchantTagline, String statementLogoName, String payByPhoneNumber, 
+	public boolean verifySettings(String merchantTagline, String payByPhoneNumber, 
 			String payByPhoneHours, String billQueryPhoneNumber, String billQueryHours, boolean displayAgingBoxes,
 			boolean displayInsuranceBoxes, boolean displayDetails, boolean payByCheck, 
 			boolean payByMoneyOrder, boolean displayDetachReturnByMail, boolean displayMerchantName){
 		IHGUtil.PrintMethodName();
-		if (merchantTagline.equals(this.merchantTagline.getText().trim()) 
-				&& statementLogoName.equals(this.statementLogoName.getText().trim()) 
-				&& payByPhoneNumber.equals(this.payByPhoneNumber.getText().trim())
-				&& payByPhoneHours.equals(this.payByPhoneHours.getText().trim())
-				&& billQueryPhoneNumber.equals(this.billQueryPhoneNumber.getText().trim())
-				&& billQueryHours.equals(this.billQueryHours.getText().trim())
+		log("Expecting: " + merchantTagline + payByPhoneNumber +
+				payByPhoneHours + billQueryPhoneNumber + billQueryHours + displayAgingBoxes + 
+				displayInsuranceBoxes + displayDetails + payByCheck + payByMoneyOrder + 
+				displayDetachReturnByMail + displayMerchantName);
+		log("Found: " + this.merchantTagline.getAttribute("value") + this.payByPhoneNumber.getAttribute("value") + this.payByPhoneHours.getAttribute("value") + 
+				this.billQueryPhoneNumber.getAttribute("value") + this.billQueryHours.getAttribute("value") + this.displayAgingBoxes.isSelected() + 
+				this.displayInsuranceBoxes.isSelected() + this.displayDetails.isSelected() + this.payByCheck.isSelected() + 
+				this.payByMoneyOrder.isSelected() + this.displayDetachReturnByMail.isSelected() + this.displayMerchantName.isSelected());
+		if (merchantTagline.equals(this.merchantTagline.getAttribute("value")) 				
+				&& payByPhoneNumber.equals(this.payByPhoneNumber.getAttribute("value"))
+				&& payByPhoneHours.equals(this.payByPhoneHours.getAttribute("value"))
+				&& billQueryPhoneNumber.equals(this.billQueryPhoneNumber.getAttribute("value"))
+				&& billQueryHours.equals(this.billQueryHours.getAttribute("value"))
 				&& displayAgingBoxes == (this.displayAgingBoxes.isSelected())
 				&& displayInsuranceBoxes == (this.displayInsuranceBoxes.isSelected())
 				&& displayDetails == (this.displayDetails.isSelected())
@@ -100,15 +106,23 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 	 * @param displayMerchantName
 	 * @return
 	 */
-	public ProvisioningMerchantDetailPage fillSettingsAndSubmit(boolean clear, String merchantTagline, String statementLogoName, String payByPhoneNumber, 
+	public ProvisioningMerchantDetailPage fillSettingsAndSubmit(boolean clear, String merchantTagline, String payByPhoneNumber, 
 			String payByPhoneHours, String billQueryPhoneNumber, String billQueryHours, boolean displayAgingBoxes,
 			boolean displayInsuranceBoxes, boolean displayDetails, boolean payByCheck, 
 			boolean payByMoneyOrder, boolean displayDetachReturnByMail, boolean displayMerchantName){
 		IHGUtil.PrintMethodName();
+		//Load ajax, prevent race condition on sendKeys
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		if(clear) this.merchantTagline.clear();
 		this.merchantTagline.sendKeys(merchantTagline);
+		/*
 		if(clear) this.statementLogoName.clear();
 		this.statementLogoName.sendKeys(statementLogoName);
+		*/
 		if(clear) this.payByPhoneNumber.clear();
 		this.payByPhoneNumber.sendKeys(payByPhoneNumber);
 		if(clear) this.payByPhoneHours.clear();
@@ -131,7 +145,6 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 			if(this.displayInsuranceBoxes.isSelected()) this.displayInsuranceBoxes.click();
 		}
 		
-		//TODO WON'T WORK UNTIL CHECKBOX INSTEAD OF RADIO
 		if(displayDetails) {
 			if(!this.displayDetails.isSelected()) this.displayDetails.click();
 		}
@@ -163,6 +176,8 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 		else {
 			if(this.displayMerchantName.isSelected()) this.displayMerchantName.click();
 		}
+		
+		submitButton.click();
 		return PageFactory.initElements(driver, ProvisioningMerchantDetailPage.class);	
 	}
 	
@@ -172,4 +187,9 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 		wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//form[@name='addStatement']"))));		
 	}
 
+	
+	public ProvisioningMerchantDetailPage clickCancel(){
+		cancelButton.click();
+		return PageFactory.initElements(driver, ProvisioningMerchantDetailPage.class);	
+	}
 }
