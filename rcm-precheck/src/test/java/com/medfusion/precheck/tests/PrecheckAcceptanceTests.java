@@ -67,7 +67,7 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String emailSubject = "You have an upcoming appointment!";
 		String inEmail = " Check in online ";
-		String url = mail.email(patient.getEmail(), emailSubject, inEmail);
+		String url = mail.getLinkFromEmail(patient.getEmail(), emailSubject, inEmail);
 		log(url);
 		
 	}
