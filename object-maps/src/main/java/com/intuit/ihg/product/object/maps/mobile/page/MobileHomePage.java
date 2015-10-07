@@ -81,9 +81,9 @@ public class MobileHomePage extends MobileBasePage {
     }
 
     public MessageInboxPage clickMyMessages() throws InterruptedException {
-        waitForCount(driver, 20);
-        log("Number of messages: " + count.getText());
-        IHGUtil.PrintMethodName();
+    	IHGUtil.PrintMethodName();
+    	waitForCount(driver, 20);
+        log("Number of messages: " + count.getText());        
         Thread.sleep(2000);
         myMessages.click();
         Thread.sleep(2000);

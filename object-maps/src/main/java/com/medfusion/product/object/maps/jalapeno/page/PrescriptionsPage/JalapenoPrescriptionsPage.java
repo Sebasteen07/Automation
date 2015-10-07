@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,7 +56,24 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 	
 	public void clickContinueButton(WebDriver driver) {
 		driver.switchTo().frame("iframebody");
+				
+		log("Checking if there're location options");
+		if(IHGUtil.exists(driver, 2, locationDropdown)) {
+			log("Selecting location");
+			Select locationSelect = new Select(locationDropdown);
+			locationSelect.selectByIndex(1);
+
+			log("Selecting provider");
+			try{
+			Select providerSelect = new Select(providerDropdown);
+			providerSelect.selectByIndex(1);
+			} catch(StaleElementReferenceException ex) {
+				log("Dont know what's going on here");
+			}
+			//continueButton.click();
+		}
 		
+		log("Clicking on continue button");
 		continueButton.click();
 		
 		driver.switchTo().defaultContent();
@@ -64,18 +82,6 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) {
 		
 		driver.switchTo().frame("iframebody");
-		
-		log("Checking if there're location options");
-		if(IHGUtil.exists(driver, 2, locationDropdown)) {
-			log("Selecting location and provider");
-			Select locationSelect = new Select(locationDropdown);
-			locationSelect.selectByIndex(1);
-			
-			Select providerSelect = new Select(providerDropdown);
-			providerSelect.selectByIndex(1);
-			
-			continueButton.click();
-		}
 		
 		log("Insert medication info");
 		this.medicationName.sendKeys(medication);

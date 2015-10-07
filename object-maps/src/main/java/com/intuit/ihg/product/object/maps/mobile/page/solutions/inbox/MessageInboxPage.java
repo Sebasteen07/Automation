@@ -35,8 +35,7 @@ public class MessageInboxPage extends MobileBasePage {
 
 	public MessageDetailsPage clickMessage(String sSubject) throws InterruptedException {
 		message = driver.findElement(By.xpath("//a[contains(@href,'msgDetail')]/h4[text()='" + sSubject + "']")); // 40205
-		IHGUtil.waitForElement(driver, 6, message);
-		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 60, message);
 		message.click();
 		Thread.sleep(2000);
 		if (getHeaderText().contains("New Health Information Import"))
