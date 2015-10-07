@@ -16,9 +16,7 @@ import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestD
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
-import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
@@ -220,7 +218,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = createPatient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail);
+		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 		
 		assertTrue(url != null);
 		
@@ -396,17 +394,13 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
 		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-		
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+
 		log("Patient Activation on Practice Portal");
 		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData,
-				testcasesData.getEmail(), testDataFromProp.getDoctorLogin(),
-				testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
+				patientsEmail, testDataFromProp);
 		
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
 		assertTrue(loginPage.assessLoginPageElements());
