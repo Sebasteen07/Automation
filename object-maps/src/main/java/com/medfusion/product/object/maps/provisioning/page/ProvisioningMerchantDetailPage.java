@@ -54,8 +54,24 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement externalId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantName;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[5]/div[2]")
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[4]/div[2]")
+	public WebElement merchantLegalName;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[6]/div[2]")
+	public WebElement merchantPhone;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[7]/div[2]")
+	public WebElement merchantCustomerPhone;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[8]/div[2]")
 	public WebElement txLimit;
+	
+	//IBM Boarding Files
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[2]/div[2]")
+	public WebElement merchantStatus;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[3]/div[2]")
+	public WebElement sicMccCode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[4]/div[2]")
+	public WebElement averageTicketPrice;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[5]/div[2]")
+	public WebElement voucherFlag;
 	
 	//Merchant Address
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[1]/div[2]")
@@ -109,8 +125,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement visaImg;
 	@FindBy(how = How.XPATH, using="//img[@title='Discover']")
 	public WebElement discoverImg;
-	@FindBy(how = How.XPATH, using="//img[@title='Care Credit']")
-	public WebElement carecredImg;
+	@FindBy(how = How.XPATH, using="//img[@title='Mastercard']")
+	public WebElement mastercardImg;
 	
 	
 	
@@ -127,14 +143,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			 return true;
 		else return false;	
 	}
-	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String transactionLimit,
-		    String address1, String address2, String zipcode, String country,
+	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String merchantLegalName, 
+			String merchantPhone, String merchantCustomerPhone, String transactionLimit, String merchantStatus,
+		    String sicMccCode, String averageTicketPrice, String address1, String address2, String zipcode, String country,
 			String state, String remitMerchantName, String remitAddress1, String remitAddress2,
 			 String remitCity, String remitZipcode, String remitCountry, String remitState){			
 		IHGUtil.PrintMethodName();		
 		if (externalId.equals(this.externalId.getText().trim()) 
 				&& merchantName.equals(this.merchantName.getText().trim()) 
+				&& merchantLegalName.equals(this.merchantLegalName.getText().trim())
+				&& merchantPhone.equals(this.merchantPhone.getText().trim())
+				&& merchantCustomerPhone.equals(this.merchantCustomerPhone.getText().trim())
 				&& transactionLimit.equals(this.txLimit.getText().trim())
+				&& merchantStatus.equals(this.merchantStatus.getText().trim())
+				&& sicMccCode.equals(this.sicMccCode.getText().trim())
+				&& averageTicketPrice.equals(this.averageTicketPrice.getText().trim())
 				&& address1.equals(this.address1.getText().trim())
 				&& address2.equals(this.address2.getText().trim())
 				&& zipcode.equals(this.zipcode.getText().trim())
@@ -182,21 +205,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			return false;
 		}
 	}
-	public boolean isCarecredOn(){
+	public boolean isMastercardOn(){
 		try{
-			return carecredImg.isDisplayed();			
+			return mastercardImg.isDisplayed();			
 		}
 		catch (Exception e){
 			return false;
 		}
 	}
 	
-	public boolean checkCards(boolean amex, boolean visa, boolean discover, boolean carecred){
+	public boolean checkCards(boolean amex, boolean visa, boolean discover, boolean mastercard){
 		IHGUtil.PrintMethodName();
 		if(amex) if(!isAmexOn()) return false;
 		if(visa) if(!isVisaOn()) return false;
 		if(discover) if(!isDiscoverOn()) return false;
-		if(carecred) if(!isCarecredOn()) return false;
+		if(mastercard) if(!isMastercardOn()) return false;
 		return true;
 	}
 	

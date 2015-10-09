@@ -89,12 +89,21 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();	
 		String randNum = IHGUtil.createRandomNumericString(8);
 		String newName = "[Automation]TestPatient"+ randNum;
+		String newLegalName = "[Automation]TestLegalName"+ randNum;
+		String phoneNumber = "1-541-754-3010";
+		String customerPhoneNumber = "+1-541-754-3010";
 		Random rBool = new Random();
 		//we need at least one true
-		boolean carecred = true;
+		boolean mastercard = true;
 		boolean amex = rBool.nextBoolean();
 		boolean visa = rBool.nextBoolean();
 		boolean discover = rBool.nextBoolean();
+		boolean merchantStatus = rBool.nextBoolean();
+		String merchantStatusString = "Closed";
+		if (merchantStatus) merchantStatusString = "Open";
+		String sicMccCode = ("AM" + randNum.substring(0, 4));
+		String averageTicketPrice = (randNum.substring(0, 4)+ "00");
+		
 		
 		//Statement options, we have a merchant name to check for even if all were to be false
 		//merchantName = newName
@@ -127,14 +136,14 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 				
 		log("Step 2: Click add a merchant");
 		ProvisioningAddMerchantPage pAddMerchantPage = pDashboardPage.clickAddMerchant();
-		ProvisioningMerchantDetailPage pMerchantDetailPage = pAddMerchantPage.fillAndSubmit(newName, newExternalId, "1000", "1 Randomstreet", "", "Randotown", newZip, "United States", "Alabama",
-				newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska", amex, visa, discover, carecred);
+		ProvisioningMerchantDetailPage pMerchantDetailPage = pAddMerchantPage.fillAndSubmit(newName, newLegalName, newExternalId, phoneNumber, customerPhoneNumber,"1000", "1 Randomstreet", "", "Randotown", newZip, "United States", "Alabama",
+				newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska", amex, visa, discover, mastercard, merchantStatus, sicMccCode, averageTicketPrice);
 		
 		
 		log("Step 3: Verify merchant details");
 		pMerchantDetailPage.waitTillLoaded();
-		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, "1000", "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
-		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, carecred));
+		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newLegalName, phoneNumber, customerPhoneNumber,"1000", merchantStatusString, sicMccCode, averageTicketPrice, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
+		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, mastercard));
 		
 		//TODO step4 accounts and Ids 
 		
