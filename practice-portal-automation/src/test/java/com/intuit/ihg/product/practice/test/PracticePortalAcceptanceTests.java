@@ -16,7 +16,6 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.eStatementUploadPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
@@ -222,11 +221,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3:Set Patient Search Fields");
 //		pPatientSearchPage.setPatientSearchFields();
-		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.fName, PracticeConstants.lName);
+		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 	
 		log("step 4:Verify the Search Result");
 		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
-		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.fName));
+		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
 
 	}
 	
@@ -481,71 +480,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
 
-	}
-
-
-	/**
-	 * @Author: bbinisha
-	 * User Story : US6487
-	 * @Date: 07/29/2013
-	 * @StepsToReproduce:
-	 * Practice portal login
-	 * Click on 'Online Billpay' 
-	 * Click on 'eStatement Upload'
-	 * Search for the patient
-	 * Enter the estatement info
-	 * Click on 'Upload eStatement' button.
-	 * Verify the Success Message.
-	 * =============================================================
-	 * @AreaImpacted : 
-	 * @throws Exception
-	 */
-	@Test (enabled = true, groups = {"AcceptanceTests"})
-	public void testEStatementUpload() throws Exception {
-
-		log("Test Case: TestLoginLogout");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 1: Get Data from Excel");	
-
-		// Load up practice test data
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData =new PracticeTestData(practice);
-
-		log("step 2: Navigate to Login page"); 
-		PracticeLoginPage practiceLogin =new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-		log("step 3: Enter credentials and login");
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-		log("Step 4 : Navigate to OnlineBillPay. ");
-		OnlineBillPaySearchPage billPaySearch = practiceHome.clickOnlineBillPayTab();
-
-		log(" Step 5 : Click on 'e-StatementUpload' link");
-		eStatementUploadPage eStatementPage = billPaySearch.clickOnEStatementUploadLink();
-
-		log(" Step 6 : Search for the patient");
-		eStatementPage.enterPatientDetails(PracticeConstants.fName, PracticeConstants.lName, PracticeConstants.patienID);
-
-		log("Step 7 : Select the particular account.");
-		eStatementPage.selectTheRecords(PracticeConstants.fName, PracticeConstants.lName);
-
-		log("Step 8 : enter the e-statement info.");
-		String sUniqueId = IHGUtil.createRandomNumericString().substring(0, 5);
-		String sAmount = IHGUtil.createRandomNumericString().substring(0, 3);
-		eStatementPage.enterEStatementInfo(PracticeConstants.location, sUniqueId, sAmount);
-
-		log("Get the filepath of the e-statement file.");
-
-		log("Step 9 : Browse the file.");
-		eStatementPage.browseFile();
-
-		log("Step 10 : Click on 'Upload Statement' button.");
-		eStatementPage.clickOnUploadStatementButton();
-
-		log("Verify whether the EStatement is uploaded successfully.");
-		assertTrue(eStatementPage.isEStatementUploadedSuccessfully(), "EStatement is not uploaded properly.");
 	}
 
 

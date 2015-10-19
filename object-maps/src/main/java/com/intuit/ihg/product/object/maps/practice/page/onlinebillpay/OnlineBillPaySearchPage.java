@@ -149,14 +149,6 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 	}
 
 
-	public eStatementUploadPage clickOnEStatementUploadLink() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver, 30, eStatementUploadLink);
-		eStatementUploadLink.click();
-		return PageFactory.initElements(driver, eStatementUploadPage.class);
-
-	}
-
 	public PatientSearchPage clickOnPatientSearchLink() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, patientSearchLink);
