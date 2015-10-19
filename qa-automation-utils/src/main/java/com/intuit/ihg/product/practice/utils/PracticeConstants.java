@@ -89,15 +89,6 @@ public class PracticeConstants {
 	public final static String Location2 ="Location: Automation-Location-1";
 
 
-	//e-staementUpload
-	public final static String fName = "test12";
-	public final static String lName = "test";
-	public final static String patienID = "ihgqa";
-	public final static String patientMail = "ihgqa@none.com";
-	public final static String location = "Automation-Location-1";
-	public final static String eStatementFile = "eStatementTest.pdf";	
-	public final static String eStatementUploadSuccessMsg = "eStatement successfully uploaded";
-	public final static String eStatementFilePath = "documents/eStatementTest.pdf";
 	
 	// change email for Patient
 	public final static String chngMailFName = "Change";

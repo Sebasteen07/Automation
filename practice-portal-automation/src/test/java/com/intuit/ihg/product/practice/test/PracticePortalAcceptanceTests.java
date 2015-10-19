@@ -16,7 +16,6 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.eStatementUploadPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
@@ -222,11 +221,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3:Set Patient Search Fields");
 //		pPatientSearchPage.setPatientSearchFields();
-		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.fName, PracticeConstants.lName);
+		pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 	
 		log("step 4:Verify the Search Result");
 		IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult);
-		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.fName));
+		verifyEquals(true,pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
 
 	}
 	
