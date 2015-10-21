@@ -16,7 +16,7 @@ import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.product.object.maps.precheck.page.DashboardLoginPage;
 import com.medfusion.product.object.maps.precheck.page.AppointmentDetails.AppointmentDetailsPage;
 import com.medfusion.product.object.maps.precheck.page.HomePage.HomePage;
-import com.medfusion.product.precheck.PrecheckConstans;
+import com.medfusion.product.precheck.PrecheckConstants;
 import com.medfusion.product.precheck.PrecheckPatient;
 
 
@@ -57,10 +57,10 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log(patient.getPatientId());
 		
-		appointmentDetailsPage.scheduleAppointment(PrecheckConstans.AppointmentDate, PrecheckConstans.ProviderName, patient.getPatientId(),
-				patient.getFirstName(), patient.getMiddleName(), patient.getLastName(), PrecheckConstans.DOB, PrecheckConstans.PatientMailingAddress1,
-				PrecheckConstans.PatientMailingAddress2, PrecheckConstans.PatientCity, PrecheckConstans.PatientZip,
-				PrecheckConstans.PatientPhoneNumber, patient.getEmail(), "100", "300");
+		appointmentDetailsPage.scheduleAppointment(PrecheckConstants.AppointmentDate, PrecheckConstants.Location, PrecheckConstants.ProviderName, patient.getPatientId(),
+				patient.getFirstName(), patient.getMiddleName(), patient.getLastName(), PrecheckConstants.DOB, PrecheckConstants.PatientMailingAddress1,
+				PrecheckConstants.PatientMailingAddress2, PrecheckConstants.PatientCity, PrecheckConstants.PatientZip,
+				PrecheckConstants.PatientPhoneNumber, patient.getEmail(), "100", "300");
 		
 		
 		log("Logging into Mailinator and getting PrecheckApp url");
