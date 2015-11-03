@@ -562,7 +562,11 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Fill and submit question");
 		assertTrue(askPage.fillAndSubmitAskAStaff(driver));
 		
+		log("Check history");
+		assertTrue(askPage.checkHistory(driver));
+		
 		log("Logout patient");
+		askPage.backToHomePage(driver);
 		assertTrue(homePage.assessHomePageElements());
 		homePage.logout(driver);
 		
