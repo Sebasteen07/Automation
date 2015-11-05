@@ -142,7 +142,7 @@ public class ProvisioningAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 3: Verify merchant details");
 		pMerchantDetailPage.waitTillLoaded();
-		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newLegalName, phoneNumber, customerPhoneNumber,"1000", merchantStatusString, sicMccCode, averageTicketPrice, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName, "1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
+		assertTrue(pMerchantDetailPage.verifyInfoWithoutMid(newExternalId, newName, newLegalName, phoneNumber, customerPhoneNumber,"1000", merchantStatusString, sicMccCode, averageTicketPrice, "1 Randomstreet", "", newZip, "United States", "Alabama", newRemitName,"1 Remitstreet", "", "Remitown", "54321", "United States", "Alaska"));
 		assertTrue(pMerchantDetailPage.checkCards(amex, visa, discover, mastercard));
 		
 		//TODO step4 accounts and Ids 
