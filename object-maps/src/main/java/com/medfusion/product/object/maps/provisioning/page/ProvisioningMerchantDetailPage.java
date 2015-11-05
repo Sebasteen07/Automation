@@ -51,11 +51,11 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[1]/div[2]")
 	public WebElement merchantId;	
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[2]/div[2]")
-	public WebElement externalId;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantName;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[4]/div[2]")
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantLegalName;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[5]/div[2]")
+	public WebElement externalId;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[6]/div[2]")
 	public WebElement merchantPhone;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[7]/div[2]")
@@ -81,11 +81,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[3]/div[2]")
 	public WebElement city;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[4]/div[2]")
-	public WebElement zipcode;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[5]/div[2]")
-	public WebElement country;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[6]/div[2]")
 	public WebElement state;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[5]/div[2]")
+	public WebElement zipcode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[6]/div[2]")
+	public WebElement country;
+
 	
 	
 	//Remit-to Address
@@ -98,11 +99,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[4]/div[2]")
 	public WebElement remitCity;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[5]/div[2]")
-	public WebElement remitZipcode;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[6]/div[2]")
-	public WebElement remitCountry;	
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
 	public WebElement remitState;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[6]/div[2]")
+	public WebElement remitZipcode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
+	public WebElement remitCountry;	
+
 	
 	//Users and Roles
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]")
@@ -172,7 +174,29 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 				&& remitState.equals(this.remitState.getText().trim())				
 				)
 			 return true;
-		else return false;	
+		else {
+				System.out.println("Expected: " + externalId + " Found: " + this.externalId.getText().trim());
+				System.out.println("Expected: " + merchantName + " Found: " + this.merchantName.getText().trim());
+				System.out.println("Expected: " + merchantLegalName + " Found: " + this.merchantLegalName.getText().trim());
+				System.out.println("Expected: " + merchantPhone + " Found: " + this.merchantName.getText().trim());
+				System.out.println("Expected: " + merchantCustomerPhone + " Found: " + this.merchantPhone.getText().trim());
+				System.out.println("Expected: " + transactionLimit + " Found: " + this.txLimit.getText().trim());
+				System.out.println("Expected: " + merchantStatus + " Found: " + this.merchantStatus.getText().trim());
+				System.out.println("Expected: " + sicMccCode + " Found: " + this.sicMccCode.getText().trim());
+				System.out.println("Expected: " + averageTicketPrice + " Found: " + this.averageTicketPrice.getText().trim());
+				System.out.println("Expected: " + address1 + " Found: " + this.address1.getText().trim());
+				System.out.println("Expected: " + address2 + " Found: " + this.address2.getText().trim());
+				System.out.println("Expected: " + zipcode + " Found: " + this.zipcode.getText().trim());
+				System.out.println("Expected: " + country + " Found: " + this.country.getText().trim());
+				System.out.println("Expected: " + state + " Found: " + this.state.getText().trim());
+				System.out.println("Expected: " + remitMerchantName + " Found: " + this.remitMerchantName.getText().trim());
+				System.out.println("Expected: " + remitAddress1 + " Found: " + this.remitAddress1.getText().trim());
+				System.out.println("Expected: " + remitAddress2 + " Found: " + this.remitAddress2.getText().trim());
+				System.out.println("Expected: " + remitCity + " Found: " + this.remitCity.getText().trim());
+				System.out.println("Expected: " + remitZipcode + " Found: " + this.remitZipcode.getText().trim());
+				System.out.println("Expected: " + remitCountry + " Found: " + this.remitCountry.getText().trim());
+				System.out.println("Expected: " + remitState + " Found: " + this.remitState.getText().trim());
+			return false;}	
 	}
 	
 	public void waitTillLoaded() {		

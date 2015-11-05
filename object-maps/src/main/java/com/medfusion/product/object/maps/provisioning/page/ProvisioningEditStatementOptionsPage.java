@@ -25,7 +25,7 @@ public class ProvisioningEditStatementOptionsPage extends BasePageObject {
 	public WebElement logoutButton;	
 	@FindBy(how = How.XPATH, using="//button[@type='submit']")
 	public WebElement submitButton;	
-	@FindBy(how = How.XPATH, using="//button[@class='btn btn-secondary actionButton']")
+	@FindBy(how = How.XPATH, using="//button[@class='btn btn-default actionButton']")
 	public WebElement cancelButton;
 	
 	//Statement options
