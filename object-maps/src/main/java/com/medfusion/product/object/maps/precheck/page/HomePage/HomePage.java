@@ -15,13 +15,13 @@ public class HomePage extends BasePageObject {
 	
 	
 	@FindBy(how = How.XPATH, using = ".//*[@id='body']/div[1]/span")
-	public WebElement rightNavMenu;
+	private WebElement rightNavMenu;
 	
 	@FindBy(how = How.XPATH, using = ".//*[@id='menu']/a[2]/span[2]")
-	public WebElement createNewAppointmentButton;
+	private WebElement createNewAppointmentButton;
 	
 	@FindBy(how = How.XPATH, using = "//a[@data-ng-click='logout()']")
-	public WebElement signOutButton;
+	private WebElement signOutButton;
 	
 
 	public HomePage(WebDriver driver) {

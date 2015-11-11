@@ -2,10 +2,12 @@ package com.medfusion.product.precheck;
 
 public class PrecheckConstants {
 
-	public final static String AppointmentDate = "03/03/2020";
+	public final static String AppointmentDate = "2020/10/10";
 	public final static String Location = "Clinic";
 	public final static String ProviderName = "Doc Frankenstein";
-	public final static String DOB = "06/06/1990";
+	public final static String DOB_DAY = "06";
+	public final static String DOB_MONTH = "06";
+	public final static String DOB_YEAR = "1990";
 	public final static String PatientMailingAddress1 = "5501 Dilard Drive";
 	public final static String PatientMailingAddress2 = "Reception";
 	public final static String PatientCity = "Cary";
