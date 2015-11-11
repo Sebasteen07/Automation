@@ -2,6 +2,8 @@ package com.medfusion.precheck.tests;
 
 
 
+import java.io.IOException;
+
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -33,26 +35,31 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
+	
+	public HomePage dashboardLogin(PropertyFileLoader testData)throws IOException{
+		log(this.getClass().getName());
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		
+		log("Loading Pre-Check login page");
+		DashboardLoginPage dashboardLoginPage = new DashboardLoginPage(driver, testData.getUrl());
+		assertTrue(dashboardLoginPage.assessLoginPageElements());
+		return dashboardLoginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendAppoitnment() throws Exception {
 
-		log(this.getClass().getName());
-		
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();	
-		
+				
 		log("Initialize Patient");
 		PrecheckPatient patient =  new PrecheckPatient();
 		patient.initPatientData();
 		
-		log("Loading Pre-Check login page");
-		DashboardLoginPage dashboardLoginPage = new DashboardLoginPage(driver, testData.getUrl());
-		
-		HomePage homePage = dashboardLoginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		HomePage homePage=this.dashboardLogin(testData);
 		AppointmentDetailsPage appointmentDetailsPage = homePage.addNewAppointment();
 		
 		log(patient.getPatientId());
@@ -66,9 +73,21 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 		log("Logging into Mailinator and getting PrecheckApp url");
 		Mailinator mail = new Mailinator();
 		String emailSubject = "You have an upcoming appointment!";
-		String inEmail = " Check in online ";
-		String url = mail.getLinkFromEmail(patient.getEmail(), emailSubject, inEmail);
+		String inEmail = "Check in online";
+		String url = mail.getLinkFromEmail(patient.getEmail(), emailSubject, inEmail, 10);
+		assertTrue(url!=null);
 		log(url);
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDashboardLoginLogout() throws Exception {
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		HomePage homePage = this.dashboardLogin(testData);
+		DashboardLoginPage dashboardLoginPage = homePage.logOut();
+		assertTrue(dashboardLoginPage.assessLoginPageElements());
+		
 		
 	}
 	
