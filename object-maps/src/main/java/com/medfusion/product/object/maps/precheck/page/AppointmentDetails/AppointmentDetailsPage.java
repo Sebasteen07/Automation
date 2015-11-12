@@ -13,61 +13,61 @@ public class AppointmentDetailsPage extends BasePageObject {
 	
 	
 	@FindBy(how = How.ID, using = "appointmentDate")
-	public WebElement appointmentDate;
+	private WebElement appointmentDate;
 
 	@FindBy(how = How.ID, using = "appointmentTime")
-	public WebElement appointmentTime;
+	private WebElement appointmentTime;
 	
 	@FindBy(how = How.ID, using = "locationName")
-	public WebElement locationName;
+	private WebElement locationName;
 
 	@FindBy(how = How.ID, using = "providerName")
-	public WebElement providerName;
+	private WebElement providerName;
 
 	@FindBy(how = How.ID, using = "patientId")
-	public WebElement patientId;
+	private WebElement patientId;
 
 	@FindBy(how = How.ID, using = "patientFirstName")
-	public WebElement patientFirstName;
+	private WebElement patientFirstName;
 
 	@FindBy(how = How.ID, using = "patientMiddleName")
-	public WebElement patientMiddleName;
+	private WebElement patientMiddleName;
 
 	@FindBy(how = How.ID, using = "patientLastName")
-	public WebElement patientLastName;
+	private WebElement patientLastName;
 
 	@FindBy(how = How.ID, using = "patientDateOfBirth")
-	public WebElement patientDOB;
+	private WebElement patientDOB;
 
 	@FindBy(how = How.ID, using = "patientMailingAddressLineOne")
-	public WebElement patientMailingAddessLine1;
+	private WebElement patientMailingAddessLine1;
 
 	@FindBy(how = How.ID, using = "patientMailingAddressLineTwo")
-	public WebElement patientMailingAddessLine2;
+	private WebElement patientMailingAddessLine2;
 
 	@FindBy(how = How.ID, using = "patientCity")
-	public WebElement patientCity;
+	private WebElement patientCity;
 
 	@FindBy(how = How.ID, using = "patientState")
-	public WebElement patientState;
+	private WebElement patientState;
 
 	@FindBy(how = How.ID, using = "patientZip")
-	public WebElement patientZip;
+	private WebElement patientZip;
 
 	@FindBy(how = How.ID, using = "patientPhone")
-	public WebElement patientPhoneNumber;
+	private WebElement patientPhoneNumber;
 
 	@FindBy(how = How.ID, using = "patientEmail")
-	public WebElement patientEmail;
+	private WebElement patientEmail;
 
 	@FindBy(how = How.ID, using = "patientCopayment")
-	public WebElement patientCopayment;
+	private WebElement patientCopayment;
 
 	@FindBy(how = How.ID, using = "patientOutstandingBalance")
-	public WebElement patientOutstandingBalance;
+	private WebElement patientOutstandingBalance;
 
 	@FindBy(how = How.ID, using = "createButton")
-	public WebElement createButton;
+	private WebElement createButton;
 	
 
 	public AppointmentDetailsPage(WebDriver driver) {

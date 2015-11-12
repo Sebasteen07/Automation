@@ -27,7 +27,7 @@ public class DashboardLoginPage extends BasePageObject {
 
 		super(driver);
 		IHGUtil.PrintMethodName();
-		log("Loading login page");
+		log("Loading Dashboard login page");
 		String sanitizedUrl = url.trim();
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
