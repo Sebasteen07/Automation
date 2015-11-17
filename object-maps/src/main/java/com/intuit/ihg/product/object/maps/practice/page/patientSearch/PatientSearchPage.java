@@ -11,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientactivationPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 
 public class PatientSearchPage extends BasePageObject{
@@ -111,11 +111,11 @@ public class PatientSearchPage extends BasePageObject{
 		searchForPatient.click();
 	}
 	
-	public PatientactivationPage clickOnAddNewPatient() {
+	public PatientActivationPage clickOnAddNewPatient() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, addNewPatient);
 		addNewPatient.click();
-		return PageFactory.initElements(driver, PatientactivationPage.class);
+		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
 	
 	public void searchPatient(String fName, String lName) {

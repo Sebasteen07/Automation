@@ -17,7 +17,7 @@ public class PreferencesPage extends BasePageObject {
 	
 	public static final String PAGE_NAME = "Account Preference Page";
 	
-	@FindBy(xpath="//input[@name='buttons:submit' and @value='Update Your Preferences']")
+	@FindBy(xpath="//input[@name='buttons:submit' and @value='Update My Preferences']")
 	private WebElement but_updateYourPreferences;
 	
 	@FindBy(xpath="//select[@id='addOption']")

@@ -14,6 +14,8 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class JalapenoLoginPage extends BasePageObject {
 
@@ -123,6 +125,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		
 		IHGUtil.PrintMethodName();
 		log("Clicking on Join In button");
+		new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(joinButton));
 		joinButton.click();
 		return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
 	}

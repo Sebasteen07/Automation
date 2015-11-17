@@ -16,6 +16,7 @@ import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealt
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskAStaffPage;
 
 public class JalapenoHomePage extends JalapenoPage {
 	
@@ -137,6 +138,17 @@ public class JalapenoHomePage extends JalapenoPage {
 	
 	public boolean isMessagesButtonDisplayed(WebDriver driver) {
 		return IHGUtil.waitForElement(driver, 60, messages);
+	}
+	
+	public boolean isHomeButtonPresent(WebDriver driver) {
+		return IHGUtil.waitForElement(driver, 60, home);
+	}
+	
+	public JalapenoAskAStaffPage clickOnAskAStaff (WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		askAQuestion.click();
+		
+		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
 	}
 	
 }

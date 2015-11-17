@@ -51,11 +51,27 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[1]/div[2]")
 	public WebElement merchantId;	
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[2]/div[2]")
-	public WebElement externalId;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
 	public WebElement merchantName;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[3]/div[2]")
+	public WebElement merchantLegalName;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[5]/div[2]")
+	public WebElement externalId;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[6]/div[2]")
+	public WebElement merchantPhone;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[7]/div[2]")
+	public WebElement merchantCustomerPhone;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[1]/div[8]/div[2]")
 	public WebElement txLimit;
+	
+	//IBM Boarding Files
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[2]/div[2]")
+	public WebElement merchantStatus;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[3]/div[2]")
+	public WebElement sicMccCode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[4]/div[2]")
+	public WebElement averageTicketPrice;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[1]/div[2]/div[5]/div[2]")
+	public WebElement voucherFlag;
 	
 	//Merchant Address
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[1]/div[2]")
@@ -65,11 +81,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[3]/div[2]")
 	public WebElement city;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[4]/div[2]")
-	public WebElement zipcode;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[5]/div[2]")
-	public WebElement country;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[6]/div[2]")
 	public WebElement state;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[5]/div[2]")
+	public WebElement zipcode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[1]/fieldset/div[6]/div[2]")
+	public WebElement country;
+
 	
 	
 	//Remit-to Address
@@ -82,11 +99,12 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[4]/div[2]")
 	public WebElement remitCity;
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[5]/div[2]")
-	public WebElement remitZipcode;
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[6]/div[2]")
-	public WebElement remitCountry;	
-	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
 	public WebElement remitState;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[6]/div[2]")
+	public WebElement remitZipcode;
+	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset/div[2]/div[2]/fieldset/div[7]/div[2]")
+	public WebElement remitCountry;	
+
 	
 	//Users and Roles
 	@FindBy(how = How.XPATH, using="//div[@id='merchantDetail']/fieldset[4]/div[1]")
@@ -109,8 +127,8 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 	public WebElement visaImg;
 	@FindBy(how = How.XPATH, using="//img[@title='Discover']")
 	public WebElement discoverImg;
-	@FindBy(how = How.XPATH, using="//img[@title='Care Credit']")
-	public WebElement carecredImg;
+	@FindBy(how = How.XPATH, using="//img[@title='Mastercard']")
+	public WebElement mastercardImg;
 	
 	
 	
@@ -127,14 +145,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			 return true;
 		else return false;	
 	}
-	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String transactionLimit,
-		    String address1, String address2, String zipcode, String country,
+	public boolean verifyInfoWithoutMid(String externalId, String merchantName, String merchantLegalName, 
+			String merchantPhone, String merchantCustomerPhone, String transactionLimit, String merchantStatus,
+		    String sicMccCode, String averageTicketPrice, String address1, String address2, String zipcode, String country,
 			String state, String remitMerchantName, String remitAddress1, String remitAddress2,
 			 String remitCity, String remitZipcode, String remitCountry, String remitState){			
 		IHGUtil.PrintMethodName();		
 		if (externalId.equals(this.externalId.getText().trim()) 
 				&& merchantName.equals(this.merchantName.getText().trim()) 
+				&& merchantLegalName.equals(this.merchantLegalName.getText().trim())
+				&& merchantPhone.equals(this.merchantPhone.getText().trim())
+				&& merchantCustomerPhone.equals(this.merchantCustomerPhone.getText().trim())
 				&& transactionLimit.equals(this.txLimit.getText().trim())
+				&& merchantStatus.equals(this.merchantStatus.getText().trim())
+				&& sicMccCode.equals(this.sicMccCode.getText().trim())
+				&& averageTicketPrice.equals(this.averageTicketPrice.getText().trim())
 				&& address1.equals(this.address1.getText().trim())
 				&& address2.equals(this.address2.getText().trim())
 				&& zipcode.equals(this.zipcode.getText().trim())
@@ -149,7 +174,29 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 				&& remitState.equals(this.remitState.getText().trim())				
 				)
 			 return true;
-		else return false;	
+		else {
+				System.out.println("Expected: " + externalId + " Found: " + this.externalId.getText().trim());
+				System.out.println("Expected: " + merchantName + " Found: " + this.merchantName.getText().trim());
+				System.out.println("Expected: " + merchantLegalName + " Found: " + this.merchantLegalName.getText().trim());
+				System.out.println("Expected: " + merchantPhone + " Found: " + this.merchantName.getText().trim());
+				System.out.println("Expected: " + merchantCustomerPhone + " Found: " + this.merchantPhone.getText().trim());
+				System.out.println("Expected: " + transactionLimit + " Found: " + this.txLimit.getText().trim());
+				System.out.println("Expected: " + merchantStatus + " Found: " + this.merchantStatus.getText().trim());
+				System.out.println("Expected: " + sicMccCode + " Found: " + this.sicMccCode.getText().trim());
+				System.out.println("Expected: " + averageTicketPrice + " Found: " + this.averageTicketPrice.getText().trim());
+				System.out.println("Expected: " + address1 + " Found: " + this.address1.getText().trim());
+				System.out.println("Expected: " + address2 + " Found: " + this.address2.getText().trim());
+				System.out.println("Expected: " + zipcode + " Found: " + this.zipcode.getText().trim());
+				System.out.println("Expected: " + country + " Found: " + this.country.getText().trim());
+				System.out.println("Expected: " + state + " Found: " + this.state.getText().trim());
+				System.out.println("Expected: " + remitMerchantName + " Found: " + this.remitMerchantName.getText().trim());
+				System.out.println("Expected: " + remitAddress1 + " Found: " + this.remitAddress1.getText().trim());
+				System.out.println("Expected: " + remitAddress2 + " Found: " + this.remitAddress2.getText().trim());
+				System.out.println("Expected: " + remitCity + " Found: " + this.remitCity.getText().trim());
+				System.out.println("Expected: " + remitZipcode + " Found: " + this.remitZipcode.getText().trim());
+				System.out.println("Expected: " + remitCountry + " Found: " + this.remitCountry.getText().trim());
+				System.out.println("Expected: " + remitState + " Found: " + this.remitState.getText().trim());
+			return false;}	
 	}
 	
 	public void waitTillLoaded() {		
@@ -182,21 +229,21 @@ public class ProvisioningMerchantDetailPage extends BasePageObject {
 			return false;
 		}
 	}
-	public boolean isCarecredOn(){
+	public boolean isMastercardOn(){
 		try{
-			return carecredImg.isDisplayed();			
+			return mastercardImg.isDisplayed();			
 		}
 		catch (Exception e){
 			return false;
 		}
 	}
 	
-	public boolean checkCards(boolean amex, boolean visa, boolean discover, boolean carecred){
+	public boolean checkCards(boolean amex, boolean visa, boolean discover, boolean mastercard){
 		IHGUtil.PrintMethodName();
 		if(amex) if(!isAmexOn()) return false;
 		if(visa) if(!isVisaOn()) return false;
 		if(discover) if(!isDiscoverOn()) return false;
-		if(carecred) if(!isCarecredOn()) return false;
+		if(mastercard) if(!isMastercardOn()) return false;
 		return true;
 	}
 	

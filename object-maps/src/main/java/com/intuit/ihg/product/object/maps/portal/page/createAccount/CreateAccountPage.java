@@ -147,6 +147,9 @@ public class CreateAccountPage extends BasePageObject {
 	@FindBy(name = "cont:questioninput")
 	private WebElement txtActivationCode;
 	
+	@FindBy(xpath = "//select[@fieldid='preferences.preferredLocation']")
+	private WebElement prefferedLocation;
+	
 	@FindBy(name = "buttons:submit")
 	private WebElement btnActivate;
 	
@@ -159,9 +162,6 @@ public class CreateAccountPage extends BasePageObject {
 	/**
 	 * creating a new user in Beta patient portal
 	 * 
-	 * @param patientDob_Month
-	 * @param patientDob_Day
-	 * @param patientDob_Year
 	 * @param patientFirstName
 	 * @param patientLastName
 	 * @param email
@@ -181,6 +181,8 @@ public class CreateAccountPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
+		driver.manage().timeouts()
+				.implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
 		log("patientFirstName: " + patientFirstName);
 		txtPatientFirstname.sendKeys(patientFirstName);
@@ -221,6 +223,8 @@ public class CreateAccountPage extends BasePageObject {
 		txtConfirmpassword.sendKeys(password);
 		chooseSecretQuestion(Question);
 		txtSecretAnswer.sendKeys(answer);
+
+		selectLocationIfNeeded();
 		
 	  /*Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default
 		chooseProvider();*/
@@ -314,12 +318,12 @@ public class CreateAccountPage extends BasePageObject {
 	}
 	
 	private void setBirthDate() {
-		setBirthDate(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		setBirthDate(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
 	}
 
 	/**
-	 * @brief Chooses secret question. This method used to have a different name (choose provider) which did not make sense
-	 * @author Adam + someone mysterious
+	 * Chooses secret question. This method used to have a different name (choose provider) which did not make sense
 	 */
 	public void chooseSecretQuestion(String pProvider) {
 		PortalUtil.setPortalFrame(driver);
@@ -332,6 +336,12 @@ public class CreateAccountPage extends BasePageObject {
 				break;
 			}
 			count++;
+		}
+	}
+
+	public void selectLocationIfNeeded() {
+		if (new IHGUtil(driver).exists(prefferedLocation)) {
+			new Select(prefferedLocation).selectByIndex(1);
 		}
 	}
 

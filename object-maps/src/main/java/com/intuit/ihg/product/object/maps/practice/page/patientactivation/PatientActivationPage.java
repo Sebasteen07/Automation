@@ -1,12 +1,4 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientactivation;
-import junit.framework.Assert;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -14,13 +6,15 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
+import junit.framework.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
-public class PatientactivationPage extends BasePageObject{
-	
-	public PatientactivationPage(WebDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
-	}
+public class PatientActivationPage extends BasePageObject{
 
 	@FindBy(css="a[href*='activate.newpat']")
 	private WebElement addNewPatient;
@@ -109,25 +103,14 @@ public class PatientactivationPage extends BasePageObject{
 	
 	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
-	
-	
-	
-	
-	
-	public void clickAddNewPatient() {
-	
-	IHGUtil.PrintMethodName();
-	
-	addNewPatient.click();
-	}
-	
-	private String firstNameString="";
-	private String lastNameString="";
-	private String patientIdString="";
-	private String zipCodeString="";
-	private String emailAddressString="";
-	private String unlocklink ="";
-	
+
+	private String firstNameString = "";
+	private String lastNameString = "";
+	private String patientIdString = "";
+	private String zipCodeString = "";
+	private String emailAddressString = "";
+	private String unlocklink = "";
+
 	public String getFirstNameString() {
 		return firstNameString;
 	}
@@ -147,49 +130,58 @@ public class PatientactivationPage extends BasePageObject{
 	public String getEmailAddressString() {
 		return emailAddressString;
 	}
-	
+
 	public String getUnlockLink() {
 		return unlocklink;
 	}
 
-	public void setinitialdetails(String sEmail)
-	{
-		firstNameString="Beta" + IHGUtil.createRandomNumericString();
-		lastNameString="Tester";	
-		zipCodeString=PracticeConstants.Zipcode;
-		emailAddressString=IHGUtil.createRandomEmailAddress(sEmail,'.');
-		patientIdString=emailAddressString;
-		
+	public PatientActivationPage(WebDriver driver) {
+		super(driver);
+	}
+
+	public void clickAddNewPatient() {
 		IHGUtil.PrintMethodName();
-		Log4jUtil.log("New Random First Name is"+firstNameString);
+		addNewPatient.click();
+	}
+
+	public void setInitialDetails(String sEmail) {
+		firstNameString = "Beta" + IHGUtil.createRandomNumericString();
+		lastNameString = "Tester";
+		zipCodeString = PracticeConstants.Zipcode;
+		emailAddressString = sEmail;
+		patientIdString = emailAddressString;
+
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("New Random First Name is " + firstNameString);
 		firstName.sendKeys(firstNameString);
 		lastName.sendKeys(lastNameString);
 		male.click();
-		Log4jUtil.log("New Random patientid is"+patientIdString);
+		Log4jUtil.log("New Random patientid is " + patientIdString);
 		patientId.sendKeys(patientIdString);
-		
-		Log4jUtil.log("New Random Email is"+emailAddressString);
+
+		Log4jUtil.log("New Random Email is " + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
-		
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
-		
+
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
+
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
 		zip.sendKeys(zipCodeString);
-		
-		clickregpatient();
-		clickverify();
-		
-//		clickgetkey deprecated after US8665 (remove comment to test where that change is not yet deployed) --by JakubO
-//		clickgetkey();
-		
+
+		clickRegPatient();
+		clickVerify();
+
+		//		clickGetKey deprecated after US8665 (remove comment to test where that change is not yet deployed) --by JakubO
+		//		clickGetKey();
+
 		IHGUtil.waitForElement(driver, 10, unlockLink);
-		unlocklink=unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", unlocklink!="");
-		
-		Log4jUtil.log("#### The unlock link exists and the link is:"+unlocklink);
-		clickdone();
+		unlocklink = unlockLink.getText().trim();
+		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
+
+		Log4jUtil.log("#### The unlock link exists and the link is:" + unlocklink);
+		clickDone();
 		
 		/*driver.get(unlocklink);
 		maxWindow();
@@ -197,55 +189,48 @@ public class PatientactivationPage extends BasePageObject{
 		birthday.sendKeys(PracticeConstants.DOB);
 		zipcode.sendKeys(PracticeConstants.Zipcode);
 		Submit.click();*/
-		
-		
-		
+
 	}
-	
-	public void setDOB( String month, String day, String year ) {
-		
-		Select dobMonth = new Select( driver.findElement(By.name("dob_m")));
-		dobMonth.selectByVisibleText( month );
-		
-		Select dobDay = new Select( driver.findElement(By.name("dob_d")));
-		dobDay.selectByVisibleText( day );
-		
-		Select dobYear = new Select( driver.findElement(By.name("dob_y")));
-		dobYear.selectByVisibleText( year );
+
+	public void setDOB(String month, String day, String year) {
+
+		Select dobMonth = new Select(driver.findElement(By.name("dob_m")));
+		dobMonth.selectByVisibleText(month);
+
+		Select dobDay = new Select(driver.findElement(By.name("dob_d")));
+		dobDay.selectByVisibleText(day);
+
+		Select dobYear = new Select(driver.findElement(By.name("dob_y")));
+		dobYear.selectByVisibleText(year);
 	}
-	
-	public void clickregpatient()
-	{
+
+	public void clickRegPatient() {
 		IHGUtil.PrintMethodName();
 		btnSubmit.click();
 	}
-	
-	public void clickverify()
-	{
+
+	public void clickVerify() {
 		IHGUtil.PrintMethodName();
 		btnVerified.click();
 	}
-	public void clickgetkey()
-	{
+
+	public void clickGetKey() {
 		IHGUtil.PrintMethodName();
 		btnGenerateKey.click();
 	}
 
-	public void clickdone()
-	{
+	public void clickDone() {
 		IHGUtil.PrintMethodName();
 		btnDone.click();
 	}
 
-	
-	public String setFullDetails(PIDCTestData testData)
-	{
-		firstNameString="MF" + IHGUtil.createRandomNumericString();
-		patientIdString=IHGUtil.createRandomNumericString();
-		emailAddressString =IHGUtil.createRandomEmailAddress(testData.getEmail());
-		
+	public String setFullDetails(PIDCTestData testData) {
+		firstNameString = "MF" + IHGUtil.createRandomNumericString();
+		patientIdString = IHGUtil.createRandomNumericString();
+		emailAddressString = IHGUtil.createRandomEmailAddress(testData.getEmail());
+
 		IHGUtil.PrintMethodName();
-		Log4jUtil.log("First Name is :"+firstNameString);
+		Log4jUtil.log("First Name is :" + firstNameString);
 		firstName.sendKeys(firstNameString);
 
 		lastName.sendKeys(testData.getLastName());
@@ -253,36 +238,36 @@ public class PatientactivationPage extends BasePageObject{
 		/*SSN1.sendKeys(testData.getSSN().subSequence(0, 3));
 		SSN2.sendKeys(testData.getSSN().subSequence(3, 5));
 		SSN3.sendKeys(testData.getSSN().subSequence(5, 9));*/
-		Log4jUtil.log("Patientid is :"+patientIdString);
+		Log4jUtil.log("Patientid is :" + patientIdString);
 		patientId.sendKeys(patientIdString);
 		Home_No1.sendKeys(testData.getHomePhoneNo().substring(0, 3));
 		Home_No2.sendKeys(testData.getHomePhoneNo().substring(3, 6));
 		Home_No3.sendKeys(testData.getHomePhoneNo().substring(6, 10));
-		Log4jUtil.log("Email is :"+emailAddressString);
+		Log4jUtil.log("Email is :" + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
 		AddLine1.sendKeys(testData.getAddress1());
 		AddLine2.sendKeys(testData.getAddress2());
 		City.sendKeys(testData.getCity());
-		Select stateSelect=new Select(State);
+		Select stateSelect = new Select(State);
 		stateSelect.selectByVisibleText(testData.getState());
 		zip.sendKeys(testData.getZipCode());
-		
-		clickregpatient();
-		IHGUtil.waitForElement(driver,30, btnVerified);
-		clickverify();
+
+		clickRegPatient();
+		IHGUtil.waitForElement(driver, 30, btnVerified);
+		clickVerify();
 
 		IHGUtil.waitForElement(driver, 30, unlockLink);
-		unlocklink=unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", unlocklink!="");
-		String activationCode=unlockCode.getText().toString();
-		Log4jUtil.log("Unlock Code :"+activationCode);
+		unlocklink = unlockLink.getText().trim();
+		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.equals(""));
+		String activationCode = unlockCode.getText();
+		Log4jUtil.log("Unlock Code :" + activationCode);
 
-		Log4jUtil.log("#### The unlock link exists and the link is :"+unlocklink);
-		clickdone();
+		Log4jUtil.log("#### The unlock link exists and the link is :" + unlocklink);
+		clickDone();
 		return activationCode;
 	}
 	
-	
-	}
+}

@@ -162,6 +162,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	public void selectStatementIfRequired() {
 
 		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
 			electronicPaymentPreference.click();
 			okButton.click();
 			try {

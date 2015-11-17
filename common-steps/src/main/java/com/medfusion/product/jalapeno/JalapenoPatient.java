@@ -11,6 +11,8 @@ import com.intuit.ihg.common.utils.IHGUtil.Gender;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class JalapenoPatient extends BaseTestNGWebDriver {
 
@@ -67,6 +69,7 @@ public class JalapenoPatient extends BaseTestNGWebDriver {
 		if (lastName.isEmpty()) { lastName = "TestPatient1"; }
 		if (password.isEmpty()) { password = testData.getPassword(); }
 		if (gender == null) { gender = Gender.MALE; }
+		if (url == null || url.isEmpty()) { url = testData.getUrl(); }
 
 		return this;
 	}
@@ -74,8 +77,7 @@ public class JalapenoPatient extends BaseTestNGWebDriver {
 	public JalapenoHomePage createAndLogInPatient(WebDriver driver, PropertyFileLoader testData) {
 		initPatientData(testData);
 
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.assessLoginPageElements());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 
 		JalapenoCreateAccountPage createAccountPage = loginPage.clickSignInButton();
 		assertTrue(createAccountPage.assessCreateAccountPageElements());

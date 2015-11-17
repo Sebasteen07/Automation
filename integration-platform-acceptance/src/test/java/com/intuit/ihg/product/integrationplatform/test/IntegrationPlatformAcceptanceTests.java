@@ -833,7 +833,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 8: Click on link ReviewHealthInformation");
+		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
@@ -869,7 +869,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PhrDocumentsPage phrDocuments = phrInboxMessage
 				.clickBtnReviewHealthInformationPhr();
 
-		log("step 16:Click on View Health Information");
+		log("step 16:Click on View health data");
 		phrDocuments.clickViewHealthInformation();
 
 		log("step 17:click Close Viewer");
@@ -1123,7 +1123,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 9: Click on link ReviewHealthInformation");
+		log("Step 9: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 10: Verify if CCD Viewer is loaded and click Close Viewer");
@@ -1225,7 +1225,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("CCD sent date & time is :"+pMessage.returnMessageSentDate());
 		//assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
 
-		log("Step 8: Click on link ReviewHealthInformation");
+		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
 
 		log("Step 9: Click on PDF download Link");
@@ -1268,7 +1268,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PhrDocumentsPage phrDocuments = phrInboxMessage
 				.clickBtnReviewHealthInformationPhr();
 
-		log("step 18:Click on View Health Information");
+		log("step 18:Click on View health data");
 		phrDocuments.clickViewHealthInformation();
 
 		log("step 19:click Close Viewer");

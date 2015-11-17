@@ -20,12 +20,15 @@ public class Mailinator {
 
 	private static final int TIME_TO_WAIT_MS = 10000;
 
-	/*
+	/**
 	 * @Author Petr H
 	 * This method checks the mailbox for an email with specified emailSubject starting from the most recent.
 	 * If it finds some url in the link which contains text specified in findInEmail it will return it
+	 *
+	 * @return link with the text from findInEmail, null it it not found
 	 */
-	private String email(String username, String emailSubject, String findInEmail, int retries)
+	public String getLinkFromEmail(String username, String emailSubject, String findInEmail,
+			int retries)
 			throws Exception {
 
 		for (int j = 0; j != retries; j++) {
@@ -62,17 +65,22 @@ public class Mailinator {
 		return null;
 	}
 
-	public String email(String username, String emailSubject, String findInEmail) throws Exception {
+	/**
+	 * Works just like {@link Mailinator#getLinkFromEmail(String, String, String, int)} with retries
+	 * set to 5
+	 * @see Mailinator#getLinkFromEmail(String, String, String, int)
+	 */
+	public String getLinkFromEmail(String username, String emailSubject, String findInEmail) throws Exception {
 
-		return this.email(username, emailSubject, findInEmail, 5);
+		return this.getLinkFromEmail(username, emailSubject, findInEmail, 5);
 	}
 
 	public boolean isMessageInInbox(String username, String emailSubject, String findInEmail,
 			int retries) throws Exception {
-		return (this.email(username, emailSubject, findInEmail, retries) != null);
+		return (this.getLinkFromEmail(username, emailSubject, findInEmail, retries) != null);
 	}
 
-	/*
+	/**
 	 * @Author Petr H
 	 * This method first checks the inbox for number of emails.
 	 * Then it waits for a new mail to arrive and checks if it contains the link specified in targetUrl

@@ -72,6 +72,7 @@ public class AppointmentRequestStep2Page extends BasePageObject{
 		selectPreferredTimeFrame.selectByIndex(1);	// TODO - use parameter
 
 
+
 		Select selectPreferredDay = new Select(dropDownPreferredDay);
 		selectPreferredDay.selectByIndex(1);		// TODO - use parameter
 		choosePreferredTime.sendKeys( sChoosePreferredTime );

@@ -14,17 +14,21 @@ import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep2Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
-import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
@@ -60,9 +64,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -76,9 +78,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginValidCredentials() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -95,9 +95,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginInvalidCredentials() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -113,10 +111,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
-
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -140,75 +135,73 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
-
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 		
-		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-
 		log("Getting Test Data");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
-		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-		
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+
 		log("Patient Activation on Practice Portal");
-		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver,
-				practiceTestData, testcasesData.getEmail(), testDataFromProp);
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		patientActivationSearchTest
+				.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+
+		log("Logging into Mailinator and getting Patient Activation url");
+		String emailSubject = "You're invited to create a Patient Portal account at "
+				+ testDataFromProp.getPracticeName();
+		String inEmail = "Sign Up!";
+		String unlockLink = new Mailinator().getLinkFromEmail(patientsEmail, emailSubject, inEmail, 10);
+		assertNotNull(unlockLink, "Error: Activation link not found.");
+		log("Retrieved activation link is " + unlockLink);
 
 		log("Finishing of patient activation: step 1 - verifying identity");
 		JalapenoPatientActivationPage patientActivationPage =
 				new JalapenoPatientActivationPage(driver, unlockLink);
-
 		patientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
-	
+
 		log("Finishing of patient activation: step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = patientActivationPage.fillInPatientActivation(
 				patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(),
 				testDataFromProp);
-		
+
 		log("Detecting if Home Page is opened");
 		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
+
 		log("Checking if address in My Account is filled");
 		JalapenoMyAccountPage jalapenoMyAccountPage = jalapenoHomePage.clickOnMyAccount(driver);
 		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-		
+
 		log("Logging out");
 		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
-		
+
 		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ "
 				+ testDataFromProp.getPassword());
-		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());	
-	/*	
-		log("Select PAPER delivery preference");
-		PreferenceDeliverySelection preferenceDeliverySelection = new PreferenceDeliverySelection();
-		jalapenoHomePage = preferenceDeliverySelection.SelectDeliveryMethod(driver, Method.PAPER);
-	*/	
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),testDataFromProp.getPassword());
+
 		assertTrue(jalapenoHomePage.assessHomePageElements());
-		
 		log("Logging out");
 		
 		jalapenoLoginPage = jalapenoHomePage.logout(driver);
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
-	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testForgotPassword() throws Exception {
-		
+
+	private void logTestEnvironment() {
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testForgotPassword() throws Exception {
+
+		logTestEnvironment();
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
-		
+
 		log("Initiate patient data");
 		JalapenoPatient createPatient = new JalapenoPatient();
 		JalapenoHomePage homePage = createPatient.createAndLogInPatient(driver, testData);
@@ -231,7 +224,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = createPatient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = mailinator.email(mailAddress[0], emailSubject, inEmail);
+		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 		
 		assertTrue(url != null);
 		
@@ -251,10 +244,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 		
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -301,10 +292,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 		
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -336,9 +325,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -368,9 +355,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 	
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -408,26 +393,20 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		log("Getting Test Data");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
 		
 		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-		
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+
 		log("Patient Activation on Practice Portal");
 		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData,
-				testcasesData.getEmail(), testDataFromProp.getDoctorLogin(),
-				testDataFromProp.getDoctorPassword(), testDataFromProp.getPortalUrl());
+				patientsEmail, testDataFromProp);
 		
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
 		assertTrue(loginPage.assessLoginPageElements());
@@ -446,10 +425,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequest() throws Exception {
-		
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -507,9 +484,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrescriptionRenewal() throws Exception {
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -569,4 +544,67 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskAStaff() throws Exception {
+		logTestEnvironment();
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		log("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		log("Click Ask A Staff tab");
+		JalapenoAskAStaffPage askPage = homePage.clickOnAskAStaff(driver);
+		
+		log("Fill and submit question");
+		assertTrue(askPage.fillAndSubmitAskAStaff(driver));
+		
+		log("Logout patient");
+		assertTrue(homePage.assessHomePageElements());
+		homePage.logout(driver);
+		
+		log("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Click Ask A Staff tab");
+		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
+
+		log("Search for questions");
+		searchQ.searchForQuestions();
+		AskAStaffQuestionDetailStep1Page detailStep1 = searchQ.getQuestionDetails("Ola! "+(Long.toString(askPage.getCreatedTimeStamp())));
+		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
+		
+		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
+		log("Choose action on patient question");
+		AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
+
+		log("Respond to patient question");
+		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test",
+				"This message was generated by an automated test");
+		
+		log("Confirm response details to patient");
+		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
+
+		log("Validate submit of confirmation");
+		detailStep4.isQuestionDetailPageLoaded();
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		log("Login patient");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		log("Go to messages");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		log("Check if message was delivered");
+		assertTrue(messagesPage.isMessageDisplayed(driver,"Ola! "+(Long.toString(askPage.getCreatedTimeStamp()))));
+	}
 }
+
+

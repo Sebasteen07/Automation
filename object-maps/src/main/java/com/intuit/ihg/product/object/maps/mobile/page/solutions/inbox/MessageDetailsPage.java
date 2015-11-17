@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.object.maps.mobile.page.solutions.inbox;
 
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.mobile.page.MobileBasePage;
 
 import org.openqa.selenium.WebDriver;
@@ -29,7 +30,7 @@ public class MessageDetailsPage extends MobileBasePage {
     }
 
     public String getSubject() throws InterruptedException {
-        Thread.sleep(1000);
+        IHGUtil.waitForElement(driver, 60, subject);
         return this.subject.getText();
     }
 }
