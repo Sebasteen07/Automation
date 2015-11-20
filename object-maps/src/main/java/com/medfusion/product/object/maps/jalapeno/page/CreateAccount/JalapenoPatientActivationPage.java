@@ -19,10 +19,10 @@ import java.util.Arrays;
 
 public class JalapenoPatientActivationPage extends BasePageObject {
 
-	@FindBy(how = How.ID, using = "userid")
+	@FindBy(how = How.XPATH, using = "(//input[@id='userid'])[2]")
 	private WebElement inputUserId;
 
-	@FindBy(how = How.ID, using = "password")
+	@FindBy(how = How.XPATH, using = "(//input[@id='password'])[2]")
 	private WebElement inputPassword;
 
 	@FindBy(how = How.ID, using = "secretQuestion")
@@ -43,28 +43,28 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement inputPhoneType;
 
-	@FindBy(how = How.ID, using = "prevStep")
+	@FindBy(how = How.XPATH, using = "(//a[@id='prevStep'])[2]")
 	private WebElement prevStep;
 
 	@FindBy(how = How.ID, using = "finishStep")
 	private WebElement finishStep;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[1]/input")
+	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[1]")
 	private WebElement postalCode;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/select")
+	@FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[1]")
 	private WebElement birthDate_month;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/input[1]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[1]")
 	private WebElement birthDate_day;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/input[2]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[1]")
 	private WebElement birthDate_year;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form_btns\"]/ul[2]/li/button")
+	@FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[1]")
 	private WebElement nextStep;
 
-	@FindBy(how = How.ID, using = "preferredLocationId")
+	@FindBy(how = How.XPATH, using = "(//select[@id='preferredLocationId'])[2]")
 	private WebElement primaryLocationElement;
 
 	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
@@ -194,7 +194,39 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		for (WebElement w : webElementsList) {
 
 			try {
-				IHGUtil.waitForElement(driver, 10, w);
+				IHGUtil.waitForElement(driver, 15, w);
+				log("Checking WebElement" + w.toString());
+				if (w.isDisplayed()) {
+					log("WebElement " + w.toString() + "is displayed");
+					allElementsDisplayed = true;
+				} else {
+					log("WebElement " + w.toString() + "is NOT displayed");
+					return false;
+				}
+			}
+
+			catch (Throwable e) {
+				log(Arrays.toString(e.getStackTrace()));
+			}
+
+		}
+		return allElementsDisplayed;
+	}
+	
+	public boolean assessPatientActivationVerifyPageElements() {
+
+		boolean allElementsDisplayed = false;
+
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(postalCode);
+		webElementsList.add(birthDate_day);
+		webElementsList.add(birthDate_month);
+		webElementsList.add(birthDate_year);
+
+		for (WebElement w : webElementsList) {
+
+			try {
+				IHGUtil.waitForElement(driver, 15, w);
 				log("Checking WebElement" + w.toString());
 				if (w.isDisplayed()) {
 					log("WebElement " + w.toString() + "is displayed");

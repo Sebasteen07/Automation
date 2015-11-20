@@ -81,7 +81,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		for (WebElement w : webElementsList) {
 
 			try {
-				IHGUtil.waitForElement(driver, 60, w);
+				IHGUtil.waitForElement(driver, 20, w);
 				log("Checking WebElement" + w.toString());
 				if (w.isDisplayed()) {
 					log("WebElement " + w.toString() + "is displayed");
