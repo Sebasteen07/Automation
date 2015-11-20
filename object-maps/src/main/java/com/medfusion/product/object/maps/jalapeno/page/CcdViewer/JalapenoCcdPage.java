@@ -37,7 +37,7 @@ public class JalapenoCcdPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "directaddr")
 	private WebElement directAddressBox;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[2]/form/div[1]/button")
+	@FindBy(how = How.XPATH, using = "//button[.='Send']")
 	private WebElement sendInformationButton;
 	
 	@FindBy(how = How.ID, using = "healthOverview")
@@ -78,6 +78,7 @@ public class JalapenoCcdPage extends BasePageObject {
 	
 	@FindBy(how = How.ID, using = "idp6454816")
 	private WebElement insurance;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/div[1]/div/a")
 	private WebElement BtnViewHealthData;
 	
@@ -112,16 +113,14 @@ public class JalapenoCcdPage extends BasePageObject {
 		try {
 			Thread.sleep(10000);
 			try {
-				if(driver.findElement(By.xpath("(//*[contains(text(),'Service temporarily unavailable.')])")) != null){
-					log("Message wasn't sent due to error");
-					return false;
+				if(driver.findElement(By.xpath("//span[.='Your health information was sent to " + emailAddress + "!']")) != null) {
+					log("Message was succesfully sent to " + emailAddress);
+					return true;
 				}
 			}
 			catch (NoSuchElementException e) {
-				if(driver.findElement(By.xpath("(//*[contains(text(),'Message was sent')])")) != null) {
-					log("Message was sent to " + emailAddress);
-					return true;
-				}
+				log("Error appears during sending health information");
+				return false;
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

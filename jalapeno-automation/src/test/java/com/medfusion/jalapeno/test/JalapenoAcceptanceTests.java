@@ -159,6 +159,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Finishing of patient activation: step 1 - verifying identity");
 		JalapenoPatientActivationPage patientActivationPage =
 				new JalapenoPatientActivationPage(driver, unlockLink);
+		assertTrue(patientActivationPage.assessPatientActivationVerifyPageElements());
 		patientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
@@ -310,7 +311,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoCcdPage.assessCcdElements());
 		assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
 		assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
-		//assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
+		assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
 		
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 		assertTrue(jalapenoMessagesPage.assessMessagesElements());

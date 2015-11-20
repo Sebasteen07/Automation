@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -39,10 +38,10 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"signin_form\"]/button[2]")
 	private WebElement sendButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/h6/a")
+	@FindBy(how = How.XPATH, using = "//a[.='View health data']")
 	private WebElement ccdDocument;
 		
-	@FindBy(how = How.XPATH, using = "//button/img[@src='img/messages/archive.png']/..")
+	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
 	private WebElement archiveMessageButton;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
