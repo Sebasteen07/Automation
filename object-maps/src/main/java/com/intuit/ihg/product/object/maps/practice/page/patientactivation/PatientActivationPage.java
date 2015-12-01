@@ -1,12 +1,16 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientactivation;
 
+import static org.testng.AssertJUnit.*;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
+
 import junit.framework.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -191,7 +195,56 @@ public class PatientActivationPage extends BasePageObject{
 		Submit.click();*/
 
 	}
+	
+	public String setInitialDetailsAllFields(String firstName, String lastName, String gender, String patientID,
+			String homePhone, String email, String month, String day, String year, String address1, 
+			String address2, String city, String state, String zipCode) {
+		IHGUtil.PrintMethodName();
+		
+		log("Patient Name is " + firstName + " " + lastName);
+		this.firstName.sendKeys(firstName);
+		this.lastName.sendKeys(lastName);
+		if (gender.equals("M"))this.male.click();
+		else this.female.click();
+		
+		log("PatientID " + patientID);
+		this.patientId.sendKeys(patientID);
+		this.Home_No1.sendKeys(homePhone.substring(0, 3));
+		this.Home_No2.sendKeys(homePhone.substring(3, 6));
+		this.Home_No3.sendKeys(homePhone.substring(6, 10));
+		
+		log("Patient email is " + email);
+		this.email.sendKeys(email);
+		this.confirmEmail.sendKeys(email);
 
+		log("Patient DOB is " + month + "/" + day + "/" + year);
+		Select dobMonth = new Select(driver.findElement(By.name("dob_m")));
+		dobMonth.selectByValue(month);
+		Select dobDay = new Select(driver.findElement(By.name("dob_d")));
+		dobDay.selectByVisibleText(day);
+		Select dobYear = new Select(driver.findElement(By.name("dob_y")));
+		dobYear.selectByVisibleText(year);
+
+		log("Patient ZIP is " + zipCode);
+		this.AddLine1.sendKeys(address1);
+		this.AddLine2.sendKeys(address2);
+		this.City.sendKeys(city);
+		Select stateSelect = new Select(State);
+		stateSelect.selectByVisibleText(state);
+		this.zip.sendKeys(zipCode);
+
+		clickRegPatient();
+		clickVerify();
+
+		IHGUtil.waitForElement(driver, 10, unlockLink);
+		unlocklink = unlockLink.getText().trim();
+		assertNotNull("### ERROR: Couldn't get unlock link", unlocklink);
+
+		log("#### The unlock link exists and the link is:" + unlocklink);
+		clickDone();
+		return unlocklink;
+	}
+	
 	public void setDOB(String month, String day, String year) {
 
 		Select dobMonth = new Select(driver.findElement(By.name("dob_m")));
@@ -268,6 +321,11 @@ public class PatientActivationPage extends BasePageObject{
 		Log4jUtil.log("#### The unlock link exists and the link is :" + unlocklink);
 		clickDone();
 		return activationCode;
+	}
+	
+	public boolean checkGuardianUrl (String url){
+		IHGUtil.PrintMethodName();
+		return url.contains("guardian");
 	}
 	
 }

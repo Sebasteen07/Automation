@@ -44,6 +44,15 @@ public class JalapenoHomePage extends JalapenoPage {
 	@FindBy(how = How.CSS, using = ".button.ng-binding")
 	private WebElement startRegistrationButton;
 
+	@FindBy(how = How.ID, using = "currentPatientBubble")
+	private WebElement bubble;
+	
+	@FindBy(how = How.ID, using = "bubbleLabel")
+	private WebElement bubbleLabel;
+	
+	@FindBy(how = How.ID, using = "familyAccountBtn")
+	private WebElement viewDifferentPatientButton;
+	
 	/**
 	 * @Author:Jakub Calabek
 	 * @Date:24.7.2013
@@ -135,6 +144,37 @@ public class JalapenoHomePage extends JalapenoPage {
 		}
 		return allElementsDisplayed;
 	}
+	
+	public boolean assessFamilyAccountElements(boolean button){
+		IHGUtil.PrintMethodName();
+		
+		boolean allElementsDisplayed = false;
+
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(bubble);
+		webElementsList.add(bubbleLabel);
+		if (button) webElementsList.add(viewDifferentPatientButton);
+
+		for (WebElement w : webElementsList) {
+			try {
+				IHGUtil.waitForElement(driver, 20, w);
+				log("Checking WebElement" + w.toString());
+				if (w.isDisplayed()) {
+					log("WebElement " + w.toString() + "is displayed");
+					allElementsDisplayed = true;
+				} else {
+					log("WebElement " + w.toString() + "is NOT displayed");
+					return false;
+				}
+			}
+			catch (Throwable e) {
+				log(e.getStackTrace().toString());
+			}
+		}
+		
+		return allElementsDisplayed;
+	}
+	
 	
 	public boolean isMessagesButtonDisplayed(WebDriver driver) {
 		return IHGUtil.waitForElement(driver, 60, messages);
