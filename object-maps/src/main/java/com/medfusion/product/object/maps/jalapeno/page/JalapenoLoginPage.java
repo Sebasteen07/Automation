@@ -111,6 +111,7 @@ public class JalapenoLoginPage extends BasePageObject {
 			inputUserId.sendKeys(username);
 		}
 		catch (org.openqa.selenium.WebDriverException e) {
+			inputUserId.clear();
 			inputUserId.sendKeys(username);
 		}
 		inputPassword.sendKeys(password);
