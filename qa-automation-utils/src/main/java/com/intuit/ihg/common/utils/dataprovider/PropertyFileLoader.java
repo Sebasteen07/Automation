@@ -59,6 +59,10 @@ public class PropertyFileLoader {
 
 		return property.getProperty("DOBYear");
 	}
+	
+    public String getDOBYearUnderage() {
+        return property.getProperty("DOBYearUnderage");
+    }
 
 	public String getDOBYearUnderage() {
 		return property.getProperty("DOBYearUnderage");
@@ -246,6 +250,12 @@ public class PropertyFileLoader {
 	}
 	public String getPracticeName() {
 		return property.getProperty("practiceName");
+	}
+	public String getPracticeId() {
+		return property.getProperty("practiceId");
+	}
+	public String getMemberId() {
+		return property.getProperty("memberId");
 	}
 	public PropertyFileLoader() throws IOException {
 

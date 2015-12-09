@@ -17,8 +17,10 @@ import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.Jal
 
 public class JalapenoMessagesPage extends BasePageObject {
 	
+	/*
 	@FindBy(how = How.ID, using = "askatitle_link")
 	private WebElement askAQuestionButton;
+	*/
 	
 	@FindBy(how = How.ID, using = "inboxFolder")
 	private WebElement inboxFolder;
@@ -84,7 +86,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 		
 		while(count <= maxCount){
 			try {				
-				element = driver.findElement(By.partialLinkText("Your Statement is Ready"));
+				element = driver.findElement(By.partialLinkText("Click here to view your statement"));
 				log("Message from eStatement found");
 				return element.isDisplayed();				
 			}
@@ -148,8 +150,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-	
-		webElementsList.add(askAQuestionButton);
+		
 		webElementsList.add(inboxFolder);
 		webElementsList.add(sentFolder);
 		webElementsList.add(archiveFolder);

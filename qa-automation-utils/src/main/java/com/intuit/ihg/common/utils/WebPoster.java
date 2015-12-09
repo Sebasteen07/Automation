@@ -204,6 +204,60 @@ public class WebPoster {
 		}
 
 	}
+	public String postFromString(String payload)
+			throws Exception {
+
+		IHGUtil.PrintMethodName();
+		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+
+		System.out.println("### SERVICE URL: " + serviceUrl);
+		System.out.println("### POSTING PAYLOAD: " + payload);
+
+		ClientRequest request = new ClientRequest(serviceUrl);
+
+		// adding headers to request
+		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			System.out.println("... HEADER[" + key + "] = [" + value + "]");
+
+			request.header(key, value);
+		}
+
+		// adding contentType to request
+		request.body(contentType, payload);
+
+		try {
+
+			ClientResponse<String> response = request.post(String.class);
+
+			// asserting if reponse code is as expected
+			Assert.assertEquals(response.getStatus(), expectedStatusCode,
+					"HTTP Status not what expected");
+			System.out.println(response.getEntity().toString());
+
+			String str = response.getEntity().toString();
+
+			return str;
+
+		} catch (UnknownHostException ex) {
+
+			if ((IHGUtil.getEnvironmentType().toString())
+					.equalsIgnoreCase("PROD")) {
+
+				throw new Exception(
+						"### On PROD, may have to use P10 to post to server: UnknownHostException"
+								+ ex.getMessage());
+			} else {
+
+				throw new Error(ex);
+			}
+
+		}
+
+	}
 	public boolean get() {
 		return get(contentType);
 	}

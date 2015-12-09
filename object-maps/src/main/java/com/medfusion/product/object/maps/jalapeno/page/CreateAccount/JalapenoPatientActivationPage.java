@@ -69,6 +69,13 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 	private WebElement electronicPaymentPreference;
+	
+	@FindBy(how = How.ID, using = "paymentPreference_Paper")
+	private WebElement paperPaymentPreference;
+	
+	//Both option currently commented out in lightbox and not supported (12/09/2015)
+	@FindBy(how = How.ID, using = "paymentPreference_Both")
+	private WebElement bothPaymentPreference;
 
 	@FindBy(how = How.ID, using = "updateStatementPrefButton")
 	private WebElement okButton;
@@ -112,9 +119,14 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		nextStep.click();
 
 	}
-
 	public JalapenoHomePage fillInPatientActivation(String userId, String password, String secretQuestion,
-			String secretAnswer, String phoneNumber) {
+			String secretAnswer, String phoneNumber){
+		return fillInPatientActivationWithDeliveryPreference(userId, password, secretQuestion,
+				secretAnswer, phoneNumber, 2);
+		
+	}
+	public JalapenoHomePage fillInPatientActivationWithDeliveryPreference(String userId, String password, String secretQuestion,
+			String secretAnswer, String phoneNumber, int deliveryPref) {
 		IHGUtil.PrintMethodName();
 
 		log("Setting User Name as " + userId);
@@ -148,7 +160,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		}
 
 		finishStep.click();
-		selectStatementIfRequired();
+		selectStatementIfRequired(deliveryPref);
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
@@ -159,16 +171,18 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 				testData.getSecretAnswer(), testData.getPhoneNumber());
 	}
 
-	public void selectStatementIfRequired() {
+	//delivery pref as in sitegen, 1 = paper, 2 = electronic, 3 = both
+	public void selectStatementIfRequired(int deliveryPref) {
 
 		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
 			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
-			electronicPaymentPreference.click();
+			if (deliveryPref == 1) paperPaymentPreference.click();
+			else if (deliveryPref == 2) electronicPaymentPreference.click();
+			else if (deliveryPref == 3) bothPaymentPreference.click();
 			okButton.click();
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
