@@ -62,11 +62,9 @@ public class AskAStaffStep2Page extends BasePageObject {
 		if (!found) {
 			payWithNewCreditCard();
 		}
-		/*//No cvv check
 		else {
 			cvvCodeExistingCard.sendKeys("123");
 		}
-		*/
 		btnSubmit.click();
 		return PageFactory.initElements(driver, AskAStaffStep3Page.class);
 	}

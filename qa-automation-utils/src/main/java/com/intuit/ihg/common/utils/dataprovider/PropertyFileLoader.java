@@ -60,6 +60,10 @@ public class PropertyFileLoader {
 		return property.getProperty("DOBYear");
 	}
 
+	public String getDOBYearUnderage() {
+		return property.getProperty("DOBYearUnderage");
+	}
+	
 	public String getZipCode() {
 		return property.getProperty("ZipCode");
 	}

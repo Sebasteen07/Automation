@@ -20,6 +20,8 @@ import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuesti
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
@@ -32,6 +34,9 @@ import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskASta
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
+import com.medfusion.product.object.maps.jalapeno.page.FamillyAccountPage.JalapenoCreateGuardianPage;
+import com.medfusion.product.object.maps.jalapeno.page.FamillyAccountPage.JalapenoCreateGuardianPage2;
+import com.medfusion.product.object.maps.jalapeno.page.FamillyAccountPage.JalapenoIdentifyDependantPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
@@ -228,6 +233,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 		
 		assertTrue(url != null);
+		url = url.substring(0, url.length()-4); //because Jsoup.parse at Mailinator changes "&lang" to "?" (problem is in progress)
 		
 		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
 		log("Redirecting to patient portal, filling secret answer as: " + testData
@@ -610,6 +616,73 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,"Ola! "+(Long.toString(askPage.getCreatedTimeStamp()))));
 	}
+	
+	// Create under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testFACreateGuardianOnly() throws Exception {
+		logTestEnvironment();
+		
+		log("Step 1: Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		long generatedTS = System.currentTimeMillis();
+		String patientLastName = "last" + generatedTS; //guardian's and dependant's last name and dependant's id
+		String patientLogin = "login" + generatedTS; //guardian's login
+		String patientEmail = "mail" + generatedTS + "@mailinator.com"; //guardian's and dependant's email
+		
+		log("Step 2: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("Step 3: Create under-age patient");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		log("Step 4: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("Step 5: Enter all the details and click on Register");
+		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependant", patientLastName, "F", patientLastName, 
+				testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage(), 
+				"address1", "address2", "city", "Alabama", testData.getZipCode());
+		
+		log("Step 6: Continue to Portal Inspired");
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+		JalapenoIdentifyDependantPage identifyDependantPage = new JalapenoIdentifyDependantPage(driver, guardianUrl);
+		identifyDependantPage.assessElements();
+
+		log("Step 7: Identify patient");
+		identifyDependantPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		
+		log("Step 8: Continue registration - check dependant info and fill guardian name");
+		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependantPage.continueToCreateGuardianPage(driver);
+		assertTrue(createGuardianStep1.checkDependantInfoRegisterPage("Dependant", patientLastName, patientEmail));
+		createGuardianStep1.createGuardianOnlyFirstPage("Guardian", patientLastName, "Parent");
+		
+		log("Step 9: Continue registration - create dependants credentials");
+		JalapenoCreateGuardianPage2 createGuardianStep2 = createGuardianStep1.continueToSecondPage(driver);
+		createGuardianStep2.assessElements();
+		createGuardianStep2.fillGuardianSecurityDetails(patientLogin, testData.getDoctorPassword(), testData.getSecretQuestion(), 
+				testData.getSecretAnswer(), testData.getPhoneNumber());
+		
+		log("Step 10: Continue to Home Page");
+		JalapenoHomePage homePage = createGuardianStep2.clickEnterPortal(driver);
+		assertTrue(homePage.assessHomePageElements());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		log("Step 11: Log out and log in");
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		homePage = loginPage.login(patientLogin, testData.getPassword());
+		assertTrue(homePage.assessHomePageElements());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		log("Step 12: Logging into Mailinator and getting Guardian Activation url");
+		String emailSubject = "You are invited to create a Patient Portal guardian account at "
+				+ testData.getPracticeName();
+		String inEmail = "Sign Up!";
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 10);
+		assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
+		guardianUrlEmail = guardianUrlEmail.substring(0, guardianUrlEmail.length()-4); //because Jsoup.parse at Mailinator changes "&lang" to "?" (problem is in progress)
+		log("Retrieved activation link is " + guardianUrlEmail);
+		log("Comparing with link from PrP " + guardianUrl);
+		assertTrue(guardianUrl.contains(guardianUrlEmail));
+	}	
 }
-
-
