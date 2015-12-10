@@ -1715,8 +1715,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Click Patient Messaging and Quick Send a message");
 		PatientMessagingPage patMessaging = practiceHome.clickPatientMessagingTab();
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
-		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1","Happy Birthday");
+		String subject = "Subject " + IHGUtil.createRandomNumericString(9);
+		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1", "Happy Birthday", subject);
 				
 		log("step 3: Logout of Practice Portal");
 		practiceHome.logOut();
@@ -1734,9 +1734,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 6: Find message in Inbox");
-		MessagePage message = inboxPage.openMessageInInbox("Quick Send");
+		MessagePage message = inboxPage.openMessageInInbox(subject);
 		log("step 7: Validate message loads and is the right message");
-		assertTrue(message.isSubjectLocated("Quick Send"));
+		assertTrue(message.isSubjectLocated(subject));
 		
 		log("step 8:Logout");
 		loginpage = pMyPatientPage.logout(driver);
