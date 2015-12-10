@@ -813,7 +813,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    specific item process the item Logout of practice
 	 *                    portal login to patient portal go to inbox find secure
 	 *                    message open secure message ============
-	 *                    =================================================
 	 * @throws Exception
 	 */
 
