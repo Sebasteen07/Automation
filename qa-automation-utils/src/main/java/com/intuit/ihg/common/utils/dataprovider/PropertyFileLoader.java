@@ -253,6 +253,18 @@ public class PropertyFileLoader {
 	public String getMemberId() {
 		return property.getProperty("memberId");
 	}
+	public String getSftpUser() {
+		return property.getProperty("sftpUser");
+	}
+	public String getSftpPassword() {
+		return property.getProperty("sftpPassword");
+	}
+	public String getSftpHost() {
+		return property.getProperty("sftpHost");
+	}
+	public String getSftpBalance() {
+		return property.getProperty("sftpBalance");
+	}
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();
