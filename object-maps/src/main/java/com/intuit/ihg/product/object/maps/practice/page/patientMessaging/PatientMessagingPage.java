@@ -127,10 +127,15 @@ public class PatientMessagingPage extends BasePageObject{
 	 */
 	public void setSubject()
 	{
+		this.setSubject(PracticeConstants.Subject);
+	}
+	
+	public void setSubject(String subjectText)
+	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
 		subject.clear();
-		subject.sendKeys(PracticeConstants.Subject);
+		subject.sendKeys(subjectText);
 	}
 
 	/**
@@ -241,7 +246,7 @@ public class PatientMessagingPage extends BasePageObject{
       * @param lastName
       * @throws Exception
       */
-      public void setQuickSendFields(String firstName, String lastName, String templateName) throws Exception
+      public void setQuickSendFields(String firstName, String lastName, String templateName, String subjectText) throws Exception
       {
              IHGUtil.PrintMethodName();
              Thread.sleep(5000);
@@ -250,7 +255,7 @@ public class PatientMessagingPage extends BasePageObject{
      		 sel.selectByVisibleText("Other");
      		 Select sel2 = new Select(template);
      		 sel2.selectByVisibleText(templateName);
-             setSubject();
+             setSubject(subjectText);
              
              Thread.sleep(2000);
              patientCanReplyButton.click();
@@ -265,7 +270,12 @@ public class PatientMessagingPage extends BasePageObject{
              Thread.sleep(12000);
              publishMessage.click();
              Thread.sleep(3000);
-      }      
+      }    
+      
+      public void setQuickSendFields(String firstName, String lastName, String templateName) throws Exception
+      {
+    	  this.setQuickSendFields(firstName, lastName, templateName, PracticeConstants.Subject);
+      }
       
       public boolean findMyMessage(String patientName) throws Exception {
     	  IHGUtil.PrintMethodName();
