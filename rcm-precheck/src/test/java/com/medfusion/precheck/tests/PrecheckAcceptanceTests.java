@@ -91,6 +91,10 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Verify Demographics.");
 		DemographicsPage demographicsPage = patientHomePage.clickDemographics();
+		demographicsPage.fillInDemogprahicsData(patient.getFirstName(), patient.getMiddleName(), patient.getLastName(), dobPatientLogin,
+												PrecheckConstants.PatientMailingAddress1, PrecheckConstants.PatientMailingAddress2, PrecheckConstants.PatientCity,
+												PrecheckConstants.PatientState, PrecheckConstants.PatientZip, PrecheckConstants.PatientPhoneNumber,
+												patient.getEmail(), PrecheckConstants.PatientPharmacy, PrecheckConstants.PatientPharmacyNumber);
 		patientHomePage = demographicsPage.clickConfirmDemographics();
 		assertTrue(patientHomePage.isDemographicsFinished(), "Demographics were not filled out.");
 		
