@@ -149,7 +149,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();	
 		URL url = ClassLoader.getSystemResource("testfiles/"+ IHGUtil.getEnvironmentType().toString() + "/" + "gwayestAUTO.002");
 		
-		log("Post eStatement");				 
+		log("Sending statment file via SFTP to " + testData.getSftpHost());				 
 		try{
 	        JSch jsch = new JSch();
 	        session = jsch.getSession(testData.getSftpUser(),testData.getSftpHost(),22);
