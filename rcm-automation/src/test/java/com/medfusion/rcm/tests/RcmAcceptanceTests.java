@@ -43,14 +43,7 @@ import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMess
 import com.medfusion.rcm.utils.PatientStatementInfo;
 import com.medfusion.rcm.utils.RCMUtil;
 
-
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
  
 
 import com.jcraft.jsch.Channel;
@@ -465,7 +458,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Expected Status Code = 200");
 		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
 		log("send Statement to patient #####");
-		poster.postFromString(payload);	
+		poster.postFromStringExplicitTimeout(payload,5000);	
 		return Integer.parseInt(newBillingNumber);		
 	}
 }
