@@ -3,8 +3,6 @@ package com.medfusion.rcm.utils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
 
