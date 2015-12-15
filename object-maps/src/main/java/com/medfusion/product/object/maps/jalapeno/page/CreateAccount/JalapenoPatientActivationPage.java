@@ -15,7 +15,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JalapenoPatientActivationPage extends BasePageObject {
 
@@ -191,8 +190,6 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 
 	public boolean assessPatientActivationPageElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputUserId);
 		webElementsList.add(inputPassword);
@@ -205,31 +202,10 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		webElementsList.add(prevStep);
 		webElementsList.add(finishStep);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 15, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(Arrays.toString(e.getStackTrace()));
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	public boolean assessPatientActivationVerifyPageElements() {
-
-		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(postalCode);
@@ -237,26 +213,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		webElementsList.add(birthDate_month);
 		webElementsList.add(birthDate_year);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 15, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(Arrays.toString(e.getStackTrace()));
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 }

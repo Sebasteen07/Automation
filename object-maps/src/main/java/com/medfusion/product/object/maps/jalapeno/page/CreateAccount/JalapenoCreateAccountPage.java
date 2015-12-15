@@ -172,8 +172,6 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 
 	public boolean assessCreateAccountPageElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputPatientFirstName);
 		webElementsList.add(inputPatientLastName);
@@ -187,27 +185,7 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 		webElementsList.add(buttonCancel);
 		webElementsList.add(buttonChooseUserId);
 
-
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	public boolean isTextVisible(String text) {

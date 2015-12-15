@@ -41,7 +41,7 @@ public class JalapenoIdentifyDependantPage extends BasePageObject{
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void assessElements() {	
+	public boolean assessElements() {	
 		IHGUtil.PrintMethodName();
 		
 		log("Wait for elements");
@@ -52,8 +52,7 @@ public class JalapenoIdentifyDependantPage extends BasePageObject{
 		webElementsList.add(inputDOBYear);
 		webElementsList.add(buttonContinue);
 		
-		new WebDriverWait(driver, 20).until(
-				ExpectedConditions.visibilityOfAllElements(webElementsList));
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 		
 	public void fillPatientIdentifyInfo (String zipCode, String month, String day, String year) {

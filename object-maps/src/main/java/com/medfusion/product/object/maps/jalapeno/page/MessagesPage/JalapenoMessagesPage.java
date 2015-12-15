@@ -147,34 +147,13 @@ public class JalapenoMessagesPage extends BasePageObject {
 	
 	public boolean assessMessagesElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		
 		webElementsList.add(inboxFolder);
 		webElementsList.add(sentFolder);
 		webElementsList.add(archiveFolder);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 60, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void archiveOpenMessage() {		

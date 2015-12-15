@@ -37,32 +37,11 @@ public class JalapenoForgotPasswordPage extends BasePageObject {
 	
 	public boolean assessForgotPasswordPageElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputEmail);
 		webElementsList.add(continueButton);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	public JalapenoForgotPasswordPage2 fillInDataPage(String email) throws InterruptedException {

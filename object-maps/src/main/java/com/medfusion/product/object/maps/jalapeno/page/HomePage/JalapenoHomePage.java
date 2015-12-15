@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.jalapeno.page.HomePage;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,7 @@ import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskAStaffPage;
@@ -81,10 +83,18 @@ public class JalapenoHomePage extends JalapenoPage {
 	}
 
 	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) throws Exception {
-		
+
 		log("Clicking on Payments button");
 		payments.click();
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
+	}
+	
+	public JalapenoNewPayBillsPage clickOnNewPayBills(WebDriver driver) throws Exception {
+		
+		log("Clicking on Payments button");
+		payments.click();
+
+		return PageFactory.initElements(driver, JalapenoNewPayBillsPage.class);
 	}
 	
 	public JalapenoHealthFormsListPage clickOnHealthForms(WebDriver driver) throws Exception {
@@ -108,10 +118,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		IHGUtil.setFrame(driver, "iframe");
 		return PageFactory.initElements(driver.switchTo().frame(0), FormWelcomePage.class);
 	}
+	
+	public boolean isNotificationDisplayed(String text) {
+		log("Looking for notification: " + text);
+		return driver.findElement(By.xpath("//div[contains(@class, 'notification-message')]/p[.='" + text + "']")).isDisplayed();
+	}
 
 	public boolean assessHomePageElements() {
-
-		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 	
@@ -123,26 +136,7 @@ public class JalapenoHomePage extends JalapenoPage {
 		webElementsList.add(payments);
 		webElementsList.add(forms);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 60, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	public boolean assessFamilyAccountElements(boolean button){

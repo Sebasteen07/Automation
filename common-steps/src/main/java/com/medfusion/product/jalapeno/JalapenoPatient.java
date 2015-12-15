@@ -11,8 +11,6 @@ import com.intuit.ihg.common.utils.IHGUtil.Gender;
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class JalapenoPatient extends BaseTestNGWebDriver {
 
