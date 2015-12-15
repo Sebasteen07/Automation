@@ -458,7 +458,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("Expected Status Code = 200");
 		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
 		log("send Statement to patient #####");
-		poster.postFromStringExplicitTimeout(payload,50000);	
+		poster.postFromStringExplicitTimeout(payload,5000);	
 		return Integer.parseInt(newBillingNumber);		
 	}
 }
