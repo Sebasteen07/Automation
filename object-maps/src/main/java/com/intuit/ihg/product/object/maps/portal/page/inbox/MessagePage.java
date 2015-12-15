@@ -242,8 +242,7 @@ public class MessagePage extends BasePageObject {
 		Thread.sleep(1000); //wait for loaded
 		PortalUtil.setPortalFrame(driver);
 		log("Looking for message with Header "+subject);
-		wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
-		WebElement	messageHeader = driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
+		WebElement	messageHeader = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
 		if (messageHeader.isDisplayed()) { 
 		log("Subject found");	
 		return true;

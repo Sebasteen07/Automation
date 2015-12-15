@@ -106,7 +106,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		WaitForPage(patientPage);
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
-		inboxPage.openMessageInInbox("Reply back");
+		inboxPage.openMessageInInbox("You have new health data");
 		
 		// The message body is the first iframe on the page
 		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
@@ -127,7 +127,8 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
-		MessagePage message = inboxPage.openMessageInInbox("New Health Information Import");
+		MessagePage message = inboxPage.openMessageInInbox("You have new health data");
+		Thread.sleep(1000);
 		message.clickBtnReviewHealthInformation();
 		
 		// The CCD iframe is now the active frame so we can get the source directly
