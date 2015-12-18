@@ -13,6 +13,8 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
 import com.intuit.ihg.product.object.maps.portal.page.AChecker;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
@@ -136,6 +138,51 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		StringSelection iFrame = new StringSelection(driver.getPageSource());
 		message.verifyCCDViewerAndClose();
 		driver.switchTo().defaultContent();
+		
+		// Open AChecker page
+		AChecker achecker = new AChecker(driver);
+		achecker.Setup();
+		
+		// Paste the iFrame code
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
+		achecker.Validate();
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void TestMyAccountPage() throws Exception
+	{		
+		// Open the API testing page, log in and go to My Account
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
+		WaitForPage(patientPage);
+		patientPage.clickMyAccountLink();
+		
+		// Get iFrame HTML (AChecker cannot handle iFrames)
+		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
+		
+		// Open AChecker page
+		AChecker achecker = new AChecker(driver);
+		achecker.Setup();
+		
+		// Paste the iFrame code
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
+		achecker.Validate();
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void TestAccountActivity() throws Exception
+	{		
+		// Open the API testing page, log in and go to My Account > Account Activity
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
+		WaitForPage(patientPage);
+		MyAccountPage myAccount = patientPage.clickMyAccountLink();
+		ViewAccountActivityPage accountActivity = myAccount.addAccountActivityLink();
+		
+		log("View Account Activity and select the source code of the lightbox iframe");
+		accountActivity.clickOnViewAccountActivity();
+		assertTrue(accountActivity.isAccountActivityDisplayed());
+		StringSelection iFrame = new StringSelection(driver.getPageSource());
 		
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
