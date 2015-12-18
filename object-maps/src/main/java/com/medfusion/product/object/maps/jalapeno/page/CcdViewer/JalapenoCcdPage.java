@@ -115,7 +115,7 @@ public class JalapenoCcdPage extends BasePageObject {
 		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessage));
 		log("Result: " + resultMessage.getText());
 		
-		return resultMessage.getText().equals("Your health information was sent to " + emailAddress + "!']");
+		return resultMessage.getText().equals("Your health information was sent to " + emailAddress + "!");
 	}
 	
 	public boolean checkPdfToDownload(WebDriver driver) throws IOException, URISyntaxException {
