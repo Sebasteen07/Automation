@@ -3,14 +3,13 @@ package com.medfusion.product.object.maps.jalapeno.page.CcdViewer;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -39,6 +38,9 @@ public class JalapenoCcdPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//button[.='Send']")
 	private WebElement sendInformationButton;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='success']")
+	private WebElement resultMessage;
 	
 	@FindBy(how = How.ID, using = "healthOverview")
 	private WebElement healthOverview;
@@ -110,25 +112,10 @@ public class JalapenoCcdPage extends BasePageObject {
 		log("Send the information");
 		sendInformationButton.click();
 		
-		try {
-			Thread.sleep(10000);
-			try {
-				if(driver.findElement(By.xpath("//span[.='Your health information was sent to " + emailAddress + "!']")) != null) {
-					log("Message was succesfully sent to " + emailAddress);
-					return true;
-				}
-			}
-			catch (NoSuchElementException e) {
-				log("Error appears during sending health information");
-				return false;
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			log("Something went wrong with Thread.sleep");
-			e.printStackTrace();
-		}
+		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessage));
+		log("Result: " + resultMessage.getText());
 		
-		return false;
+		return resultMessage.getText().equals("Your health information was sent to " + emailAddress + "!']");
 	}
 	
 	public boolean checkPdfToDownload(WebDriver driver) throws IOException, URISyntaxException {
@@ -173,8 +160,6 @@ public class JalapenoCcdPage extends BasePageObject {
 	
 	public boolean assessCcdElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 	
 		webElementsList.add(closeButton);
@@ -195,26 +180,7 @@ public class JalapenoCcdPage extends BasePageObject {
 		webElementsList.add(advanceDirectives);
 		webElementsList.add(insurance);
 	*/
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 60, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	

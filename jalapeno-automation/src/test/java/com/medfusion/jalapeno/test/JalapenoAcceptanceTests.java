@@ -19,6 +19,7 @@ import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuesti
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
+import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
@@ -45,6 +46,7 @@ import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
+import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
 import org.testng.ITestResult;
@@ -89,12 +91,14 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
-		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.assessLoginPageElements());
 		
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		assertTrue(jalapenoHomePage.assessHomePageElements());
-		jalapenoLoginPage = jalapenoHomePage.logout(driver);
-		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+		
+		loginPage = jalapenoHomePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -438,10 +442,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
-		log("Initiate patient data");
-		JalapenoPatient createPatient = new JalapenoPatient();
-
-		JalapenoHomePage homePage = createPatient.createAndLogInPatient(driver, testData);
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.assessLoginPageElements());
+		
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
+		assertTrue(homePage.assessHomePageElements());
 
 		JalapenoAppointmentRequestPage appointmentRequestPage = homePage.clickOnAppointment(
 				driver);
@@ -479,8 +485,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
 				
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(createPatient.getEmail(), createPatient.getPassword());
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 				
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.assessMessagesElements());
@@ -550,6 +556,64 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayBills() throws Exception {
+		logTestEnvironment();
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		
+		log("Initiate payment data");	
+		String accountNumber = IHGUtil.createRandomNumericString(8);
+		String amount = IHGUtil.createRandomNumericString(3);
+
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
+		
+		JalapenoNewPayBillsPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		assertTrue(payBillsPage.assessNewPayBillsElements());
+		
+		assertNotNull(payBillsPage.fillPaymentInfo(amount, accountNumber));
+		homePage = payBillsPage.submitPayment();
+		assertTrue(homePage.isNotificationDisplayed("Your payment was successful."));
+		homePage.logout(driver);
+		
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("Click On Online BillPayment Tab in Practice Portal");
+		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
+
+		log("Search Paid Bills By Current Date");
+		onlineBillPaySearchPage.searchForBillPayToday();
+
+		log("Search For Today's Paid Bill By Account Number");
+		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
+
+		log("Get Bill Details");
+		onlineBillPaySearchPage.getBillPayDetails();
+
+		log("Set Payment Communication Details");
+		onlineBillPaySearchPage.setPaymentCommunicationDetails();
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())+PracticeConstants.BillPaymentSubject;
+		
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		log("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		log("Waiting for message from practice portal");	
+		assertTrue(messagesPage.isMessageDisplayed(driver, uniquePracticeResponse));
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -647,7 +711,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Continue to Portal Inspired");
 		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
 		JalapenoIdentifyDependantPage identifyDependantPage = new JalapenoIdentifyDependantPage(driver, guardianUrl);
-		identifyDependantPage.assessElements();
+		assertTrue(identifyDependantPage.assessElements());
 
 		log("Step 7: Identify patient");
 		identifyDependantPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
@@ -659,7 +723,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 9: Continue registration - create dependants credentials");
 		JalapenoCreateGuardianPage2 createGuardianStep2 = createGuardianStep1.continueToSecondPage(driver);
-		createGuardianStep2.assessElements();
+		assertTrue(createGuardianStep2.assessElements());
 		createGuardianStep2.fillGuardianSecurityDetails(patientLogin, testData.getDoctorPassword(), testData.getSecretQuestion(), 
 				testData.getSecretAnswer(), testData.getPhoneNumber());
 		

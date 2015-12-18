@@ -31,6 +31,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -1562,6 +1563,27 @@ public class IHGUtil extends BasePageObject {
 		String res = "$" + dollars + "." + cents;		
 		return res;		
 	}
-
+	
+	public boolean assessAllPageElements(ArrayList<WebElement> allElements, Class<?> c) {
+		log("Checking all elements on " + c.getSimpleName());
+		
+		for (WebElement w : allElements) {
+			int attempt = 1;
+			while(attempt < 3) {
+				try {
+					new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(w));
+					log("Element " + w.toString() + " : is displayed");
+					attempt = 3;
+				} catch(StaleElementReferenceException ex) {
+					log("StaleElementReferenceException was catched, attempt: " + attempt++);
+				} catch(Exception ex) {
+					log(ex.getCause().toString());
+					return false;
+				}
+			}
+		}	
+		
+		return true;
+	}
 
 }

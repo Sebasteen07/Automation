@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -46,7 +44,7 @@ public class JalapenoCreateGuardianPage2 extends BasePageObject{
 		IHGUtil.PrintMethodName();
 	}
 	
-	public void assessElements() {
+	public boolean assessElements() {
 		log("Wait for elements");
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(this.inputUserId);
@@ -58,8 +56,7 @@ public class JalapenoCreateGuardianPage2 extends BasePageObject{
 		webElementsList.add(this.inputPhone3);
 		webElementsList.add(this.buttonEnterPortal);
 		
-		new WebDriverWait(driver, 20).until(
-				ExpectedConditions.visibilityOfAllElements(webElementsList));
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}	
 		
 	public void fillGuardianSecurityDetails (String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
