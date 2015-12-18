@@ -43,7 +43,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
 
 		log("verify whether Virtual Card Swiper page is displayed.");
-		verifyTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");
+		assertTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");
 
 		String amount = IHGUtil.createRandomNumericString().substring(0,2);
 
@@ -55,7 +55,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
 		log("Verify whether the payment is completed successfully.");
-		verifyEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
+		assertEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
 				true, "The payment is completed properly.");
 		
 		
