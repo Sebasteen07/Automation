@@ -86,10 +86,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		WaitForPage(patientPage);
-		patientPage.clickViewAllMessagesInMessageCenter();
+		MessageCenterInboxPage inbox = patientPage.clickViewAllMessagesInMessageCenter();
+		assertTrue(inbox.isInboxLoaded());
 		
 		// Get iFrame HTML (AChecker cannot handle iFrames)
-		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
+		StringSelection iFrame = new StringSelection(driver.getPageSource());		
 		
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
