@@ -115,7 +115,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			
 			log("Step 7: Filling in user credentials and finishing the registration");
 			// Filing the User credentials
-			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(firstNameString, testData.getLastName(), testData.getBirthDay(), testData.getZipCode(), null, emailAddressString, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),unlockcode);
+			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(testData.getZipCode(), emailAddressString, testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer());
 
 			log("Step 8: Assert Webelements in MyPatientPage");
 			assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
@@ -1316,10 +1316,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			log("Step 7: Filling in user credentials and finishing the registration");
 			// Filing the User credentials
 			MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(
-			patientData.get(1), patientData.get(3), testData.getBirthDay(),
-			testData.getZipCode(), null, email,
-			testData.getPatientPassword(), testData.getSecretQuestion(),
-			testData.getSecretAnswer(), null);
+			testData.getZipCode(), email, testData.getPatientPassword(),
+			testData.getSecretQuestion(), testData.getSecretAnswer());
 
 			log("Step 8: Assert Webelements in MyPatientPage");
 			assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));

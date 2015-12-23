@@ -11,6 +11,8 @@ local.properties
 .settings/
 .loadpath
 target/
+*.keystore
+response.xml
 
 # External tool builders
 .externalToolBuilders/

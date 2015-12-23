@@ -6,6 +6,7 @@ import java.util.Date;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
+import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ActivatePasswordChangePage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.SecretAnswerDoesntMatchPage;
@@ -46,7 +47,6 @@ import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.Virtu
 import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitTakeActionPage;
 
-import org.apache.tools.ant.types.selectors.DifferentSelector;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.ITestResult;
@@ -59,7 +59,6 @@ import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
 import com.intuit.ihg.product.portal.tests.ForgotUserIdTest;
 import com.intuit.ihg.product.portal.tests.HealthKeyMatchTest;
-import com.intuit.ihg.product.portal.tests.PatientActivationUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -1454,6 +1453,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
+	//This test will get updated soon by phajek 
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientSearch() throws Exception {
 
@@ -1470,11 +1470,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Moving to the Unlock Link get from the Creation on the
 		// PracticePortal
-
+		/*
 		PatientActivationUtil patientActivation = new PatientActivationUtil();
 
 		patientActivation.ActivatePatient(driver, testcasesData, patientActivationTest, practiceTestData,
 				patientActivationTest.getUnlockLink());
+				*/
 	}
 
 	/**
@@ -1495,7 +1496,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(groups = { "AcceptanceTests" })
 	public void testAddNewPatientActivation() throws Exception {
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
@@ -1507,17 +1508,37 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
 		
-		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, testcasesData.getEmail(), null, null, null);
+		String email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(),'.');
 		
-		// Moving to the Unlock Link get from the Creation on the
-		// PracticePortal
-
-		PatientActivationUtil patientActivation = new PatientActivationUtil();
-
-		patientActivation.ActivatePatient(driver, testcasesData, patientActivationSearchTest, practiceTestData,
-				patientActivationSearchTest.getUnlockLink());
+		log("Go to the Practice Portal and register the patient.");
+		String unlockLink = patientActivationSearchTest.
+				getPatientActivationLink(driver, practiceTestData, email, null, null, null);
+		
+		log("Go to the url from the Practice Portal to activate the patient.");
+		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(unlockLink);
+		MyPatientPage pMyPatientPage = pCreateAccountPage.
+				fillPatientActivaion(patientActivationSearchTest.getZipCodeString(), email, testcasesData.getPassword(),
+						testcasesData.getSecretQuestion(), testcasesData.getAnswer());
+		CreatePatientTest createPatientTest = new CreatePatientTest(email, testcasesData.getPassword(), testcasesData.geturl());
+		createPatientTest.loginAsNewPatient(driver, pMyPatientPage);
+		
+		
+		log ("Check if the unlock link in the mail is the same as the one from Practice Portal.");
+		Mailinator mail = new Mailinator();
+		String unlockLinkFromMail = mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage, 
+				PortalConstants.NewPatientActivationMessageLinkText, 10);
+		assertEquals(unlockLinkFromMail,unlockLink, "The link in the email is not the same as the in the Portal");
+		
+		
+		
+		/*
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(patientActivationSearchTest.getLastNameString(),
+				PortalConstants.DateOfBirtSlashFormat, patientActivationSearchTest.getZipCodeString(), testcasesData.getSSN(),
+				patientActivationSearchTest.getEmailAddressString(), testcasesData.getPassword(), testcasesData.getSecretQuestion(),
+				testcasesData.getAnswer(), activationCode, activationCode);
+*/
 	}
-	
+
 
 	/**
 	 * @Author: Ivan David

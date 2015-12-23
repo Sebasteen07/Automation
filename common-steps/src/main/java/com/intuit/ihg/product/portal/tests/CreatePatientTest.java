@@ -1,8 +1,6 @@
 package com.intuit.ihg.product.portal.tests;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -54,6 +52,18 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 	}
 
 
+
+	public CreatePatientTest(String email, String password, String url) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.url = url;
+	}
+
+	public CreatePatientTest() {
+		super();
+	}
+
 	public MyPatientPage createPatient(WebDriver driver, TestcasesData testcasesData) throws Exception {
 
 		log("Test Case: testCreatePatient");
@@ -87,24 +97,32 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 						testcasesData.getZip(), testcasesData.getAddress(), testcasesData.getPassword(),
 						testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getAddressState(),
 						testcasesData.getAddressCity());
-
+		
+		
+		
+		return this.loginAsNewPatient(driver, pMyPatientPage);
+	}
+	
+	public MyPatientPage loginAsNewPatient (WebDriver driver, MyPatientPage pMyPatientPage) throws InterruptedException {
+		
 		log("step 4: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
+	
 		log("step 5: Logout");
 		pMyPatientPage.clickLogout(driver);
-
+	
 		log("step 6: Login as new user");
-		loginpage.navigateTo(driver, url);
-		pMyPatientPage = loginpage.login(email, testcasesData.getPassword());
-
+		PortalLoginPage loginpage = new PortalLoginPage(driver, url);
+		pMyPatientPage = loginpage.login(email, password);
+	
 		log("step 7: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
+	
 		log("Patient successfully created");
 		log("Username: " + email);
-		log("Password: " + testcasesData.getPassword());
-		return PageFactory.initElements(driver, MyPatientPage.class);
+		log("Password: " + password);
+		return pMyPatientPage;
 	}
+	
 
 }
