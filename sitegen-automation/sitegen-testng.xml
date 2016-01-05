@@ -11,6 +11,7 @@
 			<class name="com.intuit.ihg.product.sitegen.test.SiteGenAcceptanceTests">
 				<methods>
 					<exclude name="testPhysicianSU" />
+					<exclude name="testMerchantAccountSetUpViaQBMS" />
 				</methods>
 			</class>
 		</classes>
