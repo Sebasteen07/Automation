@@ -504,12 +504,12 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		merchantAcctSetUp.clickOnSaveChanges();
 
 		log("Verify whether the Merchant Account added successfully");
-		verifyEquals(merchantAcctSetUp.getAccountAddedSuccessMsg().equals(SitegenConstants.expSuccessMessage), true, "Merchant Account added successfully message is not getting displayed");
+		assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage, "Merchant Account added successfully message is not getting displayed");
 
 		practiseHome.clickOnMerchantAccountLink();
 
 		log("Verify whether the Account is Added in the Merchant Account List");
-		verifyEquals(merchantAcctPage.verifyAcctInMerchantAcctList(), true, "Merchant Account not added in the Merchant Account List");
+		assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
 
 	}
 	
