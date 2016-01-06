@@ -90,6 +90,13 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 	<build>
 		<plugins>
 			<plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.9</version>
