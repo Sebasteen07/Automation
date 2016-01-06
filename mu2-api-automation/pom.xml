@@ -116,6 +116,9 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 								<workingDirectory>target/surefire-reports/</workingDirectory>
 							</properties>
 						</configuration>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
 					 	</execution>
 				</executions>
 			</plugin>
