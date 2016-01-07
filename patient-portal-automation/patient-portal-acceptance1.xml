@@ -19,7 +19,7 @@
         		<include name="testAddandRemovePreferences" />
         		<include name="testPhrPortalSSO" />
         		<include name="testViewAsPdf" />
-        		<include name="testAddNewPatientSearch" />
+        		<include name="testAddNewPatientActivation" />
                 <include name="testPayNow" />
       		</methods>
   </classes>
