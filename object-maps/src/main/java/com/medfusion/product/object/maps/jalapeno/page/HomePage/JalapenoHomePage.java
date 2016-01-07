@@ -55,6 +55,9 @@ public class JalapenoHomePage extends JalapenoPage {
 	@FindBy(how = How.ID, using = "familyAccountBtn")
 	private WebElement viewDifferentPatientButton;
 	
+	@FindBy(how = How.ID, using = "listBadge")
+	private WebElement listBadgeDropdownButton;
+	
 	/**
 	 * @Author:Jakub Calabek
 	 * @Date:24.7.2013
@@ -141,32 +144,13 @@ public class JalapenoHomePage extends JalapenoPage {
 	
 	public boolean assessFamilyAccountElements(boolean button){
 		IHGUtil.PrintMethodName();
-		
-		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(bubble);
 		webElementsList.add(bubbleLabel);
 		if (button) webElementsList.add(viewDifferentPatientButton);
 
-		for (WebElement w : webElementsList) {
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-		}
-		
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	
@@ -183,6 +167,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		askAQuestion.click();
 		
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	
+	public void faChangePatient(){
+		IHGUtil.PrintMethodName();
+		
+		viewDifferentPatientButton.click();
+		listBadgeDropdownButton.click();
 	}
 	
 }

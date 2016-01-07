@@ -51,12 +51,14 @@ public class PropertyFileLoader {
 	}
 
 	public String getDOBMonth() {
-
 		return property.getProperty("DOBMonth");
+	}
+	
+	public String getDOBMonthText() {
+		return property.getProperty("DOBMonthText");
 	}
 
 	public String getDOBYear() {
-
 		return property.getProperty("DOBYear");
 	}
 	

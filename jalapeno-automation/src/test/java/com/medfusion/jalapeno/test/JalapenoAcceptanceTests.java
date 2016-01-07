@@ -237,7 +237,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 		
 		assertTrue(url != null);
-		url = url.substring(0, url.length()-4); //because Jsoup.parse at Mailinator changes "&lang" to "?" (problem is in progress)
 		
 		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
 		log("Redirecting to patient portal, filling secret answer as: " + testData
@@ -744,9 +743,96 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String inEmail = "Sign Up!";
 		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 10);
 		assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
-		guardianUrlEmail = guardianUrlEmail.substring(0, guardianUrlEmail.length()-4); //because Jsoup.parse at Mailinator changes "&lang" to "?" (problem is in progress)
 		log("Retrieved activation link is " + guardianUrlEmail);
 		log("Comparing with link from PrP " + guardianUrl);
-		assertTrue(guardianUrl.contains(guardianUrlEmail));
-	}	
+		assertTrue(guardianUrl.equals(guardianUrlEmail));
+	}
+	
+	// Create normal patient, under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testFACreateDependantAndGuardian() throws Exception {
+		logTestEnvironment();
+		
+		log("Step 1: Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		long generatedTS = System.currentTimeMillis();
+		String patientLastName = "last" + generatedTS; //guardian's and dependant's last name and id
+		String patientLogin = "login" + generatedTS; //guardian's login
+		String patientEmail = "mail" + generatedTS + "@mailinator.com"; //guardian's and dependant's email
+		
+		log("Step 2: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("Step 3: Click on Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		log("Step 4: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("Step 5: Register Guardien - Enter all the details and click on Register");
+		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F", patientLastName + "G", 
+				testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear(), 
+				"address1", "address2", "city", "Alabama", testData.getZipCode());
+		
+		log("Step 6: Register Dependant - Enter all the details and click on Register");
+		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependant", patientLastName, "M", patientLastName + "D", 
+				testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage(), 
+				"address1", "address2", "city", "Alabama", testData.getZipCode());
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+		
+		log("Step 7: Step : Finishing of patient activation: step 1 - verifying identity");
+		JalapenoPatientActivationPage jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, patientUrl);
+		assertTrue(jalapenoPatientActivationPage.assessPatientActivationVerifyPageElements());
+		jalapenoPatientActivationPage.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(),
+				testData.getDOBDay(), testData.getDOBYear());
+
+		log("Step 8: Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientLogin, testData.getPassword(),
+				testData);
+
+		log("Step 9: Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		
+		log("Step 10: Identify Dependant without logging out the patient");
+		JalapenoIdentifyDependantPage identifyDependantPage = new JalapenoIdentifyDependantPage(driver, guardianUrl);
+		assertTrue(identifyDependantPage.assessElements());
+		identifyDependantPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		
+		log("Step 12: Continue registration - check dependant info and fill login credentials");
+		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependantPage.continueToCreateGuardianPage(driver);
+		assertTrue(createGuardianStep1.checkDependantInfoRegisterPage("Dependant", patientLastName, patientEmail));
+	    createGuardianStep1.createGuardianLinkToExistingPatient(patientLogin, testData.getPassword(), "Parent");
+	    
+	    log("Step 13: Continue to the portal and check elements");
+		jalapenoHomePage = createGuardianStep1.continueToPortal(driver);
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+		
+		log("Step 14: Logout, login and change patient");
+		JalapenoLoginPage loginPage = jalapenoHomePage.logout(driver);
+		jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
+		jalapenoHomePage.faChangePatient();
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+		
+		log("Step 15: Logging into Mailinator and getting Patient and Guardian Activation url");
+		String emailSubjectPatient = "You're invited to create a Patient Portal account at "
+				+ testData.getPracticeName();
+		String emailSubjectGuardien = "You are invited to create a Patient Portal guardian account at "
+				+ testData.getPracticeName();
+		String inEmail = "Sign Up!";
+		
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 10);
+		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
+		log("Retrieved patients activation link is " + patientUrl);
+		log("Comparing with patients link from PrP " + patientUrlEmail);
+		assertEquals(patientUrl, patientUrlEmail, "!patient unlock links are not equal!");
+		
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 10);
+		assertNotNull(guardianUrlEmail, "Error: Activation dependants link not found.");
+		log("Retrieved dependants activation link is " + guardianUrlEmail);
+		log("Comparing with dependants link from PrP " + guardianUrl);
+		assertEquals(guardianUrl, guardianUrlEmail, "!guardian unlock links are not equal!");
+	}
 }

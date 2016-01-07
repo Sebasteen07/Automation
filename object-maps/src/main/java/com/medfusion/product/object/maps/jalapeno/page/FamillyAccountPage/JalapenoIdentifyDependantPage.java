@@ -7,9 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -37,6 +35,7 @@ public class JalapenoIdentifyDependantPage extends BasePageObject{
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.get(url);
+		log("Go to URL: " + url);
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
