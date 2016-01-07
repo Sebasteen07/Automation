@@ -31,7 +31,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		testData = new APIData(apitestData);
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestLoginPage() throws Exception 
 	{	
 		// Open the API testing page
@@ -54,7 +54,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class )
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class )
 	public void TestDashboardPage() throws Exception
 	{
 		// Open the API testing page and log in
@@ -79,7 +79,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestInboxPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to Inbox
@@ -101,7 +101,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestMessageDetailsPage() throws Exception
 	{		
 		// Open the API testing page, log in, go to Inbox and open a message
@@ -123,7 +123,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestCCDPage() throws Exception
 	{
 		// Open the API testing page, log in, go to Inbox and open a CCD from a message
@@ -149,7 +149,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestMyAccountPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to My Account
@@ -170,7 +170,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestAccountActivity() throws Exception
 	{		
 		// Open the API testing page, log in and go to My Account > Account Activity
