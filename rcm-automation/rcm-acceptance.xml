@@ -9,8 +9,10 @@
 		<classes>
 			<class name="com.medfusion.rcm.tests.RcmAcceptanceTests" />
 			<methods>
-				<include name="testActivatePatientSendStatement" />
 				<include name="testSendStmtVerifyNotificationsMessagesBalance" />
+				<include name="testSendDynamicElectronicFormat1" />
+				<include name="testSendDynamicElectronicFormat2" />
+				<include name="testSendDynamicPaperFormat1" />
 			</methods>
 		</classes>
 

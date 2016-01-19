@@ -15,17 +15,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 public class JalapenoAskAStaffPage extends BasePageObject{
 	
 	//Navigation
 	@FindBy(how = How.LINK_TEXT, using = "Ask (paid)")
 	private WebElement askPaidTab;
+	@FindBy(how = How.LINK_TEXT, using = "History")
+	private WebElement historyBut;
 	@FindBy(how = How.NAME, using = ":submit")
 	private WebElement continueBut;
 	@FindBy(how = How.NAME, using = "buttons:submit")
 	private WebElement submitQuestionBut;
-	
 	
 	@FindBy(how = How.NAME, using = "subjectWrapper:_body:subject")
 	private WebElement subject;
@@ -98,13 +100,27 @@ public class JalapenoAskAStaffPage extends BasePageObject{
 		cardCVV.sendKeys("369");
 		cardZip.sendKeys("36969");
 		submitQuestionBut.click();
-
-		log("Go home");
 		new WebDriverWait(driver, 20).until(
-				ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Home')]"))).click();
-		IHGUtil.setDefaultFrame(driver);
+				ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Home')]")));
 		return true;
 	}
 	
+	public boolean checkHistory (WebDriver driver) {
+		historyBut.click();
+		try{
+			new WebDriverWait(driver, 10).until(
+				ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '"+"Ola! "+this.getCreatedTimeStamp()+"')]")));
+			}catch(org.openqa.selenium.NoSuchElementException e2){
+				log("Couldn't find Subject: Ola! "+this.getCreatedTimeStamp());
+				return false;
+			}
+		return true;
+	}
 	
+	public JalapenoHomePage backToHomePage(WebDriver driver) {
+		log("Get back to Home Page");
+		driver.findElement(By.name("cancel")).click();
+		IHGUtil.setDefaultFrame(driver);
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
 }

@@ -59,7 +59,11 @@ public class PropertyFileLoader {
 
 		return property.getProperty("DOBYear");
 	}
-
+	
+    public String getDOBYearUnderage() {
+        return property.getProperty("DOBYearUnderage");
+    }
+	
 	public String getZipCode() {
 		return property.getProperty("ZipCode");
 	}
@@ -242,6 +246,24 @@ public class PropertyFileLoader {
 	}
 	public String getPracticeName() {
 		return property.getProperty("practiceName");
+	}
+	public String getPracticeId() {
+		return property.getProperty("practiceId");
+	}
+	public String getMemberId() {
+		return property.getProperty("memberId");
+	}
+	public String getSftpUser() {
+		return property.getProperty("sftpUser");
+	}
+	public String getSftpPassword() {
+		return property.getProperty("sftpPassword");
+	}
+	public String getSftpHost() {
+		return property.getProperty("sftpHost");
+	}
+	public String getSftpBalance() {
+		return property.getProperty("sftpBalance");
 	}
 	public PropertyFileLoader() throws IOException {
 

@@ -15,14 +15,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JalapenoPatientActivationPage extends BasePageObject {
 
-	@FindBy(how = How.ID, using = "userid")
+	@FindBy(how = How.XPATH, using = "(//input[@id='userid'])[2]")
 	private WebElement inputUserId;
 
-	@FindBy(how = How.ID, using = "password")
+	@FindBy(how = How.XPATH, using = "(//input[@id='password'])[2]")
 	private WebElement inputPassword;
 
 	@FindBy(how = How.ID, using = "secretQuestion")
@@ -43,32 +42,39 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement inputPhoneType;
 
-	@FindBy(how = How.ID, using = "prevStep")
+	@FindBy(how = How.XPATH, using = "(//a[@id='prevStep'])[2]")
 	private WebElement prevStep;
 
 	@FindBy(how = How.ID, using = "finishStep")
 	private WebElement finishStep;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[1]/input")
+	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[1]")
 	private WebElement postalCode;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/select")
+	@FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[1]")
 	private WebElement birthDate_month;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/input[1]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[1]")
 	private WebElement birthDate_day;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form\"]/div[2]/input[2]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[1]")
 	private WebElement birthDate_year;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"activateAccountStep1_form_btns\"]/ul[2]/li/button")
+	@FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[1]")
 	private WebElement nextStep;
 
-	@FindBy(how = How.ID, using = "preferredLocationId")
+	@FindBy(how = How.XPATH, using = "(//select[@id='preferredLocationId'])[2]")
 	private WebElement primaryLocationElement;
 
 	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 	private WebElement electronicPaymentPreference;
+	
+	@FindBy(how = How.ID, using = "paymentPreference_Paper")
+	private WebElement paperPaymentPreference;
+	
+	//Both option currently commented out in lightbox and not supported (12/09/2015)
+	@FindBy(how = How.ID, using = "paymentPreference_Both")
+	private WebElement bothPaymentPreference;
 
 	@FindBy(how = How.ID, using = "updateStatementPrefButton")
 	private WebElement okButton;
@@ -112,9 +118,14 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		nextStep.click();
 
 	}
-
 	public JalapenoHomePage fillInPatientActivation(String userId, String password, String secretQuestion,
-			String secretAnswer, String phoneNumber) {
+			String secretAnswer, String phoneNumber){
+		return fillInPatientActivationWithDeliveryPreference(userId, password, secretQuestion,
+				secretAnswer, phoneNumber, 2);
+		
+	}
+	public JalapenoHomePage fillInPatientActivationWithDeliveryPreference(String userId, String password, String secretQuestion,
+			String secretAnswer, String phoneNumber, int deliveryPref) {
 		IHGUtil.PrintMethodName();
 
 		log("Setting User Name as " + userId);
@@ -148,7 +159,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		}
 
 		finishStep.click();
-		selectStatementIfRequired();
+		selectStatementIfRequired(deliveryPref);
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
@@ -159,16 +170,18 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 				testData.getSecretAnswer(), testData.getPhoneNumber());
 	}
 
-	public void selectStatementIfRequired() {
+	//delivery pref as in sitegen, 1 = paper, 2 = electronic, 3 = both
+	public void selectStatementIfRequired(int deliveryPref) {
 
 		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
 			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
-			electronicPaymentPreference.click();
+			if (deliveryPref == 1) paperPaymentPreference.click();
+			else if (deliveryPref == 2) electronicPaymentPreference.click();
+			else if (deliveryPref == 3) bothPaymentPreference.click();
 			okButton.click();
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -176,8 +189,6 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	}
 
 	public boolean assessPatientActivationPageElements() {
-
-		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputUserId);
@@ -191,26 +202,18 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		webElementsList.add(prevStep);
 		webElementsList.add(finishStep);
 
-		for (WebElement w : webElementsList) {
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
+	
+	public boolean assessPatientActivationVerifyPageElements() {
 
-			try {
-				IHGUtil.waitForElement(driver, 10, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(postalCode);
+		webElementsList.add(birthDate_day);
+		webElementsList.add(birthDate_month);
+		webElementsList.add(birthDate_year);
 
-			catch (Throwable e) {
-				log(Arrays.toString(e.getStackTrace()));
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 }

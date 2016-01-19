@@ -31,13 +31,13 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "email")
 	private WebElement inputEmailAddresss;
 
-	@FindBy(how = How.ID, using = "birthDate_month")
+	@FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[3]")
 	private WebElement inputDateOfBirthMonth;
 
-	@FindBy(how = How.ID, using = "birthDate_day")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[3]")
 	private WebElement inputDateOfBirthDay;
 
-	@FindBy(how = How.ID, using = "birthDate_year")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[3]")
 	private WebElement inputDateOfBirthYear;
 
 	@FindBy(how = How.ID, using = "gender_male")
@@ -46,13 +46,13 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "gender_female")
 	private WebElement femaleGender;
 
-	@FindBy(how = How.ID, using = "postalCode")
+	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[3]")
 	private WebElement inputZipCode;
 
-	@FindBy(how = How.ID, using = "cancelStep")
+	@FindBy(how = How.XPATH, using = "(//a[@id='cancelStep'])[3]")
 	private WebElement buttonCancel;
 
-	@FindBy(how = How.ID, using = "nextStep")
+	@FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[3]")
 	private WebElement buttonChooseUserId;
 
 	public JalapenoCreateAccountPage(WebDriver driver) {
@@ -172,8 +172,6 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 
 	public boolean assessCreateAccountPageElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputPatientFirstName);
 		webElementsList.add(inputPatientLastName);
@@ -187,27 +185,7 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 		webElementsList.add(buttonCancel);
 		webElementsList.add(buttonChooseUserId);
 
-
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	public boolean isTextVisible(String text) {

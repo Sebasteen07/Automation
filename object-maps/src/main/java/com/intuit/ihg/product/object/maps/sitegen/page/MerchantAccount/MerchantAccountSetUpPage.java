@@ -1,6 +1,8 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.MerchantAccount;
 
 import java.awt.AWTException;
+
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,11 +31,8 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	@FindBy( xpath = ".//span[@class='feedbackPanelINFO']")
 	private WebElement successMsg;
 
-	@FindBy (xpath = ".//input[@name = 'tokenWrapper:merchantToken']")
-	private WebElement tokenField;
-	
-	@FindBy (xpath = ".//input[@name = 'testTokenWrapper:merchantTestToken']" )
-	private WebElement tokenTestFeild;
+	@FindBy (xpath = ".//input[@name = 'qbmsFields:testTokenWrapper:merchantTestToken']" )
+	private WebElement tokenQbmsTestField;
 
 	@FindBy(xpath = ".//select[@name='Status']")
 	private WebElement statusField;
@@ -158,19 +157,27 @@ public class MerchantAccountSetUpPage extends BasePageObject{
 	 */
 	public void enterMerchantTestToken(String token) throws Exception {
 
-		waitForElement(tokenField, 30);
-		tokenTestFeild.clear();
-		tokenTestFeild.sendKeys(token);
+		waitForElement(tokenQbmsTestField, 30);
+		tokenQbmsTestField.clear();
+		tokenQbmsTestField.sendKeys(token);
 	}
 
 	/**
 	 * 
 	 * @param value
 	 */
-	public void selectStatus(String value) {
+	public void selectStatus(String value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		Select sel = new Select(statusField);
-		sel.selectByVisibleText(value);
+		Thread.sleep(4000);
+		for (int i= 0; i!=2; i++) {
+			try {
+				IHGUtil.waitForElement(driver, 20, statusField);
+				Select sel = new Select(statusField);
+				sel.selectByVisibleText(value);
+				break;
+			}
+			catch (StaleElementReferenceException e) {}
+		}
 	}
 
 	/**

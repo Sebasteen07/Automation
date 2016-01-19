@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -18,8 +17,10 @@ import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.Jal
 
 public class JalapenoMessagesPage extends BasePageObject {
 	
+	/*
 	@FindBy(how = How.ID, using = "askatitle_link")
 	private WebElement askAQuestionButton;
+	*/
 	
 	@FindBy(how = How.ID, using = "inboxFolder")
 	private WebElement inboxFolder;
@@ -39,10 +40,10 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"signin_form\"]/button[2]")
 	private WebElement sendButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/h6/a")
+	@FindBy(how = How.XPATH, using = "//a[.='View health data']")
 	private WebElement ccdDocument;
 		
-	@FindBy(how = How.XPATH, using = "//button/img[@src='img/messages/archive.png']/..")
+	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
 	private WebElement archiveMessageButton;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
@@ -85,7 +86,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 		
 		while(count <= maxCount){
 			try {				
-				element = driver.findElement(By.partialLinkText("Your Statement is Ready"));
+				element = driver.findElement(By.partialLinkText("Click here to view your statement"));
 				log("Message from eStatement found");
 				return element.isDisplayed();				
 			}
@@ -146,35 +147,13 @@ public class JalapenoMessagesPage extends BasePageObject {
 	
 	public boolean assessMessagesElements() {
 
-		boolean allElementsDisplayed = false;
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-	
-		webElementsList.add(askAQuestionButton);
+		
 		webElementsList.add(inboxFolder);
 		webElementsList.add(sentFolder);
 		webElementsList.add(archiveFolder);
 
-		for (WebElement w : webElementsList) {
-
-			try {
-				IHGUtil.waitForElement(driver, 60, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-
-		}
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void archiveOpenMessage() {		

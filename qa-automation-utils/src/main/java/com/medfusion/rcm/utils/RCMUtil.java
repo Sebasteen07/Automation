@@ -3,8 +3,6 @@ package com.medfusion.rcm.utils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
 
@@ -36,16 +34,16 @@ public class RCMUtil extends IHGUtil {
 				rcmStatementRest);
 		poster.setServiceUrl( rcmStatementRest.trim() );
 		
-		poster.setContentType( "application/xml;" );
-		poster.addHeader( "requestId", "3ab8ce87-5725-4849-ab03-7e03b5912b4a" );
+		poster.setContentType( "application/json;" );
+		poster.addHeader( "requestId", "stmtstaticpost" );
 		poster.addHeader( "Authentication-Type", "2wayssl" );
 		log("Expected Status Code =#####");
-		poster.setExpectedStatusCode( 202 );	// HTTP Status Code
+		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
 		log("send Statement to patient #####");
 		poster.postFromResourceFile( 
 					"testfiles/" 
 					+ env
-					+ "/statement.xml" );			
+					+ "/statement.txt" );			
 				
 		
 	}

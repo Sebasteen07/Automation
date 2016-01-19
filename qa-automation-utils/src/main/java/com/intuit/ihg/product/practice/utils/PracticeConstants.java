@@ -54,7 +54,7 @@ public class PracticeConstants {
 	//card PayPal  MasterCard payment
 	public final static String ccNumMasterCard = "5105105105105100";
 	public final static String cardTypeMaster = "MasterCard";
-	public final static String swipeStringMaster = ";5105105105105100=15121011000012345678?";
+	public final static String swipeStringMaster = ";5105105105105100=22121011000012345678?";
 
 
 	//Patient Search

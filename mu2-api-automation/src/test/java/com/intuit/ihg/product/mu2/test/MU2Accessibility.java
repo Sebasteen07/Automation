@@ -13,6 +13,8 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
+import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
 import com.intuit.ihg.product.object.maps.portal.page.AChecker;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
@@ -29,7 +31,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		testData = new APIData(apitestData);
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestLoginPage() throws Exception 
 	{	
 		// Open the API testing page
@@ -52,7 +54,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class )
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class )
 	public void TestDashboardPage() throws Exception
 	{
 		// Open the API testing page and log in
@@ -77,17 +79,18 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestInboxPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to Inbox
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		WaitForPage(patientPage);
-		patientPage.clickViewAllMessagesInMessageCenter();
+		MessageCenterInboxPage inbox = patientPage.clickViewAllMessagesInMessageCenter();
+		assertTrue(inbox.isInboxLoaded());
 		
 		// Get iFrame HTML (AChecker cannot handle iFrames)
-		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
+		StringSelection iFrame = new StringSelection(driver.getPageSource());		
 		
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
@@ -98,7 +101,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestMessageDetailsPage() throws Exception
 	{		
 		// Open the API testing page, log in, go to Inbox and open a message
@@ -106,7 +109,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		WaitForPage(patientPage);
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
-		inboxPage.openMessageInInbox("Reply back");
+		inboxPage.openMessageInInbox("You have new health data");
 		
 		// The message body is the first iframe on the page
 		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
@@ -120,14 +123,15 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		achecker.Validate();
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestCCDPage() throws Exception
 	{
 		// Open the API testing page, log in, go to Inbox and open a CCD from a message
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
-		MessagePage message = inboxPage.openMessageInInbox("New Health Information Import");
+		MessagePage message = inboxPage.openMessageInInbox("You have new health data");
+		Thread.sleep(1000);
 		message.clickBtnReviewHealthInformation();
 		
 		// The CCD iframe is now the active frame so we can get the source directly
@@ -135,6 +139,51 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 		StringSelection iFrame = new StringSelection(driver.getPageSource());
 		message.verifyCCDViewerAndClose();
 		driver.switchTo().defaultContent();
+		
+		// Open AChecker page
+		AChecker achecker = new AChecker(driver);
+		achecker.Setup();
+		
+		// Paste the iFrame code
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
+		achecker.Validate();
+	}
+	
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void TestMyAccountPage() throws Exception
+	{		
+		// Open the API testing page, log in and go to My Account
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
+		WaitForPage(patientPage);
+		patientPage.clickMyAccountLink();
+		
+		// Get iFrame HTML (AChecker cannot handle iFrames)
+		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());		
+		
+		// Open AChecker page
+		AChecker achecker = new AChecker(driver);
+		achecker.Setup();
+		
+		// Paste the iFrame code
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
+		achecker.Validate();
+	}
+	
+	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void TestAccountActivity() throws Exception
+	{		
+		// Open the API testing page, log in and go to My Account > Account Activity
+		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
+		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
+		WaitForPage(patientPage);
+		MyAccountPage myAccount = patientPage.clickMyAccountLink();
+		ViewAccountActivityPage accountActivity = myAccount.addAccountActivityLink();
+		
+		log("View Account Activity and select the source code of the lightbox iframe");
+		accountActivity.clickOnViewAccountActivity();
+		assertTrue(accountActivity.isAccountActivityDisplayed());
+		StringSelection iFrame = new StringSelection(driver.getPageSource());
 		
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);

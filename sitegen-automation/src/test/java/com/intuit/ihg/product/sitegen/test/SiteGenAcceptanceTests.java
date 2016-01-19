@@ -504,12 +504,12 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		merchantAcctSetUp.clickOnSaveChanges();
 
 		log("Verify whether the Merchant Account added successfully");
-		verifyEquals(merchantAcctSetUp.getAccountAddedSuccessMsg().equals(SitegenConstants.expSuccessMessage), true, "Merchant Account added successfully message is not getting displayed");
+		assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage, "Merchant Account added successfully message is not getting displayed");
 
 		practiseHome.clickOnMerchantAccountLink();
 
 		log("Verify whether the Account is Added in the Merchant Account List");
-		verifyEquals(merchantAcctPage.verifyAcctInMerchantAcctList(), true, "Merchant Account not added in the Merchant Account List");
+		assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
 
 	}
 	
@@ -600,8 +600,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Date :- 07-03-2013
 	 *  @UserStrory ID in Rally : US6407
 	 * @StepsToReproduce:
-	 * Login to Sitegen platform
-	 * Select any Practice
+	 * Login to Sitegen platform as SU
+	 * Select the Practice
 	 * Select MerchantAccount solution
 	 * Select QBMS in the options
 	 * Goto Merchant Account Setup
@@ -617,17 +617,24 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		log("Envronment on which test is running is :"+IHGUtil.getEnvironmentType());
 		log("Browser on which Test is running :"+TestConfig.getBrowserType());
 
+		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
-		SitegenTestData testCaseData = new SitegenTestData(sitegen);
+		SitegenTestData testData = new SitegenTestData(sitegen);
 
-		String userName = testCaseData.getAutomationUser();
-		String password = testCaseData.getAutomationUserPassword();
+		logSGLoginInfo(testData);
 
-        SiteGenPracticeHomePage practiseHome = new SiteGenSteps()
-                .logInUserToSG(driver, userName, password);
+		log("step 2:LogIn ##########");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getSiteGenUrl());
+		SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
+		pSiteGenHomePage = loginpage
+				.login(testData.getAdminUser(), testData.getAdminPassword());
+		assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen HomePage  to be loaded, but it was not.");
+		log("step 3: navigate to SiteGen PracticeHomePage ##########");
+		SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
 
 		log("Step 6 :- Navigating to the Merchant Account List page.");
-		MerchantAccountPage merchantAcctPage = practiseHome.clickOnMerchantAccountLink();
+		MerchantAccountPage merchantAcctPage = practiceHome.clickOnMerchantAccountLink();
 
 		log("Step 7 :- Delete Existing Merchant Account.");
 		merchantAcctPage.deleteExistingMerchantAcct();
@@ -637,20 +644,22 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		merchantAcctSetUp.clickOnPracticeRadioButton();	
 
 		log("Step 9 : Entering Account details");
+		merchantAcctSetUp.selectStatus(SitegenConstants.statusValue2);
 		merchantAcctSetUp.selectProcessorValue(SitegenConstants.PROCESSORVALUE2);
-		merchantAcctSetUp.enterMerchantToken(SitegenConstants.merchantAcctQBMSTokenForPROD);
+		merchantAcctSetUp.enterMerchantToken(SitegenConstants.merchantAcctQBMSToken);
+		merchantAcctSetUp.enterMerchantTestToken(SitegenConstants.merchantAcctQBMSToken);
 
 		log("Step 10 : Saving the account details");
 		merchantAcctSetUp.clickOnSaveChanges();
 
 		log("Verify whether the Merchant Account added successfully");
-		verifyEquals(merchantAcctSetUp.getAccountAddedSuccessMsg().equals(SitegenConstants.expSuccessMessage), true, "Merchant Account is not getting added");
+		assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage, "Merchant Account is not getting added");
 
 		log("Step 11 : Navigate to merchant account List");
-		practiseHome.clickOnMerchantAccountLink();
+		practiceHome.clickOnMerchantAccountLink();
 
 		log("Verify whether the Account is Added in the Merchant Account List");
-		verifyEquals(merchantAcctPage.verifyAcctInMerchantAcctList(), true, "Merchant Account not added in the Merchant Account List");
+		assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
 
 		merchantAcctPage.deleteExistingMerchantAcct();
 	}

@@ -9,7 +9,15 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.testng.Assert;
@@ -204,6 +212,118 @@ public class WebPoster {
 		}
 
 	}
+	public String postFromString(String payload)
+			throws Exception {
+
+		IHGUtil.PrintMethodName();
+		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+
+		System.out.println("### SERVICE URL: " + serviceUrl);
+		System.out.println("### POSTING PAYLOAD: " + payload);
+
+		ClientRequest request = new ClientRequest(serviceUrl);
+
+		// adding headers to request
+		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			System.out.println("... HEADER[" + key + "] = [" + value + "]");
+
+			request.header(key, value);
+		}
+
+		// adding contentType to request
+		request.body(contentType, payload);
+
+		try {
+
+			ClientResponse<String> response = request.post(String.class);
+
+			// asserting if reponse code is as expected
+			Assert.assertEquals(response.getStatus(), expectedStatusCode,
+					"HTTP Status not what expected");
+			System.out.println(response.getEntity().toString());
+
+			String str = response.getEntity().toString();
+
+			return str;
+
+		} catch (UnknownHostException ex) {
+
+			if ((IHGUtil.getEnvironmentType().toString())
+					.equalsIgnoreCase("PROD")) {
+
+				throw new Exception(
+						"### On PROD, may have to use P10 to post to server: UnknownHostException"
+								+ ex.getMessage());
+			} else {
+
+				throw new Error(ex);
+			}
+
+		}
+
+	}
+	public String postFromStringExplicitTimeout(String payload, int timeoutMillis)
+			throws Exception {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		final HttpParams params = httpClient.getParams();
+		HttpConnectionParams.setConnectionTimeout(params, timeoutMillis);
+		HttpConnectionParams.setSoTimeout(params, timeoutMillis*10);
+		HttpPost postRequest = new HttpPost (serviceUrl);
+		IHGUtil.PrintMethodName();
+		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+
+		System.out.println("### SERVICE URL: " + serviceUrl);
+		System.out.println("### POSTING PAYLOAD: " + payload);
+
+		// adding headers to request
+		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			System.out.println("... HEADER[" + key + "] = [" + value + "]");
+
+			postRequest.addHeader(key, value);
+		}
+
+		// adding contentType to request
+		postRequest.setHeader("Content-Type", contentType);
+		StringEntity payloadEntity = new StringEntity(payload);
+		postRequest.setEntity(payloadEntity);
+
+		try {
+
+			HttpResponse response = httpClient.execute(postRequest);
+			String str = EntityUtils.toString(response.getEntity());
+
+			// asserting if reponse code is as expected
+			Assert.assertEquals(response.getStatusLine().getStatusCode(), expectedStatusCode,
+					"HTTP Status not what expected");
+			System.out.println(str);
+
+			return str;
+
+		} catch (UnknownHostException ex) {
+
+			if ((IHGUtil.getEnvironmentType().toString())
+					.equalsIgnoreCase("PROD")) {
+
+				throw new Exception(
+						"### On PROD, may have to use P10 to post to server: UnknownHostException"
+								+ ex.getMessage());
+			} else {
+
+				throw new Error(ex);
+			}
+
+		}
+
+	}
+	
 	public boolean get() {
 		return get(contentType);
 	}
