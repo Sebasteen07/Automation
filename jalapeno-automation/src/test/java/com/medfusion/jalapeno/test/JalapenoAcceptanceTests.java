@@ -11,9 +11,6 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
 import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep2Page;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
@@ -25,12 +22,16 @@ import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSea
 import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
+import com.intuit.ihg.product.practice.tests.AppoitmentRequest;
 import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2HistoryPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
@@ -443,10 +444,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.assessLoginPageElements());
 		
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
-		assertTrue(homePage.assessHomePageElements());
 
 		JalapenoAppointmentRequestPage appointmentRequestPage = homePage.clickOnAppointment(
 				driver);
@@ -456,43 +455,81 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		homePage = appointmentRequestPage.returnToHomePage(driver);
 		homePage.logout(driver);
 		
-		log("Login to Practice Portal");
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(),
-				testData.getDoctorPassword());
-
-		log("Click Appt Request tab");
-		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
-
-		log("Search for appt requests");
-		apptSearch.searchForApptRequests();
-		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails("Illness");
-		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
-
-		log("Choose process option and respond to patient");
-		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep2Page.PAGE_NAME);
-
-		log("Confirm response details to patient");
-		apptSearch = detailStep2.processApptRequest();
-		assertTrue(apptSearch.isSearchPageLoaded(),
-				"Expected the Appt Search Page to be loaded, but it was not.");
-
-		log("Logout of Practice Portal");
-		practiceHome.logOut();
-				
+		log("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		practicePortal.ProceedAppoitmentRequest(driver, false, "Illness", testData.getPortalUrl(),
+				testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("Continue in Portal Inspired");		
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 				
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements());
 		
 		log("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved"));
-	} 	
+	} 
+	
+	//
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestV2() throws Exception {
+
+		logTestEnvironment();
+
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
+		
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		
+		log("Logging in");
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
+
+		log("Click appointment request");
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		
+		log("Assess Elements and choose provider");
+		assertTrue(appointmentRequestStep1.assessElements());
+		appointmentRequestStep1.chooseFirstProvider();
+		
+		log("Continue to step 2.: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.assessElements());
+		
+		log("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+		
+		log("Check if thank you frame is displayd");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+		
+		log("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+		
+		log("Check elements and appointment request reason");
+		assertTrue(historyPage.assessElements());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+		
+		log("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.returnToHomePage(driver);
+		homePage.logout(driver);
+		
+		log("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason, testData.getPortalUrl(),
+				testData.getDoctorLogin2(), testData.getDoctorPassword());
+		
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+				
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		log("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved"));
+	} 
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrescriptionRenewal() throws Exception {
@@ -578,7 +615,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		assertNotNull(payBillsPage.fillPaymentInfo(amount, accountNumber));
 		homePage = payBillsPage.submitPayment();
-		assertTrue(homePage.isNotificationDisplayed("Your payment was successful."));
+		assertTrue(homePage.isTextDisplayed("Your payment was successful."));
 		homePage.logout(driver);
 		
 		log("Login to Practice Portal");

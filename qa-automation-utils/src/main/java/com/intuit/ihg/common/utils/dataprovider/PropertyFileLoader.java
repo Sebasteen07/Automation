@@ -267,6 +267,16 @@ public class PropertyFileLoader {
 	public String getSftpBalance() {
 		return property.getProperty("sftpBalance");
 	}
+	
+	// Appoitment request 2.0
+	public String getDoctorLogin2() {
+		return property.getProperty("doctorLogin2");
+	}
+	public String getPracticeUrl2() {
+		return property.getProperty("practiceUrl2");
+	}
+	
+	
 	public PropertyFileLoader() throws IOException {
 
 		String env = IHGUtil.getEnvironmentType().toString();
