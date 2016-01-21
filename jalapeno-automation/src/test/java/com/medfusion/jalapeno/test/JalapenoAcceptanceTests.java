@@ -259,46 +259,37 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		logTestEnvironment();
 		
 		PropertyFileLoader testData = new PropertyFileLoader();
-
-		log("Initiate patient data");
-		JalapenoPatient createPatient = new JalapenoPatient();
-		JalapenoHomePage homePage = createPatient.createAndLogInPatient(driver, testData);
-
-		JalapenoLoginPage loginPage = homePage.logout(driver);
-		assertTrue(loginPage.assessLoginPageElements());
-				
-		//login to practice portal
+		String messageSubject = "Namaste " + System.currentTimeMillis();
+		
+		log("Login physician");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(),
 				testData.getDoctorPassword());
 
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setQuickSendFields(createPatient.getFirstName(), createPatient.getLastName(),"TestingMessage");
+		patientMessagingPage.setQuickSendFields(testData.getFirstName(), testData.getLastName(), "TestingMessage", messageSubject);
 		
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.assessLoginPageElements());
-		
-		homePage = loginPage.login(createPatient.getEmail(), createPatient.getPassword());
-		assertTrue(homePage.assessHomePageElements());
+		log("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage  = loginPage.login(testData.getUserId(), testData.getPassword());
 		
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.assessMessagesElements());
 		
 		log("Waiting for message from practice portal");	
-		assertTrue(messagesPage.isMessageDisplayed(driver, "Quick Send"));
+		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 		
 		log("Response to the message");
-		messagesPage.replyToMessage(driver);
-		//TODO: "system is unable to send a reply" message, even if the message is sent
+		assertTrue(messagesPage.replyToMessage(driver));
 		
 		log("Back to the practice portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 		
 		patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		String patientName = createPatient.getFirstName() + " " + createPatient.getLastName();
-		assertTrue(patientMessagingPage.findMyMessage(patientName));
+		assertTrue(patientMessagingPage.findMyMessage(messageSubject));
+		//TODO: Edit navigation on portal and search by date to search exact day
 	}
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
@@ -470,7 +461,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved"));
 	} 
 	
-	//
+	//TODO: after Appointment Request v1 is not used - delete test above and set up this test to Jalapeno Automation
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestV2() throws Exception {
 
