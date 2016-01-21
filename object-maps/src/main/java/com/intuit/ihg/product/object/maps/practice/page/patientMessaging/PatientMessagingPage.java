@@ -277,7 +277,7 @@ public class PatientMessagingPage extends BasePageObject{
     	  this.setQuickSendFields(firstName, lastName, templateName, PracticeConstants.Subject);
       }
       
-      public boolean findMyMessage(String patientName) throws Exception {
+      public boolean findMyMessage(String subject) throws Exception {
     	  IHGUtil.PrintMethodName();
     	  int maxCount = 10;
     	  int count = 1;
@@ -291,7 +291,7 @@ public class PatientMessagingPage extends BasePageObject{
     		  try {
     			  log("Click on Search button");
     			  searchButton.click();
-    			  element = driver.findElement(By.linkText(patientName));
+    			  element = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
     			  element.click();
     			  log("Message from patient found");
     			  return element.isDisplayed();
