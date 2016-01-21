@@ -2,6 +2,7 @@ package com.intuit.ihg.product.object.maps.practice.page.apptrequest;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -191,5 +192,22 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 		IHGUtil.waitForElement(driver,1,messageBody);
 		return messageBody.getText();
+	}
+	
+	public boolean checkAppointmentDetails (String preferredTimeFrame, String preferredDay, String preferredTimeOfDay, String reason){
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		
+		try{
+			driver.findElement(By.xpath("//*[contains(text(),'" + preferredTimeFrame + "')]"));
+			driver.findElement(By.xpath("//*[contains(text(),'" + preferredDay + "')]"));
+			driver.findElement(By.xpath("//*[contains(text(),'" + preferredTimeOfDay + "')]"));
+			driver.findElement(By.xpath("//*[contains(text(),'" + reason + "')]"));
+			return true;
+		}catch(Exception e){
+			log(e.getCause().toString());
+			return false;
+		}
+		
 	}
 }

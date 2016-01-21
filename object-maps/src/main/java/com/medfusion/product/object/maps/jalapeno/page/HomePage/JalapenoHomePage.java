@@ -13,6 +13,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
@@ -84,6 +85,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
 	}
+	
+	public JalapenoAppointmentRequestV2Step1 clickOnAppointmentV2(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		appointments.click();
+		
+		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
+			}
 
 	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) throws Exception {
 
@@ -122,10 +130,17 @@ public class JalapenoHomePage extends JalapenoPage {
 		return PageFactory.initElements(driver.switchTo().frame(0), FormWelcomePage.class);
 	}
 	
-	public boolean isNotificationDisplayed(String text) {
+	public boolean isTextDisplayed(String text) {
 		log("Looking for notification: " + text);
-		return driver.findElement(By.xpath("//div[contains(@class, 'notification-message')]/p[.='" + text + "']")).isDisplayed();
-	}
+		
+		try{
+			driver.findElement(By.xpath("//*[contains(text(),'" + text + "')]")).getText().contains(text);
+			return true;
+		}catch(Exception e){
+			log(e.getCause().toString());
+			return false;
+		}
+	}	
 
 	public boolean assessHomePageElements() {
 
