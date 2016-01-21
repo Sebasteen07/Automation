@@ -69,7 +69,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "None" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
 		logTestEnvironment();
@@ -83,7 +83,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginValidCredentials() throws Exception {
 
 		logTestEnvironment();
@@ -102,7 +102,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.assessLoginPageElements());
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginInvalidCredentials() throws Exception {
 
 		logTestEnvironment();
@@ -119,7 +119,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
 		logTestEnvironment();
 
@@ -143,7 +143,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.assessHomePageElements());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
 		logTestEnvironment();
 		
@@ -206,7 +206,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
 
 		logTestEnvironment();
@@ -253,7 +253,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.assessLoginPageElements());
 	}	
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
 
 		logTestEnvironment();
@@ -301,7 +301,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(patientMessagingPage.findMyMessage(patientName));
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {
 
 		logTestEnvironment();
@@ -333,7 +333,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
 		logTestEnvironment();
@@ -363,7 +363,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.assessLoginPageElements());
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
 		logTestEnvironment();
@@ -401,7 +401,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Username match was found");
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
 		logTestEnvironment();
@@ -434,7 +434,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(createAccountPage.assessCreateAccountPageElements());
 	}
 		
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequest() throws Exception {
 
 		logTestEnvironment();
@@ -471,7 +471,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	} 
 	
 	//
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestV2() throws Exception {
 
 		logTestEnvironment();
@@ -531,7 +531,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved"));
 	} 
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrescriptionRenewal() throws Exception {
 		logTestEnvironment();
 
@@ -594,7 +594,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayBills() throws Exception {
 		logTestEnvironment();
 
@@ -652,7 +652,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, uniquePracticeResponse));
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskAStaff() throws Exception {
 		logTestEnvironment();
 
@@ -718,7 +718,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	// Create under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFACreateGuardianOnly() throws Exception {
 		logTestEnvironment();
 		
@@ -786,7 +786,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	// Create normal patient, under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFACreateDependantAndGuardian() throws Exception {
 		logTestEnvironment();
 		

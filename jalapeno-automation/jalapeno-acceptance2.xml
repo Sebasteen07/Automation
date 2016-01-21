@@ -6,18 +6,13 @@
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
 	<test name="Jalapeno-AcceptanceTests">
-		<classes>
-			<class name="com.medfusion.jalapeno.test.JalapenoAcceptanceTests" />
-			<methods>
-				<include name="testAppointmentRequest" />
-				<include name="testAskAStaff" />
-				<include name="testFACreateDependantAndGuardian" />
-				<include name="testFACreateGuardianOnly" />
-				<include name="testMessaging" />
-				<include name="testPayBills" />
-				<include name="testPrescriptionRenewal" />
-			</methods>
-		</classes>
-
+		<groups>
+            <run>
+                <include name="JalapenoAcceptance2" />
+            </run>
+        </groups>
+        <classes>
+            <class name = "com.medfusion.jalapeno.test.JalapenoAcceptanceTests" />
+        </classes>
 	</test>
 </suite>
