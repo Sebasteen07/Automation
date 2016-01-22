@@ -21,6 +21,18 @@ public class JalapenoAppointmentRequestV2HistoryPage extends BasePageObject{
 	@FindBy(how = How.XPATH, using = "(//div[@id='frame']/table)")
 	private WebElement fullTable;
 	
+	@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'reason')]")
+	private WebElement reason;
+	
+	@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'preferredtime')]")
+	private WebElement preferredTime;
+	
+	@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedday')]")
+	private WebElement requestedDay;
+	
+	@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedtime')]")
+	private WebElement requestedTime;
+	
 	@FindBy(how = How.ID, using = "back_button")
 	private WebElement backButton;
 	
@@ -63,11 +75,12 @@ public class JalapenoAppointmentRequestV2HistoryPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		
 		try{
-			driver.findElement(By.xpath("//li[contains(@data-ng-show,'reason')]")).getText().contains(appointmentReason);
-			driver.findElement(By.xpath("//li[contains(@data-ng-show,'preferredtime')]")).getText().contains("Early Morning, Late Afternoon");
-			driver.findElement(By.xpath("//li[contains(@data-ng-show,'requestedday')]")).getText().contains("Monday - Thursday");
-			driver.findElement(By.xpath("//li[contains(@data-ng-show,'requestedtime')]")).getText().contains("Anytime");
-			return true;
+			return(
+				reason.getText().contains(appointmentReason) &&
+				preferredTime.getText().contains("Early Morning, Late Afternoon") &&
+				requestedDay.getText().contains("Monday - Thursday") &&
+				requestedTime.getText().contains("Anytime")
+			);
 		}catch(Exception e){
 			log(e.getCause().toString());
 			return false;

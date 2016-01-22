@@ -105,18 +105,19 @@ public class JalapenoAppointmentRequestV2Step2 extends BasePageObject{
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
-	public void fillAppointmentRequestForm(String appointmentReason){
+	//sendKeys(" ") instead of click() because there is some problem with resolution 1024*768
+	public void fillAppointmentRequestForm(String appointmentReason) {
 		IHGUtil.PrintMethodName();
 		
 		log("Set Times of day: Early morning and Late afternoon");
-		earlyMorningButton.click();
-		lateAfternoonButton.click();
+		earlyMorningButton.sendKeys(" ");
+		lateAfternoonButton.sendKeys(" ");
 		
 		log("Set Days of week: Monday - Thursday");
-		mondayButton.click();
-		tuesdayButton.click();
-		wednesdayButton.click();
-		thursdayButton.click();
+		mondayButton.sendKeys(" ");
+		tuesdayButton.sendKeys(" ");
+		wednesdayButton.sendKeys(" ");
+		thursdayButton.sendKeys(" ");
 		
 		log("Leave Week: Any");
 		
