@@ -1576,8 +1576,11 @@ public class IHGUtil extends BasePageObject {
 					attempt = 3;
 				} catch(StaleElementReferenceException ex) {
 					log("StaleElementReferenceException was catched, attempt: " + attempt++);
+				} catch(TimeoutException ex) {
+					log(ex.getMessage());
+					return false;
 				} catch(Exception ex) {
-					log(ex.getCause().toString());
+					ex.printStackTrace();
 					return false;
 				}
 			}
