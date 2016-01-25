@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.jalapeno.page;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -54,7 +56,8 @@ public class JalapenoLoginPage extends BasePageObject {
 		String sanitizedUrl = url.trim();
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
-		driver.manage().window().maximize();
+		//there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
+		driver.manage().window().setSize(new Dimension(1152, 864));
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}
