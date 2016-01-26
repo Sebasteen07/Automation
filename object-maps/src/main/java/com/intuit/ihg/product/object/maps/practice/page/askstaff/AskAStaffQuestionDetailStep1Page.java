@@ -42,16 +42,18 @@ public class AskAStaffQuestionDetailStep1Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		
-		boolean result = false;
 		try {
-			if (patientIntakeTab.isDisplayed() && !errorPanel.isDisplayed()) {			
-				result = true;
+			if (patientIntakeTab.isDisplayed()) {	
+				if (IHGUtil.exists(driver, errorPanel)) {									
+					return !(errorPanel.isDisplayed());
+				}
+				else return true;
 			}
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
 		
-		return result;
+		return false;
 	}
 	
 	/**

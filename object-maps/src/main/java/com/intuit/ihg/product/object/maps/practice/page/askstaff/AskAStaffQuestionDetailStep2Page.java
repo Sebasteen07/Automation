@@ -4,9 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.portal.utils.PortalConstants;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeUtil;
 
 public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
@@ -20,6 +23,27 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	
 	@FindBy(linkText="Go Back To Search Page")
 	private WebElement goBackToSearchPage;
+	
+	@FindBy(name="rx1:container:table:drugName")
+	private WebElement drugName;
+	
+	@FindBy(name="rx1:container:table:dosage")
+	private WebElement dosage;
+	
+	@FindBy(name="rx1:container:table:quantity")
+	private WebElement quantity;
+	
+	@FindBy(name="rx1:container:table:frequency")
+	private WebElement frequency;
+	
+	@FindBy(name="pharmacy:container:pharmacy")
+	private WebElement pharmacy;
+	
+	@FindBy(xpath="//input[@name='pharmacy:container:action' and @value='1']")
+	private WebElement sendToTheCallinQueue;	
+	
+	@FindBy(name="commpanel:from")
+	private WebElement from;
 	
 	@FindBy(name="commpanel:subject")
 	private WebElement subject;
@@ -106,6 +130,11 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		
+		if(IHGUtil.exists(driver, from)) {
+			Select selectFrom = new Select(from);
+			selectFrom.selectByIndex(1);
+		}
+		
 		subject.sendKeys(subjectContent + " " + createdTs);
 		body.sendKeys(bodyContent);
 		
@@ -115,6 +144,29 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		
 		btnProcess.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);		
+	}
+	
+	/**
+	 * Fills out the Prescription, Pharmacy and the rest is handled by the processAndCommunicate method
+	 * Units stay default (capsule), Refills 0 and Do not fill after = today
+	 */
+	public AskAStaffQuestionDetailStep3Page prescribeAndCommunicate(String subjectContent, String bodyContent) {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		
+		IHGUtil.waitForElement(driver, 20, drugName);		
+		drugName.sendKeys(PracticeConstants.MedicationName);
+		dosage.sendKeys(PortalConstants.Dosage);
+		quantity.sendKeys(PracticeConstants.Quantity);
+		Select selFrequency = new Select(frequency);
+		selFrequency.selectByVisibleText(PracticeConstants.Frequency);
+		
+		Select selPharmacy = new Select(pharmacy);
+		selPharmacy.selectByIndex(1);
+		IHGUtil.waitForElement(driver, 20, sendToTheCallinQueue);
+		sendToTheCallinQueue.click();		
+		
+		return processAndCommunicate (subjectContent, bodyContent);
 	}
 
 }
