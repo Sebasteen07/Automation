@@ -66,6 +66,7 @@ import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
 import com.intuit.ihg.product.practice.tests.RecivePayNowTest;
 import com.intuit.ihg.product.practice.utils.Practice;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -1270,7 +1271,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())
-				+ PortalConstants.Subject;
+				+ PracticeConstants.SubjectMessage;
 
 		log("step 13: Find message in Inbox And Validate Message Subject");
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
