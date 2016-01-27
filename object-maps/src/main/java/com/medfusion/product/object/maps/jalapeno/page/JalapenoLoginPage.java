@@ -65,6 +65,7 @@ public class JalapenoLoginPage extends BasePageObject {
 	public JalapenoLoginPage(WebDriver driver) {
 		
 		super(driver);
+		driver.manage().window().setSize(new Dimension(1152, 864));
 		PageFactory.initElements(driver, this);
 	}
 
