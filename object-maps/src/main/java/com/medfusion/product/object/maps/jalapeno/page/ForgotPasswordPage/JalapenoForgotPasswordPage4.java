@@ -23,6 +23,12 @@ public class JalapenoForgotPasswordPage4 extends BasePageObject {
 	@FindBy(how = How.ID, using = "resetPasswordButton")
 	public WebElement resetPasswordButton;
 	
+	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
+	private WebElement electronicPaymentPreference;
+
+	@FindBy(how = How.ID, using = "updateMissingInfoButton")
+	private WebElement okButton;
+	
 	public JalapenoForgotPasswordPage4(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -66,6 +72,14 @@ public class JalapenoForgotPasswordPage4 extends BasePageObject {
 		confirmPassword.sendKeys(password);
 		
 		resetPasswordButton.click();
+		selectStatementIfRequired();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	private void selectStatementIfRequired() {
+		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			electronicPaymentPreference.click();
+			okButton.click();
+		}
 	}
 }
