@@ -319,7 +319,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 14: Check secure message in patient gmail inbox");
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getPracticeName(), 3);
+				testData.getPracticeName(), 3, "Portal 1.0");
 
 		// patient Portal validation
 		log("Step 15: Login to Patient Portal");
@@ -518,7 +518,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getSender3(), 3);
+				testData.getSender3(), 3,"Portal 1.0");
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver,
@@ -1008,7 +1008,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 13: Check secure message in patient gmail inbox");
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getPracticeName(), 3);
+				testData.getPracticeName(), 3,"Portal 1.0");
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
@@ -1536,7 +1536,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 13: Check secure message in patient gmail inbox");
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testcasesData.getGmailUserName(), testcasesData.getGmailPassword(),
-				testcasesData.getPracticeName(), 3);
+				testcasesData.getPracticeName(), 3,"Portal 1.0");
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
@@ -1904,7 +1904,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		String emailMessageLink = RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getSender3(), 3);
+				testData.getSender3(), 3,"Portal 1.0");
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver,
