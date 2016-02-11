@@ -195,10 +195,8 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
 	
 		log("Step 4: Try to Save and continue with one answer missing.");
-		assertTrue(calculatedFormPage.isPageLoaded());
 		calculatedFormPage.fillFormExcludingLastQuestion();
 		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
-		assertTrue(calculatedFormPage.isPageLoaded());
 	
 		log("Step 5: Fill all the answers and click Save and continue.");
 		calculatedFormPage.fillFormLeftmostAnswer();

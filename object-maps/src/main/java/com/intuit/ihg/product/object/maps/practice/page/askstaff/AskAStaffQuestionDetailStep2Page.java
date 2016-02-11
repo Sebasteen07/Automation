@@ -60,9 +60,10 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	// Setting this to 3 letters as when you add more it causes issues as each new search result
 	// unloads the result table from the DOM and adds it again, which causes issues with the script.
 	private final String diagnosticCodeContent = "COU";
+	private final String diagnosticContent = "Cough";
 	
-	@FindBy(xpath=".//table[@class='dataview']/tbody/tr[1]/td[2]")
-	private WebElement diagnosticCodeResultTable;
+	@FindBy(linkText=diagnosticContent)
+	private WebElement diagnosticContentButton;
 	
 	@FindBy(name="buttons:submit")
 	private WebElement btnProcess;
@@ -139,8 +140,7 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		body.sendKeys(bodyContent);
 		
 		diagnosticCode.sendKeys(diagnosticCodeContent);
-		IHGUtil.waitForElement(driver,20, diagnosticCodeResultTable);
-		diagnosticCodeResultTable.click();
+		diagnosticContentButton.click();
 		
 		btnProcess.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);		
