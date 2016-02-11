@@ -692,7 +692,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
 
 		log("Validate submit of confirmation");
-		detailStep4.isQuestionDetailPageLoaded();
+		assertTrue(detailStep4.isQuestionDetailPageLoaded());
 
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
