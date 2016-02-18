@@ -174,6 +174,8 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 	public void selectStatementIfRequired(int deliveryPref) {
 
 		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			log("Statement delivery preference lightbox is displayed");
+
 			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
 			if (deliveryPref == 1) paperPaymentPreference.click();
 			else if (deliveryPref == 2) electronicPaymentPreference.click();

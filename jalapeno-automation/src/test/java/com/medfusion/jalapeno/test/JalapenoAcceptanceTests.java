@@ -532,12 +532,10 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Creating a new patient");
 		JalapenoPatient patient = new JalapenoPatient();
 		JalapenoHomePage homePage = patient.createAndLogInPatient(driver, testData);
-		assertTrue(homePage.assessHomePageElements());
 				
 		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
 		prescriptionsPage.clickContinueButton(driver);
 		homePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
-		assertTrue(homePage.assessHomePageElements());
 		
 		homePage.logout(driver);
 		
@@ -579,7 +577,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		homePage = loginPage.login(patient.getEmail(), patient.getPassword());
 				
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements());
 		
 		log("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
@@ -606,7 +603,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		assertNotNull(payBillsPage.fillPaymentInfo(amount, accountNumber));
 		homePage = payBillsPage.submitPayment();
-		assertTrue(homePage.isTextDisplayed("Your payment was successful."));
+		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.logout(driver);
 		
 		log("Login to Practice Portal");
@@ -764,6 +761,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		homePage = loginPage.login(patientLogin, testData.getPassword());
 		assertTrue(homePage.assessHomePageElements());
 		assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		homePage.logout(driver);
 		
 		log("Step 12: Logging into Mailinator and getting Guardian Activation url");
 		String emailSubject = "You are invited to create a Patient Portal guardian account at "

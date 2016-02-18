@@ -38,6 +38,12 @@ public class JalapenoCreateGuardianPage2 extends BasePageObject{
 	@FindBy(how = How.ID, using = "finishStep")
 	private WebElement buttonEnterPortal;
 	
+	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
+	private WebElement electronicPaymentPreference;
+	
+	@FindBy(how = How.ID, using = "updateStatementPrefButton")
+	private WebElement okButton;
+	
 	
 	public JalapenoCreateGuardianPage2(WebDriver driver) {
 		super(driver);
@@ -82,6 +88,16 @@ public class JalapenoCreateGuardianPage2 extends BasePageObject{
 	public JalapenoHomePage clickEnterPortal(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		this.buttonEnterPortal.click();
+		
+		selectStatementIfRequired();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	private void selectStatementIfRequired() {
+		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			log("Statement delivery preference lightbox is displayed");
+			electronicPaymentPreference.click();
+			okButton.click();
+		}
 	}
 }
