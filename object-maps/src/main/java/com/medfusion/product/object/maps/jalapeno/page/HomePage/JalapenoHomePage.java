@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
@@ -58,6 +60,9 @@ public class JalapenoHomePage extends JalapenoPage {
 	
 	@FindBy(how = How.ID, using = "listBadge")
 	private WebElement listBadgeDropdownButton;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
+	private WebElement succPaymentNotification;
 	
 	/**
 	 * @Author:Jakub Calabek
@@ -140,7 +145,20 @@ public class JalapenoHomePage extends JalapenoPage {
 			log(e.getCause().toString());
 			return false;
 		}
-	}	
+	}
+	
+	public boolean wasPayBillsSuccessfull() {
+		log("Looking for message about succesfull payment");
+		
+		try {
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(succPaymentNotification));
+			log("Result: Message is displayed. Payment: " + succPaymentNotification.getAttribute("href"));
+			return true;
+		} catch(Exception ex) {
+			log(ex.getCause().toString());
+			return false;
+		}
+	}
 
 	public boolean assessHomePageElements() {
 
