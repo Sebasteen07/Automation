@@ -160,9 +160,11 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		quantity.sendKeys(PracticeConstants.Quantity);
 		Select selFrequency = new Select(frequency);
 		selFrequency.selectByVisibleText(PracticeConstants.Frequency);
-		
+		if (IHGUtil.exists(driver, 10, pharmacy)) {
 		Select selPharmacy = new Select(pharmacy);
 		selPharmacy.selectByIndex(1);
+		}
+
 		IHGUtil.waitForElement(driver, 20, sendToTheCallinQueue);
 		sendToTheCallinQueue.click();		
 		
