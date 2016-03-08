@@ -37,7 +37,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "replyBody")
 	private WebElement replyBody;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"signin_form\"]/button[2]")
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Send')]")
 	private WebElement sendButton;
 	
 	@FindBy(how = How.XPATH, using = "//a[.='View health data']")
@@ -102,7 +102,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 		return false;
 	}
 	
-	public void replyToMessage(WebDriver driver) {
+	public boolean replyToMessage(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 
 		log("Write a message");
@@ -110,15 +110,15 @@ public class JalapenoMessagesPage extends BasePageObject {
 		replyBody.sendKeys("This is response to doctor's message");
 		
 		sendButton.click();
-	
+		
 		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 20);
+			log("Message sent");
+			return true;
+		} catch (Exception e) {
+			log(e.getCause().toString());
+			return false;
 		}
-
-		log("Message sent");
 	}
 	
 	public JalapenoCcdPage findCcdMessage(WebDriver driver) {

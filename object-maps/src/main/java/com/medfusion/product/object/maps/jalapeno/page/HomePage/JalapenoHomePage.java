@@ -8,11 +8,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
@@ -55,6 +58,12 @@ public class JalapenoHomePage extends JalapenoPage {
 	@FindBy(how = How.ID, using = "familyAccountBtn")
 	private WebElement viewDifferentPatientButton;
 	
+	@FindBy(how = How.ID, using = "listBadge")
+	private WebElement listBadgeDropdownButton;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
+	private WebElement succPaymentNotification;
+	
 	/**
 	 * @Author:Jakub Calabek
 	 * @Date:24.7.2013
@@ -81,6 +90,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
 	}
+	
+	public JalapenoAppointmentRequestV2Step1 clickOnAppointmentV2(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		appointments.click();
+		
+		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
+			}
 
 	public JalapenoPayBillsStatementPage clickOnPayBills(WebDriver driver) throws Exception {
 
@@ -119,9 +135,29 @@ public class JalapenoHomePage extends JalapenoPage {
 		return PageFactory.initElements(driver.switchTo().frame(0), FormWelcomePage.class);
 	}
 	
-	public boolean isNotificationDisplayed(String text) {
+	public boolean isTextDisplayed(String text) {
 		log("Looking for notification: " + text);
-		return driver.findElement(By.xpath("//div[contains(@class, 'notification-message')]/p[.='" + text + "']")).isDisplayed();
+		
+		try{
+			driver.findElement(By.xpath("//*[contains(text(),'" + text + "')]")).getText().contains(text);
+			return true;
+		}catch(Exception e){
+			log(e.getCause().toString());
+			return false;
+		}
+	}
+	
+	public boolean wasPayBillsSuccessfull() {
+		log("Looking for message about succesfull payment");
+		
+		try {
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(succPaymentNotification));
+			log("Result: Message is displayed. Payment: " + succPaymentNotification.getAttribute("href"));
+			return true;
+		} catch(Exception ex) {
+			log(ex.getCause().toString());
+			return false;
+		}
 	}
 
 	public boolean assessHomePageElements() {
@@ -141,32 +177,13 @@ public class JalapenoHomePage extends JalapenoPage {
 	
 	public boolean assessFamilyAccountElements(boolean button){
 		IHGUtil.PrintMethodName();
-		
-		boolean allElementsDisplayed = false;
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(bubble);
 		webElementsList.add(bubbleLabel);
 		if (button) webElementsList.add(viewDifferentPatientButton);
 
-		for (WebElement w : webElementsList) {
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
-		}
-		
-		return allElementsDisplayed;
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	
@@ -183,6 +200,13 @@ public class JalapenoHomePage extends JalapenoPage {
 		askAQuestion.click();
 		
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	
+	public void faChangePatient(){
+		IHGUtil.PrintMethodName();
+		
+		viewDifferentPatientButton.click();
+		listBadgeDropdownButton.click();
 	}
 	
 }

@@ -12,9 +12,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 
 
 public class JalapenoCreateGuardianPage extends BasePageObject{
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='password'])[1]")
+	private WebElement inputPassword;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='userid'])[1]")
+	private WebElement inputUserId;
+	
+	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[1]")
+	private WebElement inputRelationshipFirst;
 	
 	@FindBy(how = How.XPATH, using = "(//input[@id='email'])[2]")
 	private WebElement inputEmail;
@@ -30,6 +40,15 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 	
 	@FindBy(how = How.ID, using = "next")
 	private WebElement buttonContinue;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Enter Portal')]")
+	private WebElement buttonEnterPortal;
+	
+	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
+	private WebElement electronicPaymentPreference;
+	
+	@FindBy(how = How.ID, using = "updateStatementPrefButton")
+	private WebElement okButton;
 	
 	
 	public JalapenoCreateGuardianPage(WebDriver driver) {
@@ -65,10 +84,41 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 		log("Guardian relationship:" + relationship);
 	}
 	
+	public void createGuardianLinkToExistingPatient (String login, String password, String relationship){
+		IHGUtil.PrintMethodName();
+		
+		this.inputUserId.sendKeys(login);
+		this.inputPassword.sendKeys(password);
+		log("Guardian login / password: " + login + " / " + password);
+		
+		Select relationshipPatient = new Select(this.inputRelationshipFirst);
+		relationshipPatient.selectByVisibleText(relationship);
+		log("Guardian relationship:" + relationship);
+	}
+	
+	
 	public JalapenoCreateGuardianPage2 continueToSecondPage(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		this.buttonContinue.click();
 		return PageFactory.initElements(driver, JalapenoCreateGuardianPage2.class);
 	}
+	
+	public JalapenoHomePage continueToPortal(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		this.buttonEnterPortal.click();
+		
+		selectStatementIfRequired();
+		
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	private void selectStatementIfRequired() {
+		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
+			log("Statement delivery preference lightbox is displayed");
+			electronicPaymentPreference.click();
+			okButton.click();
+		}
+	}
+
 }
 	

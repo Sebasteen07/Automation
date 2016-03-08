@@ -456,7 +456,7 @@ public class MessageSync extends BaseTestNGWebDriver {
 		ConsolidatedInboxPage inboxPage = myPatientPage.clickViewAllMessages();
 		PerformanceReporter.getPageLoadDuration(driver, ConsolidatedInboxPage.PAGE_NAME);
 
-		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())+PortalConstants.RxRenewalSubject;
+		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())+PortalConstants.Subject;
 		
 		log("step 13: Find message in Inbox");
 		verifyTrue(inboxPage.findUnreadMessage(uniquePracticeResponse), "Message was not found.");

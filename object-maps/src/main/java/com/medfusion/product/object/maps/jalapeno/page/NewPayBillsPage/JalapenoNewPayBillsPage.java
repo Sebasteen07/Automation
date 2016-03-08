@@ -99,6 +99,7 @@ public class JalapenoNewPayBillsPage extends BasePageObject {
 		String cvvCode = "001";
 		String zipCode = "12345";
 		String phoneNumber = "1234567890";
+		String commentString = "This is testing payment.";
 		
 		log("Insert Payment amount: " + amount);
 		paymentAmount.sendKeys(amount);
@@ -118,14 +119,18 @@ public class JalapenoNewPayBillsPage extends BasePageObject {
 		log("Insert account number: " + accNumber);
 		accountNumber.sendKeys(accNumber);
 
+		log("Insert phone number: " + phoneNumber);
 		phone1.sendKeys(phoneNumber.substring(0, 3));
 		phone2.sendKeys(phoneNumber.substring(3, 6));
 		phone3.sendKeys(phoneNumber.substring(6, 10));
+			
+		log("Insert comment: " + commentString);
+		comment.sendKeys(commentString);
 		
+		log("Insert CVV code: " + cvvCode);
 		cvv.sendKeys(cvvCode);
 		
-		comment.sendKeys("This is testing payment.");
-		
+		log("Click on Continue button");
 		continueButton.click();
 		
 		return this;

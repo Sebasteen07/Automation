@@ -32,8 +32,6 @@ public class Mailinator {
 			throws Exception {
 
 		for (int j = 0; j != retries; j++) {
-			System.out.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
-			Thread.sleep(TIME_TO_WAIT_MS);
 			String url = MAILINATOR_INBOX_TEMPLATE_URL + username;
 
 			System.out.println("GET inbox from: " + url);
@@ -61,6 +59,9 @@ public class Mailinator {
 				}
 			}
 			System.out.println("Email not found. Trial number " + (j + 1) + " / " + retries);
+
+			System.out.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
+			Thread.sleep(TIME_TO_WAIT_MS);
 		}
 		return null;
 	}

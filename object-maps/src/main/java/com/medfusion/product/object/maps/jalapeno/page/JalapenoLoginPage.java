@@ -14,6 +14,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -54,6 +55,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		String sanitizedUrl = url.trim();
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
+		//there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
 		driver.manage().window().maximize();
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
@@ -62,6 +64,7 @@ public class JalapenoLoginPage extends BasePageObject {
 	public JalapenoLoginPage(WebDriver driver) {
 		
 		super(driver);
+		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
 
@@ -96,6 +99,7 @@ public class JalapenoLoginPage extends BasePageObject {
 		inputPassword.sendKeys(password);
 		signInButton.click();
 		
+		log("User is logged in");
 		selectStatementIfRequired();
 		
 		return PageFactory.initElements(driver, JalapenoHomePage.class);

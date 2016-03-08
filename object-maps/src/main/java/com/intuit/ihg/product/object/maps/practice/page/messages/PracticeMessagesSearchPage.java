@@ -157,7 +157,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(10000);
 		IHGUtil.setFrame(driver, "iframebody");	
-//		boolean flag=false;
 		int count=1;
 		for (WebElement message : messageList) 
 		{
@@ -167,8 +166,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 			if(msg.endsWith(subjectText))
 			{
 				driver.findElement(By.xpath(".//*[@id='MfAjaxFallbackDefaultDataTable']/tbody".concat("/tr["+count+"]/td[1]/span/a"))).click();
-				//message.click();
-//				flag=true;
 				break;
 			}
 			count++;

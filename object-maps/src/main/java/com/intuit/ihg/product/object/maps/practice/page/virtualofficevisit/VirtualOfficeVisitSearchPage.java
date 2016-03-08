@@ -11,10 +11,19 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
 import com.intuit.ihg.product.object.maps.practice.page.messages.PracticeMessagesSearchPage;
 
 public class VirtualOfficeVisitSearchPage extends BasePageObject {
 
+	//VOV Statuses
+	public final static String ALL = "0";
+	public final static String OPEN = "1";
+	public final static String IN_PROGRESS = "6";
+	public final static String COMPLETED = "2";
+	public final static String CLOSED = "4";
+	public final static String TERMINATED = "5";
+	
 	public static final String PAGE_NAME = "Virtual Office Visit Search Page";
 //	private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	private boolean hasSearched = false;
@@ -96,7 +105,7 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		//PracticeUtil.setPracticeFrame(driver);
 		
 		// Set VOV Status to Open
-		setVovStatus(VirtualOfficeVisitStatus.OPEN);
+		setVovStatus(OPEN);
 		
 		// Set VOV Assignment to ALL
 		setVovAssignment(VirtualOfficeVisitAssignment.ALL);
@@ -113,7 +122,7 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 	 * @return the Virtual Office Visit take action page or null if no results matched
 	 * @throws ParseException
 	 */
-	public VirtualOfficeVisitTakeActionPage getDetails(Date sentDate) throws ParseException {
+	public AskAStaffQuestionDetailStep1Page getDetails(Date sentDate) throws ParseException {
 		IHGUtil.PrintMethodName();
 		//PracticeUtil.setPracticeFrame(driver);
 		
@@ -135,7 +144,7 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		}
 		
 		return null;*/
-		return PageFactory.initElements(driver, VirtualOfficeVisitTakeActionPage.class);
+		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep1Page.class);
 	}
 	
 	/**

@@ -38,7 +38,8 @@ public class PortalConstants {
 	public final static String PharmacyList = "CVS, 1 Pharm Cr, Cary, NC";
 	public final static String RenewalConfirmation = "Thank you for submitting your Prescription Renewal.";
 	public final static String MyPatientPage = "My Patient Page";
-	public final static String RxRenewalSubject = "RxRenewalSubject";
+	
+	public final static String Subject = "Subject";
 	
 	// Added variables for Prescription test in Integration Platform 
 	public final static String Quantity = "3";
@@ -94,6 +95,7 @@ public class PortalConstants {
 	public final static String TestTimeFrame = "0-12 months ago";
 
 	public final static String NewPatientActivationMessage = "You're invited to create a Patient Portal";
+	public final static String NewPatientActivationMessageLinkText = "Sign Up!";
 	public final static String NewPatientActivationMessageLink = "fuseaction=home.unlock";
 	public final static String DateOfBirtSlashFormat = "01/11/1987";
 	public final static String DateOfBirthMonth = "January";

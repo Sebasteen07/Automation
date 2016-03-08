@@ -31,13 +31,13 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "email")
 	private WebElement inputEmailAddresss;
 
-	@FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[3]")
+	@FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[4]")
 	private WebElement inputDateOfBirthMonth;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[3]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[4]")
 	private WebElement inputDateOfBirthDay;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[3]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[4]")
 	private WebElement inputDateOfBirthYear;
 
 	@FindBy(how = How.ID, using = "gender_male")
@@ -46,13 +46,13 @@ public class JalapenoCreateAccountPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "gender_female")
 	private WebElement femaleGender;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[3]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[4]")
 	private WebElement inputZipCode;
 
-	@FindBy(how = How.XPATH, using = "(//a[@id='cancelStep'])[3]")
+	@FindBy(how = How.XPATH, using = "(//a[@id='cancelStep'])[4]")
 	private WebElement buttonCancel;
 
-	@FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[3]")
+	@FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[4]")
 	private WebElement buttonChooseUserId;
 
 	public JalapenoCreateAccountPage(WebDriver driver) {

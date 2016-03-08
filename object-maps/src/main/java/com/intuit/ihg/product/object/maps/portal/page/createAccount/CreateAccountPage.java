@@ -69,8 +69,6 @@ public class CreateAccountPage extends BasePageObject {
 	@FindBy(name = "addOption")
 	private WebElement prefferedProvider;
 	
-	@FindBy(name = "editAccountPref:border:editForm:inputs:0:input:input")
-	private WebElement prefferedProviderQA1;
 
 
 	// ===========Full page=======================
@@ -340,7 +338,7 @@ public class CreateAccountPage extends BasePageObject {
 	}
 
 	public void selectLocationIfNeeded() {
-		if (new IHGUtil(driver).exists(prefferedLocation)) {
+		if (IHGUtil.exists(driver, 1, prefferedLocation)) {
 			new Select(prefferedLocation).selectByIndex(1);
 		}
 	}
@@ -358,12 +356,6 @@ public class CreateAccountPage extends BasePageObject {
 				Select provider = new Select(prefferedProvider); // and if so, select the first one
 				provider.selectByIndex(1);
 			}
-		//For QA1 environmet there is another name of preffered provide drop down name.
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1"))
-		{
-			Select provider = new Select(prefferedProviderQA1); // and if so, select the first one
-			provider.selectByIndex(1);
-		}
 		
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 	}
@@ -389,76 +381,33 @@ public class CreateAccountPage extends BasePageObject {
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	
-	public MyPatientPage fillPatientActivaion(String sPatientFirstName, String sPatientLastName, String sBirthDay, String sZipCode,
-					String sSSN, String sEmail, String sPassword, String sSecretQuestion, String sSecretAnswer,String activationCode) {
+	public MyPatientPage fillPatientActivaion(String sZipCode, String sEmail, String sPassword, String sSecretQuestion,
+					String sSecretAnswer) {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-/*		IHGUtil.waitForElement(driver, 30, txtPatientFirstname);
-
-		txtPatientFirstname.sendKeys(sPatientFirstName);
-		txtLastname.sendKeys(sPatientLastName);
-		IHGUtil.waitForElement(driver, 30, birthdayDay);
-		radioButtGender.click();*/
 		setBirthDate();
-		//txtbirthday.sendKeys(sBirthDay);
 		txtzipcode.sendKeys(sZipCode);
-		if(sSSN!=null){
-		txtssn.sendKeys(sSSN);
-		}
-		//txtEmail.sendKeys(sEmail);----> commented by Bala
-		//txtEmail.sendKeys(sEmail);
 
 		btnSubmit.click();
-		/*IHGUtil.waitForElement(driver, 30, txtActivationCode);
-		txtActivationCode.sendKeys(activationCode);
-		btnActivate.click();*/
+
 		log("I am on the second Page :======");
 		
 		IHGUtil.waitForElement(driver, 60, txtUserIdActivation);
 		txtUserIdActivation.sendKeys(sEmail);
 		txtUserPasswordActivation.sendKeys(sPassword);
 		txtUserPasswordConfirmationActivation.sendKeys(sPassword);
-		//txtSecretQuestionActivation.sendKeys(sSecretQuestion);
 		Select questionSelect = new Select(txtSecretQuestionActivation);
 		questionSelect.selectByVisibleText(sSecretQuestion);
 		txtSecretAnswerActivation.sendKeys(sSecretAnswer);
 		
-		//Accepting license agreements
+		log("Accepting license agreements");
 		chooseProvider();
+		selectLocationIfNeeded();
 		checkPrivacyInformation.click();
 		checkIntuitTerms.click();
-		btnSubmit.click();
-		
-		
+		btnSubmit.click();		
 
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-
-		/*
-		 * 
-		 * @FindBy(name="firstname") private WebElement
-		 * txtPatientFirstname;
-		 * 
-		 * @FindBy(name="lastname") private WebElement txtLastname;
-		 * 
-		 * @FindBy(name="birthday") private WebElement txtbirthday;
-		 * 
-		 * @FindBy(name="zipcode") private WebElement txtzipcode;
-		 * 
-		 * @FindBy(name="ssn") private WebElement txtssn;
-		 * 
-		 * @FindBy(name="email") private WebElement txtEmail;
-		 * 
-		 * @FindBy(name="buttons:submit") private WebElement btnContinue;
-		 */
-
-	
-
-	/*
-	 * public void waitForpageContent(WebDriver driver) {
-	 * IHGUtil.PrintMethodName(); PortalUtil.setPortalFrame(driver);
-	 * IHGUtil.waitForElement(driver, 60, pageContent); }
-	 */
-
 }

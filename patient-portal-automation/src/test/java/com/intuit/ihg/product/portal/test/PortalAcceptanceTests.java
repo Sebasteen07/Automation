@@ -6,6 +6,7 @@ import java.util.Date;
 import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
 import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
 import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
+import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ActivatePasswordChangePage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.ResetYourPasswordPage;
 import com.intuit.ihg.product.object.maps.portal.page.forgotPassword.SecretAnswerDoesntMatchPage;
@@ -41,12 +42,9 @@ import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.Patient
 import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.symptomassessment.SymptomAssessmentDetailsPage;
 import com.intuit.ihg.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
-import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitOnlineVisitAndMedicationPage;
-import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitPracticeConfirmationPage;
 import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitTakeActionPage;
 
-import org.apache.tools.ant.types.selectors.DifferentSelector;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.ITestResult;
@@ -59,7 +57,6 @@ import com.intuit.ihg.product.portal.tests.CreatePatientTest;
 import com.intuit.ihg.product.portal.tests.FamilyAccountTest;
 import com.intuit.ihg.product.portal.tests.ForgotUserIdTest;
 import com.intuit.ihg.product.portal.tests.HealthKeyMatchTest;
-import com.intuit.ihg.product.portal.tests.PatientActivationUtil;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
@@ -69,6 +66,7 @@ import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.tests.PatientActivationTest;
 import com.intuit.ihg.product.practice.tests.RecivePayNowTest;
 import com.intuit.ihg.product.practice.utils.Practice;
+import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -260,15 +258,17 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		WalletPage pWalletPage = pMyAccountPage.clickWalletLink();
 
 		log("step 6:Add credit card ");
-		pWalletPage.addCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.CreditCardNumber,
-				testcasesData.getDob_Month(), PortalConstants.Year, testcasesData.getZip());
+		pWalletPage.addCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType,
+				PortalConstants.CreditCardNumber, testcasesData.getDob_Month(), PortalConstants.Year,
+				testcasesData.getZip());
 
-		//if the behavior changes back and adding a credit card navigates back to wallet credit cards table, remove step 6b 
+		// if the behavior changes back and adding a credit card navigates back to wallet credit cards table, remove
+		// step 6b
 		log("step 6b:Click on Wallet Link  on MyAccountPage again to refresh to wallet cards table");
 		pWalletPage = pMyAccountPage.clickWalletLink();
 		log("step 7:Verify correct CC details get added");
-		pWalletPage.verifyCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType, PortalConstants.Month,
-				PortalConstants.Year);
+		pWalletPage.verifyCreditCardDetails(PortalConstants.CardholderName, PortalConstants.CreditCardType,
+				PortalConstants.Month, PortalConstants.Year);
 
 		log("Delete the new added Credit card");
 		pWalletPage.removeCreditCard(PortalConstants.CreditCardType);
@@ -276,9 +276,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 13:Click on Add a Family MemberLink  on CreatefamilymemberPage ");
 		pWalletPage.logout(driver);
 	}
-
-
-
 
 	/**
 	 * @Author:- bkrishnankutty
@@ -288,10 +285,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    portal Again Login to patient Portal with the newly
 	 *                    created patient Log out ==================
 	 *                    ===========================================
-	 * 
 	 *                    Note :- //need to include a piece of code here for
 	 *                    deleting cookies so that script works in IE works
-	 * 
 	 * @throws Exception
 	 */
 
@@ -342,11 +337,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("URL: " + testcasesData.geturl());
 		log("USER NAME: " + testcasesData.getUsername());
 		log("Password: " + testcasesData.getPassword());
-		
+
 		log("step 2: LogIn");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		MyPatientPage myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
-		
+
 		log("step 3: Click on Appointment Button on My Patient Page");
 		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
 
@@ -379,16 +374,18 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 11: Click Appt Request tab");
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 
-		log("SUBJECT*******"+Long.toString(apptRequestStep2.getCreatedTs()));
+		log("SUBJECT*******" + Long.toString(apptRequestStep2.getCreatedTs()));
 		log("step 12: Search for appt requests");
 		apptSearch.searchForApptRequests();
-		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(Long.toString(apptRequestStep2.getCreatedTs()));
+		ApptRequestDetailStep1Page detailStep1 = apptSearch
+				.getRequestDetails(Long.toString(apptRequestStep2.getCreatedTs()));
 		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
 
@@ -402,7 +399,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 16: Logout of Practice Portal");
 		practiceHome.logOut();
-		
+
 		log("step 17: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
 		myPatientPage = loginPage.login(testcasesData.getUsername(), testcasesData.getPassword());
@@ -460,7 +457,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, ManageHealthInfoPage.PAGE_NAME);
 
 		log("step 5: Download PDF version of Blue Button download -- validate HTTP Status Code");
-		assertEquals(healthInfo.clickBlueButtonDownloadPdf(), 200, "Download of Blue Button PDF returned unexpected HTTP status code");
+		assertEquals(healthInfo.clickBlueButtonDownloadPdf(), 200,
+				"Download of Blue Button PDF returned unexpected HTTP status code");
 	}
 
 	/**
@@ -500,7 +498,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ManageHealthInfoPage healthInfo = myAccountPage.clickManageHealthInfoLink();
 
 		log("step 5: Download Text version of Blue Button download -- validate HTTP Status Code");
-		assertEquals(healthInfo.clickBlueButtonDownloadText(), 200, "Download of Blue Button PDF returned unexpected HTTP status code");
+		assertEquals(healthInfo.clickBlueButtonDownloadText(), 200,
+				"Download of Blue Button PDF returned unexpected HTTP status code");
 	}
 
 	/**
@@ -608,7 +607,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffStep1Page.PAGE_NAME);
 
 		log("step 4: Complete step 1 of Ask A Staff");
-		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the testAskAStaff automation test case.");
+		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test",
+				"This is generated from the testAskAStaff automation test case.");
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffStep2Page.PAGE_NAME);
 
 		log("step 5: Complete step 2 of Ask A Staff");
@@ -620,7 +620,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffHistoryPage.PAGE_NAME);
 		assertTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())),
 				"Expected to see a subject containing " + askStaff1.getCreatedTimeStamp()
-				+ " on the Ask A Staff History page. None were found.");
+						+ " on the Ask A Staff History page. None were found.");
 
 		log("step 7: Logout of Patient Portal");
 		myPatientPage.logout(driver);
@@ -632,7 +632,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 9: Click Ask A Staff tab");
 		AskAStaffSearchPage aasSearch = practiceHome.clickAskAStaffTab();
@@ -640,7 +641,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 10: Search for questions");
 		aasSearch.searchForQuestions();
-		AskAStaffQuestionDetailStep1Page detailStep1 = aasSearch.getQuestionDetails(Long.toString(askStaff1.getCreatedTimeStamp()));
+		AskAStaffQuestionDetailStep1Page detailStep1 = aasSearch
+				.getQuestionDetails(Long.toString(askStaff1.getCreatedTimeStamp()));
 		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
 
@@ -694,11 +696,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserId() throws Exception {
-		
+
 		log("Test Case: testCreatePatientOnBetaSite");
-		
+
 		// Instancing CreatePatientTest
-		ForgotUserIdTest forgotUserIdTest  = new ForgotUserIdTest();
+		ForgotUserIdTest forgotUserIdTest = new ForgotUserIdTest();
 
 		// Setting data provider
 		Portal portal = new Portal();
@@ -706,10 +708,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Executing Test
 		forgotUserIdTest.forgotUserIdTest(driver, testcasesData);
-		
+
 	}
-	
-	
+
 	/**
 	 * @Author: Prokop Rehacek
 	 * @Date: 4/1/2014
@@ -724,24 +725,23 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
-		
+
 		log("Test Case: testCreatePatientOnBetaSite");
-		
+
 		// Instancing CreatePatientTest
-		ForgotUserIdTest forgotUserIdTest  = new ForgotUserIdTest();
+		ForgotUserIdTest forgotUserIdTest = new ForgotUserIdTest();
 
 		// Setting data provider
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
-		
+
 		// Set case insensitive for email
 		forgotUserIdTest.setCaseInsensitiveEmail(true);
-		
+
 		// Executing Test
 		forgotUserIdTest.forgotUserIdTest(driver, testcasesData);
-		
-	}
 
+	}
 
 	/**
 	 * @Author:- shanthala
@@ -753,8 +753,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    ==========================================
 	 *                    ===================
 	 * @throws Exception
-	 * 
-	 * refactored a bit on Feb 9th 2015 - jodvarka
+	 *             refactored a bit on Feb 9th 2015 - jodvarka
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -788,14 +787,14 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pinsuranceDetailsPage.addInsuranceDetails();
 
 		log("step 8:asserting for Insurance Name and Insurance Type");
-		
+
 		pinsuranceDetailsPage.waitForAddInsuranceButton();
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceName));
 		assertTrue(verifyTextPresent(driver, PortalConstants.InsuranceType));
 
 		log("step 9:Click on delete button to delete Insurance added");
 		pinsuranceDetailsPage.deleteInsurance();
-		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");		
+		log("step 10:asserting for Insurance Name and Insurance Type not present after Insurance deleted");
 		pinsuranceDetailsPage.waitForSubmitInsuranceButton();
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceName));
 		assertFalse(verifyTextNotPresent(driver, PortalConstants.InsuranceType));
@@ -813,7 +812,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    specific item process the item Logout of practice
 	 *                    portal login to patient portal go to inbox find secure
 	 *                    message open secure message ============
-	 *                    =================================================
 	 * @throws Exception
 	 */
 
@@ -867,10 +865,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		VirtualOfficeVisitHistoryPage vovHistory = vovConfirmation.visitVirtualOfficeVistHistory();
 
 		log("step 7: Open Vov History item");
-		VirtualOfficeVisitHistoryDetailPage vovHistoryDetail = vovHistory.viewVirtualOfficeVisitHistoryDetails(sentDate);
+		VirtualOfficeVisitHistoryDetailPage vovHistoryDetail = vovHistory
+				.viewVirtualOfficeVisitHistoryDetails(sentDate);
 
 		log("step 8: Validate Vov History item opened correctly");
-		assertTrue(vovHistoryDetail.didHistoryDetailsLoad(), VirtualOfficeVisitHistoryDetailPage.PAGE_NAME + " failed to load");
+		assertTrue(vovHistoryDetail.didHistoryDetailsLoad(),
+				VirtualOfficeVisitHistoryDetailPage.PAGE_NAME + " failed to load");
 
 		log("step 9: Logout of Patient Portal");
 		home.logout(driver);
@@ -882,7 +882,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 11: Click Vov tab");
 		VirtualOfficeVisitSearchPage vovSearch = practiceHome.clickVirtualOfficeVisitTab();
@@ -893,19 +894,20 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		vovSearch.doBasicSearch();
 
 		log("step 13: select item from results");
-		VirtualOfficeVisitTakeActionPage vovAction = vovSearch.getDetails(sentDate);
-		assertTrue(vovAction.isPageLoaded(), VirtualOfficeVisitTakeActionPage.PAGE_NAME + " failed to load");
+		AskAStaffQuestionDetailStep1Page vovAction = vovSearch.getDetails(sentDate);
+		assertTrue(vovAction.isQuestionDetailPageLoaded(),"VOV Detail failed to load");
 
 		log("step 14: choose Vov processing action");
-		VirtualOfficeVisitOnlineVisitAndMedicationPage vovPrescribe = vovAction.takeActionOfOnlineVisitAndPrescribeMedication(null);
-		assertTrue(vovPrescribe.isPageLoaded(), VirtualOfficeVisitOnlineVisitAndMedicationPage.PAGE_NAME + " failed to load");
+		AskAStaffQuestionDetailStep2Page vovPrescribe = vovAction.chooseProvideAdviceAndMedicine();
+		assertTrue(vovPrescribe.isQuestionDetailPageLoaded(), "VOV processing page failed to load");
 
 		log("step 15: enter prescription and secure message details");
-		VirtualOfficeVisitPracticeConfirmationPage vovConfirm = vovPrescribe.completePrescriptionAndCommunication("IHGQA Auto");
-		assertTrue(vovConfirm.isPageLoaded(), VirtualOfficeVisitPracticeConfirmationPage.PAGE_NAME + " failed to load");
+		
+		AskAStaffQuestionDetailStep3Page vovConfirm = vovPrescribe.prescribeAndCommunicate(PortalConstants.Subject, "Body");
+		assertTrue(vovConfirm.isQuestionDetailPageLoaded(), "Confirm page failed to load");
 
 		log("step 16: confirm and submit");
-		vovConfirm.confirmAndSubmit();
+		vovConfirm.confirmProcessedQuestion();
 		assertTrue(verifyTextPresent(driver, "Your prescription and communication have been posted and the visit has been closed."));
 
 		log("step 17: logout of practice portal");
@@ -921,21 +923,20 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
 		log("step 20: Find message in Inbox");
-		String uniquePracticeResponse = vovPrescribe.getCreatedTs();
+		String uniquePracticeResponse = PortalConstants.Subject + " " + vovPrescribe.getCreatedTimeStamp();
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
 
 		log("step 21: Validate message loads and is the right message");
-		assertTrue(message.isSubjectLocated(uniquePracticeResponse));	
-		
+		assertTrue(message.isSubjectLocated(uniquePracticeResponse));
+
 		log("step 22: Reply back to practice");
-		inboxPage = message.replyToMessage(null,null);
+		inboxPage = message.replyToMessage(null, null);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-		Thread.sleep(10000);
+
 		log("step 23: Logout of Patient Portal");
 		home.logout(driver);
 
 		log("step 24: Login to Practice Portal");
-		Thread.sleep(10000);
 		// Load up practice test data
 		practice = new Practice();
 		practiceTestData = new PracticeTestData(practice);
@@ -957,9 +958,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 28: Find message in search results");
 		PracticeMessagePage theMessage = messageSearch.retrieveMessage(uniquePracticeResponse);
-		assertNotNull(theMessage, "The Patients reply to the Virtual Office Visit message was not received by the practice.");
+		assertNotNull(theMessage,
+				"The Patients reply to the Virtual Office Visit message was not received by the practice.");
 		assertTrue(theMessage.isPageLoaded(), PracticeMessagePage.PAGE_NAME + " failed to load");
-		
 
 	}
 
@@ -968,8 +969,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Date:-April/4/2013
 	 * @User Story ID in Rally
 	 * @StepsToReproduce:
-	 * 
-	 *                    Click on Forgot Password Link on LogIn Page On the
+	 * 					Click on Forgot Password Link on LogIn Page On the
 	 *                    Reset Password Page Give UserId and other details
 	 *                    Verify Gmail Click on Gmail link and confirm the
 	 *                    password ============================================
@@ -996,29 +996,26 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ResetYourPasswordPage pResetYourPasswordPage = loginpage.clickForgotYourPasswordLink();
 
 		log("step 4:Enter your gmail,security Answer and check your gmail account");
-		ActivatePasswordChangePage pActivatePasswordChangePage = pResetYourPasswordPage
-				.resetYourPasswordPage(testcasesData.getEmail(),
-				testcasesData.getAnswer(), testcasesData.getPassword());
+		ActivatePasswordChangePage pActivatePasswordChangePage = pResetYourPasswordPage.resetYourPasswordPage(
+				testcasesData.getEmail(), testcasesData.getAnswer(), testcasesData.getPassword());
 
 		log("step 5:reactivate  your new password");
-		MyPatientPage pMyPatientPage = pActivatePasswordChangePage.activatePasswordChangePage(driver, testcasesData.getUsername(),
-				testcasesData.getPassword());
+		MyPatientPage pMyPatientPage = pActivatePasswordChangePage.activatePasswordChangePage(driver,
+				testcasesData.getUsername(), testcasesData.getPassword());
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 		pMyPatientPage.logout(driver);
 
-
 	}
-	
+
 	/**
 	 * @Author:- Prokop Rehacek
 	 * @Date:-4/23/2014
 	 * @User Story ID in Rally US7907
 	 * @StepsToReproduce:
-	 * 
-	 *                    Click on Forgot Password Link on LogIn Page On the
-	 *                    Reset Password Page Give UserId 
-	 *					  Write wrong answer twice and verify that is shown page
-	 *					  That want you to contact practice
+	 * 					Click on Forgot Password Link on LogIn Page On the
+	 *                    Reset Password Page Give UserId
+	 *                    Write wrong answer twice and verify that is shown page
+	 *                    That want you to contact practice
 	 *                    password ============================================
 	 *                    =================
 	 * @throws Exception
@@ -1042,8 +1039,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		ResetYourPasswordPage pResetYourPasswordPage = loginpage.clickForgotYourPasswordLink();
 
 		log("step 4: Enter your gmail, security Answer and check your gmail account");
-		SecretAnswerDoesntMatchPage pSecretAnswerDoesntMatchPage = pResetYourPasswordPage.sendBadAnswerTwice(testcasesData.getUsername(), "BadAnswer");
-		
+		SecretAnswerDoesntMatchPage pSecretAnswerDoesntMatchPage = pResetYourPasswordPage
+				.sendBadAnswerTwice(testcasesData.getUsername(), "BadAnswer");
+
 		log("step 5: Verify redirection button is present");
 		pSecretAnswerDoesntMatchPage.verifyPracticeButtonPresent(driver);
 
@@ -1081,7 +1079,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: " + patientData.getUsername());
 		log("Password: " + patientData.getPassword());
 
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")){
+		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
 
 			log("****Symptom Assessment scenario wont work with DEV3 environment-Known Issue****");
 			log("**Issue details: 3rd party not being able to hit our server on dev3 ***");
@@ -1094,7 +1092,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 2: Click on SymptomAssessment");
 			NewSymptomAssessmentPage pNewSymptomAssessmentPage = pMyPatientPage.clickNewSymptomAssessmentLink();
-			assertTrue(pNewSymptomAssessmentPage.isPageLoaded(), NewSymptomAssessmentPage.PAGE_NAME + " failed to load.");
+			assertTrue(pNewSymptomAssessmentPage.isPageLoaded(),
+					NewSymptomAssessmentPage.PAGE_NAME + " failed to load.");
 
 			log("step 3: Select your doctor");
 			pNewSymptomAssessmentPage.selectProvider(patientData.getPreferredDoctor());
@@ -1125,13 +1124,15 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			PracticeTestData practiceTestData = new PracticeTestData(practice);
 			// Now start login with practice data
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-			PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-			
+			PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+					practiceTestData.getPassword());
+
 			log("step 9: On Practice Portal Home page Click SymptomAssessmentTab");
 			SymptomAssessmentFilterPage pSymptomAssessmentFilter = practiceHome.clicksymptomAssessmentTab();
 
 			log("step 10: On Practice Portal Home page Click SymptomAssessmentTab");
-			SymptomAssessmentDetailsPage pSymptomAssessmentDetailsPage = pSymptomAssessmentFilter.searchSymptomAssessment();
+			SymptomAssessmentDetailsPage pSymptomAssessmentDetailsPage = pSymptomAssessmentFilter
+					.searchSymptomAssessment();
 
 			log("step 11: Verification on SymptomAssessmentDetailsPage");
 			assertTrue(verifyTextPresent(driver, "Date of Birth : 01/11/1987"));
@@ -1159,7 +1160,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 17: Validate message loads and is the right message");
 			assertTrue(message.isSubjectLocated(practiceResponse));
-			
+
 		}
 	}
 
@@ -1229,7 +1230,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 8:Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
@@ -1268,7 +1270,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
-		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())+PortalConstants.RxRenewalSubject;
+		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs())
+				+ PracticeConstants.SubjectMessage;
 
 		log("step 13: Find message in Inbox And Validate Message Subject");
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
@@ -1330,12 +1333,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 7: Login to Practice Portal");
 		// Instancing virtualCardSwiperTest
 		BillPaymentTest billPaymentTest = new BillPaymentTest();
-		
+
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
+
 		// Executing Test
-		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData, PortalConstants.PatientAccountNumber);
+		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData,
+				PortalConstants.PatientAccountNumber);
 
 		log("step 8: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
@@ -1356,11 +1360,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	/**
 	 * @Author: Gajendran
 	 * @Date: 07/29/2013
-	 * 
 	 * @AreaImpacted :
 	 * @throws Exception
-	 * 
-	 * This test is obsolete now because of new messaging center where isn't refresh button
+	 *             This test is obsolete now because of new messaging center where isn't refresh button
 	 */
 
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1448,13 +1450,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    Specifying all necessary data. Then withdrawing link
 	 *                    to patient activation. User is finishing registration
 	 *                    by email which is send to patient patient gmail.
-	 * 
 	 *                    account. ====================================
 	 *                    =========================
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
 
+	// This test will get updated soon by phajek
 	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientSearch() throws Exception {
 
@@ -1471,11 +1473,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Moving to the Unlock Link get from the Creation on the
 		// PracticePortal
-
-		PatientActivationUtil patientActivation = new PatientActivationUtil();
-
-		patientActivation.ActivatePatient(driver, testcasesData, patientActivationTest, practiceTestData,
-				patientActivationTest.getUnlockLink());
+		/*
+		 * PatientActivationUtil patientActivation = new PatientActivationUtil();
+		 * patientActivation.ActivatePatient(driver, testcasesData, patientActivationTest, practiceTestData,
+		 * patientActivationTest.getUnlockLink());
+		 */
 	}
 
 	/**
@@ -1489,14 +1491,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    thing is on the Practice site when the patient
 	 *                    activation is provided via {@link DifferentSelector}
 	 *                    flow.
-	 * 
 	 *                    account. ====================================
 	 *                    =========================
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "AcceptanceTests" })
 	public void testAddNewPatientActivation() throws Exception {
 
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
@@ -1507,18 +1508,38 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		// Creating data provider
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
-		
-		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, testcasesData.getEmail(), null, null, null);
-		
-		// Moving to the Unlock Link get from the Creation on the
-		// PracticePortal
 
-		PatientActivationUtil patientActivation = new PatientActivationUtil();
+		String email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(), '.');
 
-		patientActivation.ActivatePatient(driver, testcasesData, patientActivationSearchTest, practiceTestData,
-				patientActivationSearchTest.getUnlockLink());
+		log("Go to the Practice Portal and register the patient.");
+		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email, null,
+				null, null);
+
+		log("Go to the url from the Practice Portal to activate the patient.");
+		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(unlockLink);
+		MyPatientPage pMyPatientPage = pCreateAccountPage.fillPatientActivaion(
+				patientActivationSearchTest.getZipCodeString(), email, testcasesData.getPassword(),
+				testcasesData.getSecretQuestion(), testcasesData.getAnswer());
+		CreatePatientTest createPatientTest = new CreatePatientTest(email, testcasesData.getPassword(),
+				testcasesData.geturl());
+		createPatientTest.loginAsNewPatient(driver, pMyPatientPage);
+
+		log("Check if the unlock link in the mail is the same as the one from Practice Portal.");
+		Mailinator mail = new Mailinator();
+		String unlockLinkFromMail = mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage,
+				PortalConstants.NewPatientActivationMessageLinkText, 10);
+		assertEquals(unlockLinkFromMail, unlockLink, "The link in the email is not the same as the in the Portal");
+
+		/*
+		 * MyPatientPage myPatientPage =
+		 * pCreateAccountPage.fillPatientActivaion(patientActivationSearchTest.getLastNameString(),
+		 * PortalConstants.DateOfBirtSlashFormat, patientActivationSearchTest.getZipCodeString(),
+		 * testcasesData.getSSN(),
+		 * patientActivationSearchTest.getEmailAddressString(), testcasesData.getPassword(),
+		 * testcasesData.getSecretQuestion(),
+		 * testcasesData.getAnswer(), activationCode, activationCode);
+		 */
 	}
-	
 
 	/**
 	 * @Author: Ivan David
@@ -1527,7 +1548,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayNow() throws Exception {
-		
 
 		log("Test Case: testPayNow - No login payment");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1536,43 +1556,41 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 1: Get Data from Excel");
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
-		
-	
+
 		log("Step 1: Open no login payment page");
 		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.geturl());
 		log("Step 2: Fill in payment info and submit");
-		
-		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(),
-						testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
-				
+
+		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(),
+				testcasesData.getZip(), testcasesData.getEmail());
+
 		log("Step 3: Verify payment OK");
 		assertTrue(driver.getPageSource().contains("Thank You for your payment"));
-		
+
 		log("Step 3: Verify account set to N/A");
-		verifyTrue(driver.getPageSource().contains("Account N/A.")); 
-		
+		verifyTrue(driver.getPageSource().contains("Account N/A."));
+
 		log("Step 4: Verify the prize format.");
 		verifyTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
-		
+
 		log("Step 5: Search the payment in Practice portal");
 		RecivePayNowTest recievePayNowTest = new RecivePayNowTest();
-		
+
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		
-		recievePayNowTest.PayNowVerify(driver, practiceTestData,pNoLoginPaymentPage.GetAmountPrize());
+
+		recievePayNowTest.PayNowVerify(driver, practiceTestData, pNoLoginPaymentPage.GetAmountPrize());
 	}
-	
-	
+
 	/**
 	 * @Author:- Prokop Rehacek
 	 * @Date:-7/10/2014
 	 * @User Story ID US8868 in Rally
-	 * @StepsToReproduce:	1. go to patient portal
-	 *				      	2. click create account
-	 *				      	4. fill out patient info same as some existing patient
-	 *				      	5. Exist page should be shown
-	 *				      	6. login 
+	 * @StepsToReproduce: 1. go to patient portal
+	 *                    2. click create account
+	 *                    4. fill out patient info same as some existing patient
+	 *                    5. Exist page should be shown
+	 *                    6. login
 	 * @throws Exception
 	 */
 
@@ -1590,23 +1608,23 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		healthKeyMatch66.healthKey66SamePracticeMatch(driver, testcasesData);
 
 	}
-	
+
 	/**
 	 * @Author:- Prokop Rehacek
 	 * @Date:-7/10/2014
 	 * @User Story ID US8868 in Rally
-	 * @StepsToReproduce:	1. create patient in practice A
-	 *				      	2. go to practice B
-	 *				      	3. click create account
-	 *				      	4. fill out patient info same as patient in practice A
-	 *				      	5. HK page should be shown
-	 *				      	6. login 
+	 * @StepsToReproduce: 1. create patient in practice A
+	 *                    2. go to practice B
+	 *                    3. click create account
+	 *                    4. fill out patient info same as patient in practice A
+	 *                    5. HK page should be shown
+	 *                    6. login
 	 * @throws Exception
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthKey66MatchDifferentPractice() throws Exception {
-		
+
 		// Instancing CreatePatientTest - create patient in practice A
 		CreatePatientTest createPatientTest = new CreatePatientTest();
 
@@ -1622,20 +1640,21 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// seting url for practice B
 		healthKeyMatch66.setUrl(testcasesData.getHealthKeyPracticeUrl());
-//		healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), createPatientTest.getLastName());
+		// healthKeyMatch66.healthKey66DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(),
+		// createPatientTest.getFirstName(), createPatientTest.getLastName());
 
 	}
-	
+
 	/**
 	 * @Author:- Ivan David
 	 * @Date:-7/17/2014
 	 * @User Story ID US8868 in Rally
-	 * @StepsToReproduce:	1. go to patient portal
-	 *				      	2. click create account
-	 *				      	4. fill out patient info same as some existing patient with only 5 same values
-	 *				      	5. May Exist page should be shown
-	 *						6. Verify patient by phone
-	 *				      	7. login 
+	 * @StepsToReproduce: 1. go to patient portal
+	 *                    2. click create account
+	 *                    4. fill out patient info same as some existing patient with only 5 same values
+	 *                    5. May Exist page should be shown
+	 *                    6. Verify patient by phone
+	 *                    7. login
 	 * @throws Exception
 	 */
 
@@ -1653,25 +1672,25 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		healthKeyMatch56.healthKey56SamePracticeMatch(driver, testcasesData);
 
 	}
-	
+
 	/**
 	 * @Author:- Ivan David
 	 * @Date:-7/17/2014
 	 * @User Story ID US8868 in Rally
-	 * @StepsToReproduce:	1. create patient in practice A
-	 *				      	2. go to practice B
-	 *				      	3. click create account
-	 *				      	4. fill out patient info same as patient in practice A only with 5 same values
-	 *				      	5. May Exist page should be shown
-	 *						6. Verify patient by phone
-	 *						7. HK page should be shown
-	 *				      	8. login 
+	 * @StepsToReproduce: 1. create patient in practice A
+	 *                    2. go to practice B
+	 *                    3. click create account
+	 *                    4. fill out patient info same as patient in practice A only with 5 same values
+	 *                    5. May Exist page should be shown
+	 *                    6. Verify patient by phone
+	 *                    7. HK page should be shown
+	 *                    8. login
 	 * @throws Exception
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthKey56MatchDifferentPractice() throws Exception {
-		
+
 		// Instancing CreatePatientTest - create patient in practice A
 		CreatePatientTest createPatientTest = new CreatePatientTest();
 
@@ -1687,9 +1706,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// seting url for practice B
 		healthKeyMatch56.setUrl(testcasesData.getHealthKeyPracticeUrl());
-//		healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(), createPatientTest.getFirstName(), "tester");
+		// healthKeyMatch56.healthKey56DifferentPracticeMatch(driver, testcasesData, createPatientTest.getEmail(),
+		// createPatientTest.getFirstName(), "tester");
 
 	}
+
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSecureMessageNotification() throws Exception {
 		log("Test Case: TestSecureMessageNotification");
@@ -1712,22 +1733,24 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 2: Click Patient Messaging and Quick Send a message");
 		PatientMessagingPage patMessaging = practiceHome.clickPatientMessagingTab();
 		String subject = "Subject " + IHGUtil.createRandomNumericString(9);
 		patMessaging.setQuickSendFields("SecureMessageTest", "TestPatient1", "Happy Birthday", subject);
-				
+
 		log("step 3: Logout of Practice Portal");
 		practiceHome.logOut();
 
 		log("step 4:LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testcasesData.geturl());
-		MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getSecureNotificationUser(), testcasesData.getSecureNotificationUserPassword());
+		MyPatientPage pMyPatientPage = loginpage.login(testcasesData.getSecureNotificationUser(),
+				testcasesData.getSecureNotificationUserPassword());
 		PerformanceReporter.getPageLoadDuration(driver, MyPatientPage.PAGE_NAME);
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver),
-				"There was an issue with login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");						
+				"There was an issue with login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
 
 		log("step 5: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
@@ -1738,17 +1761,15 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage message = inboxPage.openMessageInInbox(subject);
 		log("step 7: Validate message loads and is the right message");
 		assertTrue(message.isSubjectLocated(subject));
-		
+
 		log("step 8:Logout");
 		loginpage = pMyPatientPage.logout(driver);
-		
+
 		log("step 9:Check Mailinator");
 		Mailinator mailinator = new Mailinator();
 		String box = testcasesData.getSecureNotificationUser().split("@")[0];
-		assertTrue(mailinator.isMessageInInbox(box,
-				"New message from IHGQA Automation NonIntegrated", "Sign in to view this message",
-				10));
+		assertTrue(mailinator.isMessageInInbox(box, "New message from IHGQA Automation NonIntegrated",
+				"Sign in to view this message", 10));
 	}
-
 
 }

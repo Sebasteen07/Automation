@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -160,11 +161,21 @@ public class ApptRequestSearchPage extends BasePageObject {
 		Select startMonthSelect = new Select(startMonth);
 		startMonthSelect.selectByValue(String.valueOf(startMnthValue));
 		
-		log("Select the Start date in search filter options");	
-		IHGUtil.waitForElement(driver, 6, startDateDropDwn);
-		Select startDate = new Select(startDateDropDwn);
-		startDate.selectByValue(date);
-
+		log("Select the Start date in search filter options");
+		int i = 1;
+		do{
+			try{
+				IHGUtil.waitForElement(driver, 6, startDateDropDwn);
+				Select startDate = new Select(startDateDropDwn);
+				startDate.selectByValue(date);
+				i = 3;
+			}catch(StaleElementReferenceException e){
+				log(e.getCause().toString());
+				log(i + ". try");
+				i++;
+			}
+		}while(i < 3);
+		
 		log("Select end date in search filter options");
 		IHGUtil.waitForElement(driver, 6, endDateDropDwn);
 		Select endDate = new Select(endDateDropDwn);
@@ -224,6 +235,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 				if(complaint.getText().contains(subjectSubString)) {
 					complaint.click();	
 					log("Value :"+i);
+					return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
 				}
 			}
 		}else{
@@ -242,8 +254,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 				}
 			}
 		}
-
-		return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
+		return null;
 	}
 
 

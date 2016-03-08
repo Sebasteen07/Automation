@@ -177,22 +177,12 @@ public class PatientActivationPage extends BasePageObject{
 		clickRegPatient();
 		clickVerify();
 
-		//		clickGetKey deprecated after US8665 (remove comment to test where that change is not yet deployed) --by JakubO
-		//		clickGetKey();
-
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
 		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
 
 		Log4jUtil.log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();
-		
-		/*driver.get(unlocklink);
-		maxWindow();
-		IHGUtil.setFrame(driver, "iframebody");
-		birthday.sendKeys(PracticeConstants.DOB);
-		zipcode.sendKeys(PracticeConstants.Zipcode);
-		Submit.click();*/
 
 	}
 	
