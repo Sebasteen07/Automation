@@ -571,7 +571,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		ImportOrExportProgressPage pImportOrExportProgressPage = pImportPersonnelAndPhysicians.clickbtnimportStaffFile();
 		assertTrue(verifyTextPresent(driver,"Import/Export Progress"),"Import/Export Progress text is not present on Import/Export Progress");
 
-		log("step 7: Click on Link List All Personnel");
+		log("step 7: Wait so it can be imported and click on Link List All Personnel");
+		Thread.sleep(3000);
 		pImportPersonnelAndPhysicians = pImportOrExportProgressPage.clickLinkImportPersonnelAndPhysicians();
 
 		log("#####  Assertions For Import staff ###########");
