@@ -264,6 +264,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 			String reply_Subject="Test"+IHGUtil.createRandomNumericString();
 			String message = RestUtils.prepareSecureMessage(testData.getSecureMessage_AskaStaffXML(), testData.getFrom(), testData.getUserName(),reply_Subject,messageThreadID);
 			
+			String messageID = RestUtils.newMessageID();
+			log("Partner Message ID:" + messageID);
+			
 			log("Step 11: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
 
@@ -446,7 +449,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver{
 
 		log("Step 23: Validate message subject");
 		Thread.sleep(1000);
-		assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have new health data"));
 		
 		log("Step 24: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
