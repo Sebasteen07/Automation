@@ -45,6 +45,12 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 	@FindBy( xpath = ".//input[@name='zip']")
 	private WebElement zipField;
+	
+	@FindBy( xpath = ".//input[@name='accountnum']")
+	private WebElement patientaccountField;
+	
+	@FindBy( xpath = ".//input[@name='patientName']")
+	private WebElement patientNameField;
 
 	@FindBy( xpath = ".//input[@name='paymentComment']")
 	private WebElement paymentCommentField;
@@ -74,8 +80,8 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return pageTitleEle.getText().contains(title);
 	}
-
-	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String comment) throws Exception {
+	
+	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String PAccount, String PName, String comment) throws Exception {
 		IHGUtil.PrintMethodName();	
 		//Thread.sleep(4000);
 		driver.switchTo().frame("iframe");
@@ -95,9 +101,18 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		amountToChargeField.sendKeys(amt);
 		cvvField.sendKeys(cvv);
 		zipField.sendKeys(zip);
+				
+		patientaccountField.sendKeys(PAccount);
+		
+		patientNameField.sendKeys(PName);
+				
+		paymentCommentField.sendKeys(comment);
+		
+		/*
 		if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) {
 			paymentCommentField.sendKeys(comment);
 		}
+		*/
 			
 		clickHereToChargeCard.click();
 	}

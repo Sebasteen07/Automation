@@ -726,6 +726,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// get only patients from last day in epoch time to avoid transferring
 		// lot of data
 		Long since = timestamp / 1000L - 60 * 24;
+		
+		log("Wait 60 seconds so the message can be processed");
+		Thread.sleep(60000);
 
 		log("Getting patients since timestamp: " + since);
 
@@ -1550,7 +1553,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 15: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated(reply_Subject));
 
-		Thread.sleep(120000);
+		Thread.sleep(60000);
 		log("Step 16: Reply to the message");
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY, null);
 
@@ -1761,7 +1764,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String Amount = IHGUtil.createRandomNumericString().substring(1, 4);
 		log("Step 3: Click on Charge Card ");
 		vcsPage.addCreditCardInfo("Test", "5105105105105100", "Visa", "12",
-				"2022", Amount, "110", "12345", "comment");
+				"2022", Amount, "110", "12345", "Test0001", "Test Patient",  "comment");
 
 		log("Step 4: Verify whether the payment is completed successfully.");
 		verifyEquals(Boolean.valueOf(vcsPage.getPayementCompletedSuccessMsg()
@@ -1777,6 +1780,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getOAuthAppToken(),
 				testcasesData.getOAuthUsername(),
 				testcasesData.getOAuthPassword());
+		
+		//wait 30 seconds so the message can be processed
+		Thread.sleep(180000);
 
 		log("Step 7: Getting messages since timestamp: " + timestamp);
 		String lastTimestamp = RestUtils.setupHttpGetRequest(
