@@ -56,7 +56,7 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 	}
 	
-	public boolean checkDependantInfoRegisterPage (String name, String lastname, String email) {
+	public boolean checkDependentInfoRegisterPage (String name, String lastname, String email) {
 		IHGUtil.PrintMethodName();
 			
 		WebDriverWait wait = new WebDriverWait(driver, 20);

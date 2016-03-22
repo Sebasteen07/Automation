@@ -191,6 +191,20 @@ public class PatientSearchPage extends BasePageObject{
 	
 	}
 	
+	public PatientDashboardPage changeEmailWithoutModify(String baseEmail){
+		IHGUtil.PrintMethodName();
+		
+		IHGUtil.waitForElement(driver, 15, newEmail);		
+		newEmail.sendKeys(baseEmail);
+		newEmailConfirm.sendKeys(baseEmail);
+		
+		IHGUtil.waitForElement(driver, 15, updateEmail);
+		updateEmail.click();
+		
+		return PageFactory.initElements(driver, PatientDashboardPage.class);
+	
+	}
+	
 	public void searchAllPatientInPatientSearch(String fName, String lName,int status) throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 15, firstName);

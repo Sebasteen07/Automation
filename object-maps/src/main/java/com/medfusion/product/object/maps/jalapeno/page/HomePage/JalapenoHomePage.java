@@ -142,7 +142,7 @@ public class JalapenoHomePage extends JalapenoPage {
 			driver.findElement(By.xpath("//*[contains(text(),'" + text + "')]")).getText().contains(text);
 			return true;
 		}catch(Exception e){
-			log(e.getCause().toString());
+			log("Text: '" + text + "' wasn't found on the page.");
 			return false;
 		}
 	}
