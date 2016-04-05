@@ -915,7 +915,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		patientActivation.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(), testData.getDOBDay(), testData.getDOBYearUnderage());
 		
 		log("Step 10: Create patient");
-		patientActivation.assessPatientActivationPageElements();
+		patientActivation.assessPatientActivationPageElements(false);
 		String login = "selflogin" + id;
 		JalapenoHomePage homePage = patientActivation.fillInPatientActivation(login, testData.getPassword(), testData);
 		homePage.assessHomePageElements();
