@@ -88,7 +88,7 @@ public class JalapenoPatient extends BaseTestNGWebDriver {
 
 		JalapenoPatientActivationPage patientActivationPage = createAccountPage.goToNextPage();
 
-		assertTrue(patientActivationPage.assessPatientActivationPageElements());
+		assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
 		return patientActivationPage.fillInPatientActivation(getEmail(), getPassword(), testData);
 	}
 

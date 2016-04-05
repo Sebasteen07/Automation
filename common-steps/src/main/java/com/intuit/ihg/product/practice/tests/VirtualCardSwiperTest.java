@@ -50,7 +50,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
 		if (swipeString.isEmpty()){
 			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth, PracticeConstants.expYear, 
-					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
+					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.patientAccount, PracticeConstants.patientName, PracticeConstants.comment);
 		} else {
 			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
@@ -93,7 +93,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
 		if (swipeString.isEmpty()){
 			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth, PracticeConstants.expYear, 
-					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.comment);
+					amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.patientAccount, PracticeConstants.patientName, PracticeConstants.comment);
 		} else {
 			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
