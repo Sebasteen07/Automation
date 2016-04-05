@@ -14,7 +14,7 @@ import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestS
 
 public class AppoitmentRequest extends BaseTestNGWebDriver{
 	
-	public void ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, 
+	public long ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, 
 			String doctorLogin, String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
 		
@@ -42,5 +42,7 @@ public class AppoitmentRequest extends BaseTestNGWebDriver{
 
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
+		
+		return detailStep1.getCreatedTs();
 	}
 }
