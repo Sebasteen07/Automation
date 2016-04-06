@@ -255,7 +255,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.assessLoginPageElements());
 	}	
 	
-	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
 
 		logTestEnvironment();
@@ -705,7 +705,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		
 		log("Check if message was delivered");
-		assertTrue(messagesPage.isMessageDisplayed(driver,"Ola! "+(Long.toString(askPage.getCreatedTimeStamp()))));
+		assertTrue(messagesPage.isMessageDisplayed(driver,"Automated Test "+(Long.toString(detailStep2.getCreatedTimeStamp()))));
 	}
 	
 	// Create under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
