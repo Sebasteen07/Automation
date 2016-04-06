@@ -151,7 +151,7 @@ public class JalapenoHomePage extends JalapenoPage {
 		log("Looking for message about succesfull payment");
 		
 		try {
-			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(succPaymentNotification));
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(succPaymentNotification));
 			log("Result: Message is displayed. Payment: " + succPaymentNotification.getAttribute("href"));
 			return true;
 		} catch(Exception ex) {
