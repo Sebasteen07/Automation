@@ -73,6 +73,9 @@ public class PatientMessagingPage extends BasePageObject{
 	
 	@FindBy(how = How.LINK_TEXT, using = "Quick Send")
 	private WebElement quickSendButton;
+	
+	@FindBy(xpath="//*[contains(text(),'Message Published Successfully')]")
+	private WebElement messagePublishedSuccessfully;
 	/**
 	 * @Description:Set Delivery Mode
 	 */
@@ -205,6 +208,13 @@ public class PatientMessagingPage extends BasePageObject{
 		email.clear();
 		email.sendKeys(PracticeConstants.PatientEmail);
 	}
+	
+    public void setEmail(String email) {
+        IHGUtil.PrintMethodName();
+        IHGUtil.setFrame(driver, PracticeConstants.frameName);
+        this.email.clear();
+        this.email.sendKeys(email);
+    }
 
 	/**
      * @Description:Set Quick Send Fields
@@ -239,44 +249,71 @@ public class PatientMessagingPage extends BasePageObject{
             Thread.sleep(3000);
 
      }
-     
-     /**
-      * @Description:Set Quick Send Fields
-      * @param firstName
-      * @param lastName
-      * @throws Exception
-      */
-      public void setQuickSendFields(String firstName, String lastName, String templateName, String subjectText) throws Exception
-      {
-             IHGUtil.PrintMethodName();
-             Thread.sleep(5000);
-             IHGUtil.setFrame(driver,PracticeConstants.frameName);
-             Select sel = new Select(messageType);
-     		 sel.selectByVisibleText("Other");
-     		 Select sel2 = new Select(template);
-     		 sel2.selectByVisibleText(templateName);
-             setSubject(subjectText);
-             
-             Thread.sleep(2000);
-             patientCanReplyButton.click();
-             setRecipientType();
-             setFirstName(firstName);
-             setLastName(lastName);
-             searchForPatients.click();
-             Thread.sleep(5000);
-             IHGUtil.setFrame(driver,PracticeConstants.frameName);
-             IHGUtil.waitForElement(driver,60,searchResult);
-             searchResult.click();
-             Thread.sleep(12000);
-             publishMessage.click();
-             Thread.sleep(3000);
-      }    
-      
-      public void setQuickSendFields(String firstName, String lastName, String templateName) throws Exception
-      {
-    	  this.setQuickSendFields(firstName, lastName, templateName, PracticeConstants.Subject);
-      }
-      
+
+    /**
+     * @Description:Set Quick Send Fields
+     * @param firstName
+     * @param lastName
+     * @throws Exception
+     */
+    public void setQuickSendFields(String firstName, String lastName, String templateName, String subjectText) {
+        IHGUtil.PrintMethodName();
+
+        setMessageFields(templateName, subjectText);
+
+        setRecipient(firstName, lastName, null);
+
+        publishMessage();
+    }
+
+    public void setQuickSendFields(String firstName, String lastName, String templateName) {
+        this.setQuickSendFields(firstName, lastName, templateName, PracticeConstants.Subject);
+    }
+
+    public void setQuickSendFields(String firstName, String lastName, String email, String templateName,
+            String subjectText) {
+        IHGUtil.PrintMethodName();
+
+        setMessageFields(templateName, subjectText);
+
+        setRecipient(firstName, lastName, email);
+
+        publishMessage();
+    }
+
+    public void setMessageFields(String templateName, String subjectText) {
+        IHGUtil.PrintMethodName();
+
+        IHGUtil.setFrame(driver, PracticeConstants.frameName);
+        Select sel = new Select(messageType);
+        sel.selectByVisibleText("Other");
+        Select sel2 = new Select(template);
+        sel2.selectByVisibleText(templateName);
+        setSubject(subjectText);
+        patientCanReplyButton.click();
+        setRecipientType();
+    }
+
+    public void setRecipient(String firstName, String lastName, String email) {
+        IHGUtil.PrintMethodName();
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+
+        searchForPatients.click();
+        IHGUtil.setFrame(driver, PracticeConstants.frameName);
+        IHGUtil.waitForElement(driver, 60, searchResult);
+        searchResult.click();
+    }
+
+    public void publishMessage() {
+        IHGUtil.PrintMethodName();
+
+        publishMessage.click();
+        IHGUtil.exists(driver, 30, messagePublishedSuccessfully);
+    }
+
       public boolean findMyMessage(String subject) throws Exception {
     	  IHGUtil.PrintMethodName();
     	  int maxCount = 10;
@@ -306,6 +343,4 @@ public class PatientMessagingPage extends BasePageObject{
     	  log("Message from patient not found");
     	  return false;
       }
-
-
 }

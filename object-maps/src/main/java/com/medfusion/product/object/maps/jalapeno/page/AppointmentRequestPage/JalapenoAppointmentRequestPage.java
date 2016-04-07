@@ -88,24 +88,23 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 		}
 		
 		log("Click on Continue button");
-		continueButton.click();
-		
-		log("Submit the request");
-		int i = 1;
-		while(i < 5) {
-			try{
-				log("Find Submit the Request button, trial: " + i);
-				new WebDriverWait(driver, 10).until(
-						ExpectedConditions.elementToBeClickable(By.name(":submit"))).click();
-				log("Click on Submit the Request was successful");
-				i = 5;
-			}catch(StaleElementReferenceException ex) {
-				i++;
-			}catch(TimeoutException e){
-				i++;
-			}
-		}
-		
+        continueButton.click();
+
+        log("Submit the request");
+        for (int i = 1; i <= 5; i++) {
+            try {
+                log("Find Submit the Request button, trial: " + i);
+                new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.name(":submit")))
+                        .click();
+                log("Click on Submit the Request was successful");
+                break;
+            } catch (StaleElementReferenceException ex) {
+                log("Stale Element Reference Exception was thrown.");
+            } catch (TimeoutException e) {
+                log("Timeout Exception was thrown.");
+            }
+        }
+
 		try {
 			IHGUtil.waitForElement(driver, 60, homeButton);
 			log("Checking WebElement" + homeButton.toString());
