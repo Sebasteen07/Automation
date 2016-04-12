@@ -190,7 +190,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		
 	}
 
-	public boolean assessPatientActivationPageElements(boolean prevStepB) {
+	public boolean assessPatientActivationPageElements(boolean checkPrevStepButton) {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(inputUserId);
@@ -202,10 +202,12 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 		webElementsList.add(inputPhone3);
 		webElementsList.add(inputPhoneType);
 		webElementsList.add(finishStep);
-		if (prevStepB) webElementsList.add(prevStep);
+        if (checkPrevStepButton) {
+            webElementsList.add(prevStep);
+        }
 
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
+        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+    }
 	
 	public boolean assessPatientActivationVerifyPageElements() {
 

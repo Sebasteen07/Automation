@@ -271,7 +271,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getDoctorPassword());
 
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setQuickSendFields(testData.getFirstName(), testData.getLastName(), "TestingMessage", messageSubject);
+		patientMessagingPage.setQuickSendFields(testData.getFirstName(), testData.getLastName(), testData.getEmail(), "TestingMessage", messageSubject);
 		
 		log("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -820,6 +820,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getDOBDay(), testData.getDOBYear());
 
 		log("Step 8: Finishing of patient activation: step 2 - filling patient data");
+		assertTrue(jalapenoPatientActivationPage.assessPatientActivationPageElements(false));
 		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientLogin, testData.getPassword(),
 				testData);
 
