@@ -18,7 +18,7 @@ import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.Ja
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.jalapeno.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
+import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.jalapeno.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.jalapeno.page.AskAStaff.JalapenoAskAStaffPage;
@@ -105,12 +105,12 @@ public class JalapenoHomePage extends JalapenoPage {
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
 	}
 	
-	public JalapenoNewPayBillsPage clickOnNewPayBills(WebDriver driver) throws Exception {
+	public JalapenoPayBillsMakePaymentPage clickOnNewPayBills(WebDriver driver) throws Exception {
 		
 		log("Clicking on Payments button");
 		payments.click();
 
-		return PageFactory.initElements(driver, JalapenoNewPayBillsPage.class);
+		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
 	
 	public JalapenoHealthFormsListPage clickOnHealthForms(WebDriver driver) throws Exception {

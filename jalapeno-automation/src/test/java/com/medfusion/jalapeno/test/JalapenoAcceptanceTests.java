@@ -49,7 +49,8 @@ import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage
 import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
-import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoNewPayBillsPage;
+import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
+import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
 import org.testng.ITestResult;
@@ -603,11 +604,15 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
 		
-		JalapenoNewPayBillsPage payBillsPage = homePage.clickOnNewPayBills(driver);
-		assertTrue(payBillsPage.assessNewPayBillsElements());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		//remove all cards because Selenium can't see AddNewCard button
+		payBillsPage.removePreviousCardsIfPresent();
+		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 		
-		assertNotNull(payBillsPage.fillPaymentInfo(amount, accountNumber));
-		homePage = payBillsPage.submitPayment();
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber);
+		assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
+		
+		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.logout(driver);
 		
