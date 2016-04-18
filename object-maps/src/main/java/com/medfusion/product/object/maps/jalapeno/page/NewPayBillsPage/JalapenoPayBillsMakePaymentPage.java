@@ -9,6 +9,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.product.jalapeno.CreditCard;
+import com.medfusion.product.jalapeno.CreditCard.CardType;
 
 public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	
@@ -67,43 +69,36 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		PageFactory.initElements(driver, this);	
 	}
 	
-	private void fillNewCardInformation(String name, String number, String exp, String cvv, String zipCode) {
+	private void fillNewCardInformation(CreditCard card) {
 		log("Verify all elements of lightbox are visible");
 		assessAddNewCrediCardLightboxElements();
 		
 		log("Filling info about new credit card");
-		log("Name on card: " + name);
-		nameOnCard.sendKeys(name);
+		log("Name on card: " + card.getName());
+		nameOnCard.sendKeys(card.getName());
 		
-		log("ZipCode: " + zipCode);
-		bill_zipcode.sendKeys(zipCode);
+		log("ZipCode: " + card.getZipCode());
+		bill_zipcode.sendKeys(card.getZipCode());
 		
-		log("Card number: " + number);
-		cardNumber.sendKeys(number);
+		log("Card number: " + card.getCardNumber());
+		cardNumber.sendKeys(card.getCardNumber());
 		
-		log("Expiration: " + exp);
-		expiration.sendKeys(exp);
+		log("Expiration: " + card.getExpirationDate());
+		expiration.sendKeys(card.getExpirationDate());
 		
-		log("CVV: " + cvv);
-		creditCardCVV.sendKeys(cvv);
+		log("CVV: " + card.getCvvCode());
+		creditCardCVV.sendKeys(card.getCvvCode());
 		
-		log("Is card selected? Result: " + visaCard.getAttribute("class").contains("ccselected"));
+		log("Is " + card.getType() + " card type selected? Result: " + isCardTypeSelected(card.getType()));
 		
 		log("Submit new card");
 		submitNewCard.click();
 	}
 	
-	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber) {
-		//TODO: extract these information somewhere to property file and make it customizable
-		String name = "TestPatient CreditCard";
-		String number = "4111111111111111";
-		String exp = "1020";
-		String cvvCode = "001";
-		String zipCode = "12345";
-		
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {	
 		log("Click on Add New Card");
 		addNewCardButton.click();
-		fillNewCardInformation(name, number, exp, cvvCode, zipCode);
+		fillNewCardInformation(creditCard);
 		
 		log("Insert Payment amount: " + amount);
 		paymentAmount.sendKeys(amount);		
@@ -111,8 +106,8 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		log("Insert account number: " + accNumber);
 		accountNumber.sendKeys(accNumber);
 		
-		log("Insert CVV code: " + cvvCode);
-		confirmCVV.sendKeys(cvvCode);
+		log("Insert CVV code: " + creditCard.getCvvCode());
+		confirmCVV.sendKeys(creditCard.getCvvCode());
 		
 		log("Click on Continue button");
 		//for some reason it's not reacting when there's only one click on Continue button
@@ -125,9 +120,10 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	public void removePreviousCardsIfPresent() {
 		log("Removing of displayed cards");
 		ArrayList<WebElement> cards = (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
-		int removedCards = 0;
 		
 		if(cards.size() > 0) {
+			int removedCards = 0;
+
 			log("Count of displayed cards: " + cards.size());
 			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
 			//remove this logging after Lidka's fix -> there should be cards.size == removeButtons.size
@@ -138,9 +134,12 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 					removedCards++;
 				}
 			}
+			
+			log("Count of successfully removed cards: " + removedCards);	
 		}
-		
-		log("Count of successfully removed cards: " + removedCards);	
+		else {
+			log("No previous card is displayed");
+		}
 	}
 	
 	private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
@@ -148,6 +147,22 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		driver.findElement(By.id("removeCardOkButton")).click();
 		
 		return this;
+	}
+	
+	private boolean isCardTypeSelected(CardType type) {
+		switch (type) {
+		case Visa:
+			return visaCard.getAttribute("class").contains("ccselected");
+		case Mastercard:
+			return mastercardCard.getAttribute("class").contains("ccselected");
+		case Discover:
+			return discoverCard.getAttribute("class").contains("ccselected");
+		case Amex:
+			return amexCard.getAttribute("class").contains("ccselected");
+		default:
+			log("Unknown card type was inserted");
+			return false;
+		}
 	}
 	
 	//modified assess to see if it will work without waitForElement and moved allElementsDisplayed=true at the end

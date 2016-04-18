@@ -29,7 +29,9 @@ import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
 import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
+import com.medfusion.product.jalapeno.CreditCard;
 import com.medfusion.product.jalapeno.JalapenoPatient;
+import com.medfusion.product.jalapeno.CreditCard.CardType;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -598,19 +600,22 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		log("Initiate payment data");	
 		String accountNumber = IHGUtil.createRandomNumericString(8);
 		String amount = IHGUtil.createRandomNumericString(3);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 
 		log("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
-		
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		//remove all cards because Selenium can't see AddNewCard button
 		payBillsPage.removePreviousCardsIfPresent();
 		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 		
-		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber);
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
 		assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
+		log("Verifying credit card ending");
+		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 		
 		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 		assertTrue(homePage.wasPayBillsSuccessfull());
