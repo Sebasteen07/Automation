@@ -89,7 +89,8 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		log("CVV: " + card.getCvvCode());
 		creditCardCVV.sendKeys(card.getCvvCode());
 		
-		log("Is " + card.getType() + " card type selected? Result: " + isCardTypeSelected(card.getType()));
+		log("Checking if " + card.getType() + " card type is selected");
+		assert isCardTypeSelected(card.getType())  : "Wrong card type was selected.";
 		
 		log("Submit new card");
 		submitNewCard.click();
@@ -117,7 +118,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
 	}
 	
-	public void removePreviousCardsIfPresent() {
+	public void removeAllCards() {
 		log("Removing of displayed cards");
 		ArrayList<WebElement> cards = (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
 		
@@ -126,8 +127,6 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 
 			log("Count of displayed cards: " + cards.size());
 			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
-			//remove this logging after Lidka's fix -> there should be cards.size == removeButtons.size
-			log("Count of removeButtons: " + removeButtons.size());
 			for(int i = 0; i < removeButtons.size(); i++) {
 				if (removeButtons.get(i).isDisplayed()) {
 					removeCreditCard(removeButtons.get(i));

@@ -53,6 +53,6 @@ public class JalapenoPayBillsConfirmationPage extends BasePageObject {
 	}
 	
 	public String getCreditCardEnding() {
-		return cardEnding.getText().replaceFirst("ending in ", "");
+		return cardEnding.getText().substring(cardEnding.getText().length() - 4);
 	}
 }

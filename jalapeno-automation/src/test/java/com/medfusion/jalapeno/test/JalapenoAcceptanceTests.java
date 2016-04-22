@@ -57,6 +57,7 @@ import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.Jalapen
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotNull;
@@ -69,6 +70,13 @@ import static org.testng.Assert.assertNotNull;
 @Test
 public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
+	@BeforeMethod
+	private void logTestEnvironment() {
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+	}
+	
 	@AfterMethod
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
@@ -77,21 +85,16 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "None" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
-		logTestEnvironment();
-
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
-
 	}
 
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginValidCredentials() throws Exception {
-
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -110,8 +113,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginInvalidCredentials() throws Exception {
 
-		logTestEnvironment();
-
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -126,7 +127,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -150,7 +150,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
-		logTestEnvironment();
 		
 		log("Getting Test Data");
 		Practice practice = new Practice();
@@ -207,16 +206,9 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 	}
 
-	private void logTestEnvironment() {
-		log(this.getClass().getName());
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-	}
-
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
 
-		logTestEnvironment();
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -262,8 +254,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
-
-		logTestEnvironment();
 		
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String messageSubject = "Namaste " + System.currentTimeMillis();
@@ -301,8 +291,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {
-
-		logTestEnvironment();
 		
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -334,8 +322,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
-		logTestEnvironment();
-
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
@@ -363,8 +349,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
-
-		logTestEnvironment();
 	
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -402,8 +386,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
-		logTestEnvironment();
-
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		log("Getting Test Data");
@@ -434,8 +416,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequest() throws Exception {
-
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -472,8 +452,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	//TODO: after Appointment Request v1 is not used - delete test above and set up this test to Jalapeno Automation
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestV2() throws Exception {
-
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -532,7 +510,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrescriptionRenewal() throws Exception {
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -592,7 +569,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayBills() throws Exception {
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -609,7 +585,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(),testData.getPassword());
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		//remove all cards because Selenium can't see AddNewCard button
-		payBillsPage.removePreviousCardsIfPresent();
+		payBillsPage.removeAllCards();
 		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 		
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
@@ -657,7 +633,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskAStaff() throws Exception {
-		logTestEnvironment();
 
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -723,7 +698,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	// Create under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFACreateGuardianOnly() throws Exception {
-		logTestEnvironment();
 		
 		log("Step 1: Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -793,7 +767,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	// Create normal patient, under-age patient, complete registration with new guardian, checks login credentials and then checks guardian email
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFACreateDependentAndGuardian() throws Exception {
-		logTestEnvironment();
 		
 		log("Step 1: Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -882,7 +855,6 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 	// This test uses under-age patients created at tests FACreateDependentAndGuardian and FACreateGuardianOnly
 	@Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFAPostAgeOutFlow() throws Exception {
-		logTestEnvironment();
 		
 		log("Step 1: Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
