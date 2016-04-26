@@ -112,7 +112,6 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	 */
 	public long getCreatedTimeStamp() {
 		IHGUtil.PrintMethodName();
-		PracticeUtil.setPracticeFrame(driver);
 		
 		return createdTs;
 	}

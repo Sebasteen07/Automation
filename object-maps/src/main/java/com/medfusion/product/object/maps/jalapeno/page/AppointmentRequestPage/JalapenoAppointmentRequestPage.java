@@ -1,9 +1,9 @@
 package com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage;
 
 import java.util.ArrayList;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +11,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
@@ -89,23 +88,23 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
 		}
 		
 		log("Click on Continue button");
-		continueButton.click();
-		
-		log("Submit the request");
-		int i = 1;
-		while(i < 5) {
-			try{
-				log("Find Submit the Request button " + i);
-				new WebDriverWait(driver, 20).until(
-						ExpectedConditions.elementToBeClickable(By.name(":submit"))).click();
-				log("Click on Submit the Request was successful");
-				i = 5;
-			}
-			catch(StaleElementReferenceException ex) {
-				i++;
-			}
-		}
-		
+        continueButton.click();
+
+        log("Submit the request");
+        for (int i = 1; i <= 5; i++) {
+            try {
+                log("Find Submit the Request button, trial: " + i);
+                new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.name(":submit")))
+                        .click();
+                log("Click on Submit the Request was successful");
+                break;
+            } catch (StaleElementReferenceException ex) {
+                log("Stale Element Reference Exception was thrown.");
+            } catch (TimeoutException e) {
+                log("Timeout Exception was thrown.");
+            }
+        }
+
 		try {
 			IHGUtil.waitForElement(driver, 60, homeButton);
 			log("Checking WebElement" + homeButton.toString());

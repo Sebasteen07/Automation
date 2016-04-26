@@ -1725,16 +1725,19 @@ public class RestUtils {
    		Assert.assertTrue(found, "Patient was not found in the response XML");
 	}
 
-	public static String verifyEmailNotification(String gmailUserName,String gmailPassword, String recipient,int minute ) throws Exception
+	public static String verifyEmailNotification(String gmailUserName,String gmailPassword, String recipient,int minute, String portal ) throws Exception
 	{
 		GmailBot gBot = new GmailBot();
 		String emailMessageLink = null;
 		
 		Log4jUtil.log("Gmail User Name :"+ gmailUserName + "Password :"+gmailPassword);
 		try {
-			
-		emailMessageLink=gBot.findInboxEmailLink(gmailUserName,gmailPassword,"New message from "+recipient,IntegrationConstants.EMAIL_BODY_LINK, minute, false, true);
-		
+			if (portal == "Portal 1.0"){
+				emailMessageLink=gBot.findInboxEmailLink(gmailUserName,gmailPassword,"New message from "+recipient,IntegrationConstants.EMAIL_BODY_LINK, minute, false, true);
+					}
+			else if (portal == "Portal 2.0"){
+				emailMessageLink=gBot.findInboxEmailLink(gmailUserName,gmailPassword,"New message from "+recipient,IntegrationConstants.PI_EMAIL_BODY_LINK, minute, false, true);
+					}
 		} catch (Exception e) {
 			Log4jUtil.log("Error :"+e);
 		}

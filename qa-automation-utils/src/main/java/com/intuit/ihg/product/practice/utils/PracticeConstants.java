@@ -49,6 +49,8 @@ public class PracticeConstants {
 	public final static String expYear = "2022";
 	public final static String cvv = "111";
 	public final static String zip = "12345";
+	public final static String patientAccount = "MF12345";
+	public final static String patientName = "Test Patient";
 	public final static String comment = "Testing card Payment.";
 	
 	//card PayPal  MasterCard payment

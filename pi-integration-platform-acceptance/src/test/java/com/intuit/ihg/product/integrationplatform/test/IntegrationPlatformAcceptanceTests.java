@@ -11,6 +11,9 @@ import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.Appointment;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
@@ -19,8 +22,10 @@ import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.*;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
-
+import com.intuit.ihg.product.object.maps.practice.page.*;
+import com.intuit.ihg.product.object.maps.practice.page.apptrequest.*;
 
 import static org.testng.Assert.assertNotNull;
 
@@ -216,7 +221,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		RestUtils.verifyEmailNotification(
 				testData.getGmailUserName(), testData.getGmailPassword(),
-				testData.getSender3(), 3);
+				testData.getSender3(), 3, "Portal 2.0");
 
 		log("Step 7: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -377,4 +382,325 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	/*
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAppointmentRequest10() throws Exception {
+
+		log("Test Case: End to end testing Appointment Request 1.0 for PI");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+		log("Step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("AppointmentPath: " + testData.getAppointmentPath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("PracticePassword: "+ testData.getPracticePassword());
+		log("Practice User Name: "+ testData.getPracticeUserName());
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		log("Step 3: Click on Appointment Button on Home Page");
+		JalapenoAppointmentRequestPage apptPage = homePage.clickOnAppointment(driver);
+				
+		log("Step 4: Complete Appointment Request Page");
+		apptPage.clickOnContinueButton(driver);
+		assertTrue(apptPage.fillAndSendTheAppointmentRequest(driver), "Request not submitted");
+													
+		log("Step 5: Return to Home Page");
+		homePage = apptPage.returnToHomePage(driver);
+
+		log("Step 6: Logout of Patient Portal");
+		homePage.logout(driver);
+
+		log("Step 7: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
+				testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+
+		log("Step 8: Get Appointment Rest call");
+
+		// get only messages from last hour in epoch time to avoid transferring
+		// lot of data
+		Long since = timestamp / 1000L - 60 * 24;
+
+		log("Getting messages since timestamp: " + since);
+
+		// do the call and save xml, ",0" is there because of the since
+		// attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
+				+ ",0", testData.getResponsePath());
+
+		log("Step 9: Checking reason in the response xml");
+		String reason = "Illness";
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+
+		String arSMSubject = "Reply to Appointment Request";
+				
+		String arSMBody = "This is reply to AR for "+reason;
+		
+		String postXML = RestUtils.findValueOfChildNode(
+				testData.getResponsePath(), "AppointmentRequest", reason,
+				arSMSubject, arSMBody, testData.getAppointmentPath());
+
+		// httpPostRequest method
+		log("Step 10: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(
+				testData.getRestUrl(), postXML, testData.getResponsePath());
+
+		log("Step 11: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(120000);
+			RestUtils.setupHttpGetRequest(processingUrl,
+					testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData
+					.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+
+		log("Step 12: Check secure message in patient gmail inbox");
+		String emailMessageLink = RestUtils.verifyEmailNotification(
+				testData.getGmailUserName(), testData.getGmailPassword(),
+				testData.getPracticeName(), 3, "Portal 2.0");
+
+		log ("Email link is: "+emailMessageLink);
+		// patient Portal validation
+		log("Step 13: Login to Patient Portal");
+		JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, emailMessageLink);
+		JalapenoHomePage homePage2 = loginPage2.login(testData.getUserName(), testData.getPassword());
+		
+		log("Step 14:Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
+		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+
+		log("Step 15: Find & validate message in Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
+
+		log("Step 16: Logout of Patient Portal");
+		homePage2.logout(driver);
+		
+		// Practice portal validation
+		log("Step 17: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
+				testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(
+				testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("Step 18: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+		//PerformanceReporter.getPageLoadDuration(driver,
+				//ApptRequestSearchPage.PAGE_NAME);
+
+		log("Step 19: Search for appt requests");
+		apptSearch.searchForApptRequests(2, null, null);
+		Thread.sleep(60000);
+		ApptRequestDetailStep1Page detailStep1 = apptSearch
+				.getRequestDetails(reason);
+		assertNotNull(detailStep1,
+				"The submitted patient request was not found in the practice");
+		//PerformanceReporter.getPageLoadDuration(driver,
+				//ApptRequestDetailStep1Page.PAGE_NAME);
+
+		String actualSMSubject = detailStep1.getPracticeMessageSubject();
+		assertTrue(detailStep1.getPracticeMessageSubject()
+				.contains(arSMSubject),
+				"Expected Secure Message Subject containing [" + arSMSubject
+						+ "but actual message subject was [" + actualSMSubject
+						+ "]");
+
+		String actualSMBody = detailStep1.getPracticeMessageBody();
+		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody),
+				"Expected Secure Message Body containing [" + arSMBody
+						+ "but actual message body was [" + actualSMBody + "]");
+
+		log("Step 20: Logout of Practice Portal");
+		practiceHome.logOut();
+
+	}
+	*/
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAppointmentRequest20() throws Exception {
+
+		log("Test Case: End to end testing Appointment Request 2.0 for PI");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+		log("Step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("AppointmentPath: " + testData.getAppointmentPath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("PracticePassword: "+ testData.getPracticePassword());
+		log("Practice User Name: "+ testData.getPracticeUserName());
+		
+		String reason = IntegrationConstants.AR_REASON;
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		log("Step 3: Click on Appointment Button on Home Page");
+		JalapenoAppointmentRequestV2Step1 apptPage1 = homePage.clickOnAppointmentV2(driver);
+				
+		log("Step 4: Complete Appointment Request Page");
+		apptPage1.chooseFirstProvider();
+		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
+		
+		apptPage2.fillAppointmentRequestForm(reason);
+		homePage = apptPage2.submitAppointment(driver);
+		
+		log("Check if thank you frame is displayd");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+		
+		log("Step 6: Logout of Patient Portal");
+		homePage.logout(driver);
+
+		log("Step 7: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
+				testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+
+		log("Step 8: Get Appointment Rest call");
+
+		// get only messages from last hour in epoch time to avoid transferring
+		// lot of data
+		Long since = timestamp / 1000L - 60 * 24;
+
+		log("Getting messages since timestamp: " + since);
+
+		// do the call and save xml, ",0" is there because of the since
+		// attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
+				+ ",0", testData.getResponsePath());
+
+		log("Step 9: Checking reason in the response xml");		
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+
+		String arSMSubject = "Reply to Appointment Request";
+				
+		String arSMBody = "This is reply to AR for "+reason;
+		
+		String postXML = RestUtils.findValueOfChildNode(
+				testData.getResponsePath(), "AppointmentRequest", reason,
+				arSMSubject, arSMBody, testData.getAppointmentPath());
+
+		// httpPostRequest method
+		log("Step 10: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(
+				testData.getRestUrl(), postXML, testData.getResponsePath());
+
+		log("Step 11: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(120000);
+			RestUtils.setupHttpGetRequest(processingUrl,
+					testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData
+					.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+
+		log("Step 12: Check secure message in patient gmail inbox");
+		String emailMessageLink = RestUtils.verifyEmailNotification(
+				testData.getGmailUserName(), testData.getGmailPassword(),
+				testData.getPracticeName(), 3, "Portal 2.0");
+
+		log ("Email link is: "+emailMessageLink);
+		// patient Portal validation
+		log("Step 13: Login to Patient Portal");
+		JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, emailMessageLink);
+		JalapenoHomePage homePage2 = loginPage2.login(testData.getUserName(), testData.getPassword());
+		
+		log("Step 14:Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
+		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+
+		log("Step 15: Find & validate message in Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
+
+		log("Step 16: Logout of Patient Portal");
+		homePage2.logout(driver);
+		
+		// Practice portal validation
+		log("Step 17: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
+				testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(
+				testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("Step 18: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+		//PerformanceReporter.getPageLoadDuration(driver,
+			//	ApptRequestSearchPage.PAGE_NAME);
+
+		log("Step 19: Search for appt requests");
+		apptSearch.searchForApptRequests(2, null, null);
+		Thread.sleep(60000);
+		ApptRequestDetailStep1Page detailStep1 = apptSearch
+				.getRequestDetails(reason);
+		assertNotNull(detailStep1,
+				"The submitted patient request was not found in the practice");
+		//PerformanceReporter.getPageLoadDuration(driver,
+			//	ApptRequestDetailStep1Page.PAGE_NAME);
+
+		String actualSMSubject = detailStep1.getPracticeMessageSubject();
+		assertTrue(detailStep1.getPracticeMessageSubject()
+				.contains(arSMSubject),
+				"Expected Secure Message Subject containing [" + arSMSubject
+						+ "but actual message subject was [" + actualSMSubject
+						+ "]");
+
+		String actualSMBody = detailStep1.getPracticeMessageBody();
+		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody),
+				"Expected Secure Message Body containing [" + arSMBody
+						+ "but actual message body was [" + actualSMBody + "]");
+
+		log("Step 20: Logout of Practice Portal");
+		practiceHome.logOut();
+
+	}
 }

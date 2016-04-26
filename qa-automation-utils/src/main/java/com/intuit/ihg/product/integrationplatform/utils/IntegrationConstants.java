@@ -37,7 +37,7 @@ public class IntegrationConstants {
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "You have new health data";
-	public static final String CCD_MESSAGE_SUBJECT_old = "New Health Information Import";
+
 	//Appointment Request constants
 	public static final String REASON = "Reason";
 	public static final String CREATED_TIME = "CreatedDateTime";
@@ -51,6 +51,7 @@ public class IntegrationConstants {
 	public static final String SCHEDULED_DATE = "ScheduledDateTime";
 	public static final String AR_SM_SUBJECT = "This is reply to Appointment";
 	public static final String AR_SM_BODY = "New Reply to AR for";
+	public static final String AR_REASON = "Carpel Tunnel";
 	
 	//Prescription Constant
 	public static final String MEDICATION = "Medication";
@@ -136,5 +137,6 @@ public class IntegrationConstants {
 	
 	//Email notification constant
 	public static final String EMAIL_BODY_LINK="fuseaction=com.start";
+	public static final String PI_EMAIL_BODY_LINK="portal/#/user";
 }
 

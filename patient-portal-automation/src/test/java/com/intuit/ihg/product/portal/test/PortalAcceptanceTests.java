@@ -108,6 +108,31 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 *               removing the one that was added, not the existing provider
 	 * @throws Exception
 	 */
+
+	private void activatePatient(String unlockLink, String zip, String email, TestcasesData testcasesData) throws Exception
+	{
+
+
+	//	email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(), '.');
+
+
+
+	log("Go to the url from the Practice Portal to activate the patient.");
+	CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(unlockLink);
+	MyPatientPage pMyPatientPage = pCreateAccountPage.fillPatientActivaion(
+	zip, email, testcasesData.getPassword(),
+	testcasesData.getSecretQuestion(), testcasesData.getAnswer());
+	CreatePatientTest createPatientTest = new CreatePatientTest(email, testcasesData.getPassword(),
+	testcasesData.geturl());
+	createPatientTest.loginAsNewPatient(driver, pMyPatientPage);
+
+	log("Check if the unlock link in the mail is the same as the one from Practice Portal.");
+	Mailinator mail = new Mailinator();
+	String unlockLinkFromMail = mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage,
+	PortalConstants.NewPatientActivationMessageLinkText, 10);
+	assertEquals(unlockLinkFromMail, unlockLink, "The link in the email is not the same as the in the Portal");
+	}
+
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddandRemovePreferences() throws Exception {
 
@@ -1456,28 +1481,25 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 
-	// This test will get updated soon by phajek
-	@Test(enabled = false, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddNewPatientSearch() throws Exception {
+	PatientActivationTest patientActivationTest = new PatientActivationTest();
 
-		PatientActivationTest patientActivationTest = new PatientActivationTest();
+	Practice practice = new Practice();
+	Portal portal = new Portal();
+	TestcasesData testcasesData = new TestcasesData(portal);
 
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
+	PracticeTestData practiceTestData = new PracticeTestData(practice);
+	
+	// Creating data provider
 
-		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
+	String randomEmail = IHGUtil.createRandomNumericString() + testcasesData.getEmail();
+	patientActivationTest.PatientActivation(driver, practiceTestData, randomEmail);
 
-		patientActivationTest.PatientActivation(driver, practiceTestData, testcasesData.getEmail());
+	activatePatient(patientActivationTest.getUnlockLink(), patientActivationTest.getZipCodeString(), randomEmail, testcasesData);
 
-		// Moving to the Unlock Link get from the Creation on the
-		// PracticePortal
-		/*
-		 * PatientActivationUtil patientActivation = new PatientActivationUtil();
-		 * patientActivation.ActivatePatient(driver, testcasesData, patientActivationTest, practiceTestData,
-		 * patientActivationTest.getUnlockLink());
-		 */
+
 	}
 
 	/**
@@ -1500,45 +1522,24 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" })
 	public void testAddNewPatientActivation() throws Exception {
 
-		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+	PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
+	Practice practice = new Practice();
+	PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-		// Creating data provider
-		Portal portal = new Portal();
-		TestcasesData testcasesData = new TestcasesData(portal);
+	// Creating data provider
+	Portal portal = new Portal();
+	TestcasesData testcasesData = new TestcasesData(portal);
 
-		String email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(), '.');
+	String email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(), '.');
 
-		log("Go to the Practice Portal and register the patient.");
-		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email, null,
-				null, null);
+	log("Go to the Practice Portal and register the patient.");
+	String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email, null,
+	null, null);
 
-		log("Go to the url from the Practice Portal to activate the patient.");
-		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(unlockLink);
-		MyPatientPage pMyPatientPage = pCreateAccountPage.fillPatientActivaion(
-				patientActivationSearchTest.getZipCodeString(), email, testcasesData.getPassword(),
-				testcasesData.getSecretQuestion(), testcasesData.getAnswer());
-		CreatePatientTest createPatientTest = new CreatePatientTest(email, testcasesData.getPassword(),
-				testcasesData.geturl());
-		createPatientTest.loginAsNewPatient(driver, pMyPatientPage);
+	activatePatient(unlockLink, patientActivationSearchTest.getZipCodeString(), email, testcasesData);
 
-		log("Check if the unlock link in the mail is the same as the one from Practice Portal.");
-		Mailinator mail = new Mailinator();
-		String unlockLinkFromMail = mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLinkText, 10);
-		assertEquals(unlockLinkFromMail, unlockLink, "The link in the email is not the same as the in the Portal");
 
-		/*
-		 * MyPatientPage myPatientPage =
-		 * pCreateAccountPage.fillPatientActivaion(patientActivationSearchTest.getLastNameString(),
-		 * PortalConstants.DateOfBirtSlashFormat, patientActivationSearchTest.getZipCodeString(),
-		 * testcasesData.getSSN(),
-		 * patientActivationSearchTest.getEmailAddressString(), testcasesData.getPassword(),
-		 * testcasesData.getSecretQuestion(),
-		 * testcasesData.getAnswer(), activationCode, activationCode);
-		 */
 	}
 
 	/**
