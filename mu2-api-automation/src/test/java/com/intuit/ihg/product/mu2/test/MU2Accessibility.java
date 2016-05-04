@@ -25,7 +25,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 {
 	private APIData testData;
 	
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public void Setup() throws Exception
 	{
 		log("Setting up MU2 Test data for " + IHGUtil.getEnvironmentType());
