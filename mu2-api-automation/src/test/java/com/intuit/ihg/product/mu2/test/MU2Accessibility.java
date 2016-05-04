@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
@@ -27,6 +28,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	@BeforeMethod
 	public void Setup() throws Exception
 	{
+		log("Setting up MU2 Test data for " + IHGUtil.getEnvironmentType());
 		APITestData apitestData = new APITestData();
 		testData = new APIData(apitestData);
 	}
@@ -173,7 +175,9 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAccountActivity() throws Exception
 	{		
+		log("TestCase: account activity");
 		// Open the API testing page, log in and go to My Account > Account Activity
+		log("Opening portal page");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
 		waitForPage(patientPage);
