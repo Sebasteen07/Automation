@@ -14,13 +14,13 @@ import com.medfusion.product.object.maps.precheck.page.AppointmentDetails.Appoin
 public class HomePage extends BasePageObject {
 	
 	
-	@FindBy(how = How.XPATH, using = ".//*[@id='body']/div[1]/span")
+	@FindBy(how = How.XPATH, using = ".//div[@id='body']/div[1]/span")
 	private WebElement rightNavMenu;
 	
 	@FindBy(how = How.XPATH, using = ".//*[@id='menu']/a[2]/span[2]")
 	private WebElement createNewAppointmentButton;
 	
-	@FindBy(how = How.XPATH, using = "//a[@data-ng-click='logout()']")
+	@FindBy(how = How.XPATH, using = "//a[@data-ng-click='logout()']/span[2]")
 	private WebElement signOutButton;
 	
 
@@ -35,7 +35,8 @@ public class HomePage extends BasePageObject {
 	public AppointmentDetailsPage addNewAppointment() {
 
 		IHGUtil.PrintMethodName();
-		rightNavMenu.click();
+		if(!createNewAppointmentButton.isDisplayed()) 
+			rightNavMenu.click();
 		createNewAppointmentButton.click();
 		
 		return PageFactory.initElements(driver, AppointmentDetailsPage.class);
