@@ -8,7 +8,16 @@
  	
 	<test name = "IHG-Mu2-Api-MU2-Accessibility" >
 		<classes>
-			    <class name="com.intuit.ihg.product.mu2.test.MU2Accessibility" />
+		    <class name="com.intuit.ihg.product.mu2.test.MU2Accessibility" />
+			    <methods>
+					<include name="testAccountActivity" />
+					<include name="testCCDPage" />
+					<include name="testDashboardPage" />
+					<include name="testInboxPage" />
+					<include name="testLoginPage" />
+					<include name="testMessageDetailsPage" />
+					<include name="testMyAccountPage" />
+				</methods>
 		</classes>
 	</test>
 </suite>

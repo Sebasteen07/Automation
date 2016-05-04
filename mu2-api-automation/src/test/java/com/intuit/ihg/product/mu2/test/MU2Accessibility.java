@@ -32,7 +32,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestLoginPage() throws Exception 
+	public void testLoginPage() throws Exception 
 	{	
 		// Open the API testing page
 		new PortalLoginPage(driver, testData.getPortalURL());
@@ -55,12 +55,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class )
-	public void TestDashboardPage() throws Exception
+	public void testDashboardPage() throws Exception
 	{
 		// Open the API testing page and log in
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		
 		// Get source and iFrame HTML (AChecker cannot handle iFrames)
 		StringSelection source = new StringSelection(driver.getPageSource());
@@ -80,12 +80,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestInboxPage() throws Exception
+	public void testInboxPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to Inbox
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MessageCenterInboxPage inbox = patientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inbox.isInboxLoaded());
 		
@@ -102,12 +102,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestMessageDetailsPage() throws Exception
+	public void testMessageDetailsPage() throws Exception
 	{		
 		// Open the API testing page, log in, go to Inbox and open a message
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
 		inboxPage.openMessageInInbox("You have new health data");
 		
@@ -124,7 +124,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestCCDPage() throws Exception
+	public void testCCDPage() throws Exception
 	{
 		// Open the API testing page, log in, go to Inbox and open a CCD from a message
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
@@ -150,12 +150,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestMyAccountPage() throws Exception
+	public void testMyAccountPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to My Account
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		patientPage.clickMyAccountLink();
 		
 		// Get iFrame HTML (AChecker cannot handle iFrames)
@@ -171,12 +171,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestAccountActivity() throws Exception
+	public void testAccountActivity() throws Exception
 	{		
 		// Open the API testing page, log in and go to My Account > Account Activity
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MyAccountPage myAccount = patientPage.clickMyAccountLink();
 		ViewAccountActivityPage accountActivity = myAccount.addAccountActivityLink();
 		
@@ -195,7 +195,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	// Wait for the patient page to finish loading before grabbing the HTML
-	private void WaitForPage(MyPatientPage patientPage)
+	private void waitForPage(MyPatientPage patientPage)
 	{
 		driver.switchTo().frame(0);
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(patientPage.gettxtMyPatientPage()));
