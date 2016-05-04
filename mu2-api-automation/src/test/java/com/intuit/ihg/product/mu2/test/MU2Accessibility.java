@@ -5,7 +5,7 @@ import java.awt.datatransfer.StringSelection;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -24,7 +24,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 {
 	private APIData testData;
 	
-	@BeforeClass
+	@BeforeMethod
 	public void Setup() throws Exception
 	{
 		APITestData apitestData = new APITestData();
