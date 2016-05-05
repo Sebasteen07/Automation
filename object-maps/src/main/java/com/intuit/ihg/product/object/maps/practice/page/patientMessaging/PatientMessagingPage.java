@@ -2,6 +2,7 @@ package com.intuit.ihg.product.object.maps.practice.page.patientMessaging;
 
 import java.net.URL;
 
+import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -63,7 +64,7 @@ public class PatientMessagingPage extends BasePageObject{
 	public WebElement publishedSuccessfullyMessage;
 	
 	@FindBy(xpath="/html/body/div[2]/table/tbody/tr/td/div[1]/form/fieldset[3]/table[1]/tbody/tr[1]/td[1]/table/tbody/tr[1]/td/input")
-	public WebElement patientCanReplyButton;
+	private WebElement patientCanReplyButton;
 	
 	@FindBy(how = How.LINK_TEXT, using = "My Messages")
 	private WebElement myMessages;
@@ -221,7 +222,7 @@ public class PatientMessagingPage extends BasePageObject{
      * @param filePath
      * @throws Exception
      */
-     public void setQuickSendFields(String filePath) throws Exception
+     public void setFieldsAndPublishMessage(String filePath) throws Exception
      {
             IHGUtil.PrintMethodName();
             Thread.sleep(5000);
@@ -250,34 +251,20 @@ public class PatientMessagingPage extends BasePageObject{
 
      }
 
-    /**
-     * @Description:Set Quick Send Fields
-     * @param firstName
-     * @param lastName
-     * @throws Exception
-     */
-    public void setQuickSendFields(String firstName, String lastName, String templateName, String subjectText) {
-        IHGUtil.PrintMethodName();
-
-        setMessageFields(templateName, subjectText);
-
-        setRecipient(firstName, lastName, null);
-
-        publishMessage();
+    public void setFieldsAndPublishMessage(String firstName, String lastName, String templateName, String subjectText) {
+        setFieldsAndPublishMessage(firstName, lastName, null, templateName, subjectText);
     }
 
-    public void setQuickSendFields(String firstName, String lastName, String templateName) {
-        this.setQuickSendFields(firstName, lastName, templateName, PracticeConstants.Subject);
-    }
+	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
+		setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName,
+				subjectText);
+	}
 
-    public void setQuickSendFields(String firstName, String lastName, String email, String templateName,
-            String subjectText) {
+    public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName,
+										   String subjectText) {
         IHGUtil.PrintMethodName();
-
         setMessageFields(templateName, subjectText);
-
         setRecipient(firstName, lastName, email);
-
         publishMessage();
     }
 
