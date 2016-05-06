@@ -1,5 +1,6 @@
 package com.medfusion.product.jalapeno;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import com.intuit.ihg.common.utils.IHGUtil;
@@ -17,23 +18,30 @@ public class CreditCard {
 	private String name;
 	private String cardNumber;
 	private String zipCode;
-	private String expirationDate;
+	private String expMonth;
+	private String expYear;
 	private String cvvCode;
+	
+	private int currMonth = Calendar.getInstance().get(Calendar.MONTH);
+	private int currYear = Calendar.getInstance().get(Calendar.YEAR);
 	
 	public CreditCard() throws Exception {
 		this.zipCode = IHGUtil.createRandomZip();
 		this.cvvCode = IHGUtil.createRandomNumericString(3);
-		this.expirationDate = IHGUtil.createRandomNumericStringInRange(10, 12) + 
-				IHGUtil.createRandomNumericStringInRange(17, 20);
+		this.expMonth = IHGUtil.createRandomNumericStringInRange(currMonth, 12);
+		//to ensure that format of month will be MM
+		if (expMonth.length() == 1) expMonth = "0" + expMonth;
+		this.expYear = IHGUtil.createRandomNumericStringInRange(currYear, currYear + 10);
 	}
 	
 	public CreditCard(CardType type, String name, String cardNumber,
-			String zipCode, String expirationDate, String cvvCode) {
+			String zipCode, String expMonth, String expYear, String cvvCode) {
 		this.type = type;
 		this.name = name;
 		this.cardNumber = cardNumber;
 		this.zipCode = zipCode;
-		this.expirationDate = expirationDate;
+		this.expMonth = expMonth;
+		this.expYear = expYear;
 		this.cvvCode = cvvCode;
 	}
 
@@ -91,12 +99,20 @@ public class CreditCard {
 		this.zipCode = zipCode;
 	}
 
-	public String getExpirationDate() {
-		return expirationDate;
+	public String getExpMonth() {
+		return expMonth;
 	}
 
-	public void setExpirationDate(String expirationDate) {
-		this.expirationDate = expirationDate;
+	public void setExpMonth(String expMonth) {
+		this.expMonth = expMonth;
+	}
+
+	public String getExpYear() {
+		return expYear;
+	}
+
+	public void setExpYear(String expYear) {
+		this.expYear = expYear;
 	}
 
 	public String getCvvCode() {

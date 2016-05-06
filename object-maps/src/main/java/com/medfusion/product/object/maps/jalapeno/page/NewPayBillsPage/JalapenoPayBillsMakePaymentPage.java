@@ -1,12 +1,18 @@
 package com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage;
 
 import java.util.ArrayList;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.jalapeno.CreditCard;
@@ -41,8 +47,11 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "cardNumber")
 	private WebElement cardNumber;
 	
-	@FindBy(how = How.ID, using = "expiration")
-	private WebElement expiration;
+	@FindBy(how = How.ID, using = "expirationDate_month")
+	private WebElement expirationMonth;
+	
+	@FindBy(how = How.ID, using = "expirationDate_year")
+	private WebElement expirationYear;
 	
 	@FindBy(how = How.ID, using = "creditCardCVV")
 	private WebElement creditCardCVV;
@@ -83,8 +92,13 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		log("Card number: " + card.getCardNumber());
 		cardNumber.sendKeys(card.getCardNumber());
 		
-		log("Expiration: " + card.getExpirationDate());
-		expiration.sendKeys(card.getExpirationDate());
+		log("Expiration: " + card.getExpMonth() + "/" + card.getExpYear());
+		
+		Select selectMonth = new Select(expirationMonth);
+		selectMonth.selectByVisibleText(card.getExpMonth());
+		
+		Select selectYear = new Select(expirationYear);
+		selectYear.selectByVisibleText(card.getExpYear());
 		
 		log("CVV: " + card.getCvvCode());
 		creditCardCVV.sendKeys(card.getCvvCode());
@@ -98,7 +112,8 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	
 	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {	
 		log("Click on Add New Card");
-		addNewCardButton.click();
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(addNewCardButton));
+		addNewCardButton.sendKeys(Keys.ENTER);
 		fillNewCardInformation(creditCard);
 		
 		log("Insert Payment amount: " + amount);
@@ -111,9 +126,9 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		confirmCVV.sendKeys(creditCard.getCvvCode());
 		
 		log("Click on Continue button");
-		//for some reason it's not reacting when there's only one click on Continue button
-		continueButton.click();
-		continueButton.click();
+		//Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(continueButton));
+		continueButton.sendKeys(Keys.ENTER);
 		
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
 	}
@@ -185,7 +200,8 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		webElementsList.add(nameOnCard);
 		webElementsList.add(bill_zipcode);
 		webElementsList.add(cardNumber);
-		webElementsList.add(expiration);
+		webElementsList.add(expirationMonth);
+		webElementsList.add(expirationYear);
 		webElementsList.add(creditCardCVV);
 		webElementsList.add(submitNewCard);
 		webElementsList.add(amexCard);
