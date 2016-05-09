@@ -45,6 +45,16 @@
         	<artifactId>jersey-client</artifactId>
         	<version>1.17.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.intuit.ihg</groupId>
+            <artifactId>practiceportal-object-maps</artifactId>
+            <version>${ihg.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intuit.ihg</groupId>
+            <artifactId>practiceportal-api</artifactId>
+            <version>${ihg.version}</version>
+        </dependency>
     </dependencies>
     
     

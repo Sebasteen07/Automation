@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -293,10 +294,12 @@ public class ExcelSheetReader {
 	 * @param userObj :- domain obj for eg portal obj or phr object
 	 * @param key :-is the primary key
 	 * @return
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
 	 * @throws Exception
 	 */
 
-	public Object getSingleExcelRow (Object userObj, String key) throws	Exception {
+	public Object getSingleExcelRow (Object userObj, String key) throws ClassNotFoundException, IllegalAccessException{
 		// if key is empty, the don't bother reading
 		// the data. It will not be used any way.
 		if((key == null)||(key == ""))

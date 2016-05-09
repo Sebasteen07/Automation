@@ -24,8 +24,8 @@ import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.*;
 import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
-import com.intuit.ihg.product.object.maps.practice.page.*;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.*;
+import com.medfusion.product.object.maps.practice.page.*;
+import com.medfusion.product.object.maps.practice.page.apptrequest.*;
 
 import static org.testng.Assert.assertNotNull;
 

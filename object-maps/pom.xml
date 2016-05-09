@@ -32,6 +32,11 @@
   			<artifactId>qa-automation-utils</artifactId>
   			<version>${ihg.version}</version>
   		</dependency>
+  		<dependency>
+  			<groupId>com.intuit.ihg</groupId>
+  			<artifactId>practiceportal-api</artifactId>
+  			<version>${ihg.version}</version>
+  		</dependency>
   	</dependencies>
   	
     <build>

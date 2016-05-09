@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
-        	<artifactId>common-steps</artifactId>
+        	<artifactId>practiceportal-service</artifactId>
         	<version>${qa-automation-utils.version}</version>
         </dependency>
     </dependencies>

@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
@@ -19,11 +19,11 @@ import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.*;
 import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.*;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.ViewPatientFormPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
+import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.AddQuestionsToCategoryPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CreateCustomFormPage;
@@ -47,8 +47,8 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.portal.utils.Portal;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
 import com.intuit.ihg.product.portal.utils.TestcasesData;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
+import com.medfusion.product.practice.pojo.Practice;
+import com.medfusion.product.practice.pojo.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 

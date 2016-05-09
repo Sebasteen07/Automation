@@ -12,20 +12,20 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.CheckEmail;
 import com.intuit.ihg.common.utils.mail.Gmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
-import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
-import com.intuit.ihg.product.practice.tests.VirtualCardSwiperTest;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
-import com.intuit.ihg.product.practice.utils.PracticeUtil;
-import com.intuit.ihg.product.practice.utils.ReadFilePath;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
+import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
+import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
+import com.medfusion.product.practice.pojo.Practice;
+import com.medfusion.product.practice.utils.PracticeConstants;
+import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.utils.PracticeUtil;
+import com.medfusion.product.practice.utils.ReadFilePath;
 
 
 public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {

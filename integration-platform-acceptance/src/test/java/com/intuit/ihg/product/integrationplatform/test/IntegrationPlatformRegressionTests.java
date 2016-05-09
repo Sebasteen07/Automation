@@ -32,11 +32,11 @@ import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskASta
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep1Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep2Page;
 import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep3Page;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientactivation.PatientActivationPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.intuit.ihg.product.portal.utils.PortalConstants;
 import com.intuit.ihg.product.portal.utils.PortalUtil;
