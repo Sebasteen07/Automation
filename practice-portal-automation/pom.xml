@@ -23,6 +23,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ihg.version>16.4.0-SNAPSHOT</ihg.version>
         <qa-automation-utils.version>16.4.0-SNAPSHOT</qa-automation-utils.version>
     </properties>
     
@@ -35,7 +36,17 @@
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
         	<artifactId>practiceportal-service</artifactId>
-        	<version>${qa-automation-utils.version}</version>
+        	<version>${ihg.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>practiceportal-api</artifactId>
+        	<version>${ihg.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>practiceportal-object-maps</artifactId>
+        	<version>${ihg.version}</version>
         </dependency>
     </dependencies>
     <build>
