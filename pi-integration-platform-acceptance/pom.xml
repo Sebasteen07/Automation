@@ -107,7 +107,7 @@
 
 			  <dependency>
 			  	<groupId>com.intuit.ihg</groupId>
-			  	<artifactId>object-maps</artifactId>
+			  	<artifactId>patientportal2-object-maps</artifactId>
 			  	<version>${ihg.version}</version>
 			  </dependency>
 			  <dependency>

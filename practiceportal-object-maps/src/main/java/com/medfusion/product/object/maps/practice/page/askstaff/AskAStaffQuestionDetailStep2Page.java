@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
+import com.medfusion.product.practice.utils.PortalConstants;
 import com.medfusion.product.practice.utils.PracticeConstants;
 import com.medfusion.product.practice.utils.PracticeUtil;
 

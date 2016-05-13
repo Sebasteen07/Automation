@@ -2,8 +2,8 @@ package com.medfusion.product.object.maps.practice.page.customform;
 
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.portal.utils.Portal;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

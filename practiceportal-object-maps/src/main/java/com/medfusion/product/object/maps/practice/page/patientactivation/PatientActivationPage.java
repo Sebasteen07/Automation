@@ -6,7 +6,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
+import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.practice.utils.PracticeConstants;
 
 import junit.framework.Assert;

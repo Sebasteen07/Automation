@@ -4,7 +4,7 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

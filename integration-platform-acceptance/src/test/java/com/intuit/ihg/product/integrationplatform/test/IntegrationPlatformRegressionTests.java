@@ -21,25 +21,25 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.insurance.InsurancePage;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep1Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep2Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep3Page;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.insurance.InsurancePage;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffHistoryPage;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
+import com.medfusion.product.patientportal1.utils.PortalConstants;
+import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 
 
