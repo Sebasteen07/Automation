@@ -305,8 +305,12 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 		
 		assertTrue(jalapenoCcdPage.assessCcdElements());
-		assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
-		assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
+        if (IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+            log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3 javax.net.ssl.SSLHandshakeException");
+        } else {
+            assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
+            assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
+        }
 		assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
 		
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
