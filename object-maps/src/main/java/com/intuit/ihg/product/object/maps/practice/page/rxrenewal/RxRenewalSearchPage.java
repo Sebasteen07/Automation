@@ -168,7 +168,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 	{
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver,30,setQuantity);
+		IHGUtil.waitForElement(driver, 40, setQuantity);
 		setQuantity.clear();
 		setQuantity.sendKeys(PracticeConstants.Quantity);
 		Select startDaySelect = new Select(setFrequency);

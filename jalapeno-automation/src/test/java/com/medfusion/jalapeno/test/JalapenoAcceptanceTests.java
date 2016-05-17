@@ -82,7 +82,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
 	
-	@Test(enabled = true, groups = { "None" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 
 		log("Getting Test Data");
@@ -264,7 +264,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getDoctorPassword());
 
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setQuickSendFields(testData.getFirstName(), testData.getLastName(), testData.getEmail(), "TestingMessage", messageSubject);
+		patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
 		
 		log("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());

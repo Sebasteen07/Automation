@@ -428,7 +428,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String value =pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.pdfname);
 
 		log("Step 4:Set Quick Send Fields");
-		pPatientMessagingPage.setQuickSendFields(value);
+		pPatientMessagingPage.setFieldsAndPublishMessage(value);
 
 		log("step 5:Verify the Published Message Succesfully text");
 		IHGUtil.setFrame(driver,PracticeConstants.frameName);
