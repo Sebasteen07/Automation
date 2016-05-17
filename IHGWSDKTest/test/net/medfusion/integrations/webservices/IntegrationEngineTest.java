@@ -249,12 +249,16 @@ public class IntegrationEngineTest {
                     WebServiceConstants.FIELD_CHANGE_INTEGRATIONID,
                     SystemConfigProperties.WSFM_INTEGRATIONID,
                     WebServiceConstants.FIELD_DATATYPE_INT));
-            // fieldList.add(ieField(WebServiceConstants.FIELD_CHANGE_TYPE,
-            // WebServiceConstants.FIELD_CHANGE_TYPE_INBOUNDADD,
-            // WebServiceConstants.FIELD_DATATYPE_STRING));
             fieldList.add(ieField(WebServiceConstants.FIELD_CHANGE_TYPE,
-                    WebServiceConstants.FIELD_CHANGE_TYPE_INBOUNDUPDATE,
+                    WebServiceConstants.FIELD_CHANGE_TYPE_INBOUNDADD,
                     WebServiceConstants.FIELD_DATATYPE_STRING));
+
+             // NOTE: for update, uncomment this field and comment out the field above, and pass currentMedicationId 
+             // that should be updated to the method getMedicationQuestionFields(  ) called below
+//           fieldList.add(ieField(WebServiceConstants.FIELD_CHANGE_TYPE,
+//                    WebServiceConstants.FIELD_CHANGE_TYPE_INBOUNDUPDATE,
+//                    WebServiceConstants.FIELD_DATATYPE_STRING));
+             
             fieldList.add(ieField(WebServiceConstants.FIELD_CHANGE_PRACTICEID,
                     SystemConfigProperties.WSFM_PRACTICEID,
                     WebServiceConstants.FIELD_DATATYPE_INT));

@@ -21,7 +21,7 @@ public class SystemConfigProperties extends TestProperties {
     public static final int WSFM_MEMBERLOCKEDID2 = getInteger("WSFM_MEMBERLOCKEDID2");
     public static final String WSFM_EXTERNALID1 = getProperty("WSFM_EXTERNALID1");
     public static final String WSFM_EXTERNALID2 = getProperty("WSFM_EXTERNALID2");
-    public static final String WSFM_INTEGRATIONID = getProperty("WSFM_INTEGRATIONID");
+    public static final int WSFM_INTEGRATIONID = getInteger("WSFM_INTEGRATIONID");
 
     public static final int WSCARD_PRACTICEID = getInteger("WSCARD_PRACTICEID");
     public static final int WSCARD_LOCATIONID1 = getInteger("WSCARD_LOCATIONID1");
