@@ -1,5 +1,12 @@
 package com.medfusion.jalapeno.test;
 
+import static org.testng.Assert.assertNotNull;
+
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -30,8 +37,9 @@ import com.intuit.ihg.product.practice.utils.Practice;
 import com.intuit.ihg.product.practice.utils.PracticeConstants;
 import com.intuit.ihg.product.practice.utils.PracticeTestData;
 import com.medfusion.product.jalapeno.CreditCard;
-import com.medfusion.product.jalapeno.JalapenoPatient;
 import com.medfusion.product.jalapeno.CreditCard.CardType;
+import com.medfusion.product.jalapeno.JalapenoPatient;
+import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -48,19 +56,11 @@ import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.Jalape
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
 import com.medfusion.product.object.maps.jalapeno.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.jalapeno.page.MyAccountPage.JalapenoMyAccountPage;
 import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.jalapeno.page.PrescriptionsPage.JalapenoPrescriptionsPage;
-
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertNotNull;
 
 /**
  * @Author:Jakub Calabek
@@ -731,7 +731,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 8: Continue registration - check dependent info and fill guardian name");
 		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
-		assertTrue(createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail));
+		createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
 		createGuardianStep1.createGuardianOnlyFirstPage("Guardian", patientLastName, "Parent");
 		
 		log("Step 9: Continue registration - create dependents credentials");
@@ -817,7 +817,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Step 12: Continue registration - check dependent info and fill login credentials");
 		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
-		assertTrue(createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail));
+		createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
 	    createGuardianStep1.createGuardianLinkToExistingPatient(patientLogin, testData.getPassword(), "Parent");
 	    
 	    log("Step 13: Continue to the portal and check elements");

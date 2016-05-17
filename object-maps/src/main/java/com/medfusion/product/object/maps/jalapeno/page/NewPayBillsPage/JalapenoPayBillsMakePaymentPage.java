@@ -26,6 +26,9 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "creditCardAddButton")
 	private WebElement addNewCardButton;
 	
+	@FindBy(how = How.ID, using = "removeCardOkButton")
+	private WebElement removeCardOkButton;
+	
 	@FindBy(how = How.ID, using = "pay_history")
 	private WebElement payHistoryButton;
 	
@@ -111,8 +114,10 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	}
 	
 	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {	
-		log("Click on Add New Card");
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(addNewCardButton));
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		
+	    log("Click on Add New Card");
+	    wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
 		addNewCardButton.sendKeys(Keys.ENTER);
 		fillNewCardInformation(creditCard);
 		
@@ -121,13 +126,14 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		
 		log("Insert account number: " + accNumber);
 		accountNumber.sendKeys(accNumber);
-		
+				
 		log("Insert CVV code: " + creditCard.getCvvCode());
+		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
 		confirmCVV.sendKeys(creditCard.getCvvCode());
 		
 		log("Click on Continue button");
 		//Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(continueButton));
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		continueButton.sendKeys(Keys.ENTER);
 		
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
@@ -157,8 +163,13 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	}
 	
 	private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(removeButton));
 		removeButton.click();
-		driver.findElement(By.id("removeCardOkButton")).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(removeCardOkButton));
+		removeCardOkButton.click();
 		
 		return this;
 	}
