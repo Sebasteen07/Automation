@@ -139,23 +139,31 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
 	}
 	
-	public void removeAllCards() {
+	private ArrayList<WebElement> getCreditCards() {
+		return (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
+	}
+	
+	public boolean isAnyCardPresent() {
+		return getCreditCards().size() > 0;
+	}
+	
+	public void removeAllCards() throws InterruptedException {
 		log("Removing of displayed cards");
-		ArrayList<WebElement> cards = (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
+		ArrayList<WebElement> cards = getCreditCards();
 		
 		if(cards.size() > 0) {
-			int removedCards = 0;
-
 			log("Count of displayed cards: " + cards.size());
+			int removedCards = 0;
+			
 			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
-			for(int i = 0; i < removeButtons.size(); i++) {
+			for (int i = 0; i < removeButtons.size(); i++) {
 				if (removeButtons.get(i).isDisplayed()) {
 					removeCreditCard(removeButtons.get(i));
-					removedCards++;
+					log("Card #" + ++removedCards + " removed");
+					// need to sleep because of modal disappearing time
+					Thread.sleep(2000);
 				}
-			}
-			
-			log("Count of successfully removed cards: " + removedCards);	
+			}				
 		}
 		else {
 			log("No previous card is displayed");
