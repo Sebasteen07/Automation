@@ -44,7 +44,7 @@ public class AgeOutReportPage extends BasePageObject {
 	@FindBy(xpath="//form[@id='resultsForm']/table/tbody/tr/td/span/a")
 	private WebElement firstPatientName;
 	
-	@FindBy(xpath="//form[@id='resultsForm']/table/tbody/tr/td[10]/span/a")
+	@FindBy(xpath="//form[@id='resultsForm']/table/tbody/tr/td[11]/span/a")
 	private WebElement firstPatientAgeOutButton;
 	
 	@FindBy(xpath="//div[@class='wicket-modal']//iframe")
