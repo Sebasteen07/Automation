@@ -590,6 +590,8 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		//remove all cards because Selenium can't see AddNewCard button
 		payBillsPage.removeAllCards();
+		log("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
 		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 		
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
@@ -761,7 +763,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String emailSubject = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
 		String inEmail = "Sign Up!";
-		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 10);
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 15);
 		assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
 		log("Retrieved activation link is " + guardianUrlEmail);
 		log("Comparing with link from PrP " + guardianUrl);
@@ -843,13 +845,13 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 				+ testData.getPracticeName();
 		String inEmail = "Sign Up!";
 		
-		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 10);
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 15);
 		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
 		log("Retrieved patients activation link is " + patientUrl);
 		log("Comparing with patients link from PrP " + patientUrlEmail);
 		assertEquals(patientUrl, patientUrlEmail, "!patient unlock links are not equal!");
 		
-		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 10);
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 15);
 		assertNotNull(guardianUrlEmail, "Error: Activation dependents link not found.");
 		log("Retrieved dependents activation link is " + guardianUrlEmail);
 		log("Comparing with dependents link from PrP " + guardianUrl);
@@ -892,7 +894,7 @@ public class JalapenoAcceptanceTests extends BaseTestNGWebDriver {
 		String emailSubject = "Invitation to join our patient portal at "
 				+ testData.getPracticeName();
 		String inEmail = "Sign Up!";
-		String patientUrlEmail = new Mailinator().getLinkFromEmail(email, emailSubject, inEmail, 14);
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(email, emailSubject, inEmail, 15);
 		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
 		log("Retrieved patients activation link is " + patientUrlEmail);
 		
