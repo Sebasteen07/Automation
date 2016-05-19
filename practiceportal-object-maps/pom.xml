@@ -35,7 +35,7 @@
   		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>practiceportal-api</artifactId>
-  		<version>${ihg.version}</version>
+  		<version>16.4.0Ex</version>
   		</dependency>
   		<dependency>
   			<groupId>com.intuit.ihg</groupId>
@@ -74,4 +74,6 @@
 			</plugin>
 		</plugins>
 	</build>
+    <version>16.4.0Ex</version>
+    <groupId>com.intuit.ihg</groupId>
 </project>

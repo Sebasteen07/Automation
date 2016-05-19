@@ -148,12 +148,15 @@ public class VirtualCardSwiperPage extends BasePageObject {
 	 */
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String PAccount, String PName, String comment, String location){
 		IHGUtil.PrintMethodName();	
-		//Thread.sleep(4000);
-		driver.switchTo().frame("iframe");		
+		driver.switchTo().frame("iframe");				
 		WebElement locationDropDwn = driver.findElement(By.xpath(".//select[@name='locationSelected']"));
-		locationDropDwn.click();
-		Select selLoc = new Select(locationDropDwn);	
-		selLoc.selectByVisibleText(location);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Select selLoc = new Select(locationDropDwn);
+		selLoc.selectByVisibleText(location);		
 		
 		cardHolderName.sendKeys(ccName);
 		

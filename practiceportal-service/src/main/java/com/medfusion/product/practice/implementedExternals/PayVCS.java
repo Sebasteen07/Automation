@@ -8,7 +8,7 @@ import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.VCSPaymentInfo;
 
 
-public class VCSPayment implements com.medfusion.product.practice.api.flows.IPayVCS{
+public class PayVCS implements com.medfusion.product.practice.api.flows.IPayVCS{
 
 	@Override
 	public boolean simplePay(WebDriver driver, Practice practiceInfo, VCSPaymentInfo pay)
