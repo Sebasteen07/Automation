@@ -1,9 +1,11 @@
 package com.medfusion.product.object.maps.jalapeno.page.MyAccountPage;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.IHGUtil.Gender;
+import com.medfusion.product.object.maps.jalapeno.page.JalapenoPage;
 import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+
+import java.util.ArrayList;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +13,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-public class JalapenoMyAccountPage extends BasePageObject {
+/*
+ * Rename to JalapenoMyAccountPage after My Account update is finished
+ */
+public class JalapenoNewMyAccountPage extends JalapenoPage {
 
     @FindBy(how = How.LINK_TEXT, using = "Profile")
     private WebElement profileTab;
@@ -34,30 +39,33 @@ public class JalapenoMyAccountPage extends BasePageObject {
     @FindBy(how = How.LINK_TEXT, using = "Account Activity")
     private WebElement accountActivityTab;
 
-    @FindBy(how = How.XPATH, using = "//input[@fieldid='address.address1']")
+    @FindBy(how = How.ID, using = "address1")
     private WebElement address1Textbox;
 
-    @FindBy(how = How.XPATH, using = "//input[@fieldid='address.city']")
+    @FindBy(how = How.ID, using = "city")
     private WebElement cityTextbox;
 
-    @FindBy(how = How.XPATH, using = "//input[@fieldid='address.zip']")
+    @FindBy(how = How.ID, using = "state")
+    private WebElement stateSelect;
+
+    @FindBy(how = How.ID, using = "postalCode")
     private WebElement zipCodeTextbox;
 
-    @FindBy(how = How.XPATH, using = "//td[label[.='Male']]/input")
+    @FindBy(how = How.ID, using = "gender_male")
     private WebElement maleRadioButton;
 
-    public JalapenoMyAccountPage(WebDriver driver) {
+    @FindBy(how = How.ID, using = "save-button")
+    private WebElement submitButton;
+
+    public JalapenoNewMyAccountPage(WebDriver driver) {
         super(driver);
         IHGUtil.PrintMethodName();
         driver.manage().window().maximize();
         PageFactory.initElements(driver, this);
+        submitFormElement = submitButton;
     }
 
     public boolean checkForAddress(WebDriver driver, String line1, String city, String zipCode) {
-
-        log("Finding Address Line 1 textbox");
-        IHGUtil.setFrame(driver, "iframebody");
-        log("I am in iframe");
 
         String savedAddressLine1 = address1Textbox.getAttribute("value");
         String savedCity = cityTextbox.getAttribute("value");
@@ -87,13 +95,10 @@ public class JalapenoMyAccountPage extends BasePageObject {
         log("City value: " + savedCity);
         log("ZipCode value: " + savedZipCode);
 
-        log("Going out of frame");
-        IHGUtil.setDefaultFrame(driver);
-
         return true;
     }
 
-    /* CR: Why named checkForAddress when checks for zipCode? Why zipCode in input when it is not used? */
+    /* TO REFACTOR: Why checkForAddress when checks for zipCode? Why zipCode in input when it is not used? */
     public boolean checkForAddress(WebDriver driver, String zipCode) {
 
         log("Finding ZipCode textbox");
@@ -128,4 +133,70 @@ public class JalapenoMyAccountPage extends BasePageObject {
 
         return PageFactory.initElements(driver, JalapenoHomePage.class);
     }
+
+    public boolean assessPageElements() {
+
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+        webElementsList.add(profileTab);
+        webElementsList.add(preferencesTab);
+        webElementsList.add(address1Textbox);
+        webElementsList.add(cityTextbox);
+        webElementsList.add(zipCodeTextbox);
+        webElementsList.add(maleRadioButton);
+
+        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+    }
+
+    public WebElement getProfileTab() {
+        return profileTab;
+    }
+
+    public WebElement getEmailTab() {
+        return emailTab;
+    }
+
+    public WebElement getPasswordAndIdTab() {
+        return passwordAndIdTab;
+    }
+
+    public WebElement getPreferencesTab() {
+        return preferencesTab;
+    }
+
+    public WebElement getWalletTab() {
+        return walletTab;
+    }
+
+    public WebElement getFamilyTab() {
+        return familyTab;
+    }
+
+    public WebElement getAccountActivityTab() {
+        return accountActivityTab;
+    }
+
+    public WebElement getAddress1Textbox() {
+        return address1Textbox;
+    }
+
+    public WebElement getCityTextbox() {
+        return cityTextbox;
+    }
+
+    public WebElement getStateSelect() {
+        return stateSelect;
+    }
+
+    public WebElement getZipCodeTextbox() {
+        return zipCodeTextbox;
+    }
+
+    public WebElement getMaleRadioButton() {
+        return maleRadioButton;
+    }
+
+    public WebElement getSubmitForm() {
+        return submitButton;
+    }
+
 }
