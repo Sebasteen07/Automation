@@ -8,7 +8,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class PatientActivationTest extends BaseTestNGWebDriver{
 	

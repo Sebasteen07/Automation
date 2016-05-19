@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.practice.utils.PracticeConstants;
-import com.medfusion.product.practice.utils.PracticeUtil;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.api.utils.PracticeUtil;
 
 public class OnlineBillPaySearchPage extends BasePageObject{
 

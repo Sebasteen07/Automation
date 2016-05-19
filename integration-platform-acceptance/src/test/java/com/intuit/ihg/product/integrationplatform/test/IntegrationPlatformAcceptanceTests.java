@@ -1740,7 +1740,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testVirtualCardSwiper() throws Exception {
+	public void testVirtualCardSwiper() throws Exception{
 
 		log("Test Case: Virtual Card Swiper");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1767,7 +1767,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				"2022", Amount, "110", "12345", "Test0001", "Test Patient",  "comment");
 
 		log("Step 4: Verify whether the payment is completed successfully.");
-		verifyEquals(Boolean.valueOf(vcsPage.getPayementCompletedSuccessMsg()
+		verifyEquals(Boolean.valueOf(vcsPage.getPaymentCompletedSuccessMsg()
 				.contains("Payment completed")), Boolean.valueOf(true),
 				"The payment is completed properly.");
 

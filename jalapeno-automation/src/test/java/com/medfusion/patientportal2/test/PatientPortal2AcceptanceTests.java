@@ -1,5 +1,7 @@
 package com.medfusion.patientportal2.test;
 
+import java.util.Arrays;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -49,11 +51,11 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDash
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
-import com.medfusion.product.practice.pojo.Practice;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
-import com.medfusion.product.practice.utils.PracticeConstants;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -84,13 +86,23 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
-
+		if(Arrays.equals( new String[]{ getA(), getB()},new String[]{"a","b"})) log("EEEEEEEEEEERMMMMMMMMMEEEEEEEERGEEEEEERD");
 		log("Getting Test Data");
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
+
+	private String getB() {
+		// TODO Auto-generated method stub
+		return "b";
+	}
+
+	private String getA() {
+		// TODO Auto-generated method stub
+		return "a";
 	}
 
 	@Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)

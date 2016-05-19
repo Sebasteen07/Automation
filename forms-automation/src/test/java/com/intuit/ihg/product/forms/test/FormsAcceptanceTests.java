@@ -47,8 +47,8 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
-import com.medfusion.product.practice.pojo.Practice;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 

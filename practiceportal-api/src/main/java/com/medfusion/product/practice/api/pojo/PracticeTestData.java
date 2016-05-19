@@ -1,11 +1,11 @@
-package com.medfusion.product.practice.pojo;
+package com.medfusion.product.practice.api.pojo;
 
 import java.io.IOException;
 import java.net.URL;
 
 import com.intuit.ihg.common.utils.ExcelSheetReader;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.medfusion.product.practice.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.Practice;
 
 public class PracticeTestData {
 

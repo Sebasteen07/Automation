@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.utils;
+package com.medfusion.product.practice.api.utils;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -20,8 +20,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.medfusion.product.practice.utils.PracticeUtil;
-import com.medfusion.product.practice.utils.ReadFilePath;
+import com.medfusion.product.practice.api.utils.PracticeUtil;
+import com.medfusion.product.practice.api.utils.ReadFilePath;
 
 public class PracticeUtil extends IHGUtil implements Runnable{
 

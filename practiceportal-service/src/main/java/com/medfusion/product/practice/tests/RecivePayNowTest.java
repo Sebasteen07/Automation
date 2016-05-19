@@ -9,7 +9,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class RecivePayNowTest extends BaseTestNGWebDriver {
 

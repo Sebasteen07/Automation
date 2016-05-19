@@ -12,7 +12,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
-import com.medfusion.product.practice.utils.PracticeConstants;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 public class PatientSearchPage extends BasePageObject{
 	

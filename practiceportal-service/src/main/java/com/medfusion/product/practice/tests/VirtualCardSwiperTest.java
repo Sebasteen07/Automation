@@ -8,8 +8,8 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
-import com.medfusion.product.practice.utils.PracticeConstants;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 	
@@ -20,7 +20,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 		swipeString= swipe;
 	}
 
-	public void virtualCardSwipeTest(WebDriver driver, PracticeTestData practiceTestData, String cardType) throws Exception {
+	public void virtualCardSwipeTest(WebDriver driver, PracticeTestData practiceTestData, String cardType) throws InterruptedException{
 		
 		log("Test Case: TestLoginLogout");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -55,7 +55,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
 		log("Verify whether the payment is completed successfully.");
-		assertEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
 				true, "The payment is completed properly.");
 		
 		
@@ -98,7 +98,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver{
 			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster, PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
 		}
 		log("Verify whether the payment is completed successfully.");
-		verifyEquals(virtualCardSwiper.getPayementCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
+		verifyEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg),
 				true, "The payment is completed properly.");
 		return IHGUtil.formatNumber(Integer.parseInt(amount)*100);
 		

@@ -8,8 +8,8 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
-import com.medfusion.product.practice.utils.PracticeConstants;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 public class BillPaymentTest extends BaseTestNGWebDriver{
 

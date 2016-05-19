@@ -1,11 +1,11 @@
-package com.medfusion.product.practice.flows;
+package com.medfusion.product.practice.api.flows;
 
 import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
-import com.medfusion.product.practice.pojo.PatientInfo;
+import com.medfusion.product.practice.api.pojo.PatientInfo;
 
 public interface IPatientActivation {
 	

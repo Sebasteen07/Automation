@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.utils;
+package com.medfusion.product.practice.api.utils;
 
 public class PortalConstants {
 	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;

@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.practice.page;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -214,15 +215,15 @@ public class PracticeHomePage extends BasePageObject {
 	 * 
 	 * @throws Exception
 	 */
-	public VirtualCardSwiperPage clickVirtualCardSwiperTab() throws Exception {
+	public VirtualCardSwiperPage clickVirtualCardSwiperTab(){
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, virtualCardSwiperTab);
 		
 		try {
 			virtualCardSwiperTab.isDisplayed();
-		} catch (Exception e) {
+		} catch (WebDriverException e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
+			throw new WebDriverException("Either there was a timeout on loading the page, " +
 					" or virtualCardSwiperTab not found");
 		}
 		

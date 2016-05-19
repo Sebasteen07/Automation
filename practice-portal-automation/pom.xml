@@ -9,8 +9,8 @@
         <version>16.4.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>practice-portal-automation</artifactId>
-    <name>practice-portal-automation</name>
+    <artifactId>practiceportal-automation</artifactId>
+    <name>practiceportal-automation</name>
     <packaging>jar</packaging>
     
     <repositories>

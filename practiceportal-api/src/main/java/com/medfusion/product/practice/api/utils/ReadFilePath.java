@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.utils;
+package com.medfusion.product.practice.api.utils;
 
 
 import java.io.File;
@@ -18,7 +18,7 @@ import java.util.jar.JarFile;
 import org.apache.commons.lang.StringUtils;
 
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.product.practice.utils.ReadFilePath;
+import com.medfusion.product.practice.api.utils.ReadFilePath;
 
 
 public class ReadFilePath {

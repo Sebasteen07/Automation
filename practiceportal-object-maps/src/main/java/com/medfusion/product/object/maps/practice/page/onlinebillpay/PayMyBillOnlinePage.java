@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
-import com.medfusion.product.practice.utils.PracticeConstants;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 public class PayMyBillOnlinePage extends BasePageObject{
 	

@@ -80,8 +80,22 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return pageTitleEle.getText().contains(title);
 	}
-	
-	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String PAccount, String PName, String comment) throws Exception {
+	/**
+	 *  Use this one for single location practices (there won't be a selector
+	 * @param ccName
+	 * @param ccNum
+	 * @param cardType
+	 * @param expMonth
+	 * @param expYear
+	 * @param amt
+	 * @param cvv
+	 * @param zip
+	 * @param PAccount
+	 * @param PName
+	 * @param comment
+	 * @throws Exception
+	 */
+	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String PAccount, String PName, String comment){
 		IHGUtil.PrintMethodName();	
 		//Thread.sleep(4000);
 		driver.switchTo().frame("iframe");
@@ -116,8 +130,65 @@ public class VirtualCardSwiperPage extends BasePageObject {
 			
 		clickHereToChargeCard.click();
 	}
+	/**
+	 * 	Use this one if there's a location selector
+	 * @param ccName
+	 * @param ccNum
+	 * @param cardType
+	 * @param expMonth
+	 * @param expYear
+	 * @param amt
+	 * @param cvv
+	 * @param zip
+	 * @param PAccount
+	 * @param PName
+	 * @param comment
+	 * @param location
+	 * @throws Exception
+	 */
+	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip, String PAccount, String PName, String comment, String location){
+		IHGUtil.PrintMethodName();	
+		//Thread.sleep(4000);
+		driver.switchTo().frame("iframe");		
+		WebElement locationDropDwn = driver.findElement(By.xpath(".//select[@name='locationSelected']"));
+		locationDropDwn.click();
+		Select selLoc = new Select(locationDropDwn);	
+		selLoc.selectByVisibleText(location);
+		
+		cardHolderName.sendKeys(ccName);
+		
+		Select sel = new Select(creditCardType);
+		sel.selectByVisibleText(cardType);
+		
+		creditCardNum.sendKeys(ccNum);
+		
+		Select selMonth = new Select(expiryMonthDropDwn);
+		selMonth.selectByValue(expMonth);
+				
+		
+		Select selYear = new Select(expiryYearDropDwn);
+		selYear.selectByVisibleText(expYear);
+		
+		amountToChargeField.sendKeys(amt);
+		cvvField.sendKeys(cvv);
+		zipField.sendKeys(zip);
+				
+		patientaccountField.sendKeys(PAccount);
+		
+		patientNameField.sendKeys(PName);
+				
+		paymentCommentField.sendKeys(comment);
+		
+		/*
+		if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) {
+			paymentCommentField.sendKeys(comment);
+		}
+		*/
+			
+		clickHereToChargeCard.click();
+	}
 	
-	public void addCreditCardMandatoryInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String zip, String swipe) throws Exception {
+	public void addCreditCardMandatoryInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String zip, String swipe) {
 		IHGUtil.PrintMethodName();	
 		//Thread.sleep(4000);
 		
@@ -151,7 +222,7 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		clickHereToChargeCard.click();
 	}
 
-	public String getPayementCompletedSuccessMsg() {
+	public String getPaymentCompletedSuccessMsg() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, paymentSuccessMsg);
 		return paymentSuccessMsg.getText();

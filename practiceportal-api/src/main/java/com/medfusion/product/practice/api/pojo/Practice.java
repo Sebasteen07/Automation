@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.pojo;
+package com.medfusion.product.practice.api.pojo;
 
 public class Practice {
 

@@ -16,10 +16,10 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.practice.flows.IPatientActivation;
-import com.medfusion.product.practice.pojo.PatientInfo;
-import com.medfusion.product.practice.pojo.Practice;
-import com.medfusion.product.practice.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.flows.IPatientActivation;
+import com.medfusion.product.practice.api.pojo.PatientInfo;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
 public class PatientActivation implements IPatientActivation{

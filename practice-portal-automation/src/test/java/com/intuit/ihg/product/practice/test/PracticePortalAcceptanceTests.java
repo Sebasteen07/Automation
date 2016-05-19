@@ -20,12 +20,12 @@ import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientM
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.api.utils.PracticeUtil;
+import com.medfusion.product.practice.api.utils.ReadFilePath;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
-import com.medfusion.product.practice.pojo.Practice;
-import com.medfusion.product.practice.utils.PracticeConstants;
-import com.medfusion.product.practice.pojo.PracticeTestData;
-import com.medfusion.product.practice.utils.PracticeUtil;
-import com.medfusion.product.practice.utils.ReadFilePath;
 
 
 public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {

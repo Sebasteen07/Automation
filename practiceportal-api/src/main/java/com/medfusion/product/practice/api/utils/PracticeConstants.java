@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.utils;
+package com.medfusion.product.practice.api.utils;
 
 public class PracticeConstants {
 
