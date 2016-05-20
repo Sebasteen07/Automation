@@ -12,6 +12,8 @@
     <artifactId>practiceportal-automation</artifactId>
     <name>practiceportal-automation</name>
     <packaging>jar</packaging>
+    <version>${ihg.version}</version>
+    <groupId>com.intuit.ihg</groupId>
     
     <repositories>
         <repository>
@@ -24,29 +26,28 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ihg.version>16.4.0-SNAPSHOT</ihg.version>
-        <qa-automation-utils.version>16.4.0-SNAPSHOT</qa-automation-utils.version>
     </properties>
     
     <dependencies>
         <dependency>
             <groupId>com.intuit.ihg</groupId>
             <artifactId>qa-automation-utils</artifactId>
-            <version>${qa-automation-utils.version}</version>
+            <version>${ihg.version}</version>
         </dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
         	<artifactId>practiceportal-service</artifactId>
-        	<version>16.4.0Ex</version>
+        	<version>${ihg.version}</version>
         </dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
         	<artifactId>practiceportal-api</artifactId>
-        	<version>16.4.0Ex</version>
+        	<version>${ihg.version}</version>
         </dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
         	<artifactId>practiceportal-object-maps</artifactId>
-        	<version>16.4.0Ex</version>
+        	<version>${ihg.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -104,6 +105,5 @@
             </plugin>
         </plugins>
     </build>
-    <version>16.4.0Ex</version>
-    <groupId>com.intuit.ihg</groupId>
+
 </project>
