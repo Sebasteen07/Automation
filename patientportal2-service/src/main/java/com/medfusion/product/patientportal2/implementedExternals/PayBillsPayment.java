@@ -1,4 +1,4 @@
-package com.medfusion.product.practice.implementedExternals;
+package com.medfusion.product.patientportal2.implementedExternals;
 
 import org.openqa.selenium.WebDriver;
 
