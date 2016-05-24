@@ -1760,12 +1760,20 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PerformanceReporter.getPageLoadDuration(driver, MyPatientPage.PAGE_NAME);
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver),
 				"There was an issue with login or loading the home page. Expected to see 'View All Messages' link, but it was not found.");
+		
+		log("step 9:Check Mailinator");
+		Mailinator mailinator = new Mailinator();
+		String box = testcasesData.getSecureNotificationUser().split("@")[0];
+		assertTrue(mailinator.isMessageInInbox(box, "New message from IHGQA Automation NonIntegrated",
+				"Sign in to view this message", 20));
 
 		log("step 5: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
+		
 
+		
 		log("step 6: Find message in Inbox");
 		MessagePage message = inboxPage.openMessageInInbox(subject);
 		log("step 7: Validate message loads and is the right message");
@@ -1774,11 +1782,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8:Logout");
 		loginpage = pMyPatientPage.logout(driver);
 
-		log("step 9:Check Mailinator");
-		Mailinator mailinator = new Mailinator();
-		String box = testcasesData.getSecureNotificationUser().split("@")[0];
-		assertTrue(mailinator.isMessageInInbox(box, "New message from IHGQA Automation NonIntegrated",
-				"Sign in to view this message", 10));
+
 	}
 
 }
