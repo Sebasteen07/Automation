@@ -15,6 +15,7 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -81,6 +82,15 @@ public class JalapenoHomePage extends JalapenoPage {
 		messages.click();
 		
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
+	}
+	
+	// TODO: remove or refactor to go to this page through button after the button will be added
+	public JalapenoAppointmentsPage goToAppointmentsPage(String practiceURL){
+		String destinationURL  = practiceURL + "#/upcomingappointments";
+		log("Going to URL: " + destinationURL);
+		driver.get(destinationURL);
+		
+		return PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
 	}
 	
 	public JalapenoAppointmentRequestPage clickOnAppointment(WebDriver driver) {
