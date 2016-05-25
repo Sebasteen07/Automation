@@ -8,7 +8,7 @@
  	
 <test name = "Zero_Blips-Portal-Automation" >
 	<classes>
-	    <class name="com.intuit.ihg.product.portal.test.PortalAcceptanceTests" />
+	    <class name="com.medfusion.product.patientportal1.test.PortalAcceptanceTests" />
 	    	<methods>
 	    	    <include name="testAppointmentRequestEnd2End" />
         		<include name="testBillPaymentEnd2End" />
