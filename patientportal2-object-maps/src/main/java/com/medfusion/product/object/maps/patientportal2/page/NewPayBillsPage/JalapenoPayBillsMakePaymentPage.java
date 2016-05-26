@@ -111,6 +111,9 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	}
 	
 	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {	
+		return fillPaymentInfo(amount, accNumber, creditCard, "");
+	}
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) {	
 		log("Click on Add New Card");
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(addNewCardButton));
 		addNewCardButton.sendKeys(Keys.ENTER);
@@ -124,6 +127,12 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		
 		log("Insert CVV code: " + creditCard.getCvvCode());
 		confirmCVV.sendKeys(creditCard.getCvvCode());
+		
+		if (!location.equals("")) {
+			log("Location not empty, selecting");
+			Select selectLoc = new Select(driver.findElement(By.name("location")));
+			selectLoc.selectByVisibleText(location);
+		}
 		
 		log("Click on Continue button");
 		//Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys

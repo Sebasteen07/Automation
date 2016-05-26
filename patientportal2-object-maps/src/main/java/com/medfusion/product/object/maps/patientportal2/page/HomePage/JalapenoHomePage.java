@@ -156,6 +156,20 @@ public class JalapenoHomePage extends JalapenoPage {
 			return false;
 		}
 	}
+	public String getConfirmationNumberFromPayment() {
+		log("Looking for a confirmation number in a payment message");		
+		try {
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(succPaymentNotification));			
+			String message  = driver.findElement(By.xpath("//div[@class='notification-message']/p/span[2]")).getText();
+			log("Result: Message is displayed: " + message);
+			message = message.substring(28, 40);
+			log("Confirmation Number = " + message);
+			return message;
+		} catch(Exception ex) {
+			log(ex.getCause().toString());
+			return "";
+		}
+	}
 
 	public boolean assessHomePageElements() {
 
