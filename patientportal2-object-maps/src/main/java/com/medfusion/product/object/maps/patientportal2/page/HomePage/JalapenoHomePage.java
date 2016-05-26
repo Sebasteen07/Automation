@@ -162,7 +162,7 @@ public class JalapenoHomePage extends JalapenoPage {
 			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(succPaymentNotification));			
 			String message  = driver.findElement(By.xpath("//div[@class='notification-message']/p/span[2]")).getText();
 			log("Result: Message is displayed: " + message);
-			message = message.substring(28, 40);
+			message = message.substring(28, message.indexOf("."));
 			log("Confirmation Number = " + message);
 			return message;
 		} catch(Exception ex) {
