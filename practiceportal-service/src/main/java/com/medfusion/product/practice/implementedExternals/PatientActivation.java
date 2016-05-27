@@ -72,6 +72,7 @@ public class PatientActivation implements IPatientActivation{
         System.out.println("Update ID");
 		String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
 		System.out.println("Found memberId: " + memberId);
+		patientInfo.memberId = memberId;
         WebElement rsdkId = driver.findElement(By.name("patientid_78"));
         rsdkId.sendKeys(patientInfo.firstName);
         driver.findElement(By.name("submitted")).click();        
