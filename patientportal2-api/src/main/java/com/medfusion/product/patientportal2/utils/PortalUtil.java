@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class PortalUtil extends IHGUtil {
 

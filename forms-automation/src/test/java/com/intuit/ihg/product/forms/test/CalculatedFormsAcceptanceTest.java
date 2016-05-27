@@ -8,7 +8,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
 import org.testng.annotations.Test;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.CalculatedFormPage;

@@ -3,9 +3,9 @@ package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 import java.util.ArrayList;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.IHGUtil.Gender;
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
+import com.medfusion.common.utils.PropertyFileLoader;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

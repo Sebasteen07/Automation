@@ -1,7 +1,7 @@
 package com.medfusion.product.precheck;
 
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class PrecheckPatient {
 	

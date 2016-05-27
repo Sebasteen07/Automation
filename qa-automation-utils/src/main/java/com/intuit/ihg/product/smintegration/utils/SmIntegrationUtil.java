@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;

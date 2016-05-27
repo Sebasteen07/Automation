@@ -4,7 +4,7 @@ import static org.testng.AssertJUnit.*;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;

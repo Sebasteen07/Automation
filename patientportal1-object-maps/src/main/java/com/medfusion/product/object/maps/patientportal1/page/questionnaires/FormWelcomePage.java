@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ihg.common.utils.IHGConstants;
+import com.medfusion.common.utils.IHGConstants;
 
 public class FormWelcomePage extends PortalFormPage {
 

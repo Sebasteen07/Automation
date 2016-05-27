@@ -16,7 +16,7 @@ import com.medfusion.product.object.maps.patientportal1.page.forgotuserid.Forgot
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 /** @author bkrishnankutty
  *  @Date 2-12-2013

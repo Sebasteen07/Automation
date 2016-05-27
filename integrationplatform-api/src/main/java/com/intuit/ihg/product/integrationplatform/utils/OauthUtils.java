@@ -37,7 +37,7 @@ import com.intuit.api.security.client.OAuthTwoLeggedClient;
 import com.intuit.api.security.client.TokenManager;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 
 public class OauthUtils {

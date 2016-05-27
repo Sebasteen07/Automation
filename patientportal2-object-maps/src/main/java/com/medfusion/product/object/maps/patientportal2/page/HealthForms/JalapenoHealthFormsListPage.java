@@ -2,7 +2,7 @@ package com.medfusion.product.object.maps.patientportal2.page.HealthForms;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoPage;
 
 public class JalapenoHealthFormsListPage extends JalapenoPage {

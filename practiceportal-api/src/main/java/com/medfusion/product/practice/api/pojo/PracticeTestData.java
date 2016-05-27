@@ -3,8 +3,8 @@ package com.medfusion.product.practice.api.pojo;
 import java.io.IOException;
 import java.net.URL;
 
-import com.intuit.ihg.common.utils.ExcelSheetReader;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 public class PracticeTestData {

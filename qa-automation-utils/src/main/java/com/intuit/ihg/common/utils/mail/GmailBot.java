@@ -11,7 +11,7 @@ package com.intuit.ihg.common.utils.mail;
  * 	http://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
  */
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import junit.framework.Assert;
 
 import javax.mail.*;

@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.support.utils;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class SupportConstants {
 	

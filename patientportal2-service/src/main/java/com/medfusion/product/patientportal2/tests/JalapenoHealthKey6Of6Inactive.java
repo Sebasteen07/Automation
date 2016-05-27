@@ -5,8 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;

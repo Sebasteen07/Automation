@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.patientportal1.pojo.PatientInfo;
 
 public interface IPatientActivation {

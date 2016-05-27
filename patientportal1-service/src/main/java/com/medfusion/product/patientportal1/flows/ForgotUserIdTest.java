@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;

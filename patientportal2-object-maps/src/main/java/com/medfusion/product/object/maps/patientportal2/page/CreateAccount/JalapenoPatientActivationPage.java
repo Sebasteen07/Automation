@@ -1,8 +1,8 @@
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 import org.openqa.selenium.WebDriver;

@@ -3,7 +3,7 @@ package com.medfusion.product.patientportal2.pojo;
 import java.util.Calendar;
 import java.util.Random;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class CreditCard {
 	

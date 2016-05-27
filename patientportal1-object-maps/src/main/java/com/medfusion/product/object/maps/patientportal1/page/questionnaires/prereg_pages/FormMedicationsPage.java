@@ -7,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.PortalFormPage;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 
 public class FormMedicationsPage extends PortalFormPage 

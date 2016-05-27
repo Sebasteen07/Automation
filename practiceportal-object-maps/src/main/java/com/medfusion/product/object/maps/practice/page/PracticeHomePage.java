@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;

@@ -3,8 +3,8 @@ package com.medfusion.product.patientportal2.tests;
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 
 public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {

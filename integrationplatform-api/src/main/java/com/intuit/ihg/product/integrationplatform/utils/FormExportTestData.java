@@ -3,8 +3,8 @@ package com.intuit.ihg.product.integrationplatform.utils;
 import java.net.URL;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.ExcelSheetReader;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.IHGUtil;
 
 public class FormExportTestData {
 	

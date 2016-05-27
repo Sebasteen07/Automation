@@ -2,7 +2,7 @@ package com.medfusion.product.object.maps.practice.page.patientMessaging;
 
 import java.net.URL;
 
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 import org.openqa.selenium.By;
@@ -13,7 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class PatientMessagingPage extends BasePageObject{
 

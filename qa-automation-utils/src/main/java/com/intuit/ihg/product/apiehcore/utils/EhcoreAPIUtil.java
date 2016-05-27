@@ -58,7 +58,7 @@ import org.xml.sax.SAXParseException;
 import com.allscripts.uai.schemas._2010._02._15.AllscriptsMessageEnvelope;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
 import com.intuit.ihg.product.apiehcore.utils.constants.CCDExportConstants;
 import com.intuit.ihg.product.apiehcore.utils.constants.CCDImportConstants;
