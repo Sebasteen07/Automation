@@ -11,7 +11,7 @@
 	
 	<artifactId>qa-automation-utils</artifactId>
     <name>qa-automation-utils</name>
-    <packaging>jar</packaging>
+
 	
 	<repositories>
         <repository>
