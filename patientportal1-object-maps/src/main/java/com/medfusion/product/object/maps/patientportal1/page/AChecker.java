@@ -51,6 +51,9 @@ public class AChecker extends BasePageObject {
 	@FindBy(how = How.ID, using = "AC_congrats_msg_for_errors")
 	public WebElement successMessage;
 	
+	@FindBy(how = How.ID, using = "AC_errors")
+	public WebElement errors;
+	
 	public AChecker(WebDriver driver) {
 		super(driver);
 		driver.manage().deleteAllCookies();
@@ -76,6 +79,9 @@ public class AChecker extends BasePageObject {
 		pasteField.sendKeys(Keys.CONTROL, "v");
 		validateButton.click();
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
+		if (errors.isDisplayed()) {
+			log(errors.getText());
+		}
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
 	}
 }
