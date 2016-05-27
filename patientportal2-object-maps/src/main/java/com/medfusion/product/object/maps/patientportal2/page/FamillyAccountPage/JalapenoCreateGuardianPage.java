@@ -56,20 +56,13 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 	}
 	
-	public boolean checkDependentInfoRegisterPage (String name, String lastname, String email) {
-		IHGUtil.PrintMethodName();
-			
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
-		
-		if (this.inputEmail.getAttribute("value").equals(email)) {
-			log("Name, lastname and email is correct");
-			return true;
-		}else{
-			log(this.inputEmail.getAttribute("value") + " is not equal " + email);
-			return false;
-		}
+	public void checkDependentInfoRegisterPage (String name, String lastname, String email) {
+        IHGUtil.PrintMethodName();
+
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
+        wait.until(ExpectedConditions.textToBePresentInElementValue(inputEmail, email));
 	}
 	
 	public void createGuardianOnlyFirstPage (String name, String lastname, String relationship) {

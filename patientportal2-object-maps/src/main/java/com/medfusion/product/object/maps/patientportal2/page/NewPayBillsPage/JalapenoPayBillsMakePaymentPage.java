@@ -26,6 +26,9 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "creditCardAddButton")
 	private WebElement addNewCardButton;
 	
+	@FindBy(how = How.ID, using = "removeCardOkButton")
+	private WebElement removeCardOkButton;
+	
 	@FindBy(how = How.ID, using = "pay_history")
 	private WebElement payHistoryButton;
 	
@@ -113,11 +116,16 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {	
 		return fillPaymentInfo(amount, accNumber, creditCard, "");
 	}
-	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) {	
-		log("Click on Add New Card");
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(addNewCardButton));
-		addNewCardButton.sendKeys(Keys.ENTER);
-		fillNewCardInformation(creditCard);
+	
+    public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard,
+            String location) {
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        log("Click on Add New Card");
+        wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
+        addNewCardButton.sendKeys(Keys.ENTER);
+        fillNewCardInformation(creditCard);
 		
 		log("Insert Payment amount: " + amount);
 		paymentAmount.sendKeys(amount);		
@@ -126,6 +134,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		accountNumber.sendKeys(accNumber);
 		
 		log("Insert CVV code: " + creditCard.getCvvCode());
+		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
 		confirmCVV.sendKeys(creditCard.getCvvCode());
 		
 		if (!location.equals("")) {
@@ -136,38 +145,51 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		
 		log("Click on Continue button");
 		//Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(continueButton));
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		continueButton.sendKeys(Keys.ENTER);
 		
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
-	}
-	
-	public void removeAllCards() {
-		log("Removing of displayed cards");
-		ArrayList<WebElement> cards = (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
-		
-		if(cards.size() > 0) {
-			int removedCards = 0;
+    }
 
-			log("Count of displayed cards: " + cards.size());
-			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
-			for(int i = 0; i < removeButtons.size(); i++) {
-				if (removeButtons.get(i).isDisplayed()) {
-					removeCreditCard(removeButtons.get(i));
-					removedCards++;
-				}
-			}
-			
-			log("Count of successfully removed cards: " + removedCards);	
-		}
-		else {
-			log("No previous card is displayed");
-		}
-	}
-	
+    private ArrayList<WebElement> getCreditCards() {
+        return (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
+    }
+
+    public boolean isAnyCardPresent() {
+        return getCreditCards().size() > 0;
+    }
+
+    public void removeAllCards() throws InterruptedException {
+        log("Removing of displayed cards");
+        ArrayList<WebElement> cards = getCreditCards();
+
+        if (cards.size() > 0) {
+            log("Count of displayed cards: " + cards.size());
+            int removedCards = 0;
+
+            ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By
+                    .xpath("//a[contains(@class,'creditCardRemoveButton')]"));
+            for (int i = 0; i < removeButtons.size(); i++) {
+                if (removeButtons.get(i).isDisplayed()) {
+                    removeCreditCard(removeButtons.get(i));
+                    log("Card #" + ++removedCards + " removed");
+                    // need to sleep because of modal disappearing time
+                    Thread.sleep(2000);
+                }
+            }
+        } else {
+            log("No previous card is displayed");
+        }
+    }
+
 	private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
+	    WebDriverWait wait = new WebDriverWait(driver, 10);
+	    
+	    wait.until(ExpectedConditions.elementToBeClickable(removeButton));
 		removeButton.click();
-		driver.findElement(By.id("removeCardOkButton")).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(removeCardOkButton));
+		removeCardOkButton.click();
 		
 		return this;
 	}
