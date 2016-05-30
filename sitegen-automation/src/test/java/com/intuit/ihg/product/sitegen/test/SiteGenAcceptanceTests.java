@@ -5,8 +5,10 @@ import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep1Page;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep2Page;
@@ -30,9 +32,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhys
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;

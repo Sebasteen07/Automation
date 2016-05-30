@@ -4,7 +4,7 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -14,10 +14,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage.QuestionType;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-import com.intuit.ihg.common.utils.IHGConstants;
+import com.medfusion.common.utils.IHGConstants;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

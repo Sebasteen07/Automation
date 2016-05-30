@@ -34,12 +34,28 @@
 		</dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>practiceportal-object-maps</artifactId>
+        	<version>${ihg.version}</version>
+        </dependency>  
+        <dependency>
+        	<groupId>com.intuit.ihg</groupId>
         	<artifactId>object-maps</artifactId>
         	<version>${ihg.version}</version>
         </dependency>
         <dependency>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>patientportal2-object-maps</artifactId>
+        	<version>${ihg.version}</version>
+        </dependency>       
+        <dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>common-steps</artifactId>
+			<artifactId>practiceportal-api</artifactId>			
+			<version>${ihg.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-service</artifactId>
+			<scope>runtime</scope>
 			<version>${ihg.version}</version>
 		</dependency>
 	</dependencies>

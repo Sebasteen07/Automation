@@ -17,7 +17,7 @@ import com.intuit.dc.framework.tracking.entity.Message;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.eh.core.dto.ProcessingResponse;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPI;

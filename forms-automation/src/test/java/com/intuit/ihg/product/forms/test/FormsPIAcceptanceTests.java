@@ -1,12 +1,13 @@
 package com.intuit.ihg.product.forms.test;
 
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
-import com.intuit.ihg.product.portal.utils.Portal;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
-import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class FormsPIAcceptanceTests extends FormsAcceptanceTests {
 
@@ -28,7 +29,8 @@ public class FormsPIAcceptanceTests extends FormsAcceptanceTests {
 		assertTrue(homePage.isMessagesButtonDisplayed(driver));
 
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
-		FormWelcomePage pFormWelcomePage = homePage.clickStartRegistrationButton(driver);
+		homePage.clickStartRegistrationButton(driver);
+		FormWelcomePage pFormWelcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		assertTrue(pFormWelcomePage.isWelcomePageLoaded());
 		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
 

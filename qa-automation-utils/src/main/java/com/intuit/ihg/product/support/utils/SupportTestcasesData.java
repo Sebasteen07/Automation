@@ -1,8 +1,8 @@
 package com.intuit.ihg.product.support.utils;
 
 import java.net.URL;
-import com.intuit.ihg.common.utils.ExcelSheetReader;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.support.utils.Support;
 public class SupportTestcasesData {
 

@@ -10,7 +10,7 @@ import static org.testng.Assert.*;
 import com.ibm.icu.util.Calendar;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10TestData;
 import com.intuit.ihg.product.integrationplatform.utils.OauthUtils;

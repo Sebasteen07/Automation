@@ -13,7 +13,7 @@ import org.custommonkey.xmlunit.examples.RecursiveElementNameAndTextQualifier;
 import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class XMLHandler {
 	public static boolean xmlComparison(String actualXML, String expectedXML)

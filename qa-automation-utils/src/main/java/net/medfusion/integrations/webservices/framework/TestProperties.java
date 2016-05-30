@@ -2,7 +2,7 @@
 package net.medfusion.integrations.webservices.framework;
 import org.apache.commons.lang.StringUtils;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 import java.util.Properties;
 

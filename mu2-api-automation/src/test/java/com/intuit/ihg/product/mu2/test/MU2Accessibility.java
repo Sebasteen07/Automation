@@ -10,16 +10,16 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
-import com.intuit.ihg.product.object.maps.portal.page.AChecker;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.AccountActivity.ViewAccountActivityPage;
+import com.medfusion.product.object.maps.patientportal1.page.AChecker;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 
 public class MU2Accessibility extends BaseTestNGWebDriver 
 {

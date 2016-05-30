@@ -15,7 +15,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
  
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

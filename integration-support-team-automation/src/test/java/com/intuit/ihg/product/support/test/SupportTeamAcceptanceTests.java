@@ -24,13 +24,13 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.entities.CcdType;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.support.utils.Support;
 import com.intuit.ihg.product.support.utils.SupportConstants;
 import com.intuit.ihg.product.support.utils.SupportTestcasesData;
 import com.intuit.ihg.product.support.utils.SupportUtil;
 import com.intuit.ihg.product.support.utils.WebserviceUtils;
+import com.medfusion.pojos.CcdType;
 
 /**
  * 

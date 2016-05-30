@@ -20,9 +20,9 @@
         		<include name="testHealthKeyPatientUpdate" />
         		<include name="testPatientDemographicsUpdateWithSpecialCharacter" />
         		<include name="testPIDCWithSpecialCharacterData" />
-        		<include name="testHealthKeyPatientLoginAndOnDemandProvision"> 
-        		<include name="testHealthKeyPatientAddInsurance">
-        		<include name="testHealthKeyPatientUpdateInsurance">
+        		<include name="testHealthKeyPatientLoginAndOnDemandProvision" /> 
+        		<include name="testHealthKeyPatientAddInsurance" />
+        		<include name="testHealthKeyPatientUpdateInsurance" />
       		</methods>
 	</classes>
 </test>

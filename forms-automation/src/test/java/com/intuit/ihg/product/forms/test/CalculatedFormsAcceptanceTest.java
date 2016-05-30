@@ -8,16 +8,16 @@ import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
 import org.testng.annotations.Test;
 
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.CalculatedFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.CalculatedFormPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
-import com.intuit.ihg.product.portal.utils.Portal;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 

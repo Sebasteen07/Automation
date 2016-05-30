@@ -11,9 +11,9 @@ import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
-import com.intuit.ihg.common.entities.CcdType;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
+import com.medfusion.pojos.CcdType;
 
 public class PhrUtil extends IHGUtil {
 

@@ -2,7 +2,7 @@ package com.intuit.ihg.product.smintegration.utils;
 
 import java.net.HttpURLConnection;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author bkrishnankutty
