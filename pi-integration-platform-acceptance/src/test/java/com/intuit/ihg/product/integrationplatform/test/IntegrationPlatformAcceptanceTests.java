@@ -19,32 +19,24 @@ import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
-<<<<<<< HEAD
+
 import com.medfusion.product.patientportal1.utils.PortalConstants;
+
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.*;
 import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
-import com.medfusion.product.object.maps.practice.page.*;
-import com.medfusion.product.object.maps.practice.page.apptrequest.*;
-=======
-import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
-import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.jalapeno.page.AppointmentRequestPage.*;
-import com.medfusion.product.object.maps.jalapeno.page.CcdViewer.JalapenoCcdPage;
-import com.medfusion.product.jalapeno.CreditCard;
-import com.medfusion.product.jalapeno.CreditCard.CardType;
-import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
-import com.medfusion.product.object.maps.jalapeno.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
-import com.intuit.ihg.product.object.maps.practice.page.*;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.*;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
->>>>>>> origin/PMEMR-565
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 
 import static org.testng.Assert.assertNotNull;
 
