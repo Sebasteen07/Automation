@@ -1453,14 +1453,14 @@ public class EhcoreAPIUtil extends IHGUtil {
 	/**
 	 * This method is used to update CCDExport data.(Updated -MsgId  &  UPN)
 	 */
-	public static void updateCCDExport_Data(String fromXML,String toXML,String msgId,String patientId,String practiceId,String providerId) {
+	public static void updateCCDExport_Data(String fromXML,String toXML,String msgId,String personUrnId,String practiceUrnId,String providerUrnId) {
 
 		CCDMessageType message = unmarshallMessage(fromXML);
 
 		message.getHeader().setMsgId(msgId);
-		message.getCCDDocument().getPatientDemographics().getPatientIdentifier().setUniversalPatientNumber(patientId);
-		message.getClinicalExchangeHeader().getPracticeList().get(0).getPracticeIdentifier().setUniversalPracticeId(practiceId);
-		message.getClinicalExchangeHeader().getPracticeList().get(0).getProviderList().get(0).getProviderIdentifier().setIntuitProviderId(providerId);
+		message.getCCDDocument().getPatientDemographics().getPatientIdentifier().setPortalStackPersonUrnId(personUrnId);
+		message.getClinicalExchangeHeader().getPracticeList().get(0).getPracticeIdentifier().setPortalStackPracticeUrnId(practiceUrnId);
+		message.getClinicalExchangeHeader().getPracticeList().get(0).getProviderList().get(0).getProviderIdentifier().setIntuitProviderId(providerUrnId);
 
 		marshallMessage(message,toXML);
 	}
@@ -2175,9 +2175,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 			toXML = CCDExportConstants.SAMPLE_CCD_EXPORT_DATA
 					+ "testCCDMessageType.xml";
 			updateCCDExport_Data(xmlFile, toXML, value,
-					EhcoreAPIConstants.KEYREGISTRY_PATIENTID,
-					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
-					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
+					EhcoreAPIConstants.PORTAL_PERSONID_URN,
+					EhcoreAPIConstants.PORTAL_PRACTICEID_URN,
+					EhcoreAPIConstants.PORTAL_PROVIDERID_URN);
 		} else if (type == "invalidExportMsg") {
 			Log4jUtil.log("********** invalidExportMsg");
 			url = getURL() + EhcoreAPIConstants.CCDEXPORT;
@@ -2197,9 +2197,9 @@ public class EhcoreAPIUtil extends IHGUtil {
 					+ "testQuestionnaireMessage.xml";
 
 			EhcoreAPIUtil.updateCCDExport_Data(xmlFile, toXML, "msgId",
-					EhcoreAPIConstants.KEYREGISTRY_PATIENTID,
-					EhcoreAPIConstants.KEYREGISTRY_PRACTICEID,
-					EhcoreAPIConstants.KEYREGISTRY_PROVIDERID);
+					EhcoreAPIConstants.PORTAL_PERSONID_URN,
+					EhcoreAPIConstants.PORTAL_PRACTICEID_URN,
+					EhcoreAPIConstants.PORTAL_PROVIDERID_URN);
 			// Validate Request xml against XSD
 			
 

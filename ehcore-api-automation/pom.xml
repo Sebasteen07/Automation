@@ -19,7 +19,6 @@
 		<dcf-version>16.4.0-SNAPSHOT</dcf-version>
 		<eh-core-version>16.4.0-SNAPSHOT</eh-core-version>
 		<messages-version>16.4.0-SNAPSHOT</messages-version>
-		<keyreg-client-version>16.4.0-SNAPSHOT</keyreg-client-version>
 		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
@@ -154,27 +153,6 @@
 			<version>${codification-version}</version>
 		</dependency>
 		<!-- Codification Dependency End -->
-		<!-- Key Registry Dependency Start -->
-		<dependency>
-			<groupId>com.intuit.internal.keyregistry.client</groupId>
-			<artifactId>kr-client</artifactId>
-			<version>${keyreg-client-version}</version>
-			<exclusions>
-
-				<exclusion>
-					<artifactId>jcl-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-log4j12</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<!-- DataChannelFramework dependency START -->
 		<dependency>
 			<groupId>com.intuit.framework.dc</groupId>
