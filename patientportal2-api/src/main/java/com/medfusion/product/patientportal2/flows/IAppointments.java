@@ -19,10 +19,8 @@ public interface IAppointments {
 	 * Gets past appointments for given patient in given practice.
 	 * 
 	 * @param driver
-	 * @param practiceURL
-	 * @param username
-	 * @param password
-	 * @return
+	 * @param portal - jalapeno patient portal URL is needed
+	 * @param patientInfo - username and password are needed
 	 * @throws ParseException
 	 */
 	public List<Appointment> getAllAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
@@ -31,10 +29,8 @@ public interface IAppointments {
 	 * Gets past appointments for given patient in given practice.
 	 * 
 	 * @param driver
-	 * @param practiceURL
-	 * @param username
-	 * @param password
-	 * @return
+	 * @param portal - jalapeno patient portal URL is needed
+	 * @param patientInfo - username and password are needed
 	 * @throws ParseException
 	 */
 	public List<Appointment> getUpcomingAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
@@ -43,10 +39,8 @@ public interface IAppointments {
 	 * Gets past appointments for given patient in given practice.
 	 * 
 	 * @param driver
-	 * @param practiceURL
-	 * @param username
-	 * @param password
-	 * @return
+	 * @param portal - jalapeno patient portal URL is needed
+	 * @param patientInfo - username and password are needed
 	 * @throws ParseException
 	 */
 	public List<Appointment> getPastAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
