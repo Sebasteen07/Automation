@@ -12,7 +12,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoAppointmentsPage extends BasePageObject {
 	
@@ -33,7 +33,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 	@FindBy(how = How.ID, using = NO_APPOINTMENTS_TEXT_ID)
 	public WebElement noAppointmentsText;
 	
-	@FindBy(how = How.XPATH, using = "//ul[contains(@class, 'myAccountList')]//div[@class='row']")
+	@FindBy(how = How.XPATH, using = "//ul[contains(@class, 'myAccountList')]")
 	public WebElement appointments;
 	
 	public JalapenoAppointmentsPage(WebDriver driver) {
@@ -48,7 +48,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 		if (util.isFoundBy(By.id(NO_APPOINTMENTS_TEXT_ID), 5)) {
 			return Collections.emptyList();
 		}
-		List<WebElement> result = appointments.findElements(By.xpath("//li//div[@class='row']"));
+		List<WebElement> result = appointments.findElements(By.xpath(".//div[@class='row']"));
 		return result;
 	}
 	
