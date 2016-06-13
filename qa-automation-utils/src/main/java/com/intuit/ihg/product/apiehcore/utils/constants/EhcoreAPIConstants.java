@@ -144,7 +144,7 @@ public class EhcoreAPIConstants {
 	public static final String RAWPERSISTANCE = "Raw Message Persistance";
 	public static final String XMLVALIDATION = "XML Validation ";
 	public static final String RAWRETRIEVAL = "Raw Message Retrieval";
-	public static final String KEYREGISTRY = "Keyregistry Enrichment of SimpleCDA";
+	public static final String IDENRICHMENT = "Id Enrichment of SimpleCDA";
 	public static final String ACTOR_ID = "Actor ID Validation";
 	public static final String PUBLISHNOTIFICATION = "Publish CCD Notification to Hub";
 	public static final String CCDXSDVALIDATION = "CCD XSD Validation"; //Raw Data XSD Validation
@@ -254,22 +254,10 @@ public class EhcoreAPIConstants {
 	// Actual & EXPECTED CDM Message
 
 	
-	public static final String KEYREGISTRY_ENRICHMENT_RESPONSE = SAMPLE_DATA
-			+ "keyregistry_enrichment/";
 	// Request xml updates
-	//%%%%%%%%%%%%%%%%%%%%%excel
-	public static final String KEYREGISTRY_PRACTICEID = "urn:vnd:ihg:keyregistry:practice:19462a02-5b51-4577-8404-6e4194e175cc"; 
-	public static final String KEYREGISTRY_PATIENTID = "urn:vnd:ihg:keyregistry:patient:5bcba7ca-f36f-4551-99c2-d2b024884ab9";
-	public static final String KEYREGISTRY_PROVIDERID = "urn:vnd:ihg:keyregistry:staff:95b48dd7-732a-4ace-ad7b-6451e0812e61";
-
-	//%%%%%%%%%%%excel
-	public static final String KR_PRACTICEID = "40069";
-	public static final String KR_PATIENTID = "70063";
-	public static final String KR_PROVIDERID = "40073";
-
-	public static final String PORTALKEY_PRACTICEID = "0000021089";
-	public static final String PORTALKEY_PATIENTID = "EEHR44698";
-	public static final String PORTALKEY_PROVIDERID = "0000026067";
+	public static final String PORTAL_PRACTICEID_URN = "urn:vnd:ihg:portal:practice:21069";
+	public static final String PORTAL_PERSONID_URN = "urn:vnd:ihg:portal:person:21069";
+	public static final String PORTAL_PROVIDERID_URN = "urn:vnd:ihg:portal:staff:25874";
 
 	// Portal Key Enrichment Response
 	public static final String PORTALKEY_ENRICHMENT_RESPONSE = SAMPLE_DATA
