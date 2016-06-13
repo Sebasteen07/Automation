@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -57,11 +58,11 @@ public class Appointments implements IAppointments {
 	private List<Appointment> parseWebElementsToAppointments(List<WebElement> elements) throws ParseException {
 		List<Appointment> appointments = new ArrayList<Appointment>();		
 		for (WebElement element : elements) {
-			DateFormat df = new SimpleDateFormat("M/d/yy h:mm a");
-		    Date date =  df.parse(element.findElement(By.xpath("/div[1]")).getText());
-		    String provider = element.findElement(By.xpath("/div[2]/div[1]")).getText();
-		    String location = element.findElement(By.xpath("/div[2]/div[2]")).getText();
-		    boolean canceled = "Cancelled".equals(element.findElement(By.xpath("/div[3]")).getText());
+			DateFormat df = new SimpleDateFormat("M/d/yy h:mm a", Locale.US);
+		    Date date =  df.parse(element.findElement(By.xpath("./div[1]")).getText());
+		    String provider = element.findElement(By.xpath("./div[2]/div[1]")).getText();
+		    String location = element.findElement(By.xpath("./div[2]/div[2]")).getText();
+		    boolean canceled = "Cancelled".equals(element.findElement(By.xpath("./div[3]")).getText());
 		    appointments.add(new Appointment(date, provider, location, canceled));
 		}		
 	    return appointments;
