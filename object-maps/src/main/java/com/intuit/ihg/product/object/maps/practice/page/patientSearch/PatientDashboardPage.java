@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.object.maps.practice.page.patientSearch;
 
+import static org.testng.AssertJUnit.assertTrue;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
@@ -7,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -57,6 +60,15 @@ public class PatientDashboardPage extends BasePageObject{
 	
 	@FindBy(xpath=".//table[@class='demographics']/tbody/tr[8]/td[2]")
 	private WebElement lblPatientStatus;
+	
+	@FindBy(linkText="Send post age-out invite")
+	private WebElement postAgeOutInviteButton;
+	
+	@FindBy(xpath = "//input[@value='Send post age-out invite']")
+	private WebElement	sendPostAgeOutInviteButton;
+	
+	@FindBy(xpath="//*[contains(.,'Post age-out invitation has been sent successfully')]")
+	private WebElement postAgeOutInvitationInfoMessage;
 	
 	private WebElement feedback;
 	
@@ -187,4 +199,15 @@ public class PatientDashboardPage extends BasePageObject{
 		
 	}
 
+
+	public void sendPostAgeOutInvitation() {
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(postAgeOutInviteButton));
+		postAgeOutInviteButton.click();
+		
+		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(sendPostAgeOutInviteButton));
+		sendPostAgeOutInviteButton.click();
+		
+		log("Check if info message is present");
+		assertTrue(IHGUtil.exists(driver, 30, postAgeOutInvitationInfoMessage));
+	}
 }

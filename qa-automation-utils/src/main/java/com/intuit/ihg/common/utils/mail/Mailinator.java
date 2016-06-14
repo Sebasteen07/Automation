@@ -1,14 +1,16 @@
 package com.intuit.ihg.common.utils.mail;
 
-import javax.ws.rs.core.MediaType;
-
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ihg.rest.RestUtils;
+import org.apache.log4j.Level;
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.intuit.ihg.rest.RestUtils;
+import javax.ws.rs.core.MediaType;
 
 public class Mailinator {
 
@@ -17,7 +19,6 @@ public class Mailinator {
 			+ API_TOKEN + "&to=";
 	private static final String MAILINATOR_EMAIL_TEMPLATE_URL = "https://api.mailinator.com/api/email?token="
 			+ API_TOKEN + "&msgid=";
-
 	private static final int TIME_TO_WAIT_MS = 10000;
 
 	/**
@@ -25,42 +26,36 @@ public class Mailinator {
 	 * This method checks the mailbox for an email with specified emailSubject starting from the most recent.
 	 * If it finds some url in the link which contains text specified in findInEmail it will return it
 	 *
-	 * @return link with the text from findInEmail, null it it not found
+	 * @return link with the text from findInEmail, null if it not found
 	 */
-	public String getLinkFromEmail(String username, String emailSubject, String findInEmail,
-			int retries)
-			throws Exception {
+	public String getLinkFromEmail(String username, String emailSubject, String findInEmail, int retries) throws InterruptedException {
 
-		for (int j = 0; j != retries; j++) {
-			String url = MAILINATOR_INBOX_TEMPLATE_URL + username;
+		String url = MAILINATOR_INBOX_TEMPLATE_URL + username;
 
-			System.out.println("GET inbox from: " + url);
-			JSONObject inbox = new JSONObject(RestUtils.get(url, String.class,
-					MediaType.APPLICATION_XML));
-			JSONArray inboxArray = inbox.getJSONArray("messages");
-			for (int i = inboxArray.length() - 1; i >= 0; i--) {
-				JSONObject emailInInbox = inboxArray.getJSONObject(i);
-				if (emailInInbox.get("subject").toString().contains(emailSubject)) {
-					url = MAILINATOR_EMAIL_TEMPLATE_URL + emailInInbox.get("id").toString();
-					System.out.println("GET e-mail from: " + url);
-					JSONObject email = new JSONObject(RestUtils.get(url, String.class,
-							MediaType.APPLICATION_XML));
-					JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
-					for (int k = 0; k < parts.length(); k++) {
-						Document emailContent = Jsoup.parse(parts.getJSONObject(k)
-								.getString("body"));
+		for (int j = 1; j <= retries; j++) {
+			JSONObject inbox = getJSONFromMailinator(url);
+			try {
+				JSONArray emails = inbox.getJSONArray("messages");
+				for (int i = 0; i < emails.length(); i++) {
+					JSONObject email = emails.getJSONObject(i);
+					if (email.get("subject").toString().contains(emailSubject)) {
+						String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL + email.get("id").toString();
+						JSONObject emailDetail = getJSONFromMailinator(emailUrl);
+						Document emailContent = getEmailContent(emailDetail);
 						Elements links = emailContent.body().getElementsContainingText(findInEmail);
 						String href = links.attr("href");
 						if (!href.isEmpty()) {
-							System.out.println("URL found: " + href);
+							Log4jUtil.log("URL found: " + href);
 							return href;
 						}
 					}
 				}
+			} catch (JSONException e) {
+				Log4jUtil.log("Response from Mailinator could not be parsed: " + e);
 			}
-			System.out.println("Email not found. Trial number " + (j + 1) + " / " + retries);
-
-			System.out.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
+			Log4jUtil.log(
+					"Email was not retrieved. Trial number " + j + "/" + retries
+							+ ". Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
 			Thread.sleep(TIME_TO_WAIT_MS);
 		}
 		return null;
@@ -103,9 +98,7 @@ public class Mailinator {
 	public String catchNewMessage(String username, String emailSubject, String findInEmail,
 			String targetUrl, int retries) throws Exception {
 		String inboxUrl = MAILINATOR_INBOX_TEMPLATE_URL + username;
-		System.out.println("GET initial inbox from: " + inboxUrl);
-		JSONObject inbox = new JSONObject(RestUtils.get(inboxUrl, String.class,
-				MediaType.APPLICATION_XML));
+		JSONObject inbox = getJSONFromMailinator(inboxUrl);
 		JSONArray inboxArray = inbox.getJSONArray("messages");
 		int initialMailCount = inboxArray.length();
 		System.out.println("Initial mail count: " + initialMailCount);
@@ -118,24 +111,21 @@ public class Mailinator {
 		}
 		for (int j = 0; j != retries; j++) {
 			System.out
-			.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
+					.println("Waiting for e-mail to arrive for " + TIME_TO_WAIT_MS / 1000 + " s.");
 			Thread.sleep(TIME_TO_WAIT_MS);
-			System.out.println("GET inbox from: " + inboxUrl);
-			inbox = new JSONObject(RestUtils.get(inboxUrl, String.class, MediaType.APPLICATION_XML));
+			inbox = getJSONFromMailinator(inboxUrl);
 			inboxArray = inbox.getJSONArray("messages");
 			int currentMailCount = inboxArray.length();
 			if (currentMailCount > 0) {
 				JSONObject lastMailInInbox = inboxArray.getJSONObject(currentMailCount - 1);
 				String currentLastMailId = lastMailInInbox.get("id").toString();
-				if (!currentLastMailId.equals(initialLastMailId)) {			
+				if (!currentLastMailId.equals(initialLastMailId)) {
 					String fullSubject = lastMailInInbox.get("subject").toString();
 					if (fullSubject.contains(emailSubject)) {
 						if (findInEmail != null) {
 							String emailUrl = MAILINATOR_EMAIL_TEMPLATE_URL
 									+  currentLastMailId;
-							System.out.println("GET e-mail from: " + emailUrl);
-							JSONObject email = new JSONObject(RestUtils.get(emailUrl, String.class,
-									MediaType.APPLICATION_XML));
+							JSONObject email =getJSONFromMailinator(emailUrl);
 							JSONArray parts = email.getJSONObject("data").getJSONArray("parts");
 							for (int k = 0; k < parts.length(); k++) {
 								Document emailContent = Jsoup.parse(parts.getJSONObject(k).getString(
@@ -193,5 +183,38 @@ public class Mailinator {
 		return catchNewMessage(username, "", null, null, retries);
 	}
 
+	/**
+	 * @author lhruban
+	 * Gets json from Mailinator. If en exception occurs, empty JSON is returned.
+	 * @param url URL of endpoint
+	 * @return JSON response
+	 */
+	private JSONObject getJSONFromMailinator(String url) {
+		Log4jUtil.log("GET JSON from: " + url);
+		JSONObject result;
+		try {
+			result = new JSONObject(RestUtils.get(url, String.class, MediaType.APPLICATION_XML));
+			Log4jUtil.log("JSON retrieved: " + result, Level.DEBUG);
+		} catch (Exception e) {
+			Log4jUtil.log("Mailinator did not respond properly: " + e);
+			result = new JSONObject();
+		}
+		return result;
+	}
 
+	/**
+	 * @author lhruban
+	 * Gets email's body out of the JSON response from Mailinator.
+	 * @throws JSONException when JSON cannot be parsed properly.
+	 * @param emailDetail JSON containing email.
+	 * @return email's body (empty Document if there are no 'parts' in email).
+	 */
+	private Document getEmailContent(JSONObject emailDetail) throws JSONException {
+		Document emailContent = new Document("");
+		JSONArray parts = emailDetail.getJSONObject("data").getJSONArray("parts");
+		for (int i = 0; i < parts.length(); i++) {
+			emailContent = Jsoup.parse(parts.getJSONObject(i).getString("body"));
+		}
+		return emailContent;
+	}
 }

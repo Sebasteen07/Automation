@@ -13,7 +13,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.common.utils.IHGUtil;
 
 
-public class JalapenoIdentifyDependantPage extends BasePageObject{
+public class JalapenoIdentifyDependentPage extends BasePageObject{
 	
 	@FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[2]")
 	private WebElement inputZipCode;
@@ -31,7 +31,7 @@ public class JalapenoIdentifyDependantPage extends BasePageObject{
 	private WebElement buttonContinue;
 	
 	
-	public JalapenoIdentifyDependantPage(WebDriver driver, String url) {
+	public JalapenoIdentifyDependentPage(WebDriver driver, String url) {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.get(url);

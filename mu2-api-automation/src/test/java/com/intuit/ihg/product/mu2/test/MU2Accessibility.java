@@ -5,11 +5,12 @@ import java.awt.datatransfer.StringSelection;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
@@ -24,15 +25,16 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 {
 	private APIData testData;
 	
-	@BeforeClass
+	@BeforeMethod(alwaysRun = true)
 	public void Setup() throws Exception
 	{
+		log("Setting up MU2 Test data for " + IHGUtil.getEnvironmentType());
 		APITestData apitestData = new APITestData();
 		testData = new APIData(apitestData);
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestLoginPage() throws Exception 
+	public void testLoginPage() throws Exception 
 	{	
 		// Open the API testing page
 		new PortalLoginPage(driver, testData.getPortalURL());
@@ -55,12 +57,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class )
-	public void TestDashboardPage() throws Exception
+	public void testDashboardPage() throws Exception
 	{
 		// Open the API testing page and log in
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		
 		// Get source and iFrame HTML (AChecker cannot handle iFrames)
 		StringSelection source = new StringSelection(driver.getPageSource());
@@ -80,12 +82,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestInboxPage() throws Exception
+	public void testInboxPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to Inbox
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MessageCenterInboxPage inbox = patientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inbox.isInboxLoaded());
 		
@@ -102,12 +104,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestMessageDetailsPage() throws Exception
+	public void testMessageDetailsPage() throws Exception
 	{		
 		// Open the API testing page, log in, go to Inbox and open a message
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MessageCenterInboxPage inboxPage = patientPage.clickViewAllMessagesInMessageCenter();
 		inboxPage.openMessageInInbox("You have new health data");
 		
@@ -124,7 +126,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestCCDPage() throws Exception
+	public void testCCDPage() throws Exception
 	{
 		// Open the API testing page, log in, go to Inbox and open a CCD from a message
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
@@ -150,12 +152,12 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestMyAccountPage() throws Exception
+	public void testMyAccountPage() throws Exception
 	{		
 		// Open the API testing page, log in and go to My Account
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		patientPage.clickMyAccountLink();
 		
 		// Get iFrame HTML (AChecker cannot handle iFrames)
@@ -171,12 +173,14 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	@Test(enabled = true, groups = { "AccessibilityTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestAccountActivity() throws Exception
+	public void testAccountActivity() throws Exception
 	{		
+		log("TestCase: account activity");
 		// Open the API testing page, log in and go to My Account > Account Activity
+		log("Opening portal page");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage patientPage = loginPage.login(testData.getPortalUserName(), testData.getPortalPassword());
-		WaitForPage(patientPage);
+		waitForPage(patientPage);
 		MyAccountPage myAccount = patientPage.clickMyAccountLink();
 		ViewAccountActivityPage accountActivity = myAccount.addAccountActivityLink();
 		
@@ -195,7 +199,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver
 	}
 	
 	// Wait for the patient page to finish loading before grabbing the HTML
-	private void WaitForPage(MyPatientPage patientPage)
+	private void waitForPage(MyPatientPage patientPage)
 	{
 		driver.switchTo().frame(0);
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(patientPage.gettxtMyPatientPage()));

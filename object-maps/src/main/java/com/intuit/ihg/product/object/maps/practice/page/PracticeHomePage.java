@@ -10,6 +10,7 @@ import com.intuit.ihg.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
+import com.intuit.ihg.product.object.maps.practice.page.familyManagement.AgeOutReportPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.intuit.ihg.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
@@ -85,9 +86,11 @@ public class PracticeHomePage extends BasePageObject {
 	@FindBy(css="a[href*='home.fsu']")
 	private WebElement fileSharingTab;
 
-
 	@FindBy(xpath=".//a[contains(@href, 'paymybill.srch')]")
 	private WebElement makePaymentForPatient;
+	
+	@FindBy(xpath=".//a[contains(@href, 'home.fa')]")
+	private WebElement familyManagement;
 	
 	public PracticeHomePage(WebDriver driver) {
 		super(driver);
@@ -419,6 +422,15 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver,10,makePaymentForPatient);
 		makePaymentForPatient.click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
+		
+	}
+	
+	public AgeOutReportPage clickFamilyManagementTab()
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElementInDefaultFrame(driver,20,familyManagement);
+		familyManagement.click();
+		return PageFactory.initElements(driver, AgeOutReportPage.class);
 		
 	}
 }

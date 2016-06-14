@@ -246,14 +246,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		try{
 			log("Waiting for balance element.");
 			WebDriverWait wait = new WebDriverWait(driver, 20);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='balanceDue']/span/span")));
-			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='balanceDue']/span/strong")));
+			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/strong"));
 			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
 			return balance.getText();
 		}
 		catch (Exception ex) {
 			log("Exception from element caught, rechecking");
-			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/span"));
+			WebElement balance = driver.findElement(By.xpath("//div[@id='balanceDue']/span/strong"));
 			log("Displayed: " + balance.isDisplayed() + " amount: " + balance.getText());
 			return balance.getText();
 		}

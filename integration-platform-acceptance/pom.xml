@@ -4,7 +4,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>16.2.0</version>
+	  <version>16.3.0</version>
 </parent>
 
   <artifactId>integration-platform-automation</artifactId>
@@ -13,8 +13,8 @@
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>16.2.0</ihg.version>
-        <dcf-version>16.2.0</dcf-version>
+        <ihg.version>16.3.0</ihg.version>
+        <dcf-version>16.3.0</dcf-version>
   </properties>
   
   <repositories>
@@ -105,65 +105,83 @@
               
 			  
 
-			  <dependency>
-			  	<groupId>com.intuit.ihg</groupId>
-			  	<artifactId>object-maps</artifactId>
-			  	<version>${ihg.version}</version>
-			  </dependency>
-    </dependencies>
-  <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.9</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <failBuild>false</failBuild>
-                            <!--<groups>${testGroups}</groups> -->
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${suite.xml}</suiteXmlFile>
-                            </suiteXmlFiles>
-                            <systemPropertyVariables>
-                                <testRoot>${basedir}</testRoot>
-                                <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-                                <testResultScreenshots>true</testResultScreenshots>
-                                <testResultVideos>true</testResultVideos>
-                            </systemPropertyVariables>
-                            <properties>
-                                <usedefaultlisteners>false</usedefaultlisteners>
-                                <workingDirectory>target/surefire-reports/</workingDirectory>
-                            </properties>
-                        </configuration>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+	</dependencies>
+	
+	
+
+	<build>
+		<plugins>
+			<plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.10</version>
                 <configuration>
-                    <outputDirectory>target/autolab</outputDirectory>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
-                        </manifest>
-                    </archive>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<configuration>
+							<failBuild>false</failBuild>
+							<!-- <groups>${testGroups}</groups> -->
+							<suiteXmlFiles> 
+								<suiteXmlFile>${suite.xml}</suiteXmlFile> 
+							</suiteXmlFiles>  
+							<systemPropertyVariables>
+								<testRoot>${basedir}</testRoot>
+								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
+								<testResultScreenshots>${test.result.screenshots}</testResultScreenshots>
+                                <testResultVideos>${test.result.videos}</testResultVideos>
+								
+								<!-- <testResultScreenshots>true</testResultScreenshots>
+								<testResultVideos>true</testResultVideos> -->
+							</systemPropertyVariables>
+							<properties>
+								<usedefaultlisteners>false</usedefaultlisteners>
+								<workingDirectory>target/surefire-reports/</workingDirectory>
+							</properties>
+						</configuration>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					 	</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>target/autolab</outputDirectory>
+					<archive>
+						<manifest>
+							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+						</manifest>
+					</archive>
+					
+				</configuration>
+			</plugin>
+		 	
+		</plugins>
+		
+		
+		
+	</build>
 </project>

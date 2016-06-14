@@ -1572,7 +1572,7 @@ public class IHGUtil extends BasePageObject {
 			while(attempt < 3) {
 				try {
 					new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(w));
-					log("Element " + w.toString() + " : is displayed");
+					log("Element " + w.toString() + " : is displayed", Level.DEBUG);
 					attempt = 3;
 				} catch(StaleElementReferenceException ex) {
 					log("StaleElementReferenceException was catched, attempt: " + attempt++);

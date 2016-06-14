@@ -26,7 +26,7 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[1]")
 	private WebElement inputRelationshipFirst;
 	
-	@FindBy(how = How.XPATH, using = "(//input[@id='email'])[2]")
+    @FindBy(how = How.XPATH, using = "(//input[@id='email'])[2]")
 	private WebElement inputEmail;
 	
 	@FindBy(how = How.XPATH, using = "(//input[@id='firstName'])[2]")
@@ -56,20 +56,13 @@ public class JalapenoCreateGuardianPage extends BasePageObject{
 		IHGUtil.PrintMethodName();
 	}
 	
-	public boolean checkDependantInfoRegisterPage (String name, String lastname, String email) {
+	public void checkDependentInfoRegisterPage (String name, String lastname, String email) {
 		IHGUtil.PrintMethodName();
 			
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
-		
-		if (this.inputEmail.getAttribute("value").equals(email)) {
-			log("Name, lastname and email is correct");
-			return true;
-		}else{
-			log(this.inputEmail.getAttribute("value") + " is not equal " + email);
-			return false;
-		}
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
+		wait.until(ExpectedConditions.textToBePresentInElementValue(inputEmail, email));
 	}
 	
 	public void createGuardianOnlyFirstPage (String name, String lastname, String relationship) {
