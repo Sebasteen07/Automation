@@ -272,17 +272,17 @@ public class MyPatientPage extends BasePageObject {
         lnkViewMeaningfulUsePHR.click();
         return PageFactory.initElements(driver, AcceptPhrTermsandConditions.class);
     }
-
-	/**
-	 * Click on PHR link and redirect to page AcceptPhrTermsandConditions
-	 * @return
-	 */
-	public AcceptPhrTermsandConditions clickViewMeaningfulUsePHRLink() {
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		lnkViewMeaningfulUsePHR.click();
-		return PageFactory.initElements(driver, AcceptPhrTermsandConditions.class);
-	}
+    /**
+     * Click on PHR link and redirect to page AcceptPhrTermsandConditions
+     * 
+     * @return
+     */
+    public AcceptPhrTermsandConditions clickViewMeaningfulUsePHRLink() {
+        IHGUtil.PrintMethodName();
+        PortalUtil.setPortalFrame(driver);
+        lnkViewMeaningfulUsePHR.click();
+        return PageFactory.initElements(driver, AcceptPhrTermsandConditions.class);
+    }
 
     /**
      * Click on Prescription Renewal link and redirect to page New Rx Renewal Page
@@ -297,14 +297,14 @@ public class MyPatientPage extends BasePageObject {
     }
 	/**
 	 * Click on Prescription Renewal link and redirect to page New Rx Renewal Page
-	 * @return NewRxRenewalPage
-	 */
-	public NewRxRenewalPage clickPrescriptionRenewal() {
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		lnkPrescriptionRenewal.click();
-		return PageFactory.initElements(driver, NewRxRenewalPage.class);
-	}
+     * @return NewRxRenewalPage
+     */
+    public NewRxRenewalPage clickPrescriptionRenewal() {
+        IHGUtil.PrintMethodName();
+        PortalUtil.setPortalFrame(driver);
+        lnkPrescriptionRenewal.click();
+        return PageFactory.initElements(driver, NewRxRenewalPage.class);
+    }
 
     /**
      * Click on Online Bill Pay link and redirect to Make Payment Page
@@ -343,21 +343,19 @@ public class MyPatientPage extends BasePageObject {
         PortalUtil.setquestionnarieFrame(driver);
         return PageFactory.initElements(pdriver, FormWelcomePage.class);
     }
-
-
-	/**
-	 * @Description:Click on Start Registration Button
-	 * @param pdriver
-	 * @return
-	 * @throws InterruptedException
-	 */
-	public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws Exception {
-		PortalUtil.setPortalFrame(pdriver);
-		IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
-		startRegistrationlnk.click();
-		PortalUtil.setquestionnarieFrame(driver);
-		return PageFactory.initElements(pdriver, FormWelcomePage.class);
-	}
+    /**
+     * @Description:Click on Start Registration Button
+     * @param pdriver
+     * @return
+     * @throws InterruptedException
+     */
+    public FormWelcomePage clickStartRegistrationButton(WebDriver pdriver) throws Exception {
+        PortalUtil.setPortalFrame(pdriver);
+        IHGUtil.waitForElement(pdriver, 15, startRegistrationlnk);
+        startRegistrationlnk.click();
+        PortalUtil.setquestionnarieFrame(driver);
+        return PageFactory.initElements(pdriver, FormWelcomePage.class);
+    }
 
     /**
      * @Description:Verify Registration Confirmation Text
@@ -380,14 +378,7 @@ public class MyPatientPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		log("Confirmation Text :" + registrationConfirmationtext.getText());
-		BaseTestSoftAssert
-				.verifyEquals(
-						true,
-						registrationConfirmationtext
-								.getText()
-								.contains(
-										"Thank you for filling out your registration and health history information!"));
-	}
+    }
 
     public ConsolidatedInboxPage clickMymessages() {
         IHGUtil.PrintMethodName();
@@ -425,12 +416,10 @@ public class MyPatientPage extends BasePageObject {
 	/**
 	 * @Description:Click On PHR Link
 	 */
-	public void clickPHRWithoutInit(WebDriver pdriver)
- {
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		phrLink.click();
-	}
+        IHGUtil.PrintMethodName();
+        PortalUtil.setPortalFrame(driver);
+        phrLink.click();
+    }
 
 	public boolean isTermsOfUseDisplayed() {
 		try {
