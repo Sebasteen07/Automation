@@ -12,61 +12,60 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class CreateAccountHealthKeyPage extends BasePageObject {
 
-	@FindBy(xpath = "//input[@fieldid='username']")
-	private WebElement txtUserId;
-	
-	@FindBy(xpath = "//input[@fieldid='password']")
-	private WebElement txtUserPassword;
+    @FindBy(xpath = "//input[@fieldid='username']")
+    private WebElement txtUserId;
 
-	@FindBy(name = "buttons:submit")
-	private WebElement btnContinue;
-	
-	@FindBy(xpath = "//div[@id='workflowMessage']/p/span[contains(.,'website that is a member of the Healthkey network')]")
-	private WebElement titleMessage;
+    @FindBy(xpath = "//input[@fieldid='password']")
+    private WebElement txtUserPassword;
 
-	@FindBy(name="phoneButton")
-	private WebElement btnPhoneVerify;
-	
-	public CreateAccountHealthKeyPage(WebDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
-	}
+    @FindBy(name = "buttons:submit")
+    private WebElement btnContinue;
 
-	/**
-	 * login to patient portal
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	public MyPatientPage logIn(String username, String password) {
+    @FindBy(xpath = "//div[@id='workflowMessage']/p/span[contains(.,'website that is a member of the Healthkey network')]")
+    private WebElement titleMessage;
 
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		
-		log("PatientUserId: " + username);
-		txtUserId.sendKeys(username);
-		log("Password: " + password);
-		txtUserPassword.sendKeys(password);
-		btnContinue.click();
+    @FindBy(name = "phoneButton")
+    private WebElement btnPhoneVerify;
 
-		return PageFactory.initElements(driver, MyPatientPage.class);
-	}
-	
-	public boolean existingPageVerify(WebDriver driver) throws InterruptedException
-	{
-		PortalUtil.setPortalFrame(driver);
-		return IHGUtil.waitForElement(driver,6, titleMessage);
-	}
-		
-	public CreatePatientVerifyPhonePage clickVerifyPhone(WebDriver driver) {
-		
-		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,6, btnPhoneVerify);
-		
-		btnPhoneVerify.click();
-		
-		return PageFactory.initElements(driver, CreatePatientVerifyPhonePage.class);
-	}
-	
+    public CreateAccountHealthKeyPage(WebDriver driver) {
+        super(driver);
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * login to patient portal
+     * 
+     * @param username
+     * @param password
+     * @return
+     */
+    public MyPatientPage logIn(String username, String password) {
+
+        IHGUtil.PrintMethodName();
+        PortalUtil.setPortalFrame(driver);
+
+        log("PatientUserId: " + username);
+        txtUserId.sendKeys(username);
+        log("Password: " + password);
+        txtUserPassword.sendKeys(password);
+        btnContinue.click();
+
+        return PageFactory.initElements(driver, MyPatientPage.class);
+    }
+
+    public boolean existingPageVerify(WebDriver driver) throws InterruptedException {
+        PortalUtil.setPortalFrame(driver);
+        return IHGUtil.waitForElement(driver, 6, titleMessage);
+    }
+
+    public CreatePatientVerifyPhonePage clickVerifyPhone(WebDriver driver) {
+
+        PortalUtil.setPortalFrame(driver);
+        IHGUtil.waitForElement(driver, 6, btnPhoneVerify);
+
+        btnPhoneVerify.click();
+
+        return PageFactory.initElements(driver, CreatePatientVerifyPhonePage.class);
+    }
+
 }

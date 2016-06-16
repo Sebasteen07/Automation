@@ -13,50 +13,50 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoForgotPasswordPage extends BasePageObject {
 
-	@FindBy(how = How.ID, using = "emailOrUsername")
-	public WebElement inputEmail;
+    @FindBy(how = How.ID, using = "emailOrUsername")
+    public WebElement inputEmail;
 
-	@FindBy(how = How.ID, using = "forgotFormContinueButton")
-	public WebElement continueButton;
-	
-	public JalapenoForgotPasswordPage(WebDriver driver, String url) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		log("Loading ForgotPasswordPage");
-		String sanitizedUrl = url.trim();
-		log("URL: " + sanitizedUrl);
-		driver.get(sanitizedUrl);
-		driver.manage().window().maximize();
-		IHGUtil.printCookies(driver);
-		PageFactory.initElements(driver, this);
-	}
-	
-	public JalapenoForgotPasswordPage(WebDriver driver) {
-		super(driver);		
-	}
-	
-	public boolean assessForgotPasswordPageElements() {
+    @FindBy(how = How.ID, using = "forgotFormContinueButton")
+    public WebElement continueButton;
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputEmail);
-		webElementsList.add(continueButton);
+    public JalapenoForgotPasswordPage(WebDriver driver, String url) {
+        super(driver);
+        IHGUtil.PrintMethodName();
+        log("Loading ForgotPasswordPage");
+        String sanitizedUrl = url.trim();
+        log("URL: " + sanitizedUrl);
+        driver.get(sanitizedUrl);
+        driver.manage().window().maximize();
+        IHGUtil.printCookies(driver);
+        PageFactory.initElements(driver, this);
+    }
 
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-	
-	public JalapenoForgotPasswordPage2 fillInDataPage(String email) throws InterruptedException {
-		IHGUtil.PrintMethodName();
-		
-		log("Setting email address as " + email);
-		inputEmail.sendKeys(email);
-		
-		log("Clicking on Continue button");
-		
-		continueButton.click();
-		
-		//waitForPageTitle(null, 60);
+    public JalapenoForgotPasswordPage(WebDriver driver) {
+        super(driver);
+    }
 
-		return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
-	}
-	
+    public boolean assessForgotPasswordPageElements() {
+
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+        webElementsList.add(inputEmail);
+        webElementsList.add(continueButton);
+
+        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+    }
+
+    public JalapenoForgotPasswordPage2 fillInDataPage(String email) throws InterruptedException {
+        IHGUtil.PrintMethodName();
+
+        log("Setting email address as " + email);
+        inputEmail.sendKeys(email);
+
+        log("Clicking on Continue button");
+
+        continueButton.click();
+
+        // waitForPageTitle(null, 60);
+
+        return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
+    }
+
 }

@@ -10,86 +10,85 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class FormVaccinePage extends PortalFormPage {
 
-	public FormVaccinePage(WebDriver driver)  {
-		super(driver);
-	}
+    public FormVaccinePage(WebDriver driver) {
+        super(driver);
+    }
 
+    @FindBy(id = "tetanusvaccination")
+    WebElement tetanusvaccination;
 
-	@FindBy(id="tetanusvaccination")
-	WebElement tetanusvaccination;
+    @FindBy(id = "hpvvaccination")
+    WebElement hpvvaccination;
 
-	@FindBy(id="hpvvaccination")
-	WebElement hpvvaccination;
+    @FindBy(id = "influeenzavaccination")
+    WebElement influeenzavaccination;
 
-	@FindBy(id="influeenzavaccination")
-	WebElement influeenzavaccination;
+    @FindBy(id = "pneumoniavaccination")
+    WebElement pneumoniavaccination;
 
-	@FindBy(id="pneumoniavaccination")
-	WebElement pneumoniavaccination;
+    @FindBy(id = "tdap_immunization")
+    WebElement tdapimmunization;
 
-	@FindBy(id="tdap_immunization")
-	WebElement tdapimmunization;
+    @FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
+    private WebElement saveAndContinuebtn;
 
-	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+    /**
+     * @Description:Set Tetanus
+     * @return
+     * @throws Exception
+     */
+    public void setTetanus(String type) throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        Select selector = new Select(tetanusvaccination);
+        selector.selectByVisibleText(type);
+    }
 
-	/**
-	 * @Description:Set Tetanus
-	 * @return
-	 * @throws Exception
-	 */	
-	public void setTetanus(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		Select selector = new Select(tetanusvaccination);
-		selector.selectByVisibleText(type);
-	}
+    /**
+     * @Description:Set HPV
+     * @return
+     * @throws Exception
+     */
+    public void setHPV(String type) throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        Select selector = new Select(hpvvaccination);
+        selector.selectByVisibleText(type);
+    }
 
-	/**
-	 * @Description:Set HPV
-	 * @return
-	 * @throws Exception
-	 */	
-	public void setHPV(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		Select selector = new Select(hpvvaccination);
-		selector.selectByVisibleText(type);
-	}
+    /**
+     * @Description:Set Influenza
+     * @return
+     * @throws Exception
+     */
+    public void setInfluenza(String type) throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        Select selector = new Select(influeenzavaccination);
+        selector.selectByVisibleText(type);
+    }
 
-	/**
-	 * @Description:Set Influenza
-	 * @return
-	 * @throws Exception
-	 */	
-	public void setInfluenza(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		Select selector = new Select(influeenzavaccination);
-		selector.selectByVisibleText(type);
-	}
+    /**
+     * @Description:Set Pneumonia
+     * @return
+     * @throws Exception
+     */
+    public void setPneumonia(String type) throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        Select selector = new Select(pneumoniavaccination);
+        selector.selectByVisibleText(type);
+    }
 
-	/**
-	 * @Description:Set Pneumonia
-	 * @return
-	 * @throws Exception
-	 */	
-	public void setPneumonia(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		Select selector = new Select(pneumoniavaccination);
-		selector.selectByVisibleText(type);
-	}
-
-	/**
-	 * @Description:Click on Tetanus Check Box
-	 * @return
-	 * @throws Exception
-	 */	
-	public void clickTetanus() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		tdapimmunization.click();
-	}
+    /**
+     * @Description:Click on Tetanus Check Box
+     * @return
+     * @throws Exception
+     */
+    public void clickTetanus() throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        tdapimmunization.click();
+    }
 
 }

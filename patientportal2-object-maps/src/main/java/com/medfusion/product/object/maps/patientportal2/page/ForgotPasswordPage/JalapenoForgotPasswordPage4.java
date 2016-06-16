@@ -13,73 +13,73 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoForgotPasswordPage4 extends BasePageObject {
-	
-	@FindBy(how = How.ID, using = "newPassword")
-	public WebElement newPassword;
-	
-	@FindBy(how = How.ID, using = "confirmPassword")
-	public WebElement confirmPassword;	
-	
-	@FindBy(how = How.ID, using = "resetPasswordButton")
-	public WebElement resetPasswordButton;
-	
-	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
-	private WebElement electronicPaymentPreference;
 
-	@FindBy(how = How.ID, using = "updateMissingInfoButton")
-	private WebElement okButton;
-	
-	public JalapenoForgotPasswordPage4(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		log("Loading ForgotPasswordPage4");
-		driver.manage().window().maximize();
-	}
-	
-	public boolean assessForgotPasswordPage4Elements() {
+    @FindBy(how = How.ID, using = "newPassword")
+    public WebElement newPassword;
 
-		boolean allElementsDisplayed = false;
+    @FindBy(how = How.ID, using = "confirmPassword")
+    public WebElement confirmPassword;
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(newPassword);
-		webElementsList.add(confirmPassword);
-		webElementsList.add(resetPasswordButton);
+    @FindBy(how = How.ID, using = "resetPasswordButton")
+    public WebElement resetPasswordButton;
 
-		for (WebElement w : webElementsList) {
+    @FindBy(how = How.ID, using = "paymentPreference_Electronic")
+    private WebElement electronicPaymentPreference;
 
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
+    @FindBy(how = How.ID, using = "updateMissingInfoButton")
+    private WebElement okButton;
 
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
+    public JalapenoForgotPasswordPage4(WebDriver driver) {
+        super(driver);
+        IHGUtil.PrintMethodName();
+        log("Loading ForgotPasswordPage4");
+        driver.manage().window().maximize();
+    }
 
-		}
-		return allElementsDisplayed;
-	} 
-	
-	public JalapenoHomePage fillInNewPassword(String password) {
-		newPassword.sendKeys(password);
-		confirmPassword.sendKeys(password);
-		
-		resetPasswordButton.click();
-		selectStatementIfRequired();
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
-	
-	private void selectStatementIfRequired() {
-		if ( new IHGUtil(driver).exists(electronicPaymentPreference) ) {
-			electronicPaymentPreference.click();
-			okButton.click();
-		}
-	}
+    public boolean assessForgotPasswordPage4Elements() {
+
+        boolean allElementsDisplayed = false;
+
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+        webElementsList.add(newPassword);
+        webElementsList.add(confirmPassword);
+        webElementsList.add(resetPasswordButton);
+
+        for (WebElement w : webElementsList) {
+
+            try {
+                IHGUtil.waitForElement(driver, 20, w);
+                log("Checking WebElement" + w.toString());
+                if (w.isDisplayed()) {
+                    log("WebElement " + w.toString() + "is displayed");
+                    allElementsDisplayed = true;
+                } else {
+                    log("WebElement " + w.toString() + "is NOT displayed");
+                    return false;
+                }
+            }
+
+            catch (Throwable e) {
+                log(e.getStackTrace().toString());
+            }
+
+        }
+        return allElementsDisplayed;
+    }
+
+    public JalapenoHomePage fillInNewPassword(String password) {
+        newPassword.sendKeys(password);
+        confirmPassword.sendKeys(password);
+
+        resetPasswordButton.click();
+        selectStatementIfRequired();
+        return PageFactory.initElements(driver, JalapenoHomePage.class);
+    }
+
+    private void selectStatementIfRequired() {
+        if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+            electronicPaymentPreference.click();
+            okButton.click();
+        }
+    }
 }

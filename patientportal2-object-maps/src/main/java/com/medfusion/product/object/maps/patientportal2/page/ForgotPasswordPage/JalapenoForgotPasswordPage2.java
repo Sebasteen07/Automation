@@ -14,51 +14,51 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 
 public class JalapenoForgotPasswordPage2 extends BasePageObject {
 
-	@FindBy(how = How.ID, using = "closeButton")
-	public WebElement closeButton;
-	
-	public JalapenoForgotPasswordPage2(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		log("Loading ForgotPasswordPage2");
-		driver.manage().window().maximize();
-	}
-	
-	public boolean assessForgotPasswordPage2Elements() {
+    @FindBy(how = How.ID, using = "closeButton")
+    public WebElement closeButton;
 
-		boolean allElementsDisplayed = false;
+    public JalapenoForgotPasswordPage2(WebDriver driver) {
+        super(driver);
+        IHGUtil.PrintMethodName();
+        log("Loading ForgotPasswordPage2");
+        driver.manage().window().maximize();
+    }
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(closeButton);
+    public boolean assessForgotPasswordPage2Elements() {
 
-		for (WebElement w : webElementsList) {
+        boolean allElementsDisplayed = false;
 
-			try {
-				IHGUtil.waitForElement(driver, 20, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+        webElementsList.add(closeButton);
 
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
+        for (WebElement w : webElementsList) {
 
-		}
-		return allElementsDisplayed;
-	} 
-	
-	public JalapenoLoginPage clickCloseButton() {
-		
-		IHGUtil.PrintMethodName();
-		log("Clicking on Close button");
-		closeButton.click();
-		return PageFactory.initElements(driver, JalapenoLoginPage.class);
-	}
-	
+            try {
+                IHGUtil.waitForElement(driver, 20, w);
+                log("Checking WebElement" + w.toString());
+                if (w.isDisplayed()) {
+                    log("WebElement " + w.toString() + "is displayed");
+                    allElementsDisplayed = true;
+                } else {
+                    log("WebElement " + w.toString() + "is NOT displayed");
+                    return false;
+                }
+            }
+
+            catch (Throwable e) {
+                log(e.getStackTrace().toString());
+            }
+
+        }
+        return allElementsDisplayed;
+    }
+
+    public JalapenoLoginPage clickCloseButton() {
+
+        IHGUtil.PrintMethodName();
+        log("Clicking on Close button");
+        closeButton.click();
+        return PageFactory.initElements(driver, JalapenoLoginPage.class);
+    }
+
 }

@@ -8,25 +8,25 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 
 public class OnlineBillPayVerifyPage extends BasePageObject {
-	
-	public OnlineBillPayVerifyPage(WebDriver driver) {
-		super(driver);
-	}
 
-	public boolean MessageSentNotification() {
-		IHGUtil.PrintMethodName();
-		PracticeUtil.setPracticeFrame(driver);
-		
-		boolean result = false;
-		
-		try {
-			result = driver.findElement(By.xpath("//span[contains(text(),'Message Sent')]")).isDisplayed();
-					
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-		
-		return result;
-	}
-	
+    public OnlineBillPayVerifyPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public boolean MessageSentNotification() {
+        IHGUtil.PrintMethodName();
+        PracticeUtil.setPracticeFrame(driver);
+
+        boolean result = false;
+
+        try {
+            result = driver.findElement(By.xpath("//span[contains(text(),'Message Sent')]")).isDisplayed();
+
+        } catch (Exception e) {
+            // Catch any element not found errors
+        }
+
+        return result;
+    }
+
 }

@@ -8,31 +8,31 @@ import com.medfusion.product.object.maps.patientportal1.page.questionnaires.Port
 
 public class SpecialCharFormSecondPage extends PortalCustomFormPage {
 
-	@FindBy(id = "custom_mappingid_customsecond_section_0_5")
-	private WebElement severeButt;
-	
-	@FindBy(id = "custom_mappingid_customsecond_section_consentanswer_custom_1")
-	private WebElement consent;
-	
-	@FindBy(xpath="//*[@id='container']//section/div[@class='done_frame']/a")
-	private WebElement submitForm;
+    @FindBy(id = "custom_mappingid_customsecond_section_0_5")
+    private WebElement severeButt;
 
-	@FindBy( xpath = ".//iframe[@title ='Forms']")
-	private WebElement iframe;
+    @FindBy(id = "custom_mappingid_customsecond_section_consentanswer_custom_1")
+    private WebElement consent;
 
-	public SpecialCharFormSecondPage(WebDriver driver) {
-		super(driver);
-	}
+    @FindBy(xpath = "//*[@id='container']//section/div[@class='done_frame']/a")
+    private WebElement submitForm;
 
-	public void selectAnswerQuoteMark() {
-		severeButt.click();
-	}
-	
-	/**
-	 * @brief Signs consent with a name containing quote marks
-	 */
-	public void signConsent() {
+    @FindBy(xpath = ".//iframe[@title ='Forms']")
+    private WebElement iframe;
+
+    public SpecialCharFormSecondPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public void selectAnswerQuoteMark() {
+        severeButt.click();
+    }
+
+    /**
+     * @brief Signs consent with a name containing quote marks
+     */
+    public void signConsent() {
         consent.clear();
         consent.sendKeys("Frankie \"Tester\" Testguy");
-	}
+    }
 }

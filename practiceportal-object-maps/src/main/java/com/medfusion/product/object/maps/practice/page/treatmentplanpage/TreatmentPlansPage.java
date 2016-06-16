@@ -12,66 +12,62 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class TreatmentPlansPage extends BasePageObject {
 
-	private static final String pageTitle = "My Home";
+    private static final String pageTitle = "My Home";
 
+    @FindBy(xpath = ".//input[@value='Submit']")
+    private WebElement submitButton;
 
-	@FindBy( xpath = ".//input[@value='Submit']")
-	private WebElement submitButton;
+    @FindBy(xpath = ".//*[@id='pagetitle']/h1")
+    private WebElement pageTitleEle;
 
-	@FindBy( xpath = ".//*[@id='pagetitle']/h1")
-	private WebElement pageTitleEle;
+    @FindBy(xpath = ".//select[@name='featureid']")
+    private WebElement featureDropDwn;
 
-	@FindBy( xpath = ".//select[@name='featureid']")
-	private WebElement featureDropDwn;
+    @FindBy(id = "title")
+    private WebElement titleField;
 
-	@FindBy( id = "title")
-	private WebElement titleField;
-	
-	@FindBy( id = "subject")
-	private WebElement subjectField;
-	
-	@FindBy( xpath = ".//textarea[@name='body']")
-	private WebElement bodyField;
-	
-	@FindBy( xpath = "//input[@value='Create Treatment Plan']")
-	private WebElement createTreatmentPlanBtn;
-	
-	
-	public TreatmentPlansPage(WebDriver driver) {
-		super(driver);
-		PageFactory.initElements(driver, this);
-	}
+    @FindBy(id = "subject")
+    private WebElement subjectField;
 
-	public boolean checkTreatmentPlanPage() {
-		IHGUtil.PrintMethodName();
-		return pageTitleEle.getText().contains(pageTitle);
-	}
+    @FindBy(xpath = ".//textarea[@name='body']")
+    private WebElement bodyField;
 
+    @FindBy(xpath = "//input[@value='Create Treatment Plan']")
+    private WebElement createTreatmentPlanBtn;
 
-	public void clickOnSubmitButton() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, submitButton);
-		submitButton.click();
-	}
+    public TreatmentPlansPage(WebDriver driver) {
+        super(driver);
+        PageFactory.initElements(driver, this);
+    }
 
-	public void selectAppointmentRequest(){
-		Select sel = new Select(featureDropDwn);
-		sel.selectByValue("1");
-	}
+    public boolean checkTreatmentPlanPage() {
+        IHGUtil.PrintMethodName();
+        return pageTitleEle.getText().contains(pageTitle);
+    }
 
-	public void createTreatmentPlanInfo(String title, String subject, String text) {
-		IHGUtil.PrintMethodName();
-		titleField.sendKeys(title);
-		subjectField.sendKeys(subject);
-		bodyField.sendKeys(text);
-		createTreatmentPlanBtn.click();
-	}
-	
-	public String checkTreatmentPlanSuccessMsg() {
-		IHGUtil.PrintMethodName();
-		String successMsg = driver.findElement(By.xpath(".//*[@id='content']/table/tbody/tr/td/strong")).getText();
-		return successMsg;
-	}
-	
+    public void clickOnSubmitButton() {
+        IHGUtil.PrintMethodName();
+        IHGUtil.waitForElement(driver, 30, submitButton);
+        submitButton.click();
+    }
+
+    public void selectAppointmentRequest() {
+        Select sel = new Select(featureDropDwn);
+        sel.selectByValue("1");
+    }
+
+    public void createTreatmentPlanInfo(String title, String subject, String text) {
+        IHGUtil.PrintMethodName();
+        titleField.sendKeys(title);
+        subjectField.sendKeys(subject);
+        bodyField.sendKeys(text);
+        createTreatmentPlanBtn.click();
+    }
+
+    public String checkTreatmentPlanSuccessMsg() {
+        IHGUtil.PrintMethodName();
+        String successMsg = driver.findElement(By.xpath(".//*[@id='content']/table/tbody/tr/td/strong")).getText();
+        return successMsg;
+    }
 
 }

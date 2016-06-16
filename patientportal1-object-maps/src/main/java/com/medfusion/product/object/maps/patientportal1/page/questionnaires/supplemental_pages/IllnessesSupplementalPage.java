@@ -8,34 +8,34 @@ import com.medfusion.product.object.maps.patientportal1.page.questionnaires.Port
 
 public class IllnessesSupplementalPage extends PortalFormPage {
 
-	@FindBy(id = "custom_mappingid_conditions_section_1")
-	private WebElement firstQuestion;
-	
-	@FindBy(id = "custom_mappingid_conditions_section_2")
-	private WebElement secondQuestion;
-	
-	@FindBy(xpath = "//label[span[contains(text(), 'Mononucleosis')]]/input")
-	private WebElement monoCheckbox;
-	
-	public IllnessesSupplementalPage(WebDriver driver) {
-		super(driver);
-	}
-	
-	public void answerFirst(String answer) {
-		firstQuestion.sendKeys(answer);
-	}
-	
-	public void answerSecond(String answer) {
-		secondQuestion.sendKeys(answer);
-	}
-	
-	public void selectMono() {
-		monoCheckbox.click();
-	}
-	
-	public void fillOut() {
-		selectMono();
-		answerFirst("test answer 1");
-		answerSecond("test answer 2");
-	}
+    @FindBy(id = "custom_mappingid_conditions_section_1")
+    private WebElement firstQuestion;
+
+    @FindBy(id = "custom_mappingid_conditions_section_2")
+    private WebElement secondQuestion;
+
+    @FindBy(xpath = "//label[span[contains(text(), 'Mononucleosis')]]/input")
+    private WebElement monoCheckbox;
+
+    public IllnessesSupplementalPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public void answerFirst(String answer) {
+        firstQuestion.sendKeys(answer);
+    }
+
+    public void answerSecond(String answer) {
+        secondQuestion.sendKeys(answer);
+    }
+
+    public void selectMono() {
+        monoCheckbox.click();
+    }
+
+    public void fillOut() {
+        selectMono();
+        answerFirst("test answer 1");
+        answerSecond("test answer 2");
+    }
 }

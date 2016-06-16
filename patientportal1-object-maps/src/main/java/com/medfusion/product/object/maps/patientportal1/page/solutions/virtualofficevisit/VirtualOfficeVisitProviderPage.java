@@ -11,57 +11,60 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class VirtualOfficeVisitProviderPage extends BasePageObject {
 
-	public static final String PAGE_NAME = "Virtual Office Visit Provider Page";
-	
-	@FindBy(name="provider")
-	private WebElement provider;
-	
-	@FindBy(xpath="//input[@value='Continue']")
-	private WebElement btnContinue;
-	
-	public VirtualOfficeVisitProviderPage(WebDriver driver) {
-		super(driver);
-	}
-	
+    public static final String PAGE_NAME = "Virtual Office Visit Provider Page";
 
-	/**
-	 * Will select the supplied provider and click continue. If the provider argument is null or empty, the last provider
-	 * in the list will be selected.
-	 * @param providerOption the visible text in the provider select box
-	 * @return the VoV pharmacy page
-	 */
-	public VirtualOfficeVisitPharmacyPage chooseProviderAndContinue(String providerOption) {
-		IHGUtil.PrintMethodName();
-		// PortalUtil.setPortalFrame(driver);
-		
-		Select providerSelect = new Select(provider);
-		
-		if (providerOption == null || providerOption.isEmpty()) {
-			providerSelect.selectByIndex(providerSelect.getOptions().size()-1);
-		} else {
-			// Having an issue selecting provider by visible text
-			providerSelect.selectByVisibleText(providerOption);
-		}
-		btnContinue.click();
-		
-		return PageFactory.initElements(driver, VirtualOfficeVisitPharmacyPage.class);
-	}
+    @FindBy(name = "provider")
+    private WebElement provider;
 
-	/**
-	 * Gives indication if page is loaded
-	 * @return true or false
-	 */
-	public boolean isPageLoaded() {
-		IHGUtil.PrintMethodName();
-		
-		boolean result = false;
-		try {
-			result = btnContinue.isDisplayed();
-		} catch (Exception e) {
+    @FindBy(xpath = "//input[@value='Continue']")
+    private WebElement btnContinue;
 
-		}
-		
-		return result;
-	}
+    public VirtualOfficeVisitProviderPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Will select the supplied provider and click continue. If the provider argument is null or empty, the last
+     * provider
+     * in the list will be selected.
+     * 
+     * @param providerOption
+     *            the visible text in the provider select box
+     * @return the VoV pharmacy page
+     */
+    public VirtualOfficeVisitPharmacyPage chooseProviderAndContinue(String providerOption) {
+        IHGUtil.PrintMethodName();
+        // PortalUtil.setPortalFrame(driver);
+
+        Select providerSelect = new Select(provider);
+
+        if (providerOption == null || providerOption.isEmpty()) {
+            providerSelect.selectByIndex(providerSelect.getOptions().size() - 1);
+        } else {
+            // Having an issue selecting provider by visible text
+            providerSelect.selectByVisibleText(providerOption);
+        }
+        btnContinue.click();
+
+        return PageFactory.initElements(driver, VirtualOfficeVisitPharmacyPage.class);
+    }
+
+    /**
+     * Gives indication if page is loaded
+     * 
+     * @return true or false
+     */
+    public boolean isPageLoaded() {
+        IHGUtil.PrintMethodName();
+
+        boolean result = false;
+        try {
+            result = btnContinue.isDisplayed();
+        } catch (Exception e) {
+
+        }
+
+        return result;
+    }
 
 }

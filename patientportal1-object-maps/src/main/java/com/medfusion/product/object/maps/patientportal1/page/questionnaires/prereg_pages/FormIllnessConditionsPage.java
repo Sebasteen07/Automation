@@ -9,43 +9,42 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class FormIllnessConditionsPage extends PortalFormPage {
 
-	public FormIllnessConditionsPage(WebDriver driver)  {
-		super(driver);
-	}
+    public FormIllnessConditionsPage(WebDriver driver) {
+        super(driver);
+    }
 
-	@FindBy(id="idonot_conditions")
-	WebElement noConditions;
-	
-	@FindBy(id="mononucleosis_condition_other")
-	WebElement monoCheckbox;
+    @FindBy(id = "idonot_conditions")
+    WebElement noConditions;
 
-	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+    @FindBy(id = "mononucleosis_condition_other")
+    WebElement monoCheckbox;
 
-	/**
-	 * @Description:Set No Conditions
-	 * @return
-	 * @throws Exception
-	 */
-	public void setNoConditions() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		noConditions.click();
-	}
+    @FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
+    private WebElement saveAndContinuebtn;
 
-	public void checkMononucleosis() throws Exception {
-		if (monoCheckbox.isSelected() == false)
-			monoCheckbox.click();
-	}
-	
+    /**
+     * @Description:Set No Conditions
+     * @return
+     * @throws Exception
+     */
+    public void setNoConditions() throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        noConditions.click();
+    }
 
-	/**
-	 * @Description:Set Illness Condition Form Fields
-	 * @return FormFamilyHistoryPage
-	 * @throws Exception
-	 */
-	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
-		setNoConditions();
-		return  clickSaveContinue(FormFamilyHistoryPage.class);
-	}
+    public void checkMononucleosis() throws Exception {
+        if (monoCheckbox.isSelected() == false)
+            monoCheckbox.click();
+    }
+
+    /**
+     * @Description:Set Illness Condition Form Fields
+     * @return FormFamilyHistoryPage
+     * @throws Exception
+     */
+    public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
+        setNoConditions();
+        return clickSaveContinue(FormFamilyHistoryPage.class);
+    }
 }

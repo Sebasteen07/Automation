@@ -9,25 +9,24 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class FormOtherProvidersPage extends PortalFormPage {
 
+    public FormOtherProvidersPage(WebDriver driver) {
+        super(driver);
+    }
 
-	public FormOtherProvidersPage(WebDriver driver) {
-		super(driver);
-	}
+    @FindBy(id = "idonot_referring_doctors")
+    WebElement noOtherProviders;
 
-	@FindBy(id="idonot_referring_doctors")
-	WebElement noOtherProviders;
+    @FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
+    private WebElement saveAndContinuebtn;
 
-	@FindBy(xpath="//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+    /**
+     * @Description:Set No Providers
+     * @throws Exception
+     */
+    public void setNoProviders() throws Exception {
+        PortalUtil.PrintMethodName();
+        PortalUtil.setquestionnarieFrame(driver);
+        noOtherProviders.click();
 
-	/**
-	 * @Description:Set No Providers
-	 * @throws Exception
-	 */
-	public void setNoProviders() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
-		noOtherProviders.click();
-
-	}
+    }
 }

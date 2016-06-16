@@ -5,7 +5,7 @@ package com.medfusion.product.patientportal2.pojo;
  */
 public class Portal extends PortalBasic {
 
-	//TODO: make attributes private + generate setters and getters
-	public String secureMessageNotificationUserEmail="";
-	public String secureMessageNotificationUserPassword="";
+    // TODO: make attributes private + generate setters and getters
+    public String secureMessageNotificationUserEmail = "";
+    public String secureMessageNotificationUserPassword = "";
 }

@@ -1,6 +1,5 @@
 package com.medfusion.product.object.maps.practice.page.customform;
 
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
@@ -31,8 +30,7 @@ public class SearchPartiallyFilledPage extends BasePageObject {
         TestcasesData testData = new TestcasesData(portal);
         String patientsName = testData.getFirstName() + ' ' + testData.getLastName();
 
-        driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]"))
-                .click();
+        driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]")).click();
         return PageFactory.initElements(driver, ViewPatientFormPage.class);
     }
 }

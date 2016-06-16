@@ -12,35 +12,35 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-public class ApptRequestHistoryPage extends BasePageObject{
-	
-	public static final String PAGE_NAME = "Appt Request History Page";
-	
-	@FindBy(xpath = ".//table[@id='MfAjaxFallbackDefaultDataTable']/tbody/tr/td//a/span")
-	private WebElement lnkApptRequestHistoryDetailItem1;
+public class ApptRequestHistoryPage extends BasePageObject {
 
-	public ApptRequestHistoryPage(WebDriver driver) {
-		super(driver);
-	}
-	
-	/**
-	 * Clicks the first Appt Request history link on the page.
-	 * 
-	 * @return ApptRequestHistoryDetailPage
-	 * @throws Exception 
-	 */
-	public ApptRequestHistoryDetailPage clickApptRequestHistoryDetailLink() throws Exception {
-		IHGUtil.PrintMethodName();
-		Thread.sleep(10000);
-		PortalUtil.setPortalFrame(driver);
-		// This assert will explain why this action would fail if left unchecked
-		assertTrue(lnkApptRequestHistoryDetailItem1.isDisplayed(), 
-				"There is no Appt Request History Detail link on the Appt Request History page");
-		
-		IHGUtil.waitForElement(driver, 30, lnkApptRequestHistoryDetailItem1);
-		((JavascriptExecutor) driver).executeScript("arguments[0].click();", lnkApptRequestHistoryDetailItem1);
-		//lnkApptRequestHistoryDetailItem1.click();
-		return PageFactory.initElements(driver, ApptRequestHistoryDetailPage.class);
-	}
+    public static final String PAGE_NAME = "Appt Request History Page";
+
+    @FindBy(xpath = ".//table[@id='MfAjaxFallbackDefaultDataTable']/tbody/tr/td//a/span")
+    private WebElement lnkApptRequestHistoryDetailItem1;
+
+    public ApptRequestHistoryPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Clicks the first Appt Request history link on the page.
+     * 
+     * @return ApptRequestHistoryDetailPage
+     * @throws Exception
+     */
+    public ApptRequestHistoryDetailPage clickApptRequestHistoryDetailLink() throws Exception {
+        IHGUtil.PrintMethodName();
+        Thread.sleep(10000);
+        PortalUtil.setPortalFrame(driver);
+        // This assert will explain why this action would fail if left unchecked
+        assertTrue(lnkApptRequestHistoryDetailItem1.isDisplayed(),
+                "There is no Appt Request History Detail link on the Appt Request History page");
+
+        IHGUtil.waitForElement(driver, 30, lnkApptRequestHistoryDetailItem1);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", lnkApptRequestHistoryDetailItem1);
+        // lnkApptRequestHistoryDetailItem1.click();
+        return PageFactory.initElements(driver, ApptRequestHistoryDetailPage.class);
+    }
 
 }

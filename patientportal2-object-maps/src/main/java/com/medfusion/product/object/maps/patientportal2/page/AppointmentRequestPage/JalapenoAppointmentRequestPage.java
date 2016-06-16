@@ -16,78 +16,78 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class JalapenoAppointmentRequestPage extends BasePageObject{
+public class JalapenoAppointmentRequestPage extends BasePageObject {
 
-	@FindBy(how = How.LINK_TEXT, using = "Request Appointment")
-	private WebElement requestTab;
-	
-	@FindBy(how = How.NAME, using = "timeframeWrapper:_body:timeframe")
-	private WebElement prefTimeFrame;
-	
-	@FindBy(how = How.NAME, using = "prefdayWrapper:_body:prefday")
-	private WebElement prefDay;
-	
-	@FindBy(how = How.NAME, using = "preftimeWrapper:_body:preftime")
-	private WebElement prefTime;
-	
-	@FindBy(how = How.NAME, using = "reasonWrapper:_body:reason")
-	private WebElement appointmentReason;
-	
-	@FindBy(how = How.NAME, using = "preferenceWrapper:_body:preference")
-	private WebElement preference;
-	
-	@FindBy(how = How.NAME, using = "homephoneWrapper:_body:homephone")
-	private WebElement homePhone;
-	
-	@FindBy(how = How.NAME, using = ":submit")
-	private WebElement continueButton;
-	
-	@FindBy(how = How.ID, using = "id1b")
-	private WebElement homeButton;
-	
-	public JalapenoAppointmentRequestPage(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		driver.manage().window().maximize();
-		PageFactory.initElements(driver, this);	
-	}
-	
-	public void clickOnContinueButton(WebDriver driver) {
-		log("Click on Continue button");
-		IHGUtil.setFrame(driver, "iframebody");
+    @FindBy(how = How.LINK_TEXT, using = "Request Appointment")
+    private WebElement requestTab;
 
-		continueButton.click();
-	}
-	
-	public JalapenoHomePage returnToHomePage(WebDriver driver) {
-		log("Return to dashboard");
-		homeButton.click();
-		IHGUtil.setDefaultFrame(driver);
+    @FindBy(how = How.NAME, using = "timeframeWrapper:_body:timeframe")
+    private WebElement prefTimeFrame;
 
-		return PageFactory.initElements(driver, JalapenoHomePage.class);	
-	}
-	
-	public boolean fillAndSendTheAppointmentRequest(WebDriver driver) {
-		IHGUtil.setFrame(driver, "iframebody");
-		log("Filling the appointment form");
-		
-		Select dropdown = new Select(prefTimeFrame);
-		dropdown.selectByVisibleText("First Available");
-		
-		dropdown = new Select(prefDay);
-		dropdown.selectByVisibleText("Monday");
-		
-		prefTime.sendKeys("Morning");
-		appointmentReason.sendKeys("Illness");
-		
-		dropdown = new Select(preference);
-		dropdown.selectByVisibleText("Specific Provider");
-		
-		if(homePhone.getAttribute("value").equals("")) {
-			homePhone.sendKeys("1234567890");
-		}
-		
-		log("Click on Continue button");
+    @FindBy(how = How.NAME, using = "prefdayWrapper:_body:prefday")
+    private WebElement prefDay;
+
+    @FindBy(how = How.NAME, using = "preftimeWrapper:_body:preftime")
+    private WebElement prefTime;
+
+    @FindBy(how = How.NAME, using = "reasonWrapper:_body:reason")
+    private WebElement appointmentReason;
+
+    @FindBy(how = How.NAME, using = "preferenceWrapper:_body:preference")
+    private WebElement preference;
+
+    @FindBy(how = How.NAME, using = "homephoneWrapper:_body:homephone")
+    private WebElement homePhone;
+
+    @FindBy(how = How.NAME, using = ":submit")
+    private WebElement continueButton;
+
+    @FindBy(how = How.ID, using = "id1b")
+    private WebElement homeButton;
+
+    public JalapenoAppointmentRequestPage(WebDriver driver) {
+        super(driver);
+        IHGUtil.PrintMethodName();
+        driver.manage().window().maximize();
+        PageFactory.initElements(driver, this);
+    }
+
+    public void clickOnContinueButton(WebDriver driver) {
+        log("Click on Continue button");
+        IHGUtil.setFrame(driver, "iframebody");
+
+        continueButton.click();
+    }
+
+    public JalapenoHomePage returnToHomePage(WebDriver driver) {
+        log("Return to dashboard");
+        homeButton.click();
+        IHGUtil.setDefaultFrame(driver);
+
+        return PageFactory.initElements(driver, JalapenoHomePage.class);
+    }
+
+    public boolean fillAndSendTheAppointmentRequest(WebDriver driver) {
+        IHGUtil.setFrame(driver, "iframebody");
+        log("Filling the appointment form");
+
+        Select dropdown = new Select(prefTimeFrame);
+        dropdown.selectByVisibleText("First Available");
+
+        dropdown = new Select(prefDay);
+        dropdown.selectByVisibleText("Monday");
+
+        prefTime.sendKeys("Morning");
+        appointmentReason.sendKeys("Illness");
+
+        dropdown = new Select(preference);
+        dropdown.selectByVisibleText("Specific Provider");
+
+        if (homePhone.getAttribute("value").equals("")) {
+            homePhone.sendKeys("1234567890");
+        }
+
+        log("Click on Continue button");
         continueButton.click();
 
         log("Submit the request");
@@ -105,53 +105,52 @@ public class JalapenoAppointmentRequestPage extends BasePageObject{
             }
         }
 
-		try {
-			IHGUtil.waitForElement(driver, 60, homeButton);
-			log("Checking WebElement" + homeButton.toString());
-			if (homeButton.isDisplayed()) {
-				log(homeButton.toString() + "is displayed");
-				log("Request was succesfully submitted");
-				return true;
-			} else {
-				log(homeButton.toString() + "is NOT displayed");
-				return false;
-			}
-		}
-		catch (Throwable e) {
-			log(e.getStackTrace().toString());
-		}
-		
-		IHGUtil.setDefaultFrame(driver);
-		return false;
-	}
-	
-	public boolean assessAppointmentPageElements() {
+        try {
+            IHGUtil.waitForElement(driver, 60, homeButton);
+            log("Checking WebElement" + homeButton.toString());
+            if (homeButton.isDisplayed()) {
+                log(homeButton.toString() + "is displayed");
+                log("Request was succesfully submitted");
+                return true;
+            } else {
+                log(homeButton.toString() + "is NOT displayed");
+                return false;
+            }
+        } catch (Throwable e) {
+            log(e.getStackTrace().toString());
+        }
 
-		boolean allElementsDisplayed = false;
+        IHGUtil.setDefaultFrame(driver);
+        return false;
+    }
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-	
-		webElementsList.add(requestTab);
+    public boolean assessAppointmentPageElements() {
 
-		for (WebElement w : webElementsList) {
+        boolean allElementsDisplayed = false;
 
-			try {
-				IHGUtil.waitForElement(driver, 60, w);
-				log("Checking WebElement" + w.toString());
-				if (w.isDisplayed()) {
-					log("WebElement " + w.toString() + "is displayed");
-					allElementsDisplayed = true;
-				} else {
-					log("WebElement " + w.toString() + "is NOT displayed");
-					return false;
-				}
-			}
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-			catch (Throwable e) {
-				log(e.getStackTrace().toString());
-			}
+        webElementsList.add(requestTab);
 
-		}
-		return allElementsDisplayed;
-	}
+        for (WebElement w : webElementsList) {
+
+            try {
+                IHGUtil.waitForElement(driver, 60, w);
+                log("Checking WebElement" + w.toString());
+                if (w.isDisplayed()) {
+                    log("WebElement " + w.toString() + "is displayed");
+                    allElementsDisplayed = true;
+                } else {
+                    log("WebElement " + w.toString() + "is NOT displayed");
+                    return false;
+                }
+            }
+
+            catch (Throwable e) {
+                log(e.getStackTrace().toString());
+            }
+
+        }
+        return allElementsDisplayed;
+    }
 }

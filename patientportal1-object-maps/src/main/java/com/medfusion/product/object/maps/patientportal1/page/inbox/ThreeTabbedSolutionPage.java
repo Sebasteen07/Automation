@@ -10,56 +10,56 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class ThreeTabbedSolutionPage extends BasePageObject {
 
-	@FindBy(name = "allMessages")
-	private WebElement allMessages;
+    @FindBy(name = "allMessages")
+    private WebElement allMessages;
 
-	@FindBy(name = "officeMessages")
-	private WebElement officeMessages;
+    @FindBy(name = "officeMessages")
+    private WebElement officeMessages;
 
-	@FindBy(name = "healthMessages")
-	private WebElement healthMessages;
+    @FindBy(name = "healthMessages")
+    private WebElement healthMessages;
 
-	public ThreeTabbedSolutionPage(WebDriver driver) {
-		super(driver);
-	}
+    public ThreeTabbedSolutionPage(WebDriver driver) {
+        super(driver);
+    }
 
-	public ConsolidatedInboxPage clickAllMessages() {
+    public ConsolidatedInboxPage clickAllMessages() {
 
-		try {
-			IHGUtil.setFrame(driver, "iframebody");
-			allMessages.click();
-			System.out.println("###The Link was found");
-		} catch (Exception ex) {
-			System.out.println("### WARNING: The Link not found");
-		}
+        try {
+            IHGUtil.setFrame(driver, "iframebody");
+            allMessages.click();
+            System.out.println("###The Link was found");
+        } catch (Exception ex) {
+            System.out.println("### WARNING: The Link not found");
+        }
 
-		return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
-	}
+        return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
+    }
 
-	public OfficeMessagesPage clickOfficeMessages() {
+    public OfficeMessagesPage clickOfficeMessages() {
 
-		try {
-			IHGUtil.setFrame(driver, "iframebody");
-			officeMessages.click();
-			System.out.println("###The Link was found");
-		} catch (Exception ex) {
-			System.out.println("### WARNING: The Link not found");
-		}
+        try {
+            IHGUtil.setFrame(driver, "iframebody");
+            officeMessages.click();
+            System.out.println("###The Link was found");
+        } catch (Exception ex) {
+            System.out.println("### WARNING: The Link not found");
+        }
 
-		return PageFactory.initElements(driver, OfficeMessagesPage.class);
-	}
-	
-	public void clickHealthMessages() {
+        return PageFactory.initElements(driver, OfficeMessagesPage.class);
+    }
 
-		try {
-			IHGUtil.setFrame(driver, "iframebody");
-			healthMessages.click();
-			System.out.println("###The Link was found");
-		} catch (Exception ex) {
-			System.out.println("### WARNING: The Link not found");
-		}
+    public void clickHealthMessages() {
 
-		//return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
-	}
+        try {
+            IHGUtil.setFrame(driver, "iframebody");
+            healthMessages.click();
+            System.out.println("###The Link was found");
+        } catch (Exception ex) {
+            System.out.println("### WARNING: The Link not found");
+        }
+
+        // return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
+    }
 
 }

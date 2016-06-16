@@ -16,15 +16,15 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PortalFormPage extends BasePageObject {
-	
-	@FindBy(xpath="//*[@id='container']//section/div[@class='done_frame']/a")
-	private WebElement submitForm;
 
-	@FindBy(id = "closeFormButton")
-	private WebElement closeButton;
-	
-	@FindBy(id = "nextPageButton")
-	private WebElement btnContinue;
+    @FindBy(xpath = "//*[@id='container']//section/div[@class='done_frame']/a")
+    private WebElement submitForm;
+
+    @FindBy(id = "closeFormButton")
+    private WebElement closeButton;
+
+    @FindBy(id = "nextPageButton")
+    private WebElement btnContinue;
 
     @FindBy(id = "prevPageButton")
     private WebElement previousPageButton;
@@ -38,35 +38,37 @@ public class PortalFormPage extends BasePageObject {
     @FindBy(id = "modalButton")
     private WebElement tryAgainButton;
 	
-	public PortalFormPage(WebDriver driver) {
-		super(driver);
-	}
-	
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * 		  continueButton WebElement of the continue button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton) throws Exception {
-		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		//we need this here as demo is acting up sometimes with longer delays and newrelic, doing this twice blocks the occasional org.openqa.selenium.WebDriverException: Permission denied to access property 'handleEvent'		
-		try{
-			
-			wait.until(ExpectedConditions.elementToBeClickable(continueButton));	
-		}
-		catch(org.openqa.selenium.WebDriverException e){
-			wait.until(ExpectedConditions.elementToBeClickable(continueButton));
-		}
-		continueButton.click();
-		if (nextPageClass == null)
-			return null;
-		else
-			return PageFactory.initElements(driver, nextPageClass);
-	}
-	
+    public PortalFormPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * @brief Click on Continue Button
+     * @param nextPageClass
+     *            Class of the following page in the form
+     *            continueButton WebElement of the continue button
+     * @return initialized PageObject for the next page
+     * @throws Exception
+     */
+    public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton)
+            throws Exception {
+        IHGUtil.PrintMethodName();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        // we need this here as demo is acting up sometimes with longer delays and newrelic, doing this twice blocks the
+        // occasional org.openqa.selenium.WebDriverException: Permission denied to access property 'handleEvent'
+        try {
+
+            wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+        } catch (org.openqa.selenium.WebDriverException e) {
+            wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+        }
+        continueButton.click();
+        if (nextPageClass == null)
+            return null;
+        else
+            return PageFactory.initElements(driver, nextPageClass);
+    }
+
 	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton, int maxRetry) throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -92,24 +94,25 @@ public class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 	
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
-		return clickSaveContinue(nextPageClass, this.btnContinue);
-	}
+    /**
+     * @brief Click on Continue Button
+     * @param nextPageClass
+     *            Class of the following page in the form
+     * @return initialized PageObject for the next page
+     * @throws Exception
+     */
+    public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
+        return clickSaveContinue(nextPageClass, this.btnContinue);
+    }
 
-	/**
-	 * @brief Click on Continue Button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
-		return clickSaveContinue(null, this.btnContinue);
-	}
+    /**
+     * @brief Click on Continue Button
+     * @return initialized PageObject for the next page
+     * @throws Exception
+     */
+    public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
+        return clickSaveContinue(null, this.btnContinue);
+    }
 	
     public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, int maxRetry) throws Exception {
         return clickSaveContinueWithRetry(nextPageClass, this.btnContinue, maxRetry);
@@ -119,26 +122,25 @@ public class PortalFormPage extends BasePageObject {
         clickSaveContinueWithRetry(null, this.btnContinue, retries);
     }
 
-	/**
-	 * @Description Click on Submit Form Button
-	 * @return
-	 * @throws Exception
-	 * 
-	 */
-	public void submitForm() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 25);
-		
-		submitForm.click();
+    /**
+     * @Description Click on Submit Form Button
+     * @return
+     * @throws Exception
+     */
+    public void submitForm() throws Exception {
+        WebDriverWait wait = new WebDriverWait(driver, 25);
+
+        submitForm.click();
         try {
-            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+        wait.until(ExpectedConditions.elementToBeClickable(closeButton));
         } catch (NoSuchElementException ex) {
             log("Close button is not displayed");
             if (errorDialog.isDisplayed()) {
                 throw new UnexpectedException("***Oops, something went wrong*** dialog is displayed");
             }
         }
-		closeButton.click();
-	}
+        closeButton.click();
+    }
 
     public void clickSaveAndFinishAnotherTime() {
         saveAndFinishLink.click();
@@ -150,19 +152,20 @@ public class PortalFormPage extends BasePageObject {
     }
 
     public void scrollToFooter() {
-        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         String continueButtonID;
-        
-        //we need this here as demo is acting up sometimes with longer delays and newrelic, doing this twice blocks the occasional org.openqa.selenium.WebDriverException: Permission denied to access property 'handleEvent'
+
+        // we need this here as demo is acting up sometimes with longer delays and newrelic, doing this twice blocks the
+        // occasional org.openqa.selenium.WebDriverException: Permission denied to access property 'handleEvent'
         try {
-			continueButtonID = previousPageButton.getAttribute("id");
-		} catch (org.openqa.selenium.WebDriverException e) {
-			continueButtonID = previousPageButton.getAttribute("id");
-		}        
+            continueButtonID = previousPageButton.getAttribute("id");
+        } catch (org.openqa.selenium.WebDriverException e) {
+            continueButtonID = previousPageButton.getAttribute("id");
+        }
 
         jsExecutor.executeScript("document.getElementById('" + continueButtonID + "').scrollIntoView();");
     }
-    
+
     public void scrollToFooter(int maxAttempt) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
         String continueButtonID = null;

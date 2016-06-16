@@ -8,25 +8,25 @@ import com.medfusion.product.object.maps.patientportal1.page.questionnaires.Port
 
 public class SpecialCharFormFirstPage extends PortalCustomFormPage {
 
-	@FindBy(id = "custom_mappingid_customfirst_section_2_0")
-	private WebElement feverCheck;
+    @FindBy(id = "custom_mappingid_customfirst_section_2_0")
+    private WebElement feverCheck;
 
-	@FindBy(id = "custom_mappingid_customfirst_section_2_2")
-	private WebElement coughCheck;
-	
-	public SpecialCharFormFirstPage(WebDriver driver) {
-		super(driver);
-	}
+    @FindBy(id = "custom_mappingid_customfirst_section_2_2")
+    private WebElement coughCheck;
 
-	/**
-	 * @brief Selects checkboxes in the form that contain quotations marks - "
-	 */
-	public void selectQuotatedAnswers() {
-		if (feverCheck.isSelected() == false) 
-			feverCheck.click();
-		
-		if (coughCheck.isSelected() == false)
-			coughCheck.click();
-	}
-	
+    public SpecialCharFormFirstPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * @brief Selects checkboxes in the form that contain quotations marks - "
+     */
+    public void selectQuotatedAnswers() {
+        if (feverCheck.isSelected() == false)
+            feverCheck.click();
+
+        if (coughCheck.isSelected() == false)
+            coughCheck.click();
+    }
+
 }

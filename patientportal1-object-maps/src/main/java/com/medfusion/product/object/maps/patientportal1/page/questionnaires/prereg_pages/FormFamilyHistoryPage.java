@@ -6,21 +6,20 @@ import org.openqa.selenium.support.FindBy;
 
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.PortalFormPage;
 
-public class FormFamilyHistoryPage extends PortalFormPage 
-{
+public class FormFamilyHistoryPage extends PortalFormPage {
 
-	public FormFamilyHistoryPage(WebDriver driver)  {
-		super(driver);
-	}
+    public FormFamilyHistoryPage(WebDriver driver) {
+        super(driver);
+    }
 
-	@FindBy(id="idonot_familymedicalhistory")
-	WebElement noFamilyHistory;
+    @FindBy(id = "idonot_familymedicalhistory")
+    WebElement noFamilyHistory;
 
-	/**
-	 * @Description: Set No Family History
-	 */
-	public void setNoFamilyHistory() throws Exception {
-		noFamilyHistory.click();
-	}
+    /**
+     * @Description: Set No Family History
+     */
+    public void setNoFamilyHistory() throws Exception {
+        noFamilyHistory.click();
+    }
 
 }

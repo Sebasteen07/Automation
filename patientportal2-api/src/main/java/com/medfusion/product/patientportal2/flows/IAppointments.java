@@ -15,33 +15,42 @@ import com.medfusion.product.patientportal2.pojo.PatientInfo;
  * @author Viktor
  */
 public interface IAppointments {
-	/**
-	 * Gets past appointments for given patient in given practice.
-	 * 
-	 * @param driver
-	 * @param portal - jalapeno patient portal URL is needed
-	 * @param patientInfo - username and password are needed
-	 * @throws ParseException
-	 */
-	public List<Appointment> getAllAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
-	
-	/**
-	 * Gets past appointments for given patient in given practice.
-	 * 
-	 * @param driver
-	 * @param portal - jalapeno patient portal URL is needed
-	 * @param patientInfo - username and password are needed
-	 * @throws ParseException
-	 */
-	public List<Appointment> getUpcomingAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
-	
-	/**
-	 * Gets past appointments for given patient in given practice.
-	 * 
-	 * @param driver
-	 * @param portal - jalapeno patient portal URL is needed
-	 * @param patientInfo - username and password are needed
-	 * @throws ParseException
-	 */
-	public List<Appointment> getPastAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
+    /**
+     * Gets past appointments for given patient in given practice.
+     * 
+     * @param driver
+     * @param portal
+     *            - jalapeno patient portal URL is needed
+     * @param patientInfo
+     *            - username and password are needed
+     * @throws ParseException
+     */
+    public List<Appointment> getAllAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo)
+            throws ParseException;
+
+    /**
+     * Gets past appointments for given patient in given practice.
+     * 
+     * @param driver
+     * @param portal
+     *            - jalapeno patient portal URL is needed
+     * @param patientInfo
+     *            - username and password are needed
+     * @throws ParseException
+     */
+    public List<Appointment> getUpcomingAppointmentsForPatient(WebDriver driver, Jalapeno portal,
+            PatientInfo patientInfo) throws ParseException;
+
+    /**
+     * Gets past appointments for given patient in given practice.
+     * 
+     * @param driver
+     * @param portal
+     *            - jalapeno patient portal URL is needed
+     * @param patientInfo
+     *            - username and password are needed
+     * @throws ParseException
+     */
+    public List<Appointment> getPastAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo)
+            throws ParseException;
 }
