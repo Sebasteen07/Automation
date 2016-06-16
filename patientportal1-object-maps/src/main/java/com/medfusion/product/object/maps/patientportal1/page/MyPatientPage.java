@@ -26,6 +26,7 @@ import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -107,7 +108,15 @@ public class MyPatientPage  extends BasePageObject{
 
 	@FindBy(linkText = "My Messages")
 	private WebElement Mymessages;
-
+	
+	@FindBy(id = "touAck")
+	private WebElement touAck;
+	
+	@FindBy(id = "touAck-inputs:1:input:input_1")
+	private WebElement touCheckbox;
+	
+	@FindBy(xpath = "//div[@class='submitContainer']/input[@type='submit']")
+	private WebElement touSubmitBtn;
 
 	PortalUtil pPortalUtil = new PortalUtil(driver);
 
@@ -235,7 +244,7 @@ public class MyPatientPage  extends BasePageObject{
 	public HealthFormPage clickFillOutFormsLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 15); // we need to wait until the form window disappears
+		WebDriverWait wait = new WebDriverWait(driver, 20); // we need to wait until the form window disappears
 
 		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
 		lnkFillOutForms.click();
@@ -344,5 +353,22 @@ public class MyPatientPage  extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		phrLink.click();
+	}
+
+	public boolean isTermsOfUseDisplayed() {
+		try {
+			return touAck.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	public MyPatientPage acknowledgeTermsOfUse() {
+		log("Check Terms of use checkbox");
+		touCheckbox.click();
+		log("Click on Submit button");
+    	touSubmitBtn.click();
+    	
+    	return this;
 	}
 }
