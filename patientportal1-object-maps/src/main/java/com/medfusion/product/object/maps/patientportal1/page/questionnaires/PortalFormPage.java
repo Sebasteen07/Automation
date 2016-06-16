@@ -1,6 +1,9 @@
 package com.medfusion.product.object.maps.patientportal1.page.questionnaires;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,8 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-
-import java.util.concurrent.TimeUnit;
 
 public class PortalFormPage extends BasePageObject {
 	
@@ -59,6 +60,31 @@ public class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 	
+	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton, int maxRetry) throws Exception {
+		IHGUtil.PrintMethodName();
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        int attempt;
+        for (attempt = 1; attempt <= maxRetry; attempt++) {
+			try{
+				wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+				continueButton.click();
+                break;
+			}
+			catch(org.openqa.selenium.WebDriverException e){
+                log("Exception was thrown, retry: " + attempt + "/" + maxRetry);
+			}
+		}
+		
+        if (attempt > maxRetry) {
+			log("Exception is still present, element is not displayed");
+		}
+		if (nextPageClass == null)
+			return null;
+		else
+			return PageFactory.initElements(driver, nextPageClass);
+	}
+	
 	/**
 	 * @brief Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form
@@ -77,6 +103,14 @@ public class PortalFormPage extends BasePageObject {
 	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);
 	}
+	
+    public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, int maxRetry) throws Exception {
+        return clickSaveContinueWithRetry(nextPageClass, this.btnContinue, maxRetry);
+	}
+
+    public void clickSaveContinueSamePage(int retries) throws Exception {
+        clickSaveContinueWithRetry(null, this.btnContinue, retries);
+    }
 
 	/**
 	 * @Description Click on Submit Form Button
@@ -115,11 +149,32 @@ public class PortalFormPage extends BasePageObject {
         jsExecutor.executeScript("document.getElementById('" + continueButtonID + "').scrollIntoView();");
     }
     
+    public void scrollToFooter(int maxAttempt) {
+        JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+        String continueButtonID = null;
+        
+        int attempt;
+        for (attempt = 0; attempt <= maxAttempt; attempt++) {
+        	try {
+        		continueButtonID = previousPageButton.getAttribute("id");
+        		break;
+        	} catch (org.openqa.selenium.WebDriverException e) {
+                log("Wasn't able to get attribute of previousPageButton, attempt: " + attempt + "/" + maxAttempt);
+        	}      
+        }
+        
+        if (attempt > maxAttempt) {
+        	throw new NoSuchElementException("PreviousPageButton is no longer visible");
+        }
+
+        jsExecutor.executeScript("document.getElementById('" + continueButtonID + "').scrollIntoView();");
+    }
+    
     public void goToFirstPage() {
         scrollToFooter();
         while (previousPageButton.isDisplayed()) {
             previousPageButton.click();
-            scrollToFooter();
+            scrollToFooter(3);
         }
     }
 }
