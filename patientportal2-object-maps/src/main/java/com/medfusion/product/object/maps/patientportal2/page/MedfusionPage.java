@@ -24,14 +24,18 @@ public abstract class MedfusionPage extends IHGUtil {
      * Returns supported web element or throws error if not supported
      */
     public SupportedWebElements getSupportedWebElement(WebElement element) {
+        SupportedWebElements swe;
         if ("select".equals(element.getTagName())) {
-            return SupportedWebElements.SELECT;
+            swe = SupportedWebElements.SELECT;
         } else if ("input".equals(element.getTagName())) {
-            return SupportedWebElements.TEXT;
+            swe = SupportedWebElements.TEXT;
         } else {
             throw new UnsupportedOperationException("Error when processing element with id: "
                     + element.getAttribute("id") + ". Tag: " + element.getTagName() + " is not supported.");
         }
+
+        log("Element evaluated as: " + swe);
+        return swe;
     }
 
     /**
@@ -83,6 +87,11 @@ public abstract class MedfusionPage extends IHGUtil {
             select.selectByVisibleText(value);
         } else {
             element.sendKeys(value);
+        }
+
+        if (!validateWebElement(element, value)) {
+            // TODO temp prasecina
+            throw new UnsupportedOperationException("Element was not set up correctly");
         }
     }
 

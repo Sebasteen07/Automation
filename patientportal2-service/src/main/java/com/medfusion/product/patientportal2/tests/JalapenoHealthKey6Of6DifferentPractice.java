@@ -72,7 +72,7 @@ public class JalapenoHealthKey6Of6DifferentPractice extends BaseTestNGWebDriver{
 		}
 
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getDifferentUrl());
-		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickSignInButton();
+		JalapenoCreateAccountPage jalapenoCreateAccountPage = jalapenoLoginPage.clickCreateANewAccountButton();
 
 		jalapenoCreateAccountPage.fillInDataPage(testData.getHealthKey6Of6FirstnameSamePractice(),
 				testData.getHealthKey6Of6LastnameSamePractice(),
