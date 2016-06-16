@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -27,16 +28,16 @@ public class JalapenoLoginPage extends BasePageObject {
     public WebElement inputPassword;
 
     @FindBy(how = How.ID, using = "signin_btn")
-    public WebElement signInButton;
+    public WebElement buttonSignIn;
 
     @FindBy(how = How.ID, using = "create_btn")
-    public WebElement joinButton;
+    public WebElement buttonCreateANewAccount;
 
     @FindBy(how = How.ID, using = "remember")
     public WebElement rememberUserNameCheckbox;
 
     @FindBy(how = How.ID, using = "paynow_button")
-    public WebElement payNowButton;
+    public WebElement buttonPayNow;
 
     @FindBy(how = How.PARTIAL_LINK_TEXT, using = "I forgot my user name and/or password.")
     public WebElement forgotUserOrPasswordButton;
@@ -74,10 +75,10 @@ public class JalapenoLoginPage extends BasePageObject {
         webElementsList.add(inputUserId);
         webElementsList.add(inputPassword);
         webElementsList.add(forgotUserOrPasswordButton);
-        webElementsList.add(signInButton);
-        webElementsList.add(joinButton);
+        webElementsList.add(buttonSignIn);
+        webElementsList.add(buttonCreateANewAccount);
         webElementsList.add(rememberUserNameCheckbox);
-        webElementsList.add(payNowButton);
+        webElementsList.add(buttonPayNow);
 
         return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
     }
@@ -91,12 +92,12 @@ public class JalapenoLoginPage extends BasePageObject {
         try {
             inputUserId.clear();
             inputUserId.sendKeys(username);
-        } catch (org.openqa.selenium.WebDriverException e) {
+        } catch (WebDriverException e) {
             inputUserId.clear();
             inputUserId.sendKeys(username);
         }
         inputPassword.sendKeys(password);
-        signInButton.click();
+        buttonSignIn.click();
 
         log("User is logged in");
         selectStatementIfRequired();
@@ -104,12 +105,12 @@ public class JalapenoLoginPage extends BasePageObject {
         return PageFactory.initElements(driver, JalapenoHomePage.class);
     }
 
-    public JalapenoCreateAccountPage clickSignInButton() {
+    public JalapenoCreateAccountPage clickCreateANewAccountButton() {
 
         IHGUtil.PrintMethodName();
-        log("Clicking on Join In button");
-        new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(joinButton));
-        joinButton.click();
+        log("Clicking on Create a new account button");
+        // new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
+        buttonCreateANewAccount.click();
         return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
     }
 

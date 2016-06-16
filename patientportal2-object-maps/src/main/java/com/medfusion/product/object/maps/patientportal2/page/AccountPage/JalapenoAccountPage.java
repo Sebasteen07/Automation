@@ -12,7 +12,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 
 public class JalapenoAccountPage extends BasePageObject {
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"frame\"]/div[2]/ul/li/div/div[3]/button")
+    @FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
     private WebElement editMyAccountButton;
 
     public JalapenoAccountPage(WebDriver driver) {
