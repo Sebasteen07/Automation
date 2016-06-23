@@ -300,7 +300,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 						
 		log("Log in back to patient portal");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver,testData.getUrl());
-		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(newPat.username, newPat.password);
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(newPat.firstName, testData.getPassword());
 		
 		//check presence of badge (electronic preference &&(last payment date < newest statement date || (no payments present && statement arrived)))
 		if (preference == 2){
