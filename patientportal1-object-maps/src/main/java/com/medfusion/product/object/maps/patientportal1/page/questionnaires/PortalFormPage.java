@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.patientportal1.page.questionnaires;
 
+import java.rmi.UnexpectedException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -30,6 +31,12 @@ public class PortalFormPage extends BasePageObject {
 
     @FindBy(className = "save")
     private WebElement saveAndFinishLink;
+
+    @FindBy(id = "errorDialog")
+    private WebElement errorDialog;
+
+    @FindBy(id = "modalButton")
+    private WebElement tryAgainButton;
 	
 	public PortalFormPage(WebDriver driver) {
 		super(driver);
@@ -122,7 +129,14 @@ public class PortalFormPage extends BasePageObject {
 		WebDriverWait wait = new WebDriverWait(driver, 25);
 		
 		submitForm.click();
-		wait.until(ExpectedConditions.elementToBeClickable(closeButton));	
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+        } catch (NoSuchElementException ex) {
+            log("Close button is not displayed");
+            if (errorDialog.isDisplayed()) {
+                throw new UnexpectedException("***Oops, something went wrong*** dialog is displayed");
+            }
+        }
 		closeButton.click();
 	}
 

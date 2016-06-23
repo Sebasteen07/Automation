@@ -1,10 +1,11 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author Adam Warzel
@@ -71,9 +72,11 @@ public class ConfiguratorFormPage extends BasePageObject {
 
     public ConfiguratorFormPage saveOpenedForm() throws InterruptedException {
         IHGUtil utils = new IHGUtil(driver);
-
+        // it's passing here too quickly so we need explicit wait
+        Thread.sleep(5000);
         clickSaveButton();
-        utils.waitForElementToDisappear(loadingNotification, 1500, 8);
+        utils.waitForElementToDisappear(loadingNotification, 2000, 10);
+
         return this;
     }
 

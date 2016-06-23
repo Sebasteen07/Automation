@@ -2,24 +2,22 @@ package com.intuit.ihg.product.forms.test;
 
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.PageFactory;
-
-import com.intuit.ihg.product.sitegen.SiteGenSteps;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-
 import org.testng.annotations.Test;
 
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
+import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
+import com.intuit.ihg.product.sitegen.SiteGenSteps;
+import com.intuit.ihg.product.sitegen.utils.Sitegen;
+import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.CalculatedFormPage;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
-import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
-import com.intuit.ihg.product.sitegen.utils.Sitegen;
-import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
 public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 
@@ -200,7 +198,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 	
 		log("Step 5: Fill all the answers and click Save and continue.");
 		calculatedFormPage.fillFormLeftmostAnswer();
-		calculatedFormPage.clickSaveContinue();
+        calculatedFormPage.clickSaveContinueSamePage(3);
 		calculatedFormPage.submitForm();
 	}
 
