@@ -72,19 +72,22 @@ import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
     PropertyFileLoader testData;
+    int stepCounter;
 
-    @BeforeMethod
-    private void logTestEnvironment() {
+    @BeforeMethod(alwaysRun = true)
+    public void setUp() throws Exception {
+        super.setUp();
+        
         log(this.getClass().getName());
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());
-    }
-
-    @BeforeMethod
-    private void loadTestData() throws IOException {
+        
         log("Getting Test Data");
         testData = new PropertyFileLoader();
-    }
+        
+        log("Resetting step counter");
+        stepCounter = 0;
+    }
 
     @AfterMethod
     public void logTestStatus(ITestResult result) {
