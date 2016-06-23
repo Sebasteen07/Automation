@@ -1,23 +1,86 @@
 package com.medfusion.product.object.maps.patientportal2.page;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Level;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.IHGUtil;
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
 
 /**
- * Universal page that can process WebElements automatically just by passing values to them
- * Should be moved to IHGUtil later
+ * Page with general functionality
+ * TODO Should be moved somewhere to general project later
  */
-public abstract class MedfusionPage extends IHGUtil {
+public abstract class MedfusionPage extends BasePageObject {
 
     public MedfusionPage(WebDriver driver) {
+        this(driver, null);
+    }
+
+    public MedfusionPage(WebDriver driver, String url) {
         super(driver);
+
+        log("Loading page");
+
+        if (url != null) {
+            String sanitizedUrl = url.trim();
+            log("URL: " + sanitizedUrl);
+            driver.get(sanitizedUrl);
+        }
+
+        // there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
+        driver.manage().window().maximize();
+        printCookies();
+        PageFactory.initElements(driver, this);
+
+        if (!assessBasicPageElements()) {
+            throw new UnsupportedOperationException("Page was not successfully loaded");
+        }
+    }
+
+    /**
+     * TODO update in IHGUtil - there is System.out.println :(
+     * Usually this is just annoying so want to put this on debug level
+     */
+    public void printCookies() {
+        Set<Cookie> cookies = driver.manage().getCookies();
+        log("Printing Cookies -------", Level.DEBUG);
+        for (Cookie c : cookies) {
+            log(c.toString(), Level.DEBUG);
+        }
+        log("--------------------------", Level.DEBUG);
+    }
+
+    public abstract boolean assessBasicPageElements();
+
+    public String elementToString(WebElement element) {
+        return "Element (id: " + element.getAttribute("id") + ", tag: " + element.getTagName() + ")";
+    }
+
+    @Override
+    protected void log(String logText) {
+        super.log(createFormattedLogMessage(logText));
+    }
+
+    @Override
+    protected void log(String logText, Level level) {
+        super.log(createFormattedLogMessage(logText), level);
+    }
+
+    private String createFormattedLogMessage(String logText) {
+        return this.getClass().getSimpleName() + ": " + logText;
     }
 
     /**
@@ -30,11 +93,11 @@ public abstract class MedfusionPage extends IHGUtil {
         } else if ("input".equals(element.getTagName())) {
             swe = SupportedWebElements.TEXT;
         } else {
-            throw new UnsupportedOperationException("Error when processing element with id: "
-                    + element.getAttribute("id") + ". Tag: " + element.getTagName() + " is not supported.");
+            throw new UnsupportedOperationException(
+                    "Error when processing " + elementToString(element) + ". Element is not supported.");
         }
 
-        log("Element evaluated as: " + swe);
+        log("Element evaluated as: " + swe, Level.DEBUG);
         return swe;
     }
 
@@ -43,7 +106,7 @@ public abstract class MedfusionPage extends IHGUtil {
      */
     public boolean updateAndValidateWebElements(Map<WebElement, String> map, WebElement submitElement) {
         updateWebElements(map);
-        submitForm(submitElement);
+        clickOnElement(submitElement);
         return validateWebElements(map);
     }
 
@@ -57,15 +120,16 @@ public abstract class MedfusionPage extends IHGUtil {
     }
 
     /**
-     * Submits form
+     * Clicks on web element
+     * 
+     * @param element
      */
-    public void submitForm(WebElement submitElement) {
-        if (submitElement != null) {
-            log("Submitting form");
-            submitElement.click();
+    public void clickOnElement(WebElement element) {
+        if (element != null) {
+            log("Click on: " + elementToString(element));
+            element.click();
         } else {
-            throw new UnsupportedOperationException(
-                    "Error when submitting form - submit form element has not been set up.");
+            throw new UnsupportedOperationException("Error when clicking element - element is null.");
         }
     }
 
@@ -74,7 +138,7 @@ public abstract class MedfusionPage extends IHGUtil {
      * Currently works with text and select elements only
      */
     public void updateWebElement(WebElement element, String value) {
-        log("Updating element with id: " + element.getAttribute("id") + " to value: " + value);
+        log("Updating element with id: " + element.getAttribute("id") + " to value: " + value, Level.DEBUG);
 
         SupportedWebElements swe = getSupportedWebElement(element);
 
@@ -90,7 +154,7 @@ public abstract class MedfusionPage extends IHGUtil {
         }
 
         if (!validateWebElement(element, value)) {
-            // TODO temp prasecina
+            // TODO what exception should be here?
             throw new UnsupportedOperationException("Element was not set up correctly");
         }
     }
@@ -115,29 +179,53 @@ public abstract class MedfusionPage extends IHGUtil {
         switch (getSupportedWebElement(element)) {
             case TEXT:
                 if (!value.equals(element.getAttribute("value"))) {
-                    log("Element with id: " + element.getAttribute("id") + " has value : "
-                            + element.getAttribute("value") + " but expected: " + value + " - ERROR");
+                    // TODO duplicate code in cases
+                    log(elementToString(element) + " has value : " + element.getAttribute("value") + " but expected: "
+                            + value + " - ERROR");
                     return false;
                 } else {
-                    log("Element with id: " + element.getAttribute("id") + " has value : "
-                            + element.getAttribute("value") + " - OK", Level.DEBUG);
+                    log(elementToString(element) + " has value : " + element.getAttribute("value") + " - OK");
                 }
                 break;
             case SELECT:
                 Select select = new Select(element);
                 String selectedText = select.getFirstSelectedOption().getText();
                 if (!value.equals(selectedText)) {
-                    log("Element with id: " + element.getAttribute("id") + " has value : " + selectedText
-                            + " but expected: " + value + " - ERROR");
+                    log(elementToString(element) + " has value : " + selectedText + " but expected: " + value
+                            + " - ERROR");
                     return false;
                 } else {
-                    log("Element with id: " + element.getAttribute("id") + " has value : " + selectedText + " - OK",
-                            Level.DEBUG);
+                    log(elementToString(element) + " has value : " + selectedText + " - OK");
                 }
                 log(select.getFirstSelectedOption().getText());
                 break;
             default:
                 break;
+        }
+        return true;
+    }
+
+    public boolean assessPageElements(ArrayList<WebElement> allElements) {
+        log("Checking page elements");
+
+        for (WebElement w : allElements) {
+            int attempt = 1;
+            while (attempt < 3) {
+                log("Searching for element: " + w.toString(), Level.DEBUG);
+                try {
+                    new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(w));
+                    log("Element " + w.toString() + " : is displayed", Level.DEBUG);
+                    attempt = 3;
+                } catch (StaleElementReferenceException ex) {
+                    log("StaleElementReferenceException was catched, attempt: " + attempt++, Level.DEBUG);
+                } catch (TimeoutException ex) {
+                    log(ex.getMessage());
+                    return false;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+            }
         }
         return true;
     }

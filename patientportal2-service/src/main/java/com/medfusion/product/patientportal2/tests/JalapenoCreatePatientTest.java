@@ -7,6 +7,7 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 
+// TODO to delete?
 public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 
     private String email = "";

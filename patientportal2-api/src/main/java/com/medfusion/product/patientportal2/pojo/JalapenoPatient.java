@@ -26,6 +26,9 @@ public class JalapenoPatient {
     private String city;
     private String state;
 
+    public JalapenoPatient() {
+    }
+
     public JalapenoPatient(PropertyFileLoader testData) {
         IHGUtil.PrintMethodName();
 
@@ -40,11 +43,10 @@ public class JalapenoPatient {
         DOBMonthText = testData.getDOBMonthText();
         DOBYear = testData.getDOBYear();
         ZipCode = testData.getZipCode();
-        // TODO fix this hack - sak nemame pristup do com.medfusion.common.utils, tak co? :)
-        address1 = "U rychtare gejoty 8";
-        address2 = "U bobra 12";
-        city = "Mamlasov";
-        state = "Alabama";
+        address1 = testData.getProperty("Address1");
+        address2 = testData.getProperty("Address2");
+        city = testData.getProperty("City");
+        state = testData.getProperty("State");
     }
 
     public JalapenoPatient(String email, String password, String url, String firstName, String lastName, Gender gender,

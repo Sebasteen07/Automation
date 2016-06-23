@@ -1,18 +1,17 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
+
+import com.medfusion.common.utils.IHGUtil.Gender;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class JalapenoMyAccountPage extends MedfusionPage {
 
@@ -55,11 +54,8 @@ public class JalapenoMyAccountPage extends MedfusionPage {
     @FindBy(how = How.ID, using = "saveAccountChanges")
     private WebElement submitButton;
 
-    public JalapenoMyAccountPage(WebDriver driver) throws InterruptedException {
+    public JalapenoMyAccountPage(WebDriver driver) {
         super(driver);
-        IHGUtil.PrintMethodName();
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
     }
 
     public boolean checkForAddress(WebDriver driver, String addressLine1, String city, String zipCode) {
@@ -97,19 +93,15 @@ public class JalapenoMyAccountPage extends MedfusionPage {
         return true;
     }
 
-    public boolean checkZipCode(String zipCode) {
+    public boolean validatePageContent(JalapenoPatient jalapenoPatient) {
 
-        log("Checking ZipCode textbox");
+        Map<WebElement, String> itemsTovalidate = new HashMap<WebElement, String>();
+        itemsTovalidate.put(address1Textbox, jalapenoPatient.getAddress1());
+        itemsTovalidate.put(cityTextbox, jalapenoPatient.getCity());
+        itemsTovalidate.put(stateSelect, jalapenoPatient.getState());
+        itemsTovalidate.put(zipCodeTextbox, jalapenoPatient.getZipCode());
 
-        String savedZipCode = zipCodeTextbox.getAttribute("value");
-
-        if (!StringUtils.equals(zipCode, savedZipCode)) {
-            log("ZipCode does not match, expected '" + zipCode + "' but there is '" + savedZipCode + "'");
-            return false;
-        }
-
-        log("ZipCode value: " + savedZipCode);
-        return true;
+        return validateWebElements(itemsTovalidate);
     }
 
     public boolean checkGender(Gender genderExpected) {
@@ -118,14 +110,7 @@ public class JalapenoMyAccountPage extends MedfusionPage {
         return genderExpected == genderOnPage;
     }
 
-    public JalapenoHomePage returnToHomePage(WebDriver driver) {
-        log("Return to dashboard");
-        driver.findElement(By.id("home")).click();
-
-        return PageFactory.initElements(driver, JalapenoHomePage.class);
-    }
-
-    public boolean assessPageElements() {
+    public boolean assessBasicPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
@@ -136,59 +121,17 @@ public class JalapenoMyAccountPage extends MedfusionPage {
         webElementsList.add(zipCodeTextbox);
         webElementsList.add(maleRadioButton);
 
-        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+        return assessPageElements(webElementsList);
     }
 
-    public WebElement getProfileTab() {
-        return profileTab;
-    }
+    public boolean modifyAndValidatePageContent() {
+        Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
+        itemsToChange.put(address1Textbox, "address");
+        itemsToChange.put(cityTextbox, "city");
+        itemsToChange.put(stateSelect, "Alaska");
+        itemsToChange.put(zipCodeTextbox, "54321");
 
-    public WebElement getEmailTab() {
-        return emailTab;
-    }
-
-    public WebElement getPasswordAndIdTab() {
-        return passwordAndIdTab;
-    }
-
-    public WebElement getPreferencesTab() {
-        return preferencesTab;
-    }
-
-    public WebElement getWalletTab() {
-        return walletTab;
-    }
-
-    public WebElement getFamilyTab() {
-        return familyTab;
-    }
-
-    public WebElement getAccountActivityTab() {
-        return accountActivityTab;
-    }
-
-    public WebElement getAddress1Textbox() {
-        return address1Textbox;
-    }
-
-    public WebElement getCityTextbox() {
-        return cityTextbox;
-    }
-
-    public WebElement getZipCodeTextbox() {
-        return zipCodeTextbox;
-    }
-
-    public WebElement getMaleRadioButton() {
-        return maleRadioButton;
-    }
-
-    public WebElement getStateSelect() {
-        return stateSelect;
-    }
-
-    public WebElement getSubmitButton() {
-        return submitButton;
+        return updateAndValidateWebElements(itemsToChange, submitButton);
     }
 
 }

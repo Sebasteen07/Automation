@@ -58,8 +58,7 @@ public class Appointments implements IAppointments {
         JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
         JalapenoHomePage homePage = loginPage.login(username, password);
 
-        // TODO: use method for getting to this page through button after the button is added
-        return homePage.goToAppointmentsPage(portalURL);
+        return homePage.clickOnMenuAppointments();
     }
 
     private List<Appointment> parseWebElementsToAppointments(List<WebElement> elements) throws ParseException {

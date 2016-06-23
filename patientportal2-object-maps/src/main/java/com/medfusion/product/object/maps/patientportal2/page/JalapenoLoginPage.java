@@ -2,24 +2,18 @@ package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoCreateAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-public class JalapenoLoginPage extends BasePageObject {
+public class JalapenoLoginPage extends MedfusionPage {
 
     @FindBy(how = How.ID, using = "userid")
     public WebElement inputUserId;
@@ -49,27 +43,14 @@ public class JalapenoLoginPage extends BasePageObject {
     private WebElement okButton;
 
     public JalapenoLoginPage(WebDriver driver, String url) {
-
-        super(driver);
-        IHGUtil.PrintMethodName();
-        log("Loading login page");
-        String sanitizedUrl = url.trim();
-        log("URL: " + sanitizedUrl);
-        driver.get(sanitizedUrl);
-        // there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
-        driver.manage().window().maximize();
-        IHGUtil.printCookies(driver);
-        PageFactory.initElements(driver, this);
+        super(driver, url);
     }
 
     public JalapenoLoginPage(WebDriver driver) {
-
         super(driver);
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
     }
 
-    public boolean assessLoginPageElements() {
+    public boolean assessBasicPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
         webElementsList.add(inputUserId);
@@ -80,49 +61,39 @@ public class JalapenoLoginPage extends BasePageObject {
         webElementsList.add(rememberUserNameCheckbox);
         webElementsList.add(buttonPayNow);
 
-        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+        return assessPageElements(webElementsList);
     }
 
-    public JalapenoHomePage login(String username, String password) {
+    /**
+     * Login successfully or throws error
+     * 
+     * @param username
+     * @param password
+     * @return
+     * @throws UnsupportedOperationException
+     */
+    public JalapenoHomePage login(String username, String password) throws UnsupportedOperationException {
 
-        IHGUtil.PrintMethodName();
-        log("Login Credentials: [" + username + "] [" + password + "]");
-        // catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
-        // try removing the try catch once newrelic is deprecated and fully removed
-        try {
-            inputUserId.clear();
-            inputUserId.sendKeys(username);
-        } catch (WebDriverException e) {
-            inputUserId.clear();
-            inputUserId.sendKeys(username);
-        }
-        inputPassword.sendKeys(password);
-        buttonSignIn.click();
+        log("Login with credentials: [" + username + "] [" + password + "]");
+        updateWebElement(inputUserId, username);
+        updateWebElement(inputPassword, password);
+        clickOnElement(buttonSignIn);
 
-        log("User is logged in");
         selectStatementIfRequired();
-
         return PageFactory.initElements(driver, JalapenoHomePage.class);
     }
 
+    // TODO make method for unsuccessful login
+
     public JalapenoCreateAccountPage clickCreateANewAccountButton() {
 
-        IHGUtil.PrintMethodName();
-        log("Clicking on Create a new account button");
-        // new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
-        buttonCreateANewAccount.click();
+        clickOnElement(buttonCreateANewAccount);
         return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
     }
 
-    public JalapenoForgotPasswordPage clickForgotPasswordButton() {
-        IHGUtil.PrintMethodName();
-        log("Clicking on Forgot Password button");
-        forgotUserOrPasswordButton.click();
+    public JalapenoForgotPasswordPage clickOnForgotPasswordButton() {
+        clickOnElement(forgotUserOrPasswordButton);
         return PageFactory.initElements(driver, JalapenoForgotPasswordPage.class);
-    }
-
-    public boolean isTextVisible(String text) {
-        return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
     }
 
     private void selectStatementIfRequired() {

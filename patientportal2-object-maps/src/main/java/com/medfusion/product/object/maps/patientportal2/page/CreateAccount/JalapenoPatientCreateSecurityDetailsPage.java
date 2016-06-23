@@ -1,9 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,9 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
-public class JalapenoPatientActivationPage extends BasePageObject {
+public class JalapenoPatientCreateSecurityDetailsPage extends MedfusionPage {
 
     @FindBy(how = How.XPATH, using = "(//input[@id='userid'])[2]")
     private WebElement inputUserId;
@@ -48,18 +48,23 @@ public class JalapenoPatientActivationPage extends BasePageObject {
     @FindBy(how = How.ID, using = "finishStep")
     private WebElement finishStep;
 
+    @Deprecated
     @FindBy(how = How.XPATH, using = "(//input[@id='postalCode'])[1]")
     private WebElement postalCode;
 
+    @Deprecated
     @FindBy(how = How.XPATH, using = "(//select[@id='birthDate_month'])[1]")
     private WebElement birthDate_month;
 
+    @Deprecated
     @FindBy(how = How.XPATH, using = "(//input[@id='birthDate_day'])[1]")
     private WebElement birthDate_day;
 
+    @Deprecated
     @FindBy(how = How.XPATH, using = "(//input[@id='birthDate_year'])[1]")
     private WebElement birthDate_year;
 
+    @Deprecated
     @FindBy(how = How.XPATH, using = "(//button[@id='nextStep'])[1]")
     private WebElement nextStep;
 
@@ -79,25 +84,40 @@ public class JalapenoPatientActivationPage extends BasePageObject {
     @FindBy(how = How.ID, using = "updateStatementPrefButton")
     private WebElement okButton;
 
-    public JalapenoPatientActivationPage(WebDriver driver) {
-        this(driver, null);
+    public JalapenoPatientCreateSecurityDetailsPage(WebDriver driver) {
+        super(driver);
     }
 
-    public JalapenoPatientActivationPage(WebDriver driver, String url) {
-        super(driver);
-        IHGUtil.PrintMethodName();
-        log("Loading activation page");
+    public JalapenoPatientCreateSecurityDetailsPage(WebDriver driver, String url) {
+        super(driver, url);
+    }
 
-        if (url != null && !url.isEmpty()) {
-            String sanitizedUrl = url.trim();
-            log("URL: " + sanitizedUrl);
-            driver.get(sanitizedUrl);
+    @Override
+    public boolean assessBasicPageElements() {
+        return assessBasicPageElements(false);
+    }
+
+    public boolean assessBasicPageElements(boolean checkPrevStepButton) {
+
+        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+        webElementsList.add(inputUserId);
+        webElementsList.add(inputPassword);
+        webElementsList.add(inputSecretQuestion);
+        webElementsList.add(inputSecretAnswer);
+        webElementsList.add(inputPhone1);
+        webElementsList.add(inputPhone2);
+        webElementsList.add(inputPhone3);
+        webElementsList.add(inputPhoneType);
+        webElementsList.add(finishStep);
+        if (checkPrevStepButton) {
+            webElementsList.add(prevStep);
         }
 
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
+        return assessPageElements(webElementsList);
     }
 
+    // TODO functionality from other page - move it there
+    @Deprecated
     public void verifyPatientIdentity(String zipCode, String month, String day, String year) {
         IHGUtil.PrintMethodName();
 
@@ -166,7 +186,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
         return PageFactory.initElements(driver, JalapenoHomePage.class);
     }
 
-    public JalapenoHomePage fillInPatientActivation(String userId, String password, PropertyFileLoader testData) {
+    public JalapenoHomePage fillInSecurityDetails(String userId, String password, PropertyFileLoader testData) {
         return fillInPatientActivation(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(),
                 testData.getPhoneNumber());
     }
@@ -194,25 +214,7 @@ public class JalapenoPatientActivationPage extends BasePageObject {
 
     }
 
-    public boolean assessPatientActivationPageElements(boolean checkPrevStepButton) {
-
-        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-        webElementsList.add(inputUserId);
-        webElementsList.add(inputPassword);
-        webElementsList.add(inputSecretQuestion);
-        webElementsList.add(inputSecretAnswer);
-        webElementsList.add(inputPhone1);
-        webElementsList.add(inputPhone2);
-        webElementsList.add(inputPhone3);
-        webElementsList.add(inputPhoneType);
-        webElementsList.add(finishStep);
-        if (checkPrevStepButton) {
-            webElementsList.add(prevStep);
-        }
-
-        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-    }
-
+    @Deprecated
     public boolean assessPatientActivationVerifyPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

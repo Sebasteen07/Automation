@@ -11,16 +11,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class JalapenoCreateAccountPage extends MedfusionPage {
-
-    /**
-     * @Author:Jakub Calabek
-     * @Date:24.7.2013
-     */
 
     @FindBy(how = How.ID, using = "firstName")
     private WebElement inputPatientFirstName;
@@ -71,8 +67,8 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         super(driver);
     }
 
-    public JalapenoPatientActivationPage fillInDataPage(String firstName, String lastName, String email, String month,
-            String day, String year, Gender gender, String zipCode) {
+    public JalapenoPatientCreateSecurityDetailsPage fillInDataPage(String firstName, String lastName, String email,
+            String month, String day, String year, Gender gender, String zipCode) {
         IHGUtil.PrintMethodName();
 
         setName(firstName, lastName);
@@ -87,7 +83,7 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         updateWebElement(inputState, "Alabama");
         updateWebElement(inputZipCode, "94043");
 
-        return goToNextPage();
+        return clickOnNextButton();
     }
 
     public JalapenoCreateAccountPage2 fillInDataPage1(String firstName, String lastName, String email, String month,
@@ -125,17 +121,17 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         return PageFactory.initElements(driver, JalapenoCreateAccountPage2.class);
     }
 
-    public JalapenoPatientActivationPage fillInDataPage(String firstName, String lastName, String email,
+    public JalapenoPatientCreateSecurityDetailsPage fillInDataPage(String firstName, String lastName, String email,
             PropertyFileLoader testData) {
 
         return fillInDataPage(firstName, lastName, email, testData.getDOBMonthText(), testData.getDOBDay(),
                 testData.getDOBYear(), Gender.MALE, testData.getZipCode());
     }
 
-    public JalapenoPatientActivationPage goToNextPage() {
+    public JalapenoPatientCreateSecurityDetailsPage clickOnNextButton() {
         buttonChooseUserId.click();
 
-        return new JalapenoPatientActivationPage(driver);
+        return new JalapenoPatientCreateSecurityDetailsPage(driver);
     }
 
     public JalapenoCreateAccountPage setZipCode(String zipCode) {
@@ -176,7 +172,7 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         return this;
     }
 
-    public boolean assessCreateAccountPageElements() {
+    public boolean assessBasicPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
         webElementsList.add(inputPatientFirstName);
@@ -195,7 +191,7 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         webElementsList.add(buttonCancel);
         webElementsList.add(buttonChooseUserId);
 
-        return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+        return assessPageElements(webElementsList);
     }
 
     public boolean isTextVisible(String text) {
@@ -226,4 +222,5 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
 
         return this;
     }
+
 }

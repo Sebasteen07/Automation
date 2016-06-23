@@ -12,18 +12,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoPage;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.JalapenoHealthFormsListPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
-import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 
-public class JalapenoHomePage extends JalapenoPage {
+public class JalapenoHomePage extends JalapenoMenu {
 
     @FindBy(how = How.ID, using = "home")
     private WebElement home;
@@ -64,16 +63,8 @@ public class JalapenoHomePage extends JalapenoPage {
     @FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
     private WebElement succPaymentNotification;
 
-    /**
-     * @Author:Jakub Calabek
-     * @Date:24.7.2013
-     */
-
     public JalapenoHomePage(WebDriver driver) {
         super(driver);
-        IHGUtil.PrintMethodName();
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
     }
 
     public JalapenoMessagesPage showMessages(WebDriver driver) throws Exception {
@@ -120,13 +111,6 @@ public class JalapenoHomePage extends JalapenoPage {
         payments.click();
 
         return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
-    }
-
-    public JalapenoHealthFormsListPage clickOnHealthForms(WebDriver driver) throws Exception {
-
-        log("Clicking on Health Forms button");
-        forms.click();
-        return PageFactory.initElements(driver, JalapenoHealthFormsListPage.class);
     }
 
     public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
@@ -183,7 +167,8 @@ public class JalapenoHomePage extends JalapenoPage {
         }
     }
 
-    public boolean assessHomePageElements() {
+    @Override
+    public boolean assessBasicPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
