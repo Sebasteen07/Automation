@@ -151,6 +151,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	public void clickOnNewSection() {
+        IHGUtil.waitForElement(driver, 10, newSection);
 		newSection.click();
 	}
 
