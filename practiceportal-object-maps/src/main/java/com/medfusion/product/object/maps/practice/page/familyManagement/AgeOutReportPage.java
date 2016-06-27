@@ -93,6 +93,7 @@ public class AgeOutReportPage extends BasePageObject {
 		
 		log("Switch to Lightbox iFrame");
 		driver.switchTo().frame(iFrameOfLightbox);
+		IHGUtil.waitForElement(driver, 10, iFrameOkButton);
 		iFrameOkButton.click();
 		
 		log("Switch back");
