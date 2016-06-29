@@ -24,7 +24,7 @@
          </KeyValuePair>
       </DeviceArguments>
    </Destination>
-   <SecureMessage messageId="99920871-1921-2221-1948-23422015">
+   <SecureMessage messageId="99920871-1921-2221-1948-">
       <From></From>
       <To></To>
       <Subject></Subject>
@@ -32,7 +32,7 @@
       <AllowReply>true</AllowReply>
       <Message>this is test msg generated from testAMDCSecureMessage() Automation to 1st patient</Message>
    </SecureMessage>
-   <SecureMessage messageId="99920871-1921-2259-1997-23422016">
+   <SecureMessage messageId="99920871-1921-2259-1997-">
       <From></From>
       <To></To>
       <Subject></Subject>
@@ -40,7 +40,7 @@
       <AllowReply>true</AllowReply>
       <Message>this is test msg generated from testAMDCSecureMessage() Automation to 2nd patient </Message>
    </SecureMessage>
-   <SecureMessage messageId="99920871-8821-2221-1997-23422017">
+   <SecureMessage messageId="99920871-8821-2221-1997-">
       <From></From>
       <To></To>
       <Subject></Subject>
