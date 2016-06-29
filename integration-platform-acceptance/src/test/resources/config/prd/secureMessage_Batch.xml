@@ -24,28 +24,28 @@
          </KeyValuePair>
       </DeviceArguments>
    </Destination>
-   <SecureMessage messageId="99920871-1921-2221-1948-23422015">
+   <SecureMessage messageId="99920871-1921-2221-1948-">
       <From></From>
       <To></To>
       <Subject></Subject>
       <!--MessageThreadId>b3627299-a937-4615-b9cb-5b3b96d45d87</MessageThreadId-->
       <AllowReply>true</AllowReply>
-      <Message></Message>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 1st patient</Message>
    </SecureMessage>
-   <SecureMessage messageId="99920871-1921-2259-1997-23422016">
+   <SecureMessage messageId="99920871-1921-2259-1997-">
       <From></From>
       <To></To>
       <Subject></Subject>
-      <MessageThreadId>1257e7aa-3ca1-407d-9820-783dcb58f580</MessageThreadId>
+      <MessageThreadId>a74724ff-e449-4250-8f24-29bbff146b2e</MessageThreadId>
       <AllowReply>true</AllowReply>
-      <Message></Message>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 2nd patient </Message>
    </SecureMessage>
-   <SecureMessage messageId="99920871-8821-2221-1997-23422017">
+   <SecureMessage messageId="99920871-8821-2221-1997-">
       <From></From>
       <To></To>
       <Subject></Subject>
       <!--MessageThreadId>b3627299-a937-4615-b9cb-5b3b96d45d87</MessageThreadId-->
       <AllowReply>true</AllowReply>
-      <Message></Message>
+      <Message>this is test msg generated from testAMDCSecureMessage() Automation to 1st patient</Message>
    </SecureMessage>
 </p:AdministrativeMessages>

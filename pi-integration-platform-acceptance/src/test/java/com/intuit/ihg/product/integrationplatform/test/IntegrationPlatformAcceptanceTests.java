@@ -69,9 +69,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName,
                 email, null);
 
-        log("Step 2: Setup Oauth client");
-        RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
-                testData.getOAuthUsername(), testData.getOAuthPassword());
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
+				testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
 
         log("Step 3: Do a POST call and get processing status URL");
         String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient,
@@ -221,13 +222,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         }
         verifyTrue(completed, "Message processing was not completed in time");
 
-        log("Step 6: Check secure message in patient gmail inbox");
-        RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(),
-                testData.getSender3(), 3, "Portal 2.0");
+		log("Step 6: Check secure message in patient gmail inbox");
+		String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(),
+				testData.getGmailPassword(), testData.getSender3(), 3,
+				"Portal 2.0");
 
-        log("Step 7: Login to Patient Portal");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+		log("Step 7: Login to Patient Portal");
+		log("Link is "+link);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver,
+				link);
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(),
+				testData.getPassword());
 
         log("Detecting if Home Page is opened");
         assertTrue(homePage.isHomeButtonPresent(driver));
@@ -267,8 +272,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         // TODO: "system is unable to send a reply" message, even if the message
         // is sent
 
-        log("Logging out");
-        homePage.clickOnLogout();
+		log("Logging out");
+		homePage.clickOnLogout();
 
         log("Step 15: Wait 60 seconds, so the message can be processed");
         Thread.sleep(60000);
@@ -337,38 +342,44 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
         jalapenoCcdPage.verifyCCDViewerAndClose();
 
-        log("Logging out");
-        homePage.clickOnLogout();
-
-        // TODO Do we need this huge amount of commented code?
-        /*
-         * log("Step 10: Go to patient page"); pMyPatientPage =
-         * pMessage.clickMyPatientPage();
-         * log("Step 11: Click PHR");
-         * pMyPatientPage.clickPHRWithoutInit(driver); PhrHomePage phrPage =
-         * PageFactory.initElements(driver, PhrHomePage.class);
-         * log("Step 12: Go to PHR Inbox"); PhrMessagesPage phrMessagesPage =
-         * phrPage.clickOnMyMessages(); //
-         * assertTrue(phrMessagesPage.isInboxLoaded(), //
-         * "Inbox failed to load properly.");
-         * log("Step 13: Click first message"); PhrInboxMessage phrInboxMessage
-         * = phrMessagesPage.clickOnFirstMessage();
-         * log("Step 14: Validate message subject and send date");
-         * Thread.sleep(1000);
-         * assertEquals(phrInboxMessage.getPhrMessageSubject(),
-         * IntegrationConstants.CCD_MESSAGE_SUBJECT,
-         * "### Assertion failed for Message subject");
-         * log("######  Message Date :: " + IHGUtil.getEstTiming());
-         * assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-         * log("Step 15: Click on link ReviewHealthInformation");
-         * PhrDocumentsPage phrDocuments = phrInboxMessage
-         * .clickBtnReviewHealthInformationPhr();
-         * log("step 16:Click on View health data");
-         * phrDocuments.clickViewHealthInformation();
-         * log("step 17:click Close Viewer"); phrDocuments.closeViewer();
-         * log("step 18:Click Logout"); phrDocuments.clickLogout();
-         */
-        // driver.switchTo().defaultContent();
+		log("Logging out");
+		homePage.clickOnLogout();
+		/*
+		 * log("Step 10: Go to patient page"); pMyPatientPage =
+		 * pMessage.clickMyPatientPage();
+		 * 
+		 * log("Step 11: Click PHR");
+		 * pMyPatientPage.clickPHRWithoutInit(driver); PhrHomePage phrPage =
+		 * PageFactory.initElements(driver, PhrHomePage.class);
+		 * 
+		 * log("Step 12: Go to PHR Inbox"); PhrMessagesPage phrMessagesPage =
+		 * phrPage.clickOnMyMessages(); //
+		 * assertTrue(phrMessagesPage.isInboxLoaded(), //
+		 * "Inbox failed to load properly.");
+		 * 
+		 * log("Step 13: Click first message"); PhrInboxMessage phrInboxMessage
+		 * = phrMessagesPage.clickOnFirstMessage();
+		 * 
+		 * log("Step 14: Validate message subject and send date");
+		 * Thread.sleep(1000);
+		 * assertEquals(phrInboxMessage.getPhrMessageSubject(),
+		 * IntegrationConstants.CCD_MESSAGE_SUBJECT,
+		 * "### Assertion failed for Message subject");
+		 * log("######  Message Date :: " + IHGUtil.getEstTiming());
+		 * assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
+		 * 
+		 * log("Step 15: Click on link ReviewHealthInformation");
+		 * PhrDocumentsPage phrDocuments = phrInboxMessage
+		 * .clickBtnReviewHealthInformationPhr();
+		 * 
+		 * log("step 16:Click on View health data");
+		 * phrDocuments.clickViewHealthInformation();
+		 * 
+		 * log("step 17:click Close Viewer"); phrDocuments.closeViewer();
+		 * 
+		 * log("step 18:Click Logout"); phrDocuments.clickLogout();
+		 */
+		// driver.switchTo().defaultContent();
 
     }
 
@@ -512,26 +523,25 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         log("PracticePassword: " + testData.getPracticePassword());
         log("Practice User Name: " + testData.getPracticeUserName());
 
-        String reason = IntegrationConstants.AR_REASON;
-
-        log("Step 2: LogIn");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
-
-        log("Detecting if Home Page is opened");
-        assertTrue(homePage.isHomeButtonPresent(driver));
+		String reason = "Reason" + timestamp;
+		
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver,
+				testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(),
+				testData.getPassword());
 
         log("Step 3: Click on Appointment Button on Home Page");
         JalapenoAppointmentRequestV2Step1 apptPage1 = homePage.clickOnAppointmentV2(driver);
-
+		assertTrue(apptPage1.assessElements());
+		
         log("Step 4: Complete Appointment Request Page");
-        apptPage1.chooseFirstProvider();
-        JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
+		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
 
         apptPage2.fillAppointmentRequestForm(reason);
         homePage = apptPage2.submitAppointment(driver);
 
-        log("Check if thank you frame is displayd");
+        log("Step 5: Check if thank you frame is displayd");
         assertTrue(homePage.isTextDisplayed("Thank you"));
 
         log("Step 6: Logout of Patient Portal");
@@ -586,6 +596,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
                 testData.getGmailPassword(), testData.getPracticeName(), 3, "Portal 2.0");
 
         log("Email link is: " + emailMessageLink);
+        
         // patient Portal validation
         log("Step 13: Login to Patient Portal");
         JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, emailMessageLink);
@@ -614,19 +625,19 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
         log("Step 19: Search for appt requests");
         apptSearch.searchForApptRequests(2, null, null);
-        Thread.sleep(60000);
+        Thread.sleep(120000);
         ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
         assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
         // PerformanceReporter.getPageLoadDuration(driver,
         // ApptRequestDetailStep1Page.PAGE_NAME);
 
         String actualSMSubject = detailStep1.getPracticeMessageSubject();
-        assertTrue(detailStep1.getPracticeMessageSubject().contains(arSMSubject),
+        assertTrue(actualSMSubject.contains(arSMSubject),
                 "Expected Secure Message Subject containing [" + arSMSubject + "but actual message subject was ["
                         + actualSMSubject + "]");
 
         String actualSMBody = detailStep1.getPracticeMessageBody();
-        assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody), "Expected Secure Message Body containing ["
+        assertTrue(actualSMBody.contains(arSMBody), "Expected Secure Message Body containing ["
                 + arSMBody + "but actual message body was [" + actualSMBody + "]");
 
         log("Step 20: Logout of Practice Portal");

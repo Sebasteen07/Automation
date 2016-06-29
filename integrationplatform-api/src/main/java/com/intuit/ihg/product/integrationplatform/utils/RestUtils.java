@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,14 +48,13 @@ import org.xml.sax.SAXException;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
-
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
-
 import com.medfusion.product.patientportal1.utils.PortalConstants;
+import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
 
 
 public class RestUtils {
@@ -278,7 +278,8 @@ public class RestUtils {
 		Element elem = (Element) node;
 		
 		//set random message id
-		elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + fourDigitRandom());
+		long msgid = System.currentTimeMillis() / 10;
+		elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + msgid);
 		
 		gnMessageID=elem.getAttribute(IntegrationConstants.MESSAGE_ID).toString();
 		//set other attributes
@@ -1501,7 +1502,8 @@ public class RestUtils {
 			Node node = doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE).item(i);
 			Element elem = (Element) node;
 			//set random message id
-			elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + fourDigitRandom());
+			long msgid = System.currentTimeMillis() / 100;
+			elem.setAttribute(IntegrationConstants.MESSAGE_ID, elem.getAttribute(IntegrationConstants.MESSAGE_ID) + msgid + i);
 			Node fromNode = doc.getElementsByTagName(IntegrationConstants.FROM).item(i);
 			fromNode.setTextContent(newdata.get(0).toString());
 			testData(fromNode.getTextContent());
@@ -1835,6 +1837,68 @@ public class RestUtils {
 		
 			
 	}
+	
+	public static String prepareMassAdminMessage(MassAdmin massAdmin) throws ParserConfigurationException, SAXException, IOException, TransformerException
+	  {
+	  IHGUtil.PrintMethodName();
+	  String xmlFileName = massAdmin.getMassAdminPayload();
+	  if(xmlFileName == null) {
+	   System.out.println("XML File name not Found");
+	  }
+	  URL url = ClassLoader.getSystemResource(xmlFileName);
+	  String fileName = url.getFile();
+	  System.out.println("File Name: "+fileName);
+	  Document doc = buildDOMXML(fileName);
+	  
+	  //get message root element
+	  Node node = doc.getElementsByTagName(IntegrationConstants.MASS_MESSAGE).item(0);
+	  Element elem = (Element) node;
+	   
+	  Node nFrom = elem.getElementsByTagName(IntegrationConstants.FROM).item(0);
+	  Node nSubject = elem.getElementsByTagName(IntegrationConstants.SUBJECT).item(0);
+	  Node nMessage = elem.getElementsByTagName(IntegrationConstants.MESSAGE).item(0);
+	  
+	  nFrom.setTextContent(massAdmin.getFrom());
+	  nSubject.setTextContent("Mass Admin Message");
+	  nMessage.setTextContent(massAdmin.getMessage());
+	  
+	  Node nPatients = elem.getElementsByTagName(IntegrationConstants.PATIENTS).item(0);
+	  List<PatientDetails> patientDetailsList = massAdmin.getPatientDetailsList();
+	  for (PatientDetails patientDetails : patientDetailsList) {
+	            // server elements
+	            Element newPatient = doc.createElement(IntegrationConstants.PATIENT);
+	            
+	            String no1 = String.valueOf(fourDigitRandom()) +  String.valueOf(fourDigitRandom());
+	            String no2 = String.valueOf(fourDigitRandom());
+	            String no3 = String.valueOf(fourDigitRandom());
+	            String no4 = String.valueOf(fourDigitRandom());
+	            String no5 = String.valueOf(fourDigitRandom()) +  String.valueOf(fourDigitRandom()) +  String.valueOf(fourDigitRandom());
+	            
+	            String messageid = no1+"-"+no2+"-"+no3+"-"+no4+"-"+no5;
+	            System.out.println("Messageid: "+messageid);
+	            newPatient.setAttribute(IntegrationConstants.MESSAGE_ID, messageid);
+	            
+	            Element practicePatientId = doc.createElement(IntegrationConstants.PRACTICE_PATIENT_ID);
+	            practicePatientId.appendChild(doc.createTextNode(patientDetails.getPatient()));
+	            newPatient.appendChild(practicePatientId);
+
+	           Element params = doc.createElement("Params");
+	           Element param = doc.createElement("Param");
+	           Element name = doc.createElement("Name");
+	           Element value = doc.createElement("Value");
+	           name.appendChild(doc.createTextNode("PATIENT.FIRSTNAME"));
+	           value.appendChild(doc.createTextNode(patientDetails.getPatientName()));
+	           param.appendChild(name);
+	           param.appendChild(value);
+	           
+	           params.appendChild(param);
+	           newPatient.appendChild(params);
+
+	           nPatients.appendChild(newPatient);
+	       }
+			return domToString(doc);
+		}
+
 
 }
 
