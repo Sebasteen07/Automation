@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.patientportal1.page.inbox;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -52,19 +53,30 @@ public class MessageCenterInboxPage extends BasePageObject {
 	 * @return New Inbox Message or null if no message is found
 	 * @throws InterruptedException
 	 */
-	public MessagePage openMessageInInbox(String uniqueSubString) throws InterruptedException {
+	public MessagePage openMessageInInbox(String uniqueSubString, int maxCount) {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 10, inboxTab);
-		log("Opening message with subject "+uniqueSubString);
-		WebElement message = driver.findElement(By.xpath("//span[contains(.,'"+uniqueSubString+"')]/../.."));
-		IHGUtil.waitForElement(driver, 10, message);
-		message.click();
-		IHGUtil.waitForElement(driver, 10, inboxTab);
+		log("Opening message with subject " + uniqueSubString);
 		
-		return PageFactory.initElements(driver, MessagePage.class);
+		for (int i = 1; i <= (maxCount + 1); i++) {
+			try {
+				PortalUtil.setPortalFrame(driver);
+				IHGUtil.waitForElement(driver, 10, inboxTab);
+				WebElement message = driver.findElement(By.xpath("//span[contains(.,'" + uniqueSubString + "')]"));
+				message.click();
+				IHGUtil.waitForElement(driver, 10, inboxTab);
+				return PageFactory.initElements(driver, MessagePage.class);
+			} catch (NoSuchElementException ex) {
+				log("Message didn't arrive. Attempt " + i + "/" + maxCount + ". Refreshing page.");
+				driver.navigate().refresh();
+			}
+		}
+		throw new NoSuchElementException("Message was not found after " + maxCount + " attempts.");
 	}
-	
+
+	public MessagePage openMessageInInbox(String uniqueSubString) {
+		return openMessageInInbox(uniqueSubString, 10);
+	}
+
 	public MessagePage clickFirstMessageRow() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);

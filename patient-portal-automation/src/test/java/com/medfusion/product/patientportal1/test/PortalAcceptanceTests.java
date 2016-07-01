@@ -1775,7 +1775,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		
 		log("step 6: Find message in Inbox");
-		MessagePage message = inboxPage.openMessageInInbox(subject);
+		MessagePage message = inboxPage.openMessageInInbox(subject, 10);
 		log("step 7: Validate message loads and is the right message");
 		assertTrue(message.isSubjectLocated(subject));
 
