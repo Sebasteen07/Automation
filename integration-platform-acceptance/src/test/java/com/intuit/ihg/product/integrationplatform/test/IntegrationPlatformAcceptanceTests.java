@@ -3,6 +3,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 import static org.testng.Assert.assertNotNull;
 
 
+
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +15,6 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
-
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
@@ -634,11 +634,23 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
 		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());				
-		log("Created Email address: " + email);
-		log("Practice Patient ID: " + practicePatientId);
-		String patient = RestUtils.preparePatient(testData.getPatientPath(),
-				practicePatientId, firstName, lastName, email, null);
-
+		String zip = testData.getZipCode();
+	    String date = testData.getBirthDay();
+	        
+	    String dt = date.substring(0, 2);
+	    String month = date.substring(3, 5);
+	    String year = date.substring(6);
+	  	        
+	    log("Created Patient details");
+	    log("Practice Patient ID: " + practicePatientId);
+	    log("Firstname: "+firstName);
+	    log("Lastname: "+lastName);
+	    log("Email address: "+email);
+	    log("Birthdate: "+date);
+	    log("Zipcode: "+zip);
+	        
+	    String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, dt, month, year, email, zip, null);
+	    
 		log("Step 2: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
 				testData.getOAuthProperty(), testData.getOAuthAppToken(),
@@ -713,7 +725,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
 		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(
-				testData.getZipCode(), email, testData.getPatientPassword(),
+				zip, email, testData.getPatientPassword(),
 				testData.getSecretQuestion(), testData.getSecretAnswer());
 
 		log("Step 8: Assert Webelements in MyPatientPage");
@@ -1465,6 +1477,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PaymentTestData testcasesData = new PaymentTestData(paymentData);
 		Long timestamp = System.currentTimeMillis();
 		String accountNumber = IHGUtil.createRandomNumericString();
+		String amount = "100.00";
+		String CCLastDig = "1111";
+		String CCType = "Visa";
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
@@ -1507,7 +1522,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 10: Verify payment details");
 		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(),
-				accountNumber, IntegrationConstants.SUBMITTED,
+				accountNumber, amount, CCLastDig, CCType, IntegrationConstants.SUBMITTED,
 				confirmationNumber);
 
 		String messageThreadID = RestUtils.paymentID;

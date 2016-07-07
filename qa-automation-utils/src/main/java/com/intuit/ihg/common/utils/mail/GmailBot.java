@@ -31,7 +31,7 @@ public class GmailBot implements MailBot {
 
 	private static final String GMAIL_FOLDER_INBOX = "Inbox";
 //	private static final String GMAIL_FOLDER_DRAFTS = "[Gmail]/Drafts";
-//	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
+	private static final String GMAIL_FOLDER_SPAM = "[Gmail]/Spam";
 	//private static final String GMAIL_FOLDER_TRASH = "[Gmail]/Trash"; // UK =
 	private static final String GMAIL_FOLDER_TRASH = "Inbox";																	// [Google
 																		// Mail]/Bin
@@ -1551,7 +1551,12 @@ public class GmailBot implements MailBot {
 			IOException {
 
 		IHGUtil.PrintMethodName();
-    	return findMessageTo(recipient, GMAIL_FOLDER_INBOX, sSubject, sBody, minutesAgo, bFindSeen, bMarkSeen );
+		List<HashMap<String, String>> messageList = null;
+		
+		messageList = findMessageTo(recipient, GMAIL_FOLDER_INBOX, sSubject, sBody, minutesAgo, bFindSeen, bMarkSeen );
+		if (messageList == null){
+				messageList = findMessageTo(recipient, GMAIL_FOLDER_SPAM, sSubject, sBody, minutesAgo, bFindSeen, bMarkSeen );}
+		return messageList;
 	}
 
 	
