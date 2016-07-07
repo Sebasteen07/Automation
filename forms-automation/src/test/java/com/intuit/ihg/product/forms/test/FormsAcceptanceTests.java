@@ -52,6 +52,8 @@ import com.medfusion.product.object.maps.practice.page.customform.SearchPartiall
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
 import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.patientportal1.flows.CheckOldCustomFormTest;
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
@@ -136,6 +138,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
         formPage.openDiscreteForm(formIdentifier);
         return pMyPatientPage;
+    }
+
+    protected PracticeHomePage loginToPracticePortal() throws Exception {
+        Practice practice = new Practice();
+        PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+        return practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
     }
 
     protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
@@ -707,4 +717,46 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			pManageForm.deleteUnpublishedForm(customFormTitle);
 		}
 	}
+
+    @Test(enabled = true, groups = { "PatientForms" })
+    public void testFormPatientDashboard() throws Exception {
+        String comment = "Written by formPatientDashboardTest";
+
+        logTestEnvironmentInfo("testPatientDashboard");
+        Portal portal = new Portal();
+        TestcasesData portalData = new TestcasesData(portal);
+        String url = portalData.getFormsAltUrl();
+        log("Patient Portal URL: " + url);
+
+        log("step 1: Click on Sign Up Fill details in Create Account Page");
+        CreatePatientTest createPatient = new CreatePatientTest();
+        createPatient.setUrl(url);
+        MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
+
+        log("step 2: Click on forms and open the form");
+        HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+        formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
+
+        log("Step 3: Fill out the form");
+        fillOutputForm(comment);
+
+        log("Step 4: Log out");
+        driver.switchTo().defaultContent();
+        pMyPatientPage.clickLogout(driver);
+
+        log("Step 5: Log in to Practice Portal");
+        PracticeHomePage pHomePage = loginToPracticePortal();
+
+        log("Step 6: Search for previously created patient");
+        PatientSearchPage pSearchPage = pHomePage.clickPatientSearchLink();
+        pSearchPage.searchForPatientInPatientSearch(createPatient.getFirstName(), createPatient.getLastName());
+
+        log("Step 7: Get into patient dashboard");
+        PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(createPatient.getFirstName(),
+                createPatient.getLastName());
+
+        log("Step 8: Verify if there's submitted form on patient dashboard");
+        assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM),
+                "Submitted form was not found on Patient Dashboard");
+    }
 }
