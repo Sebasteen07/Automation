@@ -4,6 +4,7 @@ import static org.testng.AssertJUnit.assertTrue;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -210,4 +211,14 @@ public class PatientDashboardPage extends BasePageObject{
 		log("Check if info message is present");
 		assertTrue(IHGUtil.exists(driver, 30, postAgeOutInvitationInfoMessage));
 	}
+
+    public boolean verifySubmittedForm(String formName) {
+        try {
+            return driver
+                    .findElement(By.xpath("//table[@class='encounters']//td[contains(text(),'" + formName + "')]"))
+                    .isDisplayed();
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
+    }
 }
