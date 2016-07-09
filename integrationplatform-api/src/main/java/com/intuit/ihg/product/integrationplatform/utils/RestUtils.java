@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
+import java.text.DateFormatSymbols;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,7 +55,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
-import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
+//import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
 
 
 public class RestUtils {
@@ -307,10 +308,11 @@ public class RestUtils {
 		return (new Random()).nextInt(9000) + 1000;
 	}
 	
-	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName, String email, String medfusionPatientID) throws ParserConfigurationException, SAXException, IOException, TransformerException{
+	public static String preparePatient(String xmlFileName, String practicePatientId, String firstName, String lastName, String dt, String month, String year, String email, String zip, String medfusionPatientID) throws ParserConfigurationException, SAXException, IOException, TransformerException{
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
-		
+		String DOB = year+"-"+month+"-"+dt+"T12:00:01";
+				
 		Node idNode = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(0);
 		idNode.setTextContent(practicePatientId);
 		
@@ -324,9 +326,18 @@ public class RestUtils {
 				firstNameNode.setTextContent(firstName);
 				lastNameNode.setTextContent(lastName);
 			}
+			if(childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals(IntegrationConstants.DATEOFBIRTH)){
+				childNodes.item(i).setTextContent(DOB);
+			}
 			if(childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals(IntegrationConstants.EMAIL_ADDRESS)){
 				childNodes.item(i).setTextContent(email);
 			}
+			if(childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals(IntegrationConstants.HOME_ADDRESS)){
+				Element zipcode = (Element) childNodes.item(i);
+				Node zipcodenode = zipcode.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
+				zipcodenode.setTextContent(zip);
+			}
+		
 		}
 		if(medfusionPatientID!=null){
 		Node idNode1 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID).item(0);
@@ -651,7 +662,8 @@ public class RestUtils {
 		//update messageId,Subject,message_thread_id
 		Node cNode=doc.getElementsByTagName(IntegrationConstants.COMMUNICATION).item(0);
 		Element ele=(Element) cNode;
-		ele.setAttribute(IntegrationConstants.MESSAGE_ID,"5a5346dc-4671-4355-9391-363fde62"+fourDigitRandom());
+		long msgid = System.currentTimeMillis() / 10;
+		ele.setAttribute(IntegrationConstants.MESSAGE_ID,"5a5346dc-4671-4355-9391-"+msgid);
 		Node ncFrom=ele.getElementsByTagName(IntegrationConstants.FROM).item(0);
 		Node ncTo=ele.getElementsByTagName(IntegrationConstants.TO).item(0);
 		ncFrom.setTextContent(To);
@@ -1328,7 +1340,7 @@ public class RestUtils {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String status, String confirmationNumber) throws ParserConfigurationException, SAXException, IOException {
+	public static void isPaymentAppeared(String responsePath,String patientAccountNumber, String amt, String CClastdig, String CCtype, String status, String confirmationNumber) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsePath);
 
@@ -1355,12 +1367,12 @@ public class RestUtils {
 				Node cNode=payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele=(Element) cNode;
 				Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
-				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), "100.00", "Payment has different amount than expected. Amount is: " + amount.getTextContent());
+				BaseTestSoftAssert.verifyEquals(amount.getTextContent(), amt, "Payment has different amount than expected. Amount is: " + amount.getTextContent());
 				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
-				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), "1111", "Payment has different last digit than expected. Amount is: " + digits.getTextContent());
+				BaseTestSoftAssert.verifyEquals(digits.getTextContent(), CClastdig, "Payment has different last digit than expected. Amount is: " + digits.getTextContent());
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
-				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
-				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), "Visa", "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
+				//Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" + ccType.getTextContent().toString());
+				BaseTestSoftAssert.verifyEquals(ccType.getTextContent(), CCtype, "Payment has different amount than expected. Amount is: " + ccType.getTextContent());
 				Node nconfirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
 				BaseTestSoftAssert.verifyEquals(nconfirmationNumber.getTextContent(), confirmationNumber, "Payment has different confirmation Number than expected. Confirmation Number is: " + nconfirmationNumber.getTextContent());
 				
@@ -1837,8 +1849,14 @@ public class RestUtils {
 		
 			
 	}
+
+	public static String getmonthstr(String month) {
+		int intmth=Integer.parseInt(month);
+		String monthString = new DateFormatSymbols().getMonths()[intmth-1];
+		return monthString;
+	}
 	
-	public static String prepareMassAdminMessage(MassAdmin massAdmin) throws ParserConfigurationException, SAXException, IOException, TransformerException
+/*	public static String prepareMassAdminMessage(MassAdmin massAdmin) throws ParserConfigurationException, SAXException, IOException, TransformerException
 	  {
 	  IHGUtil.PrintMethodName();
 	  String xmlFileName = massAdmin.getMassAdminPayload();
@@ -1898,7 +1916,7 @@ public class RestUtils {
 	       }
 			return domToString(doc);
 		}
-
+*/
 
 }
 

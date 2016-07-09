@@ -66,12 +66,25 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         String firstName = "Name" + timestamp;
         String lastName = "TestPatient1" + timestamp;
         String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
-        log("Created Email address: " + email);
+        String zip = testData.getZipCode();
+        String date = testData.getBirthDay();
+        
+        String dt = date.substring(0, 2);
+        String month = date.substring(3, 5);
+        String year = date.substring(6);
+        String monthstring = RestUtils.getmonthstr(month);
+        
+        log("Created Patient details");
         log("Practice Patient ID: " + practicePatientId);
-        String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName,
-                email, null);
-
-		log("Step 2: Setup Oauth client");
+        log("Firstname: "+firstName);
+        log("Lastname: "+lastName);
+        log("Email address: "+email);
+        log("Birthdate: "+date);
+        log("Zipcode: "+zip);
+        
+        String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, dt, month, year, email, zip, null);
+        
+        log("Step 2: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
 				testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
@@ -103,31 +116,29 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         log("Step 6: Moving to the link obtained from the email message");
         assertNotNull(activationUrl, "Error: Activation link not found.");
         log("Retrieved activation link is " + activationUrl);
-        /*
-        log("Finishing of patient activation: step 1 - verifying identity");
-        JalapenoIdentifyPatientBeforeActivationPage patientActivationPage = new JalapenoIdentifyPatientBeforeActivationPage(
-                driver, activationUrl);
 
-        // TODO move to simple flow
-        JalapenoPatient jalapenoPatient = new JalapenoPatient();
-        jalapenoPatient.setZipCode(testData.getZipCode());
-        jalapenoPatient.setDOBMonth(PortalConstants.DateOfBirthMonth);
-        jalapenoPatient.setDOBDay(PortalConstants.DateOfBirthDay);
-        jalapenoPatient.setDOBYear(PortalConstants.DateOfBirthYear);
+        log("Finishing of patient activation: step 1 - verifying identity");
+        JalapenoPatientActivationPage patientActivationPage = new JalapenoPatientActivationPage(driver, activationUrl);
+        patientActivationPage.verifyPatientIdentity(zip, monthstring, dt, year);
+     /*   JalapenoPatient jalapenoPatient = new JalapenoPatient();
+        jalapenoPatient.setZipCode(zip);
+        jalapenoPatient.setDOBMonthText(monthstring);
+        jalapenoPatient.setDOBDay(dt);
+        jalapenoPatient.setDOBYear(year);
         JalapenoPatientCreateSecurityDetailsPage jalapenoPatientCreateSecurityDetailsPage = patientActivationPage
                 .fillInPatientDataAndSubmitForm(jalapenoPatient);
-		
+*/
         log("Finishing of patient activation: step 2 - filling patient data");
-        JalapenoHomePage jalapenoHomePage = jalapenoPatientCreateSecurityDetailsPage.fillInPatientActivation(email,
+        JalapenoHomePage jalapenoHomePage = patientActivationPage.fillInPatientActivation(email,
                 testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
                 testData.getHomePhoneNo());
-         
+
         log("Detecting if Home Page is opened");
         assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
         log("Logging out");
         jalapenoHomePage.logout(driver);
-*/
+
         log("Step 10: Do a GET on PIDC Url to get registered patient");
         // get only patients from last day in epoch time to avoid transferring
         // lot of data
@@ -173,7 +184,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
     @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testAMDCSecureMessageWithReadCommnunication() throws Exception {
-        log("Test Case: AMDC Secure Message with Read Communication");
+    	log("Test Case: AMDC Secure Message with Read Communication");
 
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());
@@ -215,7 +226,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         boolean completed = false;
         for (int i = 0; i < 3; i++) {
             // wait 10 seconds so the message can be processed
-            Thread.sleep(120000);
+            Thread.sleep(60000);
             RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
             if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
                 completed = true;
@@ -291,7 +302,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
     @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testEHDCsendCCD() throws Exception {
 
-        log("Test Case: send a CCD and check in patient Portal");
+    	log("Test Case: send a CCD and check in patient Portal");
         EHDC EHDCData = new EHDC();
         EHDCTestData testData = new EHDCTestData(EHDCData);
 
@@ -500,7 +511,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
     @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testE2EAppointmentRequest20() throws Exception {
 
-        log("Test Case: End to end testing Appointment Request 2.0 for PI");
+    	log("Test Case: End to end testing Appointment Request 2.0 for PI");
 
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());
@@ -650,7 +661,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
     @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testE2E_OLBP20() throws Exception {
 
-        log("Test Case: End to end testing Online Bill Pay 2.0 for PI");
+    	log("Test Case: End to end testing Online Bill Pay 2.0 for PI");
 
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());
@@ -669,7 +680,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         String amount = IHGUtil.createRandomNumericString(3);
         String name = "TestPatient CreditCard";
         CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
-
+        String CClastdig = creditCard.getLastFourDigits();
+        String CCtype = "MasterCard";
+        String amt = amount.substring(0, 1)+"."+amount.substring(1);
+        
         log("Step 3: LogIn");
         JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, OLBPData.getUrl());
         JalapenoHomePage homePage = loginPage.login(OLBPData.getUserName(), OLBPData.getPassword());
@@ -692,6 +706,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
         log("Step 7: Logout of Patient Portal");
         assertTrue(homePage.wasPayBillsSuccessfull());
+        String confirmationnumber = homePage.getConfirmationNumberFromPayment();
         homePage.logout(driver);
 
         log("Step 8: Setup Oauth client 2.O");
@@ -702,16 +717,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         RestUtils.setupHttpGetRequest(OLBPData.getRestUrl() + "?since=" + timestamp, OLBPData.getResponsePath());
 
         log("Step 10: Verify payment details");
-        RestUtils.isPaymentAppeared(OLBPData.getResponsePath(), accountNumber, IntegrationConstants.SUBMITTED, null);
+        RestUtils.isPaymentAppeared(OLBPData.getResponsePath(), accountNumber, amt, CClastdig, CCtype, IntegrationConstants.SUBMITTED, confirmationnumber);
 
-        log("Step 10: Generate unique messageThreadID and Message Subject");
+        log("Step 10: Generate unique Message Subject and set messageThreadID as PaymentId");
         String messageThreadID = RestUtils.paymentID;
         log("Payment ID :" + messageThreadID);
         String reply_Subject = "Test " + IHGUtil.createRandomNumericString();
 
         String message = RestUtils.prepareSecureMessage(OLBPData.getcommunicationXML(), OLBPData.getFrom(),
                 OLBPData.getUserName(), reply_Subject, messageThreadID);
-
+        
+        log("POST AMDC: "+message);
+        
         log("Step 11: Do Message Post AMDC Request");
         String processingUrl = RestUtils.setupHttpPostRequest(OLBPData.getCommRestUrl(), message,
                 OLBPData.getResponsePath());
