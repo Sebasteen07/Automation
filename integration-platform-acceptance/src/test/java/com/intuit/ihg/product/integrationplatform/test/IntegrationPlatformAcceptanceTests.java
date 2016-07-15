@@ -38,6 +38,8 @@ import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription;
 import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
+import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.intuit.ihg.product.object.maps.integrationplatform.page.TestPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
@@ -51,6 +53,7 @@ import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenter
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
 import com.medfusion.product.object.maps.patientportal1.page.makePaymentpage.MakePaymentPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.preferences.PreferencesPage;
 import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.NewRxRenewalPage;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -1944,5 +1947,144 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(msg.isSubjectLocated(messageIdentifier));
 		
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementPreference() throws Exception {
+
+		log("Test Case: Statement Preference");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Step 1: Get Data from Excel");
+		StatementPreference stmtPrefData = new StatementPreference();
+		StatementPreferenceTestData testData = new StatementPreferenceTestData(stmtPrefData);
+				
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Patient's First Name: " + testData.getFirstName());
+		log("Patient's Last Name: " + testData.getLastName());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Statement Path: " + testData.getStatementPath());
+		log("Response Path: " + testData.getResponsePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		Long timestamp = System.currentTimeMillis();
+		
+		log("Step 2: LogIn to Patient Portal");
+		PortalLoginPage loginPage = new PortalLoginPage(driver,	testData.getUrl());
+		assertTrue(loginPage.isLoginPageLoaded(),
+				"There was an error loading the login page");
+		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		MyAccountPage myAccountPage = myPatientPage.clickMyAccountLink();
+
+		log("Step 4: Click on Preferences Tab");
+		PreferencesPage myPreferencePage = myAccountPage.clickpreferencesLink();
+
+		log("Step 5: Set Statement Delievery Preference as Paper Statement");
+		String setPref = "PAPER";
+		myPreferencePage.setStmtPreference(setPref);
+		myPreferencePage.clickupdateYourPreferences();
+		
+		log("Step 6: Logout from Patient portal");
+		myAccountPage.logout(driver);
+
+		log("Step 7: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,	testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+	
+		log("Step 8: Search for above patient with first name & last name");
+		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
+		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());
+		
+		log("Step 9: Verify search results");
+		Thread.sleep(120000);
+		IHGUtil.waitForElement(driver,60,patientSearch.searchResult);
+		verifyEquals(true,patientSearch.searchResult.getText().contains(testData.getFirstName()));
+				
+		log("Step 10: Get Medfusion Member Id & External Id of the patient");
+		PatientDashboardPage ptDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
+		ptDashboard.editPatientLink();
+		
+		String MFMemId = ptDashboard.medfusionID();
+		log("MFMemId is " + MFMemId);
+		String ExtId = ptDashboard.readExtID();
+		log("External Id is " + ExtId);
+		
+		PracticeLoginPage login = practiceHome.logOut();
+		
+		log("Step 11: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
+				testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+		
+		log("Step 12: Wait 60 seconds");
+		Thread.sleep(60000);
+
+		log("Step 13: GET Statement Preference API");
+			Long since = timestamp / 1000L - 60 * 24;
+
+		log("Getting statement preference updates since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
+				+ "000", testData.getResponsePath());
+
+		log("Step 14: Validate the response");
+		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(),MFMemId, setPref);
+
+		log("Step 15: Prepare payload to set Statement Preference as Electronic Statement");
+		setPref = "E_STATEMENT";
+		timestamp = System.currentTimeMillis();
+		since = timestamp / 1000L - 60 * 24;
+
+		String payload = RestUtils.preparePOSTStmtPref(testData.getStatementPath(), MFMemId, ExtId, setPref);
+		
+		log("Step 16: Do POST Statement Preference API & set preference to Electronic Statement");
+		String processingUrl = RestUtils.setupHttpPostRequest(
+				testData.getRestUrl(), payload, testData.getResponsePath());
+
+		log("Step 17: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl,testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+
+
+		log("Step 18: GET Statement Preference API");
+		log("Getting statement preference updates since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
+				+ "000", testData.getResponsePath());
+		
+		log("Step 19: Validate the response");
+		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref);
+		
+		log("Step 20: Login to Patient Portal");
+		PortalLoginPage loginPage1 = new PortalLoginPage(driver,testData.getUrl());
+		assertTrue(loginPage1.isLoginPageLoaded(),
+				"There was an error loading the login page");
+		MyPatientPage myPatientPage1 = loginPage1.login(testData.getUserName(),testData.getPassword());
+		
+		log("Step 21: Check for update in Statement Preference");
+		MyAccountPage myAccountPage1 = myPatientPage1.clickMyAccountLink();
+		PreferencesPage myPreferencePage1 = myAccountPage1.clickpreferencesLink();
+		myPreferencePage1.checkStmtPreference(setPref);
+		
+		log("Step 22: Logout of Portal");
+		myAccountPage1.logout(driver);
+		
+	}
+
 
 }

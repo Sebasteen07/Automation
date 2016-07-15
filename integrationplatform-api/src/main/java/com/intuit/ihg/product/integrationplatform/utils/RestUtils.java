@@ -1918,5 +1918,77 @@ public class RestUtils {
 		}
 */
 
+	/**
+	 * Checks if the patient statement delivery preference is correct
+	 * @param xmlFileName response xml path
+	 * @param MFId is id of a patient to check
+	 * @param Pref is Statement Delivery Preference selected  by patient
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	*/ 
+	public static void isStmtPreferenceCorrect(String xmlFileName, String MFId , String Pref) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.MEDFUSION_MEMBER_ID);
+		for (int i = 0; i < nodes.getLength(); i++){
+			if(nodes.item(i).getTextContent().equals(MFId)){
+				Element stpref = (Element) nodes.item(i).getParentNode();
+				Element prefs = (Element) stpref.getElementsByTagName(IntegrationConstants.PREFERENCES).item(0);
+				Element pref = (Element) prefs.getElementsByTagName(IntegrationConstants.PREFERENCE).item(0);
+				Node pref_name = pref.getElementsByTagName(IntegrationConstants.PREF_NAME).item(0);
+				Node pref_value = pref.getElementsByTagName(IntegrationConstants.PREF_VALUE).item(0);
+				Assert.assertEquals(pref_name.getTextContent(), "STATEMENT_DELIVERY_PREF", "Not on Statement Delivery Preference Node");
+				Assert.assertEquals(pref_value.getTextContent(), Pref, "Statement Delivery Preference does not match");
+				break;					
+				}
+			if(i== nodes.getLength() - 1)
+			{
+				Assert.fail("Patient was not Found");
+			}			
+		}		
+		
+	}
+
+	/**
+	 * Reads the XML and checks asked Question if it complies
+	 * @param xmlFileName XML Statement Preference POST Payload
+	 * @param MFId - Medfusion Member Id 
+	 * @param extId - external Patient ID
+	 * @param Pref - Statement Preference
+	 * @return XML message as a String
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws TransformerException 
+	 */
+	public static String preparePOSTStmtPref(String xmlFileName, String MFId, String extId, String Pref) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		
+		//get message root element
+		Node node = doc.getElementsByTagName(IntegrationConstants.STMT_PREF).item(0);
+		Element elem = (Element) node;
+		
+		//set other attributes
+		Node PracticePatientId = elem.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID).item(0);
+		PracticePatientId.setTextContent(extId);
+		Node MedfusionMemberId = elem.getElementsByTagName(IntegrationConstants.MEDFUSION_MEMBER_ID).item(0);
+		MedfusionMemberId.setTextContent(MFId);
+		
+		Element prefs = (Element) elem.getElementsByTagName(IntegrationConstants.PREFERENCES).item(0);
+		Element pref = (Element) prefs.getElementsByTagName(IntegrationConstants.PREFERENCE).item(0);
+	//	Node pref_name = pref.getElementsByTagName(IntegrationConstants.PREF_NAME).item(0);
+		Node pref_value = pref.getElementsByTagName(IntegrationConstants.PREF_VALUE).item(0);
+		
+	//	Element prefname = (Element) pref_name;
+		Element prefvalue = (Element) pref_value;
+		
+		prefvalue.setTextContent(Pref);
+		
+		return domToString(doc);
+	}
+	
 }
 

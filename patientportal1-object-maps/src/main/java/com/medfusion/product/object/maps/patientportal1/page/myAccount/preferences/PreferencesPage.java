@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
@@ -34,7 +36,7 @@ public class PreferencesPage extends BasePageObject {
 	private WebElement rb_statementDeliveryBoth;
 		
 	@FindBy(xpath="//input[@name='inputs:2:input:input' and @value='2']")
-	private WebElement rb_statementDeliveryEmail;
+	private WebElement rb_statementDeliveryE_Statement;
 	
 	@FindBy(xpath= "//input[@name='inputs:2:input:input' and @value='1']")
 	private WebElement rb_statementDeliveryPaper;
@@ -127,7 +129,7 @@ public class PreferencesPage extends BasePageObject {
 		{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		rb_statementDeliveryEmail.click();
+		rb_statementDeliveryE_Statement.click();
 		rb_EmailFormatText.click();
 		}
 		catch(Exception e)
@@ -171,6 +173,60 @@ public class PreferencesPage extends BasePageObject {
 		throw new Exception("The provider name [" + provider + "] was not found as an option.");
 	}
 	
+	/**
+	 * Sets Statement Delivery Preference
+	 * 
+	 * @param Pref
+	 */
+
+	public enum p{E_STATEMENT,PAPER,BOTH;}
+	public void setStmtPreference(String Pref)
+	{
+		try
+		{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		switch (p.valueOf(Pref)){
+		case E_STATEMENT:
+				rb_statementDeliveryE_Statement.click();
+				break;
+				
+		case PAPER:
+			 	rb_statementDeliveryPaper.click();
+			 	break;
+			 	
+		case BOTH:
+				rb_statementDeliveryBoth.click();
+				break;
+		}		
+		rb_EmailFormatText.click();
+		}
+		catch(Exception e)
+		{
+			Log4jUtil.log("Set appropriate Statement Delievery Preference");
+		}
+	}
 	
+	
+	public void checkStmtPreference(String Pref)
+	{
+		try
+		{
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String pref=null;
+		if (rb_statementDeliveryE_Statement.isSelected())
+			pref="E_STATEMENT";
+			else if (rb_statementDeliveryPaper.isSelected())
+				pref="PAPER";
+				else if (rb_statementDeliveryBoth.isSelected())
+					pref="BOTH";
+		Assert.assertEquals(pref, Pref, "Statement Delivery Preference not updated");
+		}
+		catch(Exception e)
+		{
+			Log4jUtil.log("No Statement Delievery Preference selected");
+		}
+	}
    
 }
