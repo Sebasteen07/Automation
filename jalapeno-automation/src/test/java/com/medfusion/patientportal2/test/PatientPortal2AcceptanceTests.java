@@ -2,7 +2,6 @@ package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

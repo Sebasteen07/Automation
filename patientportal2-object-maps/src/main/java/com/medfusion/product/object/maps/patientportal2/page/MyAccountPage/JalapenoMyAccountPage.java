@@ -125,6 +125,13 @@ public class JalapenoMyAccountPage extends MedfusionPage {
         return PageFactory.initElements(driver, JalapenoHomePage.class);
     }
 
+	public JalapenoPreferencesPage goToPreferences(WebDriver driver) {
+		log("Click on Preferences");
+		preferencesTab.click();
+
+		return PageFactory.initElements(driver, JalapenoPreferencesPage.class);
+	}
+
     public boolean assessPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

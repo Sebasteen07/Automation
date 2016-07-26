@@ -22,7 +22,7 @@ public class JalapenoAccountPage extends BasePageObject {
         PageFactory.initElements(driver, this);
     }
 
-    public JalapenoMyAccountPage clickOnEditMyAccount() throws Exception {
+    public JalapenoMyAccountPage clickOnEditMyAccount() {
 
         log("Trying to click on Edit button for My Account");
         editMyAccountButton.click();
