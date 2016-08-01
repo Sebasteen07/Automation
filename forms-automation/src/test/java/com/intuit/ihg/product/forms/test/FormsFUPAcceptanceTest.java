@@ -23,7 +23,7 @@ public class FormsFUPAcceptanceTest extends FormsAcceptanceTests {
 	 *             Adds and removes FUPs. Saves form. Reopens the form and
 	 *             checks that it contains correct items.
 	 */
-	@Test
+	@Test(enabled = true, groups = { "PatientForms" })
 	public void testSitegenFUPInteraction() throws Exception {
 		logTestEnvironmentInfo("testCreateFormWithFUPs");
 		Sitegen sitegen = new Sitegen();
