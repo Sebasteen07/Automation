@@ -9,7 +9,7 @@ import static org.testng.Assert.*;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.mail.Mailinator;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 

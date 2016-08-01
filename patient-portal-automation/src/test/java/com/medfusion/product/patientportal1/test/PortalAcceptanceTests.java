@@ -78,7 +78,7 @@ import com.medfusion.product.practice.tests.PatientActivationTest;
 import com.medfusion.product.practice.tests.RecivePayNowTest;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.mail.Mailinator;
+import com.medfusion.common.utils.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 
