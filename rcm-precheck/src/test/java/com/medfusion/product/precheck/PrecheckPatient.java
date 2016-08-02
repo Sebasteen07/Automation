@@ -1,8 +1,7 @@
 package com.medfusion.product.precheck;
 
 
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class PrecheckPatient {
 	
@@ -37,7 +36,7 @@ public class PrecheckPatient {
 	public void initPatientData() {
 		IHGUtil.PrintMethodName();
 		
-		int randomize = PortalUtil.createRandomNumber();
+		int randomize = IHGUtil.createRandomNumber();
 		
 		//Setting data according to test purpose
 

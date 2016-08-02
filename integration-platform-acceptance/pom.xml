@@ -4,7 +4,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>16.3.0</version>
+	  <version>16.4.0</version>
 </parent>
 
   <artifactId>integration-platform-automation</artifactId>
@@ -13,8 +13,8 @@
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>16.3.0</ihg.version>
-        <dcf-version>16.3.0</dcf-version>
+        <ihg.version>16.4.0</ihg.version>
+        <dcf-version>16.4.0</dcf-version>
   </properties>
   
   <repositories>
@@ -108,6 +108,16 @@
        		<dependency>
        			<groupId>com.intuit.ihg</groupId>
        			<artifactId>object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>practiceportal-object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>integrationplatform-api</artifactId>
        			<version>${ihg.version}</version>
        		</dependency>
 	</dependencies>

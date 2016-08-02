@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>16.3.0</version>
+        <version>16.4.0</version>
     </parent>
 	
 	<artifactId>rcm-automation</artifactId>
@@ -23,7 +23,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>16.3.0</ihg.version>
+		<ihg.version>16.4.0</ihg.version>
 	</properties>
 	
 	<dependencies>
@@ -34,12 +34,28 @@
 		</dependency>
         <dependency>
         	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>practiceportal-object-maps</artifactId>
+        	<version>${ihg.version}</version>
+        </dependency>  
+        <dependency>
+        	<groupId>com.intuit.ihg</groupId>
         	<artifactId>object-maps</artifactId>
         	<version>${ihg.version}</version>
         </dependency>
         <dependency>
+        	<groupId>com.intuit.ihg</groupId>
+        	<artifactId>patientportal2-object-maps</artifactId>
+        	<version>${ihg.version}</version>
+        </dependency>       
+        <dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>common-steps</artifactId>
+			<artifactId>practiceportal-api</artifactId>			
+			<version>${ihg.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-service</artifactId>
+			<scope>runtime</scope>
 			<version>${ihg.version}</version>
 		</dependency>
 	</dependencies>

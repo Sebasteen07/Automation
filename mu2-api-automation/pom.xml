@@ -5,7 +5,7 @@
   <parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>16.3.0</version>
+		<version>16.4.0</version>
 	</parent>
   
  
@@ -24,7 +24,7 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>16.3.0</ihg.version>
+		<ihg.version>16.4.0</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -76,11 +76,24 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 			<artifactId>awaitility</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-
-
        		<dependency>
        			<groupId>com.intuit.ihg</groupId>
        			<artifactId>object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>patientportal2-object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>patientportal1-object-maps</artifactId>
+       			<version>${ihg.version}</version>
+       		</dependency>
+       		<dependency>
+       			<groupId>com.intuit.ihg</groupId>
+       			<artifactId>integrationplatform-api</artifactId>
        			<version>${ihg.version}</version>
        		</dependency>
 	</dependencies>

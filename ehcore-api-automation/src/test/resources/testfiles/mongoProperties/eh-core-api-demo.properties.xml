@@ -26,7 +26,6 @@
 	
 	<entry key="ecomm.attachment.serviceUrl">${ecomm.attachment.serviceUrl}</entry>
  	<entry key="codification.hostname">http://dev3vip-codification-svc.qhg.local</entry>
-    <entry key="kr.serverAddress">http://dev3vip-keyregistry-svc.qhg.local</entry>
     <entry key="ProviderView.XSL.Location">http://50-17-83-158.s3-website-us-east-1.amazonaws.com/cda/registration.xsl</entry>
     <entry key="resource.owner.baseurl">http://resource.owner.com</entry>
     <entry key="oauth.validation.url">https://oauthws.e2e.qdc.ep.intuit.net/iam/oauth_utils/v1/messages/validation/</entry>

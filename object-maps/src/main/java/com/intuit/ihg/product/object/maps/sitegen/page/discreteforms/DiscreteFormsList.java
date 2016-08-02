@@ -4,22 +4,37 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage.QuestionType;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-import com.intuit.ihg.common.utils.IHGConstants;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.AllergiesPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CurrentSymptomsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.EmergencyContactInformationPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.ExamsTestsAndProceduresPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.FormFamilyHistoryPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.HealthInsuranceInformationPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.IllnessesAndConditionsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.MedicationsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.OtherDoctorsYouSeen;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SecondaryHealthInsurancePage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage.QuestionType;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SurgeriesAndHospitalizationsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.VaccinationsPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
+import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.medfusion.common.utils.IHGConstants;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 
 /**
 	 *
@@ -297,6 +312,7 @@ public class DiscreteFormsList extends BasePageObject {
 		CurrentSymptomsPage symptomsPage = otherDocspage.clicklnkCurrentSymptoms();
 		symptomsPage.selectBasicSymptoms();
 
+        scrollToTheTop();
         log("substep 6: Go through the rest of the pages");
 		MedicationsPage medicationsPage = symptomsPage.clicklnkMedications();
 		AllergiesPage allergiesPage = medicationsPage.clicklnkAllergies();
@@ -347,4 +363,10 @@ public class DiscreteFormsList extends BasePageObject {
 				.clickBackToTheList();
 		return this;
 	}
+
+    private void scrollToTheTop() {
+        log("Scroll to the top of page to see al sections");
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript("scroll(0, 0);");
+    }
 }

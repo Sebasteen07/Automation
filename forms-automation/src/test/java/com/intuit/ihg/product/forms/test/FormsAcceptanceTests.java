@@ -1,8 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
-import com.intuit.ihg.product.sitegen.SiteGenSteps;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -11,19 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.healthform.HealthFormPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.*;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.*;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.supplemental_pages.*;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.custom_pages.*;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
-import com.intuit.ihg.product.object.maps.practice.page.customform.ViewPatientFormPage;
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ihg.common.utils.ccd.CCDTest;
+import com.intuit.ihg.common.utils.downloads.RequestMethod;
+import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.AddQuestionsToCategoryPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CreateCustomFormPage;
@@ -35,24 +26,41 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFor
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
-import com.intuit.ihg.product.portal.tests.CheckOldCustomFormTest;
-import com.intuit.ihg.product.portal.tests.CreatePatientTest;
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
-import com.intuit.ihg.common.utils.ccd.CCDTest;
-import com.intuit.ihg.common.utils.downloads.RequestMethod;
-import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
-import com.intuit.ihg.product.portal.utils.Portal;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
+import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
+import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
-
-import java.util.concurrent.TimeUnit;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.custom_pages.SpecialCharFormFirstPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.custom_pages.SpecialCharFormSecondPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormBasicInfoPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormFamilyHistoryPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormMedicationsPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormSocialHistoryPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPartiallyFilledPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
+import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
+import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.patientportal1.flows.CheckOldCustomFormTest;
+import com.medfusion.product.patientportal1.flows.CreatePatientTest;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.product.practice.api.pojo.Practice;
+import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -119,11 +127,25 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsAltUrl());
         MyPatientPage pMyPatientPage =
                 loginPage.login(portalData.getUsername(), portalData.getPassword());
-
+        
+        //just a workaround because there is npp still displaying for the same patient
+        if(pMyPatientPage.isTermsOfUseDisplayed()) {
+        	log("Terms of Use page is displayed");
+        	pMyPatientPage.acknowledgeTermsOfUse();
+        }
+        
         log("Go to forms page and open the \"" + formIdentifier + "\" form");
         HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
         formPage.openDiscreteForm(formIdentifier);
         return pMyPatientPage;
+    }
+
+    protected PracticeHomePage loginToPracticePortal() throws Exception {
+        Practice practice = new Practice();
+        PracticeTestData practiceTestData = new PracticeTestData(practice);
+
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+        return practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
     }
 
     protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
@@ -273,7 +295,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		String xml;
 		// easy bruising is mapped to following term in Forms Configurator in SiteGen
 		String easyBruisingString = "ABO donor$$$easy";
-		String diacriticString = "¿¡eñÑeŘ\"";
+        String diacriticString = "¿¡eñÑeŘ\"";
 
 		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
@@ -338,7 +360,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         FormIllnessConditionsPage illsPage =
                 medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
 		illsPage.checkMononucleosis();
-		illsPage.clickSaveContinue(null);
+        illsPage.clickSaveContinueSamePage(3);
+
+		log("Submitting form");
 		illsPage.submitForm();
 
 		log("Step 3: Logout of patient portal");
@@ -369,7 +393,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
         welcomePage.initToFirstPage(FormBasicInfoPage.class);
         welcomePage.clickSaveAndFinishAnotherTime();
         driver.switchTo().defaultContent();
+
         wait.until( ExpectedConditions.elementToBeClickable(myPatientPage.getLogoutLink()) );
+        log("Logging out");
+        myPatientPage.getLogoutLink().click();
 
         log("Step 3: Go to Practice Portal forms tab");
         SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
@@ -690,4 +717,46 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 			pManageForm.deleteUnpublishedForm(customFormTitle);
 		}
 	}
+
+    @Test(enabled = true, groups = { "PatientForms" })
+    public void testFormPatientDashboard() throws Exception {
+        String comment = "Written by formPatientDashboardTest";
+
+        logTestEnvironmentInfo("testPatientDashboard");
+        Portal portal = new Portal();
+        TestcasesData portalData = new TestcasesData(portal);
+        String url = portalData.getFormsAltUrl();
+        log("Patient Portal URL: " + url);
+
+        log("step 1: Click on Sign Up Fill details in Create Account Page");
+        CreatePatientTest createPatient = new CreatePatientTest();
+        createPatient.setUrl(url);
+        MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
+
+        log("step 2: Click on forms and open the form");
+        HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+        formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
+
+        log("Step 3: Fill out the form");
+        fillOutputForm(comment);
+
+        log("Step 4: Log out");
+        driver.switchTo().defaultContent();
+        pMyPatientPage.clickLogout(driver);
+
+        log("Step 5: Log in to Practice Portal");
+        PracticeHomePage pHomePage = loginToPracticePortal();
+
+        log("Step 6: Search for previously created patient");
+        PatientSearchPage pSearchPage = pHomePage.clickPatientSearchLink();
+        pSearchPage.searchForPatientInPatientSearch(createPatient.getFirstName(), createPatient.getLastName());
+
+        log("Step 7: Get into patient dashboard");
+        PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(createPatient.getFirstName(),
+                createPatient.getLastName());
+
+        log("Step 8: Verify if there's submitted form on patient dashboard");
+        assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM),
+                "Submitted form was not found on Patient Dashboard");
+    }
 }

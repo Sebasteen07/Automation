@@ -8,7 +8,7 @@
  	
 <test name = "Portal-Automation" >
 	<classes>
-	    <class name="com.intuit.ihg.product.portal.test.PortalAcceptanceTests" />
+	    <class name="com.medfusion.product.patientportal1.test.PortalAcceptanceTests" />
 	    	<methods>
 	    		<include name="testLoginLogout" />
       		</methods>

@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 import java.util.List;
@@ -151,6 +151,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	public void clickOnNewSection() {
+        IHGUtil.waitForElement(driver, 10, newSection);
 		newSection.click();
 	}
 

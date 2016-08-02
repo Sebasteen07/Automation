@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
@@ -43,41 +43,41 @@ import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.NoLoginPaymentPage;
-import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.createAccount.CreateAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessageCenterInboxPage;
-import com.intuit.ihg.product.object.maps.portal.page.inbox.MessagePage;
-import com.intuit.ihg.product.object.maps.portal.page.makePaymentpage.MakePaymentPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.newRxRenewalpage.NewRxRenewalPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.FormWelcomePage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormBasicInfoPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormEmergencyContactPage;
-import com.intuit.ihg.product.object.maps.portal.page.questionnaires.prereg_pages.FormMedicationsPage;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep1Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep2Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep3Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.apptRequest.AppointmentRequestStep4Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffHistoryPage;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep1Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep2Page;
-import com.intuit.ihg.product.object.maps.portal.page.solutions.askstaff.AskAStaffStep3Page;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
-import com.intuit.ihg.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
-import com.intuit.ihg.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
-import com.intuit.ihg.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
+import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
+import com.medfusion.product.object.maps.patientportal1.page.makePaymentpage.MakePaymentPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.NewRxRenewalPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormBasicInfoPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormEmergencyContactPage;
+import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormMedicationsPage;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep1Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep2Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep3Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep4Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffHistoryPage;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
+import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
+import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
+import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.portal.utils.PortalUtil;
+import com.medfusion.product.patientportal1.utils.PortalConstants;
+import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 /**
  * @author bkrishnankutty
@@ -1740,7 +1740,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testVirtualCardSwiper() throws Exception {
+	public void testVirtualCardSwiper() throws Exception{
 
 		log("Test Case: Virtual Card Swiper");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1767,7 +1767,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				"2022", Amount, "110", "12345", "Test0001", "Test Patient",  "comment");
 
 		log("Step 4: Verify whether the payment is completed successfully.");
-		verifyEquals(Boolean.valueOf(vcsPage.getPayementCompletedSuccessMsg()
+		verifyEquals(Boolean.valueOf(vcsPage.getPaymentCompletedSuccessMsg()
 				.contains("Payment completed")), Boolean.valueOf(true),
 				"The payment is completed properly.");
 

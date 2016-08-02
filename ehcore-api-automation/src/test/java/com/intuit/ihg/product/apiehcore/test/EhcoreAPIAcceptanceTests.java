@@ -17,7 +17,7 @@ import com.intuit.dc.framework.tracking.entity.Message;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.eh.core.dto.DataJob;
 import com.intuit.ihg.eh.core.dto.ProcessingResponse;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPI;
@@ -1077,12 +1077,12 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		 * @Date:-12/Sep/2013
 		 * @User Story ID in Rally : 6774
 		 * @StepsToReproduce:	
-		 * Test - Test - check the status of 'Keyregistry Enrichment of SimpleCDA' in Tracking DB for validCCD
+		 * Test - Test - check the status of 'Id Enrichment of SimpleCDA' in Tracking DB for validCCD
 		 * Expected Result :200 OK
 		 * @throws Exception 
 		 */
 		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-		public void testKREnrichmentforValidCCD() throws Exception {
+		public void testIdEnrichmentforValidCCD() throws Exception {
 
 			log("Test Case: testKREnrichmentforValidCCD");
 			log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1102,7 +1102,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 	(),CCDIMPORT_MSG_TYPE);
 			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.ENRICH.toString
 
-	(),EhcoreAPIConstants.KEYREGISTRY));
+	(),EhcoreAPIConstants.IDENRICHMENT));
 		}
 
 
@@ -3481,12 +3481,12 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 		 * @Date:-11/Oct/2013
 		 * @User Story ID in Rally:US6799
 		 * @StepsToReproduce:	
-		 * C-CCD(Consolidated CCD) Request to check "Key Enrichment activity "
+		 * C-CCD(Consolidated CCD) Request to check "Id Enrichment activity "
 		 * Expected Result :200 OK
 		 * @throws Exception 
 		 */
 		@Test(enabled = true, groups = {"Allscripts_Acceptance","Allscripts_Functional"}, retryAnalyzer=RetryAnalyzer.class)
-		public void testKREnrichmentforValidC_CCD() throws Exception {
+		public void testIdEnrichmentforValidC_CCD() throws Exception {
 			log("Test Case: testKREnrichmentforValidC_CCD");
 			log("Execution Environment: " + IHGUtil.getEnvironmentType());
 			log("Execution Browser: " + TestConfig.getBrowserType());
@@ -3497,7 +3497,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver{
 			List<Message> msgDetails = new ArrayList<Message>();
 			msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0,response.getDataJobId(),TrackingEnumHolder.MESSAGE_STATUS.COMPLETED.toString(),CCDIMPORT_MSG_TYPE);
 			
-			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.ENRICH.toString(),EhcoreAPIConstants.KEYREGISTRY));
+			assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(),TrackingEnumHolder.ACTIVITY_TYPE.ENRICH.toString(),EhcoreAPIConstants.IDENRICHMENT));
 		}
 		
 		

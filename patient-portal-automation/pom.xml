@@ -6,11 +6,11 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>16.3.0</version>
+        <version>16.4.0</version>
     </parent>
 	
-	<artifactId>patient-portal-automation</artifactId>
-    <name>patient-portal-automation</name>
+	<artifactId>patientportal1-automation</artifactId>
+    <name>patientportal1-automation</name>
     <packaging>jar</packaging>
 	
 	<repositories>
@@ -23,7 +23,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>16.3.0</ihg.version>
+		<ihg.version>16.4.0</ihg.version>
 	</properties>
 	
 	<dependencies>
@@ -34,12 +34,27 @@
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>object-maps</artifactId>
+			<artifactId>patientportal1-object-maps</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>common-steps</artifactId>
+			<artifactId>patientportal1-service</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-object-maps</artifactId>
+			<version>${ihg.version}</version>			
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-service</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-api</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 	</dependencies>

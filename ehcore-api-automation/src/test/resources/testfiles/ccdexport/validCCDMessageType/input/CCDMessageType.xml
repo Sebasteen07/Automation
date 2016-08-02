@@ -39,7 +39,7 @@
 			 <Provider>
                     <ProviderIdentifier>
                         <PracticeProviderId>sampleID</PracticeProviderId>
-                        <IntuitProviderId>urn:vnd:ihg:keyregistry:staff:c135e809-9083-464a-9127-d24299d298ab</IntuitProviderId>
+                        <IntuitProviderId>urn:vnd:ihg:portal:staff:25874</IntuitProviderId>
                     </ProviderIdentifier>
                 </Provider>
         </PracticeInformation>

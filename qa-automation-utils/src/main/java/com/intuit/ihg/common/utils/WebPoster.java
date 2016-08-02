@@ -22,6 +22,8 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.testng.Assert;
 
+import com.medfusion.common.utils.IHGUtil;
+
 /**
  * Base class for posting Request
  * 

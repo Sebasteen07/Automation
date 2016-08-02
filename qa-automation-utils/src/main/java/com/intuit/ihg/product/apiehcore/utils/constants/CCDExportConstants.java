@@ -26,7 +26,7 @@ public class CCDExportConstants {
 	
 	public static final String SAMPLE_ALLSCRIPTS_FORMS_EXPORT_INPUT_DATA = QUESTIONNAIRE_TEST_DATA
 				+ "export/allscripts_ehr/validQuestionnaireMessage/input/";
-	// KeyRegistry Enrichment Response
+	// Id Enrichment Response
 	public static final String QUESTIONNAIRE_EXPORT_DATA_INVALIDKEY = QUESTIONNAIRE_TEST_DATA
 			+ "export/validQuestionnaireMessage/input/invalidkey/";
 	public static final String QUESTIONNAIRE_EXPORT_DATA_ENRICHED_INVALIDKEY = QUESTIONNAIRE_TEST_DATA

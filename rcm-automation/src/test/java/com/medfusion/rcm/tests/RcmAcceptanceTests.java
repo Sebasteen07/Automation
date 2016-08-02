@@ -3,13 +3,17 @@ package com.medfusion.rcm.tests;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 
 
+
+
+
+
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,29 +26,28 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.WebPoster;
-import com.intuit.ihg.common.utils.dataprovider.PropertyFileLoader;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.common.utils.mail.Mailinator;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeHomePage;
-import com.intuit.ihg.product.object.maps.practice.page.PracticeLoginPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
-import com.intuit.ihg.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.intuit.ihg.product.portal.utils.PortalConstants;
-import com.intuit.ihg.product.practice.tests.PatientActivationSearchTest;
-import com.intuit.ihg.product.practice.utils.Practice;
-import com.intuit.ihg.product.practice.utils.PracticeConstants;
-import com.intuit.ihg.product.practice.utils.PracticeTestData;
-import com.medfusion.product.object.maps.jalapeno.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.jalapeno.page.CreateAccount.JalapenoPatientActivationPage;
-import com.medfusion.product.object.maps.jalapeno.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.object.maps.jalapeno.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.rcm.utils.PatientStatementInfo;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.patientportal2.utils.PortalConstants;
+import com.medfusion.product.practice.api.flows.IPatientActivation;
+import com.medfusion.product.practice.api.pojo.PatientInfo;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.implementedExternals.PatientActivation;
 import com.medfusion.rcm.utils.RCMUtil;
 
 import java.io.FileInputStream;
  
+
+
+
+
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -215,7 +218,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();		
 		
 		//set up patient
-		PatientStatementInfo newPat = activateNewPatientPrepareForStatement(driver, testData,1);
+		PatientInfo newPat = activateNewPatientPrepareForStatement(driver, testData,1);
 		
 		//Randomize balance, insert decimal dot
 		Random rand = new Random();
@@ -276,7 +279,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		
 		//set up patient
-		PatientStatementInfo newPat = activateNewPatientPrepareForStatement(driver, testData, preference);
+		PatientInfo newPat = activateNewPatientPrepareForStatement(driver, testData, preference);
 		
 		//Randomize balance, insert decimal dot
 		Random rand = new Random();
@@ -334,26 +337,19 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log("It also checks out with practice admin!");
 	}		
 	
-	protected PatientStatementInfo activateNewPatientPrepareForStatement(WebDriver driver, PropertyFileLoader testData, int deliveryPref) throws Exception{
+	protected PatientInfo activateNewPatientPrepareForStatement(WebDriver driver, PropertyFileLoader testData, int deliveryPref) throws Exception{
 		log(this.getClass().getName());
 		log("Creating a new patient to use in statements");
+		PatientInfo newPat = new PatientInfo();
+		newPat.email = "eStMf."+IHGUtil.createRandomNumericString(6)+"@mailinator.com";
 		
-		//RCMUtil util = new RCMUtil(driver);
-		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-
-		log("Getting Test Data");
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);				
-	
-		log("Patient Activation on Practice Portal");
-		String patMail = "eStMf."+IHGUtil.createRandomNumericString(6)+"@mailinator.com";
-		String unlockLink = patientActivationSearchTest.PatientActivation(driver, practiceTestData, patMail, 
-				testData.getDoctorLogin(), testData.getDoctorPassword(), testData.getPortalUrl());
+		IPatientActivation act = new PatientActivation();
+		newPat = act.activatePatient(driver, testData, newPat.email);			
 		JalapenoPatientActivationPage jalapenoPatientActivationPage;
 		JalapenoHomePage jalapenoHomePage;		
 		try	{
 			log("Finishing of patient activation: step 1 - verifying identity");
-			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
+			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, newPat.unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load");
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
@@ -361,9 +357,11 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			driver.manage().window().maximize();
 			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
 			PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+			checkAlert(driver);
+			
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(patientActivationSearchTest.getFirstNameString(),
+			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(newPat.firstName,
 				testData.getPassword(), testData.getSecretQuestion(), 
 				testData.getSecretAnswer(), "1234567890", deliveryPref);
 		}
@@ -371,7 +369,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			e.printStackTrace();
 			log("Retrying");
 			log("Finishing of patient activation: step 1 - verifying identity AGAIN.");
-			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, unlockLink);
+			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, newPat.unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load.");
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
@@ -381,7 +379,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(patientActivationSearchTest.getFirstNameString(),
+			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(newPat.firstName,
 					testData.getPassword(), testData.getSecretQuestion(), 
 					testData.getSecretAnswer(), "1234567890", deliveryPref);
 			
@@ -391,36 +389,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.logout(driver);
 		
 		log("Back to Practice Portal to assign external ID");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-		log("Click on Patient Search Link");
-		PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
-
-		log("Set Patient Search Fields");
-		pPatientSearchPage.searchForPatientInPatientSearch(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString());
-		
-		log("Open Patient Dashboard");
-		PatientDashboardPage pPatientDashboardPage =  pPatientSearchPage.clickOnPatient(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString());
-
-		//save email
-		log("@@@@@@@@@@@@@@@@@ " + patMail);
-		
-		log("Click Edit ID");
-		List<WebElement> editButtons = driver.findElements(By.linkText("Edit"));
-        editButtons.get(3).click();
-        
-        //read memberid and update MRN ( = external memberid)
-		log("Update ID");
-		String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
-		System.out.println("Found memberId: " + memberId);
-        WebElement rsdkId = driver.findElement(By.name("patientid_78"));
-        rsdkId.sendKeys(patientActivationSearchTest.getFirstNameString());
-        driver.findElement(By.name("submitted")).click();        
-		verifyEquals(true,pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated"));
-				
-		PatientStatementInfo result = new PatientStatementInfo(memberId, patientActivationSearchTest.getFirstNameString(), -1, "", "", patientActivationSearchTest.getFirstNameString(), testData.getPassword(), deliveryPref);		
-		return result;
+		return act.editPatientRSDKExternalID(driver, testData, newPat);
 	}
 	
 	protected int postModifiedStatementToPatient(String filename, String endpoint, String env, String practicePatientId, String patientBalance, String prefix) throws Exception {
@@ -461,4 +430,14 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		poster.postFromStringExplicitTimeout(payload,5000);	
 		return Integer.parseInt(newBillingNumber);		
 	}
+	public void checkAlert(WebDriver driver) {
+	    try {
+	        WebDriverWait wait = new WebDriverWait(driver, 2);
+	        wait.until(ExpectedConditions.alertIsPresent());
+	        Alert alert = driver.switchTo().alert();
+	        alert.accept();
+	    } catch (Exception e) {
+	        //exception handling
+	    }
+	} 
 }

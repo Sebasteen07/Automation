@@ -11,15 +11,15 @@ import org.testng.annotations.AfterMethod;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
-import com.intuit.ihg.product.object.maps.portal.page.MyPatientPage;
-import com.intuit.ihg.product.object.maps.portal.page.PortalLoginPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.MyAccountPage;
-import com.intuit.ihg.product.object.maps.portal.page.myAccount.AccountActivity.ViewAccountActivityPage;
-import com.intuit.ihg.product.portal.utils.Portal;
-import com.intuit.ihg.product.portal.utils.TestcasesData;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.AccountActivity.ViewAccountActivityPage;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 
 public class MU2UserActivityAcceptaceTest  extends BaseTestNGWebDriver {
