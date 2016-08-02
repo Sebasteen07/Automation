@@ -15,6 +15,7 @@
 
         <classes>
             <class name = "com.intuit.ihg.product.forms.test.FormsAcceptanceTests" />
+            <class name = "com.intuit.ihg.product.forms.test.FormsFUPAcceptanceTest" />
         </classes>
     </test>
 </suite>
