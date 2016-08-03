@@ -2,7 +2,9 @@ package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebElement;
@@ -14,11 +16,12 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.IHGUtil.Gender;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -39,7 +42,8 @@ import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
@@ -70,869 +74,903 @@ import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 @Test
 public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
-    PropertyFileLoader testData;
+	private static final String NEW_EMAIL_TEMPLATE = "jalapeno2.%s@mailinator.com";
+	private static final String NEW_USERNAME_TEMPLATE = "automation%s";
+	private static final String NAME_OF_FIRST_PET_SECURITY_QUESTION = "What was the name of your first pet?";
+	private static final String NAME_OF_FIRST_PET_SECURITY_QUESTION_ANSWER = "Jerry";
+	private static final String NEW_PASSWORD = "idkfa1";
+	private static final String ACCOUNT_CHANGE_NOTIFICATION_EMAIL_SUBJECT_TEMPLATE = "Verify your account with %s";
+	private static final String EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT = "email address associated with your Patient Portal account has been changed";
+	private static final String PASSWORD_CHANGE_NOTIFICATION_EMAIL_CONTENT = "You recently changed your Patient Portal password.";
+	private static final String USERNAME_CHANGE_NOTIFICATION_EMAIL_CONTENT = "User ID associated with your Patient Portal account has been changed";
+
+	PropertyFileLoader testData;
+
+	@Override
+	@BeforeMethod(alwaysRun = true)
+	public void setUp() throws Exception {
+		super.setUp();
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting Test Data");
+		testData = new PropertyFileLoader();
+	}
+
+	@AfterMethod
+	public void logTestStatus(ITestResult result) {
+		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
+	}
+
+	public JalapenoHomePage createAndLogInPatient(JalapenoPatient patient) {
+
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+
+		JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
+		assertTrue(createAccountPage.assessCreateAccountPageElements());
+
+		JalapenoPatientActivationPage patientActivationPage = createAccountPage.fillInPatientData(patient).goToNextPage();
+
+		assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
+
+		JalapenoHomePage homePage = patientActivationPage.fillInPatientActivation(patient.getEmail(), patient.getPassword(), testData);
+		assertTrue(homePage.assessHomePageElements());
+		return homePage;
+	}
+
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	public void testAssessLoginPageElements() throws Exception {
+		log("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
+
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLoginValidCredentials() throws Exception {
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.assessLoginPageElements());
+
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+
+		loginPage = jalapenoHomePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
+	}
+
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLoginInvalidCredentials() throws Exception {
+
+		log("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		// JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(),
+		// "InvalidPassword");
+		// assertFalse(jalapenoHomePage.assessHomePageElements());
+		jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
+
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatient() throws Exception {
+
+		JalapenoPatient jalapenoPatient = new JalapenoPatient(testData);
+
+		log("Creating a new patient");
+		JalapenoHomePage homePage = createAndLogInPatient(jalapenoPatient);
+		assertTrue(homePage.assessHomePageElements());
+
+		log("Checking if the information");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkZipCode(testData.getZipCode()));
+		assertTrue(myAccountPage.checkGender(jalapenoPatient.getGender()));
+
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
+
+		homePage = loginPage.login(jalapenoPatient.getEmail(), jalapenoPatient.getPassword());
+		assertTrue(homePage.assessHomePageElements());
+	}
+
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientActivation() throws Exception {
 
-    @BeforeMethod(alwaysRun = true)
-    public void setUp() throws Exception {
-        super.setUp();
+		log("Getting Test Data");
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
+		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+
+		log("Patient Activation on Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+
+		log("Finishing of patient activation: step 1 - verifying identity");
+		JalapenoPatientActivationPage patientActivationPage = new JalapenoPatientActivationPage(driver, unlockLinkPortal);
+		assertTrue(patientActivationPage.assessPatientActivationVerifyPageElements());
+		patientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
 
-        log(this.getClass().getName());
-        log("Execution Environment: " + IHGUtil.getEnvironmentType());
-        log("Execution Browser: " + TestConfig.getBrowserType());
-
-        log("Getting Test Data");
-        testData = new PropertyFileLoader();
-    }
-
-    @AfterMethod
-    public void logTestStatus(ITestResult result) {
-        TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
-    }
-
-    public JalapenoHomePage createAndLogInPatient(JalapenoPatient patient) {
+		log("Finishing of patient activation: step 2 - filling patient data");
+		assertTrue(patientActivationPage.assessPatientActivationPageElements(false));
+		JalapenoHomePage jalapenoHomePage =
+				patientActivationPage.fillInPatientActivation(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(), testDataFromProp);
 
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
-
-        JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
-        assertTrue(createAccountPage.assessCreateAccountPageElements());
-
-        JalapenoPatientActivationPage patientActivationPage = createAccountPage.fillInPatientData(patient)
-                .goToNextPage();
-
-        assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
-
-        JalapenoHomePage homePage = patientActivationPage.fillInPatientActivation(patient.getEmail(),
-                patient.getPassword(), testData);
-        assertTrue(homePage.assessHomePageElements());
-        return homePage;
-    }
-
-    @Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
-    public void testAssessLoginPageElements() throws Exception {
-        log("Load login page");
-        JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        assertTrue(jalapenoLoginPage.assessLoginPageElements());
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testLoginValidCredentials() throws Exception {
-        log("Load login page");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        assertTrue(loginPage.assessLoginPageElements());
-
-        JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-
-        loginPage = jalapenoHomePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testLoginInvalidCredentials() throws Exception {
-
-        log("Load login page");
-        JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-
-        // JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
-        // assertFalse(jalapenoHomePage.assessHomePageElements());
-        jalapenoLoginPage.login(testData.getUserId(), "InvalidPassword");
-        assertTrue(jalapenoLoginPage.assessLoginPageElements());
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testCreatePatient() throws Exception {
-
-        JalapenoPatient jalapenoPatient = new JalapenoPatient(testData);
-
-        log("Creating a new patient");
-        JalapenoHomePage homePage = createAndLogInPatient(jalapenoPatient);
-        assertTrue(homePage.assessHomePageElements());
-
-        log("Checking if the information");
-        JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
-        JalapenoMyAccountPage myAccountPage = accountPage.clickOnEditMyAccount();
-        assertTrue(myAccountPage.checkZipCode(testData.getZipCode()));
-        assertTrue(myAccountPage.checkGender(jalapenoPatient.getGender()));
-
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
-
-        homePage = loginPage.login(jalapenoPatient.getEmail(), jalapenoPatient.getPassword());
-        assertTrue(homePage.assessHomePageElements());
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testPatientActivation() throws Exception {
-
-        log("Getting Test Data");
-        Practice practice = new Practice();
-        PracticeTestData practiceTestData = new PracticeTestData(practice);
-        PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-        String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
-
-        log("Patient Activation on Practice Portal");
-        PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-        String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData,
-                patientsEmail, testDataFromProp);
-
-        log("Finishing of patient activation: step 1 - verifying identity");
-        JalapenoPatientActivationPage patientActivationPage = new JalapenoPatientActivationPage(driver,
-                unlockLinkPortal);
-        assertTrue(patientActivationPage.assessPatientActivationVerifyPageElements());
-        patientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
-                PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
-
-        log("Finishing of patient activation: step 2 - filling patient data");
-        assertTrue(patientActivationPage.assessPatientActivationPageElements(false));
-        JalapenoHomePage jalapenoHomePage = patientActivationPage.fillInPatientActivation(
-                patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(), testDataFromProp);
-
-        log("Detecting if Home Page is opened");
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-
-        log("Checking if address in My Account is filled");
-        JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount(driver);
-        JalapenoMyAccountPage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
-        assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
-
-        log("Logging out");
-        JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
-        assertTrue(jalapenoLoginPage.assessLoginPageElements());
-
-        log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ "
-                + testDataFromProp.getPassword());
-        jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),
-                testDataFromProp.getPassword());
-
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-        log("Logging out");
-
-        jalapenoLoginPage = jalapenoHomePage.logout(driver);
-        assertTrue(jalapenoLoginPage.assessLoginPageElements());
-
-        log("Logging into Mailinator and getting Patient Activation url");
-        String emailSubject = "You're invited to create a Patient Portal account at "
-                + testDataFromProp.getPracticeName();
-        String inEmail = "Sign Up!";
-        String unlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail, emailSubject, inEmail, 10);
-        assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
-        log("Retrieved activation link is " + unlockLinkEmail);
-        log("Comparing with portal unlock link " + unlockLinkPortal);
-        assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testForgotPassword() throws Exception {
-
-        log("Initiate patient data");
-        JalapenoPatient patient = new JalapenoPatient(testData);
-        JalapenoHomePage homePage = createAndLogInPatient(patient);
-
-        log("Logout");
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
-
-        log("Clicking on forgot username or password");
-        JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
-
-        assertTrue(forgotPasswordPage.assessForgotPasswordPageElements());
-
-        JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
-        log("Message was sent, closing");
-        forgotPasswordPage2.clickCloseButton();
-
-        log("Logging into Mailinator and getting ResetPassword url");
-        Mailinator mailinator = new Mailinator();
-        String[] mailAddress = patient.getEmail().split("@");
-        String emailSubject = "Help with your user name or password";
-        String inEmail = "Reset Password Now";
-        String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
-
-        assertTrue(url != null);
-
-        JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
-        log("Redirecting to patient portal, filling secret answer as: " + testData.getSecretAnswer());
-        JalapenoForgotPasswordPage4 forgotPasswordPage4 = forgotPasswordPage3
-                .fillInSecretAnswer(testData.getSecretAnswer());
-
-        log("Filling new password");
-        homePage = forgotPasswordPage4.fillInNewPassword(testData.getPassword());
-        assertTrue(homePage.assessHomePageElements());
-
-        log("Logging out");
-        loginPage = homePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
-    }
-
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testMessaging() throws Exception {
+		log("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.assessHomePageElements());
 
-        String messageSubject = "Namaste " + System.currentTimeMillis();
+		log("Checking if address in My Account is filled");
+		JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount(driver);
+		JalapenoMyAccountProfilePage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
 
-        log("Login physician");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-        PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-        patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
+		log("Logging out");
+		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 
-        log("Login patient");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		log("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testDataFromProp.getPassword());
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword());
 
-        log("Click on messages solution");
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-        assertTrue(messagesPage.assessMessagesElements());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		log("Logging out");
 
-        log("Waiting for message from practice portal");
-        assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
 
-        log("Response to the message");
-        assertTrue(messagesPage.replyToMessage(driver));
+		log("Logging into Mailinator and getting Patient Activation url");
+		String emailSubject = "You're invited to create a Patient Portal account at " + testDataFromProp.getPracticeName();
+		String inEmail = "Sign Up!";
+		String unlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail, emailSubject, inEmail, 10);
+		assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
+		log("Retrieved activation link is " + unlockLinkEmail);
+		log("Comparing with portal unlock link " + unlockLinkPortal);
+		assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
+	}
 
-        log("Back to the practice portal");
-        practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testForgotPassword() throws Exception {
 
-        patientMessagingPage = practiceHome.clickPatientMessagingTab();
-        assertTrue(patientMessagingPage.findMyMessage(messageSubject));
-        // TODO: Edit navigation on portal and search by date to search exact day
-    }
+		log("Initiate patient data");
+		JalapenoPatient patient = new JalapenoPatient(testData);
+		JalapenoHomePage homePage = createAndLogInPatient(patient);
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testViewCCD() throws Exception {
+		log("Logout");
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
 
-        log("Load login page");
-        JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		log("Clicking on forgot username or password");
+		JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
 
-        JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getCCDPatientUsername(),
-                testData.getPassword());
-        assertTrue(jalapenoHomePage.assessHomePageElements());
+		assertTrue(forgotPasswordPage.assessForgotPasswordPageElements());
 
-        JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-        JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
+		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
+		log("Message was sent, closing");
+		forgotPasswordPage2.clickCloseButton();
 
-        assertTrue(jalapenoCcdPage.assessCcdElements());
-        if (IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
-            log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3 javax.net.ssl.SSLHandshakeException");
-        } else {
-            assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
-            assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
-        }
-        assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
+		log("Logging into Mailinator and getting ResetPassword url");
+		Mailinator mailinator = new Mailinator();
+		String[] mailAddress = patient.getEmail().split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 
-        jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
-        assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		assertTrue(url != null);
 
-        jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
+		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
+		log("Redirecting to patient portal, filling secret answer as: " + testData.getSecretAnswer());
+		JalapenoForgotPasswordPage4 forgotPasswordPage4 = forgotPasswordPage3.fillInSecretAnswer(testData.getSecretAnswer());
 
-        log("Logging out");
-        jalapenoLoginPage = jalapenoHomePage.logout(driver);
-        assertTrue(jalapenoLoginPage.assessLoginPageElements());
-    }
+		log("Filling new password");
+		homePage = forgotPasswordPage4.fillInNewPassword(testData.getPassword());
+		assertTrue(homePage.assessHomePageElements());
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
+		log("Logging out");
+		loginPage = homePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
+	}
 
-        log("Initiate patient data");
-        JalapenoPatient patient = new JalapenoPatient(testData);
-        JalapenoHomePage homePage = createAndLogInPatient(patient);
-        assertTrue(homePage.assessHomePageElements());
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMessaging() throws Exception {
 
-        log("Checking if zipCode in My Account is filled");
-        JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
-        JalapenoMyAccountPage myAccountPage = accountPage.clickOnEditMyAccount();
-        assertTrue(myAccountPage.checkZipCode(testData.getZipCode()));
+		String messageSubject = "Namaste " + System.currentTimeMillis();
 
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
+		log("Login physician");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        log("Try to create the same patient");
-        JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
-        assertTrue(createAccountPage.assessCreateAccountPageElements());
+		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
 
-        createAccountPage.fillInPatientData(patient).goToNextPage();
+		log("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        assertTrue(loginPage.assessLoginPageElements());
-    }
+		log("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.assessMessagesElements());
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
+		log("Waiting for message from practice portal");
+		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 
-        log("Create patient");
-        JalapenoPatient patient = new JalapenoPatient(testData);
-        JalapenoHomePage homePage = createAndLogInPatient(patient);
+		log("Response to the message");
+		assertTrue(messagesPage.replyToMessage(driver));
 
-        assertTrue(homePage.assessHomePageElements());
+		log("Back to the practice portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        assertTrue(loginPage.assessLoginPageElements());
+		patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		assertTrue(patientMessagingPage.findMyMessage(messageSubject));
+		// TODO: Edit navigation on portal and search by date to search exact day
+	}
 
-        log("Try to create the same patient in different practice");
-        loginPage = new JalapenoLoginPage(driver, testData.getPractice2Url());
-        assertTrue(loginPage.assessLoginPageElements());
-        JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testViewCCD() throws Exception {
 
-        assertTrue(createAccountPage.assessCreateAccountPageElements());
+		log("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
-        JalapenoPatientActivationPage patientActivationPage = createAccountPage.fillInPatientData(patient)
-                .goToNextPage();
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		assertTrue(jalapenoHomePage.assessHomePageElements());
 
-        log("Patient with same demographics was allowed");
-        assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
-        patientActivationPage.fillInPatientActivation(patient.getEmail(), patient.getPassword(), testData);
+		assertTrue(jalapenoCcdPage.assessCcdElements());
+		if (IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
+			log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3 javax.net.ssl.SSLHandshakeException");
+		} else {
+			assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
+			assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
+		}
+		assertTrue(jalapenoCcdPage.sendInformation("ihg_qa@direct.healthvault.com"));
 
-        assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
-        log("Username match was found");
-    }
+		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
+		assertTrue(jalapenoMessagesPage.assessMessagesElements());
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
+		jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
 
-        PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		log("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.logout(driver);
+		assertTrue(jalapenoLoginPage.assessLoginPageElements());
+	}
 
-        log("Getting Test Data");
-        Practice practice = new Practice();
-        PracticeTestData practiceTestData = new PracticeTestData(practice);
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
-        PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-        String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+		log("Initiate patient data");
+		JalapenoPatient patient = new JalapenoPatient(testData);
+		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		assertTrue(homePage.assessHomePageElements());
 
-        log("Patient Activation on Practice Portal");
-        patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+		log("Checking if zipCode in My Account is filled");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkZipCode(testData.getZipCode()));
 
-        log("Going to PI login page");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
-        assertTrue(loginPage.assessLoginPageElements());
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
 
-        log("Going to create account page");
-        JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
-        assertTrue(createAccountPage.assessCreateAccountPageElements());
+		log("Try to create the same patient");
+		JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
+		assertTrue(createAccountPage.assessCreateAccountPageElements());
 
-        log("Creating patient with the same data as in practice portal");
-        createAccountPage.fillInDataPage(patientActivationSearchTest.getFirstNameString(),
-                patientActivationSearchTest.getLastNameString(), patientActivationSearchTest.getEmailAddressString(),
-                PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear,
-                Gender.MALE, patientActivationSearchTest.getZipCodeString());
+		createAccountPage.fillInPatientData(patient).goToNextPage();
 
-        log("Checking that i am still on create account page due to healthKey check won't let me create patient with the same data");
-        assertTrue(createAccountPage.assessCreateAccountPageElements());
-    }
+		assertTrue(loginPage.assessLoginPageElements());
+	}
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testAppointmentRequest() throws Exception {
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 
-        log("Load login page and login");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		log("Create patient");
+		JalapenoPatient patient = new JalapenoPatient(testData);
+		JalapenoHomePage homePage = createAndLogInPatient(patient);
 
-        log("Create an appointment request");
-        JalapenoAppointmentRequestPage appointmentRequestPage = homePage.clickOnAppointment(driver);
-        appointmentRequestPage.clickOnContinueButton(driver);
-        assertTrue(appointmentRequestPage.fillAndSendTheAppointmentRequest(driver));
+		assertTrue(homePage.assessHomePageElements());
 
-        log("Logout from Patient Portal");
-        homePage = appointmentRequestPage.returnToHomePage(driver);
-        homePage.logout(driver);
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		assertTrue(loginPage.assessLoginPageElements());
 
-        log("Proceed in Practice Portal");
-        AppoitmentRequest practicePortal = new AppoitmentRequest();
-        long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, false, "Illness",
-                testData.getPortalUrl(), testData.getDoctorLogin(), testData.getDoctorPassword());
+		log("Try to create the same patient in different practice");
+		loginPage = new JalapenoLoginPage(driver, testData.getPractice2Url());
+		assertTrue(loginPage.assessLoginPageElements());
+		JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
 
-        log("Continue in Portal Inspired");
-        loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		assertTrue(createAccountPage.assessCreateAccountPageElements());
 
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		JalapenoPatientActivationPage patientActivationPage = createAccountPage.fillInPatientData(patient).goToNextPage();
 
-        log("Looking for appointment approval from doctor");
-        assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
-    }
+		log("Patient with same demographics was allowed");
+		assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
 
-    // TODO: after Appointment Request v1 is not used - delete test above and set up this test to Jalapeno Automation
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testAppointmentRequestV2() throws Exception {
+		patientActivationPage.fillInPatientActivation(patient.getEmail(), patient.getPassword(), testData);
 
-        String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
+		assertTrue(patientActivationPage.assessPatientActivationPageElements(true));
+		log("Username match was found");
+	}
 
-        log("Load login page");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
-        log("Logging in");
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
-        log("Click appointment request");
-        JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		log("Getting Test Data");
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-        log("Assess Elements and choose provider");
-        assertTrue(appointmentRequestStep1.assessElements());
-        appointmentRequestStep1.chooseFirstProvider();
+		PropertyFileLoader testDataFromProp = new PropertyFileLoader();
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
 
-        log("Continue to step 2.: click continue and assess elements");
-        JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-        assertTrue(appointmentRequestStep2.assessElements());
+		log("Patient Activation on Practice Portal");
+		patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
 
-        log("Fill details and submit");
-        appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
-        homePage = appointmentRequestStep2.submitAppointment(driver);
+		log("Going to PI login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
+		assertTrue(loginPage.assessLoginPageElements());
 
-        log("Check if thank you frame is displayd");
-        assertTrue(homePage.isTextDisplayed("Thank you"));
+		log("Going to create account page");
+		JalapenoCreateAccountPage createAccountPage = loginPage.clickCreateANewAccountButton();
+		assertTrue(createAccountPage.assessCreateAccountPageElements());
 
-        log("Navigate to Appointment Request History");
-        appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
-        JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+		log("Creating patient with the same data as in practice portal");
+		createAccountPage.fillInDataPage(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString(),
+				patientActivationSearchTest.getEmailAddressString(), PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear,
+				Gender.MALE, patientActivationSearchTest.getZipCodeString());
 
-        log("Check elements and appointment request reason");
-        assertTrue(historyPage.assessElements());
-        assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+		log("Checking that i am still on create account page due to healthKey check won't let me create patient with the same data");
+		assertTrue(createAccountPage.assessCreateAccountPageElements());
+	}
 
-        log("Check appointment request details");
-        assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-        homePage = historyPage.returnToHomePage(driver);
-        homePage.logout(driver);
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequest() throws Exception {
 
-        log("Proceed in Practice Portal");
-        AppoitmentRequest practicePortal = new AppoitmentRequest();
-        long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
-                testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+		log("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        log("Login back to patient portal");
-        loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
-        homePage = loginPage.login(testData.getUserId(), testData.getPassword());
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		log("Create an appointment request");
+		JalapenoAppointmentRequestPage appointmentRequestPage = homePage.clickOnAppointment(driver);
+		appointmentRequestPage.clickOnContinueButton(driver);
+		assertTrue(appointmentRequestPage.fillAndSendTheAppointmentRequest(driver));
 
-        log("Looking for appointment approval from doctor");
-        assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
-    }
+		log("Logout from Patient Portal");
+		homePage = appointmentRequestPage.returnToHomePage(driver);
+		homePage.logout(driver);
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testPrescriptionRenewal() throws Exception {
+		log("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal =
+				practicePortal.ProceedAppoitmentRequest(driver, false, "Illness", testData.getPortalUrl(), testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        log("Creating a new patient");
-        JalapenoPatient patient = new JalapenoPatient(testData);
-        JalapenoHomePage homePage = createAndLogInPatient(patient);
+		log("Continue in Portal Inspired");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
-        prescriptionsPage.clickContinueButton(driver);
-        homePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-        homePage.logout(driver);
+		log("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+	}
 
-        log("Login to Practice Portal");
+	// TODO: after Appointment Request v1 is not used - delete test above and set up this test to
+	// Jalapeno Automation
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestV2() throws Exception {
 
-        // Now start login with practice data
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
-        log("Click On RxRenewal in Practice Portal");
-        RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
 
-        log("Search for Today's RxRenewal in Practice Portal");
-        rxRenewalSearchPage.searchForRxRenewalToday();
+		log("Logging in");
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        log("Get the RxRenewal Details in Practice Portal");
-        rxRenewalSearchPage.getRxRenewalDetails();
+		log("Click appointment request");
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
 
-        log("Set the RxRenewal Fields in Practice Portal");
-        rxRenewalSearchPage.setRxRenewalFields();
+		log("Assess Elements and choose provider");
+		assertTrue(appointmentRequestStep1.assessElements());
+		appointmentRequestStep1.chooseFirstProvider();
 
-        log("Click On Process RxRenewal Button in Practice Portal");
-        rxRenewalSearchPage.clickProcessRxRenewal();
+		log("Continue to step 2.: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.assessElements());
 
-        String subject = rxRenewalSearchPage.getSubject();
-        log("Verify Prescription Confirmation in Practice Portal");
-        rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
+		log("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
 
-        log("Set Action Radio Button in Practice Portal");
-        rxRenewalSearchPage.setActionRadioButton();
+		log("Check if thank you frame is displayd");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
 
-        log("Verify Process Completed Text in Practice Portal");
-        rxRenewalSearchPage.verifyProcessCompleted();
+		log("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
-        log("Logout of Practice Portal");
-        practiceHome.logOut();
+		log("Check elements and appointment request reason");
+		assertTrue(historyPage.assessElements());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        homePage = loginPage.login(patient.getEmail(), patient.getPassword());
+		log("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.returnToHomePage(driver);
+		homePage.logout(driver);
 
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		log("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(),
+				testData.getDoctorPassword());
 
-        log("Looking for appointment approval from doctor");
-        assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
-    }
+		log("Login back to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testPayBills() throws Exception {
+		log("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+	}
 
-        log("Initiate payment data");
-        String accountNumber = IHGUtil.createRandomNumericString(8);
-        String amount = IHGUtil.createRandomNumericString(3);
-        String name = "TestPatient CreditCard";
-        CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrescriptionRenewal() throws Exception {
 
-        log("Load login page");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		log("Creating a new patient");
+		JalapenoPatient patient = new JalapenoPatient(testData);
+		JalapenoHomePage homePage = createAndLogInPatient(patient);
 
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
-        JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
-        // remove all cards because Selenium can't see AddNewCard button
-        payBillsPage.removeAllCards();
-        log("Check that no card is present");
-        assertFalse(payBillsPage.isAnyCardPresent());
-        assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		prescriptionsPage.clickContinueButton(driver);
+		homePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
 
-        JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,
-                creditCard);
-        assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
-        log("Verifying credit card ending");
-        assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
+		homePage.logout(driver);
 
-        homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
-        assertTrue(homePage.wasPayBillsSuccessfull());
-        homePage.logout(driver);
+		log("Login to Practice Portal");
 
-        log("Login to Practice Portal");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        log("Click On Online BillPayment Tab in Practice Portal");
-        OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
+		log("Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
 
-        log("Search Paid Bills By Current Date");
-        onlineBillPaySearchPage.searchForBillPayToday();
+		log("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday();
 
-        log("Search For Today's Paid Bill By Account Number");
-        onlineBillPaySearchPage.searchForBillPayment(accountNumber);
+		log("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
 
-        log("Get Bill Details");
-        onlineBillPaySearchPage.getBillPayDetails();
+		log("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();
 
-        log("Set Payment Communication Details");
-        onlineBillPaySearchPage.setPaymentCommunicationDetails();
+		log("Click On Process RxRenewal Button in Practice Portal");
+		rxRenewalSearchPage.clickProcessRxRenewal();
 
-        log("Logout of Practice Portal");
-        practiceHome.logOut();
+		String subject = rxRenewalSearchPage.getSubject();
+		log("Verify Prescription Confirmation in Practice Portal");
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
 
-        String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())
-                + PracticeConstants.BillPaymentSubject;
+		log("Set Action Radio Button in Practice Portal");
+		rxRenewalSearchPage.setActionRadioButton();
 
-        loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		log("Verify Process Completed Text in Practice Portal");
+		rxRenewalSearchPage.verifyProcessCompleted();
 
-        log("Click on messages solution");
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
 
-        log("Waiting for message from practice portal");
-        assertTrue(messagesPage.isMessageDisplayed(driver, uniquePracticeResponse));
-    }
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getEmail(), patient.getPassword());
 
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testAskAStaff() throws Exception {
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-        log("Login patient");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		log("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
+	}
 
-        log("Click Ask A Staff tab");
-        JalapenoAskAStaffPage askPage = homePage.clickOnAskAStaff(driver);
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayBills() throws Exception {
 
-        log("Fill and submit question");
-        assertTrue(askPage.fillAndSubmitAskAStaff(driver));
+		log("Initiate payment data");
+		String accountNumber = IHGUtil.createRandomNumericString(8);
+		String amount = IHGUtil.createRandomNumericString(3);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 
-        log("Check history");
-        assertTrue(askPage.checkHistory(driver));
+		log("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
-        log("Logout patient");
-        askPage.backToHomePage(driver);
-        assertTrue(homePage.assessHomePageElements());
-        homePage.logout(driver);
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		// remove all cards because Selenium can't see AddNewCard button
+		payBillsPage.removeAllCards();
+		log("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 
-        log("Login to practice portal");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
+		assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
+		log("Verifying credit card ending");
+		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 
-        log("Click Ask A Staff tab");
-        AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
+		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		homePage.logout(driver);
 
-        log("Search for questions");
-        searchQ.searchForQuestions();
-        AskAStaffQuestionDetailStep1Page detailStep1 = searchQ
-                .getQuestionDetails("Ola! " + (Long.toString(askPage.getCreatedTimeStamp())));
-        assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
-        log("Choose action on patient question");
-        AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
+		log("Click On Online BillPayment Tab in Practice Portal");
+		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
 
-        log("Respond to patient question");
-        AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test",
-                "This message was generated by an automated test");
+		log("Search Paid Bills By Current Date");
+		onlineBillPaySearchPage.searchForBillPayToday();
 
-        log("Confirm response details to patient");
-        AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
+		log("Search For Today's Paid Bill By Account Number");
+		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
 
-        log("Validate submit of confirmation");
-        assertTrue(detailStep4.isQuestionDetailPageLoaded());
+		log("Get Bill Details");
+		onlineBillPaySearchPage.getBillPayDetails();
 
-        log("Logout of Practice Portal");
-        practiceHome.logOut();
+		log("Set Payment Communication Details");
+		onlineBillPaySearchPage.setPaymentCommunicationDetails();
 
-        log("Login patient");
-        loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
 
-        log("Go to messages");
-        JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BillPaymentSubject;
 
-        log("Check if message was delivered");
-        assertTrue(messagesPage.isMessageDisplayed(driver,
-                "Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-    }
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-    // Create under-age patient, complete registration with new guardian, checks login credentials and then checks
-    // guardian email
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testFACreateGuardianOnly() throws Exception {
+		log("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-        log("Step 1: Getting Test Data");
-        PropertyFileLoader testData = new PropertyFileLoader();
-        long generatedTS = System.currentTimeMillis();
-        String patientLastName = "last" + generatedTS; // guardian's and dependent's last name and dependent's id
-        String patientLogin = "login" + generatedTS; // guardian's login
-        String patientEmail = "mail" + generatedTS + "@mailinator.com"; // guardian's and dependent's email
+		log("Waiting for message from practice portal");
+		assertTrue(messagesPage.isMessageDisplayed(driver, uniquePracticeResponse));
+	}
 
-        log("Step 2: Login to Practice Portal");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskAStaff() throws Exception {
 
-        log("Step 3: Create under-age patient");
-        PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+		log("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        log("Step 4: Click on Add new Patient");
-        PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+		log("Click Ask A Staff tab");
+		JalapenoAskAStaffPage askPage = homePage.clickOnAskAStaff(driver);
 
-        log("Step 5: Enter all the details and click on Register");
-        String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "F",
-                patientLastName, testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(),
-                testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+		log("Fill and submit question");
+		assertTrue(askPage.fillAndSubmitAskAStaff(driver));
 
-        log("Step 6: Continue to Portal Inspired");
-        assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-        JalapenoIdentifyDependentPage identifyDependentPage = new JalapenoIdentifyDependentPage(driver, guardianUrl);
-        assertTrue(identifyDependentPage.assessElements());
+		log("Check history");
+		assertTrue(askPage.checkHistory(driver));
 
-        log("Step 7: Identify patient");
-        identifyDependentPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(),
-                testData.getDOBDay(), testData.getDOBYearUnderage());
+		log("Logout patient");
+		askPage.backToHomePage(driver);
+		assertTrue(homePage.assessHomePageElements());
+		homePage.logout(driver);
 
-        log("Step 8: Continue registration - check dependent info and fill guardian name");
-        JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
-        createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
-        createGuardianStep1.createGuardianOnlyFirstPage("Guardian", patientLastName, "Parent");
+		log("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-        log("Step 9: Continue registration - create dependents credentials");
-        JalapenoCreateGuardianPage2 createGuardianStep2 = createGuardianStep1.continueToSecondPage(driver);
-        assertTrue(createGuardianStep2.assessElements());
-        createGuardianStep2.fillGuardianSecurityDetails(patientLogin, testData.getDoctorPassword(),
-                testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+		log("Click Ask A Staff tab");
+		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
 
-        log("Step 10: Continue to Home Page");
-        JalapenoHomePage homePage = createGuardianStep2.clickEnterPortal(driver);
-        assertTrue(homePage.assessHomePageElements());
-        assertTrue(homePage.assessFamilyAccountElements(false));
+		log("Search for questions");
+		searchQ.searchForQuestions();
+		AskAStaffQuestionDetailStep1Page detailStep1 = searchQ.getQuestionDetails("Ola! " + (Long.toString(askPage.getCreatedTimeStamp())));
+		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
 
-        log("Step 11: Log out and log in");
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        homePage = loginPage.login(patientLogin, testData.getPassword());
-        assertTrue(homePage.assessHomePageElements());
-        assertTrue(homePage.assessFamilyAccountElements(false));
+		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
+		log("Choose action on patient question");
+		AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
 
-        homePage.logout(driver);
-
-        log("Step 12: Logging into Mailinator and getting Guardian Activation url");
-        String emailSubject = "You are invited to create a Patient Portal guardian account at "
-                + testData.getPracticeName();
-        String inEmail = "Sign Up!";
-        String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 15);
-        assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
-        log("Retrieved activation link is " + guardianUrlEmail);
-        log("Comparing with link from PrP " + guardianUrl);
-        assertTrue(guardianUrl.equals(guardianUrlEmail));
-    }
+		log("Respond to patient question");
+		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test", "This message was generated by an automated test");
 
-    // Create normal patient, under-age patient, complete registration with new guardian, checks login credentials and
-    // then checks guardian email
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testFACreateDependentAndGuardian() throws Exception {
-
-        long generatedTS = System.currentTimeMillis();
-        String patientLastName = "last" + generatedTS; // guardian's and dependent's last name and id
-        String patientLogin = "login" + generatedTS; // guardian's login
-        String patientEmail = "mail" + generatedTS + "@mailinator.com"; // guardian's and dependent's email
-
-        log("Step 2: Login to Practice Portal");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-        log("Step 3: Click on Search");
-        PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
-
-        log("Step 4: Click on Add new Patient");
-        PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
-
-        log("Step 5: Register Guardien - Enter all the details and click on Register");
-        String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F",
-                patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-                testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
-                testData.getZipCode());
-
-        log("Step 6: Register Dependent - Enter all the details and click on Register");
-        String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
-                patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-                testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
-                testData.getZipCode());
-        assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-
-        log("Step 7: Step : Finishing of patient activation: step 1 - verifying identity");
-        JalapenoPatientActivationPage jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver,
-                patientUrl);
-        assertTrue(jalapenoPatientActivationPage.assessPatientActivationVerifyPageElements());
-        jalapenoPatientActivationPage.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(),
-                testData.getDOBDay(), testData.getDOBYear());
-
-        log("Step 8: Finishing of patient activation: step 2 - filling patient data");
-        assertTrue(jalapenoPatientActivationPage.assessPatientActivationPageElements(false));
-        JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientLogin,
-                testData.getPassword(), testData);
-
-        log("Step 9: Detecting if Home Page is opened");
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-
-        log("Step 10: Identify Dependent without logging out the patient");
-        JalapenoIdentifyDependentPage identifyDependentPage = new JalapenoIdentifyDependentPage(driver, guardianUrl);
-        assertTrue(identifyDependentPage.assessElements());
-        identifyDependentPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(),
-                testData.getDOBDay(), testData.getDOBYearUnderage());
-
-        log("Step 12: Continue registration - check dependent info and fill login credentials");
-        JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
-        createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
-        createGuardianStep1.createGuardianLinkToExistingPatient(patientLogin, testData.getPassword(), "Parent");
-
-        log("Step 13: Continue to the portal and check elements");
-        jalapenoHomePage = createGuardianStep1.continueToPortal(driver);
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-        assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
-
-        log("Step 14: Logout, login and change patient");
-        JalapenoLoginPage loginPage = jalapenoHomePage.logout(driver);
-        jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
-        jalapenoHomePage.faChangePatient();
-        assertTrue(jalapenoHomePage.assessHomePageElements());
-        assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
-
-        log("Step 15: Logging into Mailinator and getting Patient and Guardian Activation url");
-        String emailSubjectPatient = "You're invited to create a Patient Portal account at "
-                + testData.getPracticeName();
-        String emailSubjectGuardien = "You are invited to create a Patient Portal guardian account at "
-                + testData.getPracticeName();
-        String inEmail = "Sign Up!";
-
-        String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 15);
-        assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
-        log("Retrieved patients activation link is " + patientUrl);
-        log("Comparing with patients link from PrP " + patientUrlEmail);
-        assertEquals(patientUrl, patientUrlEmail, "!patient unlock links are not equal!");
-
-        String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 15);
-        assertNotNull(guardianUrlEmail, "Error: Activation dependents link not found.");
-        log("Retrieved dependents activation link is " + guardianUrlEmail);
-        log("Comparing with dependents link from PrP " + guardianUrl);
-        assertEquals(guardianUrl, guardianUrlEmail, "!guardian unlock links are not equal!");
-    }
-
-    // This test uses under-age patients created at tests FACreateDependentAndGuardian and FACreateGuardianOnly
-    @Test(enabled = true, groups = { "JalapenoAcceptance2" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testFAPostAgeOutFlow() throws Exception {
-
-        log("Step 2: Login to Practice Portal");
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-        log("Step 3: Click on Family Management");
-        AgeOutReportPage AOPage = practiceHome.clickFamilyManagementTab();
-
-        log("Step 4: Age-out first patient");
-        AOPage.searchInAgeOutReport(true, false, testData.getDOBMonth(), testData.getDOBDay(),
-                testData.getDOBYearUnderage());
-        String name = AOPage.ageOutFirstPatient();
-        log("Patients name: " + name);
-
-        log("Step 5: Proceed to his dashboard");
-        AOPage.searchInAgeOutReport(false, true, testData.getDOBMonth(), testData.getDOBDay(),
-                testData.getDOBYearUnderage());
-        PatientDashboardPage patientDashboard = AOPage.findPatientInList(name);
-        String id = name.replaceAll("[^0-9]", "");
-        String email = "mail" + id + "@mailinator.com";
-
-        log("Step 6: Change patients email to " + email);
-        PatientSearchPage patientSearch = patientDashboard.clickEditEmail();
-        patientDashboard = patientSearch.changeEmailWithoutModify(email);
-
-        log("Step 7: Send post age-out invitation");
-        patientDashboard.sendPostAgeOutInvitation();
-
-        log("Step 8: Wait for email");
-        String emailSubject = "Invitation to join our patient portal at " + testData.getPracticeName();
-        String inEmail = "Sign Up!";
-        String patientUrlEmail = new Mailinator().getLinkFromEmail(email, emailSubject, inEmail, 15);
-        assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
-        log("Retrieved patients activation link is " + patientUrlEmail);
-
-        log("Step 9: Identify patient");
-        JalapenoPatientActivationPage patientActivation = new JalapenoPatientActivationPage(driver, patientUrlEmail);
-        patientActivation.assessPatientActivationVerifyPageElements();
-        patientActivation.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(), testData.getDOBDay(),
-                testData.getDOBYearUnderage());
-
-        log("Step 10: Create patient");
-        patientActivation.assessPatientActivationPageElements(false);
-        String login = "selflogin" + id;
-        JalapenoHomePage homePage = patientActivation.fillInPatientActivation(login, testData.getPassword(), testData);
-        homePage.assessHomePageElements();
-        homePage.isTextDisplayed(
-                "You have successfully created your account and can access all of your previous health information.");
-
-        log("Step 11: Logout and login patient");
-        JalapenoLoginPage loginPage = homePage.logout(driver);
-        homePage = loginPage.login(login, testData.getPassword());
-        homePage.assessHomePageElements();
-    }
-
-    /**
-     * Creates patient, modifies My Account setting and validates result
-     */
-    @Test(enabled = true, groups = { "JalapenoAcceptance1" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testMyAccount() throws Exception {
-
-        JalapenoHomePage homePage = createAndLogInPatient(new JalapenoPatient(testData));
-
-        JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
-        JalapenoMyAccountPage myAccountPage = accountPage.clickOnEditMyAccount();
-
-        assertTrue(myAccountPage.assessPageElements());
-
-        Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
-        itemsToChange.put(myAccountPage.getAddress1Textbox(), "address");
-        itemsToChange.put(myAccountPage.getCityTextbox(), "city");
-        itemsToChange.put(myAccountPage.getStateSelect(), "Alaska");
-        itemsToChange.put(myAccountPage.getZipCodeTextbox(), "54321");
-
-        log("Modifying and checking My Account page");
-        assertTrue(myAccountPage.updateAndValidateWebElements(itemsToChange, myAccountPage.getSubmitButton()));
-    }
+		log("Confirm response details to patient");
+		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
 
+		log("Validate submit of confirmation");
+		assertTrue(detailStep4.isQuestionDetailPageLoaded());
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		log("Login patient");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		log("Go to messages");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		log("Check if message was delivered");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
+	}
+
+	// Create under-age patient, complete registration with new guardian, checks login credentials and
+	// then checks
+	// guardian email
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testFACreateGuardianOnly() throws Exception {
+
+		log("Step 1: Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		long generatedTS = System.currentTimeMillis();
+		String patientLastName = "last" + generatedTS; // guardian's and dependent's last name and
+																										// dependent's id
+		String patientLogin = "login" + generatedTS; // guardian's login
+		String patientEmail = "mail" + generatedTS + "@mailinator.com"; // guardian's and dependent's
+																																		// email
+
+		log("Step 2: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Step 3: Create under-age patient");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		log("Step 4: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("Step 5: Enter all the details and click on Register");
+		String guardianUrl =
+				patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "F", patientLastName, testData.getPhoneNumber(), patientEmail,
+						testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+
+		log("Step 6: Continue to Portal Inspired");
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+		JalapenoIdentifyDependentPage identifyDependentPage = new JalapenoIdentifyDependentPage(driver, guardianUrl);
+		assertTrue(identifyDependentPage.assessElements());
+
+		log("Step 7: Identify patient");
+		identifyDependentPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+
+		log("Step 8: Continue registration - check dependent info and fill guardian name");
+		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
+		createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
+		createGuardianStep1.createGuardianOnlyFirstPage("Guardian", patientLastName, "Parent");
+
+		log("Step 9: Continue registration - create dependents credentials");
+		JalapenoCreateGuardianPage2 createGuardianStep2 = createGuardianStep1.continueToSecondPage(driver);
+		assertTrue(createGuardianStep2.assessElements());
+		createGuardianStep2.fillGuardianSecurityDetails(patientLogin, testData.getDoctorPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+				testData.getPhoneNumber());
+
+		log("Step 10: Continue to Home Page");
+		JalapenoHomePage homePage = createGuardianStep2.clickEnterPortal(driver);
+		assertTrue(homePage.assessHomePageElements());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		log("Step 11: Log out and log in");
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		homePage = loginPage.login(patientLogin, testData.getPassword());
+		assertTrue(homePage.assessHomePageElements());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		homePage.logout(driver);
+
+		log("Step 12: Logging into Mailinator and getting Guardian Activation url");
+		String emailSubject = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
+		String inEmail = "Sign Up!";
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, inEmail, 15);
+		assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
+		log("Retrieved activation link is " + guardianUrlEmail);
+		log("Comparing with link from PrP " + guardianUrl);
+		assertTrue(guardianUrl.equals(guardianUrlEmail));
+	}
+
+	// Create normal patient, under-age patient, complete registration with new guardian, checks login
+	// credentials and
+	// then checks guardian email
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testFACreateDependentAndGuardian() throws Exception {
+
+		long generatedTS = System.currentTimeMillis();
+		String patientLastName = "last" + generatedTS; // guardian's and dependent's last name and id
+		String patientLogin = "login" + generatedTS; // guardian's login
+		String patientEmail = "mail" + generatedTS + "@mailinator.com"; // guardian's and dependent's
+																																		// email
+
+		log("Step 2: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Step 3: Click on Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		log("Step 4: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("Step 5: Register Guardien - Enter all the details and click on Register");
+		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F", patientLastName + "G", testData.getPhoneNumber(),
+				patientEmail, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+
+		log("Step 6: Register Dependent - Enter all the details and click on Register");
+		String guardianUrl =
+				patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M", patientLastName + "D", testData.getPhoneNumber(), patientEmail,
+						testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+
+		log("Step 7: Step : Finishing of patient activation: step 1 - verifying identity");
+		JalapenoPatientActivationPage jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, patientUrl);
+		assertTrue(jalapenoPatientActivationPage.assessPatientActivationVerifyPageElements());
+		jalapenoPatientActivationPage.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(), testData.getDOBDay(), testData.getDOBYear());
+
+		log("Step 8: Finishing of patient activation: step 2 - filling patient data");
+		assertTrue(jalapenoPatientActivationPage.assessPatientActivationPageElements(false));
+		JalapenoHomePage jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivation(patientLogin, testData.getPassword(), testData);
+
+		log("Step 9: Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+
+		log("Step 10: Identify Dependent without logging out the patient");
+		JalapenoIdentifyDependentPage identifyDependentPage = new JalapenoIdentifyDependentPage(driver, guardianUrl);
+		assertTrue(identifyDependentPage.assessElements());
+		identifyDependentPage.fillPatientIdentifyInfo(testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+
+		log("Step 12: Continue registration - check dependent info and fill login credentials");
+		JalapenoCreateGuardianPage createGuardianStep1 = identifyDependentPage.continueToCreateGuardianPage(driver);
+		createGuardianStep1.checkDependentInfoRegisterPage("Dependent", patientLastName, patientEmail);
+		createGuardianStep1.createGuardianLinkToExistingPatient(patientLogin, testData.getPassword(), "Parent");
+
+		log("Step 13: Continue to the portal and check elements");
+		jalapenoHomePage = createGuardianStep1.continueToPortal(driver);
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+
+		log("Step 14: Logout, login and change patient");
+		JalapenoLoginPage loginPage = jalapenoHomePage.logout(driver);
+		jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
+		jalapenoHomePage.faChangePatient();
+		assertTrue(jalapenoHomePage.assessHomePageElements());
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+
+		log("Step 15: Logging into Mailinator and getting Patient and Guardian Activation url");
+		String emailSubjectPatient = "You're invited to create a Patient Portal account at " + testData.getPracticeName();
+		String emailSubjectGuardien = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
+		String inEmail = "Sign Up!";
+
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 15);
+		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
+		log("Retrieved patients activation link is " + patientUrl);
+		log("Comparing with patients link from PrP " + patientUrlEmail);
+		assertEquals(patientUrl, patientUrlEmail, "!patient unlock links are not equal!");
+
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 15);
+		assertNotNull(guardianUrlEmail, "Error: Activation dependents link not found.");
+		log("Retrieved dependents activation link is " + guardianUrlEmail);
+		log("Comparing with dependents link from PrP " + guardianUrl);
+		assertEquals(guardianUrl, guardianUrlEmail, "!guardian unlock links are not equal!");
+	}
+
+	// This test uses under-age patients created at tests FACreateDependentAndGuardian and
+	// FACreateGuardianOnly
+	@Test(enabled = true, groups = {"JalapenoAcceptance2"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testFAPostAgeOutFlow() throws Exception {
+
+		log("Step 2: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		log("Step 3: Click on Family Management");
+		AgeOutReportPage AOPage = practiceHome.clickFamilyManagementTab();
+
+		log("Step 4: Age-out first patient");
+		AOPage.searchInAgeOutReport(true, false, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		String name = AOPage.ageOutFirstPatient();
+		log("Patients name: " + name);
+
+		log("Step 5: Proceed to his dashboard");
+		AOPage.searchInAgeOutReport(false, true, testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		PatientDashboardPage patientDashboard = AOPage.findPatientInList(name);
+		String id = name.replaceAll("[^0-9]", "");
+		String email = "mail" + id + "@mailinator.com";
+
+		log("Step 6: Change patients email to " + email);
+		PatientSearchPage patientSearch = patientDashboard.clickEditEmail();
+		patientDashboard = patientSearch.changeEmailWithoutModify(email);
+
+		log("Step 7: Send post age-out invitation");
+		patientDashboard.sendPostAgeOutInvitation();
+
+		log("Step 8: Wait for email");
+		String emailSubject = "Invitation to join our patient portal at " + testData.getPracticeName();
+		String inEmail = "Sign Up!";
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(email, emailSubject, inEmail, 15);
+		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
+		log("Retrieved patients activation link is " + patientUrlEmail);
+
+		log("Step 9: Identify patient");
+		JalapenoPatientActivationPage patientActivation = new JalapenoPatientActivationPage(driver, patientUrlEmail);
+		patientActivation.assessPatientActivationVerifyPageElements();
+		patientActivation.verifyPatientIdentity(testData.getZipCode(), testData.getDOBMonthText(), testData.getDOBDay(), testData.getDOBYearUnderage());
+
+		log("Step 10: Create patient");
+		patientActivation.assessPatientActivationPageElements(false);
+		String login = "selflogin" + id;
+		JalapenoHomePage homePage = patientActivation.fillInPatientActivation(login, testData.getPassword(), testData);
+		homePage.assessHomePageElements();
+		homePage.isTextDisplayed("You have successfully created your account and can access all of your previous health information.");
+
+		log("Step 11: Logout and login patient");
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		homePage = loginPage.login(login, testData.getPassword());
+		homePage.assessHomePageElements();
+	}
+
+	/**
+	 * Creates patient, modifies My Account setting and validates result
+	 */
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMyAccountProfileTab() throws Exception {
+
+		JalapenoHomePage homePage = createAndLogInPatient(new JalapenoPatient(testData));
+
+		JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+
+		assertTrue(myAccountPage.assessPageElements());
+
+		Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
+		itemsToChange.put(myAccountPage.getAddress1Textbox(), "address");
+		itemsToChange.put(myAccountPage.getCityTextbox(), "city");
+		itemsToChange.put(myAccountPage.getStateSelect(), "Alaska");
+		itemsToChange.put(myAccountPage.getZipCodeTextbox(), "54321");
+
+		log("Modifying and checking My Account page");
+		assertTrue(myAccountPage.updateAndValidateWebElements(itemsToChange, myAccountPage.getSubmitButton()));
+	}
+
+	@Test(enabled = true, groups = {"JalapenoAcceptance1"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMyAccountSecurityTab() throws Exception {
+		JalapenoPatient patient = new JalapenoPatient(testData);
+		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
+
+		long generatedTS = System.currentTimeMillis();
+		String newEmail = String.format(NEW_EMAIL_TEMPLATE, generatedTS);
+		String newUserName = String.format(NEW_USERNAME_TEMPLATE, generatedTS);
+		String accountChangeNotificationSubject = String.format(ACCOUNT_CHANGE_NOTIFICATION_EMAIL_SUBJECT_TEMPLATE, testData.getPracticeName());
+
+		log("Create and log in patient");
+		JalapenoHomePage homePage = createAndLogInPatient(patient);
+
+		log("Go to security tab on my account page");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		JalapenoMyAccountSecurityPage myAccountSecurityPage = myAccountPage.goToSecurityTab(driver);
+		assertTrue(myAccountSecurityPage.assessBasicPageElements());
+
+		log("Change email");
+		myAccountSecurityPage.goToChangeEmailAndAssessElements();
+		myAccountSecurityPage.changeEmailAndVerify(patient.getPassword(), newEmail);
+		mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+		mails.add(new ExpectedEmail(patient.getEmail(), accountChangeNotificationSubject, EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+
+		log("Change username");
+		myAccountSecurityPage.goToChangeUserNameAndAssessElements();
+		myAccountSecurityPage.changeUserNameAndVerify(patient.getPassword(), newUserName);
+		mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, USERNAME_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+
+		log("Change security question");
+		myAccountSecurityPage.goToChangeSecurityQuestionAndAssessElements();
+		myAccountSecurityPage.changeSecurityQuestionAndVerify(patient.getPassword(), NAME_OF_FIRST_PET_SECURITY_QUESTION,
+				NAME_OF_FIRST_PET_SECURITY_QUESTION_ANSWER);
+
+		log("Change password");
+		myAccountSecurityPage.goToChangePasswordAndAssessElements();
+		myAccountSecurityPage.changePassword(patient.getPassword(), NEW_PASSWORD);
+		log("Try new password");
+		JalapenoLoginPage loginPage = homePage.logout(driver);
+		loginPage.login(newUserName, NEW_PASSWORD);
+		mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, PASSWORD_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+
+		log("Check notification emails");
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 15));
+	}
 }

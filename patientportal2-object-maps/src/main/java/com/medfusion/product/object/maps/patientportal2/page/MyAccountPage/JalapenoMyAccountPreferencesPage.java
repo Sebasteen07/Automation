@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
@@ -11,11 +13,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
-public class JalapenoPreferencesPage extends BaseTestNGWebDriver{
+public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.ID, using = "preferredLocation")
 	private WebElement preferredLocation;
@@ -29,17 +30,11 @@ public class JalapenoPreferencesPage extends BaseTestNGWebDriver{
 	@FindBy(how = How.ID, using = "apptRemindersOptOut")
 	private WebElement apptRemindersOptOut;
 
-	@FindBy(how = How.ID, using = "prevStep")
-	private WebElement previousStep;
-
-	@FindBy(how = How.ID, using = "saveAccountChanges")
-	private WebElement saveAccountChanges;
-
 	@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
 	private WebElement successfulUpdateMessage;
 
-	public JalapenoPreferencesPage(WebDriver driver) {
-		super();
+	public JalapenoMyAccountPreferencesPage(WebDriver driver) {
+		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
@@ -74,8 +69,7 @@ public class JalapenoPreferencesPage extends BaseTestNGWebDriver{
 		log("Statement preference is set up to: " + statementPreferenceType);
 	}
 
-	public boolean assessPageElements(WebDriver driver) {
-
+	public boolean assessPageElements() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(preferredLocation);
@@ -85,6 +79,6 @@ public class JalapenoPreferencesPage extends BaseTestNGWebDriver{
 		webElementsList.add(previousStep);
 		webElementsList.add(saveAccountChanges);
 
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 }
