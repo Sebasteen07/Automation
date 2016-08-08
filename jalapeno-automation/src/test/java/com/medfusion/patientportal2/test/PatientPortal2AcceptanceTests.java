@@ -255,7 +255,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = patient.getEmail().split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+		String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
 
 		assertTrue(url != null);
 
