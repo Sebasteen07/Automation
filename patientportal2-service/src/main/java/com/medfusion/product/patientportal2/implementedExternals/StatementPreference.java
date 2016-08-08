@@ -25,7 +25,7 @@ public class StatementPreference implements IStatementPreference {
 			String password) {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
 		JalapenoHomePage homePage = loginPage.login(username, password);
-		JalapenoAccountPage accountPage = homePage.clickOnAccount(driver);
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
 
 		return myAccountPage.goToPreferencesTab(driver);

@@ -3,9 +3,11 @@ package com.medfusion.product.object.maps.patientportal2.page.HealthForms;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
-public class JalapenoHealthFormsListPage extends JalapenoPage {
+
+//TODO not used anywhere - is needed?
+public class JalapenoHealthFormsListPage extends MedfusionPage {
 
 	/**
 	 * @Author:Petr Hajek
@@ -17,6 +19,12 @@ public class JalapenoHealthFormsListPage extends JalapenoPage {
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
+	}
+
+	@Override
+	public boolean assessBasicPageElements() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

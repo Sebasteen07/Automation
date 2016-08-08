@@ -386,7 +386,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		}		
 		
 		log("Logging out");
-		jalapenoHomePage.logout(driver);
+		jalapenoHomePage.clickOnLogout();
 		
 		log("Back to Practice Portal to assign external ID");
 		return act.editPatientRSDKExternalID(driver, testData, newPat);

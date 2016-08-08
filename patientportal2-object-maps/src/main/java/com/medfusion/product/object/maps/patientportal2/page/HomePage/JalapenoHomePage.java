@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoPage;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
@@ -23,7 +23,7 @@ import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPa
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 
-public class JalapenoHomePage extends JalapenoPage {
+public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.ID, using = "home")
 	private WebElement home;
@@ -63,11 +63,6 @@ public class JalapenoHomePage extends JalapenoPage {
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
-	
-	/**
-	 * @Author:Jakub Calabek
-	 * @Date:24.7.2013
-	 */
 	
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -181,7 +176,8 @@ public class JalapenoHomePage extends JalapenoPage {
 		}
 	}
 
-	public boolean assessHomePageElements() {
+	@Override
+	public boolean assessBasicPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 	
@@ -229,5 +225,4 @@ public class JalapenoHomePage extends JalapenoPage {
 		viewDifferentPatientButton.click();
 		listBadgeDropdownButton.click();
 	}
-	
 }

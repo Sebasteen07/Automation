@@ -137,7 +137,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
         log("Logging out");
-        jalapenoHomePage.logout(driver);
+		jalapenoHomePage.clickOnLogout();
 
         log("Step 10: Do a GET on PIDC Url to get registered patient");
         // get only patients from last day in epoch time to avoid transferring
@@ -286,7 +286,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         // is sent
 
 		log("Logging out");
-		homePage.logout(driver);
+		homePage.clickOnLogout();
 
         log("Step 15: Wait 60 seconds, so the message can be processed");
         Thread.sleep(60000);
@@ -356,7 +356,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         jalapenoCcdPage.verifyCCDViewerAndClose();
 
 		log("Logging out");
-		homePage.logout(driver);
+		homePage.clickOnLogout();
 		/*
 		 * log("Step 10: Go to patient page"); pMyPatientPage =
 		 * pMessage.clickMyPatientPage();
@@ -558,7 +558,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         assertTrue(homePage.isTextDisplayed("Thank you"));
 
         log("Step 6: Logout of Patient Portal");
-        homePage.logout(driver);
+		homePage.clickOnLogout();
 
         log("Step 7: Setup Oauth client");
         RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
@@ -623,7 +623,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
 
         log("Step 16: Logout of Patient Portal");
-        homePage2.logout(driver);
+		homePage2.clickOnLogout();
 
         // Practice portal validation
         log("Step 17: Login to Practice Portal");
@@ -707,7 +707,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         log("Step 7: Logout of Patient Portal");
         assertTrue(homePage.wasPayBillsSuccessfull());
         String confirmationnumber = homePage.getConfirmationNumberFromPayment();
-        homePage.logout(driver);
+		homePage.clickOnLogout();
 
         log("Step 8: Setup Oauth client 2.O");
         RestUtils.oauthSetup(OLBPData.getOAuthKeyStore(), OLBPData.getOAuthProperty(), OLBPData.getOAuthAppToken(),
@@ -773,7 +773,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         messagesPage.replyToMessage(driver);
 
         log("Step 19: Logging out");
-        inboxPage.logout(driver);
+		inboxPage.clickOnLogout();
 
         // Wait 60 seconds, so the message can be processed
         Thread.sleep(60000);

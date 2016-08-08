@@ -151,7 +151,6 @@ public class PatientActivationPage extends BasePageObject{
 	public void setInitialDetails(String sEmail) {
 		firstNameString = "Beta" + IHGUtil.createRandomNumericString();
 		lastNameString = "Tester";
-		zipCodeString = PracticeConstants.Zipcode;
 		emailAddressString = sEmail;
 		patientIdString = emailAddressString;
 
@@ -172,7 +171,7 @@ public class PatientActivationPage extends BasePageObject{
 
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
-		zip.sendKeys(zipCodeString);
+		zip.sendKeys(PracticeConstants.Zipcode);
 
 		clickRegPatient();
 		clickVerify();

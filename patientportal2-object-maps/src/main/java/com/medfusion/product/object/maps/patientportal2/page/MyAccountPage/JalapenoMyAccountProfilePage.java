@@ -1,6 +1,8 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
@@ -11,6 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
@@ -114,7 +117,8 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
 	}
 
-	public boolean assessPageElements() {
+	@Override
+	public boolean assessBasicPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
@@ -129,36 +133,13 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
-	public WebElement getProfileTab() {
-		return profileTab;
-	}
+	public boolean modifyAndValidatePageContent() {
+		        Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
+		        itemsToChange.put(address1Textbox, "address");
+		        itemsToChange.put(cityTextbox, "city");
+		        itemsToChange.put(stateSelect, "Alaska");
+		        itemsToChange.put(zipCodeTextbox, "54321");
 
-	public WebElement getPreferencesTab() {
-		return preferencesTab;
+		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
-
-	public WebElement getAddress1Textbox() {
-		return address1Textbox;
-	}
-
-	public WebElement getCityTextbox() {
-		return cityTextbox;
-	}
-
-	public WebElement getZipCodeTextbox() {
-		return zipCodeTextbox;
-	}
-
-	public WebElement getMaleRadioButton() {
-		return maleRadioButton;
-	}
-
-	public WebElement getStateSelect() {
-		return stateSelect;
-	}
-
-	public WebElement getSubmitButton() {
-		return saveAccountChanges;
-	}
-
 }

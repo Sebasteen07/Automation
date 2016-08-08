@@ -69,7 +69,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		log("Statement preference is set up to: " + statementPreferenceType);
 	}
 
-	public boolean assessPageElements() {
+	@Override
+	public boolean assessBasicPageElements() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(preferredLocation);

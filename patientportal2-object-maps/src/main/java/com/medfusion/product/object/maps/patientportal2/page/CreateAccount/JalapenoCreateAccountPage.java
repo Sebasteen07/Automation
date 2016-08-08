@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
@@ -176,7 +177,8 @@ public class JalapenoCreateAccountPage extends MedfusionPage {
         return this;
     }
 
-    public boolean assessCreateAccountPageElements() {
+	@Override
+    public boolean assessBasicPageElements() {
 
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
         webElementsList.add(inputPatientFirstName);
