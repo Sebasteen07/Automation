@@ -141,12 +141,15 @@ public abstract class MedfusionPage extends BasePageObject {
 
         if (swe.equals(SupportedWebElements.SELECT)) {
             Select select = new Select(element);
-            select.selectByVisibleText(value);
+			select.selectByVisibleText(value);
+		} else if (swe.equals(SupportedWebElements.TEXT)) {
+			element.clear();
+			element.sendKeys(value);
         } else {
             element.sendKeys(value);
         }
 
-        if (!validateWebElement(element, value, swe)) {
+		if (!validateWebElement(element, value)) {
 			// TODO what exception should be here?
             throw new UnsupportedOperationException("Element was not set up correctly");
         }
@@ -157,36 +160,43 @@ public abstract class MedfusionPage extends BasePageObject {
      */
     public boolean validateWebElements(Map<WebElement, String> map) {
         for (Entry<WebElement, String> entry : map.entrySet()) {
-            if (!validateWebElement(entry.getKey(), entry.getValue())) {
+			if (!validateWebElement(entry.getKey(), entry.getValue())) {
                 return false;
             }
         }
         return true;
     }
 
+	private String createValidateWebElementErrorMessage(WebElement element, String value) {
+		return elementToString(element) + " has value : " + element.getAttribute("value") + " but expected: " + value + " - ERROR";
+	}
+
+	private String createValidateWebElementOkMessage(WebElement element, String value) {
+		return elementToString(element) + " has value : " + element.getAttribute("value") + " - OK";
+	}
+
     /**
      * Validates that web element has the same value as expected
      * Currently works with text and select elements only
      */
-    public boolean validateWebElement(WebElement element, String value, SupportedWebElements swe) {
-        switch (swe) {
+	public boolean validateWebElement(WebElement element, String value) {
+		switch (getSupportedWebElement(element)) {
             case TEXT:
                 if (!value.equals(element.getAttribute("value"))) {
-					// TODO duplicate code in cases
-					log(elementToString(element) + " has value : " + element.getAttribute("value") + " but expected: " + value + " - ERROR");
+					log(createValidateWebElementErrorMessage(element, value));
                     return false;
                 } else {
-					log(elementToString(element) + " has value : " + element.getAttribute("value") + " - OK", Level.DEBUG);
+					log(createValidateWebElementOkMessage(element, value));
                 }
                 break;
             case SELECT:
                 Select select = new Select(element);
                 String selectedText = select.getFirstSelectedOption().getText();
                 if (!value.equals(selectedText)) {
-					log(elementToString(element) + " has value : " + selectedText + " but expected: " + value + " - ERROR");
+					log(createValidateWebElementErrorMessage(element, value));
                     return false;
                 } else {
-					log(elementToString(element) + " has value : " + selectedText + " - OK");
+					log(createValidateWebElementOkMessage(element, value));
                 }
                 log(select.getFirstSelectedOption().getText(), Level.DEBUG);
                 break;
@@ -200,13 +210,13 @@ public abstract class MedfusionPage extends BasePageObject {
 	public boolean assessPageElements(ArrayList<WebElement> allElements) {
 		log("Checking page elements");
 
-		for (WebElement w : allElements) {
+		for (WebElement element : allElements) {
 			int attempt = 1;
 			while (attempt < 3) {
-				log("Searching for element: " + w.toString(), Level.DEBUG);
+				log("Searching for element: " + element.toString(), Level.DEBUG);
 				try {
-					new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(w));
-					log("Element " + w.toString() + " : is displayed", Level.DEBUG);
+					new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+					log("Element " + element.toString() + " : is displayed", Level.DEBUG);
 					attempt = 3;
 				} catch (StaleElementReferenceException ex) {
 					log("StaleElementReferenceException was catched, attempt: " + attempt++, Level.DEBUG);
