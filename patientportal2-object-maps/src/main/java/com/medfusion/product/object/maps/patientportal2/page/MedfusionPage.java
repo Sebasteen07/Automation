@@ -78,6 +78,10 @@ public abstract class MedfusionPage extends IHGUtil {
 
         SupportedWebElements swe = getSupportedWebElement(element);
 
+		if ((swe.equals(SupportedWebElements.TEXT)) && (element.getText() != "")) {
+			element.clear();
+		}
+
         if (swe.equals(SupportedWebElements.SELECT)) {
             Select select = new Select(element);
             select.selectByVisibleText(value);
