@@ -64,7 +64,7 @@ public class JalapenoMessagesPage extends BasePageObject {
 
 		for (int count = 1; count <= maxCount; count++) {
 			try {
-				element = driver.findElement(By.xpath("(//*[contains(text(),'" + subject + "')])[1]"));
+				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
 				log("Message with subject \"" + subject + "\" arrived.");
 				return element.isDisplayed();
 			} catch (Exception ex) {

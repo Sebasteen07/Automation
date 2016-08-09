@@ -17,14 +17,6 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class PatientMessagingPage extends BasePageObject{
 
-	public PatientMessagingPage(WebDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
-	}
-
-
-
-
 	@FindBy(xpath="//table[@class='searchForm']//select[@name='delivery']")
 	private WebElement deliveryMode;
 
@@ -78,6 +70,14 @@ public class PatientMessagingPage extends BasePageObject{
 	
 	@FindBy(xpath="//*[contains(text(),'Message Published Successfully')]")
 	private WebElement messagePublishedSuccessfully;
+	
+	private static int maxCount = 10;
+
+	public PatientMessagingPage(WebDriver driver) {
+		super(driver);
+		// TODO Auto-generated constructor stub
+	}
+	
 	/**
 	 * @Description:Set Delivery Mode
 	 */
@@ -302,33 +302,30 @@ public class PatientMessagingPage extends BasePageObject{
         IHGUtil.exists(driver, 30, messagePublishedSuccessfully);
     }
 
-      public boolean findMyMessage(String subject) throws Exception {
-    	  IHGUtil.PrintMethodName();
-    	  int maxCount = 10;
-    	  int count = 1;
-    	  WebElement element;
-    	  
-    	  myMessages.click();
-    	  
-          IHGUtil.setFrame(driver,PracticeConstants.frameName);
-    	  
-    	  while(count <= maxCount) {
-    		  try {
-    			  log("Click on Search button");
-    			  searchButton.click();
-    			  element = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
-    			  element.click();
-    			  log("Message from patient found");
-    			  return element.isDisplayed();
-    		  }
-    		  catch(Exception ex) {
-    			  log("Searching for message: " + count + "/" + maxCount);
-    			  count++;
-    			  searchButton.click();
-    		  }
-    	  }
-    	  
-    	  log("Message from patient not found");
-    	  return false;
-      }
+	public boolean findMyMessage(String subject) throws Exception {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+
+		myMessages.click();
+
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+
+		log("Searching message with subject: " + subject);
+
+		for (int count = 1; count <= maxCount; count++) {
+			try {
+				searchButton.click();
+				element = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
+				element.click();
+				log("Message from patient found");
+				return element.isDisplayed();
+			} catch (Exception ex) {
+				log("Searching for message: " + count + "/" + maxCount);
+				searchButton.click();
+			}
+		}
+
+		log("Message from patient not found");
+		return false;
+	}
 }
