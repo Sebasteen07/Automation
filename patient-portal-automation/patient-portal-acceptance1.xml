@@ -10,17 +10,12 @@
 	<classes>
 	    <class name="com.medfusion.product.patientportal1.test.PortalAcceptanceTests" />
 	    	<methods>
-	    		<include name="testSecureMessageNotification" />
-	    		<include name="testAddInsurance" />
 	    		<include name="testLoginLogout" />
         		<include name="testCreatePatient" />
-        		<include name="testAppointmentRequestEnd2End" />
-        		<include name="testRxRenewalEnd2End" />
-        		<include name="testAddandRemovePreferences" />
-        		<include name="testPhrPortalSSO" />
-        		<include name="testViewAsPdf" />
         		<include name="testAddNewPatientActivation" />
-                <include name="testPayNow" />
+        		<include name="testPatientForgotUserId" />
+        		<include name="testPatientForgotUserIdCaseInsensitiveEmail" />
+        		<include name="testForgotPassword" />
       		</methods>
   </classes>
 	

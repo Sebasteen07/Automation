@@ -10,15 +10,9 @@
 	<classes>
 	    <class name="com.medfusion.product.patientportal1.test.PortalAcceptanceTests" />
 	   		<methods>
-        		<include name="testBillPaymentEnd2End" />
         		<include name="testSymptomAssessment" />
-        		<include name="testVirtualOfficeVisitEnd2End" />
-        		<include name="testAskAStaffEnd2End" />
         		<include name="testFamilyAccount" />
-        		<include name="testAddandChangeCreditCard" />
-        		<include name="testPatientForgotUserId" />
-        		<include name="testPatientForgotUserIdCaseInsensitiveEmail" />
-        		<include name="testForgotPassword" />
+        		<include name="testAddandRemovePreferences" />
         		<include name="testMyMessagesRefreshButton" />
       		</methods>
   </classes>
