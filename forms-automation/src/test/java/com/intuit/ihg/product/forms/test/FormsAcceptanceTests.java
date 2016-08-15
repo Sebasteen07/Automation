@@ -1,7 +1,11 @@
 package com.intuit.ihg.product.forms.test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.PageFactory;
@@ -10,7 +14,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
@@ -24,6 +27,8 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormLay
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.CustomFormPreviewPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFormsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
@@ -71,35 +76,34 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
-	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
+	 * Fills out Output form for CCD test. Needs the form to be opened and on
+	 * the first (welcome) page
+	 * 
+	 * @param diacriticString
+	 *            - String to fill out in Symptoms comments, used for testing
+	 *            special diacritic
 	 */
 	private void fillOutputForm(String diacriticString) throws Exception {
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		FormBasicInfoPage basicInfoPage = welcomePage.clickSaveContinue(FormBasicInfoPage.class);
 
-        FormCurrentSymptomsPage currentSymptomsPage =
-                basicInfoPage.clickSaveContinue(FormCurrentSymptomsPage.class);
+		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveContinue(FormCurrentSymptomsPage.class);
 		currentSymptomsPage.setBasicSymptoms();
 		currentSymptomsPage.enterComment(diacriticString);
-		CurrentSymptomsSupplementalPage symptomsSupplemental =
-                currentSymptomsPage.clickSaveContinue(CurrentSymptomsSupplementalPage.class);
+		CurrentSymptomsSupplementalPage symptomsSupplemental = currentSymptomsPage
+				.clickSaveContinue(CurrentSymptomsSupplementalPage.class);
 		symptomsSupplemental.fillLogicalAnswersForPdfTest();
 
-        FormMedicationsPage medicationsPage =
-                symptomsSupplemental.clickSaveContinue(FormMedicationsPage.class);
+		FormMedicationsPage medicationsPage = symptomsSupplemental.clickSaveContinue(FormMedicationsPage.class);
 		medicationsPage.setNoMedications();
 
-        IllnessesSupplementalPage illnessesPage =
-                medicationsPage.clickSaveContinue(IllnessesSupplementalPage.class);
+		IllnessesSupplementalPage illnessesPage = medicationsPage.clickSaveContinue(IllnessesSupplementalPage.class);
 		illnessesPage.fillOut();
 
-        FormFamilyHistoryPage familyPage =
-                illnessesPage.clickSaveContinue(FormFamilyHistoryPage.class);
+		FormFamilyHistoryPage familyPage = illnessesPage.clickSaveContinue(FormFamilyHistoryPage.class);
 		familyPage.setNoFamilyHistory();
 
-        FormSocialHistoryPage socialHistoryPage =
-                familyPage.clickSaveContinue(FormSocialHistoryPage.class);
+		FormSocialHistoryPage socialHistoryPage = familyPage.clickSaveContinue(FormSocialHistoryPage.class);
 		socialHistoryPage.fillOutDefaultExerciseLength();
 		socialHistoryPage.clickSaveContinue();
 		socialHistoryPage.submitForm();
@@ -111,87 +115,87 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		return createPatient.createPatient(driver, portalData);
 	}
 
-    /**
-     * Logs in to Patient Portal with default test patient and opens up a form selected by the identifier
-     * @param formIdentifier
-     * @return
-     * @throws Exception
-     */
-    protected MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
-        log("Get Portal Data from Excel ##########");
-        Portal portal = new Portal();
-        TestcasesData portalData = new TestcasesData(portal);
-        log("Patient Portal URL: " + portalData.getFormsAltUrl());
+	/**
+	 * Logs in to Patient Portal with default test patient and opens up a form
+	 * selected by the identifier
+	 * 
+	 * @param formIdentifier
+	 * @return
+	 * @throws Exception
+	 */
+	protected MyPatientPage openFormOnPatientPortal(String formIdentifier) throws Exception {
+		log("Get Portal Data from Excel ##########");
+		Portal portal = new Portal();
+		TestcasesData portalData = new TestcasesData(portal);
+		log("Patient Portal URL: " + portalData.getFormsAltUrl());
 
-        log("Log in to Patient Portal");
-        PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsAltUrl());
-        MyPatientPage pMyPatientPage =
-                loginPage.login(portalData.getUsername(), portalData.getPassword());
-        
-        //just a workaround because there is npp still displaying for the same patient
-        if(pMyPatientPage.isTermsOfUseDisplayed()) {
-        	log("Terms of Use page is displayed");
-        	pMyPatientPage.acknowledgeTermsOfUse();
-        }
-        
-        log("Go to forms page and open the \"" + formIdentifier + "\" form");
-        HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
-        formPage.openDiscreteForm(formIdentifier);
-        return pMyPatientPage;
-    }
+		log("Log in to Patient Portal");
+		PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsAltUrl());
+		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(), portalData.getPassword());
 
-    protected PracticeHomePage loginToPracticePortal() throws Exception {
-        Practice practice = new Practice();
-        PracticeTestData practiceTestData = new PracticeTestData(practice);
+		// just a workaround because there is npp still displaying for the same
+		// patient
+		if (pMyPatientPage.isTermsOfUseDisplayed()) {
+			log("Terms of Use page is displayed");
+			pMyPatientPage.acknowledgeTermsOfUse();
+		}
 
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-        return practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
-    }
+		log("Go to forms page and open the \"" + formIdentifier + "\" form");
+		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
+		formPage.openDiscreteForm(formIdentifier);
+		return pMyPatientPage;
+	}
 
-    protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
-        Practice practice = new Practice();
+	protected PracticeHomePage loginToPracticePortal() throws Exception {
+		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-        PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(),
-                practiceTestData.getFormPassword());
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		return practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword());
+	}
 
-        log("Click CustomFormTab");
-        SearchPatientFormsPage searchFormsPage = practiceHome.clickCustomFormTab();
+	protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
-		// check if the page is loaded, sometimes the test ends up on login page at this point
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getFormUser(),
+				practiceTestData.getFormPassword());
+
+		log("Click CustomFormTab");
+		SearchPatientFormsPage searchFormsPage = practiceHome.clickCustomFormTab();
+
+		// check if the page is loaded, sometimes the test ends up on login page
+		// at this point
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		if (!searchFormsPage.isPageLoaded() && practiceLogin.isLoginPageLoaded()) {
-				searchFormsPage = practiceLogin
-						.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword())
-						.clickCustomFormTab();
+			searchFormsPage = practiceLogin.login(practiceTestData.getFormUser(), practiceTestData.getFormPassword())
+					.clickCustomFormTab();
 		}
 		driver.manage().timeouts().implicitlyWait(SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
-				verifyTrue(searchFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
-        return searchFormsPage;
-    }
+		assertTrue(searchFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
+		return searchFormsPage;
+	}
 
-    /**
-     * Verifies that record of completed or partially completed form is from the current day and that
-     * the pdf is downloadable
-     */
-    private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage)
-            throws Exception {
-        log("Verify date and download code");
+	/**
+	 * Verifies that record of completed or partially completed form is from the
+	 * current day and that the pdf is downloadable
+	 */
+	private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage) throws Exception {
+		log("Verify date and download code");
 		// take the date of form submission
 		String submittedDate = IHGUtil.extractDateFromText(viewFormPage.getLastUpdatedDateText());
 		// get current date in the same format as the date at the page
 		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
-        assertEquals(submittedDate, currentDate, "Form submitted today not found");
+		assertEquals(submittedDate, currentDate, "Form submitted today not found");
 
-        log("Download URL: " + viewFormPage.getDownloadURL());
-        URLStatusChecker status = new URLStatusChecker(driver);
-        assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
-    }
+		log("Download URL: " + viewFormPage.getDownloadURL());
+		URLStatusChecker status = new URLStatusChecker(driver);
+		assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
+	}
 
-	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName)
-			throws Exception {
+	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		String submittedDate = formsPage.getSubmittedDate(formName);
 		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
@@ -219,8 +223,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData SGData = new SitegenTestData(sitegen);
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps()
-				.logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver,
+				SGData.getFormUser(), SGData.getFormPassword());
 		// Get the current window handle before opening new window
 		String parentHandle = driver.getWindowHandle();
 
@@ -240,7 +244,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		pManageDiscreteForms.publishForm(newFormName);
 
 		log("step 5: Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle descriptor
+		// Switching back to original window using previously saved handle
+		// descriptor
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
@@ -248,19 +253,18 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		return pManageDiscreteForms.getWelcomeMessage();
 	}
 
-    @Test(groups = {"smokeTest"})
-    public void formsConfigSmokeTest() throws Exception {
-        SitegenTestData testData = new SitegenTestData(new Sitegen());
-        SiteGenSteps sgSteps = new SiteGenSteps();
+	@Test(groups = { "smokeTest" })
+	public void formsConfigSmokeTest() throws Exception {
+		SitegenTestData testData = new SitegenTestData(new Sitegen());
+		SiteGenSteps sgSteps = new SiteGenSteps();
 
-        logTestEnvironmentInfo("formsConfigSmokeTest");
-        DiscreteFormsList formsPage = sgSteps
-                .logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword())
-                .clickLnkDiscreteForms();
-        assertTrue(formsPage.isPageLoaded());
-    }
+		logTestEnvironmentInfo("formsConfigSmokeTest");
+		DiscreteFormsList formsPage = sgSteps.logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword())
+				.clickLnkDiscreteForms();
+		assertTrue(formsPage.isPageLoaded());
+	}
 
-    @Test(enabled = true, groups = {"PatientForms"})
+	@Test(enabled = true, groups = { "PatientForms" })
 	public void testQuotationMarksInForm() throws Exception {
 		logTestEnvironmentInfo("testQuotationMarksInForm");
 
@@ -271,31 +275,31 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		SpecialCharFormFirstPage customPage1 = welcomePage.initToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
 
-        SpecialCharFormSecondPage customPage2 =
-                customPage1.clickSaveContinue(SpecialCharFormSecondPage.class);
+		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveContinue(SpecialCharFormSecondPage.class);
 		customPage2.selectAnswerQuoteMark();
 		customPage2.signConsent();
 		customPage2.clickSaveContinue();
 		customPage2.submitForm();
 	}
 
-    /**
+	/**
 	 * @Author: Adam Warzel
 	 * @Date: April-01-2014
-	 * @UserStory: US7083
-	 *             Creates a new user.
-	 *             Tests if filling out a form generates a PDF, if link for downloading
-	 *             the PDF appears in Patient Portal and if the link is working and also
-	 *             whether corresponding CCD was generated.
-	 *             Then it checks if the submitted date is accurate and if patient's DOB has not been changed
+	 * @UserStory: US7083 Creates a new user. Tests if filling out a form
+	 *             generates a PDF, if link for downloading the PDF appears in
+	 *             Patient Portal and if the link is working and also whether
+	 *             corresponding CCD was generated. Then it checks if the
+	 *             submitted date is accurate and if patient's DOB has not been
+	 *             changed
 	 */
-	@Test(enabled = true, groups = {"PatientForms"})
+	@Test(enabled = true, groups = { "PatientForms" })
 	public void testFormPdfCcd() throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml;
-		// easy bruising is mapped to following term in Forms Configurator in SiteGen
+		// easy bruising is mapped to following term in Forms Configurator in
+		// SiteGen
 		String easyBruisingString = "ABO donor$$$easy";
-        String diacriticString = "¿¡eñÑeŘ\"";
+		String diacriticString = "¿¡eñÑeŘ\"";
 
 		logTestEnvironmentInfo("testDiscreteFormPDF");
 		Portal portal = new Portal();
@@ -321,8 +325,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Test if CCD is produced");
 		log("Calling rest");
 		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
-		assertTrue(xml.contains(easyBruisingString),
-                "Symptom not found in the CCD, printing the CCD:\n" + xml);
+		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 6: Test if the submission date is correct");
 		verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM);
@@ -335,32 +338,30 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
-		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy",
-				"MMMMM/dd/yyyy");
+		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy");
 		assertEquals(portalData.getDOB(), accountDOB, "Date of birth is not accurate!");
 
 	}
 
-	@Test(enabled = true, groups = {"PatientForms"})
+	@Test(enabled = true, groups = { "PatientForms" })
 	public void testFormPracticePortal() throws Exception {
 
 		logTestEnvironmentInfo("testFormPracticePortal");
 
-        log("Step 1: Open the form");
+		log("Step 1: Open the form");
 		MyPatientPage pMyPatientPage = openFormOnPatientPortal(SitegenConstants.PRACTICE_FORM);
 
 		log("Step 2: Fill out the form");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 
-        FormBasicInfoPage demographPage = welcomePage.initToFirstPage(FormBasicInfoPage.class);
+		FormBasicInfoPage demographPage = welcomePage.initToFirstPage(FormBasicInfoPage.class);
 
-        FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
+		FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 
-        FormIllnessConditionsPage illsPage =
-                medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
+		FormIllnessConditionsPage illsPage = medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
 		illsPage.checkMononucleosis();
-        illsPage.clickSaveContinueSamePage(3);
+		illsPage.clickSaveContinueSamePage(3);
 
 		log("Submitting form");
 		illsPage.submitForm();
@@ -368,7 +369,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 3: Logout of patient portal");
 		pMyPatientPage.logout(driver);
 
-        SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
+		SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
 
 		log("step 6: Search for PatientForms With Status Open");
 		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage
@@ -376,55 +377,48 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 7: View the Result");
 		ViewPatientFormPage pViewPatientFormPage = pSearchPatientFormsResultPage.clickViewLink();
-        verifyFormsDateAndPDF(pViewPatientFormPage);
+		verifyFormsDateAndPDF(pViewPatientFormPage);
 	}
 
-    @Test(enabled = true, groups = {"PatientForms"})
-    public void testPartiallyCompletedForm() throws Exception {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+	@Test(enabled = true, groups = { "PatientForms" })
+	public void testPartiallyCompletedForm() throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 5);
 
-        logTestEnvironmentInfo("testPartiallyCompletedForm");
+		logTestEnvironmentInfo("testPartiallyCompletedForm");
 
-        log("Step 1: Open the form");
+		log("Step 1: Open the form");
 		MyPatientPage myPatientPage = openFormOnPatientPortal(SitegenConstants.PRACTICE_FORM);
 
-        log("Step 2: Fill out the form");
-        FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-        welcomePage.initToFirstPage(FormBasicInfoPage.class);
-        welcomePage.clickSaveAndFinishAnotherTime();
-        driver.switchTo().defaultContent();
+		log("Step 2: Fill out the form");
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		welcomePage.initToFirstPage(FormBasicInfoPage.class);
+		welcomePage.clickSaveAndFinishAnotherTime();
+		driver.switchTo().defaultContent();
 
-        wait.until( ExpectedConditions.elementToBeClickable(myPatientPage.getLogoutLink()) );
-        log("Logging out");
-        myPatientPage.getLogoutLink().click();
+		wait.until(ExpectedConditions.elementToBeClickable(myPatientPage.getLogoutLink()));
+		log("Logging out");
+		myPatientPage.getLogoutLink().click();
 
-        log("Step 3: Go to Practice Portal forms tab");
-        SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
-        SearchPartiallyFilledPage searchPage = pSearchPatientFormsPage.getPartiallyFilledSearch();
-        searchPage.clickSearch();
-        ViewPatientFormPage resultPage = searchPage.selectPatientsFirstForm();
-        verifyFormsDateAndPDF(resultPage);
-    }
+		log("Step 3: Go to Practice Portal forms tab");
+		SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
+		SearchPartiallyFilledPage searchPage = pSearchPatientFormsPage.getPartiallyFilledSearch();
+		searchPage.clickSearch();
+		ViewPatientFormPage resultPage = searchPage.selectPatientsFirstForm();
+		verifyFormsDateAndPDF(resultPage);
+	}
 
-    /**
-     * User Story ID in Rally: US544 - TA30648
-	 * StepsToReproduce:
-     *      Log in to SG
-     *      Go to Forms Config
-     *      Unpublish all forms
-     *      Delete all forms
-     *      Create a new form and configure it
-     *      Create a custom section and test saving it without name and questions
-     *      Save the form
-     *      Publish it
-     *      Test viewing the form on Patient Portal
-	 * === Prerequisite for the test case to run=========
-	 * Practice configured
-	 * Practices configured on: DEV3, DEMO, PROD
+	/**
+	 * User Story ID in Rally: US544 - TA30648 StepsToReproduce: Log in to SG Go
+	 * to Forms Config Unpublish all forms Delete all forms Create a new form
+	 * and configure it Create a custom section and test saving it without name
+	 * and questions Save the form Publish it Test viewing the form on Patient
+	 * Portal === Prerequisite for the test case to run========= Practice
+	 * configured Practices configured on: DEV3, DEMO, PROD
 	 * ============================================================
+	 * 
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"PatientForms"})
+	@Test(enabled = true, groups = { "PatientForms" })
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
 
 		String welcomeMessage = createFormSG();
@@ -435,15 +429,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 7: Log in to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, portalData.getFormsUrl());
-		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(),
-				portalData.getPassword());
+		MyPatientPage pMyPatientPage = loginPage.login(portalData.getUsername(), portalData.getPassword());
 
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
 	}
 
-    /**
+	/**
 	 * @Author: bkrishnankutty
 	 * @Date: 05/4/2013
 	 * @StepsToReproduce: Login to Patient Portal Click on CustomForm Fill
@@ -457,7 +450,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"CustomForms"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "CustomForms" })
 	public void testCustomForms() throws Exception {
 
 		log("Test Case: testCustomForms");
@@ -485,9 +478,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(driver.getPageSource().contains("Female question"));
 
 		pHealthForm.submitInsuranceHealthForm();
-
-		verifyEquals(pHealthForm.InsuranceHelthform.getText(), "Thank you for completing our Insurance Health Form ( Testing).");
-		// assertTrue(verifyTextPresent(driver,"Thank you for completing our Insurance Health Form ( Testing)."));
+		assertEquals(pHealthForm.InsuranceHelthform.getText(),
+				"Thank you for completing our Ivan Insurance Health Form ( Testing).");
 
 		log("step 4: Download InsuranceHealthForm -- validate HTTP Status Code");
 		assertEquals(pHealthForm.clickInsuranceHealthFormDownloadText(), 200,
@@ -502,16 +494,17 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(),
+				practiceTestData.getPassword());
 
 		log("step 8: On Practice Portal Home page Click CustomFormTab");
 		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
 		assertTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
 
 		log("step 9: Search for PatientForms With Status Open");
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(
-				patientData.getFirstName(), patientData.getLastName(), patientData.getDob_Month(), patientData.getDob_Day(),
-				patientData.getDob_Year());
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage
+				.SearchPatientFormsWithOpenStatus(patientData.getFirstName(), patientData.getLastName(),
+						patientData.getDob_Month(), patientData.getDob_Day(), patientData.getDob_Year());
 
 		log("step 10: View the Result");
 		pSearchPatientFormsResultPage.clickViewLink();
@@ -519,244 +512,325 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 11: Verify the Result");
 		String actualPatientName = pHealthForm.Patientname.getText().trim();
 
-		log("Displayed patient name is :"+actualPatientName);
-		verifyEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
-		/*
-		 * assertTrue(verifyTextPresent(driver,
-		 * "Patient Name : ihgqa  automation "));
-		 * assertTrue(verifyTextPresent(driver, "Patient DOB : 01/11/1987"));
-		 */
-		// assertTrue(verifyTextPresent(driver,
-		// "Patient SSN : 987-65-4322"));
+		log("Displayed patient name is :" + actualPatientName);
+		assertEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
+		assertTrue(verifyTextPresent(driver, "Patient DOB : 01/11/1987"));
 	}
 
 	/**
-	 * @Author:-Shanthala  : Modified :bbinisha : Modified-Modified: Prokop Rehacek
+	 * @Author:-Shanthala : Modified :bbinisha : Modified-Modified: Prokop
+	 *                    Rehacek
 	 * @Date:- 07-03-2013
-	 * @User Story ID in Rally :  US6152 and US6151 and US7626
-	 * @StepsToReproduce:
-	 *Go to siteGen
-	 *Enter the credentials
-	 *Search for the practice
-	 *Click on Custom Form
-	 *Click on Create Custom Form
-	 *Publish Custom Form and check for preview
-	 *Unpublish Custom Form, check for Preview and delete unpublished custom form
+	 * @User Story ID in Rally : US6152 and US6151 and US7626
+	 * @StepsToReproduce: Go to siteGen Enter the credentials Search for the
+	 *                    practice Click on Custom Form Click on Create Custom
+	 *                    Form Publish Custom Form and check for preview
+	 *                    Unpublish Custom Form, check for Preview and delete
+	 *                    unpublished custom form
 	 *
-	 *=== Prerequisite for the test case to run=========
-	 * Nurse Named :-
+	 *                    === Prerequisite for the test case to run=========
+	 *                    Nurse Named :-
 	 *
-	 *====Valid Custom Form details required. Test data would be updated after getting proper test data
-	 * =============================================================
-	 * @AreaImpacted :-
-	 * Description
+	 *                    ====Valid Custom Form details required. Test data
+	 *                    would be updated after getting proper test data
+	 *                    =============================================================
+	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"CustomForms"})
+	@Test(enabled = true, groups = { "CustomForms" })
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEnvironmentInfo("testCustomFormPublished");
 
 		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen=new Sitegen();
-		SitegenTestData testcasesData=new SitegenTestData(sitegen);
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testcasesData = new SitegenTestData(sitegen);
 
 		SiteGenSteps.logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage (driver,testcasesData.getSiteGenUrl());
-		SiteGenHomePage pSiteGenHomePage=loginpage.login(testcasesData.getAutomationUser(), testcasesData.getAutomationUserPassword());
-		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testcasesData.getAutomationUser(),
+				testcasesData.getAutomationUserPassword());
+		assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen HomePage  to be loaded, but it was not.");
 
 		log("step 3: navigate to SiteGen PracticeHomePage ##########");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
 		log("step 4: Click on Custom Forms");
 		String winHandleSiteGen = driver.getWindowHandle();
-		CreateCustomForms pManageCustomForms=pSiteGenPracticeHomePage.clickCustomForms();
+		CreateCustomForms pManageCustomForms = pSiteGenPracticeHomePage.clickCustomForms();
 		String winHandleCustomBuilder = driver.getWindowHandle();
 
-		log("step 5:Click on Manage Custom Form and delete custom form 'Automation Custom Form' if present");
+		log("step 5: Clear forms - unpublish and delete forms created by this method in previous runs");
 		ManageYourFormsPage plinkOnManageCustomForm = pManageCustomForms.clicklnkManageCustomForm();
-		verifyEquals(plinkOnManageCustomForm.isSearchPageLoaded(), true, "Expected SiteGen Manage custom form page to be loaded to unpublish the published form, but itwas not.");
+		plinkOnManageCustomForm.unpublishFormsNamedLike(SitegenConstants.FORMTITLE);
+		plinkOnManageCustomForm.deleteFormsNamedLike(SitegenConstants.FORMTITLE);
+		log("step 6: Click on Create Custom Form");
+		CreateCustomFormPage plinkOnCustomForm = pManageCustomForms.clicklnkCreateCustomForm();
 
-		if(plinkOnManageCustomForm.isUnPublished(SitegenConstants.FORMTITLE)) {
-			log("There is a form with the name 'Automation Custom Form' and is unpublished");
+		String customFormTitle = SitegenConstants.FORMTITLE + IHGUtil.createRandomNumber();
 
-			verifyTrue(plinkOnManageCustomForm.isSearchPageLoadedForUnpublishedTable(), "Expected the SiteGen Manage custom form page to be loaded to delete unpublishedform , but it was not.");
-			plinkOnManageCustomForm.deleteUnpublishedForm(SitegenConstants.FORMTITLE);
-			log("Existing custom form named 'Automation Custom Form deleted");
+		log("step 7: Enter Custom Form details");
+		assertTrue(plinkOnCustomForm.isSearchPageLoaded(),
+				"Expected the SiteGen Create a Custom Form page to be loaded to create a new custom form with details, but it was not.");
+		CustomFormAddCategoriesPage pCustomFormAddCategories = plinkOnCustomForm.enterCustomFormDetails(
+				SitegenConstants.FORMTYPE, customFormTitle, SitegenConstants.FORMINSTRUCTIONS,
+				SitegenConstants.FORMMESSAGE);
 
-		} else {
-			log("step 6: Click on Create Custom Form");
-			CreateCustomFormPage plinkOnCustomForm = pManageCustomForms.clicklnkCreateCustomForm();
+		log("step 8: Build a Custom Form");
+		assertTrue(pCustomFormAddCategories.isSearchPageLoaded(),
+				"Expected the SiteGen Build a Custom Form page to be loaded to add categories into the custom form, but it was not.");
+		AddQuestionsToCategoryPage pAddCAtegories = pCustomFormAddCategories
+				.addCategoriesDetails(SitegenConstants.FORMCATEGORY);
 
-			String customFormTitle = SitegenConstants.FORMTITLE+IHGUtil.createRandomNumber();
+		log("step 9A: Add Question1 to category 1");
+		assertTrue(pAddCAtegories.isSearchPageLoaded(),
+				"Expected the SiteGen Add questions to the category page to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),
+				"Questions are not getting added to expected Category");
+		assertTrue(pAddCAtegories.addQuestion1ToCategory(SitegenConstants.FORMQUESTION1),
+				"Custom Form question1 and answerset1 did not updated successfully.");
+		pAddCAtegories.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET1);
+		pAddCAtegories.saveCategoryQuestions();
 
-			log("step 7: Enter Custom Form details");
-			assertTrue(plinkOnCustomForm.isSearchPageLoaded(), "Expected the SiteGen Create a Custom Form page to be loaded to create a new custom form with details, but it was not.");
-			CustomFormAddCategoriesPage pCustomFormAddCategories = plinkOnCustomForm.enterCustomFormDetails(SitegenConstants.FORMTYPE,customFormTitle,SitegenConstants.FORMINSTRUCTIONS,SitegenConstants.FORMMESSAGE);
+		CustomFormAddCategoriesPage pCustomFormAddCategories2 = pAddCAtegories.clickCustomFormAddCategoriesPage();
+		AddQuestionsToCategoryPage pAddCAtegories2 = pCustomFormAddCategories2
+				.addCategoriesDetails(SitegenConstants.FORMCATEGORY2);
+		System.out.print(SitegenConstants.FORMCATEGORY);
 
-			log("step 8: Build a Custom Form");
-			assertTrue(pCustomFormAddCategories.isSearchPageLoaded(), "Expected the SiteGen Build a Custom Form page to be loaded to add categories into the custom form, but it was not.");
-			AddQuestionsToCategoryPage pAddCAtegories = pCustomFormAddCategories.addCategoriesDetails(SitegenConstants.FORMCATEGORY);
+		log("step 9B: Add Question2 to category 2");
+		assertTrue(pAddCAtegories2.isSearchPageLoaded(),
+				"Expected the SiteGen Add question to the category page to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),
+				"Questions are not getting added to expected Category");
+		assertTrue(pAddCAtegories2.addQuestion1ToCategory(SitegenConstants.FORMQUESTION2),
+				"Custom Form question2 and answerset2 did not updated successfully.");
+		pAddCAtegories2.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET2);
+		pAddCAtegories2.saveCategoryQuestions();
 
-			log("step 9A: Add Question1 to category 1");
-			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add questions to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Questions are not getting added to expected Category");
-			verifyTrue(pAddCAtegories.addQuestion1ToCategory(SitegenConstants.FORMQUESTION1), "Custom Form question1 and answerset1 did not updated successfully.");
-			pAddCAtegories.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET1);
-			pAddCAtegories.saveCategoryQuestions();
+		CustomFormAddCategoriesPage pCustomFormAddCategories3 = pAddCAtegories2.clickCustomFormAddCategoriesPage();
+		AddQuestionsToCategoryPage pAddCAtegories3 = pCustomFormAddCategories3
+				.addCategoriesDetails(SitegenConstants.FORMCATEGORY3);
 
-			CustomFormAddCategoriesPage pCustomFormAddCategories2 = pAddCAtegories.clickCustomFormAddCategoriesPage();
-			AddQuestionsToCategoryPage pAddCAtegories2 = pCustomFormAddCategories2.addCategoriesDetails(SitegenConstants.FORMCATEGORY2);
-            System.out.print(SitegenConstants.FORMCATEGORY);
+		log("step 9C: Add Question3 to category 3");
+		assertTrue(pAddCAtegories3.isSearchPageLoaded(),
+				"Expected the SiteGen Add question to the category page to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),
+				"Questions are not getting added to expected Category");
+		assertTrue(pAddCAtegories3.addQuestion1ToCategory(SitegenConstants.FORMQUESTION3),
+				"Custom Form question3 and answerset3 did not updated successfully.");
+		pAddCAtegories3.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET3);
 
-			log("step 9B: Add Question2 to category 2");
-			verifyTrue(pAddCAtegories2.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Questions are not getting added to expected Category");
-			verifyTrue(pAddCAtegories2.addQuestion1ToCategory(SitegenConstants.FORMQUESTION2), "Custom Form question2 and answerset2 did not updated successfully.");
-			pAddCAtegories2.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET2);
-			pAddCAtegories2.saveCategoryQuestions();
+		log("step 9D: Save added questions to category");
+		assertTrue(pAddCAtegories.isSearchPageLoaded(),
+				"Expected the SiteGen Add question to the category page to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),
+				"Questions are not getting added to expected Category");
+		pAddCAtegories.saveCategoryQuestions();
 
-			CustomFormAddCategoriesPage pCustomFormAddCategories3 = pAddCAtegories2.clickCustomFormAddCategoriesPage();
-			AddQuestionsToCategoryPage pAddCAtegories3 = pCustomFormAddCategories3.addCategoriesDetails(SitegenConstants.FORMCATEGORY3);
+		CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.clickCustomFormLayoutPage();
 
-			log("step 9C: Add Question3 to category 3");
-			verifyTrue(pAddCAtegories3.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
-			verifyTrue(pAddCAtegories3.addQuestion1ToCategory(SitegenConstants.FORMQUESTION3), "Custom Form question3 and answerset3 did not updated successfully.");
-			pAddCAtegories3.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET3);
+		log("step 10: Set Custom Form Layout");
+		assertTrue(pAddQuestionsToCategory.isSearchPageLoaded(),
+				"Expected the SiteGen form Layout page to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),
+				"Form Layout is not set for Expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),
+				"Form Layout is not set for Expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),
+				"Form Layout is not set for Expected Category");
+		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
+		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE2, SitegenConstants.FORMCATEGORY2);
+		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE3, SitegenConstants.FORMCATEGORY3);
 
-			log("step 9D: Save added questions to category");
-			verifyTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Questions are not getting added to expected Category");
-			pAddCAtegories.saveCategoryQuestions();
+		CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
 
-			CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.clickCustomFormLayoutPage();
+		pCustomFormPreview.waitForPublishLink();
 
-			log("step 10: Set Custom Form Layout");
-			verifyTrue(pAddQuestionsToCategory.isSearchPageLoaded(), "Expected the SiteGen form Layout page to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY),"Form Layout is not set for Expected Category");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3),"Form Layout is not set for Expected Category");
-			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
-			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE2, SitegenConstants.FORMCATEGORY2);
-			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE3, SitegenConstants.FORMCATEGORY3);
+		log("step 11: Custom Form Preview Page to click on publish");
+		assertTrue(pCustomFormPreview.isSearchPageLoaded(),
+				"Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),
+				"Form Layout is not set for Expected Category");
+		assertTrue(verifyTextPresent(driver, customFormTitle), "Vewing custom form is not expected custom form");
 
+		assertEquals(verifyTextPresent(driver, "First Name"), true,
+				"Demographic information is not present in form preview");
+		pCustomFormPreview.clickOnPage(2);
+		assertEquals(verifyTextPresent(driver, "Vital"), true, "Vital information is not present in form preview");
+		pCustomFormPreview.clickOnPage(3);
+		assertEquals(verifyTextPresent(driver, "Insurance Type"), true,
+				"Insurance Type is not present in form preview");
+		ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
 
-			CustomFormPreviewPage pCustomFormPreview = pAddQuestionsToCategory.saveFormLayout();
+		pCustomFormPreview.waitForUnpublishLink();
 
-			pCustomFormPreview.waitForPublishLink();
+		log("step 12: Manage your forms -Check custom Form published successfully");
+		assertEquals(pManageForm.checkForPublishedPage(customFormTitle), true,
+				"Custom Form did not published successfully and not present in published forms table");
 
-			log("step 11: Custom Form Preview Page to click on publish");
-			verifyTrue(pCustomFormPreview.isSearchPageLoaded(), "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
-			verifyTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2),"Form Layout is not set for Expected Category");
-			verifyTrue(verifyTextPresent(driver,customFormTitle),"Vewing custom form is not expected custom form");
+		driver.switchTo().window(winHandleSiteGen);
 
-			//This assert statements can be changed after getting standard valid custom form from Richard/Don B
-			//verifyEquals(verifyTextPresent(driver,"Insurance Type"),true,"Insurance Type is not present in form preview");
-			verifyEquals(verifyTextPresent(driver,"First Name"),true, "Demographic information is not present in form preview");
-			//verifyEquals(verifyTextPresent(driver,"Vital"),true, "Vital information is not present in form preview");
-			ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
+		// Instancing CreatePatientTest
+		CheckOldCustomFormTest checkOldCustomFormTest = new CheckOldCustomFormTest();
 
-			pCustomFormPreview.waitForUnpublishLink();
+		// Setting data provider
+		Portal portal = new Portal();
+		TestcasesData portalTestcasesData = new TestcasesData(portal);
 
-			log("step 12: Manage your forms -Check custom Form published successfully");
-			verifyEquals(pManageForm.checkForPublishedPage(customFormTitle), true, "Custom Form did not published successfully and not present in published forms table");
+		// Executing Test
+		checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
+		String winHandlePatientPortal = driver.getWindowHandle();
+		HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
 
-			driver.switchTo().window(winHandleSiteGen);
+		driver.switchTo().window(winHandleCustomBuilder);
 
-			// Instancing CreatePatientTest
-			CheckOldCustomFormTest checkOldCustomFormTest =  new CheckOldCustomFormTest();
+		log("step 13a: Delete 2 pages");
+		pManageForm.clickOnPublishedFormPreviewLink(customFormTitle);
+		pAddCAtegories.clickCustomFormLayoutPage();
+		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY);
+		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY3);
+		pAddQuestionsToCategory.categorySequence();
 
-			// Setting data provider
-			Portal portal = new Portal();
-			TestcasesData portalTestcasesData = new TestcasesData(portal);
+		pAddQuestionsToCategory.saveFormLayout();
+		driver.switchTo().window(winHandlePatientPortal);
 
-			// Executing Test
-			checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
-			String winHandlePatientPortal = driver.getWindowHandle();
-			HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
+		checkOldCustomFormTest.checkDeletedPages(driver, page, customFormTitle);
 
+		driver.switchTo().window(winHandleCustomBuilder);
+		pCustomFormPreview.clickOnUnPublishLink();
 
-			driver.switchTo().window(winHandleCustomBuilder);
+		log("step 14: Manage your forms -Check unpublished Form Preview");
+		pManageForm.clickOnUnpublishedFormPreviewLink(customFormTitle);
 
+		log("step 15: Manage your forms -Click on publish link");
+		pCustomFormPreview.clickOnPublishLink();
 
-			log("step 13: Manage your forms -Check published Form Preview by clicking on Preview link");
-			verifyEquals(pManageForm.isSearchPageLoaded(),true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
-			log("step 13a: Delete 2 pages");
-			pManageForm.clickOnPublishedFormPreviewLink(customFormTitle);
-			pAddCAtegories.clickCustomFormLayoutPage();
-			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY);
-			pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE0, SitegenConstants.FORMCATEGORY3);
-			pAddQuestionsToCategory.categorySequence();
+		log("step 16: Manage your forms -Check custom Form published was able to unpublish successfully");
+		pManageForm.unPublishThepublishedForm(customFormTitle);
 
-			pAddQuestionsToCategory.saveFormLayout();
-			driver.switchTo().window(winHandlePatientPortal);
-
-			checkOldCustomFormTest.checkDeletedPages(driver, page, customFormTitle);
-
-			driver.switchTo().window(winHandleCustomBuilder);
-			pCustomFormPreview.clickOnUnPublishLink();
-
-			log("step 14: Manage your forms -Check unpublished Form Preview");
-			verifyEquals(pManageForm.isSearchPageLoaded(), true, "Expected the SiteGen Manage your Forms -> published form preview page to be loaded, but it was not.");
-			pManageForm.clickOnUnpublishedFormPreviewLink(customFormTitle);
-
-			log("step 15: Manage your forms -Click on publish link");
-			verifyEquals(pCustomFormPreview.isSearchPageLoaded(),true, "Expected the SiteGen create custom form page preview with publish link to be loaded, but it was not.");
-			pCustomFormPreview.clickOnPublishLink();
-
-			log("step 16: Manage your forms -Check custom Form published was able to unpublish successfully");
-			verifyEquals(pManageForm.isSearchPageLoadedForUnpublishedTable(),true, "Expected the SiteGen Manage your Forms -> unpublished form page to be loaded to unpublish the published form, but it was not.");
-			pManageForm.unPublishThepublishedForm(customFormTitle);
-
-			log("step 17: Manage your forms -Check custom Form unpublished was able to delete successfully");
-			pManageForm.deleteUnpublishedForm(customFormTitle);
-		}
+		log("step 17: Manage your forms -Check custom Form unpublished was able to delete successfully");
+		pManageForm.deleteUnpublishedForm(customFormTitle);
 	}
 
-    @Test(enabled = true, groups = { "PatientForms" })
-    public void testFormPatientDashboard() throws Exception {
-        String comment = "Written by formPatientDashboardTest";
+	@Test(enabled = true, groups = { "PatientForms" })
+	public void testFormPatientDashboard() throws Exception {
+		String comment = "Written by formPatientDashboardTest";
 
-        logTestEnvironmentInfo("testPatientDashboard");
-        Portal portal = new Portal();
-        TestcasesData portalData = new TestcasesData(portal);
-        String url = portalData.getFormsAltUrl();
-        log("Patient Portal URL: " + url);
+		logTestEnvironmentInfo("testPatientDashboard");
+		Portal portal = new Portal();
+		TestcasesData portalData = new TestcasesData(portal);
+		String url = portalData.getFormsAltUrl();
+		log("Patient Portal URL: " + url);
 
-        log("step 1: Click on Sign Up Fill details in Create Account Page");
-        CreatePatientTest createPatient = new CreatePatientTest();
-        createPatient.setUrl(url);
-        MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
+		log("step 1: Click on Sign Up Fill details in Create Account Page");
+		CreatePatientTest createPatient = new CreatePatientTest();
+		createPatient.setUrl(url);
+		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 
-        log("step 2: Click on forms and open the form");
-        HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-        formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
+		log("step 2: Click on forms and open the form");
+		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
 
-        log("Step 3: Fill out the form");
-        fillOutputForm(comment);
+		log("Step 3: Fill out the form");
+		fillOutputForm(comment);
 
-        log("Step 4: Log out");
-        driver.switchTo().defaultContent();
-        pMyPatientPage.clickLogout(driver);
+		log("Step 4: Log out");
+		driver.switchTo().defaultContent();
+		pMyPatientPage.clickLogout(driver);
 
-        log("Step 5: Log in to Practice Portal");
-        PracticeHomePage pHomePage = loginToPracticePortal();
+		log("Step 5: Log in to Practice Portal");
+		PracticeHomePage pHomePage = loginToPracticePortal();
 
-        log("Step 6: Search for previously created patient");
-        PatientSearchPage pSearchPage = pHomePage.clickPatientSearchLink();
-        pSearchPage.searchForPatientInPatientSearch(createPatient.getFirstName(), createPatient.getLastName());
+		log("Step 6: Search for previously created patient");
+		PatientSearchPage pSearchPage = pHomePage.clickPatientSearchLink();
+		pSearchPage.searchForPatientInPatientSearch(createPatient.getFirstName(), createPatient.getLastName());
 
-        log("Step 7: Get into patient dashboard");
-        PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(createPatient.getFirstName(),
-                createPatient.getLastName());
+		log("Step 7: Get into patient dashboard");
+		PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(createPatient.getFirstName(),
+				createPatient.getLastName());
 
-        log("Step 8: Verify if there's submitted form on patient dashboard");
-        assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM),
-                "Submitted form was not found on Patient Dashboard");
-    }
+		log("Step 8: Verify if there's submitted form on patient dashboard");
+		assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM),
+				"Submitted form was not found on Patient Dashboard");
+	}
+
+	/**
+	 * @UserStory: FORMS-346 Logins into sitegen. Creates a new custom form.
+	 *             Adds and removes FUPs. Saves form. Reopens the form and
+	 *             checks that it contains correct items.
+	 */
+	@Test(enabled = true, groups = { "PatientForms" })
+	public void testSitegenFUPInteraction() throws Exception {
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		logTestEnvironmentInfo("testCreateFormWithFUPs");
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData SGData = new SitegenTestData(sitegen);
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver,
+				SGData.getFormUser(), SGData.getFormPassword());
+
+		log("step 1: Click on Patient Forms");
+		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		assertTrue(pManageDiscreteForms.isPageLoaded());
+
+		log("step 2: Unpublish and delete all forms and create a new one");
+		driver.manage().window().maximize();
+		pManageDiscreteForms.initializePracticeForNewForm();
+		pManageDiscreteForms.createANewCustomForm();
+
+		log("step 3: Open created custom form");
+		CustomFormPage customFormPage = pManageDiscreteForms.clickOnLastCreatedForm();
+		customFormPage.clickOnSection(1);
+		CustomFormPageSection section1 = customFormPage.getFirstSection();
+
+		log("step 4: Create question and add 3 answers");
+		section1.addQuestionItem(SitegenConstants.QUESTION_TYPE4, "base question", false, false);
+		section1.addAnswers(1, Arrays.asList("answer1", "answer2", "answer3"));
+
+		log("step 5: Add 2 FUPs to 1st answer of 1st question");
+		section1.addQuestionFUP(1, 1, SitegenConstants.QUESTION_TYPE1, "followUpText", false, false);
+		jse.executeScript("scroll(0, -250);");
+		Thread.sleep(500);
+		section1.addQuestionFUP(1, 1, SitegenConstants.QUESTION_TYPE3, "sndFollowUp", false, false);
+		section1.addAnswersFUP(1, 2, Arrays.asList("sub-answer1", "sub-answer2"));
+
+		log("step 6: Add FUP to 2nd answer of 1st question");
+		section1.addQuestionFUP(1, 2, SitegenConstants.QUESTION_TYPE3, "thirdFollowUp", false, false);
+		section1.addAnswersFUP(1, 3, Arrays.asList("sub-answer1", "sub-answer2", "sub-answer3"));
+
+		log("step 7: Add FUP to 3rd answer of 1st question and delete it immediately");
+		section1.addHeadingFUP(1, 3, "deleted heading");
+		section1.removeFUP(1, 4);
+
+		log("step 8: save and reopen form");
+		customFormPage.saveForm();
+		jse.executeScript("scroll(0, -250);");
+		customFormPage.leaveFormPage();
+		customFormPage = pManageDiscreteForms.clickOnLastCreatedForm();
+		customFormPage.clickOnSection(1);
+		section1 = customFormPage.getFirstSection();
+
+		log("step 9: test if form contains correct count of FUPs");
+		assertEquals(section1.getCountOfFUPsOfAnswer(1, 1), 2);
+		assertEquals(section1.getCountOfFUPsOfAnswer(1, 3), 0);
+
+		log("step 10: test FUPs minimization");
+		assertFalse(section1.areFUPsMinimized(1, 1));
+		section1.toogleFUPs(1, 1);
+		assertTrue(section1.areFUPsMinimized(1, 1));
+		jse.executeScript("scroll(0, 250);");
+		section1.toogleFUPs(1, 1);
+		assertFalse(section1.areFUPsMinimized(1, 1));
+
+		log("step 11: test consistency of FUPs");
+		assertEquals("sndFollowUp", section1.getTitleOfFUPQuestion(1, 2));
+		List<String> expectedAnswers = new ArrayList<String>();
+		expectedAnswers.add("sub-answer1");
+		expectedAnswers.add("sub-answer2");
+		assertTrue(section1.getAnswersOfFUPQuestion(1, 2).containsAll(expectedAnswers));
+	}
 }
