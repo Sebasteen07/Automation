@@ -113,7 +113,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil utils = new IHGUtil(driver);
 
 		IHGUtil.PrintMethodName();
-		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
+		String xpath = ".//div[contains(@class,'admin_inner')]//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :" + count);
 
@@ -352,16 +352,15 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	public void testAddingQuestion(SocialHistoryPage socialPage) throws Exception {
+		Thread.sleep(500);
 		socialPage.clickAddSection();
 		socialPage.clickOnNewSection();
 		socialPage.setSectionName("Additional questions");
 		socialPage.clickInsertItemButton();
 		socialPage.setQuestionName("added question");
 		socialPage.clickSaveButton();
-		// socialPage.errorMessageAppearedTest();
 		socialPage.setQuestionType(QuestionType.multiSelect);
 		socialPage.clickSaveButton();
-		// socialPage.errorMessageAppearedTest();
 		socialPage.addPossibleAnswer("1 - 2");
 		socialPage.addPossibleAnswer("3 or 4");
 		socialPage.clickBackToTheList();
