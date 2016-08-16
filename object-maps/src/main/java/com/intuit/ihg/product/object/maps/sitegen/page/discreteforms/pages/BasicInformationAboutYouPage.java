@@ -6,50 +6,49 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.medfusion.common.utils.IHGUtil;
 
-public class BasicInformationAboutYouPage extends BasePageObject{
+public class BasicInformationAboutYouPage extends BasePageObject {
 
 	public BasicInformationAboutYouPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
-	@FindBy(xpath="//li[@data-section='demographics']/a")
+
+	@FindBy(xpath = "//li[@data-section='demographics']/a")
 	private WebElement lnkBasicInformationAboutYou;
-	
-	@FindBy(xpath="//li[@data-section='emergencycontact']/a")
+
+	@FindBy(xpath = "//li[@data-section='emergencycontact']/a")
 	private WebElement lnkEmergencyContactInformation;
 
-	@FindBy(id="save_config_form")              
+	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
-	
-	@FindBy(id="streetaddr1")
+
+	@FindBy(id = "streetaddr1")
 	private WebElement chckAddress;
-	
-	@FindBy(id="city")
+
+	@FindBy(id = "city")
 	private WebElement chckCity;
-	
-	@FindBy(id="state")
+
+	@FindBy(id = "state")
 	private WebElement chckState;
-	
-	@FindBy(id="postalcode")
+
+	@FindBy(id = "postalcode")
 	private WebElement chckZIP;
-	
-	@FindBy(id="primaryphone")
+
+	@FindBy(id = "primaryphone")
 	private WebElement chckPhoneNumber;
-	
-	@FindBy(id="gender")
+
+	@FindBy(id = "gender")
 	private WebElement chckGender; // sex
-	
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() 
-	{
+	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -63,28 +62,26 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
 	 * Click on link - Basic Information About You
 	 */
-	
-	public void clicklnkBasicInfoAboutYourPage() 
-	{			
+
+	public void clicklnkBasicInfoAboutYourPage() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkBasicInformationAboutYou);
 		lnkBasicInformationAboutYou.click();
 	}
-	
+
 	/**
-	 *	Select basic info about the patient to appear
-	 *	Address items, phone number, gender
+	 * Select basic info about the patient to appear Address items, phone
+	 * number, gender
 	 */
-	
-	public void selectBasicInfo() 
-	{
+
+	public void selectBasicInfo() {
 		// wait for the element to load
 		IHGUtil.waitForElement(driver, 30, chckAddress);
-		
+
 		chckAddress.click();
 		chckCity.click();
 		chckState.click();
@@ -92,33 +89,30 @@ public class BasicInformationAboutYouPage extends BasePageObject{
 		chckPhoneNumber.click();
 		chckGender.click();
 	}
-	
+
 	/**
 	 * Selects more attributes for patient information
 	 */
-	public void selectAdditionalInfo() 
-	{
+	public void selectAdditionalInfo() {
 		selectBasicInfo();
-		
-		
+
 	}
-	
-	
+
 	/**
 	 * Click on next page, which is Emergency contact page
+	 * 
 	 * @return PageFactory initialization of EmergencyContactPage class
+	 * @throws InterruptedException
 	 */
-	
-	public EmergencyContactInformationPage clickLnkEmergency() 
-	{
+
+	public EmergencyContactInformationPage clickLnkEmergency() throws InterruptedException {
+		Thread.sleep(100);
 		lnkEmergencyContactInformation.click();
 		return PageFactory.initElements(driver, EmergencyContactInformationPage.class);
 	}
-	
-	public void clickSave() 
-	{
+
+	public void clickSave() {
 		btnSave.click();
 	}
-
 
 }

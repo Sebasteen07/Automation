@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.PortalFormPage;
 
 public class CalculatedFormPage extends PortalFormPage {
 
@@ -36,7 +35,7 @@ public class CalculatedFormPage extends PortalFormPage {
 	public boolean isPageLoaded() {
 		log("Checking if Form page is loaded.");
 		IHGUtil iHGUtil = new IHGUtil(driver);
-		if( iHGUtil.exists(btnContinue)) {
+		if (iHGUtil.exists(btnContinue)) {
 			return btnContinue.isDisplayed();
 		} else {
 			return false;
@@ -58,7 +57,8 @@ public class CalculatedFormPage extends PortalFormPage {
 	public void fillFormRightmostAnswer() {
 		log("Filling the form with the rightmost answers.");
 		for (WebElement radioButton : rightmostRadioTableList) {
-			radioButton.sendKeys(" "); // radioButton.click(); doesn't work with ADHD Forms
+			radioButton.sendKeys(" "); // radioButton.click(); doesn't work with
+										// ADHD Forms
 		}
 
 		IHGUtil iHGUtil = new IHGUtil(driver);
@@ -74,11 +74,12 @@ public class CalculatedFormPage extends PortalFormPage {
 		}
 
 	}
-	
-	public boolean isValidationErrorDisplayed() {
+
+	public boolean isValidationErrorDisplayed() throws InterruptedException {
 		log("Checking if error message was displayed.");
 		IHGUtil iHGUtil = new IHGUtil(driver);
-		if(iHGUtil.exists(errorMsg)) {
+		Thread.sleep(1000);
+		if (iHGUtil.exists(errorMsg)) {
 			return errorMsg.isDisplayed();
 		} else {
 			return false;

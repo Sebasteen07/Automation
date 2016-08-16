@@ -2,21 +2,22 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import static org.testng.AssertJUnit.assertTrue;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
-import com.medfusion.common.utils.IHGUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-
-import java.util.List;
+import com.medfusion.common.utils.IHGUtil;
 
 public class SocialHistoryPage extends ConfiguratorFormPage {
 
-	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
+	@FindBy(xpath = "//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
 
 	@FindBy(id = "hide_socialhistory_section_check")
@@ -100,16 +101,17 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	@FindBy(xpath = "//div[@class='notifications']/div[@class='error']/h3[contains(text(), 'Sorry, some required fields are missing.')]")
 	private WebElement errorNotification;
 
+	private JavascriptExecutor jse;
+
 	public static enum QuestionType {
 		shortText, longText, multiSelect, singleSelect
 	}
 
 	public SocialHistoryPage(WebDriver driver) {
 		super(driver);
+		jse = (JavascriptExecutor) driver;
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 	/**
 	 * Indicates if the search page is loaded
@@ -132,8 +134,8 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Deselects the checkbox for hiding the page
-	 * Adds a tea-drinking question so that the page does not hide again
+	 * Deselects the checkbox for hiding the page Adds a tea-drinking question
+	 * so that the page does not hide again
 	 */
 	public void showThisPage() {
 		if (hideSocialhistorySectionCheck.isSelected()) {
@@ -145,78 +147,91 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 
 	/**
 	 * Click on button to add a section
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void clickAddSection() {
+	public void clickAddSection() throws InterruptedException {
+		jse.executeScript("scroll(0, 0);");
 		newSectionButt.click();
+		Thread.sleep(500);
 	}
 
-	public void clickOnNewSection() {
-        IHGUtil.waitForElement(driver, 10, newSection);
+	public void clickOnNewSection() throws InterruptedException {
 		newSection.click();
 	}
 
 	/**
 	 * Description: Sets the name of the section. Name is passe as parameter
-	 * @param newName: A name to be set
+	 * 
+	 * @param newName:
+	 *            A name to be set
+	 * @throws InterruptedException
 	 *
 	 */
-	 public void setSectionName(String newName) {
-		 IHGUtil.PrintMethodName();
-		 customSectionName.sendKeys(newName);
-	 }
+	public void setSectionName(String newName) throws InterruptedException {
+		Thread.sleep(500);
+		jse.executeScript("scroll(0, 0);");
+		customSectionName.sendKeys(newName);
+	}
 
-	 /**
-      * Description: Sets the name of the section. Name is passe as parameter
-      * @param newName: A name to be set
-      *
-      */
-     public void setQuestionName(String newName) {
-    	 IHGUtil.PrintMethodName();
-    	 questionNameField.sendKeys(newName);
-     }
+	/**
+	 * Description: Sets the name of the section. Name is passe as parameter
+	 * 
+	 * @param newName:
+	 *            A name to be set
+	 *
+	 */
+	public void setQuestionName(String newName) {
+		IHGUtil.PrintMethodName();
+		questionNameField.sendKeys(newName);
+	}
 
-     public void setQuestionType(QuestionType type) throws Exception {
-    	 Select questionTypeSel = new Select(questionTypeSelect);
+	public void setQuestionType(QuestionType type) throws Exception {
+		Select questionTypeSel = new Select(questionTypeSelect);
 
-    	 switch (type) {
-    	 	case shortText:
-    	 		questionTypeSel.selectByIndex(1);
-    	 		break;
-    	 	case longText:
-    	 		questionTypeSel.selectByIndex(2);
-    	 		break;
-    	 	case multiSelect:
-    	 		questionTypeSel.selectByIndex(3);
-    	 		break;
-    	 	case singleSelect:
-    	 		questionTypeSel.selectByIndex(4);
-    	 		break;
-    	 	default:
-    	 		throw new Exception();
-    	 }
-     }
+		switch (type) {
+		case shortText:
+			questionTypeSel.selectByIndex(1);
+			break;
+		case longText:
+			questionTypeSel.selectByIndex(2);
+			break;
+		case multiSelect:
+			questionTypeSel.selectByIndex(3);
+			break;
+		case singleSelect:
+			questionTypeSel.selectByIndex(4);
+			break;
+		default:
+			throw new Exception();
+		}
+	}
 
-     /**
-      * Description: Enters possible answers to the text field. Answers are comma separated values
-      * @param newAnswerText Answer text that will be shown to patient
-      */
-     public void addPossibleAnswer(String newAnswerText) {
-		 addAnswerButton.click();
+	/**
+	 * Description: Enters possible answers to the text field. Answers are comma
+	 * separated values
+	 * 
+	 * @param newAnswerText
+	 *            Answer text that will be shown to patient
+	 */
+	public void addPossibleAnswer(String newAnswerText) {
+		addAnswerButton.click();
 
-		 List<WebElement> answers = driver.findElements(By.className("available_answers"));
-		 WebElement lastAnswer = answers.get(answers.size() - 1);
+		List<WebElement> answers = driver.findElements(By.className("available_answers"));
+		WebElement lastAnswer = answers.get(answers.size() - 1);
 
-		 lastAnswer.sendKeys(newAnswerText);
-	 }
+		lastAnswer.sendKeys(newAnswerText);
+	}
 
-     /**
-      * Asserts that error notification message appeared. For example when user tried to save form with incomplete question
-      */
-     public void errorMessageAppearedTest() {
-    	 assertTrue(errorNotification.isDisplayed());
-     }
+	/**
+	 * Asserts that error notification message appeared. For example when user
+	 * tried to save form with incomplete question
+	 */
+	public void errorMessageAppearedTest() {
+		assertTrue(errorNotification.isDisplayed());
+	}
 
-     public void clickInsertItemButton() {
-    	 insertItemButton.click();
-     }
+	public void clickInsertItemButton() {
+		insertItemButton.click();
+	}
 }
