@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "calculated-forms-acceptance" verbose = "2">
+<suite name = "patient-forms-automation" verbose = "2" preserve-order = "true" >
     <listeners>
       <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
       <listener class-name="org.uncommons.reportng.HTMLReporter" />
       <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
     </listeners>
 
-    <test name = "calculated-forms" >	
+    <test name = "Calculated-forms-Automation" >
         <groups>
             <run>
-                <include name="CalculatedForms" />
+                <include name="calculatedForms" />
             </run>
         </groups>
 

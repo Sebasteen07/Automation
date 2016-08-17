@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.patientportal1.page.healthform;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,9 +12,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
@@ -26,7 +25,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "footer:submit")
 	private WebElement btnSubmit;
 
-	@FindBy(xpath = "//a[@class='pdf text']") // table/tbody/tr/td/a
+	@FindBy(xpath = "//a[@class='pdf text']") //table/tbody/tr/td/a
 	private WebElement lnkclickForPdfDownload;
 
 	// Forms on the page
@@ -82,7 +81,7 @@ public class HealthFormPage extends BasePageObject {
 	@FindBy(name = "content:categories:0:questions:0:question:vitalsForm:inputFieldsContainer:inputFieldsPanel:submitContainer:inlineSubmit")
 	private WebElement vitalSave;
 
-	@FindBy(xpath = "//li[@class='sol_forms2']/a")
+	@FindBy(xpath = "//td[@class='MT_2']//a[contains(text(), 'health forms')]")
 	private WebElement lnkHealthForms;
 
 	@FindBy(className = "delete")
@@ -142,6 +141,7 @@ public class HealthFormPage extends BasePageObject {
 
 		Select selectstate3 = new Select(feelings);
 		selectstate3.selectByVisibleText("happy");
+
 	}
 
 	/**
@@ -191,7 +191,8 @@ public class HealthFormPage extends BasePageObject {
 		return urlChecker.getHTTPStatusCode();
 	}
 
-	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
+	public CustomFormPageForSitegen selectCustomForm(String formName)
+			throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(3000);
 		driver.switchTo().defaultContent();
@@ -206,17 +207,19 @@ public class HealthFormPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframe");
-		WebElement formLink = driver.findElement(By.xpath("//a[text()='" + formName + "']"));
+		WebElement formLink = driver.findElement(By.xpath("//a[text()='"
+				+ formName + "']"));
 		IHGUtil.waitForElement(driver, 10, formLink);
 		formLink.click();
 		IHGUtil.waitForElement(driver, 15, formInfo);
 	}
 
+
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
-		return wait
-				.until(ExpectedConditions.elementToBeClickable(By.xpath(
-						"//a[starts-with(@title, '" + formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
+		return wait.until(
+				ExpectedConditions.elementToBeClickable(By.xpath("//a[starts-with(@title, '"
+						+ formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
 				.getAttribute("href");
 	}
 
@@ -230,7 +233,8 @@ public class HealthFormPage extends BasePageObject {
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm)))
+					.click();
 		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
@@ -263,16 +267,15 @@ public class HealthFormPage extends BasePageObject {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		String formattedDate;
 		try {
-			formattedDate = IHGUtil.extractDateFromText(wait
-					.until(ExpectedConditions.visibilityOfElementLocated(
-							By.xpath("//a[contains(@title, '" + formName + "')]/../table/tbody/tr/td/span")))
-					.getText());
+			formattedDate = IHGUtil.extractDateFromText(wait.until(
+					ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@title, '"
+							+ formName + "')]/../table/tbody/tr/td/span"))).getText());
 		} catch (Exception e) {
 			try {
-				formattedDate = IHGUtil.extractDateFromText(wait
-						.until(ExpectedConditions.visibilityOfElementLocated(
-								By.xpath("//a[contains(@title, '" + formName + "')]/../table/tbody/tr/td/span")))
-						.getText());
+				formattedDate = IHGUtil.extractDateFromText(wait.until(
+						ExpectedConditions.visibilityOfElementLocated(By
+								.xpath("//a[contains(@title, '" + formName
+										+ "')]/../table/tbody/tr/td/span"))).getText());
 			} catch (Exception f) {
 				log("Date not found or it is in incorrect format!");
 				throw f;
@@ -282,5 +285,6 @@ public class HealthFormPage extends BasePageObject {
 		return formattedDate;
 
 	}
+
 
 }
