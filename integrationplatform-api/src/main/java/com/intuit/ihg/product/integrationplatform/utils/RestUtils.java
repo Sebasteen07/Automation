@@ -1751,6 +1751,8 @@ public class RestUtils {
 					}
 			else if (portal == "Portal 2.0"){
 				emailMessageLink=gBot.findInboxEmailLink(gmailUserName,gmailPassword,"New message from "+recipient,IntegrationConstants.PI_EMAIL_BODY_LINK, minute, false, true);
+					if (emailMessageLink.contains("?redirectoptout=true"))
+					{emailMessageLink=emailMessageLink.replace("?redirectoptout=true", "");}
 					}
 		} catch (Exception e) {
 			Log4jUtil.log("Error :"+e);
