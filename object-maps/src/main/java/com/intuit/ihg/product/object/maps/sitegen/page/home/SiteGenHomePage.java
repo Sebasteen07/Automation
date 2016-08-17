@@ -6,9 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author bkrishnankutty
@@ -34,13 +35,12 @@ public class SiteGenHomePage extends BasePageObject {
 	@FindBy(how = How.CSS, using = "table>tbody>tr>td>ul>li>a>b")
 	private WebElement lnkMedfusionSiteAdministration;
 
-	@FindBy( xpath = ".//input[@id ='grpName']")
+	@FindBy(xpath = ".//input[@id ='grpName']")
 	private WebElement searchPratciceField;
-	
-	@FindBy( xpath = ".//input[@value ='Search']")
+
+	@FindBy(xpath = ".//input[@value ='Search']")
 	private WebElement searchPratciceButton;
-	
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- constructor for this Page
@@ -77,15 +77,14 @@ public class SiteGenHomePage extends BasePageObject {
 	 */
 	public SiteGenPracticeHomePage clickLinkMedfusionSiteAdministration() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,10,lnkMedfusionSiteAdministration);
+		IHGUtil.waitForElement(driver, 10, lnkMedfusionSiteAdministration);
 		lnkMedfusionSiteAdministration.click();
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
 	}
 
-	
 	public SiteGenPracticeHomePage searchPracticeFromSGAdmin(String practiceName) throws Exception {
 		log("Automation Practice: " + practiceName);
-		IHGUtil.waitForElement(driver, 10, this.searchPratciceField);
+		IHGUtil.waitForElement(driver, 30, this.searchPratciceField);
 		searchPratciceField.sendKeys(practiceName);
 		searchPratciceButton.click();
 		String xpath = "//*[contains(text(),'" + practiceName + "')]";

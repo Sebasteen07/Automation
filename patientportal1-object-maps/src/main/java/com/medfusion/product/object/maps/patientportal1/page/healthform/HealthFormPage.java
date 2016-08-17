@@ -235,9 +235,10 @@ public class HealthFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
-	public void clickNext() {
+	public void clickNext() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, btnNext);
 		btnNext.click();
+		Thread.sleep(1000);
 	}
 
 	public void fillVitals() throws Exception {
