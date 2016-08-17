@@ -128,9 +128,8 @@ public class CustomFormPreviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, ManageYourFormsPage.class);
 	}
 
-	public void clickOnPage(int pageNumber) throws InterruptedException {
+	public void clickOnPage(int pageNumber) {
 		driver.findElement(By.xpath("(//*[@class='MfSecureLink'])[" + pageNumber + "]")).click();
-		Thread.sleep(1000);
 	}
 
 }

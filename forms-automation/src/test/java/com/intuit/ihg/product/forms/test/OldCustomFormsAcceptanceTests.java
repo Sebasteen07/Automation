@@ -53,7 +53,7 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "OldCustomForms" }, invocationCount = 10)
+	@Test(enabled = true, groups = { "OldCustomForms" })
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEnvironmentInfo("testCustomFormPublished");
@@ -177,10 +177,8 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		assertEquals(verifyTextPresent(driver, "First Name"), true,
 				"Demographic information is not present in form preview");
 		pCustomFormPreview.clickOnPage(2);
-		// fix
 		assertEquals(verifyTextPresent(driver, "Vital"), true, "Vital information is not present in form preview");
 		pCustomFormPreview.clickOnPage(3);
-		// fix
 		assertEquals(verifyTextPresent(driver, "Insurance Type"), true,
 				"Insurance Type is not present in form preview");
 		ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();

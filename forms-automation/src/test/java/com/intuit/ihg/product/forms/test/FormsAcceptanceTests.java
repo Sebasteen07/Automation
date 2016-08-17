@@ -157,6 +157,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy");
 		assertEquals(portalData.getDOB(), accountDOB, "Date of birth is not accurate!");
+
 	}
 
 	@Test(enabled = true, groups = { "Forms" })
@@ -329,7 +330,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 5: Add 2 FUPs to 1st answer of 1st question");
 		section1.addQuestionFUP(1, 1, SitegenConstants.QUESTION_TYPE1, "followUpText", false, false);
-		jse.executeScript("scroll(0, 0);");
+		jse.executeScript("scroll(0, -250);");
 		Thread.sleep(500);
 		section1.addQuestionFUP(1, 1, SitegenConstants.QUESTION_TYPE3, "sndFollowUp", false, false);
 		section1.addAnswersFUP(1, 2, Arrays.asList("sub-answer1", "sub-answer2"));
