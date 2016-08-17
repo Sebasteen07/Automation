@@ -43,29 +43,28 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
 		new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
-		log("step 2: LOG IN MANUALLY AS SUPERUSER, the test will continue after that, waiting 30s");
 		SiteGenHomePage sHomePage = PageFactory.initElements(driver, SiteGenHomePage.class);
-		log("step 3: navigate to SiteGen PracticeHomePage ##########");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+		log("step 2: LOG IN MANUALLY AS SUPERUSER, the test will continue after that, waiting 30s");
 		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(testcasesData.getAutomationPracticeName());
 		String parentHandle = driver.getWindowHandle();
-		log("step 1: Click on Patient Forms");
+		log("step 3: Click on Patient Forms");
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 
-		log("step 2: Unpublish and delete all forms and add calculated form");
+		log("step 4: Unpublish and delete all forms and add calculated form");
 		driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
 		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
-		log("step 3: Check if the added form is no longer in the Calculated Form Directory ");
+		log("step 5: Check if the added form is no longer in the Calculated Form Directory ");
 		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
-		log("step 4: Delete all Forms and check if the Calculated Form is back in Directory");
+		log("step 6: Delete all Forms and check if the Calculated Form is back in Directory");
 		pManageDiscreteForms.initializePracticeForNewForm();
 		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
-		log("step 5: Close the window and logout from SiteGenerator");
+		log("step 7: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle
 		// descriptor
 		driver.close();

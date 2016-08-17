@@ -58,6 +58,7 @@ public class CheckOldCustomFormTest extends BaseTestNGWebDriver {
 		pHealthForm.fillVitals();
 
 		pHealthForm.clickNext();
+
 		assertEquals(verifyTextPresent(driver, "Insurance Type"), true,
 				"Insurance Type is not present in form on Portal");
 
