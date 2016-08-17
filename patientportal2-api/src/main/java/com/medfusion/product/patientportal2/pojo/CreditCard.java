@@ -26,6 +26,23 @@ public class CreditCard {
 	private int currYear = Calendar.getInstance().get(Calendar.YEAR);
 	
 	public CreditCard() throws Exception {
+		this.name = "Name" + IHGUtil.createRandomNumericString();
+		Random rand = new Random();
+		this.type = CardType.values()[rand.nextInt(3)];
+		switch (type) {
+			case Visa:
+				this.cardNumber = visaNumbers[rand.nextInt(visaNumbers.length)];
+				break;
+			case Mastercard:
+				this.cardNumber = mastercardNumbers[rand.nextInt(mastercardNumbers.length)];
+				break;
+			case Discover:
+				this.cardNumber = discoverNumbers[rand.nextInt(discoverNumbers.length)];
+				break;
+			case Amex:
+				this.cardNumber = amexNumbers[rand.nextInt(amexNumbers.length)];
+				break;
+		}
 		this.zipCode = IHGUtil.createRandomZip();
 		this.cvvCode = IHGUtil.createRandomNumericString(3);
 		this.expMonth = IHGUtil.createRandomNumericStringInRange(currMonth, 12);
@@ -45,6 +62,7 @@ public class CreditCard {
 		this.cvvCode = cvvCode;
 	}
 
+	// TODO: Delete the constructor and solve conflicts
 	public CreditCard(CardType type, String name) throws Exception {
 		this();
 		this.type = type;

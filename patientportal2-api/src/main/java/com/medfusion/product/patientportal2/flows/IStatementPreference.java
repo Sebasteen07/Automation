@@ -17,13 +17,10 @@ public interface IStatementPreference {
 	 * Changes patient's statement preference
 	 * 
 	 * @param driver
-	 * @param portal
-	 *            URL, username and password are needed
-	 * @param statementPreferenceType
-	 *            preference to be set
+	 * @param portal URL, username and password are needed
+	 * @param statementPreferenceType preference to be set
 	 * @return true if statementPreferenceType was changed to given value <br/>
 	 *         false if statementPreferenceType were the same as given value
 	 */
-	boolean updateStatementPreferenceFromMyAccount(WebDriver driver, Jalapeno portal,
-			StatementPreferenceType statementPreferenceType);
+	boolean updateStatementPreferenceFromMyAccount(WebDriver driver, Jalapeno portal, StatementPreferenceType statementPreferenceType);
 }

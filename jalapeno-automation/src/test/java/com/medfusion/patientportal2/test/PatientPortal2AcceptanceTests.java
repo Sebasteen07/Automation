@@ -175,7 +175,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Creating a new patient");
 		JalapenoHomePage homePage = createAndLogInPatient(jalapenoPatient);
-		assertTrue(homePage.assessBasicPageElements());
 
 		log("Checking if the information");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -343,8 +342,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
 		assertTrue(jalapenoCcdPage.assessCcdElements());
-		if (IHGUtil.getEnvironmentType().toString().equals("DEV3")) {
-			log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3 javax.net.ssl.SSLHandshakeException");
+		if ((IHGUtil.getEnvironmentType().toString().equals("DEV3"))||(IHGUtil.getEnvironmentType().toString().equals("QA1"))) {
+			log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3&&QA1 javax.net.ssl.SSLHandshakeException");
 		} else {
 			assertTrue(jalapenoCcdPage.checkPdfToDownload(driver));
 			assertTrue(jalapenoCcdPage.checkRawToDownload(driver));
@@ -367,7 +366,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		log("Initiate patient data");
 		JalapenoPatient patient = new JalapenoPatient(testData);
 		JalapenoHomePage homePage = createAndLogInPatient(patient);
-		assertTrue(homePage.assessBasicPageElements());
 
 		log("Checking if zipCode in My Account is filled");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -392,8 +390,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		log("Create patient");
 		JalapenoPatient patient = new JalapenoPatient(testData);
 		JalapenoHomePage homePage = createAndLogInPatient(patient);
-
-		assertTrue(homePage.assessBasicPageElements());
 
 		JalapenoLoginPage loginPage = homePage.clickOnLogout();
 		assertTrue(loginPage.assessLoginPageElements());
