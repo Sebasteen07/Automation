@@ -12,12 +12,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.JalapenoHealthFormsListPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -75,7 +75,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		IHGUtil.PrintMethodName();
 		messages.click();
-
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
@@ -118,11 +117,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
 
-	public JalapenoHealthFormsListPage clickOnHealthForms(WebDriver driver) throws Exception {
-
+	public HealthFormListPage clickOnHealthForms(WebDriver driver) throws Exception {
 		log("Clicking on Health Forms button");
 		forms.click();
-		return PageFactory.initElements(driver, JalapenoHealthFormsListPage.class);
+		IHGUtil.setFrame(driver, "iframe");
+		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
 	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {

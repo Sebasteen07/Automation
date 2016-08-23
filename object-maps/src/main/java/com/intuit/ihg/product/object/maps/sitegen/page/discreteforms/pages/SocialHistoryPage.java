@@ -101,8 +101,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	@FindBy(xpath = "//div[@class='notifications']/div[@class='error']/h3[contains(text(), 'Sorry, some required fields are missing.')]")
 	private WebElement errorNotification;
 
-	private JavascriptExecutor jse;
-
 	public static enum QuestionType {
 		shortText, longText, multiSelect, singleSelect
 	}
@@ -151,7 +149,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	 * @throws InterruptedException
 	 */
 	public void clickAddSection() throws InterruptedException {
-		jse.executeScript("scroll(0, 0);");
+		scrollAndWait(0, 0, 0);
 		newSectionButt.click();
 		Thread.sleep(500);
 	}
@@ -169,8 +167,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	 *
 	 */
 	public void setSectionName(String newName) throws InterruptedException {
-		Thread.sleep(500);
-		jse.executeScript("scroll(0, 0);");
+		scrollAndWait(0, 0, 500);
 		customSectionName.sendKeys(newName);
 	}
 

@@ -30,29 +30,28 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.forms.pojo.Question;
+import com.medfusion.product.forms.pojo.SelectQuestion;
+import com.medfusion.product.forms.pojo.SelectableAnswer;
+import com.medfusion.product.forms.pojo.TextQuestion;
+import com.medfusion.product.forms.services.QuestionsService;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.NewCustomFormPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages.SpecialCharFormFirstPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages.SpecialCharFormSecondPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormFamilyHistoryPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormMedicationsPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSocialHistoryPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.custom_pages.SpecialCharFormFirstPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.custom_pages.SpecialCharFormSecondPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormBasicInfoPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormFamilyHistoryPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormMedicationsPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.prereg_pages.FormSocialHistoryPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.JalapenoHealthFormsListPage;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.JalapenoNewCustomHealthFormPage;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.Question;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.QuestionUtils;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.SelectQuestion;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.SelectableAnswer;
-import com.medfusion.product.object.maps.patientportal2.page.HealthForms.TextQuestion;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
@@ -130,8 +129,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 
 		log("step 2: Click on forms and open the form");
-		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
+		HealthFormListPage formsPage = pMyPatientPage.clickOnHealthForms();
+		formsPage.openNewCustomForm(SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 3: Fill out the form");
 		fillOutputForm(diacriticString);
@@ -269,8 +268,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, portalData);
 
 		log("step 2: Click on forms and open the form");
-		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
-		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM);
+		HealthFormListPage formsPage = pMyPatientPage.clickOnHealthForms();
+		formsPage.openNewCustomForm(SitegenConstants.PDF_CCD_FORM);
 
 		log("Step 3: Fill out the form");
 		fillOutputForm(comment);
@@ -381,9 +380,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = new JalapenoLoginPage(driver, portalData.getPIFormsAltUrl())
 				.login(portalData.getUsername(), portalData.getPassword());
 		log("step 3: Open test form");
-		JalapenoHealthFormsListPage healthFormPage = homePage.clickOnHealthForms(driver);
-		IHGUtil.setFrame(driver, "iframe");
-		JalapenoNewCustomHealthFormPage customFormPage = healthFormPage.openForm("PI-testBeforeSubmit");
+		HealthFormListPage healthFormPage = homePage.clickOnHealthForms(driver);
+		NewCustomFormPage customFormPage = healthFormPage.openNewCustomForm("PI-testBeforeSubmit");
 		log("step 4: Clear all answers of 1st section");
 		customFormPage.goToFirstSection();
 		customFormPage.clearAllInputs();
@@ -439,10 +437,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		customFormPage.clickOnSaveAndFinishButton();
 		log("step 8: Open the form and checks saved values");
 		IHGUtil.setFrame(driver, "iframe");
-		customFormPage = healthFormPage.openForm("PI-testBeforeSubmit");
-		assertEquals(QuestionUtils.getSetOfVisibleQuestions(1, driver), getExpectedQuestionsForFirstSection());
+		customFormPage = healthFormPage.openNewCustomForm("PI-testBeforeSubmit");
+		assertEquals(QuestionsService.getSetOfVisibleQuestions(1, driver), getExpectedQuestionsForFirstSection());
 		assertTrue(customFormPage.clickOnSaveAndContinueButton());
-		assertEquals(QuestionUtils.getSetOfVisibleQuestions(2, driver), getExpectedQuestionsForSecondSection());
+		assertEquals(QuestionsService.getSetOfVisibleQuestions(2, driver), getExpectedQuestionsForSecondSection());
 	}
 
 	protected void logTestEnvironmentInfo(String testName) {
@@ -517,8 +515,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		log("Go to forms page and open the \"" + formIdentifier + "\" form");
-		HealthFormPage formPage = pMyPatientPage.clickFillOutFormsLink();
-		formPage.openDiscreteForm(formIdentifier);
+		HealthFormListPage formPage = pMyPatientPage.clickOnHealthForms();
+		formPage.openNewCustomForm(formIdentifier);
 		return pMyPatientPage;
 	}
 
@@ -571,14 +569,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
 	}
 
-	protected void verifyFormsDatePatientPortal(HealthFormPage formsPage, String formName) throws Exception {
+	protected void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		String submittedDate = formsPage.getSubmittedDate(formName);
 		String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
 		assertEquals(submittedDate, currentDate, "Form submitted today not found");
 	}
 
-	protected void checkPDF(HealthFormPage formsPage, String formName) throws Exception {
+	protected void checkPDF(HealthFormListPage formsPage, String formName) throws Exception {
 		PortalUtil.setPortalFrame(driver);
 		URLStatusChecker status = new URLStatusChecker(driver);
 		String pdfLink;

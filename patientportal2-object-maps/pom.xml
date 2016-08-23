@@ -37,6 +37,11 @@
   			<artifactId>patientportal2-api</artifactId>
   		<version>${ihg.version}</version>
   	</dependency>
+  	<dependency>
+  			<groupId>com.intuit.ihg</groupId>
+  			<artifactId>forms-object-maps</artifactId>
+  		<version>${ihg.version}</version>
+  	</dependency>
   	</dependencies>
   	
     <build>

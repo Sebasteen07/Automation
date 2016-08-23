@@ -18,13 +18,14 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.OldCustomFormPages;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
-import com.medfusion.product.patientportal1.flows.CheckOldCustomFormTest;
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
@@ -53,15 +54,13 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 	 * @AreaImpacted :- Description
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "OldCustomForms" }, invocationCount = 10)
+	@Test(enabled = true, groups = { "OldCustomForms" })
 	public void testCustomFormPublished() throws Exception {
 
 		logTestEnvironmentInfo("testCustomFormPublished");
-
 		log("step 1: Get Data from Excel ##########");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-
 		SiteGenSteps.logSGLoginInfo(testcasesData);
 
 		log("step 2:LogIn ##########");
@@ -116,7 +115,6 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		CustomFormAddCategoriesPage pCustomFormAddCategories2 = pAddCAtegories.clickCustomFormAddCategoriesPage();
 		AddQuestionsToCategoryPage pAddCAtegories2 = pCustomFormAddCategories2
 				.addCategoriesDetails(SitegenConstants.FORMCATEGORY2);
-		System.out.print(SitegenConstants.FORMCATEGORY);
 
 		log("step 9B: Add Question2 to category 2");
 		assertTrue(pAddCAtegories2.isSearchPageLoaded(),
@@ -177,10 +175,8 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		assertEquals(verifyTextPresent(driver, "First Name"), true,
 				"Demographic information is not present in form preview");
 		pCustomFormPreview.clickOnPage(2);
-		// fix
 		assertEquals(verifyTextPresent(driver, "Vital"), true, "Vital information is not present in form preview");
 		pCustomFormPreview.clickOnPage(3);
-		// fix
 		assertEquals(verifyTextPresent(driver, "Insurance Type"), true,
 				"Insurance Type is not present in form preview");
 		ManageYourFormsPage pManageForm = pCustomFormPreview.clickOnPublishLink();
@@ -190,21 +186,36 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		log("step 12: Manage your forms -Check custom Form published successfully");
 		assertEquals(pManageForm.checkForPublishedPage(customFormTitle), true,
 				"Custom Form did not published successfully and not present in published forms table");
+		driver.switchTo().window(winHandleSiteGen); // Setting data
 
-		driver.switchTo().window(winHandleSiteGen);
-
-		// Instancing CreatePatientTest
-		CheckOldCustomFormTest checkOldCustomFormTest = new CheckOldCustomFormTest();
-
-		// Setting data provider
 		Portal portal = new Portal();
 		TestcasesData portalTestcasesData = new TestcasesData(portal);
 
-		// Executing Test
-		checkOldCustomFormTest.setUrl(pSiteGenPracticeHomePage.getPatientPortalUrl());
 		String winHandlePatientPortal = driver.getWindowHandle();
-		HealthFormPage page = checkOldCustomFormTest.checkOldCustomForm(driver, portalTestcasesData, customFormTitle);
-
+		log("step 12.1:Login to patient portal");
+		log("URL: " + pSiteGenPracticeHomePage.getPatientPortalUrl());
+		PortalLoginPage portalLoginPage = new PortalLoginPage(driver, pSiteGenPracticeHomePage.getPatientPortalUrl());
+		MyPatientPage pMyPatientPage = portalLoginPage.login(portalTestcasesData.getUsername(),
+				portalTestcasesData.getPassword());
+		log("step 12.2: Click on CustomForm");
+		HealthFormListPage pHealthForm = pMyPatientPage.clickOnHealthForms();
+		log("step 12.3: Open Form");
+		OldCustomFormPages oldCustomForm = pHealthForm.openOldCustomForm(customFormTitle);
+		log("step 12.4: Fill form");
+		assertEquals(verifyTextPresent(driver, "First Name"), true,
+				"Demographic information is not present in form on Portal");
+		oldCustomForm.clickNext();
+		assertEquals(verifyTextPresent(driver, "Vital"), true, "Vital information is not present in form on Portal");
+		log("Step 12.3: Fill Vitals");
+		oldCustomForm.fillVitals();
+		oldCustomForm.clickNext();
+		assertEquals(verifyTextPresent(driver, "Insurance Type"), true,
+				"Insurance Type is not present in form on Portal");
+		log("Step 12.4: exit non completed form");
+		IHGUtil.setDefaultFrame(driver);
+		pMyPatientPage.clickOnHealthForms();
+		assertEquals(pHealthForm.getInfoAboutFormCompletion(customFormTitle), "2/3",
+				"Partialy completed form not saved correctly");
 		driver.switchTo().window(winHandleCustomBuilder);
 
 		log("step 13a: Delete 2 pages");
@@ -217,7 +228,12 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		pAddQuestionsToCategory.saveFormLayout();
 		driver.switchTo().window(winHandlePatientPortal);
 
-		checkOldCustomFormTest.checkDeletedPages(driver, page, customFormTitle);
+		pMyPatientPage.clickOnHealthForms();
+		assertEquals(pHealthForm.getInfoAboutFormCompletion(customFormTitle), "0/1",
+				"Partialy completed form after deleted pages not displayed correctly");
+		pHealthForm.openOldCustomForm(customFormTitle);
+		assertEquals(verifyTextPresent(driver, "First Name"), true,
+				"Demographic information is not present in form on Portal");
 
 		driver.switchTo().window(winHandleCustomBuilder);
 		pCustomFormPreview.clickOnUnPublishLink();
@@ -233,6 +249,7 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 
 		log("step 17: Manage your forms -Check custom Form unpublished was able to delete successfully");
 		pManageForm.deleteUnpublishedForm(customFormTitle);
+
 	}
 
 	/**
@@ -269,19 +286,19 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		MyPatientPage pMyPatientPage = createPatient.createPatient(driver, patientData);
 
 		log("step 2: Click on CustomForm");
-		HealthFormPage pHealthForm = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormListPage pHealthForm = pMyPatientPage.clickOnHealthForms();
 
 		log("step 3: Fill CustomForm");
-		pHealthForm.fillInsuranceHealthForm();
-
+		OldCustomFormPages oldCustomForm = pHealthForm.openOldCustomForm("Ivan Insurance Health Form ( Testing)");
+		oldCustomForm.fillInsuranceHealthForm();
 		assertFalse(driver.getPageSource().contains("Female question"));
 
-		pHealthForm.submitInsuranceHealthForm();
-		assertEquals(pHealthForm.InsuranceHelthform.getText(),
+		oldCustomForm.submitInsuranceHealthForm();
+		assertEquals(oldCustomForm.InsuranceHelthform.getText(),
 				"Thank you for completing our Ivan Insurance Health Form ( Testing).");
 
 		log("step 4: Download InsuranceHealthForm -- validate HTTP Status Code");
-		assertEquals(pHealthForm.clickInsuranceHealthFormDownloadText(), 200,
+		assertEquals(oldCustomForm.clickInsuranceHealthFormDownloadText(), 200,
 				"Download of InsuranceHealth Form PDF returned unexpected HTTP status code");
 
 		log("step 7: Logout of Patient Portal");
@@ -309,10 +326,10 @@ public class OldCustomFormsAcceptanceTests extends FormsAcceptanceTests {
 		pSearchPatientFormsResultPage.clickViewLink();
 
 		log("step 11: Verify the Result");
-		String actualPatientName = pHealthForm.Patientname.getText().trim();
+		String actualPatientName = oldCustomForm.Patientname.getText().trim();
 
 		log("Displayed patient name is :" + actualPatientName);
-		assertEquals(pHealthForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
+		assertEquals(oldCustomForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
 		assertTrue(verifyTextPresent(driver, "Patient DOB : 01/11/1987"));
 	}
 

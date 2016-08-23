@@ -13,10 +13,10 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.CalculatedFormPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.CalculatedFormPage;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
@@ -132,7 +132,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		MyPatientPage pMyPatientPage = createPatient(portalData);
 
 		log("step 2: Click on forms and open the form");
-		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormListPage formsPage = pMyPatientPage.clickOnHealthForms();
 		formsPage.openDiscreteForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 
 		log("Step 3: Try to Save and continue without any answer.");
@@ -163,7 +163,7 @@ public class CalculatedFormsAcceptanceTest extends FormsAcceptanceTests {
 		MyPatientPage pMyPatientPage = createPatient(portalData);
 
 		log("step 2: Click on forms");
-		HealthFormPage formsPage = pMyPatientPage.clickFillOutFormsLink();
+		HealthFormListPage formsPage = pMyPatientPage.clickOnHealthForms();
 		for (String formName : formNames) {
 			log("Opening Form named " + formName);
 			try {

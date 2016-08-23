@@ -37,8 +37,6 @@ public class ConfiguratorFormPage extends BasePageObject {
 	@FindBy(id = "loading")
 	private WebElement loadingNotification;
 
-	private JavascriptExecutor jse;
-
 	public ConfiguratorFormPage(WebDriver driver) {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
@@ -50,13 +48,13 @@ public class ConfiguratorFormPage extends BasePageObject {
 	 * with save and back buttons
 	 */
 
-	public void clickBackToTheList() {
-		jse.executeScript("scroll(0, 0);");
+	public void clickBackToTheList() throws InterruptedException {
+		scrollAndWait(0, 0, 0);
 		backToTheList.click();
 	}
 
-	public void clickSaveButton() {
-		jse.executeScript("scroll(0, 0);");
+	public void clickSaveButton() throws InterruptedException {
+		scrollAndWait(0, 0, 0);
 		saveButton.click();
 	}
 

@@ -3,19 +3,19 @@ package com.medfusion.product.object.maps.patientportal1.page;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.ConsolidatedInboxPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 import com.medfusion.product.object.maps.patientportal1.page.makePaymentpage.MakePaymentPage;
@@ -23,7 +23,6 @@ import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccount
 import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.NewRxRenewalPage;
 import com.medfusion.product.object.maps.patientportal1.page.phr.PHRPage;
 import com.medfusion.product.object.maps.patientportal1.page.portaltophr.AcceptPhrTermsandConditions;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.ApptRequestHistoryPage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
@@ -75,8 +74,8 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(@href,'vov.start')]")
 	private WebElement lnkVirtualOfficeVisit;
 
-	@FindBy(linkText = "Fill Out Forms")
-	private WebElement lnkFillOutForms;
+	@FindBy(xpath = "//div[@id='solutions']/ul/li[@class='sol_forms2']/a")
+	private WebElement healthFormsLink;
 
 	@FindBy(linkText = "New Assessment")
 	private WebElement lnkNewSymptomAssessment;
@@ -113,8 +112,6 @@ public class MyPatientPage extends BasePageObject {
 
 	@FindBy(xpath = "//div[@class='submitContainer']/input[@type='submit']")
 	private WebElement touSubmitBtn;
-
-	private JavascriptExecutor jse;
 
 	PortalUtil pPortalUtil = new PortalUtil(driver);
 
@@ -170,7 +167,7 @@ public class MyPatientPage extends BasePageObject {
 			System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 			// DEBUG
 			driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
-			jse.executeScript("scroll(0, 0);");
+			scrollAndWait(0, 0, 0);
 			logout.click();
 		} else {
 			// Look in frame.
@@ -241,16 +238,14 @@ public class MyPatientPage extends BasePageObject {
 		return PageFactory.initElements(driver, VirtualOfficeVisitProviderPage.class);
 	}
 
-	public HealthFormPage clickFillOutFormsLink() {
+	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 20); // we need to wait
-															// until the form
-															// window disappears
-
-		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
-		lnkFillOutForms.click();
-		return PageFactory.initElements(driver, HealthFormPage.class);
+		IHGUtil.setDefaultFrame(driver);
+		driver.findElement(By
+				.xpath("//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms']"))
+				.click();
+		IHGUtil.setFrame(driver, "iframe");
+		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
 	public NewSymptomAssessmentPage clickNewSymptomAssessmentLink() {

@@ -42,7 +42,6 @@ public class CustomFormPage extends BasePageObject {
 	private CustomFormPageSection secondSection;
 	private CustomFormPageSection thirdSection;
 	private IHGUtil utils;
-	private JavascriptExecutor jse;
 
 	public CustomFormPage(WebDriver driver) {
 		super(driver);
@@ -81,13 +80,13 @@ public class CustomFormPage extends BasePageObject {
 
 	public void saveForm() throws InterruptedException {
 		Thread.sleep(1000);
-		jse.executeScript("scroll(0, 0);");
+		scrollAndWait(0, 0, 500);
 		saveFormButton.click();
 		utils.waitForElementToDisappear(loadingNotification, 500, 20);
 	}
 
-	public void leaveFormPage() {
-		jse.executeScript("scroll(0, 0);");
+	public void leaveFormPage() throws InterruptedException {
+		scrollAndWait(0, 0, 500);
 		backToTheListButton.click();
 	}
 }

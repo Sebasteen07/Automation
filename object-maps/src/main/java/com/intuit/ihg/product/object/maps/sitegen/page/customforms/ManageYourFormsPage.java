@@ -80,9 +80,6 @@ public class ManageYourFormsPage extends BasePageObject {
 				if (list.findElement(By.className("html-control-label-left")).getText().contains(formTitle)) {
 					isPresent = true;
 					break;
-				} else {
-					isPresent = false;
-					continue;
 				}
 			} catch (Exception e) {
 				log("Couldn't find the " + formTitle);

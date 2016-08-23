@@ -44,7 +44,6 @@ public class CurrentSymptomsPage extends BasePageObject {
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
-	private JavascriptExecutor jse;
 
 	public CurrentSymptomsPage(WebDriver driver) {
 		super(driver);
@@ -76,8 +75,8 @@ public class CurrentSymptomsPage extends BasePageObject {
 	public void selectBasicSymptoms() throws InterruptedException {
 		log("Check General Health");
 		IHGUtil.waitForElement(driver, 30, chckGeneralHealth);
-		jse.executeScript("scroll(0, 0);");
-		Thread.sleep(500);
+		scrollAndWait(0, 0, 500);
+
 		chckGeneralHealth.click();
 		log("Check Blood");
 		chckBlood.click();
