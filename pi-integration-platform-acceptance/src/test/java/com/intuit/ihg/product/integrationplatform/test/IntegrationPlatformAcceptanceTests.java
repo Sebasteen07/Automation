@@ -989,8 +989,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Set Statement Delievery Preference as Paper Statement");
 		myPreferencePage.checkAndSetStatementPreference(driver, StatementPreferenceType.PAPER);
-		String setPref = "PAPER";
-		
+				
 		log("Step 6: Logout from Patient portal");
 		homePage.clickOnLogout();
 
@@ -1037,104 +1036,55 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				+ "000", testData.getResponsePath());
 
 		log("Step 14: Validate the response");
-		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(),MFMemId, setPref);
+		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(),MFMemId, "PAPER");
 
-		log("Step 15: Prepare payload to set Statement Preference as Electronic Statement");
-		setPref = "E_STATEMENT";
-		timestamp = System.currentTimeMillis();
-		since = timestamp / 1000L - 60 * 24;
-
-		String payload = RestUtils.preparePOSTStmtPref(testData.getStatementPath(), MFMemId, ExtId, setPref);
+		String setPref[] = {"E_STATEMENT","BOTH"};
 		
-		log("Step 16: Do POST Statement Preference API & set preference to Electronic Statement");
-		String processingUrl = RestUtils.setupHttpPostRequest(
-				testData.getRestUrl(), payload, testData.getResponsePath());
+		for (int i = 0; i < setPref.length; i++) {
+			log("Step 15." + i + ": Prepare payload to set Statement Preference as "+ setPref[i]);
+			timestamp = System.currentTimeMillis();
+			since = timestamp / 1000L - 60 * 24;
 
-		log("Step 17: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl,testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
+			String payload = RestUtils.preparePOSTStmtPref(
+					testData.getStatementPath(), MFMemId, ExtId, setPref[i]);
+
+			log("Step 16." + i + ": Do POST Statement Preference API & set preference to "+ setPref[i]);
+			String processingUrl = RestUtils.setupHttpPostRequest(
+					testData.getRestUrl(), payload, testData.getResponsePath());
+
+			log("Step 17." + i + ": Get processing status until it is completed");
+			boolean completed = false;
+			for (int j = 0; j < 3; j++) {
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl,
+						testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData
+						.getResponsePath())) {
+					completed = true;
+					break;
+				}
 			}
+			verifyTrue(completed, "Message processing was not completed in time");
+
+			log("Step 18." + i + ": Login to Patient Portal");
+			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
+
+			log("Step 19." + i + ": Check for update in Statement Preference");
+			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToMyAccountPage();
+			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
+
+			assertTrue(myPreferencePage1.chkstmtprefupdated(StatementPreferenceType.valueOf(setPref[i])), "Statement Preference not updated.");
+
+			log("Step 20." + i + ": Logout of Portal");
+			homePage1.clickOnLogout();
+
+			log("Step 21." + i + ": GET Statement Preference API");
+			log("Getting statement preference updates since timestamp: "+ since);
+			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since="	+ since + "000", testData.getResponsePath());
+
+			log("Step 22." + i + ": Validate the response");
+			RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref[i]);
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
-
-		log("Step 18: Login to Patient Portal");
-		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
-		
-		log("Step 19: Check for update in Statement Preference");
-		JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToMyAccountPage();
-		JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
-		
-		myPreferencePage1.chkstmtprefupdated(StatementPreferenceType.E_STATEMENT);
-		
-		log("Step 20: Logout of Portal");
-		homePage1.clickOnLogout();
-		
-		log("Step 21: GET Statement Preference API");
-		log("Getting statement preference updates since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
-				+ "000", testData.getResponsePath());
-		
-		log("Step 22: Validate the response");
-		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref);
-		
-		log("Step 23: Prepare payload to set Statement Preference as Both");
-		setPref = "BOTH";
-		timestamp = System.currentTimeMillis();
-		since = timestamp / 1000L - 60 * 24;
-
-		String payload1 = RestUtils.preparePOSTStmtPref(testData.getStatementPath(), MFMemId, ExtId, setPref);
-		
-		log("Step 24: Do POST Statement Preference API & set preference to Both Statements");
-		String processingUrl1 = RestUtils.setupHttpPostRequest(
-				testData.getRestUrl(), payload1, testData.getResponsePath());
-
-		log("Step 25: Get processing status until it is completed");
-		boolean completed1 = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
-			RestUtils.setupHttpGetRequest(processingUrl1,testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed1 = true;
-				break;
-			}
-		}
-		verifyTrue(completed1, "Message processing was not completed in time");
-
-		log("Step 26: Login to Patient Portal");
-		JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage2 = loginPage2.login(testData.getUserName(), testData.getPassword());
-		
-		log("Step 27: Check for update in Statement Preference");
-		JalapenoMyAccountProfilePage myAccountProfilePage2 = homePage2.goToMyAccountPage();
-		JalapenoMyAccountPreferencesPage myPreferencePage2 = myAccountProfilePage2.goToPreferencesTab(driver);
-		
-		myPreferencePage2.chkstmtprefupdated(StatementPreferenceType.BOTH);
-		
-		log("Step 28: Logout of Portal");
-		homePage2.clickOnLogout();
-
-		log("Step 29: GET Statement Preference API");
-		log("Getting statement preference updates since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
-				+ "000", testData.getResponsePath());
-		
-		log("Step 30: Validate the response");
-		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref);
-		
 	}
-
-/*	@Override
-	public boolean updateStatementPreferenceFromMyAccount(WebDriver driver,
-			Jalapeno portal, StatementPreferenceType statementPreferenceType) {
-		// TODO Auto-generated method stub
-		return myPreferencePage.checkAndSetStatementPreference(driver, statementPreferenceType);
-	}
-*/	
 }
