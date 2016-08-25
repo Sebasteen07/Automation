@@ -1,49 +1,37 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
-import org.openqa.selenium.WebDriver;
+import static org.testng.Assert.assertNotNull;
+
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.EHDC;
-import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
+import com.intuit.ihg.product.integrationplatform.utils.EHDC;
+import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
-import com.intuit.ihg.product.integrationplatform.utils.PayNow;
-import com.intuit.ihg.product.integrationplatform.utils.PayNowTestData;
+import com.intuit.ihg.product.integrationplatform.utils.PIDC;
+import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Payment;
 import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.intuit.ihg.product.integrationplatform.utils.PIDC;
-import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
-//import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-//import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-//import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
-//import com.medfusion.product.object.maps.patientportal1.page.myAccount.preferences.PreferencesPage;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
+import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
-import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.*;
-import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoCreateAccountPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
-import com.medfusion.product.patientportal2.flows.IStatementPreference;
-import com.medfusion.product.patientportal2.pojo.CreditCard;
-import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
-import com.medfusion.product.patientportal2.pojo.Jalapeno;
-import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
-import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
@@ -53,10 +41,10 @@ import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSe
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
-import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
-
-import static org.testng.Assert.assertNotNull;
+import com.medfusion.product.patientportal1.utils.PortalConstants;
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 /**
  * @author dsalaskar
@@ -949,18 +937,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 */
     
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementPreference() throws Exception {
 
 		log("Test Case: Statement Preference");
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		
+
 		log("Step 1: Get Data from Excel");
 		StatementPreference stmtPrefData = new StatementPreference();
 		StatementPreferenceTestData testData = new StatementPreferenceTestData(stmtPrefData);
-				
+
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());
 		log("Password: " + testData.getPassword());
@@ -976,95 +964,89 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
 		Long timestamp = System.currentTimeMillis();
-		
+
 		log("Step 2: LogIn to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
-		
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
 		log("Step 3: Click on myaccountLink on MyPatientPage");
 		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToMyAccountPage();
-					
+
 		log("Step 4: Click on Preferences Tab");
 		JalapenoMyAccountPreferencesPage myPreferencePage = myAccountProfilePage.goToPreferencesTab(driver);
 
 		log("Step 5: Set Statement Delievery Preference as Paper Statement");
 		myPreferencePage.checkAndSetStatementPreference(driver, StatementPreferenceType.PAPER);
-				
+
 		log("Step 6: Logout from Patient portal");
 		homePage.clickOnLogout();
 
 		log("Step 7: Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
-				testData.getPracticeURL());
-		PracticeHomePage practiceHome = practiceLogin.login(
-				testData.getPracticeUserName(), testData.getPracticePassword());
-	
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+
 
 		log("Step 8: Search for above patient with first name & last name");
 		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
 		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());
-		
+
 		log("Step 9: Verify search results");
 		Thread.sleep(120000);
-		IHGUtil.waitForElement(driver,60,patientSearch.searchResult);
-		verifyEquals(true,patientSearch.searchResult.getText().contains(testData.getFirstName()));
-				
+		IHGUtil.waitForElement(driver, 60, patientSearch.searchResult);
+		assertEquals(true, patientSearch.searchResult.getText().contains(testData.getFirstName()));
+		// verifyEquals(true, patientSearch.searchResult.getText().contains(testData.getFirstName()));
+
 		log("Step 10: Get Medfusion Member Id & External Id of the patient");
 		PatientDashboardPage ptDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
 		ptDashboard.editPatientLink();
-		
+
 		String MFMemId = ptDashboard.medfusionID();
 		log("MFMemId is " + MFMemId);
 		String ExtId = ptDashboard.readExtID();
 		log("External Id is " + ExtId);
-		
+
 		practiceHome.logOut();
-		
+
 		log("Step 11: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(),
-				testData.getOAuthProperty(), testData.getOAuthAppToken(),
-				testData.getOAuthUsername(), testData.getOAuthPassword());
-		
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
 		log("Step 12: Wait 60 seconds");
 		Thread.sleep(60000);
 
 		log("Step 13: GET Statement Preference API");
-			Long since = timestamp / 1000L - 60 * 24;
+		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Getting statement preference updates since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since
-				+ "000", testData.getResponsePath());
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + "000", testData.getResponsePath());
 
 		log("Step 14: Validate the response");
-		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(),MFMemId, "PAPER");
+		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, "PAPER");
 
-		String setPref[] = {"E_STATEMENT","BOTH"};
-		
+		String setPref[] = {"E_STATEMENT", "BOTH"};
+
 		for (int i = 0; i < setPref.length; i++) {
-			log("Step 15." + i + ": Prepare payload to set Statement Preference as "+ setPref[i]);
+			log("Step 15." + i + ": Prepare payload to set Statement Preference as " + setPref[i]);
 			timestamp = System.currentTimeMillis();
 			since = timestamp / 1000L - 60 * 24;
 
-			String payload = RestUtils.preparePOSTStmtPref(
-					testData.getStatementPath(), MFMemId, ExtId, setPref[i]);
+			String payload = RestUtils.preparePOSTStmtPref(testData.getStatementPath(), MFMemId, ExtId, setPref[i]);
 
-			log("Step 16." + i + ": Do POST Statement Preference API & set preference to "+ setPref[i]);
-			String processingUrl = RestUtils.setupHttpPostRequest(
-					testData.getRestUrl(), payload, testData.getResponsePath());
+			log("Step 16." + i + ": Do POST Statement Preference API & set preference to " + setPref[i]);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
 
 			log("Step 17." + i + ": Get processing status until it is completed");
 			boolean completed = false;
 			for (int j = 0; j < 3; j++) {
 				Thread.sleep(60000);
-				RestUtils.setupHttpGetRequest(processingUrl,
-						testData.getResponsePath());
-				if (RestUtils.isMessageProcessingCompleted(testData
-						.getResponsePath())) {
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 					completed = true;
 					break;
 				}
 			}
-			verifyTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
+			// verifyTrue(completed, "Message processing was not completed in time");
 
 			log("Step 18." + i + ": Login to Patient Portal");
 			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
@@ -1080,8 +1062,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			homePage1.clickOnLogout();
 
 			log("Step 21." + i + ": GET Statement Preference API");
-			log("Getting statement preference updates since timestamp: "+ since);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since="	+ since + "000", testData.getResponsePath());
+			log("Getting statement preference updates since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + "000", testData.getResponsePath());
 
 			log("Step 22." + i + ": Validate the response");
 			RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref[i]);
