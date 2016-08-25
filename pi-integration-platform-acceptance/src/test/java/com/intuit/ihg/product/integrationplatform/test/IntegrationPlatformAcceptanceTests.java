@@ -994,8 +994,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(120000);
 		IHGUtil.waitForElement(driver, 60, patientSearch.searchResult);
 		assertEquals(true, patientSearch.searchResult.getText().contains(testData.getFirstName()));
-		// verifyEquals(true, patientSearch.searchResult.getText().contains(testData.getFirstName()));
-
+		
 		log("Step 10: Get Medfusion Member Id & External Id of the patient");
 		PatientDashboardPage ptDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
 		ptDashboard.editPatientLink();
@@ -1046,8 +1045,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 			assertTrue(completed, "Message processing was not completed in time");
-			// verifyTrue(completed, "Message processing was not completed in time");
-
+			
 			log("Step 18." + i + ": Login to Patient Portal");
 			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
