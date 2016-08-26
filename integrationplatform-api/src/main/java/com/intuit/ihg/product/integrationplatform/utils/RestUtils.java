@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
-import java.text.DateFormatSymbols;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,8 +51,8 @@ import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 //import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
 
@@ -1929,7 +1928,7 @@ public class RestUtils {
 	 * @throws ParserConfigurationException
 	 * @throws IOException
 	*/ 
-	public static void isStmtPreferenceCorrect(String xmlFileName, String MFId , String Pref) throws ParserConfigurationException, SAXException, IOException {
+	public static void isStatementPreferenceCorrect(String xmlFileName, String MFId, String Pref) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		
@@ -1965,7 +1964,8 @@ public class RestUtils {
 	 * @throws SAXException 
 	 * @throws TransformerException 
 	 */
-	public static String preparePOSTStmtPref(String xmlFileName, String MFId, String extId, String Pref) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public static String preparePostStatementPreference(String xmlFileName, String MFId, String extId, String Pref) throws ParserConfigurationException,
+			SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		

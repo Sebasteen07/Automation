@@ -69,7 +69,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		log("Statement preference is set up to: " + statementPreferenceType);
 	}
 
-	public boolean chkstmtprefupdated(StatementPreferenceType statementPreferenceType) {
+	public boolean checkStatementPreferenceUpdated(StatementPreferenceType statementPreferenceType) {
 		if (isStatementPreferenceSelected(statementPreferenceType)) {
 			log("Statement preference is: " + statementPreferenceType);
 			return true;

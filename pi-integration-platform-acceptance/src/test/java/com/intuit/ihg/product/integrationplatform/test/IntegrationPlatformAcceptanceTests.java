@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -939,15 +940,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementPreference() throws Exception {
-
-		log("Test Case: Statement Preference");
-
+		log("Test Case: Statement Preference in Portal 2.0");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("Step 1: Get Data from Excel");
-		StatementPreference stmtPrefData = new StatementPreference();
-		StatementPreferenceTestData testData = new StatementPreferenceTestData(stmtPrefData);
+		StatementPreference statementPreferenceData = new StatementPreference();
+		StatementPreferenceTestData testData = new StatementPreferenceTestData(statementPreferenceData);
 
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());
@@ -963,7 +962,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
-		Long timestamp = System.currentTimeMillis();
+		Long timeStamp = System.currentTimeMillis();
 
 		log("Step 2: LogIn to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -985,24 +984,22 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
 
-
 		log("Step 8: Search for above patient with first name & last name");
 		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
 		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());
 
 		log("Step 9: Verify search results");
-		Thread.sleep(120000);
 		IHGUtil.waitForElement(driver, 60, patientSearch.searchResult);
-		assertEquals(true, patientSearch.searchResult.getText().contains(testData.getFirstName()));
-		
-		log("Step 10: Get Medfusion Member Id & External Id of the patient");
-		PatientDashboardPage ptDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
-		ptDashboard.editPatientLink();
+		assertTrue(patientSearch.searchResult.getText().contains(testData.getFirstName()));
 
-		String MFMemId = ptDashboard.medfusionID();
-		log("MFMemId is " + MFMemId);
-		String ExtId = ptDashboard.readExtID();
-		log("External Id is " + ExtId);
+		log("Step 10: Get Medfusion Member Id & External Id of the patient");
+		PatientDashboardPage patientDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
+		patientDashboard.editPatientLink();
+
+		String memberId = patientDashboard.medfusionID();
+		log("MemberId is " + memberId);
+		String externalPatientId = patientDashboard.readExternalPatientID();
+		log("External Id is " + externalPatientId);
 
 		practiceHome.logOut();
 
@@ -1010,31 +1007,31 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
 
-		log("Step 12: Wait 60 seconds");
+		log("Step 12: Wait for 60 seconds");
 		Thread.sleep(60000);
 
-		log("Step 13: GET Statement Preference API");
-		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Getting statement preference updates since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + "000", testData.getResponsePath());
+		log("Step 13: Getting statement preference updates since timestamp: " + timeStamp);
+		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
 
 		log("Step 14: Validate the response");
-		RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, "PAPER");
+		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
 
-		String setPref[] = {"E_STATEMENT", "BOTH"};
+		String statementPreference[] = {"E_STATEMENT", "BOTH"};
 
-		for (int i = 0; i < setPref.length; i++) {
-			log("Step 15." + i + ": Prepare payload to set Statement Preference as " + setPref[i]);
-			timestamp = System.currentTimeMillis();
-			since = timestamp / 1000L - 60 * 24;
+		for (int i = 0; i < statementPreference.length; i++) {
+			log("-----Statement Preference : " + statementPreference[i] + "-----");
+			log("Step 15: Prepare payload to set Statement Preference as " + statementPreference[i]);
+			if (StringUtils.isBlank(nextTimeStamp))
+				timeStamp = System.currentTimeMillis();
+			else
+				timeStamp = Long.valueOf(nextTimeStamp);
 
-			String payload = RestUtils.preparePOSTStmtPref(testData.getStatementPath(), MFMemId, ExtId, setPref[i]);
+			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId, externalPatientId, statementPreference[i]);
 
-			log("Step 16." + i + ": Do POST Statement Preference API & set preference to " + setPref[i]);
+			log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
 
-			log("Step 17." + i + ": Get processing status until it is completed");
+			log("Step 17: Get processing status until it is completed");
 			boolean completed = false;
 			for (int j = 0; j < 3; j++) {
 				Thread.sleep(60000);
@@ -1044,27 +1041,27 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 					break;
 				}
 			}
-			assertTrue(completed, "Message processing was not completed in time");
-			
-			log("Step 18." + i + ": Login to Patient Portal");
+			assertTrue(completed);
+
+			log("Step 18: Login to Patient Portal");
 			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
 
-			log("Step 19." + i + ": Check for update in Statement Preference");
+			log("Step 19: Check for update in Statement Preference");
 			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToMyAccountPage();
 			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
 
-			assertTrue(myPreferencePage1.chkstmtprefupdated(StatementPreferenceType.valueOf(setPref[i])), "Statement Preference not updated.");
+			assertTrue(myPreferencePage1.checkStatementPreferenceUpdated(StatementPreferenceType.valueOf(statementPreference[i])));
 
-			log("Step 20." + i + ": Logout of Portal");
+			log("Step 20: Logout of Portal");
 			homePage1.clickOnLogout();
 
-			log("Step 21." + i + ": GET Statement Preference API");
-			log("Getting statement preference updates since timestamp: " + since);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + "000", testData.getResponsePath());
+			log("Step 21: GET Statement Preference API");
+			log("Getting statement preference updates since timestamp: " + timeStamp);
+			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
 
-			log("Step 22." + i + ": Validate the response");
-			RestUtils.isStmtPreferenceCorrect(testData.getResponsePath(), MFMemId, setPref[i]);
+			log("Step 22: Validate the response");
+			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
 		}
 	}
 }

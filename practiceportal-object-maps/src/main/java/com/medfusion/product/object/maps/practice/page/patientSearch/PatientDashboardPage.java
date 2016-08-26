@@ -226,7 +226,7 @@ public class PatientDashboardPage extends BasePageObject{
 	 * 
 	 * @return externalID
 	 */
-	public String readExtID()
+	public String readExternalPatientID()
 	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement( driver, 30, externalID);
