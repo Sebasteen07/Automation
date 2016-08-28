@@ -2,17 +2,17 @@ package com.medfusion.product.object.maps.patientportal1.page.myAccount.preferen
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 
 public class PreferencesPage extends BasePageObject {
@@ -180,7 +180,8 @@ public class PreferencesPage extends BasePageObject {
 	 */
 
 	public enum p{E_STATEMENT,PAPER,BOTH;}
-	public void setStmtPreference(String Pref)
+
+	public void setStatementPreference(String Pref)
 	{
 		try
 		{
@@ -208,7 +209,7 @@ public class PreferencesPage extends BasePageObject {
 	}
 	
 	
-	public void checkStmtPreference(String Pref)
+	public void checkStatementPreference(String Pref)
 	{
 		try
 		{
