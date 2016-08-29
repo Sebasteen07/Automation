@@ -15,6 +15,7 @@
         		<include name="testPIDCPatientRegistration" />        		
         		<include name="testE2EAppointmentRequest20" />
 				<include name="testE2E_OLBP20" />
+				<include name="testStatementPreference" />
       		</methods>
 	</classes>
 </test>
