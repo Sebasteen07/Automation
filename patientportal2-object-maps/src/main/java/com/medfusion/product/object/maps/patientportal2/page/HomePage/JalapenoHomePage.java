@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -46,8 +47,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_discrete_forms")
 	private WebElement forms;
 
-	@FindBy(how = How.CSS, using = ".button.ng-binding")
+	@FindBy(how = How.ID, using = "unstartedformbutton")
 	private WebElement startRegistrationButton;
+
+	@FindBy(how = How.ID, using = "inprogressformbutton")
+	private WebElement continueRegistrationButton;
 
 	@FindBy(how = How.ID, using = "currentPatientBubble")
 	private WebElement bubble;
@@ -117,7 +121,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
 
-	public HealthFormListPage clickOnHealthForms(WebDriver driver) throws Exception {
+	public HealthFormListPage clickOnHealthForms() throws Exception {
 		log("Clicking on Health Forms button");
 		forms.click();
 		IHGUtil.setFrame(driver, "iframe");
@@ -131,11 +135,22 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
 
-	public void clickStartRegistrationButton(WebDriver driver) throws Exception {
+	public FormWelcomePage clickStartRegistrationButton(WebDriver driver) throws Exception {
 		log("Clicking on Start Registration button.");
 		startRegistrationButton.click();
 		log("Switch to the Forms iframe.");
 		IHGUtil.setFrame(driver, "iframe");
+		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Forms']")));
+		return PageFactory.initElements(driver, FormWelcomePage.class);
+	}
+
+	public FormWelcomePage clickContinueRegistrationButton(WebDriver driver) throws Exception {
+		log("Clicking on Continue Registration button.");
+		continueRegistrationButton.click();
+		log("Switch to the Forms iframe.");
+		IHGUtil.setFrame(driver, "iframe");
+		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Forms']")));
+		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
 	public boolean isTextDisplayed(String text) {

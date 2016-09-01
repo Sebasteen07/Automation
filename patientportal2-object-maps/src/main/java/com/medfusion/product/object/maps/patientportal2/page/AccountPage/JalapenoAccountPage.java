@@ -12,21 +12,30 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 
 public class JalapenoAccountPage extends BasePageObject {
 
-    @FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
-    private WebElement editMyAccountButton;
+	@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
+	private WebElement editMyAccountButton;
 
-    public JalapenoAccountPage(WebDriver driver) {
-        super(driver);
-        IHGUtil.PrintMethodName();
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
-    }
+	@FindBy(how = How.ID, using = "birthDate_year")
+	private WebElement DOByear;
 
-    public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
+	@FindBy(how = How.ID, using = "birthDate_month")
+	private WebElement DOBmonth;
 
-        log("Trying to click on Edit button for My Account");
-        editMyAccountButton.click();
+	@FindBy(how = How.ID, using = "birthDate_day")
+	private WebElement DOBday;
 
-        return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
-    }
+	public JalapenoAccountPage(WebDriver driver) {
+		super(driver);
+		IHGUtil.PrintMethodName();
+		driver.manage().window().maximize();
+		PageFactory.initElements(driver, this);
+	}
+
+	public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
+
+		log("Trying to click on Edit button for My Account");
+		editMyAccountButton.click();
+
+		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
+	}
 }

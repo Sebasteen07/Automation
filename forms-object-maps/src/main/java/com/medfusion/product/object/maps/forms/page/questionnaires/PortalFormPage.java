@@ -44,14 +44,12 @@ public class PortalFormPage extends BasePageObject {
 
 	/**
 	 * @brief Click on Continue Button
-	 * @param nextPageClass
-	 *            Class of the following page in the form continueButton
-	 *            WebElement of the continue button
+	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the
+	 *        continue button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton)
-			throws Exception {
+	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton) throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		// we need this here as demo is acting up sometimes with longer delays
@@ -71,8 +69,7 @@ public class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton,
-			int maxRetry) throws Exception {
+	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton, int maxRetry) throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -98,8 +95,7 @@ public class PortalFormPage extends BasePageObject {
 
 	/**
 	 * @brief Click on Continue Button
-	 * @param nextPageClass
-	 *            Class of the following page in the form
+	 * @param nextPageClass Class of the following page in the form
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
@@ -143,6 +139,8 @@ public class PortalFormPage extends BasePageObject {
 			}
 		}
 		closeButton.click();
+		IHGUtil.setDefaultFrame(driver);
+		IHGUtil.setFrame(driver, "iframe");
 	}
 
 	public void clickSaveAndFinishAnotherTime() {

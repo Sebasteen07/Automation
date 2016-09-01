@@ -19,9 +19,11 @@ public class SpecialCharFormFirstPage extends PortalCustomFormPage {
 	}
 
 	/**
+	 * @throws InterruptedException
 	 * @brief Selects checkboxes in the form that contain quotations marks - "
 	 */
-	public void selectQuotatedAnswers() {
+	public void selectQuotatedAnswers() throws InterruptedException {
+		scrollAndWait(0, 0, 500);
 		if (feverCheck.isSelected() == false)
 			feverCheck.click();
 

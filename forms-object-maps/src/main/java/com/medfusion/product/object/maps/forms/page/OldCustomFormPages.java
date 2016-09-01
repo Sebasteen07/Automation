@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,13 +12,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.common.utils.IHGUtil;
 
 /**
- * Class contains mix of elements/methods of old custom forms. Because old
- * custom forms are to be replaced there is no need to refactor this.
+ * Class contains mix of elements/methods of old custom forms. Because old custom forms are to be
+ * replaced there is no need to refactor this.
  */
 public class OldCustomFormPages extends BasePageObject {
 	public static final String PAGE_NAME = "Insurance Health Form Page";
@@ -41,15 +43,6 @@ public class OldCustomFormPages extends BasePageObject {
 
 	@FindBy(xpath = "//input[@value='partial']")
 	private WebElement blindPartial;
-
-	@FindBy(xpath = "//input[@value='blue']")
-	private WebElement colorBlue;
-
-	@FindBy(xpath = "//input[@value='green']")
-	private WebElement colorGreen;
-
-	@FindBy(xpath = "//input[@value='yes']")
-	private WebElement cancerYes;
 
 	@FindBy(name = "content:categories:1:questions:3:question")
 	private WebElement dateOfCancer;
@@ -112,9 +105,12 @@ public class OldCustomFormPages extends BasePageObject {
 
 	/**
 	 * Click on the link InsuranceHealthForm and filling the form
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void fillInsuranceHealthForm() {
+	public void fillInsuranceHealthForm() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, middleName);
+		middleName.clear();
 		middleName.sendKeys("Middle");
 		Select selectstate1 = new Select(maritalStatus);
 		selectstate1.selectByVisibleText("Single");
@@ -123,11 +119,21 @@ public class OldCustomFormPages extends BasePageObject {
 			Select selectstate2 = new Select(communicationMethod);
 			selectstate2.selectByVisibleText("US mail");
 		}
-
+		Thread.sleep(1000);
 		blindPartial.click();
-		colorBlue.click();
-		colorGreen.click();
-		cancerYes.click();
+
+		// workaround for StaleElementReferenceException
+		for (int i = 0; i < 3; i++) {
+			try {
+				driver.findElement(By.xpath("//input[@value='blue']")).click();
+				driver.findElement(By.xpath("//input[@value='green']")).click();
+				driver.findElement(By.xpath("//input[@value='yes']")).click();
+				break;
+			} catch (StaleElementReferenceException ex) {
+				Log4jUtil.log((i + 1) + ". attempt to click on checkboxes");
+			}
+		}
+
 
 		dateOfCancer.sendKeys("10/15/2013");
 
@@ -137,31 +143,33 @@ public class OldCustomFormPages extends BasePageObject {
 
 	/**
 	 * Submit the form
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void submitInsuranceHealthForm() {
+	public void submitInsuranceHealthForm() throws InterruptedException {
 		btnSubmit.click();
+		Thread.sleep(1000);
 	}
 
 	/**
-	 * Simulates Text Insurance HealthFormdownload link click by accessing the
-	 * link URL and downloading it via the URLStatusChecker class.
+	 * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and
+	 * downloading it via the URLStatusChecker class.
 	 *
 	 * @return the http status code from the download
 	 */
 	public int clickInsuranceHealthFormDownloadText() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframebody");
-		log(driver.getPageSource());
+		// log(driver.getPageSource());
 		log(lnkclickForPdfDownload.getAttribute("href").toString());
 		return insuranceHealthFormDownloadCode(lnkclickForPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
 
 	/**
-	 * steps 1:-sets URL that you want to perform an HTTP Status Check upon
-	 * steps 2:-Set the HTTP Request Method (Defaults to 'GET') steps 3:-Mimic
-	 * the cookie state of WebDriver (Defaults to true) This will enable you to
-	 * access files that are only available when logged in. Perform an HTTP
-	 * Status check and return the response code as int (200,300 etc)
+	 * steps 1:-sets URL that you want to perform an HTTP Status Check upon steps 2:-Set the HTTP
+	 * Request Method (Defaults to 'GET') steps 3:-Mimic the cookie state of WebDriver (Defaults to
+	 * true) This will enable you to access files that are only available when logged in. Perform an
+	 * HTTP Status check and return the response code as int (200,300 etc)
 	 *
 	 * @param url
 	 * @param method
@@ -170,8 +178,7 @@ public class OldCustomFormPages extends BasePageObject {
 	 * @throws IOException
 	 */
 
-	private int insuranceHealthFormDownloadCode(String url, RequestMethod method)
-			throws URISyntaxException, IOException {
+	private int insuranceHealthFormDownloadCode(String url, RequestMethod method) throws URISyntaxException, IOException {
 		IHGUtil.PrintMethodName();
 		log("Download URL: " + url);
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);
@@ -204,10 +211,8 @@ public class OldCustomFormPages extends BasePageObject {
 	}
 
 	/**
-	 * @brief Opens a form on the page selected by parameter and initializes its
-	 *        welcome page
-	 * @param selectedForm
-	 *            String value determining which form to open
+	 * @brief Opens a form on the page selected by parameter and initializes its welcome page
+	 * @param selectedForm String value determining which form to open
 	 * @return method returns initialized object for Welcome page of the form
 	 */
 

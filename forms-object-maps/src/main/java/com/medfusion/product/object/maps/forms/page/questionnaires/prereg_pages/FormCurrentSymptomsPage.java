@@ -64,10 +64,18 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 	 * @throws: Exception
 	 */
 	public void setBasicSymptoms() throws Exception {
-		checkChills.click();
-		checkInsomnia.click();
-		checkBruising.click();
-		checkEarache.click();
+		if (!checkChills.isSelected()) {
+			checkChills.click();
+		}
+		if (!checkInsomnia.isSelected()) {
+			checkInsomnia.click();
+		}
+		if (!checkBruising.isSelected()) {
+			checkBruising.click();
+		}
+		if (!checkEarache.isSelected()) {
+			checkEarache.click();
+		}
 	}
 
 	public void enterComment(String comment) {

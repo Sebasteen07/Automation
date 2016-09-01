@@ -74,8 +74,7 @@ public class BasicInformationAboutYouPage extends BasePageObject {
 	}
 
 	/**
-	 * Select basic info about the patient to appear Address items, phone
-	 * number, gender
+	 * Select basic info about the patient to appear Address items, phone number, gender
 	 */
 
 	public void selectBasicInfo() {
@@ -106,7 +105,7 @@ public class BasicInformationAboutYouPage extends BasePageObject {
 	 */
 
 	public EmergencyContactInformationPage clickLnkEmergency() throws InterruptedException {
-		Thread.sleep(100);
+		scrollAndWait(0, 0, 500);
 		lnkEmergencyContactInformation.click();
 		return PageFactory.initElements(driver, EmergencyContactInformationPage.class);
 	}

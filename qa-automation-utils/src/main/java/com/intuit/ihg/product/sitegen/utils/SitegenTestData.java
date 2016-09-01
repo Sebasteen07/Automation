@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.sitegen.utils;
 
 import java.net.URL;
+
 import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
@@ -44,7 +45,6 @@ public class SitegenTestData {
 	/**
 	 * Returns site gen adminPassword from excel sheet
 	 */
-
 	public String getAdminPassword() {
 		return sitegenobj.adminPassword;
 	}
@@ -98,7 +98,7 @@ public class SitegenTestData {
 	public String getpersonnelTypePswd() {
 		return sitegenobj.personnelTypePswd;
 	}
-	
+
 	/**
 	 * Returns site gen QBMS test username from excel sheet
 	 */
@@ -112,7 +112,7 @@ public class SitegenTestData {
 	public String getFormUser() {
 		return sitegenobj.formUser;
 	}
-	
+
 	/**
 	 * Returns the username for Form scenario
 	 */

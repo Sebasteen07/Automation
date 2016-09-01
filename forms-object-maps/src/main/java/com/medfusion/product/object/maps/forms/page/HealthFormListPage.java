@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.forms.page;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,14 +10,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 
 public class HealthFormListPage extends BasePageObject {
@@ -27,11 +27,17 @@ public class HealthFormListPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(how = How.XPATH, using = "//iframe[@title='Forms']")
+	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
 
-	@FindBy(how = How.ID, using = "iframe")
+	@FindBy(id = "iframe")
 	private WebElement formsIframe;
+
+	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout']")
+	private WebElement logout;
+
+	@FindBy(xpath = "//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms']")
+	private WebElement healthFormsLink;
 
 	/**
 	 * automatically switches to corresponding iframe
@@ -53,9 +59,11 @@ public class HealthFormListPage extends BasePageObject {
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		PortalUtil.setPortalFrame(driver); // switch focus to the correct frame
 		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
-		PortalUtil.setquestionnarieFrame(driver);
+		if (!IHGUtil.exists(driver, newFormIframe)) {
+			driver.switchTo().defaultContent();
+		}
+		driver.switchTo().frame(newFormIframe);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
@@ -65,12 +73,22 @@ public class HealthFormListPage extends BasePageObject {
 		return PageFactory.initElements(driver, OldCustomFormPages.class);
 	}
 
+	public void clickOnHealthForms() {
+		log("Clicking on Health Forms button");
+		IHGUtil.setDefaultFrame(driver);
+		healthFormsLink.click();
+		IHGUtil.setFrame(driver, "iframe");
+	}
+
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
-		return wait
-				.until(ExpectedConditions.elementToBeClickable(By.xpath(
-						"//a[starts-with(@title, '" + formName + "')]/../table/tbody/tr/td/a[@class='pdf text']")))
-				.getAttribute("href");
+		return wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//li[./a[starts-with(./text(), '" + formName + "')]]//a)[2]"))).getAttribute("href");
+	}
+
+	public void logout() throws InterruptedException, IOException {
+		IHGUtil.setDefaultFrame(driver);
+		scrollAndWait(0, 0, 500);
+		logout.click();
 	}
 
 	/**
@@ -87,25 +105,27 @@ public class HealthFormListPage extends BasePageObject {
 			throw new IllegalStateException("Info about completed pages not found.");
 	}
 
-	public String getSubmittedDate(String formName) {
-		return IHGUtil.extractDateFromText(getFormInfo(formName));
+	public LocalDateTime getSubmittedDate(String formName) {
+		Pattern pattern = Pattern.compile(".+ completed on (\\d{2})/(\\d{2})/(\\d{4}) (\\d{2}):(\\d{2}) (.M)");
+		Matcher matcher = pattern.matcher(getFormInfo(formName));
+		if (matcher.find()) {
+			int hours = Integer.parseInt(matcher.group(4));
+			if ("PM".equals(matcher.group(6))) {
+				hours = hours + 12;
+			}
+			return LocalDateTime.of(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), hours,
+					Integer.parseInt(matcher.group(5)));
+		}
+		throw new IllegalStateException("Date not found");
 	}
 
 	private String getFormInfo(String formName) {
 		String formInfo;
-		boolean inDefaultFrame = IHGUtil.waitForElement(driver, 1, formsIframe);
-		if (inDefaultFrame) {
-			IHGUtil.setFrame(driver, "iframe");
-		}
 		try {
-			formInfo = driver.findElement(By.xpath("//li[./a/text()='" + formName + "']/table/tbody/tr/td/span"))
-					.getText();
+			formInfo = driver.findElement(By.xpath("//li[./a/text()='" + formName + "']/table/tbody/tr/td/span")).getText();
 		} catch (NoSuchElementException f) {
 			log("Info about form named '" + formName + "' not found");
 			throw f;
-		}
-		if (inDefaultFrame) {
-			IHGUtil.setDefaultFrame(driver);
 		}
 		return formInfo;
 	}

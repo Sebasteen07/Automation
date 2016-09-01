@@ -175,8 +175,7 @@ public class MyPatientPage extends BasePageObject {
 			if (pPortalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
 				System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 				// DEBUG
-				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS,
-						TimeUnit.SECONDS);
+				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 				logout.click();
 			}
 			System.out.println("### WARNING: LOGOUT ELEMENT NOT FOUND.");
@@ -241,9 +240,7 @@ public class MyPatientPage extends BasePageObject {
 	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
-		driver.findElement(By
-				.xpath("//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms']"))
-				.click();
+		driver.findElement(By.xpath("//span[./text()='health forms'] | //a[./text()='Health Forms']")).click();
 		IHGUtil.setFrame(driver, "iframe");
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
@@ -268,8 +265,7 @@ public class MyPatientPage extends BasePageObject {
 	}
 
 	/**
-	 * Click on Prescription Renewal link and redirect to page New Rx Renewal
-	 * Page
+	 * Click on Prescription Renewal link and redirect to page New Rx Renewal Page
 	 * 
 	 * @return NewRxRenewalPage
 	 */
@@ -316,8 +312,8 @@ public class MyPatientPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		log("Confirmation Text :" + registrationConfirmationtext.getText());
-		BaseTestSoftAssert.verifyEquals(true, registrationConfirmationtext.getText()
-				.contains("Thank you for filling out your registration and health history information!"));
+		BaseTestSoftAssert.verifyEquals(true,
+				registrationConfirmationtext.getText().contains("Thank you for filling out your registration and health history information!"));
 	}
 
 	public ConsolidatedInboxPage clickMymessages() {

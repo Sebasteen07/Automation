@@ -13,8 +13,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
 /**
  * 
- * @author Jan Tomasek ordinal numbers are indexes of elements on the page,
- *         numbered from 1
+ * @author Jan Tomasek ordinal numbers are indexes of elements on the page, numbered from 1
  */
 public class CustomFormPageSection extends BasePageObject {
 
@@ -27,8 +26,7 @@ public class CustomFormPageSection extends BasePageObject {
 	/**
 	 * 
 	 * @param driver
-	 * @param sectionOrdinalString
-	 *            one of: 'first'/'second'/'third'
+	 * @param sectionOrdinalString one of: 'first'/'second'/'third'
 	 */
 	public CustomFormPageSection(WebDriver driver, String sectionOrdinalString) {
 		super(driver);
@@ -40,11 +38,8 @@ public class CustomFormPageSection extends BasePageObject {
 		this.sectionName = sectionName;
 	}
 
-	public void addQuestionItem(String questionType, String title, boolean required, boolean prefilled)
-			throws InterruptedException {
-		driver.findElement(By.xpath(
-				String.format(SECTION_IDENTIFIER, sectionOrdinalString) + "//a[contains(@class, 'insert_new_item')]"))
-				.click();
+	public void addQuestionItem(String questionType, String title, boolean required, boolean prefilled) throws InterruptedException {
+		driver.findElement(By.xpath(String.format(SECTION_IDENTIFIER, sectionOrdinalString) + "//a[contains(@class, 'insert_new_item')]")).click();
 		int itemOrdinalNumber = getCountOfItems();
 		selectItemType(itemOrdinalNumber, SitegenConstants.CUSTOMFORM_ITEM_TYPE1);
 		selectQuestionType(itemOrdinalNumber, questionType);
@@ -54,15 +49,16 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	public void addEmptyFUP(int itemOrdinalNumber, int answerOrdinalNumber) {
-		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//a[@class='addFollowUp'])[" + (answerOrdinalNumber) + "]")).click();
+		driver
+				.findElement(By
+						.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//a[@class='addFollowUp'])[" + (answerOrdinalNumber) + "]"))
+				.click();
 	}
 
-	public void addQuestionFUP(int itemOrdinalNumber, int answerOrdinalNumber, String questionType, String title,
-			boolean required, boolean prefilled) throws InterruptedException {
+	public void addQuestionFUP(int itemOrdinalNumber, int answerOrdinalNumber, String questionType, String title, boolean required, boolean prefilled)
+			throws InterruptedException {
 		addEmptyFUP(itemOrdinalNumber, answerOrdinalNumber);
-		setItemAsQuestionFUP(itemOrdinalNumber, getCountOfItemsFUP(itemOrdinalNumber), questionType, title, required,
-				prefilled);
+		setItemAsQuestionFUP(itemOrdinalNumber, getCountOfItemsFUP(itemOrdinalNumber), questionType, title, required, prefilled);
 	}
 
 	public void addHeadingFUP(int itemOrdinalNumber, int answerOrdinalNumber, String title) {
@@ -71,23 +67,22 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	public void removeItem(int itemOrdinalNumber) {
-		driver.findElement(By.xpath(
-				String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//a[@class='remove_item']"))
-				.click();
+		driver.findElement(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//a[@class='remove_item']")).click();
 	}
 
 	public void removeAnswer(int itemOrdinalNumber, int answerOrdinalNumber) {
-		driver.findElement(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ METADATA_PATH + "[" + answerOrdinalNumber + "]/a[@class='deleteAnswer']"));
+		driver.findElement(By.xpath(
+				String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + "[" + answerOrdinalNumber + "]/a[@class='deleteAnswer']"));
 	}
 
 	public void removeFUP(int itemOrdinalNumber, int FUPOrdinalNumber) {
-		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//a[@class='deleteFollowUp'])[" + FUPOrdinalNumber + "]")).click();
+		driver
+				.findElement(
+						By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//a[@class='deleteFollowUp'])[" + FUPOrdinalNumber + "]"))
+				.click();
 	}
 
-	public void setItemAsQuestion(int itemOrdinalNumber, String questionType, String title, boolean required,
-			boolean prefilled) {
+	public void setItemAsQuestion(int itemOrdinalNumber, String questionType, String title, boolean required, boolean prefilled) {
 		selectItemType(itemOrdinalNumber, SitegenConstants.CUSTOMFORM_ITEM_TYPE1);
 		selectQuestionType(itemOrdinalNumber, questionType);
 		fillQuestionTitle(itemOrdinalNumber, title);
@@ -95,8 +90,7 @@ public class CustomFormPageSection extends BasePageObject {
 		setQuestionPrefillOption(itemOrdinalNumber, prefilled);
 	}
 
-	public void setItemAsQuestionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String questionType, String title,
-			boolean required, boolean prefilled) {
+	public void setItemAsQuestionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String questionType, String title, boolean required, boolean prefilled) {
 		selectItemTypeFUP(itemOrdinalNumber, FUPOrdinalNumber, SitegenConstants.CUSTOMFORM_ITEM_TYPE1);
 		selectQuestionTypeFUP(itemOrdinalNumber, FUPOrdinalNumber, questionType);
 		fillQuestionTitleFUP(itemOrdinalNumber, FUPOrdinalNumber, title);
@@ -106,50 +100,41 @@ public class CustomFormPageSection extends BasePageObject {
 
 	public void setItemAsHeading(int itemOrdinalNumber, String title) {
 		selectItemType(itemOrdinalNumber, SitegenConstants.CUSTOMFORM_ITEM_TYPE2);
-		driver.findElement(
-				By.id("custom_headingtitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1)))
-				.sendKeys(title);
+		driver.findElement(By.id("custom_headingtitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))).sendKeys(title);
 	}
 
 	public void setItemAsHeadingFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String title) {
 		selectItemTypeFUP(itemOrdinalNumber, FUPOrdinalNumber, SitegenConstants.CUSTOMFORM_ITEM_TYPE2);
-		driver.findElement(By.id("custom_headingtitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1)
-				+ "-" + (FUPOrdinalNumber - 1))).sendKeys(title);
+		driver.findElement(By.id("custom_headingtitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))
+				.sendKeys(title);
 	}
 
 	public void setItemAsText(int itemOrdinalNumber, String text) {
 		selectItemType(itemOrdinalNumber, "Text");
-		driver.findElement(By.id("custom_text_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1)))
-				.sendKeys(text);
+		driver.findElement(By.id("custom_text_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))).sendKeys(text);
 	}
 
 	public void setItemAsTextFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String text) {
 		selectItemTypeFUP(itemOrdinalNumber, FUPOrdinalNumber, "Text");
-		driver.findElement(By.id("custom_text_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-"
-				+ (FUPOrdinalNumber - 1))).sendKeys(text);
+		driver.findElement(By.id("custom_text_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))).sendKeys(text);
 	}
 
 	public void setItemAsConsent(int itemOrdinalNumber, String title, String statement) {
 		selectItemType(itemOrdinalNumber, "Consent");
-		driver.findElement(
-				By.id("custom_consenttitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1)))
-				.sendKeys(title);
-		driver.findElement(
-				By.id("custom_consenttext_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1)))
-				.sendKeys(statement);
+		driver.findElement(By.id("custom_consenttitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))).sendKeys(title);
+		driver.findElement(By.id("custom_consenttext_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))).sendKeys(statement);
 	}
 
 	public void setItemAsConsentFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String title, String statement) {
 		selectItemTypeFUP(itemOrdinalNumber, FUPOrdinalNumber, "Consent");
-		driver.findElement(By.id("custom_consenttitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1)
-				+ "-" + (FUPOrdinalNumber - 1))).sendKeys(title);
-		driver.findElement(By.id("custom_consenttext_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1)
-				+ "-" + (FUPOrdinalNumber - 1))).sendKeys(statement);
+		driver.findElement(By.id("custom_consenttitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))
+				.sendKeys(title);
+		driver.findElement(By.id("custom_consenttext_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))
+				.sendKeys(statement);
 	}
 
 	public void addAnswer(int itemOrdinalNumber, String answer) {
-		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//a[@class='addAnswer'])[1]")).click();
+		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//a[@class='addAnswer'])[1]")).click();
 		getLastAnswerFieldOfQuestion(itemOrdinalNumber).sendKeys(answer);
 	}
 
@@ -160,9 +145,8 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	public void addAnswerFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String answer) {
-		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//li[contains(@class,'followUpQuestion')])[" + FUPOrdinalNumber + "]//a[@class='addAnswer']"))
-				.click();
+		driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//li[contains(@class,'followUpQuestion')])["
+				+ FUPOrdinalNumber + "]//a[@class='addAnswer']")).click();
 		getLastAnswerFieldOfQuestionFUP(itemOrdinalNumber, FUPOrdinalNumber).sendKeys(answer);
 	}
 
@@ -173,13 +157,12 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	public int getCountOfItems() {
-		return driver.findElements(By.xpath(String.format(SECTION_IDENTIFIER, sectionOrdinalString)
-				+ "/ul/li[not(contains(@class,'firstHiddenItem'))]")).size();
+		return driver.findElements(By.xpath(String.format(SECTION_IDENTIFIER, sectionOrdinalString) + "/ul/li[not(contains(@class,'firstHiddenItem'))]")).size();
 	}
 
 	public int getCountOfItemsFUP(int itemOrdinalNumber) {
-		return driver.findElements(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//ul[@class='followUpQuestions']/li")).size();
+		return driver.findElements(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//ul[@class='followUpQuestions']/li"))
+				.size();
 	}
 
 	/**
@@ -191,8 +174,8 @@ public class CustomFormPageSection extends BasePageObject {
 	 */
 	public int getCountOfFUPsOfAnswer(int itemOrdinalNumber, int answerOrdinalNumber) {
 		return driver
-				.findElements(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-						+ METADATA_PATH + ")[" + answerOrdinalNumber + "]/ul/li"))
+				.findElements(
+						By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + ")[" + answerOrdinalNumber + "]/ul/li"))
 				.size();
 	}
 
@@ -201,19 +184,16 @@ public class CustomFormPageSection extends BasePageObject {
 	 * 
 	 * @param itemOrdinalNumber
 	 * @param answerOrdinalNumber
+	 * @throws InterruptedException
 	 */
-	public void toogleFUPs(int itemOrdinalNumber, int answerOrdinalNumber) {
-		driver.findElement(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ METADATA_PATH + "[" + answerOrdinalNumber + "]/img[contains(@class,'followUpAnswerToggle')]"))
-				.click();
+	public void toogleFUPs(int itemOrdinalNumber, int answerOrdinalNumber) throws InterruptedException {
+		driver.findElement(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + "[" + answerOrdinalNumber
+				+ "]/img[contains(@class,'followUpAnswerToggle')]")).click();
 	}
 
 	public boolean areFUPsMinimized(int itemOrdinalNumber, int answerOrdinalNumber) {
-		int countOfHiddenFUPs = driver
-				.findElements(By.xpath(
-						String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + "["
-								+ answerOrdinalNumber + "]/ul/li/fieldset[contains(@class,'hiddenFollowUpStyles')]"))
-				.size();
+		int countOfHiddenFUPs = driver.findElements(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + "["
+				+ answerOrdinalNumber + "]/ul/li/fieldset[contains(@class,'hiddenFollowUpStyles')]")).size();
 		if (getCountOfFUPsOfAnswer(itemOrdinalNumber, answerOrdinalNumber) == countOfHiddenFUPs) {
 			return true;
 		}
@@ -221,8 +201,9 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	public String getTitleOfFUPQuestion(int itemOrdinalNumber, int FUPOrdinalNumber) {
-		return driver.findElement(By.id("custom_questiontitle_custom" + sectionOrdinalString + "_section_"
-				+ (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))).getText();
+		return driver
+				.findElement(By.id("custom_questiontitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))
+				.getText();
 	}
 
 	public List<String> getAnswersOfFUPQuestion(int itemOrdinalNumber, int FUPOrdinalNumber) {
@@ -234,77 +215,66 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	private void selectItemType(int itemOrdinalNumber, String itemType) {
-		new Select(driver.findElement(
-				By.id("custom_itemtype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-						.selectByVisibleText(itemType);
-		;
+		new Select(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
+				.selectByVisibleText(itemType);;
 	}
 
 	private void selectItemTypeFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String itemType) {
-		new Select(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_"
-				+ (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))).selectByVisibleText(itemType);
+		new Select(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
+				.selectByVisibleText(itemType);
 	}
 
 	private void selectQuestionType(int itemOrdinalNumber, String questionType) {
-		new Select(driver.findElement(
-				By.id("custom_questiontype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-						.selectByVisibleText(questionType);
+		new Select(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
+				.selectByVisibleText(questionType);
 	}
 
 	private void selectQuestionTypeFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String questionType) {
-		new Select(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_"
-				+ (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))).selectByVisibleText(questionType);
+		new Select(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
+				.selectByVisibleText(questionType);
 	}
 
 	private void fillQuestionTitle(int itemOrdinalNumber, String title) {
-		driver.findElement(
-				By.id("custom_questiontitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1)))
-				.sendKeys(title);
+		driver.findElement(By.id("custom_questiontitle_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))).sendKeys(title);
 	}
 
 	private void fillQuestionTitleFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String title) {
-		driver.findElement(By.id("custom_questiontitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1)
-				+ "-" + (FUPOrdinalNumber - 1))).sendKeys(title);
+		driver.findElement(By.id("custom_questiontitle_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1)))
+				.sendKeys(title);
 	}
 
 	private void setQuestionPrefillOption(int itemOrdinalNumber, boolean prefilled) {
-		new Select(driver.findElement(
-				By.id("custom_questionprefill_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-						.selectByVisibleText(prefilled ? "Yes" : "No");
+		new Select(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
+				.selectByVisibleText(prefilled ? "Yes" : "No");
 	}
 
 	private void setQuestionPrefillOptionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, boolean prefilled) {
-		new Select(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_"
-				+ (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
-						.selectByVisibleText(prefilled ? "Yes" : "No");
+		new Select(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
+				.selectByVisibleText(prefilled ? "Yes" : "No");
 	}
 
 	private void setQuestionRequiredOption(int itemOrdinalNumber, boolean required) {
-		new Select(driver.findElement(
-				By.id("custom_questionrequired_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-						.selectByVisibleText(required ? "Yes" : "No");
+		new Select(driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
+				.selectByVisibleText(required ? "Yes" : "No");
 	}
 
 	private void setQuestionRequiredOptionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, boolean required) {
-		new Select(driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_"
-				+ (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
+		new Select(
+				driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
 						.selectByVisibleText(required ? "Yes" : "No");
 	}
 
 	private List<WebElement> getAnswerFieldsOfFUPQuestion(int itemOrdinalNumber, int FUPOrdinalNumber) {
-		return driver
-				.findElements(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-						+ "//div[@class='followUpContainer'])[" + FUPOrdinalNumber + "]//li[@class='answer']/input"));
+		return driver.findElements(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//div[@class='followUpContainer'])["
+				+ FUPOrdinalNumber + "]//li[@class='answer']/input"));
 	}
 
 	private WebElement getLastAnswerFieldOfQuestion(int itemOrdinalNumber) {
-		return driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ METADATA_PATH + ")[last()]/input"));
+		return driver.findElement(By.xpath("(" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + ")[last()]/input"));
 	}
 
 	private WebElement getLastAnswerFieldOfQuestionFUP(int itemOrdinalNumber, int FUPOrdinalNumber) {
-		return driver.findElement(By.xpath("(("
-				+ String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber)
-				+ "//div[@class='followUpContainer'])[" + FUPOrdinalNumber + "]//li[@class='answer'])[last()]/input"));
+		return driver.findElement(By.xpath("((" + String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + "//div[@class='followUpContainer'])["
+				+ FUPOrdinalNumber + "]//li[@class='answer'])[last()]/input"));
 	}
 }
