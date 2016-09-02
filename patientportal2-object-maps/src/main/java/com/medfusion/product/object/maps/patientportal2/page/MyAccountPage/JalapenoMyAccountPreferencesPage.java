@@ -80,7 +80,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	}
 	
 	@Override
-	public boolean assessBasicPageElements() {
+	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(preferredLocation);

@@ -194,7 +194,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	@Override
-	public boolean assessBasicPageElements() {
+	public boolean areBasicPageElementsPresent() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 

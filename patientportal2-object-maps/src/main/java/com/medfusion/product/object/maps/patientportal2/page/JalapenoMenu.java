@@ -59,7 +59,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		super(driver);
 	}
 
-	public boolean assessMenuElements() {
+	public boolean areMenuElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(homeMenu);

@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Level;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -43,7 +44,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		printCookies();
 		PageFactory.initElements(driver, this);
 
-		if (!assessBasicPageElements()) {
+		if (!areBasicPageElementsPresent()) {
 			throw new UnsupportedOperationException("Page was not successfully loaded");
 		}
 	}
@@ -60,7 +61,7 @@ public abstract class MedfusionPage extends BasePageObject {
 	/**
 	 * Will check basic elements in page constructor. Should be properly overwritten if you want to make this check
 	 */
-	public abstract boolean assessBasicPageElements();
+	public abstract boolean areBasicPageElementsPresent();
 
 
 	public String elementToString(WebElement element) {
@@ -124,7 +125,7 @@ public abstract class MedfusionPage extends BasePageObject {
 			log("Click on: " + elementToString(element));
 			element.click();
 		} else {
-			throw new UnsupportedOperationException("Error when clicking element - element is null.");
+			throw new UnsupportedOperationException("Error when clicking element - element is null. " + elementToString(element));
 		}
 	}
 
@@ -230,5 +231,9 @@ public abstract class MedfusionPage extends BasePageObject {
 			}
 		}
 		return true;
+	}
+
+	public boolean isTextVisible(String text) {
+		return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
 	}
 }

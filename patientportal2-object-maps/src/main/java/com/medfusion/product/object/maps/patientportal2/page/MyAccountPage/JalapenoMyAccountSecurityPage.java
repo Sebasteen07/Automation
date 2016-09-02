@@ -140,7 +140,7 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(passwordSuccessfulUpdateMessage));
 	}
 
-	public boolean assessBasicPageElements() {
+	public boolean areBasicPageElementsPresent() {
 		return super.assessPageElements(false) && assessElements(changeEmailBtn, changePasswordBtn, changeUserNameBtn, changeSecurityQuestionBtn);
 	}
 
