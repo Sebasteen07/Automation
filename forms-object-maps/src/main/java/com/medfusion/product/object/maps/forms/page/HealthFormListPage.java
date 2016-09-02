@@ -1,7 +1,7 @@
 package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +14,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ibm.icu.util.Calendar;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
@@ -105,7 +106,7 @@ public class HealthFormListPage extends BasePageObject {
 			throw new IllegalStateException("Info about completed pages not found.");
 	}
 
-	public LocalDateTime getSubmittedDate(String formName) {
+	public Date getSubmittedDate(String formName) {
 		Pattern pattern = Pattern.compile(".+ completed on (\\d{2})/(\\d{2})/(\\d{4}) (\\d{2}):(\\d{2}) (.M)");
 		Matcher matcher = pattern.matcher(getFormInfo(formName));
 		if (matcher.find()) {
@@ -113,8 +114,10 @@ public class HealthFormListPage extends BasePageObject {
 			if ("PM".equals(matcher.group(6))) {
 				hours = hours + 12;
 			}
-			return LocalDateTime.of(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), hours,
+			Calendar c = Calendar.getInstance();
+			c.set(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(1)) - 1, Integer.parseInt(matcher.group(2)), hours,
 					Integer.parseInt(matcher.group(5)));
+			return c.getTime();
 		}
 		throw new IllegalStateException("Date not found");
 	}

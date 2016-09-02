@@ -2,8 +2,9 @@ package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ifs.csscat.core.utils.Log4jUtil.log;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -69,8 +70,26 @@ public class Utils {
 
 	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
 		IHGUtil.setFrame(driver, "iframe");
-		LocalDateTime submittedDate = formsPage.getSubmittedDate(formName);
-		Assert.assertTrue(submittedDate.isAfter(LocalDateTime.now(ZoneId.of("GMT-04:00")).minusMinutes(5)), "Form submitted max. 5 minutes before not found");
+		Date submittedDate = formsPage.getSubmittedDate(formName);
+		Date now = getCurrentTimeGMT(-4);
+		log("Date from web: " + submittedDate);
+		log("Current US date: " + now);
+		// "Form submitted max. 5 minutes before not found");
+		Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
+	}
+
+	public static Date getCurrentTimeGMT(int timeZoneShift) {
+		Calendar c = Calendar.getInstance();
+		TimeZone z = c.getTimeZone();
+		int offset = z.getRawOffset();
+		if (z.inDaylightTime(new Date())) {
+			offset = offset + z.getDSTSavings();
+		}
+		int offsetHrs = offset / 1000 / 60 / 60;
+		int offsetMins = offset / 1000 / 60 % 60;
+		c.add(Calendar.HOUR_OF_DAY, (-offsetHrs));
+		c.add(Calendar.MINUTE, (-offsetMins));
+		return new Date(c.getTime().getTime() + 1000 * 3600 * timeZoneShift);
 	}
 
 	public static void checkPDF(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
