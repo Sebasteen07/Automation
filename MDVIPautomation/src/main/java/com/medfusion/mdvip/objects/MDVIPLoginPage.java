@@ -15,8 +15,7 @@ public class MDVIPLoginPage {
 	private NgWebDriver ngWebDriver;
 	private WebElement username;
 	private WebElement password;
-	
-	
+		
 	private static final Logger log = LogManager.getLogger(MDVIPLoginPage.class);
 
 	public MDVIPLoginPage(FirefoxDriver driver) {
@@ -45,8 +44,7 @@ public class MDVIPLoginPage {
         return true;        
     }
 
-	public void login(String userName, String securepassword) {
-		
+	public void login(String userName, String securepassword) throws InterruptedException {
 		username.clear();
 		username.sendKeys(userName);
 		
@@ -54,6 +52,11 @@ public class MDVIPLoginPage {
 		password.sendKeys(securepassword);
 		
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+	
+	public void goToSupportPage() throws InterruptedException {		
+		Thread.sleep(500);
+		driver.findElement(By.xpath("//button[@href='#/support']")).click();
 	}
 
 }
