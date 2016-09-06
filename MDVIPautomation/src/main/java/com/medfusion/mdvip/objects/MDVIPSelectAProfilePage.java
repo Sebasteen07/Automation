@@ -51,7 +51,7 @@ public class MDVIPSelectAProfilePage {
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(element).click().perform();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 	
 	public void goToSettings() {
@@ -59,7 +59,14 @@ public class MDVIPSelectAProfilePage {
 		
 		Actions actions = new Actions(driver);
 
-		actions.moveToElement(element).click().perform();
+		actions.moveToElement(element).click().perform();		
+	}
+	
+	public void goToHelpAndFeedback() {
+		WebElement element = driver.findElement(By.xpath("//ion-item[@href='#/new-tabs-layout/support']"));
 		
+		Actions actions = new Actions(driver);
+
+		actions.moveToElement(element).click().perform();
 	}
 }

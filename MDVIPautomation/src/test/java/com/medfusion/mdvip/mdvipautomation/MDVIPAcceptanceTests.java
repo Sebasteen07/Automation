@@ -16,6 +16,7 @@ import com.medfusion.mdvip.objects.MDVIPAddBankAccount;
 import com.medfusion.mdvip.objects.MDVIPAddPaymentMethod;
 import com.medfusion.mdvip.objects.MDVIPAutoPayPage;
 import com.medfusion.mdvip.objects.MDVIPConnectionsPage;
+import com.medfusion.mdvip.objects.MDVIPHelpAndFeedback;
 import com.medfusion.mdvip.objects.MDVIPHomePage;
 import com.medfusion.mdvip.objects.MDVIPPojos;
 import com.medfusion.mdvip.objects.MDVIPProfilePage;
@@ -180,6 +181,54 @@ public class MDVIPAcceptanceTests {
 		driver.close();
 		supportPage.goBackToPreviousWindow(windowBefore);
 	}
+	
+	@Test(enabled = true, groups = { "Plus" })
+	public void testSupportPageOnceLoggedIn() throws InterruptedException {
+		log.info("Log into MDVIP");
+		MDVIPLoginPage loginPage = new MDVIPLoginPage(driver);
+		log.info("UserName: " + mdvipData.getValidUserName());
+		log.info("Password: " + mdvipData.getValidPassword());
+		loginPage.login(mdvipData.getValidUserName(), mdvipData.getValidPassword());
+		Thread.sleep(15000);
+
+		log.info("Navigate to Help and Feedback section");
+		MDVIPSelectAProfilePage nav = new MDVIPSelectAProfilePage(driver);
+		nav.clickMoreOptions();
+		nav.goToHelpAndFeedback();
+		
+		log.info("Navigate to the Support Page");
+		MDVIPHelpAndFeedback supportPage = new MDVIPHelpAndFeedback(driver);
+
+		log.info("Go to the FAQ page");
+		String windowBefore = supportPage.getWindowBeforePopUp();
+		supportPage.goToFAQ();
+
+		log.info("Verify the FAQ page loads");
+		supportPage.switchToNewWindow();
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Frequently Asked Questions"));
+		driver.close();
+		supportPage.goBackToPreviousWindow(windowBefore);
+
+		log.info("Go to the Support Request page");
+		supportPage.goToSupportRequest();
+
+		log.info("Verify the Support Request page loads");
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Where should we email you?"));
+		supportPage.clickBackButton();
+		
+		log.info("Go to the Request a Provider page");
+		supportPage.goToRequestProvider();
+
+		log.info("Verify the Request a Provider page loads");
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Tell us about the practice where you see your provider"));
+		supportPage.clickBackButton();
+		
+		log.info("Go to the Send Feedback page");
+		supportPage.goToSendFeedback();
+
+		log.info("Verify the Send Feedback page loads");
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Drop us a note"));
+	}
 
 	@Test(enabled = true, groups = { "Plus" })
 	public void testEditMyProfile() throws InterruptedException {
@@ -279,7 +328,6 @@ public class MDVIPAcceptanceTests {
 		log.info("Click on more options on the Select Profile Page");
 		MDVIPSelectAProfilePage nav = new MDVIPSelectAProfilePage(driver);
 		nav.clickMoreOptions();
-		Thread.sleep(1000);
 		nav.goToSettings();
 
 		log.info("Go to the account section");
