@@ -21,7 +21,7 @@ public class MDVIPSelectAProfilePage {
 	}
 	
 	public void clickProfile() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/profile-tabs/12/home/dashboard']"));
+		WebElement element = driver.findElement(By.xpath("//*[contains(@href,'#/new-tabs-layout/profile-tabs/')]"));
 		
 		Actions actions = new Actions(driver);
 
