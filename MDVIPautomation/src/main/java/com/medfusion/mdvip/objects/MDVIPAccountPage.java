@@ -6,7 +6,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.mdvip.angular.NgWebDriver;
 
@@ -20,10 +22,13 @@ public class MDVIPAccountPage {
 		ngWebDriver = new NgWebDriver(driver);
 		this.driver.manage().window().maximize();
 		ngWebDriver.waitForAngularRequestsToFinish();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//li[@href='#/new-tabs-layout/create']")));
 	}
 
-	public void updateMemberProfile(String salutation, String street, String city, String state, String zip,
-			String email, String phone) throws InterruptedException {
+	public void updateMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone)
+			throws InterruptedException {
 
 		Select inputSalutation = new Select(driver.findElement(By.id("salutationInput")));
 		inputSalutation.selectByVisibleText(salutation);
@@ -43,15 +48,14 @@ public class MDVIPAccountPage {
 		inputEmail.sendKeys(email);
 		WebElement inputPhone = driver.findElement(By.id("phoneInput"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", inputPhone);
-		Thread.sleep(500);
 		inputPhone.clear();
 		inputPhone.sendKeys(phone);
 
 		inputPhone.sendKeys(Keys.TAB, Keys.TAB, Keys.TAB, Keys.ENTER);
 	}
 
-	public void resetMemberProfile(String salutation, String street, String city, String state, String zip,
-			String email, String phone) throws InterruptedException {
+	public void resetMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone)
+			throws InterruptedException {
 
 		Select inputSalutation = new Select(driver.findElement(By.id("salutationInput")));
 		inputSalutation.selectByVisibleText(salutation);
@@ -71,7 +75,6 @@ public class MDVIPAccountPage {
 		inputEmail.sendKeys(email);
 		WebElement inputPhone = driver.findElement(By.id("phoneInput"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", inputPhone);
-		Thread.sleep(500);
 		inputPhone.clear();
 		inputPhone.sendKeys(phone);
 

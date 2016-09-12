@@ -5,7 +5,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.mdvip.angular.NgWebDriver;
 
@@ -19,10 +21,13 @@ public class MDVIPAddACard {
 		ngWebDriver = new NgWebDriver(driver);
 		this.driver.manage().window().maximize();
 		ngWebDriver.waitForAngularRequestsToFinish();
+
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//li[@href='#/new-tabs-layout/create']")));
 	}
 
-	public void addRequiredCardInfo(String cardName, String cardNumber, String expMonth, String expYear, String cvv,
-			String billAddress, String billCity, String billState, String billZip) {
+	public void addRequiredCardInfo(String cardName, String cardNumber, String expMonth, String expYear, String cvv, String billAddress, String billCity,
+			String billState, String billZip) {
 
 		WebElement name = driver.findElement(By.id("cardName"));
 		name.sendKeys(cardName);
