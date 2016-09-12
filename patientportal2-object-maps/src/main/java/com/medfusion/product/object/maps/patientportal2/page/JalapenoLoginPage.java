@@ -9,7 +9,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoCreateAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
@@ -86,13 +86,13 @@ public class JalapenoLoginPage extends MedfusionPage {
 		clickOnElement(buttonSignIn);
 	}
 
-	public JalapenoCreateAccountPage clickCreateANewAccountButton() {
+	public PatientDemographicPage clickCreateANewAccountButton() {
 
 		IHGUtil.PrintMethodName();
 		log("Clicking on Create a new account button");
 		// new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
 		buttonCreateANewAccount.click();
-		return PageFactory.initElements(driver, JalapenoCreateAccountPage.class);
+		return PageFactory.initElements(driver, PatientDemographicPage.class);
 	}
 
 	public JalapenoForgotPasswordPage clickForgotPasswordButton() {

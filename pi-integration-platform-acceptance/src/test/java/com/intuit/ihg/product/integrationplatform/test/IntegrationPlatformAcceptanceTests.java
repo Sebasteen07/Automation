@@ -28,7 +28,8 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
@@ -75,7 +76,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         String dt = date.substring(0, 2);
         String month = date.substring(3, 5);
         String year = date.substring(6);
-        String monthstring = RestUtils.getmonthstr(month);
         
         log("Created Patient details");
         log("Practice Patient ID: " + practicePatientId);
@@ -120,8 +120,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
         log("Retrieved activation link is " + activationUrl);
 
         log("Finishing of patient activation: step 1 - verifying identity");
-        JalapenoPatientActivationPage patientActivationPage = new JalapenoPatientActivationPage(driver, activationUrl);
-        patientActivationPage.verifyPatientIdentity(zip, monthstring, dt, year);
+        PatientVerificationPage patientActivationPage = new PatientVerificationPage(driver, activationUrl);
+        SecurityDetailsPage accountDetailsPage = patientActivationPage.fillPatientInfoAndContinue(zip, month, dt, year);
      /*   JalapenoPatient jalapenoPatient = new JalapenoPatient();
         jalapenoPatient.setZipCode(zip);
         jalapenoPatient.setDOBMonthText(monthstring);
@@ -131,7 +131,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
                 .fillInPatientDataAndSubmitForm(jalapenoPatient);
 */
         log("Finishing of patient activation: step 2 - filling patient data");
-        JalapenoHomePage jalapenoHomePage = patientActivationPage.fillInPatientActivation(email,
+        JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(email,
                 testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
                 testData.getHomePhoneNo());
 

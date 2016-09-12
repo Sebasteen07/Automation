@@ -8,6 +8,7 @@ import com.medfusion.product.patientportal2.utils.PortalUtil;
 public class JalapenoPatient {
 
     private String email = "";
+    private String username = "";
     private String password = "";
     private String url = "";
     private String firstName = "";
@@ -31,7 +32,8 @@ public class JalapenoPatient {
 
         email = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
         firstName = testData.getFirstName() + PortalUtil.createRandomNumber();
-        lastName = "TestPatient1";
+        lastName = testData.getLastName();
+        username = testData.getUserId() + System.currentTimeMillis();
         password = testData.getPassword();
         gender = Gender.MALE;
         url = testData.getUrl();
@@ -188,4 +190,11 @@ public class JalapenoPatient {
         this.state = state;
     }
 
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
 }

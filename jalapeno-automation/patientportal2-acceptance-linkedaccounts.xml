@@ -5,10 +5,14 @@
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 </listeners>
- 	
-<test name="PatientPortal2-Automation">
-		<classes>
-			<class name="com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests" />
-		</classes>
+	<test name="PatientPortal2-AcceptanceTests">
+		<groups>
+            <run>
+                <include name="acceptance-linkedaccounts" />
+            </run>
+        </groups>
+        <classes>
+            <class name = "com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests" />
+        </classes>
 	</test>
 </suite>

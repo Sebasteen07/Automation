@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -137,20 +138,17 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		SupportedWebElements swe = getSupportedWebElement(element);
 
-		if ((swe.equals(SupportedWebElements.TEXT)) && (element.getText() != "")) {
-			element.clear();
-		}
-
 		if (swe.equals(SupportedWebElements.SELECT)) {
 			Select select = new Select(element);
 			select.selectByVisibleText(value);
 		} else if (swe.equals(SupportedWebElements.TEXT)) {
-			element.clear();
+			if (StringUtils.isNotEmpty(element.getText())) {
+				element.clear();
+			}
 			element.sendKeys(value);
 		}
 
-		if (!validateWebElement(element, value)) {
-			// TODO what exception should be here?
+		if (!validateWebElement(element, value, swe)) {
 			throw new UnsupportedOperationException("Element was not set up correctly");
 		}
 	}
@@ -179,13 +177,18 @@ public abstract class MedfusionPage extends BasePageObject {
 	 * Validates that web element has the same value as expected Currently works with text and select elements only
 	 */
 	public boolean validateWebElement(WebElement element, String value) {
-		switch (getSupportedWebElement(element)) {
+		SupportedWebElements swe = getSupportedWebElement(element);
+		return validateWebElement(element, value, swe);
+	}
+	
+	public boolean validateWebElement(WebElement element, String value, SupportedWebElements swe) {
+		switch (swe) {
 			case TEXT:
 				if (!value.equals(element.getAttribute("value"))) {
 					log(createValidateWebElementErrorMessage(element, value));
 					return false;
 				} else {
-					log(createValidateWebElementOkMessage(element, value));
+					log(createValidateWebElementOkMessage(element, value),Level.DEBUG);
 				}
 				break;
 			case SELECT:
@@ -195,11 +198,9 @@ public abstract class MedfusionPage extends BasePageObject {
 					log(createValidateWebElementErrorMessage(element, value));
 					return false;
 				} else {
-					log(createValidateWebElementOkMessage(element, value));
+					log(createValidateWebElementOkMessage(element, value), Level.DEBUG);
 				}
 				log(select.getFirstSelectedOption().getText(), Level.DEBUG);
-				break;
-			default:
 				break;
 		}
 		return true;

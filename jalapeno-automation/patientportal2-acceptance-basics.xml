@@ -8,7 +8,7 @@
 	<test name="PatientPortal2-AcceptanceTests">
 		<groups>
             <run>
-                <include name="JalapenoAcceptance1" />
+                <include name="acceptance-basics" />
             </run>
         </groups>
         <classes>
