@@ -142,7 +142,7 @@ public abstract class MedfusionPage extends BasePageObject {
 			Select select = new Select(element);
 			select.selectByVisibleText(value);
 		} else if (swe.equals(SupportedWebElements.TEXT)) {
-			if (StringUtils.isNotEmpty(element.getText())) {
+			if (StringUtils.isNotEmpty(element.getAttribute("value"))) {
 				element.clear();
 			}
 			element.sendKeys(value);
