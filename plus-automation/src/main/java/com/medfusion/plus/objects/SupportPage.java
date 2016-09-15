@@ -42,7 +42,7 @@ public class SupportPage {
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToAboutConnect() {
+	public void goToAboutMedfusionPlus() {
 		WebElement element = driver.findElement(By.xpath("//div[@href='#/support/about-the-app']"));
 
 		Actions actions = new Actions(driver);

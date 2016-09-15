@@ -58,7 +58,7 @@ public class HelpAndSupport {
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToAboutConnect() {
+	public void goToAboutMedfusionPlus() {
 		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/support/about-the-app']"));
 
 		Actions actions = new Actions(driver);

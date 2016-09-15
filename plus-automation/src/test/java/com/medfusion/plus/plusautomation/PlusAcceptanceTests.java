@@ -22,13 +22,13 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import com.medfusion.plus.angular.NgWebDriver;
-import com.medfusion.plus.objects.CommonUtils;
 import com.medfusion.plus.objects.AccountPage;
 import com.medfusion.plus.objects.AddACard;
 import com.medfusion.plus.objects.AddAPersonPage;
 import com.medfusion.plus.objects.AddBankAccount;
 import com.medfusion.plus.objects.AddPaymentMethod;
 import com.medfusion.plus.objects.AutoPayPage;
+import com.medfusion.plus.objects.CommonUtils;
 import com.medfusion.plus.objects.ConnectionsPage;
 import com.medfusion.plus.objects.HelpAndSupport;
 import com.medfusion.plus.objects.HomePage;
@@ -37,10 +37,10 @@ import com.medfusion.plus.objects.NotificationsPage;
 import com.medfusion.plus.objects.PaymentMethods;
 import com.medfusion.plus.objects.PlusPojos;
 import com.medfusion.plus.objects.ProfilePage;
+import com.medfusion.plus.objects.PropertyLoader;
 import com.medfusion.plus.objects.SelectAProfilePage;
 import com.medfusion.plus.objects.SettingsPage;
 import com.medfusion.plus.objects.SupportPage;
-import com.medfusion.plus.objects.PropertyLoader;
 
 public class PlusAcceptanceTests {
 
@@ -144,10 +144,10 @@ public class PlusAcceptanceTests {
 		assertTrue(CommonUtils.verifyTextPresent(driver, "Where should we email you?"));
 		supportPage.clickBackButton();
 
-		log.info("Go to the About Connect page");
-		supportPage.goToAboutConnect();
+		log.info("Go to the About Medfusion Plus page");
+		supportPage.goToAboutMedfusionPlus();
 
-		log.info("Verify the About Connect page loads");
+		log.info("Verify the About Medfusion Plus page loads");
 		assertTrue(CommonUtils.verifyTextPresent(driver, "At some point in our lives, we are all patients"));
 		supportPage.clickBackButton();
 
@@ -215,10 +215,10 @@ public class PlusAcceptanceTests {
 		// log.info("Verify the Send Feedback page loads");
 		// assertTrue(CommonUtils.verifyTextPresent(driver, "Drop us a note"));
 
-		log.info("Go to the About Connect page");
-		supportPage.goToAboutConnect();
+		log.info("Go to the About Medfusion Plus page");
+		supportPage.goToAboutMedfusionPlus();
 
-		log.info("Verify the About Connect page loads");
+		log.info("Verify the About Medfusion Plus page loads");
 		assertTrue(CommonUtils.verifyTextPresent(driver, "At some point in our lives, we are all patients"));
 		supportPage.clickBackButton();
 
