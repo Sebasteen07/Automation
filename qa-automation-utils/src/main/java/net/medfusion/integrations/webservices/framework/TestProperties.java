@@ -17,7 +17,9 @@ public class TestProperties {
     static {
         properties = new Properties();
 
-        /* read test properties file */        TestPropertiesLoader loader = new TestPropertiesLoader("webservicesclient." + IHGUtil.getEnvironmentType() + ".properties", properties);        loader.loadProperties();        /*
+        /* read test properties file */        //TestPropertiesLoader loader = new TestPropertiesLoader("webservicesclient." + IHGUtil.getEnvironmentType() + ".properties", properties);
+        TestPropertiesLoader loader = new TestPropertiesLoader("webservicesclient.PROD" + ".properties", properties);
+        //TestPropertiesLoader loader = new TestPropertiesLoader("webservicesclient.DEV3" + ".properties", properties);        loader.loadProperties();        /*
         String propertiesFile = System.getProperty("webservicesclient.properties");
 
         if (propertiesFile != null) {

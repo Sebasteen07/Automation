@@ -34,7 +34,7 @@ public abstract class MedfusionPage extends IHGUtil {
                     + element.getAttribute("id") + ". Tag: " + element.getTagName() + " is not supported.");
         }
 
-        log("Element evaluated as: " + swe);
+        log("Element evaluated as: " + swe, Level.DEBUG);
         return swe;
     }
 
@@ -74,13 +74,13 @@ public abstract class MedfusionPage extends IHGUtil {
      * Currently works with text and select elements only
      */
     public void updateWebElement(WebElement element, String value) {
-        log("Updating element with id: " + element.getAttribute("id") + " to value: " + value);
+        log("Updating element with id: " + element.getAttribute("id") + " to value: " + value, Level.DEBUG);
 
         SupportedWebElements swe = getSupportedWebElement(element);
 
-        if (swe.equals(SupportedWebElements.TEXT)) {
-            element.clear();
-        }
+		if ((swe.equals(SupportedWebElements.TEXT)) && (element.getText() != "")) {
+			element.clear();
+		}
 
         if (swe.equals(SupportedWebElements.SELECT)) {
             Select select = new Select(element);
@@ -89,7 +89,7 @@ public abstract class MedfusionPage extends IHGUtil {
             element.sendKeys(value);
         }
 
-        if (!validateWebElement(element, value)) {
+        if (!validateWebElement(element, value, swe)) {
             // TODO temp prasecina
             throw new UnsupportedOperationException("Element was not set up correctly");
         }
@@ -111,8 +111,8 @@ public abstract class MedfusionPage extends IHGUtil {
      * Validates that web element has the same value as expected
      * Currently works with text and select elements only
      */
-    public boolean validateWebElement(WebElement element, String value) {
-        switch (getSupportedWebElement(element)) {
+    public boolean validateWebElement(WebElement element, String value, SupportedWebElements swe) {
+        switch (swe) {
             case TEXT:
                 if (!value.equals(element.getAttribute("value"))) {
                     log("Element with id: " + element.getAttribute("id") + " has value : "
@@ -134,7 +134,7 @@ public abstract class MedfusionPage extends IHGUtil {
                     log("Element with id: " + element.getAttribute("id") + " has value : " + selectedText + " - OK",
                             Level.DEBUG);
                 }
-                log(select.getFirstSelectedOption().getText());
+                log(select.getFirstSelectedOption().getText(), Level.DEBUG);
                 break;
             default:
                 break;

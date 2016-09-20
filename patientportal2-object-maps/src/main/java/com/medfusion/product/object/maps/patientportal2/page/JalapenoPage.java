@@ -10,8 +10,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPage;
 
 public class JalapenoPage extends IHGUtil {
 
@@ -34,7 +32,7 @@ public class JalapenoPage extends IHGUtil {
         PageFactory.initElements(driver, this);
     }
 
-    public JalapenoAccountPage clickOnAccount(WebDriver driver) throws Exception {
+    public JalapenoAccountPage clickOnAccount(WebDriver driver) {
 
         log("Trying to click on Account button - regular resolution");
 

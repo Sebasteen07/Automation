@@ -138,5 +138,13 @@ public class IntegrationConstants {
 	//Email notification constant
 	public static final String EMAIL_BODY_LINK="fuseaction=com.start";
 	public static final String PI_EMAIL_BODY_LINK="portal/#/user";
+
+	//Statement Preference
+	public static final String STMT_PREF="StatementPreference";
+	public static final String MEDFUSION_MEMBER_ID="MedfusionMemberId";
+	public static final String PREFERENCES="Preferences";
+	public static final String PREFERENCE="Preference";
+	public static final String PREF_NAME="Name";
+	public static final String PREF_VALUE="Value";
 }
 

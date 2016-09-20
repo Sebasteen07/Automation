@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:BulkSecureMessages xmlns:p="http://schema.intuit.com/health/bulkSecureMessages/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.intuit.com/health/bulkSecureMessages/v1 bulkSecureMessages.xsd">
+	<Sender deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+		<DeviceArguments>
+			<KeyValuePair>
+				<Key>Key</Key>
+				<Value>value</Value>
+			</KeyValuePair>
+		</DeviceArguments>
+	</Sender>
+	<Partner deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+		<DeviceArguments>
+			<KeyValuePair>
+				<Key>Key</Key>
+				<Value>value</Value>
+			</KeyValuePair>
+		</DeviceArguments>
+	</Partner>
+	<Destination deviceLocalTime="2001-12-31T12:00:00" deviceName="" deviceUTCTime="2001-12-31T12:00:00" deviceVersion="" vendorName="">
+		<DeviceArguments>
+			<KeyValuePair>
+				<Key>Key</Key>
+				<Value>value</Value>
+			</KeyValuePair>
+		</DeviceArguments>
+	</Destination>
+	<From></From>
+	<Subject></Subject>
+	<Message></Message>
+	<Attachment>
+		<FileName>attachment1.png</FileName>
+		<Body>8dH6ZGVmdA==</Body>
+	</Attachment>	
+	<Patients>     		
+	</Patients>
+</p:BulkSecureMessages>

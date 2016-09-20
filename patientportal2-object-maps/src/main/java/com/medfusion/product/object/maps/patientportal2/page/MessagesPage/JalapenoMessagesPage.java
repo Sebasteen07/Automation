@@ -49,31 +49,30 @@ public class JalapenoMessagesPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
 	private WebElement lableSent;
 	
+	private static final int maxCount = 15;
+	
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);	
 	}
-	
+
 	public boolean isMessageDisplayed(WebDriver driver, String subject) {
 		IHGUtil.PrintMethodName();
-		int count = 1;
-		int maxCount = 10;
 		WebElement element;
-		
-		while(count <= maxCount) {
+
+		for (int count = 1; count <= maxCount; count++) {
 			try {
-				element = driver.findElement(By.xpath("(//*[contains(text(),'" + subject + "')])[1]"));
-				log("Message with subject \"" + subject + "\" arrived");
+				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+				log("Message with subject \"" + subject + "\" arrived.");
 				return element.isDisplayed();
-			}
-			catch(Exception ex) {
-				log("Message didn't arrive. Attempt " + count++ + "/" + maxCount + ". Refreshing page.");
+			} catch (Exception ex) {
+				log("Message with subject \"" + subject + "\" didn't arrive. Attempt " + count + "/" + maxCount + ". Refreshing page.");
 				driver.navigate().refresh();
 			}
 		}
-		
+
 		log("Message with subject \"" + subject + "\" didn't arrive at all.");
 		return false;
 	}

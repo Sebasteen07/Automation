@@ -23,6 +23,7 @@
         		<include name="testHealthKeyPatientLoginAndOnDemandProvision" /> 
         		<include name="testHealthKeyPatientAddInsurance" />
         		<include name="testHealthKeyPatientUpdateInsurance" />
+				<include name="testStatementPreference" />				
       		</methods>
 	</classes>
 </test>

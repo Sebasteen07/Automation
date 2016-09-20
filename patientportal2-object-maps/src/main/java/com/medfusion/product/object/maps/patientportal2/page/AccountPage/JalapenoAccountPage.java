@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 public class JalapenoAccountPage extends BasePageObject {
 
@@ -22,11 +22,11 @@ public class JalapenoAccountPage extends BasePageObject {
         PageFactory.initElements(driver, this);
     }
 
-    public JalapenoMyAccountPage clickOnEditMyAccount() throws Exception {
+    public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 
         log("Trying to click on Edit button for My Account");
         editMyAccountButton.click();
 
-        return PageFactory.initElements(driver, JalapenoMyAccountPage.class);
+        return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
     }
 }

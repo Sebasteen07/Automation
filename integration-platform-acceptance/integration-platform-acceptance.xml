@@ -24,6 +24,7 @@
         		<include name="testPayNow" />
         		<include name="testVirtualCardSwiper" />
         		<include name="testAMDCSecureMessageFromPractice" />
+				<include name="testStatementPreference" />
       		</methods>
 	</classes>
 </test>

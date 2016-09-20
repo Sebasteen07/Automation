@@ -221,4 +221,17 @@ public class PatientDashboardPage extends BasePageObject{
             return false;
         }
     }
+    
+    /**
+	 * 
+	 * @return externalID
+	 */
+	public String readExtID()
+	{
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement( driver, 30, externalID);
+		patientID = externalID.getAttribute("value").toString();
+		return patientID;
+	}
+	
 }

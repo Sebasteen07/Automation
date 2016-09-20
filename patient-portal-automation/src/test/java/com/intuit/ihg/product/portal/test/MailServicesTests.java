@@ -3,7 +3,7 @@ package com.intuit.ihg.product.portal.test;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ihg.common.utils.mail.Mailinator;
+import com.medfusion.common.utils.Mailinator;
 
 
 public class MailServicesTests extends BaseTestNGWebDriver {	
