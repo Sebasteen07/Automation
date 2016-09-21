@@ -17,7 +17,7 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class PhrDocumentsPage extends BasePageObject {
 
-	@FindBy(xpath="//em[text()='Log out']")
+	@FindBy(xpath = "//em[text()='Log out']")
 	private WebElement btnLogout;
 
 	@FindBy(xpath = "(//td[@class='dtein'])[1]")
@@ -48,18 +48,13 @@ public class PhrDocumentsPage extends BasePageObject {
 	private WebElement btnCloseViewer;
 
 
-	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
-			"ihg_qa@service.address.net", "ihg_qa@gmail.com", "ihg_qa@direct.healthvault.com" };
+	String[] myDirectAddresses = {"ihg!!!qa@service.directaddress.net", "ihg_qa@service.address.net", "ihg_qa@gmail.com", "ihg_qa@direct.healthvault.com"};
 
-	String[] myDirectResponses = {
-			"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.",
-			"Service temporarily unavailable.",
-			"Service temporarily unavailable.","Service temporarily unavailable."};
+	String[] myDirectResponses = {"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.", "Service temporarily unavailable.",
+			"Service temporarily unavailable.", "Service temporarily unavailable."};
 
-	String[] myDirectResponsesDev3 = {
-			"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.",
-			"Service temporarily unavailable.",
-			"Service temporarily unavailable.","Service temporarily unavailable."};
+	String[] myDirectResponsesDev3 = {"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.", "Service temporarily unavailable.",
+			"Service temporarily unavailable.", "Service temporarily unavailable."};
 
 	public PhrDocumentsPage(WebDriver driver) {
 		super(driver);
@@ -78,7 +73,8 @@ public class PhrDocumentsPage extends BasePageObject {
 
 	/**
 	 * Click on first date in the table list
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void clickFirstCcdInTheList() throws Exception {
 		IHGUtil.PrintMethodName();
@@ -114,8 +110,7 @@ public class PhrDocumentsPage extends BasePageObject {
 	/**
 	 * click on button 'SendToShareTheHealthInformation'
 	 */
-	public void clickOnSendToShareWithAnotherDoctor()
-	throws InterruptedException {
+	public void clickOnSendToShareWithAnotherDoctor() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		btnSendToShareTheHealthInformation.click();
 	}
@@ -131,8 +126,7 @@ public class PhrDocumentsPage extends BasePageObject {
 	/**
 	 * click on button 'Close'
 	 */
-	public void clickOnCloseAfterSharingTheHealthInformation()
-	throws InterruptedException {
+	public void clickOnCloseAfterSharingTheHealthInformation() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		if (btnClose.isDisplayed()) {
 			btnClose.click();
@@ -207,31 +201,26 @@ public class PhrDocumentsPage extends BasePageObject {
 
 	/**
 	 * 
-	 * If Non Consolidated CCd then the method will just Close the Viewer
-	 * Else 
-	 * will click On ShareWithADoctor
-	 * Will type addresses and will Validate the response
-	 * CloseAfterSharingTheHealthInformation
-	 * CloseViewer
-	 *  
+	 * If Non Consolidated CCd then the method will just Close the Viewer Else will click On ShareWithADoctor Will type addresses and will Validate the response
+	 * CloseAfterSharingTheHealthInformation CloseViewer
+	 * 
 	 * @throws InterruptedException
 	 */
 	public void closeViewer() throws InterruptedException {
 		driver.switchTo().frame(0);
-		IHGUtil util=new IHGUtil(driver);
+		IHGUtil util = new IHGUtil(driver);
 		if (util.checkCcdType() == false) {
 			clickOnCloseViewer();
 		}
 
 		else if (util.checkCcdType() == true) {
 			clickOnShareWithADoctor();
-			if(IHGUtil.getEnvironmentType().equals(EnvironmentType.DEV3)){
+			if (IHGUtil.getEnvironmentType().equals(EnvironmentType.DEV3)) {
 				addAddressesAndValidateDev3();
 				clickOnCloseAfterSharingTheHealthInformation();
 				Thread.sleep(2000);
 				clickOnCloseViewer();
-			}
-			else{
+			} else {
 				addAddressesAndValidate();
 				clickOnCloseAfterSharingTheHealthInformation();
 				Thread.sleep(2000);
@@ -243,6 +232,7 @@ public class PhrDocumentsPage extends BasePageObject {
 
 	/**
 	 * Click on log out button and return PHR LogIn page
+	 * 
 	 * @return
 	 */
 	public PhrLoginPage clickLogout() {

@@ -10,35 +10,34 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-public class UnlinkPatientFromFamilyPage extends BasePageObject{
+public class UnlinkPatientFromFamilyPage extends BasePageObject {
 
 
-	@FindBy(how=How.NAME, using="inputs:1:input:input")
-	private WebElement txtEmail ;
-	
+	@FindBy(how = How.NAME, using = "inputs:1:input:input")
+	private WebElement txtEmail;
+
 	@FindBy(how = How.NAME, using = "buttons:submit")
 	private WebElement btnUnLink;
-	
-		
-	public UnlinkPatientFromFamilyPage(WebDriver driver)
-	{
+
+
+	public UnlinkPatientFromFamilyPage(WebDriver driver) {
 		super(driver);
 	}
-	
-	public void waitfortxtEmail(WebDriver driver,int n)
-	{   IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,n, txtEmail);
+
+	public void waitfortxtEmail(WebDriver driver, int n) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, n, txtEmail);
 	}
-	
-	 
-	
+
+
+
 	public PatientsOnThisAccountPage unLinkFamilyMember(String email) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		waitfortxtEmail(driver, 60);
 		txtEmail.sendKeys(email);
 		btnUnLink.click();
-		return PageFactory.initElements(driver,PatientsOnThisAccountPage.class);
+		return PageFactory.initElements(driver, PatientsOnThisAccountPage.class);
 	}
-	
+
 }

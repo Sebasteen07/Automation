@@ -18,8 +18,7 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.common.utils.IHGUtil;
 
 /**
- * Class contains mix of elements/methods of old custom forms. Because old custom forms are to be
- * replaced there is no need to refactor this.
+ * Class contains mix of elements/methods of old custom forms. Because old custom forms are to be replaced there is no need to refactor this.
  */
 public class OldCustomFormPages extends BasePageObject {
 	public static final String PAGE_NAME = "Insurance Health Form Page";
@@ -152,8 +151,7 @@ public class OldCustomFormPages extends BasePageObject {
 	}
 
 	/**
-	 * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and
-	 * downloading it via the URLStatusChecker class.
+	 * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and downloading it via the URLStatusChecker class.
 	 *
 	 * @return the http status code from the download
 	 */
@@ -166,10 +164,9 @@ public class OldCustomFormPages extends BasePageObject {
 	}
 
 	/**
-	 * steps 1:-sets URL that you want to perform an HTTP Status Check upon steps 2:-Set the HTTP
-	 * Request Method (Defaults to 'GET') steps 3:-Mimic the cookie state of WebDriver (Defaults to
-	 * true) This will enable you to access files that are only available when logged in. Perform an
-	 * HTTP Status check and return the response code as int (200,300 etc)
+	 * steps 1:-sets URL that you want to perform an HTTP Status Check upon steps 2:-Set the HTTP Request Method (Defaults to 'GET') steps 3:-Mimic the cookie
+	 * state of WebDriver (Defaults to true) This will enable you to access files that are only available when logged in. Perform an HTTP Status check and return
+	 * the response code as int (200,300 etc)
 	 *
 	 * @param url
 	 * @param method

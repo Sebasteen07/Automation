@@ -16,14 +16,13 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 public class XMLHandler {
-	public static boolean xmlComparison(String actualXML, String expectedXML)
-			throws IOException, SAXException {
-		
+	public static boolean xmlComparison(String actualXML, String expectedXML) throws IOException, SAXException {
+
 
 		boolean diffPresent = false;
 
 		IHGUtil.PrintMethodName();
-		
+
 		XMLUnit.setNormalizeWhitespace(Boolean.TRUE);
 		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(Boolean.TRUE);
 		XMLUnit.setIgnoreComments(true);
@@ -49,26 +48,26 @@ public class XMLHandler {
 		try {
 			Diff diff = new Diff(actualResponseXMLReader, expectedXMLReader);
 			diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-				Log4jUtil.log("expected and actual xml are similar "+ diff.similar());
-				Log4jUtil.log("expected and actual xml are identical "+ diff.identical());
-				DetailedDiff detDiff = new DetailedDiff(diff);
-				
-				@SuppressWarnings("rawtypes")
-				List differences = detDiff.getAllDifferences();
-				for (Object object : differences) {
-					Difference difference = (Difference) object;
-					Log4jUtil.log("XML differences" + difference);
-				}
-				diffPresent = detDiff.similar() || detDiff.identical();
-		
-		}catch (SAXException e) {
+			Log4jUtil.log("expected and actual xml are similar " + diff.similar());
+			Log4jUtil.log("expected and actual xml are identical " + diff.identical());
+			DetailedDiff detDiff = new DetailedDiff(diff);
+
+			@SuppressWarnings("rawtypes")
+			List differences = detDiff.getAllDifferences();
+			for (Object object : differences) {
+				Difference difference = (Difference) object;
+				Log4jUtil.log("XML differences" + difference);
+			}
+			diffPresent = detDiff.similar() || detDiff.identical();
+
+		} catch (SAXException e) {
 			e.printStackTrace();
-		
-		}catch (IOException e) {
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		Log4jUtil.log("Difference between Push API actual response xml and expected xml: "+diffPresent);
+
+		Log4jUtil.log("Difference between Push API actual response xml and expected xml: " + diffPresent);
 
 		return diffPresent;
 

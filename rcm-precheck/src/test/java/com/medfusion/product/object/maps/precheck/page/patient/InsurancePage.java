@@ -12,17 +12,17 @@ public class InsurancePage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "noInsuranceButton")
 	private WebElement noInsuranceButton;
-	
+
 	public InsurancePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public PatientHomePage clickNoInsurance() {
 		noInsuranceButton.click();
 		return PageFactory.initElements(driver, PatientHomePage.class);
 	}
-	
-	
+
+
 
 }

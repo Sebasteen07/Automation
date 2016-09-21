@@ -12,12 +12,12 @@ import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDe
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 
-public class AppoitmentRequest extends BaseTestNGWebDriver{
-	
-	public long ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, 
-			String doctorLogin, String doctorPassword) throws Exception {
+public class AppoitmentRequest extends BaseTestNGWebDriver {
+
+	public long ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
+			String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
-		
+
 		log("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
 		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
@@ -32,17 +32,17 @@ public class AppoitmentRequest extends BaseTestNGWebDriver{
 
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
-		if (checkDetails) assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", 
-				"Early Morning, Late Afternoon", appointmentReason));
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
 
 		log("Confirm response details to patient");
 		apptSearch = detailStep2.processApptRequest();
-		assertTrue(apptSearch.isSearchPageLoaded(),"Expected the Appt Search Page to be loaded, but it was not.");
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
 
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
-		
+
 		return detailStep1.getCreatedTs();
 	}
 }

@@ -51,8 +51,7 @@ public class DiscreteFormsList extends BasePageObject {
 	@FindBy(id = "addCalculatedForm")
 	private WebElement calculatedFormButton;
 
-	@FindBy(xpath = "//tr[@data-form-type='calculated']/td[@class='table_options last']/"
-			+ "a[contains(text(),'Preview')]")
+	@FindBy(xpath = "//tr[@data-form-type='calculated']/td[@class='table_options last']/" + "a[contains(text(),'Preview')]")
 	private WebElement calculatedFormPreview;
 
 	@FindBy(xpath = "//a[contains(text(),'Registration & Health History Form')]")
@@ -61,8 +60,7 @@ public class DiscreteFormsList extends BasePageObject {
 	@FindBy(linkText = "General Registration and Health History")
 	private WebElement lnkGeneralRegAndHealthHistory;
 
-	@FindBy(xpath = ".//div[@class='admin_inner']//"
-			+ "table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")
+	@FindBy(xpath = ".//div[@class='admin_inner']//" + "table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")
 	private WebElement lnkAutomationPracticeDiscreteForm;
 
 	@FindBy(name = "custom_form_name")
@@ -73,7 +71,7 @@ public class DiscreteFormsList extends BasePageObject {
 
 	@FindBy(xpath = "(//table)[2]/tbody[1]//a[@class='teal']")
 	private WebElement lastCreatedFormLink; // the most upper in the unpublished
-											// table
+	// table
 
 	private final int waitingPeriodSeconds = 8;
 
@@ -102,8 +100,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	/**
-	 * Description: Deletes all the unpublished forms present in the Discrete
-	 * Forms page.
+	 * Description: Deletes all the unpublished forms present in the Discrete Forms page.
 	 * 
 	 * @throws Exception
 	 */
@@ -127,8 +124,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	/**
-	 * Description: Unpublishes all the published forms present in the Discrete
-	 * Forms page.
+	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
 	 * 
 	 * @throws Exception
 	 */
@@ -176,16 +172,14 @@ public class DiscreteFormsList extends BasePageObject {
 	/**
 	 * Description : Publish the Saved Form.
 	 * 
-	 * @param uniqueDiscreteFormName
-	 *            : Form name of the form which needs to be deleted.
+	 * @param uniqueDiscreteFormName : Form name of the form which needs to be deleted.
 	 * @throws Exception
 	 */
 	public DiscreteFormsList publishForm(String uniqueDiscreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		driver.findElement(By.xpath(getUnpublishedFormsXpath(uniqueDiscreteFormName))).click();
 
-		new WebDriverWait(driver, 15).until(
-				ExpectedConditions.presenceOfElementLocated(By.xpath(getPublishedFormsXpath(uniqueDiscreteFormName))));
+		new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfElementLocated(By.xpath(getPublishedFormsXpath(uniqueDiscreteFormName))));
 
 		return this;
 	}
@@ -223,8 +217,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	/**
-	 * Checks if the Patient Forms page is loaded by checking if crucial element
-	 * of it is present
+	 * Checks if the Patient Forms page is loaded by checking if crucial element of it is present
 	 * 
 	 * @return True if the button is present, false otherwise
 	 */
@@ -239,8 +232,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	/**
-	 * Prepares practice for automated test - unpublishes and deletes all forms
-	 * and creates a new one
+	 * Prepares practice for automated test - unpublishes and deletes all forms and creates a new one
 	 * 
 	 * @return Name of the newly created form
 	 */

@@ -10,19 +10,19 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
-public class PatientActivationTest extends BaseTestNGWebDriver{
-	
-	private String unlockLink ="";
-	private String firstNameString="";
-	private String lastNameString="";
-	private String patientIdString="";
-	private String zipCodeString="";
-	private String emailAddressString="";
-	
+public class PatientActivationTest extends BaseTestNGWebDriver {
+
+	private String unlockLink = "";
+	private String firstNameString = "";
+	private String lastNameString = "";
+	private String patientIdString = "";
+	private String zipCodeString = "";
+	private String emailAddressString = "";
+
 	public String getUnlockLink() {
 		return unlockLink;
 	}
-	
+
 	public String getFirstNameString() {
 		return firstNameString;
 	}
@@ -43,8 +43,8 @@ public class PatientActivationTest extends BaseTestNGWebDriver{
 		return emailAddressString;
 	}
 
-	public void PatientActivation(WebDriver driver, PracticeTestData practiceTestData,String email) throws Exception {
-		
+	public void PatientActivation(WebDriver driver, PracticeTestData practiceTestData, String email) throws Exception {
+
 		log("Test Case: Patient Activation");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -56,25 +56,25 @@ public class PatientActivationTest extends BaseTestNGWebDriver{
 		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
 
 		log("step 2: Click on Patient Activation");
-		PatientActivationPage patientactivation=practiceHome.clickPatientactivationTab();
+		PatientActivationPage patientactivation = practiceHome.clickPatientactivationTab();
 
 		log("step 3: Click on New Patent link");
 		patientactivation.clickAddNewPatient();
 
 		log("step 3: Enter all the details and click on Register");
 		patientactivation.setInitialDetails(email);
-		
+
 		log("Moving to linkUrl to finish Create Patient procedure");
-			
+
 		unlockLink = patientactivation.getUnlockLink();
-		firstNameString=patientactivation.getFirstNameString();
-		lastNameString=patientactivation.getLastNameString();
-		patientIdString=patientactivation.getPatientIdString();
-		zipCodeString=patientactivation.getZipCodeString();
-		emailAddressString=patientactivation.getEmailAddressString();
-		
+		firstNameString = patientactivation.getFirstNameString();
+		lastNameString = patientactivation.getLastNameString();
+		patientIdString = patientactivation.getPatientIdString();
+		zipCodeString = patientactivation.getZipCodeString();
+		emailAddressString = patientactivation.getEmailAddressString();
+
 		driver.switchTo().defaultContent();
 	}
-	
- 
+
+
 }

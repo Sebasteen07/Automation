@@ -10,36 +10,36 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-public class LaboratoryAndTestResultPage extends BasePageObject{
+public class LaboratoryAndTestResultPage extends BasePageObject {
 
-	private static String title= "Laboratory and Test Results";
+	private static String title = "Laboratory and Test Results";
 	private static String noResultText = "No Test Results Added";
 
-	@FindBy( xpath = "//*[@class='content_hdr']")
+	@FindBy(xpath = "//*[@class='content_hdr']")
 	private WebElement laboratoryAndTestResultHeader;
 
-	@FindBy( id = "month")
+	@FindBy(id = "month")
 	private WebElement monthDropDwn;
 
-	@FindBy( id = "day")
+	@FindBy(id = "day")
 	private WebElement dayDropDwn;
 
-	@FindBy( id = "year")
+	@FindBy(id = "year")
 	private WebElement yearDropDwn;
 
-	@FindBy( id = "testName")
+	@FindBy(id = "testName")
 	private WebElement testNameField;
 
 	@FindBy(id = "resultInterpretation")
 	private WebElement resultInterpretationDropDwn;
 
-	@FindBy(id ="testResult")
+	@FindBy(id = "testResult")
 	private WebElement resultField;
 
-	@FindBy( xpath=".//select[@name='resultUnits']")
+	@FindBy(xpath = ".//select[@name='resultUnits']")
 	private WebElement resultUnitsDropDwn;
 
-	@FindBy(id ="comments")
+	@FindBy(id = "comments")
 	private WebElement commentsField;
 
 	@FindBy(xpath = ".//input[@value = 'Save Test Results']")
@@ -62,9 +62,9 @@ public class LaboratoryAndTestResultPage extends BasePageObject{
 
 	public void addLaboratoryTestResult(String testName, String resultInterpretation) {
 		WebElement tableList = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td"));
-		if(tableList.getText().contains(noResultText)) {
+		if (tableList.getText().contains(noResultText)) {
 			addValuesForLaboratoryResult(testName, resultInterpretation);
-		} else if(addTestResultButton.isDisplayed()) {
+		} else if (addTestResultButton.isDisplayed()) {
 			addTestResultButton.click();
 			addValuesForLaboratoryResult(testName, resultInterpretation);
 		}
@@ -89,23 +89,23 @@ public class LaboratoryAndTestResultPage extends BasePageObject{
 		log("removing all results present");
 		driver.switchTo().defaultContent();
 
-//		int row_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span")).size();
+		// int row_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span")).size();
 		int table_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr")).size();
-//		int iValue = (table_Size-row_Size)+1;
+		// int iValue = (table_Size-row_Size)+1;
 
-		for( int i=2; i<=table_Size; i++) { 
-			WebElement  ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/span"));
-			log("test :"+test);
+		for (int i = 2; i <= table_Size; i++) {
+			WebElement ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr[" + i + "]/td/a/span"));
+			log("test :" + test);
 			if (ele.getText().contains(test)) {
 				try {
-					driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/img")).click();
+					driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr[" + i + "]/td/a/img")).click();
 				} catch (Exception e) {
-					driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/img")).click();
+					driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr[" + i + "]/td/a/img")).click();
 				}
 				driver.switchTo().alert().accept();
 				table_Size--;
 				Thread.sleep(10000);
-			}else {
+			} else {
 				continue;
 			}
 

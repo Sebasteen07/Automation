@@ -9,24 +9,25 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 
-public class PhrMessagesPage  extends BasePageObject{
+public class PhrMessagesPage extends BasePageObject {
 
 	public PhrMessagesPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	@FindBy(id="inboxTab")
+
+
+	@FindBy(id = "inboxTab")
 	private WebElement inboxTab;
 
-	//@FindBy(xpath = ".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")
+	// @FindBy(xpath = ".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")
 	@FindBy(xpath = ".//*[@id='row']/tbody/tr[1]/td[6]/a")
 	private WebElement firstMessageRow;
-		
-	
+
+
 	/**
 	 * Gives indication if the Inbox page loaded correctly
+	 * 
 	 * @return true or false
 	 */
 	public boolean isInboxLoaded() {
@@ -39,36 +40,25 @@ public class PhrMessagesPage  extends BasePageObject{
 		} catch (Exception e) {
 			// Catch no element found error
 		}
-		
+
 		return result;
 	}
-	
-	
 
-	
+
+
 	/**
-	 *  
+	 * 
 	 * @Descripton:Click on first row
 	 */
 	public PhrInboxMessage clickOnFirstMessage() {
 		PhrUtil.PrintMethodName();
-        driver.switchTo().defaultContent();
-        //driver.switchTo().frame(0);
-        IHGUtil.waitForElement(driver,10,firstMessageRow);
-        firstMessageRow.click();
-        return PageFactory.initElements(driver, PhrInboxMessage.class);
-		}
+		driver.switchTo().defaultContent();
+		// driver.switchTo().frame(0);
+		IHGUtil.waitForElement(driver, 10, firstMessageRow);
+		firstMessageRow.click();
+		return PageFactory.initElements(driver, PhrInboxMessage.class);
+	}
 
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 

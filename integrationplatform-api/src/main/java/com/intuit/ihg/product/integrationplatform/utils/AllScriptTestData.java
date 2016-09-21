@@ -8,8 +8,8 @@ import com.medfusion.common.utils.IHGUtil;
 public class AllScriptTestData {
 
 	private AllScript allscriptObj = null;
-	
-	public AllScriptTestData(AllScript sheetName) throws Exception{
+
+	public AllScriptTestData(AllScript sheetName) throws Exception {
 		// which enviroment data need to picked
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
@@ -20,39 +20,39 @@ public class AllScriptTestData {
 		// filtering the entire file
 		allscriptObj = (AllScript) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	
-	public String getPHR_URL(){
+
+
+	public String getPHR_URL() {
 		return allscriptObj.PHR_URL;
 	}
-	
-	public String getURL(){
+
+	public String getURL() {
 		return allscriptObj.URL;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return allscriptObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return allscriptObj.Password;
 	}
-	
-	
-	public String getRestUrl(){
+
+
+	public String getRestUrl() {
 		return allscriptObj.RestUrl;
 	}
-	
-	public String getCCDPath(){
+
+	public String getCCDPath() {
 		return allscriptObj.CCDPath;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return allscriptObj.ResponsePath;
 	}
-		
-	public String getEmail(){
+
+	public String getEmail() {
 		return allscriptObj.Email;
 	}
-		
+
 }

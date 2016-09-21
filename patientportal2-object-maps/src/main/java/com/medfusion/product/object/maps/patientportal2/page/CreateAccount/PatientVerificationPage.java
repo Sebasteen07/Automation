@@ -58,7 +58,7 @@ public class PatientVerificationPage extends MedfusionPage {
 		driver.get(url);
 		areBasicPageElementsPresent();
 	}
-	
+
 	public SecurityDetailsPage fillPatientInfoAndContinue(JalapenoPatient patient) {
 		return fillPatientInfoAndContinue(patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 	}

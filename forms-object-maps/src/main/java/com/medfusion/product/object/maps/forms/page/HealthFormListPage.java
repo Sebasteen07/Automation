@@ -42,8 +42,8 @@ public class HealthFormListPage extends BasePageObject {
 
 	/**
 	 * automatically switches to corresponding iframe
-	 * ({@link com.medfusion.product.object.maps.patientportal2.page.JalapenoPage#JalapenoNewCustomHealthFormPage(WebDriver driver)
-	 * see customFormPage constructor})
+	 * ({@link com.medfusion.product.object.maps.patientportal2.page.JalapenoPage#JalapenoNewCustomHealthFormPage(WebDriver driver) see customFormPage
+	 * constructor})
 	 * 
 	 * @param formName
 	 * @return

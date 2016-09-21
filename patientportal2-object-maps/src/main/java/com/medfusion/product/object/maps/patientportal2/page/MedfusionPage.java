@@ -180,7 +180,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		SupportedWebElements swe = getSupportedWebElement(element);
 		return validateWebElement(element, value, swe);
 	}
-	
+
 	public boolean validateWebElement(WebElement element, String value, SupportedWebElements swe) {
 		switch (swe) {
 			case TEXT:
@@ -188,7 +188,7 @@ public abstract class MedfusionPage extends BasePageObject {
 					log(createValidateWebElementErrorMessage(element, value));
 					return false;
 				} else {
-					log(createValidateWebElementOkMessage(element, value),Level.DEBUG);
+					log(createValidateWebElementOkMessage(element, value), Level.DEBUG);
 				}
 				break;
 			case SELECT:

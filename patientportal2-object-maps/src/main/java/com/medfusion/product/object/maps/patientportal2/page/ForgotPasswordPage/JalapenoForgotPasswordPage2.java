@@ -16,14 +16,14 @@ public class JalapenoForgotPasswordPage2 extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "closeButton")
 	public WebElement closeButton;
-	
+
 	public JalapenoForgotPasswordPage2(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		log("Loading ForgotPasswordPage2");
 		driver.manage().window().maximize();
 	}
-	
+
 	public boolean assessForgotPasswordPage2Elements() {
 
 		boolean allElementsDisplayed = false;
@@ -51,14 +51,14 @@ public class JalapenoForgotPasswordPage2 extends BasePageObject {
 
 		}
 		return allElementsDisplayed;
-	} 
-	
+	}
+
 	public JalapenoLoginPage clickCloseButton() {
-		
+
 		IHGUtil.PrintMethodName();
 		log("Clicking on Close button");
 		closeButton.click();
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
-	
+
 }

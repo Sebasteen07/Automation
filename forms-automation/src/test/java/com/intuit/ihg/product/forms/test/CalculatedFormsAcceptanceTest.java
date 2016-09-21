@@ -25,12 +25,9 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 * Tect Case in TestLink: MF-1265
 	 * 
 	 * @author phajek
-	 * @Date: 13/02/2015 StepsToReproduce: Log in to SG as SU Go to Forms Config Unpublish all forms
-	 *        Delete all forms Search and add a new Calculated form Test if it is displayed in
-	 *        Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms
-	 *        directory === Prerequisite for the test case to run========= Practices configured on:
-	 *        DEV3, MANUAL login to the SG as superuser
-	 *        ============================================================
+	 * @Date: 13/02/2015 StepsToReproduce: Log in to SG as SU Go to Forms Config Unpublish all forms Delete all forms Search and add a new Calculated form Test if
+	 *        it is displayed in Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms directory === Prerequisite for the test
+	 *        case to run========= Practices configured on: DEV3, MANUAL login to the SG as superuser ============================================================
 	 * @throws Exception
 	 */
 	@Test(enabled = false)
@@ -71,9 +68,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @author Adam W Steps: Login to Site Generator, click on Patient Forms, open calculated form
-	 *         change welcome screen, save the form, exit, publish it, test changes in preview do the
-	 *         same for a second form
+	 * @author Adam W Steps: Login to Site Generator, click on Patient Forms, open calculated form change welcome screen, save the form, exit, publish it, test
+	 *         changes in preview do the same for a second form
 	 */
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
@@ -97,8 +93,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 	/**
 	 * @author: Petr H
-	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, fill in the
-	 *         form, submit the form, check if PDF was generated Practices configured on: DEV3
+	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, fill in the form, submit the form, check if PDF was generated Practices
+	 *         configured on: DEV3
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testAllCalculatedFormsPortal1() throws Exception {
@@ -140,9 +136,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 	/**
 	 * @author: Petr H
-	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, try to save
-	 *         without any answer, try to save it with one answer missing and finally saves it with
-	 *         all the correct answers Practices configured on: DEV3
+	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, try to save without any answer, try to save it with one answer missing and
+	 *         finally saves it with all the correct answers Practices configured on: DEV3
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {

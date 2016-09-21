@@ -14,17 +14,17 @@ public class CreateAccountExistingUserPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@fieldid='username']")
 	private WebElement txtUserId;
-	
+
 	@FindBy(xpath = "//input[@fieldid='password']")
 	private WebElement txtUserPassword;
 
 	@FindBy(name = "buttons:submit")
 	private WebElement btnContinue;
-	
+
 	@FindBy(xpath = "//div[@id='workflowMessage']/p/span[contains(.,'The information you entered matches an existing account.')]")
 	private WebElement titleMessage;
-	
-	@FindBy(name="phoneButton")
+
+	@FindBy(name = "phoneButton")
 	private WebElement btnPhoneVerify;
 
 	public CreateAccountExistingUserPage(WebDriver driver) {
@@ -43,7 +43,7 @@ public class CreateAccountExistingUserPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		log("PatientUserId: " + username);
 		txtUserId.sendKeys(username);
 		log("Password: " + password);
@@ -52,21 +52,20 @@ public class CreateAccountExistingUserPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-	
-	public boolean existingPageVerify(WebDriver driver) throws InterruptedException
-	{
+
+	public boolean existingPageVerify(WebDriver driver) throws InterruptedException {
 		PortalUtil.setPortalFrame(driver);
-		return IHGUtil.waitForElement(driver,6, titleMessage);
+		return IHGUtil.waitForElement(driver, 6, titleMessage);
 	}
-	
+
 	public CreatePatientVerifyPhonePage clickVerifyPhone(WebDriver driver) {
-		
+
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,6, btnPhoneVerify);
-		
+		IHGUtil.waitForElement(driver, 6, btnPhoneVerify);
+
 		btnPhoneVerify.click();
-		
+
 		return PageFactory.initElements(driver, CreatePatientVerifyPhonePage.class);
 	}
-	
+
 }

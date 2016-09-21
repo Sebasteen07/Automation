@@ -13,13 +13,13 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class MerchantAccountPage extends BasePageObject {
 
-	@FindBy(xpath ="//h2[text() = 'Merchant Account List']")
+	@FindBy(xpath = "//h2[text() = 'Merchant Account List']")
 	private WebElement merchantAccountListTitle;
 
-	@FindBy( xpath = ".//div[@id='portal']//span/a[text() ='Merchant Account Setup']")
+	@FindBy(xpath = ".//div[@id='portal']//span/a[text() ='Merchant Account Setup']")
 	private WebElement merchantAccountSetUp;
 
-	@FindBy( xpath = ".//input[@value='Delete']")
+	@FindBy(xpath = ".//input[@value='Delete']")
 	private WebElement deleteButton;
 
 	public MerchantAccountPage(WebDriver driver) {
@@ -31,7 +31,7 @@ public class MerchantAccountPage extends BasePageObject {
 	 * 
 	 * @return true if element is displayed else false.
 	 */
-	public boolean checkMerchantAccountListPage() {	
+	public boolean checkMerchantAccountListPage() {
 		IHGUtil.PrintMethodName();
 		return merchantAccountListTitle.isDisplayed();
 	}
@@ -65,11 +65,11 @@ public class MerchantAccountPage extends BasePageObject {
 	public void deleteExistingMerchantAcct() throws Exception {
 
 		Thread.sleep(4000);
-		if(verifyAcctInMerchantAcctList()) {
+		if (verifyAcctInMerchantAcctList()) {
 			waitForElement(deleteButton, 30);
 			deleteButton.click();
 			driver.switchTo().alert().accept();
-		}else {
+		} else {
 			log("No Accounts present in the Merchant Account List");
 		}
 
@@ -82,7 +82,7 @@ public class MerchantAccountPage extends BasePageObject {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean waitForElement(WebElement we, int Timeout_Seconds)throws Exception{
+	public boolean waitForElement(WebElement we, int Timeout_Seconds) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, Timeout_Seconds);
 		return wait.until(new WaitForWEIsDisplayed(we));
 	}

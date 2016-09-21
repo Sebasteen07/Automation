@@ -4,7 +4,7 @@ package com.medfusion.product.precheck;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PrecheckPatient {
-	
+
 	private String email = "";
 	private String firstName = "";
 	private String lastName = "";
@@ -24,29 +24,29 @@ public class PrecheckPatient {
 	public String getPatientId() {
 		return patientId;
 	}
-	
+
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	public String getMiddleName() {
 		return middleName;
 	}
-	
+
 	public void initPatientData() {
 		IHGUtil.PrintMethodName();
-		
+
 		int randomize = IHGUtil.createRandomNumber();
-		
-		//Setting data according to test purpose
 
-			email = "pr" + randomize + "@mailinator.com";	
-			firstName = "pr" + randomize + "First";
-			lastName = "pr" + randomize + "Last";
-			middleName = "pr" + randomize + "Middle";
-			patientId = "pr" + randomize;
-	
+		// Setting data according to test purpose
 
-		}
+		email = "pr" + randomize + "@mailinator.com";
+		firstName = "pr" + randomize + "First";
+		lastName = "pr" + randomize + "Last";
+		middleName = "pr" + randomize + "Middle";
+		patientId = "pr" + randomize;
+
+
+	}
 
 }

@@ -22,8 +22,7 @@ public interface IPayNow {
 	 * 
 	 * @param driver
 	 * @param portal URL is needed
-	 * @param payNow CreditCard, patientName, dateOfBirth, patientAccountNumber, amount, location,
-	 *        paymentComment, emailAddress
+	 * @param payNow CreditCard, patientName, dateOfBirth, patientAccountNumber, amount, location, paymentComment, emailAddress
 	 * @return confirmation number if payment succeeds
 	 * @throws Exception
 	 */

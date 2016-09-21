@@ -14,63 +14,61 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class ManageHealthInfoPage extends BasePageObject {
-	
+
 	public static final String PAGE_NAME = "Manage Health Info Page";
-	
-	@FindBy(partialLinkText="Download My Data")
+
+	@FindBy(partialLinkText = "Download My Data")
 	private WebElement lnkPdfDownload;
-	
-	@FindBy(linkText="Download text-only version")
+
+	@FindBy(linkText = "Download text-only version")
 	private WebElement lnkTxtDownload;
-	
-	@FindBy(linkText="View Account Activity")
+
+	@FindBy(linkText = "View Account Activity")
 	private WebElement lnkViewAcctActivity;
-	
-	@FindBy(linkText="Lean more about Blue Button")
+
+	@FindBy(linkText = "Lean more about Blue Button")
 	private WebElement lnkBlueButtonLearnMore;
 
 	public ManageHealthInfoPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	/**
-     * Simulates PDF Blue Button download link click by accessing the link URL and
-     * downloading it via the URLStatusChecker class.
-     * 
-     * Will return a boolean value indicating if the download was successful or not.
-     *
-     * @return the http status code from the download
-     */
+	 * Simulates PDF Blue Button download link click by accessing the link URL and downloading it via the URLStatusChecker class.
+	 * 
+	 * Will return a boolean value indicating if the download was successful or not.
+	 *
+	 * @return the http status code from the download
+	 */
 	public int clickBlueButtonDownloadPdf() throws Exception {
 		IHGUtil.PrintMethodName();
-	    PortalUtil.setPortalFrame(driver);
-	    
-	    return validateBlueButtonDownload(lnkPdfDownload.getAttribute("href"), RequestMethod.GET);
+		PortalUtil.setPortalFrame(driver);
+
+		return validateBlueButtonDownload(lnkPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
-	
+
 	/**
-     * Simulates Text Blue Button download link click by accessing the link URL and
-     * downloading it via the URLStatusChecker class.
-     * 
-     * Will return a boolean value indicating if the download was successful or not.
-     *
-     * @return the http status code from the download
-     */
+	 * Simulates Text Blue Button download link click by accessing the link URL and downloading it via the URLStatusChecker class.
+	 * 
+	 * Will return a boolean value indicating if the download was successful or not.
+	 *
+	 * @return the http status code from the download
+	 */
 	public int clickBlueButtonDownloadText() throws Exception {
 		IHGUtil.PrintMethodName();
-	    PortalUtil.setPortalFrame(driver);
-	    
-	    return validateBlueButtonDownload(lnkPdfDownload.getAttribute("href"), RequestMethod.GET);
+		PortalUtil.setPortalFrame(driver);
+
+		return validateBlueButtonDownload(lnkPdfDownload.getAttribute("href"), RequestMethod.GET);
 	}
-	
+
 	private int validateBlueButtonDownload(String url, RequestMethod method) throws URISyntaxException, IOException {
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);
-	    
-	    urlChecker.setURIToCheck(url);
-	    urlChecker.setHTTPRequestMethod(RequestMethod.GET);
-	    urlChecker.mimicWebDriverCookieState(true);
-	    
-	    return urlChecker.getHTTPStatusCode();
+
+		urlChecker.setURIToCheck(url);
+		urlChecker.setHTTPRequestMethod(RequestMethod.GET);
+		urlChecker.mimicWebDriverCookieState(true);
+
+		return urlChecker.getHTTPStatusCode();
 	}
 
 }

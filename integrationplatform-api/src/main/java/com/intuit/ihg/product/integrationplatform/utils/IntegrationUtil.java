@@ -51,7 +51,7 @@ public class IntegrationUtil extends IHGUtil {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframebody");
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- set Default Frame
@@ -62,7 +62,7 @@ public class IntegrationUtil extends IHGUtil {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- For setting generic frame
@@ -74,6 +74,7 @@ public class IntegrationUtil extends IHGUtil {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, frame);
 	}
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- For setting Consolidated frame ,Here 2 frames iframebody & externalframe
@@ -90,8 +91,8 @@ public class IntegrationUtil extends IHGUtil {
 
 		IHGUtil.setFrameChain(driver, frames);
 	}
-	
-		
+
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- Verify text ,Note :- this fun is already present in IFS but cannot be used pages,So redefining it
@@ -103,14 +104,14 @@ public class IntegrationUtil extends IHGUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws IllegalArgumentException,InterruptedException {
-		if (waitTime == 0){
+	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws IllegalArgumentException, InterruptedException {
+		if (waitTime == 0) {
 			throw new IllegalArgumentException("YOU CAN'T DO THIS USING THIS METHOD");
 		}
 		Thread.sleep(waitTime);
 		return driver.getPageSource().contains(value);
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- for dealing with browser alerts
@@ -118,19 +119,19 @@ public class IntegrationUtil extends IHGUtil {
 	 * @param driver
 	 */
 	public void checkAlert(WebDriver driver) {
-	    try {
-	        WebDriverWait wait = new WebDriverWait(driver, 5);
-	        wait.until(ExpectedConditions.alertIsPresent());
-	        Alert alert = driver.switchTo().alert();
-	        log("Alert detected: {}" + alert.getText());
-	        alert.accept();
-	        
-	    } catch (Exception e) {
-	        //exception handling
-	    	log("no alert was present");
-	    }
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Alert alert = driver.switchTo().alert();
+			log("Alert detected: {}" + alert.getText());
+			alert.accept();
+
+		} catch (Exception e) {
+			// exception handling
+			log("no alert was present");
+		}
 	}
 
-	
-	
+
+
 }

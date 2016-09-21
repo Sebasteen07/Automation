@@ -10,32 +10,31 @@ import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.phr.page.phrEmergencyContactPage.PhrEmergencyContactPage;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 
-public class PhrRegistrationInformationPage extends BasePageObject{
-	
-	
-	
+public class PhrRegistrationInformationPage extends BasePageObject {
+
+
+
 	public PhrRegistrationInformationPage(WebDriver driver) {
 		super(driver);
 		// Auto-generated constructor stub
 	}
-	
+
 
 	@FindBy(linkText = "Emergency Contact")
 	private WebElement emergencyContactlnktext;
-	
-	
-	
+
+
+
 	/**
 	 * @Description:Click on Emergency Contact Link
 	 * @return
 	 */
-	public PhrEmergencyContactPage clickEmergencyContact()
-	{
+	public PhrEmergencyContactPage clickEmergencyContact() {
 		PhrUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,10,emergencyContactlnktext);
+		IHGUtil.waitForElement(driver, 10, emergencyContactlnktext);
 		emergencyContactlnktext.click();
-		return PageFactory.initElements(driver, PhrEmergencyContactPage.class );
-		
+		return PageFactory.initElements(driver, PhrEmergencyContactPage.class);
+
 	}
 
 }

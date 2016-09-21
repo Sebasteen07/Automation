@@ -15,28 +15,28 @@ public class TreatmentPlansPage extends BasePageObject {
 	private static final String pageTitle = "My Home";
 
 
-	@FindBy( xpath = ".//input[@value='Submit']")
+	@FindBy(xpath = ".//input[@value='Submit']")
 	private WebElement submitButton;
 
-	@FindBy( xpath = ".//*[@id='pagetitle']/h1")
+	@FindBy(xpath = ".//*[@id='pagetitle']/h1")
 	private WebElement pageTitleEle;
 
-	@FindBy( xpath = ".//select[@name='featureid']")
+	@FindBy(xpath = ".//select[@name='featureid']")
 	private WebElement featureDropDwn;
 
-	@FindBy( id = "title")
+	@FindBy(id = "title")
 	private WebElement titleField;
-	
-	@FindBy( id = "subject")
+
+	@FindBy(id = "subject")
 	private WebElement subjectField;
-	
-	@FindBy( xpath = ".//textarea[@name='body']")
+
+	@FindBy(xpath = ".//textarea[@name='body']")
 	private WebElement bodyField;
-	
-	@FindBy( xpath = "//input[@value='Create Treatment Plan']")
+
+	@FindBy(xpath = "//input[@value='Create Treatment Plan']")
 	private WebElement createTreatmentPlanBtn;
-	
-	
+
+
 	public TreatmentPlansPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -54,7 +54,7 @@ public class TreatmentPlansPage extends BasePageObject {
 		submitButton.click();
 	}
 
-	public void selectAppointmentRequest(){
+	public void selectAppointmentRequest() {
 		Select sel = new Select(featureDropDwn);
 		sel.selectByValue("1");
 	}
@@ -66,12 +66,12 @@ public class TreatmentPlansPage extends BasePageObject {
 		bodyField.sendKeys(text);
 		createTreatmentPlanBtn.click();
 	}
-	
+
 	public String checkTreatmentPlanSuccessMsg() {
 		IHGUtil.PrintMethodName();
 		String successMsg = driver.findElement(By.xpath(".//*[@id='content']/table/tbody/tr/td/strong")).getText();
 		return successMsg;
 	}
-	
+
 
 }

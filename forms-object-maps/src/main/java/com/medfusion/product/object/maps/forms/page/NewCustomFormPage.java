@@ -202,8 +202,7 @@ public class NewCustomFormPage extends PortalFormPage {
 	}
 
 	/**
-	 * clears all inputs of specified section, in case of radio buttons it always selects the last
-	 * option
+	 * clears all inputs of specified section, in case of radio buttons it always selects the last option
 	 * 
 	 * @throws InterruptedException
 	 */

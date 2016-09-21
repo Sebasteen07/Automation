@@ -24,7 +24,7 @@ public interface IAppointments {
 	 * @throws ParseException
 	 */
 	public List<Appointment> getAllAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
-	
+
 	/**
 	 * Gets past appointments for given patient in given practice.
 	 * 
@@ -34,7 +34,7 @@ public interface IAppointments {
 	 * @throws ParseException
 	 */
 	public List<Appointment> getUpcomingAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException;
-	
+
 	/**
 	 * Gets past appointments for given patient in given practice.
 	 * 

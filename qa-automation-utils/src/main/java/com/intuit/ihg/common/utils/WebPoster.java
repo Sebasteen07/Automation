@@ -37,7 +37,7 @@ public class WebPoster {
 	String contentType = "text/xml;charset=UTF-8";
 	int expectedStatusCode = 200;
 	Map<String, String> headerMap = new HashMap<String, String>();
-	
+
 	/**
 	 * sets the service URL
 	 */
@@ -46,7 +46,7 @@ public class WebPoster {
 		IHGUtil.PrintMethodName();
 		serviceUrl = s;
 	}
-	
+
 	/**
 	 * sets the content type
 	 */
@@ -55,9 +55,10 @@ public class WebPoster {
 		IHGUtil.PrintMethodName();
 		contentType = s;
 	}
-	
+
 	/**
 	 * set ExpectedStatus Code (expected is 200)
+	 * 
 	 * @param i
 	 */
 
@@ -69,6 +70,7 @@ public class WebPoster {
 
 	/**
 	 * adds header
+	 * 
 	 * @param name
 	 * @param value
 	 */
@@ -80,6 +82,7 @@ public class WebPoster {
 
 	/**
 	 * Post your Request.xml for more details see line comments
+	 * 
 	 * @param sResourceFile
 	 * @throws Exception
 	 */
@@ -87,21 +90,20 @@ public class WebPoster {
 
 		IHGUtil.PrintMethodName();
 		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
-        
+
 		System.out.println("### SERVICE URL: " + serviceUrl);
 		System.out.println("### POSTING RESOURCE: " + sResourceFile);
 
 		System.out.println("Create a hand coded requset to send to the server");
 		ClientRequest request = new ClientRequest(serviceUrl);
-		
-		//Find a resource 'sResourceFile' from the search path used to load classes. 
-		//This method locates the resource through the system class loader
+
+		// Find a resource 'sResourceFile' from the search path used to load classes.
+		// This method locates the resource through the system class loader
 		URL url = ClassLoader.getSystemResource(sResourceFile);
 
-		Assert.assertNotNull(url, "### getSystemResource returned null: [" +
-		   sResourceFile + "] ");
-		 
-		 // adding headers to request
+		Assert.assertNotNull(url, "### getSystemResource returned null: [" + sResourceFile + "] ");
+
+		// adding headers to request
 		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
 
 			String key = entry.getKey();
@@ -111,39 +113,35 @@ public class WebPoster {
 
 			request.header(key, value);
 		}
-         
-	
-		 // adding contentType to request
+
+
+		// adding contentType to request
 		request.body(contentType, url.openStream());
 
 		try {
 
 			ClientResponse<String> response = request.post(String.class);
-			
-			//asserting if reponse code is 200
-			Assert.assertEquals( response.getStatus(),expectedStatusCode,"HTTP Status not what expected" );
 
-			//printing the response to the console
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					new ByteArrayInputStream(response.getEntity().getBytes())));
-			
+			// asserting if reponse code is 200
+			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+
+			// printing the response to the console
+			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
+
 			String output;
 			System.out.println("### START POST RESPONSE: \n");
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
 			}
 			System.out.println("### END POST RESPONSE: \n");
-			
-			
+
+
 
 		} catch (UnknownHostException ex) {
 
-			if ((IHGUtil.getEnvironmentType().toString())
-					.equalsIgnoreCase("PROD")) {
+			if ((IHGUtil.getEnvironmentType().toString()).equalsIgnoreCase("PROD")) {
 
-				throw new Exception(
-						"### On PROD, may have to use P10 to post to server: UnknownHostException"
-								+ ex.getMessage());
+				throw new Exception("### On PROD, may have to use P10 to post to server: UnknownHostException" + ex.getMessage());
 			} else {
 
 				throw new Error(ex);
@@ -151,16 +149,15 @@ public class WebPoster {
 		}
 	}
 
-	
-	
+
+
 	/**
 	 * Post your Request.xml for more details see line comments
 	 * 
 	 * @param sResourceFile
 	 * @throws Exception
 	 */
-	public String smpostFromResourceFile(String sResourceFile, String xmldata)
-			throws Exception {
+	public String smpostFromResourceFile(String sResourceFile, String xmldata) throws Exception {
 
 		IHGUtil.PrintMethodName();
 		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
@@ -190,8 +187,7 @@ public class WebPoster {
 			ClientResponse<String> response = request.post(String.class);
 
 			// asserting if reponse code is 200
-			Assert.assertEquals(response.getStatus(), expectedStatusCode,
-					"HTTP Status not what expected");
+			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(response.getEntity().toString());
 
 			String str = response.getEntity().toString();
@@ -200,12 +196,9 @@ public class WebPoster {
 
 		} catch (UnknownHostException ex) {
 
-			if ((IHGUtil.getEnvironmentType().toString())
-					.equalsIgnoreCase("PROD")) {
+			if ((IHGUtil.getEnvironmentType().toString()).equalsIgnoreCase("PROD")) {
 
-				throw new Exception(
-						"### On PROD, may have to use P10 to post to server: UnknownHostException"
-								+ ex.getMessage());
+				throw new Exception("### On PROD, may have to use P10 to post to server: UnknownHostException" + ex.getMessage());
 			} else {
 
 				throw new Error(ex);
@@ -214,8 +207,8 @@ public class WebPoster {
 		}
 
 	}
-	public String postFromString(String payload)
-			throws Exception {
+
+	public String postFromString(String payload) throws Exception {
 
 		IHGUtil.PrintMethodName();
 		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
@@ -244,8 +237,7 @@ public class WebPoster {
 			ClientResponse<String> response = request.post(String.class);
 
 			// asserting if reponse code is as expected
-			Assert.assertEquals(response.getStatus(), expectedStatusCode,
-					"HTTP Status not what expected");
+			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(response.getEntity().toString());
 
 			String str = response.getEntity().toString();
@@ -254,12 +246,9 @@ public class WebPoster {
 
 		} catch (UnknownHostException ex) {
 
-			if ((IHGUtil.getEnvironmentType().toString())
-					.equalsIgnoreCase("PROD")) {
+			if ((IHGUtil.getEnvironmentType().toString()).equalsIgnoreCase("PROD")) {
 
-				throw new Exception(
-						"### On PROD, may have to use P10 to post to server: UnknownHostException"
-								+ ex.getMessage());
+				throw new Exception("### On PROD, may have to use P10 to post to server: UnknownHostException" + ex.getMessage());
 			} else {
 
 				throw new Error(ex);
@@ -268,13 +257,13 @@ public class WebPoster {
 		}
 
 	}
-	public String postFromStringExplicitTimeout(String payload, int timeoutMillis)
-			throws Exception {
+
+	public String postFromStringExplicitTimeout(String payload, int timeoutMillis) throws Exception {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		final HttpParams params = httpClient.getParams();
 		HttpConnectionParams.setConnectionTimeout(params, timeoutMillis);
-		HttpConnectionParams.setSoTimeout(params, timeoutMillis*10);
-		HttpPost postRequest = new HttpPost (serviceUrl);
+		HttpConnectionParams.setSoTimeout(params, timeoutMillis * 10);
+		HttpPost postRequest = new HttpPost(serviceUrl);
 		IHGUtil.PrintMethodName();
 		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
 
@@ -303,20 +292,16 @@ public class WebPoster {
 			String str = EntityUtils.toString(response.getEntity());
 
 			// asserting if reponse code is as expected
-			Assert.assertEquals(response.getStatusLine().getStatusCode(), expectedStatusCode,
-					"HTTP Status not what expected");
+			Assert.assertEquals(response.getStatusLine().getStatusCode(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(str);
 
 			return str;
 
 		} catch (UnknownHostException ex) {
 
-			if ((IHGUtil.getEnvironmentType().toString())
-					.equalsIgnoreCase("PROD")) {
+			if ((IHGUtil.getEnvironmentType().toString()).equalsIgnoreCase("PROD")) {
 
-				throw new Exception(
-						"### On PROD, may have to use P10 to post to server: UnknownHostException"
-								+ ex.getMessage());
+				throw new Exception("### On PROD, may have to use P10 to post to server: UnknownHostException" + ex.getMessage());
 			} else {
 
 				throw new Error(ex);
@@ -325,13 +310,14 @@ public class WebPoster {
 		}
 
 	}
-	
+
 	public boolean get() {
 		return get(contentType);
 	}
+
 	public boolean get(String type) {
-		  try {
-	 
+		try {
+
 			ClientRequest request = new ClientRequest(serviceUrl);
 			request.accept(type);
 			// adding headers to request
@@ -345,38 +331,38 @@ public class WebPoster {
 				request.header(key, value);
 			}
 			ClientResponse<String> response = request.get(String.class);
-	 
-			Assert.assertEquals( response.getStatus(),expectedStatusCode,"HTTP Status not what expected" );
-	 
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-				new ByteArrayInputStream(response.getEntity().getBytes())));
-	 
+
+			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
+
 			String output;
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
 			}
 			return true;
-	 
-		  } catch (ClientProtocolException e) {
-	 
+
+		} catch (ClientProtocolException e) {
+
 			e.printStackTrace();
-	 
-		  } catch (IOException e) {
-	 
+
+		} catch (IOException e) {
+
 			e.printStackTrace();
-	 
-		  } catch (Exception e) {
-	 
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
-	 
-		  }
-		  return false;
-	 
+
 		}
+		return false;
+
+	}
+
 	public boolean getAndSearchForMatch(String lookFor) {
-		  try {
-	 
+		try {
+
 			ClientRequest request = new ClientRequest(serviceUrl);
 			request.accept(contentType);
 			// adding headers to request
@@ -390,12 +376,11 @@ public class WebPoster {
 				request.header(key, value);
 			}
 			ClientResponse<String> response = request.get(String.class);
-	 
-			Assert.assertEquals( response.getStatus(),expectedStatusCode,"HTTP Status not what expected" );
-	 
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-				new ByteArrayInputStream(response.getEntity().getBytes())));
-	 
+
+			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
+
 			String output;
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
@@ -405,21 +390,21 @@ public class WebPoster {
 					return true;
 				}
 			}
-	 
-		  } catch (ClientProtocolException e) {
-	 
+
+		} catch (ClientProtocolException e) {
+
 			e.printStackTrace();
-	 
-		  } catch (IOException e) {
-	 
+
+		} catch (IOException e) {
+
 			e.printStackTrace();
-	 
-		  } catch (Exception e) {
-	 
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
-	 
-		  }
-		return false;
-	 
+
 		}
+		return false;
+
+	}
 }

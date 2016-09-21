@@ -30,26 +30,25 @@ public class ReferralsAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" })
+	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testReferralsActivePatient() throws Exception {
-		testSendReferrals(testReferralsData.getProperty("firstNameActive"),
-				testReferralsData.getProperty("lastNameActive"), testReferralsData.getProperty("practice"), true);
+		testSendReferrals(testReferralsData.getProperty("firstNameActive"), testReferralsData.getProperty("lastNameActive"),
+				testReferralsData.getProperty("practice"), true);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" })
+	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testReferralsDeactivatedPatient() throws Exception {
-		testSendReferrals(testReferralsData.getProperty("firstNameDeactivated"),
-				testReferralsData.getProperty("lastNameDeactivated"), testReferralsData.getProperty("practice"), true);
+		testSendReferrals(testReferralsData.getProperty("firstNameDeactivated"), testReferralsData.getProperty("lastNameDeactivated"),
+				testReferralsData.getProperty("practice"), true);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" })
+	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testReferralsNonexistingPatient() throws Exception {
-		testSendReferrals(testReferralsData.getProperty("firstNameNoExist"),
-				testReferralsData.getProperty("lastNameNoExist"), testReferralsData.getProperty("practice"), false);
+		testSendReferrals(testReferralsData.getProperty("firstNameNoExist"), testReferralsData.getProperty("lastNameNoExist"),
+				testReferralsData.getProperty("practice"), false);
 	}
 
-	private void testSendReferrals(String patientFirstName, String patientLastName, String practiceName,
-			boolean patientExists) throws Exception {
+	private void testSendReferrals(String patientFirstName, String patientLastName, String practiceName, boolean patientExists) throws Exception {
 		log("Test Case: TestSendReferrals");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -60,8 +59,7 @@ public class ReferralsAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testReferralsData.getProperty("userid"),
-				testReferralsData.getProperty("password"));
+		PracticeHomePage practiceHome = practiceLogin.login(testReferralsData.getProperty("userid"), testReferralsData.getProperty("password"));
 
 		log("step 2: Go into Referrals");
 		ReferralsPage referralsPage = practiceHome.clickOnReferrals();

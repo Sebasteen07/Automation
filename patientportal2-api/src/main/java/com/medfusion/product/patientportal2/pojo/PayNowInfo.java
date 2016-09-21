@@ -25,8 +25,8 @@ public class PayNowInfo {
 		this.card = card;
 	}
 
-	public PayNowInfo(CreditCard card, String patientName, String dateOfBirth, String patientAccountNumber, String amount, String location,
-			String paymentComment, String emailAddress) {
+	public PayNowInfo(CreditCard card, String patientName, String dateOfBirth, String patientAccountNumber, String amount, String location, String paymentComment,
+			String emailAddress) {
 		this.patientName = patientName;
 		this.dateOfBirth = dateOfBirth;
 		this.patientAccountNumber = patientAccountNumber;

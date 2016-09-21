@@ -9,111 +9,109 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class FormFamilyHistoryPage extends BasePageObject{
-	
-	@FindBy(xpath="//li[@data-section='socialhistory_section']/a")
+public class FormFamilyHistoryPage extends BasePageObject {
+
+	@FindBy(xpath = "//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
-	
-	@FindBy(id="save_config_form")              
+
+	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
 
 	@FindBy(id = "hide_familymedicalhistory_section_check")
-	private WebElement hideFamilymedicalhistorySectionCheck;	
+	private WebElement hideFamilymedicalhistorySectionCheck;
 
 	@FindBy(id = "alcoholism_familymedicalhistory")
-	private WebElement alcoholismFamilymedicalhistory;	
+	private WebElement alcoholismFamilymedicalhistory;
 
 	@FindBy(id = "aneurysm_familymedicalhistory")
-	private WebElement aneurysmFamilymedicalhistory;	
+	private WebElement aneurysmFamilymedicalhistory;
 
 	@FindBy(id = "arthritis_familymedicalhistory")
-	private WebElement arthritisFamilymedicalhistory;	
+	private WebElement arthritisFamilymedicalhistory;
 
 	@FindBy(id = "asthmacopd_familymedicalhistory")
-	private WebElement asthmacopdFamilymedicalhistory;	
+	private WebElement asthmacopdFamilymedicalhistory;
 
 	@FindBy(id = "bleedingclotting_familymedicalhistory")
-	private WebElement bleedingclottingFamilymedicalhistory;	
+	private WebElement bleedingclottingFamilymedicalhistory;
 
 	@FindBy(id = "breastcancer_familymedicalhistory")
-	private WebElement breastcancerFamilymedicalhistory;	
+	private WebElement breastcancerFamilymedicalhistory;
 
 	@FindBy(id = "othercancer_familymedicalhistory")
-	private WebElement othercancerFamilymedicalhistory;	
+	private WebElement othercancerFamilymedicalhistory;
 
 	@FindBy(id = "coloncancer_familymedicalhistory")
-	private WebElement coloncancerFamilymedicalhistory;	
+	private WebElement coloncancerFamilymedicalhistory;
 
 	@FindBy(id = "depression_familymedicalhistory")
-	private WebElement depressionFamilymedicalhistory;	
+	private WebElement depressionFamilymedicalhistory;
 
 	@FindBy(id = "diabetes1_familymedicalhistory")
-	private WebElement diabetes1Familymedicalhistory;	
+	private WebElement diabetes1Familymedicalhistory;
 
 	@FindBy(id = "diabetes2_familymedicalhistory")
-	private WebElement diabetes2Familymedicalhistory;	
+	private WebElement diabetes2Familymedicalhistory;
 
 	@FindBy(id = "gallstones_familymedicalhistory")
-	private WebElement gallstonesFamilymedicalhistory;	
+	private WebElement gallstonesFamilymedicalhistory;
 
 	@FindBy(id = "geneticdisorders_familymedicalhistory")
-	private WebElement geneticdisordersFamilymedicalhistory;	
+	private WebElement geneticdisordersFamilymedicalhistory;
 
 	@FindBy(id = "glaucoma_familymedicalhistory")
-	private WebElement glaucomaFamilymedicalhistory;	
+	private WebElement glaucomaFamilymedicalhistory;
 
 	@FindBy(id = "heartdisease_familymedicalhistory")
-	private WebElement heartdiseaseFamilymedicalhistory;	
+	private WebElement heartdiseaseFamilymedicalhistory;
 
 	@FindBy(id = "highbloodpressure_familymedicalhistory")
-	private WebElement highbloodpressureFamilymedicalhistory;	
+	private WebElement highbloodpressureFamilymedicalhistory;
 
 	@FindBy(id = "highcholestrol_familymedicalhistory")
-	private WebElement highcholestrolFamilymedicalhistory;	
+	private WebElement highcholestrolFamilymedicalhistory;
 
 	@FindBy(id = "kidney_familymedicalhistory")
-	private WebElement kidneyFamilymedicalhistory;	
+	private WebElement kidneyFamilymedicalhistory;
 
 	@FindBy(id = "mentalillness_familymedicalhistory")
-	private WebElement mentalillnessFamilymedicalhistory;	
+	private WebElement mentalillnessFamilymedicalhistory;
 
 	@FindBy(id = "seizure_familymedicalhistory")
-	private WebElement seizureFamilymedicalhistory;	
+	private WebElement seizureFamilymedicalhistory;
 
 	@FindBy(id = "stroke_familymedicalhistory")
-	private WebElement strokeFamilymedicalhistory;	
+	private WebElement strokeFamilymedicalhistory;
 
 	@FindBy(id = "suicide_familymedicalhistory")
-	private WebElement suicideFamilymedicalhistory;	
+	private WebElement suicideFamilymedicalhistory;
 
 	@FindBy(id = "thyroid_familymedicalhistory")
-	private WebElement thyroidFamilymedicalhistory;	
+	private WebElement thyroidFamilymedicalhistory;
 
 	@FindBy(id = "tuberculosis_familymedicalhistory")
-	private WebElement tuberculosisFamilymedicalhistory;	
+	private WebElement tuberculosisFamilymedicalhistory;
 
 	@FindBy(id = "familymedicalhistory_other_line")
-	private WebElement familymedicalhistoryOther;	
+	private WebElement familymedicalhistoryOther;
 
 	@FindBy(id = "familymedicalhistory_anythingelse_line")
 	private WebElement familymedicalhistoryComments;
-	
-	
-	public FormFamilyHistoryPage(WebDriver driver) 
-	{
+
+
+	public FormFamilyHistoryPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
+
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() 
-	{
+	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -127,20 +125,19 @@ public class FormFamilyHistoryPage extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
-	 * Click on link - Social History	
+	 * Click on link - Social History
+	 * 
 	 * @return
 	 */
-	
-	public SocialHistoryPage clicklnkSocialHistory()
-	{	
+
+	public SocialHistoryPage clicklnkSocialHistory() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkSocialHistory);
 		lnkSocialHistory.click();
-		return PageFactory.initElements(driver,SocialHistoryPage.class);
+		return PageFactory.initElements(driver, SocialHistoryPage.class);
 	}
 }
-
 
 

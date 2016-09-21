@@ -8,7 +8,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement btnContinue;
-	
+
 	public PortalCustomFormPage(WebDriver driver) {
 		super(driver);
 	}
@@ -23,7 +23,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
-	
+
 	/**
 	 * @brief Click on Continue Button
 	 * @return initialized PageObject for the next page

@@ -9,36 +9,34 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class SurgeriesAndHospitalizationsPage extends BasePageObject{
-	
-	@FindBy(xpath="//li[@data-section='procedures_section']/a")
+public class SurgeriesAndHospitalizationsPage extends BasePageObject {
+
+	@FindBy(xpath = "//li[@data-section='procedures_section']/a")
 	private WebElement lnkProcedures;
-	
-	@FindBy(id="save_config_form")              
+
+	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
-	
+
 	@FindBy(id = "hide_surgerieshospitalizations_section_check")
-	private WebElement hideSurgerieshospitalizationsSectionCheck;	
+	private WebElement hideSurgerieshospitalizationsSectionCheck;
 
 	@FindBy(id = "surgerieshospitalizations_anythingelse_line")
 	private WebElement surgerieshospitalizationsCommentsCheck;
-	
-	
-	public SurgeriesAndHospitalizationsPage(WebDriver driver) 
-	{
+
+
+	public SurgeriesAndHospitalizationsPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
+
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() 
-	{
+	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -52,14 +50,14 @@ public class SurgeriesAndHospitalizationsPage extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
 	 * Click on link - Exams and Procedures
+	 * 
 	 * @return
 	 */
-	
-	public ExamsTestsAndProceduresPage clicklnkProcedures()
-	{	
+
+	public ExamsTestsAndProceduresPage clicklnkProcedures() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkProcedures);
 		lnkProcedures.click();

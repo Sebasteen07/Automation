@@ -15,13 +15,13 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 
 	@FindBy(how = How.LINK_TEXT, using = "Sign In Now.")
 	public WebElement signInButton;
-	
+
 	@FindBy(how = How.ID, using = "secretAnswer_forgot")
 	public WebElement secretAnswer;
-	
+
 	@FindBy(how = How.ID, using = "forgotEnterSecretAnswerFormContinueButton")
 	public WebElement continueAndResetButton;
-	
+
 	public JalapenoForgotPasswordPage3(WebDriver driver, String url) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -32,7 +32,7 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public boolean assessForgotPasswordPage3Elements() {
 
 		boolean allElementsDisplayed = false;
@@ -62,21 +62,20 @@ public class JalapenoForgotPasswordPage3 extends BasePageObject {
 
 		}
 		return allElementsDisplayed;
-	} 
-	
+	}
+
 	public JalapenoForgotPasswordPage4 fillInSecretAnswer(String answer) {
-		
+
 		// catching webdriver exception which started to show up after selenium 2.45 and firefox 36 updates
 		// try removing the try catch once newrelic is deprecated and fully removed
-		try{
+		try {
 			secretAnswer.sendKeys(answer);
-		}
-		catch (org.openqa.selenium.WebDriverException e){
+		} catch (org.openqa.selenium.WebDriverException e) {
 			secretAnswer.sendKeys(answer);
 		}
 		continueAndResetButton.click();
-		
+
 		return PageFactory.initElements(driver, JalapenoForgotPasswordPage4.class);
 	}
-	
+
 }

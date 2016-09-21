@@ -24,16 +24,17 @@ public class FormWelcomePage extends PortalFormPage {
 		super(driver);
 	}
 
-    public String getMessageText() {
+	public String getMessageText() {
 		try {
-        	return welcomeMessage.getText();
+			return welcomeMessage.getText();
 		} catch (WebDriverException e) {
 			return welcomeMessage.getText();
 		}
-    }
+	}
 
 	/**
 	 * Checks if the Welcome page of the form is loaded
+	 * 
 	 * @return True if Continue button (which is the main functional part of the page) is loaded, otherwise false
 	 */
 	public boolean isWelcomePageLoaded() {
@@ -63,10 +64,9 @@ public class FormWelcomePage extends PortalFormPage {
 	public <T extends PortalFormPage> T initToFirstPage(Class<T> nextPageClass) throws Exception {
 		if (isWelcomePageLoaded()) {
 			return clickSaveContinue(nextPageClass);
-        }
-		else {
-            goToFirstPage();
-            return PageFactory.initElements(driver, nextPageClass);
-        }
+		} else {
+			goToFirstPage();
+			return PageFactory.initElements(driver, nextPageClass);
+		}
 	}
 }

@@ -108,8 +108,7 @@ public class SmIntegrationUtil extends IHGUtil {
 
 	/**
 	 * @author bkrishnankutty
-	 * @Desc:- For setting Consolidated frame ,Here 2 frames iframebody &
-	 *         externalframe
+	 * @Desc:- For setting Consolidated frame ,Here 2 frames iframebody & externalframe
 	 * @return void
 	 * @param driver
 	 * @param frame
@@ -126,8 +125,7 @@ public class SmIntegrationUtil extends IHGUtil {
 
 	/**
 	 * @author bkrishnankutty
-	 * @Desc:- Verify text ,Note :- this fun is already present in IFS but
-	 *         cannot be used pages,So redefining it
+	 * @Desc:- Verify text ,Note :- this fun is already present in IFS but cannot be used pages,So redefining it
 	 * @return true or false
 	 * 
 	 * @param driver
@@ -136,8 +134,7 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean verifyTextPresent(WebDriver driver, String value,
-			int waitTime) throws Exception {
+	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws Exception {
 		Thread.sleep(waitTime);
 		return driver.getPageSource().contains(value);
 	}
@@ -164,18 +161,13 @@ public class SmIntegrationUtil extends IHGUtil {
 
 	/**
 	 * @author Kiran_GT
-	 * @Description:- This method returns the jdbc connection for the database
-	 *                needed
+	 * @Description:- This method returns the jdbc connection for the database needed
 	 * 
-	 * @param dbName
-	 *            Database name
-	 * @param environment
-	 *            Environment which has the needed database
+	 * @param dbName Database name
+	 * @param environment Environment which has the needed database
 	 * @return Connection Object instance for the required database
 	 */
-	public static Connection getDatabaseConnection(String dbName,
-			String environment, String dbUsername, String dbPassword)
-			throws Exception {
+	public static Connection getDatabaseConnection(String dbName, String environment, String dbUsername, String dbPassword) throws Exception {
 		Class.forName("org.postgresql.Driver");
 		Connection connection = null;
 		String url = ("jdbc:postgresql://" + environment + ":5432/" + dbName);
@@ -193,41 +185,37 @@ public class SmIntegrationUtil extends IHGUtil {
 	 */
 	public static Connection getDBConnection(String dbName) throws Exception {
 		Log4jUtil.log("Entering into getDBConnection");
-		Log4jUtil.log("Getting DB Connection for Database :" + dbName
-				+ " QA Region :");
+		Log4jUtil.log("Getting DB Connection for Database :" + dbName + " QA Region :");
 		Class.forName("org.postgresql.Driver");
 		Connection connection = null;
-		String url = "jdbc:postgresql://db02." + ".dev.medfusion.net:5432/"
-				+ dbName.trim();
+		String url = "jdbc:postgresql://db02." + ".dev.medfusion.net:5432/" + dbName.trim();
 		connection = DriverManager.getConnection(url, "postgres", "pgdb1");
 		Log4jUtil.log("DB Connection is Successful");
 		Log4jUtil.log("Returning from getDBConnection");
 		return connection;
 
 	}
-	
+
 	/**
 	 * @author Vasudeo Parab
 	 * @Descrption:- - This method retrieves Appointment request ID.
 	 * 
 	 */
-	public static String  getAppointmentRequestid(String vAppointmentReason,String dbName, String qaRegion, String dbusername, String dbPassword) throws Exception{
-	 	String appointmentrequestid= null;
-	 	Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
-	 	try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from apptreq where reason=? order by apptreqid desc limit 1;");
+	public static String getAppointmentRequestid(String vAppointmentReason, String dbName, String qaRegion, String dbusername, String dbPassword)
+			throws Exception {
+		String appointmentrequestid = null;
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
+		try {
+			PreparedStatement stmt = conn.prepareStatement("select * from apptreq where reason=? order by apptreqid desc limit 1;");
 			Log4jUtil.log("PASSING APPOINTMENT REASON: " + vAppointmentReason);
 			stmt.setString(1, vAppointmentReason);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(10000);
 			while (rs.next()) {
-				appointmentrequestid = rs
-						.getString(SmIntegrationConstants.APPOINTTMENT_REQUEST_ID);
-				
+				appointmentrequestid = rs.getString(SmIntegrationConstants.APPOINTTMENT_REQUEST_ID);
+
 				Log4jUtil.log("APPOINTMENT REQUEST ID ---->" + appointmentrequestid);
-			
+
 			}
 			stmt.close();
 		} catch (SQLException se) {
@@ -235,37 +223,31 @@ public class SmIntegrationUtil extends IHGUtil {
 		}
 		Log4jUtil.log("APPOINTMENT REQUEST ID returned " + appointmentrequestid);
 		return appointmentrequestid;
-	
- 		}
+
+	}
+
 	/**
 	 * @author Kiran_GT
 	 * @Descrption:- - This method retrieves intchangeintegration status.
 	 * 
-	 * @param dbName
-	 *            - DB Name either Medfusion or Service Mediator
-	 * @param qaRegion
-	 *            - QA region is "dev3-portal-pgsql01.mf.qhg.local"
-	 * @param dbusername
-	 *            and dbPassword
+	 * @param dbName - DB Name either Medfusion or Service Mediator
+	 * @param qaRegion - QA region is "dev3-portal-pgsql01.mf.qhg.local"
+	 * @param dbusername and dbPassword
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getintegrationStatusIDFromDB(int integrationID,
-			String dbName, String qaRegion, String dbusername, String dbPassword)
-			throws Exception {
+	public static String getintegrationStatusIDFromDB(int integrationID, String dbName, String qaRegion, String dbusername, String dbPassword) throws Exception {
 		String integrationStatusId = null;
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from intchangeintegration where intintegrationid=? order by intchangeintegrationid desc limit 1;");
+			PreparedStatement stmt =
+					conn.prepareStatement("select * from intchangeintegration where intintegrationid=? order by intchangeintegrationid desc limit 1;");
 			Log4jUtil.log("PASSING INTEGRATIONID" + integrationID);
 			stmt.setInt(1, integrationID);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(10000);
 			while (rs.next()) {
-				integrationStatusId = rs
-						.getString(SmIntegrationConstants.INTEGRATIONSTATUS_ID_COLUMN);
+				integrationStatusId = rs.getString(SmIntegrationConstants.INTEGRATIONSTATUS_ID_COLUMN);
 				Log4jUtil.log("INTEGRATION STATUS ---->" + integrationStatusId);
 				// BaseTestSoftAssert.assertEquals(integrationStatusId,SmIntegrationConstants.INTEGRATIONSTATUS_ID);
 			}
@@ -279,40 +261,31 @@ public class SmIntegrationUtil extends IHGUtil {
 
 	/**
 	 * @author Kiran_GT
-	 * @Descrption:- - This method retrieves PartnerIntegration Status and State
-	 *               Value.
+	 * @Descrption:- - This method retrieves PartnerIntegration Status and State Value.
 	 * 
-	 * @param dbName
-	 *            - DB Name either Medfusion or Service Mediator
-	 * @param qaRegion
-	 *            - QA region is "dev3-portal-pgsql01.mf.qhg.local"
-	 * @param dbusername
-	 *            and dbPassword
+	 * @param dbName - DB Name either Medfusion or Service Mediator
+	 * @param qaRegion - QA region is "dev3-portal-pgsql01.mf.qhg.local"
+	 * @param dbusername and dbPassword
 	 * @return
 	 * @throws Exception
 	 */
-	public static HashMap<String, String> getPartnerIntegrationIDFromDB(String app_req_id,
-			String dbName, String qaRegion, String dbusername, String dbPassword)
+	public static HashMap<String, String> getPartnerIntegrationIDFromDB(String app_req_id, String dbName, String qaRegion, String dbusername, String dbPassword)
 			throws Exception {
 		Thread.sleep(180000);
 		String ppia_status = null;
 		String ppia_state = null;
 		long ppia_id = 0;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 and ppia_request_id=? ;");
+			PreparedStatement stmt = conn.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 and ppia_request_id=? ;");
 			stmt.setString(1, app_req_id);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(10000);
 			while (rs.next()) {
-				ppia_status = rs
-						.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
-				ppia_state = rs
-						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
-				ppia_id = rs.getLong(SmIntegrationConstants.PPIA_ID_COLUMN);				
+				ppia_status = rs.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
+				ppia_state = rs.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
+				ppia_id = rs.getLong(SmIntegrationConstants.PPIA_ID_COLUMN);
 				hashMap.put("Status", ppia_status);
 				hashMap.put("State", ppia_state);
 				hashMap.put("ppia_id", Long.toString(ppia_id));
@@ -331,24 +304,17 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @author bbinisha
 	 * @Descrption:- - This method retrieves member id from DB.
 	 * 
-	 * @param dbName
-	 *            - DB Name either Medfusion or Service Mediator
-	 * @param qaRegion
-	 *            - QA region is "dev3-portal-pgsql01.mf.qhg.local"
-	 * @param dbusername
-	 *            and dbPassword
+	 * @param dbName - DB Name either Medfusion or Service Mediator
+	 * @param qaRegion - QA region is "dev3-portal-pgsql01.mf.qhg.local"
+	 * @param dbusername and dbPassword
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getMemberIDFromDB(String emailID, String dbName,
-			String qaRegion, String dbusername, String dbPassword)
-			throws Exception {
+	public static String getMemberIDFromDB(String emailID, String dbName, String qaRegion, String dbusername, String dbPassword) throws Exception {
 		String memberID = null;
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from member where email=? ;");
+			PreparedStatement stmt = conn.prepareStatement("select * from member where email=? ;");
 			Log4jUtil.log("PASSING LASTNAME***" + emailID);
 			stmt.setString(1, emailID);
 			ResultSet rs = stmt.executeQuery();
@@ -369,38 +335,29 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @author bbinisha
 	 * @Descrption:- - This method retrieves ppia_request_xml from db.
 	 * 
-	 * @param dbName
-	 *            - DB Name either Medfusion or Service Mediator
-	 * @param qaRegion
-	 *            - QA region is "dev3-portal-pgsql01.mf.qhg.local"
-	 * @param dbusername
-	 *            and dbPassword
+	 * @param dbName - DB Name either Medfusion or Service Mediator
+	 * @param qaRegion - QA region is "dev3-portal-pgsql01.mf.qhg.local"
+	 * @param dbusername and dbPassword
 	 * @return
 	 * @throws Exception
 	 */
-	public static HashMap<String, String> getPPIAReqXMLFromDB(int ppia_ppi_id,
-			String dbName, String qaRegion, String dbusername, String dbPassword)
+	public static HashMap<String, String> getPPIAReqXMLFromDB(int ppia_ppi_id, String dbName, String qaRegion, String dbusername, String dbPassword)
 			throws Exception {
 		String ppia_status = null;
 		String ppia_state = null;
 		String ppia_request_xml = null;
 		long ppia_id = 0;
 		HashMap<String, String> hashMap = new HashMap<String, String>();
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=? order by ppia_id desc limit 1;");
+			PreparedStatement stmt = conn.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=? order by ppia_id desc limit 1;");
 			stmt.setInt(1, ppia_ppi_id);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(30000);
 			while (rs.next()) {
-				ppia_status = rs
-						.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
-				ppia_state = rs
-						.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
-				ppia_request_xml = rs
-						.getString(SmIntegrationConstants.PPIA_REQUEST_XML_COLUMN);
+				ppia_status = rs.getString(SmIntegrationConstants.PPIA_STATUS_COLUMN);
+				ppia_state = rs.getString(SmIntegrationConstants.PPIA_STATE_COLUMN);
+				ppia_request_xml = rs.getString(SmIntegrationConstants.PPIA_REQUEST_XML_COLUMN);
 				ppia_id = rs.getLong(SmIntegrationConstants.PPIA_ID_COLUMN);
 
 				hashMap.put("Status", ppia_status);
@@ -439,17 +396,13 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @throws Exception
 	 */
 
-	public String updateXML(String xmlInString, String tagName,
-			String xmlValuestoChange, String value) throws Exception {
+	public String updateXML(String xmlInString, String tagName, String xmlValuestoChange, String value) throws Exception {
 
-		String requiredTag = "<" + tagName + ">" + xmlValuestoChange + "</"
-				+ tagName + ">";
-		String replacingTag = "<" + tagName + ">" + value + "</" + tagName
-				+ ">";
+		String requiredTag = "<" + tagName + ">" + xmlValuestoChange + "</" + tagName + ">";
+		String replacingTag = "<" + tagName + ">" + value + "</" + tagName + ">";
 		if (xmlInString.contains(requiredTag)) {
 			xmlInString = xmlInString.replace(requiredTag, replacingTag);
-			System.out.println("XML Updated with " + tagName + " and value is:"+ replacingTag
-					);
+			System.out.println("XML Updated with " + tagName + " and value is:" + replacingTag);
 		} else {
 			log("****The TagName " + tagName + " is not found in the XML");
 		}
@@ -469,8 +422,7 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @throws Exception
 	 */
 
-	public String postXMLRequest(String url, String xmlInString)
-			throws Exception {
+	public String postXMLRequest(String url, String xmlInString) throws Exception {
 
 		IHGUtil.PrintMethodName();
 		WebPoster poster = new WebPoster();
@@ -484,8 +436,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		poster.setExpectedStatusCode(200); // HTTP Status Code
 
 		log("POST the request xml");
-		String responseXML_Str = poster
-				.smpostFromResourceFile(url, xmlInString);
+		String responseXML_Str = poster.smpostFromResourceFile(url, xmlInString);
 
 		return responseXML_Str;
 
@@ -528,10 +479,9 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @throws IOException
 	 */
 
-	public static String findValueOfGrandChildNode(String xmlFileName,
-			String parentNode, String childNode)
+	public static String findValueOfGrandChildNode(String xmlFileName, String parentNode, String childNode)
 			throws ParserConfigurationException, SAXException, IOException {
-			
+
 		IHGUtil.PrintMethodName();
 		String nodeValue = null;
 		File xmlResponeFile = new File(xmlFileName);
@@ -543,20 +493,20 @@ public class SmIntegrationUtil extends IHGUtil {
 		Node pnode = doc.getElementsByTagName(parentNode).item(0);
 		NodeList list = pnode.getChildNodes();
 		for (int i = 0; i < list.getLength(); i++) {
-	            NodeList subList = list.item(0).getChildNodes();
+			NodeList subList = list.item(0).getChildNodes();
 
-	            if (subList != null && subList.getLength() > 0) {
-	            	if(childNode.equalsIgnoreCase(subList.item(0).getTextContent()))
-	            		Log4jUtil.log("Patient ID found in DB response XML");
-	            		nodeValue =subList.item(0).getTextContent();	            		
-					break;
-				}
-
+			if (subList != null && subList.getLength() > 0) {
+				if (childNode.equalsIgnoreCase(subList.item(0).getTextContent()))
+					Log4jUtil.log("Patient ID found in DB response XML");
+				nodeValue = subList.item(0).getTextContent();
+				break;
 			}
-		System.out.println("NODE VALUE returned"+nodeValue);
+
+		}
+		System.out.println("NODE VALUE returned" + nodeValue);
 		return nodeValue;
 	}
-	           
+
 
 
 	/**
@@ -570,8 +520,7 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @throws IOException
 	 */
 
-	public static String findValueOfChildNode(String xmlFileName,
-			String parentNode, String childNode)
+	public static String findValueOfChildNode(String xmlFileName, String parentNode, String childNode)
 			throws ParserConfigurationException, SAXException, IOException {
 
 		IHGUtil.PrintMethodName();
@@ -598,7 +547,7 @@ public class SmIntegrationUtil extends IHGUtil {
 		return nodeValue;
 
 	}
-	           
+
 
 	/**
 	 * 
@@ -611,8 +560,7 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public  static String findAttributeOfChildNode(String xmlFileName,
-			String parentNode, String childNode, String attribute)
+	public static String findAttributeOfChildNode(String xmlFileName, String parentNode, String childNode, String attribute)
 			throws ParserConfigurationException, SAXException, IOException {
 
 		IHGUtil.PrintMethodName();
@@ -649,14 +597,11 @@ public class SmIntegrationUtil extends IHGUtil {
 
 	public static String convertXMLFileToString(String fileName) {
 		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-					.newInstance();
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			InputStream inputStream = new FileInputStream(new File(fileName));
-			org.w3c.dom.Document doc = documentBuilderFactory
-					.newDocumentBuilder().parse(inputStream);
+			org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
 			StringWriter stw = new StringWriter();
-			Transformer serializer = TransformerFactory.newInstance()
-					.newTransformer();
+			Transformer serializer = TransformerFactory.newInstance().newTransformer();
 			serializer.transform(new DOMSource(doc), new StreamResult(stw));
 			return stw.toString();
 		} catch (Exception e) {
@@ -675,57 +620,50 @@ public class SmIntegrationUtil extends IHGUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public  static boolean getRowCount(String dbName, String query,
-			String qaRegion, String dbusername, String dbPassword)
-			throws Exception {
+	public static boolean getRowCount(String dbName, String query, String qaRegion, String dbusername, String dbPassword) throws Exception {
 		int i = 0;
 		boolean flag = false;
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
 			PreparedStatement stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(5000);
 			while (rs.next()) {
-				mainLoop:for(int count=1;count<=20;count++){
+				mainLoop: for (int count = 1; count <= 20; count++) {
 					i = rs.getRow();
-					if(i>0){  
-						flag=true;
+					if (i > 0) {
+						flag = true;
 						break mainLoop;
-					} 
-					else{
+					} else {
 						Thread.sleep(8000);
-					} 
-					
+					}
+
 				}
 			}
 			stmt.close();
-			} catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error###########" + e);
 		}
 		return flag;
 	}
 
-	
+
 	/**
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
-	public static String getPPIDFromSM(String dbName,
-			 String dbusername, String dbPassword, String qaRegion ) throws Exception {
+	public static String getPPIDFromSM(String dbName, String dbusername, String dbPassword, String qaRegion) throws Exception {
 		String ppia_id = null;
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,
-				dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 order by ppia_id desc limit 1;");
+			PreparedStatement stmt =
+					conn.prepareStatement("select * from practice_partner_integration_activity where ppia_ppi_id=3002 order by ppia_id desc limit 1;");
 
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(30000);
 			while (rs.next()) {
-				ppia_id = rs
-						.getString(SmIntegrationConstants.PPIA_ID_COLUMN);
-								
+				ppia_id = rs.getString(SmIntegrationConstants.PPIA_ID_COLUMN);
+
 			}
 			stmt.close();
 		} catch (SQLException se) {
@@ -734,30 +672,23 @@ public class SmIntegrationUtil extends IHGUtil {
 		Log4jUtil.log("PPIA ID" + ppia_id);
 		return ppia_id;
 	}
-	
 
 
-	
-	
-	
-	public String xmlTagWithValue(String xmlInString, String tagName,
-			 String value) throws Exception {
 
-		String requiredTag = "<" + tagName + ">" + value + "</"
-				+ tagName + ">";
+	public String xmlTagWithValue(String xmlInString, String tagName, String value) throws Exception {
+
+		String requiredTag = "<" + tagName + ">" + value + "</" + tagName + ">";
 		return requiredTag;
 	}
-	
-	public static String getPPIAReqXMLFromActivityLog(String ppia_id, String dbName, String qaRegion, String dbusername,
-			String dbPassword) throws Exception {
+
+	public static String getPPIAReqXMLFromActivityLog(String ppia_id, String dbName, String qaRegion, String dbusername, String dbPassword) throws Exception {
 		String ppial_response = null;
-		Long l=Long.parseLong(ppia_id);
+		Long l = Long.parseLong(ppia_id);
 		HashMap<String, String> hashMap = new HashMap<String, String>();
-		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername,dbPassword);
+		Connection conn = getDatabaseConnection(dbName, qaRegion, dbusername, dbPassword);
 		try {
-			PreparedStatement stmt = conn
-					.prepareStatement("select * from practice_partner_integration_activity_log where ppial_ppia_id=? ");
-			stmt.setLong(1,l);
+			PreparedStatement stmt = conn.prepareStatement("select * from practice_partner_integration_activity_log where ppial_ppia_id=? ");
+			stmt.setLong(1, l);
 			ResultSet rs = stmt.executeQuery();
 			Thread.sleep(30000);
 			while (rs.next()) {
@@ -771,5 +702,5 @@ public class SmIntegrationUtil extends IHGUtil {
 		Log4jUtil.log("PPIAL_RESPONSE" + ppial_response);
 		return ppial_response;
 	}
-	
+
 }

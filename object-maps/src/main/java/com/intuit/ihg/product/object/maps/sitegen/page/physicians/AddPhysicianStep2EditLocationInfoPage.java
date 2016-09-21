@@ -12,8 +12,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 /**
  * @author bkrishnankutty
  * @Date 6/17/2013
- * @Description :- Page Object for SiteGen AddPhysician Step2
- *              EditLocationInfoPage
+ * @Description :- Page Object for SiteGen AddPhysician Step2 EditLocationInfoPage
  * @Note :
  */
 public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
@@ -49,8 +48,7 @@ public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6,
-					btnGoBackToManagePhysicians);
+			result = IHGUtil.waitForElement(driver, 6, btnGoBackToManagePhysicians);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}

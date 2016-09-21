@@ -11,8 +11,7 @@ import com.medfusion.common.utils.IHGUtil;
  * @author rperkins
  * @Date 3/27/2013
  * @Description :- Page Object for Practice Portal Login Page
- * @Note :- Old Frame work this page is
- *       com.intuit.ihg.product.portal.desktop.main.beta.PortalLoginPage
+ * @Note :- Old Frame work this page is com.intuit.ihg.product.portal.desktop.main.beta.PortalLoginPage
  */
 
 public class PracticeLoginPage extends BasePageObject {
@@ -55,10 +54,8 @@ public class PracticeLoginPage extends BasePageObject {
 	/**
 	 * Login the user into the practice portal
 	 * 
-	 * @param providedUerName
-	 *               the staff user id
-	 * @param providedPassword
-	 *               the staff password
+	 * @param providedUerName the staff user id
+	 * @param providedPassword the staff password
 	 * 
 	 * @return the practice home page
 	 * @see PracticeHomePage
@@ -80,8 +77,7 @@ public class PracticeLoginPage extends BasePageObject {
 	}
 
 	/**
-	 * Gives indication of whether expected elements are found on the login
-	 * page
+	 * Gives indication of whether expected elements are found on the login page
 	 * 
 	 * @return true or false
 	 */
@@ -99,7 +95,7 @@ public class PracticeLoginPage extends BasePageObject {
 	}
 
 	public String processUrlForEnv(String url, String env) {
-		log("input parameters: "+url+" env "+env);
+		log("input parameters: " + url + " env " + env);
 		if (env.equalsIgnoreCase("qa3")) {
 			log("qa3 match");
 			url = url.replace("dev3", "qa3");

@@ -96,10 +96,8 @@ public class AddLocationPage extends BasePageObject {
 	 * @param email
 	 * @return
 	 */
-	public ManageYourLocationsPage addLocation(String practiceName,
-			String streetAddress, String city, String state, String country,
-			String zipCode, String officePhone, String contactPerson,
-			String email) {
+	public ManageYourLocationsPage addLocation(String practiceName, String streetAddress, String city, String state, String country, String zipCode,
+			String officePhone, String contactPerson, String email) {
 
 		SitegenlUtil.setSiteGenFrame(driver);
 

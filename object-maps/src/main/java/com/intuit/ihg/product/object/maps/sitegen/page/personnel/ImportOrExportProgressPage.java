@@ -34,15 +34,14 @@ public class ImportOrExportProgressPage extends BasePageObject {
 	 * @author bkrishnankutty
 	 * @Desc:- To click on link lnkImportPersonnelAndPhysicians
 	 * @return ImportPersonnelAndPhysiciansPage
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * 
 	 */
 	public ImportPersonnelAndPhysiciansPage clickLinkImportPersonnelAndPhysicians() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		lnkImportPersonnelAndPhysicians.click();
 		Thread.sleep(10000);
-		return PageFactory.initElements(driver,
-				ImportPersonnelAndPhysiciansPage.class);
+		return PageFactory.initElements(driver, ImportPersonnelAndPhysiciansPage.class);
 	}
 
 }

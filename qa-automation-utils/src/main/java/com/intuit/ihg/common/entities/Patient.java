@@ -1,201 +1,196 @@
 package com.intuit.ihg.common.entities;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/26/13
- * Time: 4:08 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/26/13 Time: 4:08 PM To change this template use File | Settings | File Templates.
  */
 public class Patient {
 
-    private String userName;
-    private String password;
-    private String emailId;
-    private String pracSearchString;
-    private String gmailUName;
-    private String gmailPassword;
-    private String secQuestion;
-    private String secAnswer;
-    private String streetAddress;
-    private String city;
-    private String state;
-    private String phoneNumber;
-    private String zipCode;
-    private String phoneType;
-    private String sex;
-    private String maritalStatus;
-    private String communicationMethod;
-    private String prefferedLanguage;
-    private String race;
-    private String ethnicity;
-  
+	private String userName;
+	private String password;
+	private String emailId;
+	private String pracSearchString;
+	private String gmailUName;
+	private String gmailPassword;
+	private String secQuestion;
+	private String secAnswer;
+	private String streetAddress;
+	private String city;
+	private String state;
+	private String phoneNumber;
+	private String zipCode;
+	private String phoneType;
+	private String sex;
+	private String maritalStatus;
+	private String communicationMethod;
+	private String prefferedLanguage;
+	private String race;
+	private String ethnicity;
 
-    public Patient() {
-    }
 
-    public String getUserName() {
-        return userName;
-    }
+	public Patient() {}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getEmailId() {
-        return emailId;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
+	public String getEmailId() {
+		return emailId;
+	}
 
-    public String getPracSearchString() {
-        return pracSearchString;
-    }
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
-    public void setPracSearchString(String pracSearchString) {
-        this.pracSearchString = pracSearchString;
-    }
+	public String getPracSearchString() {
+		return pracSearchString;
+	}
 
-    public String getGmailUName() {
-        return gmailUName;
-    }
+	public void setPracSearchString(String pracSearchString) {
+		this.pracSearchString = pracSearchString;
+	}
 
-    public void setGmailUName(String gmailUName) {
-        this.gmailUName = gmailUName;
-    }
+	public String getGmailUName() {
+		return gmailUName;
+	}
 
-    public String getGmailPassword() {
-        return gmailPassword;
-    }
+	public void setGmailUName(String gmailUName) {
+		this.gmailUName = gmailUName;
+	}
 
-    public void setGmailPassword(String gmailPassword) {
-        this.gmailPassword = gmailPassword;
-    }
+	public String getGmailPassword() {
+		return gmailPassword;
+	}
 
-    public String getSecQuestion() {
-        return secQuestion;
-    }
+	public void setGmailPassword(String gmailPassword) {
+		this.gmailPassword = gmailPassword;
+	}
 
-    public void setSecQuestion(String secQuestion) {
-        this.secQuestion = secQuestion;
-    }
+	public String getSecQuestion() {
+		return secQuestion;
+	}
 
-    public String getSecAnswer() {
-        return secAnswer;
-    }
+	public void setSecQuestion(String secQuestion) {
+		this.secQuestion = secQuestion;
+	}
 
-    public void setSecAnswer(String secAnswer) {
-        this.secAnswer = secAnswer;
-    }
+	public String getSecAnswer() {
+		return secAnswer;
+	}
 
-    public String getStreetAddress() {
-	return streetAddress;
-}
+	public void setSecAnswer(String secAnswer) {
+		this.secAnswer = secAnswer;
+	}
 
-public void setStreetAddress(String streetAddress) {
-	this.streetAddress = streetAddress;
-}
+	public String getStreetAddress() {
+		return streetAddress;
+	}
 
-public String getCity() {
-	return city;
-}
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
 
-public void setCity(String city) {
-	this.city = city;
-}
+	public String getCity() {
+		return city;
+	}
 
-public String getState() {
-	return state;
-}
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-public void setState(String state) {
-	this.state = state;
-}
+	public String getState() {
+		return state;
+	}
 
-public String getPhoneNumber() {
-	return phoneNumber;
-}
+	public void setState(String state) {
+		this.state = state;
+	}
 
-public void setPhoneNumber(String phoneNumber) {
-	this.phoneNumber = phoneNumber;
-}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-public String getZipCode() {
-	return zipCode;
-}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-public void setZipCode(String zipCode) {
-	this.zipCode = zipCode;
-}
+	public String getZipCode() {
+		return zipCode;
+	}
 
-public String getPhoneType() {
-	return phoneType;
-}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
 
-public void setPhoneType(String phoneType) {
-	this.phoneType = phoneType;
-}
+	public String getPhoneType() {
+		return phoneType;
+	}
 
-public String getSex() {
-	return sex;
-}
+	public void setPhoneType(String phoneType) {
+		this.phoneType = phoneType;
+	}
 
-public void setSex(String sex) {
-	this.sex = sex;
-}
+	public String getSex() {
+		return sex;
+	}
 
-public String getMaritalStatus() {
-	return maritalStatus;
-}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
-public void setMaritalStatus(String maritalStatus) {
-	this.maritalStatus = maritalStatus;
-}
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
 
-public String getCommunicationMethod() {
-	return communicationMethod;
-}
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
 
-public void setCommunicationMethod(String communicationMethod) {
-	this.communicationMethod = communicationMethod;
-}
+	public String getCommunicationMethod() {
+		return communicationMethod;
+	}
 
-public String getPrefferedLanguage() {
-	return prefferedLanguage;
-}
+	public void setCommunicationMethod(String communicationMethod) {
+		this.communicationMethod = communicationMethod;
+	}
 
-public void setPrefferedLanguage(String prefferedLanguage) {
-	this.prefferedLanguage = prefferedLanguage;
-}
+	public String getPrefferedLanguage() {
+		return prefferedLanguage;
+	}
 
-public String getRace() {
-	return race;
-}
+	public void setPrefferedLanguage(String prefferedLanguage) {
+		this.prefferedLanguage = prefferedLanguage;
+	}
 
-public void setRace(String race) {
-	this.race = race;
-}
+	public String getRace() {
+		return race;
+	}
 
-public String getEthnicity() {
-	return ethnicity;
-}
+	public void setRace(String race) {
+		this.race = race;
+	}
 
-public void setEthnicity(String ethnicity) {
-	this.ethnicity = ethnicity;
-}
+	public String getEthnicity() {
+		return ethnicity;
+	}
 
-public String toString() {
-		return "[UserName=" + userName+ "|Password=" + password + "|Email=" + emailId + "|GmailId=" + gmailUName + "]";
+	public void setEthnicity(String ethnicity) {
+		this.ethnicity = ethnicity;
+	}
+
+	public String toString() {
+		return "[UserName=" + userName + "|Password=" + password + "|Email=" + emailId + "|GmailId=" + gmailUName + "]";
 	}
 }
 

@@ -80,12 +80,10 @@ public class SiteGenLoginPage extends BasePageObject {
 	 * @throws InterruptedException
 	 */
 
-	public SiteGenHomePage login(String username, String password)
-			throws InterruptedException {
+	public SiteGenHomePage login(String username, String password) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
-		System.out.println("### DEBUG LOGIN: [" + username + "] [" + password
-				+ "]");
+		System.out.println("### DEBUG LOGIN: [" + username + "] [" + password + "]");
 		txtusername.sendKeys(username);
 		txtpassword.sendKeys(password);
 		login.click();

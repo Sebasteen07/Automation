@@ -74,8 +74,7 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6,
-					btnGenerateCSVHeaderTemplate);
+			result = IHGUtil.waitForElement(driver, 6, btnGenerateCSVHeaderTemplate);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -93,12 +92,10 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		URL url = ClassLoader.getSystemResource(SitegenConstants.FILEPATH);
 		log("########################File Path" + url);
-		Assert.assertNotNull(url, "### getSystemResource returned null: ["
-				+ SitegenConstants.FILEPATH + "] ");
+		Assert.assertNotNull(url, "### getSystemResource returned null: [" + SitegenConstants.FILEPATH + "] ");
 		fileUploadimportStaffFile.sendKeys(url.toString());
 		btnimportStaff.click();
-		return PageFactory.initElements(driver,
-				ImportOrExportProgressPage.class);
+		return PageFactory.initElements(driver, ImportOrExportProgressPage.class);
 	}
 
 	/**
@@ -127,8 +124,7 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 
 	/**
 	 * @author bkrishnankutty
-	 * @Desc:- Assertion of CreationDate ie verify ImportStaff CreationDate in
-	 *         table with Current EST time or server time
+	 * @Desc:- Assertion of CreationDate ie verify ImportStaff CreationDate in table with Current EST time or server time
 	 * 
 	 * @param importStaffCreateDate
 	 * @param currentEstTiming
@@ -136,24 +132,23 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 	 * @throws ParseException
 	 */
 
-	public boolean verifyImportStaffCreationDate(String importStaffCreateDate,
-			String currentEstTiming) throws ParseException {
+	public boolean verifyImportStaffCreationDate(String importStaffCreateDate, String currentEstTiming) throws ParseException {
 
 		Calendar cal = Calendar.getInstance();
-		
+
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.US);
 		SimpleDateFormat sdf2 = new SimpleDateFormat();
-		
+
 		sdf1.setTimeZone(TimeZone.getTimeZone("EST"));
 		sdf2.setTimeZone(TimeZone.getTimeZone("EST"));
-		
+
 		Date d1 = sdf1.parse(importStaffCreateDate);
 		Date d2 = sdf2.parse(currentEstTiming);
-		
-		
+
+
 		cal.setTime(d1);
 		cal.getTime();
-		int diff =IHGUtil.calculate_Date_Difference_in_Hours(d1, d2);
+		int diff = IHGUtil.calculate_Date_Difference_in_Hours(d1, d2);
 
 		if (diff > 4) {
 			return false;

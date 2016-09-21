@@ -67,14 +67,14 @@ public class CustomFormPage extends BasePageObject {
 
 	public void clickOnSection(int sectionNumber) {
 		switch (sectionNumber) {
-		case 1:
-			firstSectionElement.click();
-			break;
-		case 2:
-			secondSectionElement.click();
-			break;
-		case 3:
-			thirdSectionElement.click();
+			case 1:
+				firstSectionElement.click();
+				break;
+			case 2:
+				secondSectionElement.click();
+				break;
+			case 3:
+				thirdSectionElement.click();
 		}
 	}
 

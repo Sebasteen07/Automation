@@ -12,49 +12,47 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class EmergencyContactInformationPage extends BasePageObject{
-	
-	@FindBy(xpath="//li[@data-section='emergencycontact']/a")
+public class EmergencyContactInformationPage extends BasePageObject {
+
+	@FindBy(xpath = "//li[@data-section='emergencycontact']/a")
 	private WebElement lnkEmergencyContact;
-	
-	@FindBy(xpath="//li[@data-section='insurance']/a")
+
+	@FindBy(xpath = "//li[@data-section='insurance']/a")
 	private WebElement lnkInsurance;
-	
-	@FindBy(xpath="//input[@id='hide_emergencycontact_check']")
+
+	@FindBy(xpath = "//input[@id='hide_emergencycontact_check']")
 	private WebElement chckHideEmergencyContact;
-			
-	@FindBy(name="contactfirstname")               
+
+	@FindBy(name = "contactfirstname")
 	private WebElement chckFirstName;
-	
-	@FindBy(name="contactlastname")               
+
+	@FindBy(name = "contactlastname")
 	private WebElement chckLastName;
-	
-	@FindBy(name="relation")               
+
+	@FindBy(name = "relation")
 	private WebElement chckRelationToYou;
-	
-	@FindBy(name="contactprimaryphone")               
+
+	@FindBy(name = "contactprimaryphone")
 	private WebElement chckPrimaryPhone;
-	
-	@FindBy(name="contactemail")
+
+	@FindBy(name = "contactemail")
 	private WebElement chckContactEmail;
-	
-	@FindBy(id="save_config_form")              
+
+	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
-	
-	public EmergencyContactInformationPage(WebDriver driver) 
-	{
+
+	public EmergencyContactInformationPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() 
-	{
+	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -68,31 +66,30 @@ public class EmergencyContactInformationPage extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
-	 * Click on link - Emergency Contact Information	
+	 * Click on link - Emergency Contact Information
+	 * 
 	 * @return
 	 */
-	
-	public HealthInsuranceInformationPage clicklnkInsurance()
-	{	
+
+	public HealthInsuranceInformationPage clicklnkInsurance() {
 		lnkInsurance.click();
 		return PageFactory.initElements(driver, HealthInsuranceInformationPage.class);
 	}
-	
+
 	/**
 	 * Clicks on First name, Last name and phone number checkboxes to appear on the page
 	 */
-	
-	public void selectBasicInfo() 
-	{
+
+	public void selectBasicInfo() {
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(chckHideEmergencyContact));
-		
+
 		// click on the checkbox for showing and hiding the page for patients
 		if (chckHideEmergencyContact.isSelected())
 			chckHideEmergencyContact.click();
-		
+
 		// select name and phone items to appear on the page
 		// it is done this way because of a bug that automatically selects all the items to appear
 		if (chckFirstName.isSelected() == false)
@@ -102,5 +99,5 @@ public class EmergencyContactInformationPage extends BasePageObject{
 		if (chckPrimaryPhone.isSelected() == false)
 			chckPrimaryPhone.click();
 	}
-	
+
 }

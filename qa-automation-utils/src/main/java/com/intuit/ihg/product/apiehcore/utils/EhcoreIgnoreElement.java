@@ -9,25 +9,25 @@ import org.w3c.dom.Node;
 
 public class EhcoreIgnoreElement implements DifferenceListener {
 
-		public Set<String> ignoreList = new HashSet<String>();
-		
-		public EhcoreIgnoreElement(String ... ElementValue) {
-			for (String name : ElementValue) {
-					ignoreList.add(name);
-			}
+	public Set<String> ignoreList = new HashSet<String>();
+
+	public EhcoreIgnoreElement(String... ElementValue) {
+		for (String name : ElementValue) {
+			ignoreList.add(name);
 		}
-		
-		public int differenceFound(Difference difference) {
+	}
 
-			if (ignoreList.contains(difference.getControlNodeDetail().getValue())){
-						
-				return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
-			}
+	public int differenceFound(Difference difference) {
 
-			return DifferenceListener.RETURN_ACCEPT_DIFFERENCE;
+		if (ignoreList.contains(difference.getControlNodeDetail().getValue())) {
+
+			return RETURN_IGNORE_DIFFERENCE_NODES_IDENTICAL;
 		}
 
-		public void skippedComparison(Node control, Node test) {
-			
-		}
+		return DifferenceListener.RETURN_ACCEPT_DIFFERENCE;
+	}
+
+	public void skippedComparison(Node control, Node test) {
+
+	}
 }

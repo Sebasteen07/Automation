@@ -11,28 +11,27 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class SearchPartiallyFilledPage extends BasePageObject {
-    @FindBy(xpath = "//input[@type='submit' and @value='Search']")
-    private WebElement searchButton;
+	@FindBy(xpath = "//input[@type='submit' and @value='Search']")
+	private WebElement searchButton;
 
-    @FindBy(xpath = "")
-    private WebElement lineWithPatientName;
+	@FindBy(xpath = "")
+	private WebElement lineWithPatientName;
 
-    public SearchPartiallyFilledPage(WebDriver driver) {
-        super(driver);
-    }
+	public SearchPartiallyFilledPage(WebDriver driver) {
+		super(driver);
+	}
 
-    public void clickSearch() {
-        driver.switchTo().frame("iframe");
-        searchButton.click();
-    }
+	public void clickSearch() {
+		driver.switchTo().frame("iframe");
+		searchButton.click();
+	}
 
-    public ViewPatientFormPage selectPatientsFirstForm() throws Exception {
-        Portal portal = new Portal();
-        TestcasesData testData = new TestcasesData(portal);
-        String patientsName = testData.getFirstName() + ' ' + testData.getLastName();
+	public ViewPatientFormPage selectPatientsFirstForm() throws Exception {
+		Portal portal = new Portal();
+		TestcasesData testData = new TestcasesData(portal);
+		String patientsName = testData.getFirstName() + ' ' + testData.getLastName();
 
-        driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]"))
-                .click();
-        return PageFactory.initElements(driver, ViewPatientFormPage.class);
-    }
+		driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]")).click();
+		return PageFactory.initElements(driver, ViewPatientFormPage.class);
+	}
 }

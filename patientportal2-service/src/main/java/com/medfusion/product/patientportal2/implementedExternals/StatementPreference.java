@@ -14,15 +14,12 @@ import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 public class StatementPreference implements IStatementPreference {
 
 	@Override
-	public boolean updateStatementPreferenceFromMyAccount(WebDriver driver, Jalapeno portal,
-			StatementPreferenceType statementPreferenceType) {
-		JalapenoMyAccountPreferencesPage preferencesPage = logInAndGoToMyPreferencesPage(driver, portal.url, portal.username,
-				portal.password);
+	public boolean updateStatementPreferenceFromMyAccount(WebDriver driver, Jalapeno portal, StatementPreferenceType statementPreferenceType) {
+		JalapenoMyAccountPreferencesPage preferencesPage = logInAndGoToMyPreferencesPage(driver, portal.url, portal.username, portal.password);
 		return preferencesPage.checkAndSetStatementPreference(driver, statementPreferenceType);
 	}
 
-	private JalapenoMyAccountPreferencesPage logInAndGoToMyPreferencesPage(WebDriver driver, String portalURL, String username,
-			String password) {
+	private JalapenoMyAccountPreferencesPage logInAndGoToMyPreferencesPage(WebDriver driver, String portalURL, String username, String password) {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
 		JalapenoHomePage homePage = loginPage.login(username, password);
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();

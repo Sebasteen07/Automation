@@ -12,16 +12,16 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class CreateCustomFormPage extends BasePageObject {
 
-	@FindBy(name="type")
+	@FindBy(name = "type")
 	private WebElement dropDownFormType;
 
-	@FindBy(name="title[0]")
+	@FindBy(name = "title[0]")
 	private WebElement txtFormTitle;
 
-	@FindBy(name="instructions[0]")
+	@FindBy(name = "instructions[0]")
 	private WebElement txtFormInstruction;
 
-	@FindBy(name="endMessage[0]")
+	@FindBy(name = "endMessage[0]")
 	private WebElement txtFormEndMessage;
 
 	@FindBy(xpath = "//input[@class='html-control-text' and @value='Save']")
@@ -54,6 +54,7 @@ public class CreateCustomFormPage extends BasePageObject {
 
 	/**
 	 * Create a custom form with below parameters
+	 * 
 	 * @param formtype
 	 * @param formtitle
 	 * @param forminstructions
@@ -67,7 +68,7 @@ public class CreateCustomFormPage extends BasePageObject {
 		SitegenlUtil.setDefaultFrame(driver);
 
 		log("Select Custom Form Type");
-		Select personaltype =new Select(dropDownFormType);
+		Select personaltype = new Select(dropDownFormType);
 		personaltype.selectByVisibleText(formtype);
 
 		log("Enter form title");
@@ -87,7 +88,6 @@ public class CreateCustomFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, CustomFormAddCategoriesPage.class);
 
 	}
-
 
 
 

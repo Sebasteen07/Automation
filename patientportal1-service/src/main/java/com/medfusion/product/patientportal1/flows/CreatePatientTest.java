@@ -12,13 +12,13 @@ import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 public class CreatePatientTest extends BaseTestNGWebDriver {
 
-	private String email="";
-	private String password="";
-	private String url="";
+	private String email = "";
+	private String password = "";
+	private String url = "";
 	private String firstName = "";
 	private String lastName = "";
 
-	//Getters for getting the email and password value and reusing in other tests
+	// Getters for getting the email and password value and reusing in other tests
 	public String getEmail() {
 		return email;
 	}
@@ -70,11 +70,11 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		/* Not very elegant way of changing URL the method uses
-		 * If someone sets the URL in the object before calling this method then the set URL is be used
+		/*
+		 * Not very elegant way of changing URL the method uses If someone sets the URL in the object before calling this method then the set URL is be used
 		 * otherwise (the default way) the URL from testcasesData.geturl() is used
 		 */
-		if ( url.isEmpty() ){
+		if (url.isEmpty()) {
 			url = testcasesData.geturl();
 		}
 
@@ -86,43 +86,41 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		CreateAccountPage pCreateAccountPage = loginpage.signUp();
 
 		log("step 3: Fill details in Create Account Page");
-		//Setting the variables for user in other tests
+		// Setting the variables for user in other tests
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
 		lastName = testcasesData.getLastName() + PortalUtil.createRandomNumber();
 		password = testcasesData.getPassword();
 		log("email:-" + email);
-		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName,
-						lastName, email, testcasesData.getPhoneNumber(),
-						testcasesData.getZip(), testcasesData.getAddress(), testcasesData.getPassword(),
-						testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getAddressState(),
-						testcasesData.getAddressCity());
-		
-		
-		
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName, lastName, email, testcasesData.getPhoneNumber(), testcasesData.getZip(),
+				testcasesData.getAddress(), testcasesData.getPassword(), testcasesData.getSecretQuestion(), testcasesData.getAnswer(), testcasesData.getAddressState(),
+				testcasesData.getAddressCity());
+
+
+
 		return this.loginAsNewPatient(driver, pMyPatientPage);
 	}
-	
-	public MyPatientPage loginAsNewPatient (WebDriver driver, MyPatientPage pMyPatientPage) throws InterruptedException {
-		
+
+	public MyPatientPage loginAsNewPatient(WebDriver driver, MyPatientPage pMyPatientPage) throws InterruptedException {
+
 		log("step 4: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-	
+
 		log("step 5: Logout");
 		pMyPatientPage.clickLogout(driver);
-	
+
 		log("step 6: Login as new user");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, url);
 		pMyPatientPage = loginpage.login(email, password);
-	
+
 		log("step 7: Assert Webelements in MyPatientPage");
 		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-	
+
 		log("Patient successfully created");
 		log("Username: " + email);
 		log("Password: " + password);
 		return pMyPatientPage;
 	}
-	
+
 
 }

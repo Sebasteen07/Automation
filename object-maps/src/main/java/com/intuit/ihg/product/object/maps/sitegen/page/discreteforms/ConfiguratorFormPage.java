@@ -43,9 +43,8 @@ public class ConfiguratorFormPage extends BasePageObject {
 	}
 
 	/*
-	 * In case the screen is scrolled down it is possible that save button and
-	 * back link are not visible when that happens we can use the floating panel
-	 * with save and back buttons
+	 * In case the screen is scrolled down it is possible that save button and back link are not visible when that happens we can use the floating panel with save
+	 * and back buttons
 	 */
 
 	public void clickBackToTheList() throws InterruptedException {

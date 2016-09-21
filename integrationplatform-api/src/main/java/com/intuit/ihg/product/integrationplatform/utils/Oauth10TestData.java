@@ -16,79 +16,79 @@ public class Oauth10TestData {
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
 		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		Log4jUtil.log("URL: "+url);
+		Log4jUtil.log("URL: " + url);
 		// reading the entire file
 		excelReader = new ExcelSheetReader(url.getFile());
 		// filtering the entire file
 		OauthObj = (Oauth10) excelReader.getSingleExcelRow(oauth10Data, temp);
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return OauthObj.UserName;
 	}
-	
-	public String getFrom(){
+
+	public String getFrom() {
 		return OauthObj.From;
 	}
-	
-	public String getCommonPath(){
+
+	public String getCommonPath() {
 		return OauthObj.CommonPath;
 	}
-	
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return OauthObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return OauthObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return OauthObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return OauthObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return OauthObj.OAuthPassword;
-	}	
-	
-	public String getAMDCRestURL(){
+	}
+
+	public String getAMDCRestURL() {
 		return OauthObj.AMDCRestURL;
-	}	
-	
-	public String getReadCommunicationURL(){
+	}
+
+	public String getReadCommunicationURL() {
 		return OauthObj.ReadCommunicationURL;
 	}
-	
-	public String getPatientRestURL(){
+
+	public String getPatientRestURL() {
 		return OauthObj.PatientRestURL;
 	}
-	
-	public String getAppointmentRestURL(){
+
+	public String getAppointmentRestURL() {
 		return OauthObj.AppointmentRestURL;
 	}
-	
-	public String getEHDCRestURL(){
+
+	public String getEHDCRestURL() {
 		return OauthObj.EHDCRestURL;
 	}
-	
-	public String getPrescriptionRestURL(){
+
+	public String getPrescriptionRestURL() {
 		return OauthObj.PrescriptionRestURL;
 	}
-	
-	public String getccdExchangeBatch(){
+
+	public String getccdExchangeBatch() {
 		return OauthObj.ccdExchangeBatch;
 	}
-	
-	public String getPullEventsURL(){
+
+	public String getPullEventsURL() {
 		return OauthObj.pullEventsURL;
 	}
-	
-	public String getPaymentURL(){
+
+	public String getPaymentURL() {
 		return OauthObj.paymentURL;
 	}
-	
+
 }

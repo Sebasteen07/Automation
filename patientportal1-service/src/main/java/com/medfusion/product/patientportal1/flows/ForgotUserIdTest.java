@@ -16,45 +16,45 @@ import com.medfusion.product.object.maps.patientportal1.page.forgotuserid.Forgot
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 public class ForgotUserIdTest extends BaseTestNGWebDriver {
-	
+
 	private Boolean caseInsensitiveEmail = false;
 	private String email = "";
 	private String url = "";
-	
-	
+
+
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public void setUrl(String str) {
 		url = str;
 	}
-	
+
 	public void setCaseInsensitiveEmail(Boolean value) {
 		caseInsensitiveEmail = value;
 	}
 
 
-	public void forgotUserIdTest(WebDriver driver,TestcasesData testcasesData) throws Exception {
+	public void forgotUserIdTest(WebDriver driver, TestcasesData testcasesData) throws Exception {
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		
-		/* Not very elegant way of changing URL the method uses 
-		 * If someone sets the URL in the object before calling this method then the set URL is be used
+
+		/*
+		 * Not very elegant way of changing URL the method uses If someone sets the URL in the object before calling this method then the set URL is be used
 		 * otherwise (the default way) the URL from testcasesData.geturl() is used
 		 */
-		if ( url.isEmpty() ){
+		if (url.isEmpty()) {
 			url = testcasesData.geturl();
 		}
-		
+
 		// If someone sets caseInsensitive to true, the test mix the cases of email
-		if ( caseInsensitiveEmail == false ) {
+		if (caseInsensitiveEmail == false) {
 			email = testcasesData.getEmail();
 		} else {
 			email = mixCase(testcasesData.getEmail());
 		}
-			
+
 		log("step 1: Get Data from Excel");
 		log("URL: " + url);
 
@@ -69,7 +69,7 @@ public class ForgotUserIdTest extends BaseTestNGWebDriver {
 		log("step 4: Enter patient email and DOB");
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(email);
 		step2.selectDOB(testcasesData.getDob_Day(), testcasesData.getDob_Month(), testcasesData.getDob_Year());
-		
+
 		log("step 5: Answer patient security question");
 		ForgotUserIdConfirmationPage step3 = step2.answerSecurityQuestion(testcasesData.getAnswer());
 		assertTrue(step3.confirmationPageLoaded(), "There was an error loading the confirmation page in the Forgot UserId workflow");
@@ -81,18 +81,18 @@ public class ForgotUserIdTest extends BaseTestNGWebDriver {
 				"The User ID email wasn't received even after a few minutes of waiting");
 
 	}
-	
-	
+
+
 	// This method takes inputString and mix cases of its chars
 	// like "camel" to "CaMeL"
-	public String mixCase( String inputStr ){
+	public String mixCase(String inputStr) {
 		StringBuilder outputStr = new StringBuilder();
-		
-		for ( int i = 0; i < inputStr.length(); i++ ){
-			char mixCase =  (( i % 2 ) == 1 ) ? Character.toUpperCase(( inputStr.charAt( i ))) : Character.toLowerCase(( inputStr.charAt( i ))); 
-			outputStr.append( mixCase );			
+
+		for (int i = 0; i < inputStr.length(); i++) {
+			char mixCase = ((i % 2) == 1) ? Character.toUpperCase((inputStr.charAt(i))) : Character.toLowerCase((inputStr.charAt(i)));
+			outputStr.append(mixCase);
 		}
-		
+
 		return outputStr.toString();
 	}
 

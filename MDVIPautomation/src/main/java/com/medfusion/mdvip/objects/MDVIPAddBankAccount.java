@@ -21,8 +21,7 @@ public class MDVIPAddBankAccount {
 		ngWebDriver.waitForAngularRequestsToFinish();
 	}
 
-	public void addRequiredBankInfo(String bankName, String routingNumber, String accountNumber, String address,
-			String city, String state, String zip) {
+	public void addRequiredBankInfo(String bankName, String routingNumber, String accountNumber, String address, String city, String state, String zip) {
 
 		WebElement name = driver.findElement(By.id("bankName"));
 		name.sendKeys(bankName);

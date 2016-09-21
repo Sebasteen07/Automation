@@ -16,5 +16,5 @@ public class PrecheckConstants {
 	public final static String PatientPhoneNumber = "9194454578";
 	public final static String PatientPharmacy = "My favourite pharmacy";
 	public final static String PatientPharmacyNumber = "9197718415";
-	
+
 }

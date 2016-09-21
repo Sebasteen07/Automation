@@ -11,34 +11,35 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 public class ForgotUserIdConfirmationPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Forgot User Id Confirmation Page";
-	
-	@FindBy(xpath=".//*[@id='content']/div/div[contains(text(),'Check your email')]")
+
+	@FindBy(xpath = ".//*[@id='content']/div/div[contains(text(),'Check your email')]")
 	private WebElement confirmationText;
-	
+
 	public ForgotUserIdConfirmationPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	/**
 	 * Indicates whether the confirmation page loaded successfully.
+	 * 
 	 * @return true or false
 	 */
 	public boolean confirmationPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		boolean result = false;
 		try {
 			result = confirmationText.isDisplayed();
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-		
+
 		return result;
 	}
-	
-	
-	
+
+
+
 }
 
 

@@ -9,15 +9,15 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
 
-public class PhrSharingPage extends BasePageObject{
+public class PhrSharingPage extends BasePageObject {
 
 
-	@FindBy(css="a[class*='linkToSharing']")
+	@FindBy(css = "a[class*='linkToSharing']")
 	private WebElement btnSharing;
 
 	// <a class="linkToPermissions" href="/phr/ui/action/sharing.do">Manage Permissions</a>
 
-	@FindBy(css="a[class*='linkToPermissions']")
+	@FindBy(css = "a[class*='linkToPermissions']")
 	private WebElement btnManage;
 
 	public PhrSharingPage(WebDriver driver) {
@@ -25,7 +25,7 @@ public class PhrSharingPage extends BasePageObject{
 		// TODO Auto-generated constructor stub
 	}
 
-	public PhrSharingPrivacySettingsPage clickSharingAndPrivacySettings() {	
+	public PhrSharingPrivacySettingsPage clickSharingAndPrivacySettings() {
 
 		IHGUtil.PrintMethodName();
 
@@ -34,7 +34,7 @@ public class PhrSharingPage extends BasePageObject{
 		return PageFactory.initElements(driver, PhrSharingPrivacySettingsPage.class);
 	}
 
-	public PhrManagePermissionsPage clickManagePermissionsPage() {	
+	public PhrManagePermissionsPage clickManagePermissionsPage() {
 
 		IHGUtil.PrintMethodName();
 

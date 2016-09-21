@@ -10,16 +10,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 @Configuration
-@ComponentScan(basePackages="com.medfusion.mdvip")
+@ComponentScan(basePackages = "com.medfusion.mdvip")
 
 public class PropertyLoader {
-	@Bean 
+	@Bean
 	public static PropertySourcesPlaceholderConfigurer myPropertySourcesPlaceholderConfigurer() throws FileNotFoundException {
-		
-		String propName = "local.properties"; 
-        PropertySourcesPlaceholderConfigurer p = new PropertySourcesPlaceholderConfigurer();
-        Resource[] resourceLocations = new Resource[] {new ClassPathResource(propName)};
-        p.setLocations(resourceLocations);
-        return p;
-    }
+
+		String propName = "local.properties";
+		PropertySourcesPlaceholderConfigurer p = new PropertySourcesPlaceholderConfigurer();
+		Resource[] resourceLocations = new Resource[] {new ClassPathResource(propName)};
+		p.setLocations(resourceLocations);
+		return p;
+	}
 }

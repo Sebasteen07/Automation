@@ -21,7 +21,7 @@ public class MDVIPHelpAndFeedback {
 		ngWebDriver = new NgWebDriver(driver);
 		this.driver.manage().window().maximize();
 		ngWebDriver.waitForAngularRequestsToFinish();
-		
+
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@href='https://connect.mdvip.com.qa.mindgruve.com/app/terms-of-use']")));
 	}

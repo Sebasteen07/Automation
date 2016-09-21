@@ -37,14 +37,12 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Author:-Shanthala : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
 	 * @User Story ID in Rally : US6152 and US6151 and US7626
-	 * @StepsToReproduce: Go to siteGen Enter the credentials Search for the practice Click on Custom
-	 *                    Form Click on Create Custom Form Publish Custom Form and check for preview
-	 *                    Unpublish Custom Form, check for Preview and delete unpublished custom form
+	 * @StepsToReproduce: Go to siteGen Enter the credentials Search for the practice Click on Custom Form Click on Create Custom Form Publish Custom Form and
+	 *                    check for preview Unpublish Custom Form, check for Preview and delete unpublished custom form
 	 *
 	 *                    === Prerequisite for the test case to run========= Nurse Named :-
 	 *
-	 *                    ====Valid Custom Form details required. Test data would be updated after
-	 *                    getting proper test data
+	 *                    ====Valid Custom Form details required. Test data would be updated after getting proper test data
 	 *                    =============================================================
 	 * @AreaImpacted :- Description
 	 * @throws Exception
@@ -218,11 +216,9 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 	/**
 	 * @Author: bkrishnankutty
 	 * @Date: 05/4/2013
-	 * @StepsToReproduce: Login to Patient Portal Click on CustomForm Fill CustomForm and submit
-	 *                    Download InsuranceHealthForm pdf-- validate HTTP Status Code Logout from
-	 *                    Patient Portal Login to Practice Portal On Practice Portal Home page Click
-	 *                    on CustomFormTab Search for PatientForms With Status Open View and Validate
-	 *                    the Result ============================================== ===============
+	 * @StepsToReproduce: Login to Patient Portal Click on CustomForm Fill CustomForm and submit Download InsuranceHealthForm pdf-- validate HTTP Status Code
+	 *                    Logout from Patient Portal Login to Practice Portal On Practice Portal Home page Click on CustomFormTab Search for PatientForms With
+	 *                    Status Open View and Validate the Result ============================================== ===============
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */

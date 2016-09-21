@@ -1,13 +1,9 @@
 package com.intuit.ihg.common.entities;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/20/13
- * Time: 6:15 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 6:15 PM To change this template use File | Settings | File Templates.
  */
-public class TestObject  {
+public class TestObject {
 	public static final String TEST_CASE_ID = "TestObject.TestCaseId";
 	public static final String TEST_METHOD = "TestObject.TestMethod";
 	public static final String TEST_TITLE = "TestObject.TestTitle";

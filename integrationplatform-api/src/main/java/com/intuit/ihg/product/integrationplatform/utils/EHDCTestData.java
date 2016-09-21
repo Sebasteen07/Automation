@@ -8,8 +8,8 @@ import com.medfusion.common.utils.IHGUtil;
 public class EHDCTestData {
 
 	private EHDC EhdcObj = null;
-	
-	public EHDCTestData(EHDC sheetName) throws Exception{
+
+	public EHDCTestData(EHDC sheetName) throws Exception {
 		// which enviroment data need to picked
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
@@ -19,68 +19,68 @@ public class EHDCTestData {
 		// filtering the entire file
 		EhdcObj = (EHDC) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	
-	public String getPHR_URL(){
+
+
+	public String getPHR_URL() {
 		return EhdcObj.PHR_URL;
 	}
-	
-	public String getURL(){
+
+	public String getURL() {
 		return EhdcObj.URL;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return EhdcObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return EhdcObj.Password;
 	}
-	
-	
-	public String getRestUrl(){
+
+
+	public String getRestUrl() {
 		return EhdcObj.RestUrl;
 	}
-	
-	public String getCCDPath(){
+
+	public String getCCDPath() {
 		return EhdcObj.CCDPath;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return EhdcObj.ResponsePath;
 	}
-	
-	
-	public String getOAuthProperty(){
+
+
+	public String getOAuthProperty() {
 		return EhdcObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return EhdcObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return EhdcObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return EhdcObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return EhdcObj.OAuthPassword;
-	}	
-	
-	public String getGmailUserName(){
+	}
+
+	public String getGmailUserName() {
 		return EhdcObj.GmailUserName;
 	}
-	
-	public String getGmailPassword(){
+
+	public String getGmailPassword() {
 		return EhdcObj.GmailPassword;
 	}
-	
-	public String getPracticeName(){
+
+	public String getPracticeName() {
 		return EhdcObj.PracticeName;
 	}
-	
+
 }

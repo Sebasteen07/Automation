@@ -7,17 +7,17 @@ import org.openqa.selenium.support.FindBy;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-public class PhrEmergencyTermsOfUse extends BasePageObject{
+public class PhrEmergencyTermsOfUse extends BasePageObject {
 
 	// <input id="acknowledgement" type="checkbox" value="on" name="acknowledgement">
-	@FindBy(css="input[id='acknowledgement']")
+	@FindBy(css = "input[id='acknowledgement']")
 	private WebElement checkAcknowledgement;
 
 	// <input class="custom_text_button" type="submit" value="Continue">
-	@FindBy(css="input[type='submit']")
+	@FindBy(css = "input[type='submit']")
 	private WebElement btnSubmit;
-	
-	
+
+
 
 	public PhrEmergencyTermsOfUse(WebDriver driver) {
 		super(driver);
@@ -32,6 +32,6 @@ public class PhrEmergencyTermsOfUse extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		btnSubmit.click();
 	}
-	
+
 
 }

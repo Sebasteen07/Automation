@@ -19,17 +19,15 @@ public class MDVIPAddPaymentMethod {
 		this.driver.manage().window().maximize();
 		ngWebDriver.waitForAngularRequestsToFinish();
 	}
-	
+
 	public void clickAddACard() {
-		WebElement element = driver
-				.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-or-edit-card/']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-or-edit-card/']"));
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element).click().perform();
 	}
-	
+
 	public void clickAddABankAccount() {
-		WebElement element = driver
-				.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-or-edit-bank-account/']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-or-edit-bank-account/']"));
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element).click().perform();
 	}

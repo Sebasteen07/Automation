@@ -100,10 +100,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	/**
 	 * @Author: Adam Warzel
 	 * @Date: April-01-2014
-	 * @UserStory: US7083 Tests if filling out a form generates a PDF, if link for downloading the PDF
-	 *             appears in Patient Portal and if the link is working and also whether corresponding
-	 *             CCD was generated. Then it checks if the submitted date is accurate and if
-	 *             patient's DOB has not been changed.
+	 * @UserStory: US7083 Tests if filling out a form generates a PDF, if link for downloading the PDF appears in Patient Portal and if the link is working and
+	 *             also whether corresponding CCD was generated. Then it checks if the submitted date is accurate and if patient's DOB has not been changed.
 	 */
 	@Test(groups = {"Forms"})
 	public void testFormPdfCcdPI() throws Exception {
@@ -216,11 +214,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * User Story ID in Rally: US544 - TA30648 StepsToReproduce: Log in to SG Go to Forms Config
-	 * Unpublish all forms Delete all forms Create a new form and configure it Create a custom section
-	 * and test saving it without name and questions Save the form Publish it Test viewing the form on
-	 * Patient Portal === Prerequisite for the test case to run========= Practice configured Practices
-	 * configured on: DEV3, DEMO, PROD ============================================================
+	 * User Story ID in Rally: US544 - TA30648 StepsToReproduce: Log in to SG Go to Forms Config Unpublish all forms Delete all forms Create a new form and
+	 * configure it Create a custom section and test saving it without name and questions Save the form Publish it Test viewing the form on Patient Portal ===
+	 * Prerequisite for the test case to run========= Practice configured Practices configured on: DEV3, DEMO, PROD
+	 * ============================================================
 	 * 
 	 * @throws Exception
 	 */
@@ -236,6 +233,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
+		pMyPatientPage.logout(driver);
 
 		log("step 9: Log in to Patient Portal Inspired");
 		JalapenoHomePage pHomePage = Utils.loginPI(driver, false);
@@ -282,8 +280,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @UserStory: FORMS-346 Logins into sitegen. Creates a new custom form. Adds and removes FUPs.
-	 *             Saves form. Reopens the form and checks that it contains correct items.
+	 * @UserStory: FORMS-346 Logins into sitegen. Creates a new custom form. Adds and removes FUPs. Saves form. Reopens the form and checks that it contains
+	 *             correct items.
 	 */
 	@Test(groups = {"Forms"})
 	public void testSitegenFUPInteraction() throws Exception {
@@ -354,8 +352,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * Fills and saves (does not submit) custom form. Tests displaying and interactivity of elements
-	 * including FUPs.
+	 * Fills and saves (does not submit) custom form. Tests displaying and interactivity of elements including FUPs.
 	 */
 	@Test(groups = {"Forms"})
 	public void testCustomFormWithFUPsPI() throws Exception {
@@ -440,8 +437,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	/**
 	 * Fills out Output form for CCD test. Needs the form to be opened and on the first (welcome) page
 	 * 
-	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special
-	 *        diacritic
+	 * @param diacriticString - String to fill out in Symptoms comments, used for testing special diacritic
 	 */
 	private void fillOutputForm(String diacriticString) throws Exception {
 		FormBasicInfoPage basicInfoPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
@@ -497,8 +493,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * Verifies that record of completed or partially completed form is from the current day and that
-	 * the pdf is downloadable
+	 * Verifies that record of completed or partially completed form is from the current day and that the pdf is downloadable
 	 */
 	private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage) throws Exception {
 		log("Verify date and download code");

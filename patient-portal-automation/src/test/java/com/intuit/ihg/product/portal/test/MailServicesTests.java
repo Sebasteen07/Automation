@@ -6,7 +6,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.common.utils.Mailinator;
 
 
-public class MailServicesTests extends BaseTestNGWebDriver {	
+public class MailServicesTests extends BaseTestNGWebDriver {
 
 	@Test
 	public void testMailinator() throws Exception {
@@ -18,9 +18,7 @@ public class MailServicesTests extends BaseTestNGWebDriver {
 		int retries = 3;
 		assertTrue(mailinator.isMessageInInbox(username, emailSubject, findInEmail, retries));
 		assertFalse(mailinator.isMessageInInbox(username, emailSubject, "something not there", retries));
-		assertTrue(mailinator.catchNewMessageCheckLinkUrl(username, emailSubject, findInEmail,
-				targetUrl, retries));
-		assertFalse(mailinator.catchNewMessageCheckLinkUrl(username, emailSubject, findInEmail,
-				targetUrl + "nononono", retries));
+		assertTrue(mailinator.catchNewMessageCheckLinkUrl(username, emailSubject, findInEmail, targetUrl, retries));
+		assertFalse(mailinator.catchNewMessageCheckLinkUrl(username, emailSubject, findInEmail, targetUrl + "nononono", retries));
 	}
 }

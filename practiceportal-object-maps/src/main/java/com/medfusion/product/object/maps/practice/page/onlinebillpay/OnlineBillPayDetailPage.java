@@ -11,49 +11,49 @@ import com.medfusion.product.practice.api.utils.PracticeUtil;
 
 public class OnlineBillPayDetailPage extends BasePageObject {
 
-	@FindBy(xpath="//input[@name='voidPayment']")
+	@FindBy(xpath = "//input[@name='voidPayment']")
 	private WebElement btnVoidPayment;
-	
-	@FindBy(xpath="//input[@name='refundPayment']")
+
+	@FindBy(xpath = "//input[@name='refundPayment']")
 	private WebElement btnRefundPayment;
-	
-	@FindBy(xpath="//input[@name='secureComm:allowPatientReply']")
+
+	@FindBy(xpath = "//input[@name='secureComm:allowPatientReply']")
 	private WebElement checkDoNotAllowPatientReply;
-	
-	@FindBy(xpath="//input[@name='secureComm:sendComm']")
+
+	@FindBy(xpath = "//input[@name='secureComm:sendComm']")
 	private WebElement btnSendCommunication;
-	
-	@FindBy(xpath="//input[@name='secureComm:subject']")
+
+	@FindBy(xpath = "//input[@name='secureComm:subject']")
 	private WebElement messageSubject;
-	
-	@FindBy(xpath="//textarea[@name='secureComm:body']")
+
+	@FindBy(xpath = "//textarea[@name='secureComm:body']")
 	private WebElement messageBody;
 
-	
+
 	public OnlineBillPayDetailPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	public void setFrame() {
-		
+
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 	}
-	
 
-	public OnlineBillPayVerifyPage CommunicateBillPay(String sSubject,String sMessage) throws Exception {
-		
+
+	public OnlineBillPayVerifyPage CommunicateBillPay(String sSubject, String sMessage) throws Exception {
+
 		IHGUtil.PrintMethodName();
-		PracticeUtil.setPracticeFrame(driver);	
+		PracticeUtil.setPracticeFrame(driver);
 
 		messageSubject.sendKeys(sSubject);
 		messageBody.sendKeys(sMessage);
 		btnSendCommunication.click();
-		
-		
-		
+
+
+
 		Thread.sleep(10000);
-		
+
 		return PageFactory.initElements(driver, OnlineBillPayVerifyPage.class);
 	}
 }

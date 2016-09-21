@@ -6,7 +6,7 @@ import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AMDCTestData {
-	
+
 	private AMDC AmdcObj = null;
 	private ExcelSheetReader excelReader = null;
 
@@ -20,115 +20,114 @@ public class AMDCTestData {
 		// filtering the entire file
 		AmdcObj = (AMDC) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return AmdcObj.Url;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return AmdcObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return AmdcObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return AmdcObj.RestUrl;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return AmdcObj.ResponsePath;
 	}
-	
-	public String getFrom(){
+
+	public String getFrom() {
 		return AmdcObj.From;
 	}
-	
-	public String getSecureMessagePath(){
+
+	public String getSecureMessagePath() {
 		return AmdcObj.SecureMessagePath;
 	}
-	
-	
-		
-	
-	public String getOAuthProperty(){
+
+
+
+	public String getOAuthProperty() {
 		return AmdcObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return AmdcObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return AmdcObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return AmdcObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return AmdcObj.OAuthPassword;
-	}	
-	
-	public String getReadCommunicationURL(){
+	}
+
+	public String getReadCommunicationURL() {
 		return AmdcObj.ReadCommuniationURL;
 	}
-	
-	public String getSecureMessage_AskaStaffXML(){
+
+	public String getSecureMessage_AskaStaffXML() {
 		return AmdcObj.SecureMessage_AskaStaffXML;
 	}
-	
-	public String getBatch_SecureMessage(){
+
+	public String getBatch_SecureMessage() {
 		return AmdcObj.Batch_SecureMessage;
-	} 
-	
-	public String getUserName1(){
+	}
+
+	public String getUserName1() {
 		return AmdcObj.UserName1;
 	}
-	
-	public String getFrom1(){
+
+	public String getFrom1() {
 		return AmdcObj.From1;
 	}
-	
-	public String getUserName2(){
+
+	public String getUserName2() {
 		return AmdcObj.UserName2;
 	}
-	
-	public String getSender1(){
+
+	public String getSender1() {
 		return AmdcObj.Sender1;
 	}
-	
-	public String getSender2(){
+
+	public String getSender2() {
 		return AmdcObj.Sender2;
 	}
-	
-	public String getSender3(){
+
+	public String getSender3() {
 		return AmdcObj.Sender3;
 	}
-	
-	public String getIntegrationPracticeID(){
+
+	public String getIntegrationPracticeID() {
 		return AmdcObj.IntegrationPracticeID;
 	}
-	
-	public String getPatientName1(){
+
+	public String getPatientName1() {
 		return AmdcObj.PatientName1;
 	}
-	
-	public String getPatientName2(){
+
+	public String getPatientName2() {
 		return AmdcObj.PatientName2;
 	}
-	
-	public String getPatientName3(){
+
+	public String getPatientName3() {
 		return AmdcObj.PatientName3;
 	}
-	
-	public String getGmailUserName(){
+
+	public String getGmailUserName() {
 		return AmdcObj.GmailUserName;
 	}
-	
-	public String getGmailPassword(){
+
+	public String getGmailPassword() {
 		return AmdcObj.GmailPassword;
 	}
 }

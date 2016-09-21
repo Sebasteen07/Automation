@@ -132,8 +132,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Deselects the checkbox for hiding the page Adds a tea-drinking question
-	 * so that the page does not hide again
+	 * Deselects the checkbox for hiding the page Adds a tea-drinking question so that the page does not hide again
 	 */
 	public void showThisPage() {
 		if (hideSocialhistorySectionCheck.isSelected()) {
@@ -161,8 +160,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	/**
 	 * Description: Sets the name of the section. Name is passe as parameter
 	 * 
-	 * @param newName:
-	 *            A name to be set
+	 * @param newName: A name to be set
 	 * @throws InterruptedException
 	 *
 	 */
@@ -174,8 +172,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	/**
 	 * Description: Sets the name of the section. Name is passe as parameter
 	 * 
-	 * @param newName:
-	 *            A name to be set
+	 * @param newName: A name to be set
 	 *
 	 */
 	public void setQuestionName(String newName) {
@@ -187,29 +184,27 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 		Select questionTypeSel = new Select(questionTypeSelect);
 
 		switch (type) {
-		case shortText:
-			questionTypeSel.selectByIndex(1);
-			break;
-		case longText:
-			questionTypeSel.selectByIndex(2);
-			break;
-		case multiSelect:
-			questionTypeSel.selectByIndex(3);
-			break;
-		case singleSelect:
-			questionTypeSel.selectByIndex(4);
-			break;
-		default:
-			throw new Exception();
+			case shortText:
+				questionTypeSel.selectByIndex(1);
+				break;
+			case longText:
+				questionTypeSel.selectByIndex(2);
+				break;
+			case multiSelect:
+				questionTypeSel.selectByIndex(3);
+				break;
+			case singleSelect:
+				questionTypeSel.selectByIndex(4);
+				break;
+			default:
+				throw new Exception();
 		}
 	}
 
 	/**
-	 * Description: Enters possible answers to the text field. Answers are comma
-	 * separated values
+	 * Description: Enters possible answers to the text field. Answers are comma separated values
 	 * 
-	 * @param newAnswerText
-	 *            Answer text that will be shown to patient
+	 * @param newAnswerText Answer text that will be shown to patient
 	 */
 	public void addPossibleAnswer(String newAnswerText) {
 		addAnswerButton.click();
@@ -221,8 +216,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Asserts that error notification message appeared. For example when user
-	 * tried to save form with incomplete question
+	 * Asserts that error notification message appeared. For example when user tried to save form with incomplete question
 	 */
 	public void errorMessageAppearedTest() {
 		assertTrue(errorNotification.isDisplayed());

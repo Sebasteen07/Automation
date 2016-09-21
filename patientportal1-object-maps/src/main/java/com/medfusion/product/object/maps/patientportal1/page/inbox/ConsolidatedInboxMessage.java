@@ -60,82 +60,79 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 
 	@FindBy(id = "closeCcd")
 	private WebElement btnCloseViewer;
-	
+
 	@FindBy(linkText = "My Patient Page")
 	private WebElement lnkMyPatientPage;
-	
+
 	@FindBy(id = "basicInfo")
 	private WebElement ccdBasicInfo;
-	
+
 	@FindBy(css = "#lightbox > iframe:nth-child(1)")
 	public WebElement CCDViewFrame;
 
-	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
-			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
-	
-	
-	String[] myDirectResponses = {
-			"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.",
-			"",
-			"", };
-	
-	String[] myDirectResponsesPortal = {
-			"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.",
-			"This Direct Address appears to be invalid. Your message was not sent.",
-			"This Direct Address appears to be invalid. Your message was not sent.",
-			"Your health information was sent to ihg_qa@direct.healthvault.com!"};
+	String[] myDirectAddresses = {"ihg!!!qa@service.directaddress.net", "ihg_qa@service.address.net", "ihg_qa@gmail.com", "ihg_qa@direct.healthvault.com"};
+
+
+	String[] myDirectResponses = {"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.", "", "",};
+
+	String[] myDirectResponsesPortal =
+			{"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.", "This Direct Address appears to be invalid. Your message was not sent.",
+					"This Direct Address appears to be invalid. Your message was not sent.", "Your health information was sent to ihg_qa@direct.healthvault.com!"};
 
 
 	public ConsolidatedInboxMessage(WebDriver driver) {
 		super(driver);
 	}
-	
-	
+
+
 	/**
 	 * Returns the subject for the most recent practice response in the message thread
+	 * 
 	 * @return the subject text
 	 */
 	public String getPracticeReplyMessageTitle() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setConsolidatedInboxFrame(driver);
-		IHGUtil.waitForElement(driver,400,practiceResponseSubject);
+		IHGUtil.waitForElement(driver, 400, practiceResponseSubject);
 		return practiceResponseSubject.getText();
 	}
-	
-	
+
+
 	// reloads inbox after successful send
 	// goes back to message after discard (ie send, discard, reply subject, reply body are not visible)
 	/**
 	 * Will reply to a message using the current message subject, and adding the supplied text for the message body.
+	 * 
 	 * @param body the text for the body of the message
 	 * @return the consolidated inbox
 	 */
 	public ConsolidatedInboxPage replyToMessage(String body) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setConsolidatedInboxFrame(driver);
-		
-		btnReply.click();		
+
+		btnReply.click();
 		if (body == null || body.isEmpty()) {
 			body = REPLY_TEXT;
 		}
 		replyBody.sendKeys(body);
 		btnSend.click();
-		
+
 		return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
 	}
-	
-	
+
+
 	/**
 	 * Will initiate a reply and then discard the message.
+	 * 
 	 * @return true if the 'Send' button is still displayed, false if not
 	 */
 	public boolean initiateReplyAndThenDiscard() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setConsolidatedInboxFrame(driver);
-		
+
 		btnReply.click();
 		btnDiscard.click();
-		
+
 		boolean result = true;
 		try {
 			result = btnSend.isDisplayed();
@@ -143,23 +140,23 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			// Catch any element not found
 			result = false;
 		}
-		
-		return result;		
+
+		return result;
 	}
-	
+
 	/**
 	 * returns Email subject
+	 * 
 	 * @return
 	 */
-	
-	 public String getMessageSubject()
-	 {
-		 IHGUtil.PrintMethodName();
-		 PortalUtil.setConsolidatedInboxFrame(driver);
-		 return practiceResponseSubject.getText().toString().trim();
-	 }
-	 
-	 
+
+	public String getMessageSubject() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setConsolidatedInboxFrame(driver);
+		return practiceResponseSubject.getText().toString().trim();
+	}
+
+
 	/**
 	 * Click on the link Review Health Information
 	 */
@@ -170,7 +167,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		btnReviewHealthInformation.click();
 		Thread.sleep(2000);
 	}
-	
+
 
 	/**
 	 * Click on the link 'ShareWithADoctor'
@@ -179,7 +176,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		btnShareWithDoctor.click();
 	}
-	
+
 
 	/**
 	 * returns webelement 'textBoxToEnterEmailAddress'
@@ -188,17 +185,16 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return textBoxToEnterEmailAddress;
 	}
-	
+
 
 	/**
 	 * click on button 'SendToShareTheHealthInformation'
 	 */
-	public void clickOnSendToShareWithAnotherDoctor()
-			throws InterruptedException {
+	public void clickOnSendToShareWithAnotherDoctor() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		btnSendToShareTheHealthInformation.click();
 	}
-	
+
 
 	/**
 	 * returns webelement 'textBoxResponseMsg'
@@ -207,13 +203,12 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return textBoxResponseMsg.getText();
 	}
-	
+
 
 	/**
 	 * click on button 'Close'
 	 */
-	public void clickOnCloseAfterSharingTheHealthInformation()
-			throws InterruptedException {
+	public void clickOnCloseAfterSharingTheHealthInformation() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		if (btnClose.isDisplayed()) {
 			btnClose.click();
@@ -233,7 +228,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			log("### PhrDocumentsPage.btnCloseViewer --- Could not find Close Viewer");
 		}
 	}
-	
+
 	/**
 	 * verify CCD Viewer and click on button 'CloseViewer'
 	 */
@@ -247,7 +242,7 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
-	
+
 
 
 	/**
@@ -263,8 +258,8 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			enterDirectAddress().clear();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Enter direct Address and validate the response
 	 */
@@ -274,16 +269,15 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			clickOnSendToShareWithAnotherDoctor();
 			Thread.sleep(20000);
 			String textBoxResponseMsg = getResponseAfterSending();
-			Assert.assertEquals(textBoxResponseMsg,myDirectResponsesPortal[i]);
+			Assert.assertEquals(textBoxResponseMsg, myDirectResponsesPortal[i]);
 			enterDirectAddress().clear();
 		}
 	}
 
 	/**
 	 * 
-	 * If Non Consolidated CCd then the method will just Close the Viewer Else
-	 * will click On ShareWithADoctor Will type addresses and will Validate the
-	 * response CloseAfterSharingTheHealthInformation CloseViewer
+	 * If Non Consolidated CCd then the method will just Close the Viewer Else will click On ShareWithADoctor Will type addresses and will Validate the response
+	 * CloseAfterSharingTheHealthInformation CloseViewer
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -292,9 +286,9 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame(webframe);
-       
+
 		if (util.checkCcdType() == false) {
-		  clickOnCloseViewer();
+			clickOnCloseViewer();
 		}
 
 		else if (util.checkCcdType() == true) {
@@ -305,12 +299,12 @@ public class ConsolidatedInboxMessage extends BasePageObject {
 			clickOnCloseViewer();
 		}
 	}
-	
+
 	public MyPatientPage clickMyPatientPage() {
-	 	IHGUtil.PrintMethodName();
+		IHGUtil.PrintMethodName();
 		PortalUtil.setDefaultFrame(driver);
 		lnkMyPatientPage.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
-}
+	}
 
 }

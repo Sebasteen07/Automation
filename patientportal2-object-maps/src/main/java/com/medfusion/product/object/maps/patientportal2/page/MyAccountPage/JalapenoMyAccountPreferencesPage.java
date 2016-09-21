@@ -78,7 +78,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

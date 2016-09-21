@@ -29,7 +29,7 @@ public class MessagePage extends BasePageObject {
 
 	@FindBy(name = "buttons:0:button")
 	private WebElement btnSend;
-	
+
 	@FindBy(linkText = "View health data")
 	private WebElement btnReviewHealthInformation;
 
@@ -37,109 +37,108 @@ public class MessagePage extends BasePageObject {
 	private WebElement btnClose;
 
 	@FindBy(linkText = "My Patient Page")
-	private WebElement lnkMyPatientPage;	
-	
+	private WebElement lnkMyPatientPage;
+
 	@FindBy(xpath = "//iframe[contains(@title, 'Health Information Details')]")
 	private WebElement webframe;
-	
+
 	@FindBy(id = "closeCcd")
 	private WebElement btnCloseViewer;
-	
+
 	@FindBy(linkText = "Send my information")
 	private WebElement btnShareWithDoctor;
-	
+
 	@FindBy(xpath = "//form/div/button")
 	private WebElement btnSendToShareTheHealthInformation;
-	
+
 	@FindBy(xpath = "//html/body/div[2]/form/div[1]/input[@type='text']")
 	private WebElement textBoxToEnterEmailAddress;
-	
+
 	@FindBy(xpath = "//form/div/span")
 	private WebElement textBoxResponseMsg;
-	
+
 	@FindBy(id = "basicInfo")
 	private WebElement ccdBasicInfo;
-	
+
 	@FindBy(id = "savePdf")
 	private WebElement pdfDownload;
-	
+
 	@FindBy(xpath = "//span[@fieldid='instructions']")
 	private WebElement sigCodeInstructions;
-	
+
 	@FindBy(xpath = "//input[@type='file']")
 	private WebElement browseButton;
-	
+
 	@FindBy(xpath = "//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[3]/div[2]")
 	private WebElement lableTo;
-	
+
 	@FindBy(xpath = "//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[2]/div[2]")
 	private WebElement lableFrom;
-	
+
 	@FindBy(xpath = ".//*[@id='pageContent']/div/div[5]/div[2]/div[2]/div[1]/div[4]/div[2]")
 	private WebElement lableSent;
-	
+
 	@FindBy(css = "div.commMessageText")
 	private WebElement txtMessage;
-		
-	String[] myDirectAddresses = { "ihg!!!qa@service.directaddress.net",
-			"ihg_qa@service.address.net", "ihg_qa@gmail.com" , "ihg_qa@direct.healthvault.com"};
-	
-	String[] myDirectResponsesPortal = {
-			"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.",
-			"This Direct Address appears to be invalid. Your message was not sent.",
-			"This Direct Address appears to be invalid. Your message was not sent.",
-			"Your health information was sent to ihg_qa@direct.healthvault.com!"};
+
+	String[] myDirectAddresses = {"ihg!!!qa@service.directaddress.net", "ihg_qa@service.address.net", "ihg_qa@gmail.com", "ihg_qa@direct.healthvault.com"};
+
+	String[] myDirectResponsesPortal =
+			{"ihg!!!qa@service.directaddress.net is invalid. Please correct the format.", "This Direct Address appears to be invalid. Your message was not sent.",
+					"This Direct Address appears to be invalid. Your message was not sent.", "Your health information was sent to ihg_qa@direct.healthvault.com!"};
 
 	public MessagePage(WebDriver driver) {
 		super(driver);
 	}
-	
-	
+
+
 	/**
 	 * Returns the subject for the most recent practice response in the message thread
+	 * 
 	 * @return the subject text
 	 */
 	public String getPracticeReplyMessageTitle() {
 		IHGUtil.PrintMethodName();
-		driver.switchTo().frame("iframebody"); 
-		IHGUtil.waitForElement(driver,30,practiceResponseSubject);
+		driver.switchTo().frame("iframebody");
+		IHGUtil.waitForElement(driver, 30, practiceResponseSubject);
 		return practiceResponseSubject.getText();
 	}
-	
+
 
 	/**
 	 * Will reply to a message using the current message subject, and adding the supplied text for the message body.
+	 * 
 	 * @param body the text for the body of the message
 	 * @return the consolidated inbox
 	 * 
 	 */
-	public MessageCenterInboxPage replyToMessage(String body,String fileName) {
+	public MessageCenterInboxPage replyToMessage(String body, String fileName) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
-		btnReply.click();		
+
+		btnReply.click();
 		if (body == null || body.isEmpty()) {
 			body = REPLY_TEXT;
 		}
 		replyBody.sendKeys(body);
-		if(fileName!=null){
-		IHGUtil.waitForElement(driver, 120, browseButton);
-		browseButton.sendKeys(fileName);
+		if (fileName != null) {
+			IHGUtil.waitForElement(driver, 120, browseButton);
+			browseButton.sendKeys(fileName);
 		}
 		btnSend.click();
-		
+
 		return PageFactory.initElements(driver, MessageCenterInboxPage.class);
 	}
-	
-	
+
+
 	public MyPatientPage clickMyPatientPage() {
-	 	IHGUtil.PrintMethodName();
+		IHGUtil.PrintMethodName();
 		PortalUtil.setDefaultFrame(driver);
 		lnkMyPatientPage.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-	
-	
+
+
 	/**
 	 * Click on the link Review Health Information
 	 */
@@ -147,14 +146,13 @@ public class MessagePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, btnReviewHealthInformation);
-		btnReviewHealthInformation.click();	
+		btnReviewHealthInformation.click();
 	}
-	
+
 	/**
 	 * 
-	 * If Non Consolidated CCd then the method will just Close the Viewer Else
-	 * will click On ShareWithADoctor Will type addresses and will Validate the
-	 * response CloseAfterSharingTheHealthInformation CloseViewer
+	 * If Non Consolidated CCd then the method will just Close the Viewer Else will click On ShareWithADoctor Will type addresses and will Validate the response
+	 * CloseAfterSharingTheHealthInformation CloseViewer
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -164,10 +162,10 @@ public class MessagePage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		IHGUtil.waitForElement(driver, 20, webframe);
 		driver.switchTo().frame(webframe);
-       
+
 		if (util.checkCcdType() == false) {
-		  IHGUtil.waitForElement(driver, 10, btnCloseViewer);
-		  btnCloseViewer.click();
+			IHGUtil.waitForElement(driver, 10, btnCloseViewer);
+			btnCloseViewer.click();
 		} else if (util.checkCcdType() == true) {
 			btnShareWithDoctor.click();
 			addAddressesAndValidateInPortal();
@@ -177,7 +175,7 @@ public class MessagePage extends BasePageObject {
 			btnCloseViewer.click();
 		}
 	}
-	
+
 	/**
 	 * verify CCD Viewer and click on button 'CloseViewer'
 	 */
@@ -186,14 +184,14 @@ public class MessagePage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		IHGUtil.waitForElement(driver, 20, webframe);
 		driver.switchTo().frame(webframe);
-		
+
 		if (ccdBasicInfo.isDisplayed() && btnCloseViewer.isDisplayed()) {
 			btnCloseViewer.click();
 		} else {
 			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
-	
+
 	/**
 	 * Enter direct Address and validate the response
 	 */
@@ -203,10 +201,11 @@ public class MessagePage extends BasePageObject {
 			textBoxToEnterEmailAddress.sendKeys(myDirectAddresses[i]);
 			btnSendToShareTheHealthInformation.click();
 			IHGUtil.waitForElement(driver, 20, textBoxResponseMsg);
-			Assert.assertEquals(textBoxResponseMsg.getText(),myDirectResponsesPortal[i]);
+			Assert.assertEquals(textBoxResponseMsg.getText(), myDirectResponsesPortal[i]);
 			textBoxToEnterEmailAddress.clear();
 		}
 	}
+
 	/**
 	 * click on PDF button
 	 */
@@ -216,49 +215,49 @@ public class MessagePage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 60, webframe);
 		driver.switchTo().frame(webframe);
 		pdfDownload.click();
-		
+
 	}
-	
+
 	/**
-	 * Enter EmailID for transmit and send  
+	 * Enter EmailID for transmit and send
 	 */
-	public void generateTransmitEvent(String email) throws InterruptedException{
-		  IHGUtil.PrintMethodName();
-		  driver.switchTo().defaultContent();
-		  IHGUtil.waitForElement(driver, 20, webframe);
-		  driver.switchTo().frame(webframe);
-		  btnShareWithDoctor.click();
-		  IHGUtil.waitForElement(driver, 20, textBoxToEnterEmailAddress);
-		  textBoxToEnterEmailAddress.sendKeys(email);
-		  btnSendToShareTheHealthInformation.click();
-		  IHGUtil.waitForElement(driver, 70, textBoxResponseMsg);
-		  String successMessage="Your health information was sent to "+email+"!";
-		  log(textBoxResponseMsg.getText().toString());
-		  Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
-		 }
-	
-	public boolean isSubjectLocated(String subject) throws InterruptedException{
+	public void generateTransmitEvent(String email) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(1000); //wait for loaded
+		driver.switchTo().defaultContent();
+		IHGUtil.waitForElement(driver, 20, webframe);
+		driver.switchTo().frame(webframe);
+		btnShareWithDoctor.click();
+		IHGUtil.waitForElement(driver, 20, textBoxToEnterEmailAddress);
+		textBoxToEnterEmailAddress.sendKeys(email);
+		btnSendToShareTheHealthInformation.click();
+		IHGUtil.waitForElement(driver, 70, textBoxResponseMsg);
+		String successMessage = "Your health information was sent to " + email + "!";
+		log(textBoxResponseMsg.getText().toString());
+		Assert.assertEquals(textBoxResponseMsg.getText(), successMessage);
+	}
+
+	public boolean isSubjectLocated(String subject) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		Thread.sleep(1000); // wait for loaded
 		PortalUtil.setPortalFrame(driver);
-		log("Looking for message with Header "+subject);
-		WebElement	messageHeader = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'"+subject+"')]"))));
-		if (messageHeader.isDisplayed()) { 
-		log("Subject found");	
-		return true;
-		}
-		else {
+		log("Looking for message with Header " + subject);
+		WebElement messageHeader = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'" + subject + "')]"))));
+		if (messageHeader.isDisplayed()) {
+			log("Subject found");
+			return true;
+		} else {
 			log("Subject not found");
 			return false;
-			}
 		}
-	
+	}
+
 	/**
 	 * verify sidcode meaning in patient portal
+	 * 
 	 * @param sigCodeMeaning
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
-	
+
 	public String readSigCode(String sigCodeMeaning) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(120000);
@@ -267,51 +266,51 @@ public class MessagePage extends BasePageObject {
 		log("Searching: SigCode Meaning is:" + sigCodeMeaning + ", and Actual SigCode Meaning is:" + sigCodeInstructions.getText().toString());
 		return sigCodeInstructions.getText().toString();
 	}
-	
+
 	/**
 	 * 
 	 * @return
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
-	public String returnSenderName() throws InterruptedException{
+	public String returnSenderName() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(60000);
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, lableFrom);
-		return lableFrom.getText().toString();	
+		return lableFrom.getText().toString();
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public String returnRecipientName(){
+	public String returnRecipientName() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, lableTo);
-		return lableTo.getText().toString();	
+		return lableTo.getText().toString();
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public String returnMessage(){
+	public String returnMessage() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, txtMessage);
-		return txtMessage.getText().toString();	
+		return txtMessage.getText().toString();
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public String returnMessageSentDate(){
+	public String returnMessageSentDate() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, lableSent);
-		return lableSent.getText().toString();	
+		return lableSent.getText().toString();
 	}
 
 }

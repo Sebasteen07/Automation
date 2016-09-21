@@ -155,8 +155,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		webElementsList.add(zipCodeTextbox);
 		webElementsList.add(maleRadioButton);
 
-		return super.assessPageElements(true)
-				&& new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public boolean modifyAndValidatePageContent() {

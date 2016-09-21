@@ -9,29 +9,27 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class MedicationsPage extends BasePageObject{
-	
-	@FindBy(xpath="//li[@data-section='allergies']/a")
+public class MedicationsPage extends BasePageObject {
+
+	@FindBy(xpath = "//li[@data-section='allergies']/a")
 	private WebElement lnkAllergies;
-	
-	@FindBy(id="save_config_form")              
+
+	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
-	
-	public MedicationsPage(WebDriver driver) 
-	{
+
+	public MedicationsPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
+
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
 	 * @return true or false
 	 */
-	public boolean isSearchPageLoaded() 
-	{
+	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -45,18 +43,18 @@ public class MedicationsPage extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
-	 * Click on link - Allergies	
+	 * Click on link - Allergies
+	 * 
 	 * @return
 	 */
-	
-	public AllergiesPage clicklnkAllergies()
-	{	
+
+	public AllergiesPage clicklnkAllergies() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkAllergies);
 		lnkAllergies.click();
-		return PageFactory.initElements(driver,AllergiesPage.class);
+		return PageFactory.initElements(driver, AllergiesPage.class);
 	}
-	
+
 }

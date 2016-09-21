@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage;
 
 import java.util.List;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,9 +13,10 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-public class NewRxRenewalPage  extends BasePageObject {
-	
+public class NewRxRenewalPage extends BasePageObject {
+
 	private long createdTs;
+
 	public NewRxRenewalPage(WebDriver driver) {
 		super(driver);
 		createdTs = System.currentTimeMillis();
@@ -45,7 +45,7 @@ public class NewRxRenewalPage  extends BasePageObject {
 
 	@FindBy(xpath = ".//*[@class='customForm']/div[2]/div[2]/strong[2]")
 	public WebElement medicineName1;
-	
+
 	@FindBy(xpath = ".//*[@class='customForm']/div[1]/div[2]/strong[2]")
 	public WebElement medicineName0;
 
@@ -56,48 +56,45 @@ public class NewRxRenewalPage  extends BasePageObject {
 	private WebElement clickEdit;
 
 	@FindBy(xpath = "//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']")
-    	private WebElement pharmacySearchList;
+	private WebElement pharmacySearchList;
 
 	@FindBy(xpath = "//div[@class='paperPad']/div[4]/p")
 	public WebElement renewalConfirmationmessage;
 	@FindBy(xpath = "//div[@id='medForm']/div[3]/div[@class='fieldWrapper']/div[2]/input")
 	private WebElement quantity;
-	
+
 	@FindBy(xpath = "//div[@id='medForm']/div[4]/div[@class='fieldWrapper']/div[2]/input")
 	private WebElement numberOfRefills;
-	
+
 	@FindBy(xpath = "//div[@id='medForm']/div[5]/div[@class='fieldWrapper']/div[2]/input")
 	private WebElement prescriptionNo;
-	
+
 	@FindBy(xpath = "//div[@id='medicationForm']/div[2]/div[@class='medicationBorder']/div[3]/div[@class='fieldWrapper']/div[2]/textarea")
 	public WebElement additionalInformation;
 
 	/**
 	 * @Description:Choose the provider name from Drop Down
 	 * @param pProvider
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void chooseProvider(String pProvider) throws Exception
-	{
+	public void chooseProvider(String pProvider) throws Exception {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,10,chooseProviderDropDrown);
+		IHGUtil.waitForElement(driver, 10, chooseProviderDropDrown);
 		List<WebElement> list = driver.findElements(By.xpath("//select[@name='providerContainer:providerDD']/option"));
-		for(WebElement li : list)
-		{
-			int count=1;
-			if(li.getText().contains(pProvider))
-			{
+		for (WebElement li : list) {
+			int count = 1;
+			if (li.getText().contains(pProvider)) {
 				Thread.sleep(3000);
 				PortalUtil.setPortalFrame(driver);
-				Select selectProvider=new Select(chooseProviderDropDrown);
+				Select selectProvider = new Select(chooseProviderDropDrown);
 				selectProvider.selectByIndex(count);
 				Thread.sleep(3000);
 				break;
 			}
 			count++;
 		}
-		IHGUtil.waitForElement(driver,10,clickContinuebtn);
+		IHGUtil.waitForElement(driver, 10, clickContinuebtn);
 		clickContinuebtn.click();
 		Thread.sleep(8000);
 	}
@@ -105,19 +102,17 @@ public class NewRxRenewalPage  extends BasePageObject {
 	/**
 	 * @Description:Set the Medication Fields
 	 */
-	public void setMedicationFields()
-	{
+	public void setMedicationFields() {
 		PortalUtil.setPortalFrame(driver);
-		try{
+		try {
 			medicationName.clear();
 			medicationName.sendKeys(PortalConstants.MedicationName);
 			dosage.clear();
 			dosage.sendKeys(PortalConstants.Dosage);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			clickEdit.click();
 			PortalUtil.setPortalFrame(driver);
-			IHGUtil.waitForElement(driver,5,medicationName);
+			IHGUtil.waitForElement(driver, 5, medicationName);
 			medicationName.clear();
 			medicationName.sendKeys(PortalConstants.MedicationName);
 			dosage.clear();
@@ -128,43 +123,37 @@ public class NewRxRenewalPage  extends BasePageObject {
 	/**
 	 * @Description:Set the Pharmacy Fields
 	 */
-	public void setPharmacyFields()
-	{
+	public void setPharmacyFields() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		chooseFromList.click();
-		try{
+		try {
 			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup']/option"));
-			for(WebElement li : list)
-			{
-				int count=1;
-				if(li.getText().contains("CVS"))
-				{
-					Select selectProvider=new Select(pharmacySearchList);
+			for (WebElement li : list) {
+				int count = 1;
+				if (li.getText().contains("CVS")) {
+					Select selectProvider = new Select(pharmacySearchList);
 					selectProvider.selectByIndex(count);
 					break;
 				}
 				count++;
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			log("Pharmacy List is not displayed");
 		}
-		IHGUtil.waitForElement(driver,10,clickContinuebtn);
+		IHGUtil.waitForElement(driver, 10, clickContinuebtn);
 		clickContinuebtn.click();
-		IHGUtil.waitForElement(driver,10,clickSubmitbtn);
+		IHGUtil.waitForElement(driver, 10, clickSubmitbtn);
 		clickSubmitbtn.click();
 	}
 
 	/**
 	 * @Description:Click On Continue button
 	 */
-	public void clickContinuebtn()
-	{
+	public void clickContinuebtn() {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,10,clickContinuebtn);
+		IHGUtil.waitForElement(driver, 10, clickContinuebtn);
 		clickContinuebtn.click();
 	}
 
@@ -172,11 +161,10 @@ public class NewRxRenewalPage  extends BasePageObject {
 	/**
 	 * @Description:Click On Submit button
 	 */
-	public void clickSubmitbtn()
-	{
+	public void clickSubmitbtn() {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver,10,clickSubmitbtn);
+		IHGUtil.waitForElement(driver, 10, clickSubmitbtn);
 		clickSubmitbtn.click();
 	}
 
@@ -184,12 +172,11 @@ public class NewRxRenewalPage  extends BasePageObject {
 	 * @Description: Get medication Name
 	 */
 
-	public void checkMedication()
-	{
+	public void checkMedication() {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.PrintMethodName();
 	}
-	
+
 	/**
 	 * @return createdTs
 	 */
@@ -197,19 +184,19 @@ public class NewRxRenewalPage  extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		return createdTs;
 	}
+
 	/**
 	 * @Description: Set Medication details for integration Platform project
 	 */
-	public void setMedicationDetails()
-	{
+	public void setMedicationDetails() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		medicationName.sendKeys(PortalConstants.MedicationName+""+createdTs);
+		medicationName.sendKeys(PortalConstants.MedicationName + "" + createdTs);
 		dosage.sendKeys(PortalConstants.Dosage);
 		quantity.sendKeys(PortalConstants.Quantity);
 		numberOfRefills.sendKeys(PortalConstants.No_Of_Refills);
 		prescriptionNo.sendKeys(PortalConstants.Prescription_No);
 		additionalInformation.sendKeys(PortalConstants.Additional_Info);
-		
+
 	}
 }

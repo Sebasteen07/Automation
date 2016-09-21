@@ -28,72 +28,72 @@ public class PracticeHomePage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Practice Home Page";
 
-	@FindBy(xpath=".//*[@id='pagetitle']/h1")
+	@FindBy(xpath = ".//*[@id='pagetitle']/h1")
 	private WebElement homePageTitle;
 	private final String homePageTitleText = "My Home";
 
-	@FindBy(xpath=".//a[contains(@title,'Sign Out')]")
+	@FindBy(xpath = ".//a[contains(@title,'Sign Out')]")
 	private WebElement signOut;
 
 	/*
 	 * Solution tabs
 	 */
-	@FindBy(xpath=".//a[contains(@href,'askadoc')]")
+	@FindBy(xpath = ".//a[contains(@href,'askadoc')]")
 	private WebElement askAStaffTab;
 
-	@FindBy(xpath="//div[@id='navigation']/ul/li/a")
+	@FindBy(xpath = "//div[@id='navigation']/ul/li/a")
 	private WebElement apptRequestTab;
 
-	@FindBy(xpath=".//a[contains(@href,'vov')]")
+	@FindBy(xpath = ".//a[contains(@href,'vov')]")
 	private WebElement virtualOfficeVisitTab;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.forms2')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.forms2')]")
 	private WebElement customform;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.imh')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.imh')]")
 	private WebElement symptomAssessmentTab;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.paymybill')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.paymybill')]")
 	private WebElement onlineBillPay;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.rx')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.rx')]")
 	private WebElement rxRenewal;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.docs')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.docs')]")
 	private WebElement docManagement;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.fsu')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.fsu')]")
 	private WebElement fileSharing;
-	
-	@FindBy(xpath=".//a[contains(@href, 'home.activate')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'home.activate')]")
 	private WebElement patientactivation;
 
-	@FindBy(xpath=".//a[contains(@href, 'home.tplan')]")
+	@FindBy(xpath = ".//a[contains(@href, 'home.tplan')]")
 	private WebElement treatmentPlanTab;
-	
-	@FindBy( xpath = ".//a[contains(@href, 'home.vcs')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'home.vcs')]")
 	private WebElement virtualCardSwiper;
-	@FindBy(linkText="Patient Search")
+	@FindBy(linkText = "Patient Search")
 	private WebElement patientSearchLinkText;
-	
-	@FindBy(xpath=".//a[contains(@href, 'home.em')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'home.em')]")
 	private WebElement patientMessaging;
-	
-	@FindBy(linkText="Quick Send")
+
+	@FindBy(linkText = "Quick Send")
 	private WebElement quickSendLinkText;
-	
-	@FindBy(css="a[href*='home.vcs']")
+
+	@FindBy(css = "a[href*='home.vcs']")
 	private WebElement virtualCardSwiperTab;
 
-	@FindBy(css="a[href*='home.fsu']")
+	@FindBy(css = "a[href*='home.fsu']")
 	private WebElement fileSharingTab;
 
-	@FindBy(xpath=".//a[contains(@href, 'paymybill.srch')]")
+	@FindBy(xpath = ".//a[contains(@href, 'paymybill.srch')]")
 	private WebElement makePaymentForPatient;
-	
-	@FindBy(xpath=".//a[contains(@href, 'home.fa')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'home.fa')]")
 	private WebElement familyManagement;
-	
+
 	@FindBy(xpath = ".//a[contains(@href, 'home.referral')]")
 	private WebElement referralsTab;
 
@@ -111,7 +111,7 @@ public class PracticeHomePage extends BasePageObject {
 
 		boolean result = false;
 		try {
-			result = homePageTitle.getText().equalsIgnoreCase(homePageTitleText);		
+			result = homePageTitle.getText().equalsIgnoreCase(homePageTitleText);
 		} catch (Exception e) {
 			// just catch any element not found errors
 		}
@@ -129,13 +129,12 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
 
-		signOut.click();		
+		signOut.click();
 		return PageFactory.initElements(driver, PracticeLoginPage.class);
 	}
 
 	/**
-	 * Will take the staff member to the Ask A Staff search page
-	 * where the staff member can search questions that need processing.
+	 * Will take the staff member to the Ask A Staff search page where the staff member can search questions that need processing.
 	 * 
 	 * @return the Ask A Staff search page
 	 * @see AskAStaffSearchPage
@@ -150,9 +149,8 @@ public class PracticeHomePage extends BasePageObject {
 			askAStaffTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Ask A Question' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Ask A Question' solution,"
+					+ " or there was an error on login");
 		}
 
 		askAStaffTab.click();
@@ -160,8 +158,7 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page
-	 * where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -176,9 +173,8 @@ public class PracticeHomePage extends BasePageObject {
 			onlineBillPay.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Online Bill Pay' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Online Bill Pay' solution,"
+					+ " or there was an error on login");
 		}
 
 		onlineBillPay.click();
@@ -186,8 +182,7 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page
-	 * where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -202,42 +197,39 @@ public class PracticeHomePage extends BasePageObject {
 			patientactivation.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Online Bill Pay' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Online Bill Pay' solution,"
+					+ " or there was an error on login");
 		}
 
 		patientactivation.click();
 		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
-/**
-	 * Will take the staff member to the Online Bill Pay search page
-	 * where the staff member can search payments that need processing.
+
+	/**
+	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
 	 * 
 	 * @throws Exception
 	 */
-	public VirtualCardSwiperPage clickVirtualCardSwiperTab(){
+	public VirtualCardSwiperPage clickVirtualCardSwiperTab() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, virtualCardSwiperTab);
-		
+
 		try {
 			virtualCardSwiperTab.isDisplayed();
 		} catch (WebDriverException e) {
 			// Helpful message about possible issues
-			throw new WebDriverException("Either there was a timeout on loading the page, " +
-					" or virtualCardSwiperTab not found");
+			throw new WebDriverException("Either there was a timeout on loading the page, " + " or virtualCardSwiperTab not found");
 		}
-		
+
 		virtualCardSwiperTab.click();
 		return PageFactory.initElements(driver, VirtualCardSwiperPage.class);
 	}
-	
+
 	/**
-	 * Will take the staff member to the Online Bill Pay search page
-	 * where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -247,21 +239,20 @@ public class PracticeHomePage extends BasePageObject {
 	public PatientActivationPage clickFileSharingTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, fileSharingTab);
-		
+
 		try {
 			fileSharingTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-			" or fileSharingTab not found");
+			throw new Exception("Either there was a timeout on loading the page, " + " or fileSharingTab not found");
 		}
-		
+
 		fileSharingTab.click();
 		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
+
 	/**
-	 * Will take the staff member to the Rx Renewal Pay search page
-	 * where the staff member can search rx removals that need processing.
+	 * Will take the staff member to the Rx Renewal Pay search page where the staff member can search rx removals that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -276,9 +267,8 @@ public class PracticeHomePage extends BasePageObject {
 			rxRenewal.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Rx Renewal' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Rx Renewal' solution,"
+					+ " or there was an error on login");
 		}
 
 		rxRenewal.click();
@@ -286,8 +276,7 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will taky the staff member to the Referrals page where the staff member
-	 * can work with referrals
+	 * Will taky the staff member to the Referrals page where the staff member can work with referrals
 	 * 
 	 * @return the Referrals page
 	 * @see referrals
@@ -302,8 +291,7 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Appt Request search page
-	 * where the staff member can search questions that need processing.
+	 * Will take the staff member to the Appt Request search page where the staff member can search questions that need processing.
 	 * 
 	 * @return the Appt Request search page
 	 * 
@@ -317,9 +305,8 @@ public class PracticeHomePage extends BasePageObject {
 			apptRequestTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Appt Request' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Appt Request' solution,"
+					+ " or there was an error on login");
 		}
 
 		apptRequestTab.click();
@@ -334,9 +321,8 @@ public class PracticeHomePage extends BasePageObject {
 			virtualOfficeVisitTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					"the staff member is not permissioned for 'Virtual Office Visit' solution," +
-					" or there was an error on login");
+			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Virtual Office Visit' solution,"
+					+ " or there was an error on login");
 		}
 
 		virtualOfficeVisitTab.click();
@@ -351,8 +337,8 @@ public class PracticeHomePage extends BasePageObject {
 			customform.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					" or there was an error on login");	}
+			throw new Exception("Either there was a timeout on loading the page, " + " or there was an error on login");
+		}
 		customform.click();
 		return PageFactory.initElements(driver, SearchPatientFormsPage.class);
 	}
@@ -365,16 +351,16 @@ public class PracticeHomePage extends BasePageObject {
 			symptomAssessmentTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " +
-					" or there was an error on login");	}
+			throw new Exception("Either there was a timeout on loading the page, " + " or there was an error on login");
+		}
 		symptomAssessmentTab.click();
 		return PageFactory.initElements(driver, SymptomAssessmentFilterPage.class);
 	}
 
 	public boolean verifyAptRequestTab() {
 		IHGUtil.PrintMethodName();
-		IHGUtil util =new IHGUtil(driver);
-		IHGUtil.waitForElement(driver,20,apptRequestTab);
+		IHGUtil util = new IHGUtil(driver);
+		IHGUtil.waitForElement(driver, 20, apptRequestTab);
 		return util.isRendered(this.apptRequestTab);
 
 	}
@@ -386,7 +372,7 @@ public class PracticeHomePage extends BasePageObject {
 	 */
 	public TreatmentPlansPage clickOnManageTreatmentPlan() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver, 30, treatmentPlanTab);	
+		IHGUtil.waitForElementInDefaultFrame(driver, 30, treatmentPlanTab);
 		treatmentPlanTab.click();
 		return PageFactory.initElements(driver, TreatmentPlansPage.class);
 	}
@@ -403,55 +389,51 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, VirtualCardSwiperPage.class);
 	}
 
-/**
+	/**
 	 * @Description:Click Patient Search Link
 	 * @return
 	 */
-	public PatientSearchPage clickPatientSearchLink()
-	{
+	public PatientSearchPage clickPatientSearchLink() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver,20,patientSearchLinkText);
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientSearchLinkText);
 		patientSearchLinkText.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
-		
+
 	}
-	
+
 	/**
 	 * @Description:Click Patient Messaging Tab
 	 * @return
 	 */
-	public PatientMessagingPage clickPatientMessagingTab()
-	{
+	public PatientMessagingPage clickPatientMessagingTab() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver,20,patientMessaging);
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientMessaging);
 		patientMessaging.click();
-		IHGUtil.waitForElementInDefaultFrame(driver,10,quickSendLinkText);
+		IHGUtil.waitForElementInDefaultFrame(driver, 10, quickSendLinkText);
 		quickSendLinkText.click();
 		return PageFactory.initElements(driver, PatientMessagingPage.class);
-	
+
 	}
-	
-		/**
+
+	/**
 	 * @Description:Click Make Payment For Patient
 	 * @return
 	 */
-	public PayMyBillOnlinePage clickMakePaymentForPatient()
-	{
+	public PayMyBillOnlinePage clickMakePaymentForPatient() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver,20,onlineBillPay);
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, onlineBillPay);
 		onlineBillPay.click();
-		IHGUtil.waitForElementInDefaultFrame(driver,10,makePaymentForPatient);
+		IHGUtil.waitForElementInDefaultFrame(driver, 10, makePaymentForPatient);
 		makePaymentForPatient.click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
-		
+
 	}
-	
-	public AgeOutReportPage clickFamilyManagementTab()
-	{
+
+	public AgeOutReportPage clickFamilyManagementTab() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElementInDefaultFrame(driver,20,familyManagement);
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, familyManagement);
 		familyManagement.click();
 		return PageFactory.initElements(driver, AgeOutReportPage.class);
-		
+
 	}
 }

@@ -16,10 +16,10 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 	public static final String pageTitle = "Conditions and Diagnoses";
 	public static final String noConditions = "No Conditions or Diagnoses Added";
 
-	@FindBy( xpath = ".//*[@class='content_hdr']")
+	@FindBy(xpath = ".//*[@class='content_hdr']")
 	private WebElement conditionsAndDiagnosesTitle;
 
-	@FindBy( xpath = "//img[@alt='ADD CONDITIONS']")
+	@FindBy(xpath = "//img[@alt='ADD CONDITIONS']")
 	private WebElement addConditionsBtn;
 
 	public PhrConditionsAndDiagnosesPage(WebDriver driver) {
@@ -35,12 +35,12 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 	public void clickOnAddConditions() throws Exception {
 		IHGUtil.PrintMethodName();
 		WebElement ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td"));
-		if(ele.getText().contains(noConditions)){
+		if (ele.getText().contains(noConditions)) {
 			selectFirstCheckBox();
 			IHGUtil.waitForElement(driver, 30, addConditionsBtn);
 			addConditionsBtn.click();
 			Thread.sleep(8000);
-		}else {
+		} else {
 			IHGUtil.waitForElement(driver, 30, addConditionsBtn);
 			addConditionsBtn.click();
 			Thread.sleep(5000);
@@ -48,7 +48,7 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 30, addConditionsBtn);
 			addConditionsBtn.click();
 			Thread.sleep(8000);
-		}	
+		}
 	}
 
 	public void selectFirstCheckBox() {
@@ -58,10 +58,10 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 
 		List<WebElement> allValues = driver.findElements(By.xpath(xpath_AllCheckBox));
 
-		for(WebElement value : allValues) {
-			if(value.isSelected()) {
+		for (WebElement value : allValues) {
+			if (value.isSelected()) {
 				continue;
-			}else {
+			} else {
 				value.click();
 				break;
 			}
@@ -74,17 +74,17 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		int row_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span")).size();
 		int table_Size = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr")).size();
-		int iValue = (table_Size-row_Size)+1;
+		int iValue = (table_Size - row_Size) + 1;
 
-		for( int i=iValue; i<=table_Size; i++) { 
-			WebElement  ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/span"));
+		for (int i = iValue; i <= table_Size; i++) {
+			WebElement ele = driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr[" + i + "]/td/a/span"));
 
 			if (ele.getText().contains(value)) {
-				driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr["+i+"]/td/a/img")).click();
+				driver.findElement(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr[" + i + "]/td/a/img")).click();
 				driver.switchTo().alert().accept();
 				Thread.sleep(10000);
 				break;
-			}else {
+			} else {
 				continue;
 			}
 
@@ -96,9 +96,9 @@ public class PhrConditionsAndDiagnosesPage extends BasePageObject {
 		Thread.sleep(8000);
 		driver.switchTo().defaultContent();
 		List<WebElement> allConditions = driver.findElements(By.xpath(".//*[@id='custom_table_list_id']/tbody/tr/td/a/span"));
-		for(WebElement cond : allConditions) {
-			log("text :"+cond.getText());
-			if(cond.getText().contains(value)) {
+		for (WebElement cond : allConditions) {
+			log("text :" + cond.getText());
+			if (cond.getText().contains(value)) {
 				isPresent = true;
 			} else {
 				isPresent = false;

@@ -82,12 +82,10 @@ public class ViewIntegrationsPage extends BasePageObject {
 	 * @throws InterruptedException
 	 * 
 	 */
-	public CreateIntegrationStep1Page clickLnkCreateIntegration()
-			throws InterruptedException {
+	public CreateIntegrationStep1Page clickLnkCreateIntegration() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		lnkCreateIntegration.click();
-		return PageFactory.initElements(driver,
-				CreateIntegrationStep1Page.class);
+		return PageFactory.initElements(driver, CreateIntegrationStep1Page.class);
 
 	}
 
@@ -100,21 +98,17 @@ public class ViewIntegrationsPage extends BasePageObject {
 	public boolean verifyIfIntegrationsEngineIsAdded(String integrationName) {
 
 		int flag = 0;
-		List<WebElement> tr_collection = tableIntegrationsInformation
-				.findElements(By.xpath(table_row));
+		List<WebElement> tr_collection = tableIntegrationsInformation.findElements(By.xpath(table_row));
 
-		System.out.println("NUMBER OF ROWS IN THIS TABLE = "
-				+ tr_collection.size());
+		System.out.println("NUMBER OF ROWS IN THIS TABLE = " + tr_collection.size());
 		int row_num, col_num;
 		row_num = 1;
 		for (WebElement trElement : tr_collection) {
-			List<WebElement> td_collection = trElement.findElements(By
-					.xpath("td"));
+			List<WebElement> td_collection = trElement.findElements(By.xpath("td"));
 			System.out.println("NUMBER OF COLUMNS=" + td_collection.size());
 			col_num = 2;
 			for (WebElement tdElement : td_collection) {
-				System.out.println("row # " + row_num + ", col # " + col_num
-						+ "text=" + tdElement.getText());
+				System.out.println("row # " + row_num + ", col # " + col_num + "text=" + tdElement.getText());
 
 				if (tdElement.getText().equals(integrationName)) {
 					flag = flag + 1;

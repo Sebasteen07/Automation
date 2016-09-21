@@ -14,20 +14,20 @@ import com.medfusion.common.utils.IHGUtil;
  * @Description :-
  * @Note :
  */
-public class TestPage extends BasePageObject{
+public class TestPage extends BasePageObject {
 
-	
+
 	public static final String PAGE_NAME = "";
-    public static final String pageUrl = "";
+	public static final String pageUrl = "";
 
-	@FindBy(name="username")
+	@FindBy(name = "username")
 	private WebElement txtElement;
-	
-		
+
+
 	public TestPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	public TestPage(WebDriver driver, String baseURL) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -37,5 +37,5 @@ public class TestPage extends BasePageObject{
 		PageFactory.initElements(driver, this);
 	}
 
-    
+
 }

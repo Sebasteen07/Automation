@@ -9,12 +9,12 @@ public class EHDC {
 	public String RestUrl = "";
 	public String CCDPath = "";
 	public String ResponsePath = "";
-	public String OAuthProperty ="";
-	public String OAuthKeyStore ="";
-	public String OAuthAppToken ="";
-	public String OAuthUsername ="";
-	public String OAuthPassword ="";
-	public String GmailUserName ="";
-	public String GmailPassword ="";
-	public String PracticeName ="";
+	public String OAuthProperty = "";
+	public String OAuthKeyStore = "";
+	public String OAuthAppToken = "";
+	public String OAuthUsername = "";
+	public String OAuthPassword = "";
+	public String GmailUserName = "";
+	public String GmailPassword = "";
+	public String PracticeName = "";
 }

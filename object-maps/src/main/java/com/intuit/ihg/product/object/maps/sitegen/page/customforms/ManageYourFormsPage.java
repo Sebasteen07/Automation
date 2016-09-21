@@ -61,8 +61,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author : bbinihsa Verify that published custom form is present in Manage
-	 *         Your Forms ->Published Table
+	 * @author : bbinihsa Verify that published custom form is present in Manage Your Forms ->Published Table
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
@@ -89,8 +88,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author bbinisha verify that published form can be unpublished by
-	 *         clicking on 'Unpublish' link
+	 * @author bbinisha verify that published form can be unpublished by clicking on 'Unpublish' link
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
@@ -142,8 +140,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author bbinisha Verify that unpublished form deleted by clicking on
-	 *         'Delete' link
+	 * @author bbinisha Verify that unpublished form deleted by clicking on 'Delete' link
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
@@ -168,8 +165,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for published
-	 *         form
+	 * @author bbinisha Verify that 'Preview' has been clicked for published form
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
@@ -197,8 +193,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished
-	 *         form
+	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished form
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
@@ -227,8 +222,7 @@ public class ManageYourFormsPage extends BasePageObject {
 	}
 
 	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished
-	 *         form
+	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished form
 	 * @param formTitle
 	 * @return true or false
 	 * @throws Exception
