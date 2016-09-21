@@ -1,13 +1,14 @@
 package com.medfusion.product.patientportal1.flows;
 
 import static org.testng.AssertJUnit.assertNotNull;
+
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.forgotuserid.ForgotUserIdConfirmationPage;
 import com.medfusion.product.object.maps.patientportal1.page.forgotuserid.ForgotUserIdEnterEmailPage;
@@ -65,8 +66,9 @@ public class ForgotUserIdTest extends BaseTestNGWebDriver {
 		assertTrue(step1.isPageLoaded(), "There was an error loading the first page in the Forgot UserId workflow.");
 		PerformanceReporter.getPageLoadDuration(driver, ForgotUserIdEnterEmailPage.PAGE_NAME);
 
-		log("step 4: Enter patient email");		
+		log("step 4: Enter patient email and DOB");
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(email);
+		step2.selectDOB(testcasesData.getDob_Day(), testcasesData.getDob_Month(), testcasesData.getDob_Year());
 		
 		log("step 5: Answer patient security question");
 		ForgotUserIdConfirmationPage step3 = step2.answerSecurityQuestion(testcasesData.getAnswer());
