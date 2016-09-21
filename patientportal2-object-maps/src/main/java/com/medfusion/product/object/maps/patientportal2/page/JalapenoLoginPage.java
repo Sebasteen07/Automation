@@ -61,8 +61,6 @@ public class JalapenoLoginPage extends MedfusionPage {
 		webElementsList.add(buttonSignIn);
 		webElementsList.add(buttonCreateANewAccount);
 		webElementsList.add(rememberUserNameCheckbox);
-		webElementsList.add(buttonPayNow);
-
 		return assessPageElements(webElementsList);
 	}
 

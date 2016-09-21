@@ -85,11 +85,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	private void testQuotationMarksInForm(HealthFormListPage formsPage) throws Exception {
 		log("step 1: Open form: " + SitegenConstants.SPECIAL_CHARS_FORM);
-		formsPage.openNewCustomForm(SitegenConstants.SPECIAL_CHARS_FORM);
+		SpecialCharFormFirstPage customPage1 = formsPage.openDiscreteForm(SitegenConstants.SPECIAL_CHARS_FORM).initToFirstPage(SpecialCharFormFirstPage.class);
 
 		log("Step 2: Fill the form out with values containing quotes");
-		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		SpecialCharFormFirstPage customPage1 = welcomePage.initToFirstPage(SpecialCharFormFirstPage.class);
 		customPage1.selectQuotatedAnswers();
 
 		SpecialCharFormSecondPage customPage2 = customPage1.clickSaveContinue(SpecialCharFormSecondPage.class);
@@ -136,7 +134,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		String diacriticString = "¿¡eñÑeŘ\"";
 
 		log("step 1: Open form: " + SitegenConstants.PDF_CCD_FORM);
-		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).goToFirstPage();
+		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).initToFirstPage(FormBasicInfoPage.class);
 
 		log("Step 2: Fill out the form");
 		fillOutputForm(diacriticString);
@@ -166,13 +164,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	private void testFormPracticePortal(HealthFormListPage formsPage) throws Exception {
 		log("step 1: Open form: " + SitegenConstants.PRACTICE_FORM);
-		formsPage.openNewCustomForm(SitegenConstants.PRACTICE_FORM);
+		FormBasicInfoPage demographPage = formsPage.openDiscreteForm(SitegenConstants.PRACTICE_FORM).initToFirstPage(FormBasicInfoPage.class);
 
 		log("Step 2: Fill out and submit the form");
-		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-
-		FormBasicInfoPage demographPage = welcomePage.initToFirstPage(FormBasicInfoPage.class);
-
 		FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 
@@ -207,12 +201,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	private void testPartiallyCompletedForm(HealthFormListPage formsPage) throws Exception {
 		log("step 1: Open form: " + SitegenConstants.PRACTICE_FORM);
-		formsPage.openNewCustomForm(SitegenConstants.PRACTICE_FORM);
+		FormBasicInfoPage firstPage = formsPage.openDiscreteForm(SitegenConstants.PRACTICE_FORM).initToFirstPage(FormBasicInfoPage.class);
 
 		log("Step 2: Fill out the form");
-		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-		welcomePage.initToFirstPage(FormBasicInfoPage.class);
-		welcomePage.clickSaveAndFinishAnotherTime();
+		firstPage.clickSaveAndFinishAnotherTime();
 		driver.switchTo().defaultContent();
 
 		log("Step 3: Go to Practice Portal forms tab");
@@ -266,7 +258,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	private void testFormPatientDashboard(HealthFormListPage formsPage) throws Exception {
 
 		log("step 1: Open form :" + SitegenConstants.PDF_CCD_FORM);
-		formsPage.openNewCustomForm(SitegenConstants.PDF_CCD_FORM);
+		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).initToFirstPage(FormBasicInfoPage.class);
 
 		log("Step 2: Fill out the form");
 		fillOutputForm("Written by formPatientDashboardTest");
@@ -453,7 +445,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	private void fillOutputForm(String diacriticString) throws Exception {
 		FormBasicInfoPage basicInfoPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
-
 		FormCurrentSymptomsPage currentSymptomsPage = basicInfoPage.clickSaveContinue(FormCurrentSymptomsPage.class);
 		currentSymptomsPage.setBasicSymptoms();
 		currentSymptomsPage.enterComment(diacriticString);
