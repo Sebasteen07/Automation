@@ -49,12 +49,12 @@ public class ConfiguratorFormPage extends BasePageObject {
 	 */
 
 	public void clickBackToTheList() throws InterruptedException {
-		scrollAndWait(0, 0, 0);
+		scrollAndWait(0, 0, 500);
 		backToTheList.click();
 	}
 
 	public void clickSaveButton() throws InterruptedException {
-		scrollAndWait(0, 0, 0);
+		scrollAndWait(0, 0, 500);
 		saveButton.click();
 	}
 

@@ -26,7 +26,7 @@ import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.J
 
 public class JalapenoHomePage extends JalapenoMenu {
 
-	@FindBy(how = How.ID, using = "home")
+	@FindBy(how = How.XPATH, using = "//*[@id='home' and contains(@class,'active')]")
 	private WebElement home;
 
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -195,17 +195,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(messages);
-		webElementsList.add(appointments);
 		webElementsList.add(home);
-		webElementsList.add(askAQuestion);
-		webElementsList.add(prescriptions);
-		webElementsList.add(payments);
-		webElementsList.add(forms);
-
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
