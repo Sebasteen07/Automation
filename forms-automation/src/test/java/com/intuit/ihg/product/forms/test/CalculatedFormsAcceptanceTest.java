@@ -33,7 +33,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 *        ============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
 		log("step 1: navigate to SiteGen PracticeHomePage");
