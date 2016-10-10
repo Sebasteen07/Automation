@@ -43,7 +43,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='forms_lhn']/a/span")
 	private WebElement healthFormsMenu;
-	@FindBy(how = How.LINK_TEXT, using = "Account")
+	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "Account")
 	private WebElement accountButton;
 
 	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
@@ -63,12 +63,6 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(homeMenu);
-		webElementsList.add(messagesMenu);
-		webElementsList.add(appointmentsMenu);
-		webElementsList.add(askAQuestionMenu);
-		webElementsList.add(prescriptionsMenu);
-		webElementsList.add(payBillsMenu);
-		webElementsList.add(healthFormsMenu);
 		webElementsList.add(accountButton);
 		webElementsList.add(signoutButton);
 

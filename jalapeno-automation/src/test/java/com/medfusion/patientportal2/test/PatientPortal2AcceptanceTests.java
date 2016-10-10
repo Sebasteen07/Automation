@@ -28,10 +28,10 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage2;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage3;
@@ -60,6 +60,7 @@ import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearch
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.tests.CommonSteps;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
@@ -110,21 +111,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
 
-	public JalapenoHomePage createAndLogInPatient(JalapenoPatient patient) {
-
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
-
-		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
-		
-		patientDemographicPage.fillInPatientData(patient);
-		
-		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
-
-		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testData);
-		assertTrue(homePage.areBasicPageElementsPresent());
-		return homePage;
-	}
-
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 		log("Load login page");
@@ -166,7 +152,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoPatient jalapenoPatient = new JalapenoPatient(testData);
 
 		logStep("Creating a new patient");
-		JalapenoHomePage homePage = createAndLogInPatient(jalapenoPatient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(jalapenoPatient, testData, driver);
 
 		logStep("Checking if the information are correct");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -244,7 +230,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Initiate patient data");
 		JalapenoPatient patient = new JalapenoPatient(testData);
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		logStep("Logout");
 		JalapenoLoginPage loginPage = homePage.clickOnLogout();
@@ -355,7 +341,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Initiate patient data");
 		JalapenoPatient patient = new JalapenoPatient(testData);
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		logStep("Checking if zipCode in My Account is filled");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -381,7 +367,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Create patient");
 		JalapenoPatient patient = new JalapenoPatient(testData);
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		JalapenoLoginPage loginPage = homePage.clickOnLogout();
 		assertTrue(loginPage.areBasicPageElementsPresent());
@@ -528,7 +514,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Creating a new patient");
 		JalapenoPatient patient = new JalapenoPatient(testData);
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
 		prescriptionsPage.clickContinueButton(driver);
@@ -923,7 +909,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testMyAccount() throws Exception {
 
 		logStep("Create and login patient");
-		JalapenoHomePage homePage = createAndLogInPatient(new JalapenoPatient(testData));
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(new JalapenoPatient(testData), testData, driver);
 		logStep("Going to MyAccount page");
 		JalapenoMyAccountProfilePage myAccountPage = homePage.goToMyAccountPage();
 		logStep("Modify some elements and check their values on My Account page");
@@ -942,7 +928,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPracticeName());
 
 		logStep("Create and log in patient");
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		logStep("Go to security tab on my account page");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -988,7 +974,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Creating a new patient");
 		JalapenoPatient patient = new JalapenoPatient(testData);
 		JalapenoPatient trustedPatient = new JalapenoPatient(testData);
-		JalapenoHomePage homePage = createAndLogInPatient(patient);
+		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(patient, testData, driver);
 
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 

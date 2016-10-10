@@ -68,8 +68,37 @@ public class Utils {
 		return new PortalLoginPage(driver, url).login(portalData.getUsername(), portalData.getPassword());
 	}
 
+	public static JalapenoHomePage loginPI(WebDriver driver, boolean persistentFormsPractice, String userName, String password) throws Exception {
+		String url;
+		TestcasesData portalData = new TestcasesData(new Portal());
+		if (persistentFormsPractice) {
+			url = portalData.getPIFormsAltUrl();
+		} else {
+			url = portalData.getPIFormsUrl();
+		}
+		log("Login to PI");
+		logLogin(url, userName, password);
+		return new JalapenoLoginPage(driver, url).login(userName, password);
+	}
+
+	public static MyPatientPage loginPortal1(WebDriver driver, boolean persistentFormsPractice, String userName, String password) throws Exception {
+		String url;
+		TestcasesData portalData = new TestcasesData(new Portal());
+		if (persistentFormsPractice) {
+			url = portalData.getFormsAltUrl();
+		} else {
+			url = portalData.getFormsUrl();
+		}
+		log("Login to Portal 1");
+		logLogin(url, userName, password);
+		return new PortalLoginPage(driver, url).login(userName, password);
+	}
+
+
+
 	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
 		IHGUtil.setFrame(driver, "iframe");
+		Thread.sleep(8000);
 		Date submittedDate = formsPage.getSubmittedDate(formName);
 		Date now = getCurrentTimeGMT(-4);
 		log("Date from web: " + submittedDate);

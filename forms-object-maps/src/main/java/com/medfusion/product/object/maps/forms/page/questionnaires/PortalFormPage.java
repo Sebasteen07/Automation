@@ -128,10 +128,10 @@ public class PortalFormPage extends BasePageObject {
 	 */
 	public void submitForm() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 25);
-
+		wait.until(ExpectedConditions.visibilityOf(submitForm));
 		submitForm.click();
 		try {
-			wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+			wait.until(ExpectedConditions.visibilityOf(closeButton));
 		} catch (NoSuchElementException ex) {
 			log("Close button is not displayed");
 			if (errorDialog.isDisplayed()) {
@@ -146,7 +146,7 @@ public class PortalFormPage extends BasePageObject {
 	public void clickSaveAndFinishAnotherTime() {
 		saveAndFinishLink.click();
 		try {
-			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

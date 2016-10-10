@@ -2,9 +2,12 @@ package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.util.List;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 
@@ -77,11 +80,10 @@ public class CalculatedFormPage extends PortalFormPage {
 
 	public boolean isValidationErrorDisplayed() throws InterruptedException {
 		log("Checking if error message was displayed.");
-		IHGUtil iHGUtil = new IHGUtil(driver);
-		Thread.sleep(1000);
-		if (iHGUtil.exists(errorMsg)) {
-			return errorMsg.isDisplayed();
-		} else {
+		try {
+			new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOf(errorMsg));
+			return true;
+		} catch (TimeoutException ex) {
 			return false;
 		}
 	}

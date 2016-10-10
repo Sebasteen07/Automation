@@ -49,6 +49,7 @@ public class JalapenoPatient {
         state = "Alabama";
     }
 
+	// not used anywhere, too heavy, probably should be deleted
     public JalapenoPatient(String email, String password, String url, String firstName, String lastName, Gender gender,
             String dOBDay, String dOBMonth, String dOBMonthText, String dOBYear, String zipCode, String address1,
             String address2, String city, String state) {
