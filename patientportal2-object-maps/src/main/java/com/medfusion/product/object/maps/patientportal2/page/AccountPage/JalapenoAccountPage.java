@@ -19,6 +19,7 @@ import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class JalapenoAccountPage extends BasePageObject {
 
+	// won't work if linked accounts are disabled
 	@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
 	private WebElement editMyAccountButton;
 

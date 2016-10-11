@@ -10,7 +10,7 @@
 	<classes>
 	    <class name="com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests" />
 	    	<methods>
-	    		<include name="testLoginValidCredentials" />
+	    		<include name="testLoginValidCredentialsAndValidateMenuElements" />
       		</methods>
   </classes>
 	

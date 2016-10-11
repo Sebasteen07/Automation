@@ -26,6 +26,7 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.forms.pojo.Question;
 import com.medfusion.product.forms.pojo.SelectQuestion;
 import com.medfusion.product.forms.pojo.SelectableAnswer;
@@ -56,8 +57,11 @@ import com.medfusion.product.object.maps.practice.page.customform.SearchPatientF
 import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.tests.CommonSteps;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
@@ -106,21 +110,29 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testFormPdfCcdPI() throws Exception {
 		TestcasesData portalData = new TestcasesData(new Portal());
-		testFormPdfCcd(Utils.loginPIAndOpenFormsList(driver, true), portalData);
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoPatient patientData = new JalapenoPatient(testData);
+		patientData.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
+		patientData.setDOBYear("1900");
+		HealthFormListPage hflp = CommonSteps.createAndLogInPatient(patientData, testData, driver).clickOnHealthForms();
+		testFormPdfCcd(hflp, portalData);
 		log("Step 6: Test if the DOB has not been changed");
-		JalapenoMyAccountProfilePage pMyAccountPage = Utils.loginPI(driver, true).clickOnAccount().clickOnEditMyAccount();
-		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), portalData.getDOB());
+		JalapenoHomePage jhp = Utils.loginPI(driver, true, patientData.getEmail(), patientData.getPassword());
+		assertTrue(jhp.areMenuElementsPresent());
+		JalapenoMyAccountProfilePage pMyAccountPage = jhp.clickOnAccount().clickOnEditMyAccount();
+		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"),
+				patientData.getDOBMonthText() + "/" + patientData.getDOBDay() + "/" + patientData.getDOBYear());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPdfCcdPortal1() throws Exception {
 		TestcasesData portalData = new TestcasesData(new Portal());
-		testFormPdfCcd(Utils.loginPortal1AndOpenFormsList(driver, true), portalData);
-		MyPatientPage pMyPatientPage = Utils.loginPortal1(driver, true);
+		CreatePatientTest patientCreation = new CreatePatientTest(null, null, new TestcasesData(new Portal()).getFormsAltUrl());
+		HealthFormListPage hflp = patientCreation.createPatient(driver, new TestcasesData(new Portal())).clickOnHealthForms();
+		testFormPdfCcd(hflp, portalData);
 		log("Step 6: Test if the DOB has not been changed");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
-		String accountDOB = IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy");
-		assertEquals(portalData.getDOB(), accountDOB, "Date of birth is not accurate!");
+		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, true, patientCreation.getEmail(), patientCreation.getPassword()).clickMyAccountLink();
+		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), portalData.getDOB());
 	}
 
 	private void testFormPdfCcd(HealthFormListPage formsPage, TestcasesData portalData) throws Exception {
@@ -203,7 +215,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fill out the form");
 		firstPage.clickSaveAndFinishAnotherTime();
-		driver.switchTo().defaultContent();
+		formsPage.logout();
 
 		log("Step 3: Go to Practice Portal forms tab");
 		SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
@@ -233,28 +245,37 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
 		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
+		FormBasicInfoPage firstRegPage = pFormWelcomePage.clickSaveContinue(FormBasicInfoPage.class);
+		firstRegPage.clickSaveAndFinishAnotherTime();
 		pMyPatientPage.logout(driver);
 
 		log("step 9: Log in to Patient Portal Inspired");
 		JalapenoHomePage pHomePage = Utils.loginPI(driver, false);
 
 		log("step 10: Click On Start Registration Button and verify welcome page of the previously created form");
-		pFormWelcomePage = pHomePage.clickContinueRegistrationButton(driver);
-		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
+		pHomePage.clickContinueRegistrationButton(driver);
+		firstRegPage = new FormBasicInfoPage(driver);
+		assertEquals(firstRegPage.isPageLoaded(), true);
 	}
 
 	@Test(groups = {"Forms"})
 	public void testFormPatientDashboardPI() throws Exception {
-		testFormPatientDashboard(Utils.loginPIAndOpenFormsList(driver, true));
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoPatient jp = new JalapenoPatient(testData);
+		jp.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
+		jp.setDOBYear("1900");
+		HealthFormListPage hflp = CommonSteps.createAndLogInPatient(jp, testData, driver).clickOnHealthForms();
+		testFormPatientDashboard(hflp, jp.getEmail(), jp.getFirstName(), jp.getLastName());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPatientDashboardPortal1() throws Exception {
-		testFormPatientDashboard(Utils.loginPortal1AndOpenFormsList(driver, true));
+		CreatePatientTest cpt = new CreatePatientTest(null, null, new TestcasesData(new Portal()).getFormsAltUrl());
+		HealthFormListPage hflp = cpt.createPatient(driver, new TestcasesData(new Portal())).clickOnHealthForms();
+		testFormPatientDashboard(hflp, cpt.getEmail(), cpt.getFirstName(), cpt.getLastName());
 	}
 
-	private void testFormPatientDashboard(HealthFormListPage formsPage) throws Exception {
-
+	private void testFormPatientDashboard(HealthFormListPage formsPage, String email, String firstName, String lastName) throws Exception {
 		log("step 1: Open form :" + SitegenConstants.PDF_CCD_FORM);
 		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).initToFirstPage(FormBasicInfoPage.class);
 
@@ -268,12 +289,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeHomePage pHomePage = loginToPracticePortal();
 
 		log("Step 5: Search for previously created patient");
-		TestcasesData portalData = new TestcasesData(new Portal());
 		PatientSearchPage pSearchPage = pHomePage.clickPatientSearchLink();
-		pSearchPage.searchForPatientInPatientSearch(portalData.getFirstName(), portalData.getLastName());
+		pSearchPage.searchForPatientInPatientSearch(email);
 
 		log("Step 6: Get into patient dashboard");
-		PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(portalData.getFirstName(), portalData.getLastName());
+		PatientDashboardPage pDashboardPage = pSearchPage.clickOnPatient(firstName, lastName);
 
 		log("Step 7: Verify if there's submitted form on patient dashboard");
 		assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM), "Submitted form was not found on Patient Dashboard");

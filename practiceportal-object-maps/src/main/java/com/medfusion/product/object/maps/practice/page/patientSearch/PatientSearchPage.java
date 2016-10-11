@@ -126,19 +126,17 @@ public class PatientSearchPage extends BasePageObject {
 
 	public void searchForPatientInPatientSearch(String fName, String lName) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 15, firstName);
 		firstName.clear();
 		firstName.sendKeys(fName);
-		IHGUtil.waitForElement(driver, 15, lastName);
 		lastName.clear();
 		lastName.sendKeys(lName);
-		IHGUtil.waitForElement(driver, 12, searchForPatient);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		searchForPatient.click();	
+	}
+
+	public void searchForPatientInPatientSearch(String email) {
+		IHGUtil.PrintMethodName();
+		firstName.clear();
+		this.email.sendKeys(email);
 		searchForPatient.click();
 	}
 

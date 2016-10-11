@@ -20,8 +20,6 @@ import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.OldCustomFormPages;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
@@ -33,6 +31,7 @@ import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
+	private final int TRANSITION_WAIT_TIME_MS = 5000;
 	/**
 	 * @Author:-Shanthala : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
@@ -51,18 +50,19 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testCustomFormPublished() throws Exception {
 		Utils.logTestEnvironmentInfo("testCustomFormPublished");
 		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
+		SitegenTestData testcasesData = new SitegenTestData(new Sitegen());
 		SiteGenSteps.logSGLoginInfo(testcasesData);
+		String customFormTitle = SitegenConstants.FORMTITLE + IHGUtil.createRandomNumber();
+		log("new form name: " + customFormTitle);
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
 		SiteGenHomePage pSiteGenHomePage = loginpage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
-		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
+		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage to be loaded, but it was not.");
 
 		log("step 3: navigate to SiteGen PracticeHomePage ##########");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage to be loaded, but it was not.");
 
 		log("step 4: Click on Custom Forms");
 		String winHandleSiteGen = driver.getWindowHandle();
@@ -75,8 +75,6 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		plinkOnManageCustomForm.deleteFormsNamedLike(SitegenConstants.FORMTITLE);
 		log("step 6: Click on Create Custom Form");
 		CreateCustomFormPage plinkOnCustomForm = pManageCustomForms.clicklnkCreateCustomForm();
-
-		String customFormTitle = SitegenConstants.FORMTITLE + IHGUtil.createRandomNumber();
 
 		log("step 7: Enter Custom Form details");
 		assertTrue(plinkOnCustomForm.isSearchPageLoaded(),
@@ -91,7 +89,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 9A: Add Question1 to category 1");
 		assertTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add questions to the category page to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY), "Questions are not getting added to expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY, TRANSITION_WAIT_TIME_MS), "Questions are not getting added to expected Category");
 		assertTrue(pAddCAtegories.addQuestion1ToCategory(SitegenConstants.FORMQUESTION1), "Custom Form question1 and answerset1 did not updated successfully.");
 		pAddCAtegories.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET1);
 		pAddCAtegories.saveCategoryQuestions();
@@ -101,7 +99,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 9B: Add Question2 to category 2");
 		assertTrue(pAddCAtegories2.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2), "Questions are not getting added to expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2, TRANSITION_WAIT_TIME_MS), "Questions are not getting added to expected Category");
 		assertTrue(pAddCAtegories2.addQuestion1ToCategory(SitegenConstants.FORMQUESTION2), "Custom Form question2 and answerset2 did not updated successfully.");
 		pAddCAtegories2.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET2);
 		pAddCAtegories2.saveCategoryQuestions();
@@ -111,21 +109,21 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 9C: Add Question3 to category 3");
 		assertTrue(pAddCAtegories3.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3), "Questions are not getting added to expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3, TRANSITION_WAIT_TIME_MS), "Questions are not getting added to expected Category");
 		assertTrue(pAddCAtegories3.addQuestion1ToCategory(SitegenConstants.FORMQUESTION3), "Custom Form question3 and answerset3 did not updated successfully.");
 		pAddCAtegories3.addAnswerForQuestion1(SitegenConstants.FORMANSWERSET3);
 
 		log("step 9D: Save added questions to category");
 		assertTrue(pAddCAtegories.isSearchPageLoaded(), "Expected the SiteGen Add question to the category page to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3), "Questions are not getting added to expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3, TRANSITION_WAIT_TIME_MS), "Questions are not getting added to expected Category");
 		pAddCAtegories.saveCategoryQuestions();
 
 		CustomFormLayoutPage pAddQuestionsToCategory = pAddCAtegories.clickCustomFormLayoutPage();
 
 		log("step 10: Set Custom Form Layout");
 		assertTrue(pAddQuestionsToCategory.isSearchPageLoaded(), "Expected the SiteGen form Layout page to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY), "Form Layout is not set for Expected Category");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2), "Form Layout is not set for Expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY, TRANSITION_WAIT_TIME_MS), "Form Layout is not set for Expected Category");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY2, TRANSITION_WAIT_TIME_MS), "Form Layout is not set for Expected Category");
 		assertTrue(verifyTextPresent(driver, SitegenConstants.FORMCATEGORY3), "Form Layout is not set for Expected Category");
 		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE, SitegenConstants.FORMCATEGORY);
 		pAddQuestionsToCategory.addFormLayout(SitegenConstants.FORMLAYOUTPAGE2, SitegenConstants.FORMCATEGORY2);
@@ -154,29 +152,24 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 				"Custom Form did not published successfully and not present in published forms table");
 		driver.switchTo().window(winHandleSiteGen); // Setting data
 
-		Portal portal = new Portal();
-		TestcasesData portalTestcasesData = new TestcasesData(portal);
-
 		String winHandlePatientPortal = driver.getWindowHandle();
 		log("step 12.1:Login to patient portal");
 		log("URL: " + pSiteGenPracticeHomePage.getPatientPortalUrl());
-		PortalLoginPage portalLoginPage = new PortalLoginPage(driver, pSiteGenPracticeHomePage.getPatientPortalUrl());
-		MyPatientPage pMyPatientPage = portalLoginPage.login(portalTestcasesData.getUsername(), portalTestcasesData.getPassword());
-		log("step 12.2: Click on CustomForm");
-		HealthFormListPage pHealthForm = pMyPatientPage.clickOnHealthForms();
+		HealthFormListPage pHealthForm = Utils.loginPIAndOpenFormsList(driver, false);
+
 		log("step 12.3: Open Form");
 		OldCustomFormPages oldCustomForm = pHealthForm.openOldCustomForm(customFormTitle);
 		log("step 12.4: Fill form");
-		assertEquals(verifyTextPresent(driver, "First Name"), true, "Demographic information is not present in form on Portal");
+		assertEquals(verifyTextPresent(driver, "First Name", TRANSITION_WAIT_TIME_MS), true, "Demographic information is not present in form on Portal");
 		oldCustomForm.clickNext();
-		assertEquals(verifyTextPresent(driver, "Vital"), true, "Vital information is not present in form on Portal");
-		log("Step 12.3: Fill Vitals");
+		assertEquals(verifyTextPresent(driver, "Vital", TRANSITION_WAIT_TIME_MS), true, "Vital information is not present in form on Portal");
+		log("Step 12.5: Fill Vitals");
 		oldCustomForm.fillVitals();
 		oldCustomForm.clickNext();
-		assertEquals(verifyTextPresent(driver, "Insurance Type"), true, "Insurance Type is not present in form on Portal");
-		log("Step 12.4: exit non completed form");
+		assertEquals(verifyTextPresent(driver, "Insurance Type", TRANSITION_WAIT_TIME_MS), true, "Insurance Type is not present in form on Portal");
+		log("Step 12.6: exit non completed form");
 		IHGUtil.setDefaultFrame(driver);
-		pMyPatientPage.clickOnHealthForms();
+		pHealthForm.clickOnHealthForms();
 		IHGUtil.setFrame(driver, "iframe");
 		assertEquals(pHealthForm.getInfoAboutFormCompletion(customFormTitle), "2/3", "Partialy completed form not saved correctly");
 		driver.switchTo().window(winHandleCustomBuilder);
@@ -191,10 +184,10 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		pAddQuestionsToCategory.saveFormLayout();
 		driver.switchTo().window(winHandlePatientPortal);
 
-		pMyPatientPage.clickOnHealthForms();
+		pHealthForm.clickOnHealthForms();
 		assertEquals(pHealthForm.getInfoAboutFormCompletion(customFormTitle), "0/1", "Partialy completed form after deleted pages not displayed correctly");
 		pHealthForm.openOldCustomForm(customFormTitle);
-		assertEquals(verifyTextPresent(driver, "First Name"), true, "Demographic information is not present in form on Portal");
+		assertEquals(verifyTextPresent(driver, "First Name", TRANSITION_WAIT_TIME_MS), true, "Demographic information is not present in form on Portal");
 
 		driver.switchTo().window(winHandleCustomBuilder);
 		pCustomFormPreview.clickOnUnPublishLink();
@@ -227,11 +220,11 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testCustomFormsPI() throws Exception {
 		testCustomForms(Utils.loginPIAndOpenFormsList(driver, true));
 	}
-
-	@Test(groups = "OldPortalForms")
-	public void testCustomFormsPortal1() throws Exception {
-		testCustomForms(Utils.loginPortal1AndOpenFormsList(driver, true));
-	}
+	// PROD uses Portal 1 template on which Selenium doesn't see Health Form link after submitting custom form
+	// @Test(groups = "OldPortalForms")
+	// public void testCustomFormsPortal1() throws Exception {
+	// testCustomForms(Utils.loginPortal1AndOpenFormsList(driver, true));
+	// }
 
 	private void testCustomForms(HealthFormListPage pHealthForm) throws Exception {
 		log("step 1: Open and fill CustomForm");

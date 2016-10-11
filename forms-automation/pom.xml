@@ -61,6 +61,11 @@
             <version>${ihg.version}</version>
         </dependency>
         <dependency>
+         <groupId>com.intuit.ihg</groupId>
+        <artifactId>patientportal2-service</artifactId>
+    <version>${ihg.version}</version>
+    </dependency>
+        <dependency>
             <groupId>com.intuit.ihg</groupId>
             <artifactId>qa-automation-utils</artifactId>
             <version>${ihg.version}</version>

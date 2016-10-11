@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -144,7 +145,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
-	public FormWelcomePage clickContinueRegistrationButton(WebDriver driver) throws Exception {
+	public PortalFormPage clickContinueRegistrationButton(WebDriver driver) throws Exception {
 		log("Clicking on Continue Registration button.");
 		continueRegistrationButton.click();
 		log("Switch to the Forms iframe.");

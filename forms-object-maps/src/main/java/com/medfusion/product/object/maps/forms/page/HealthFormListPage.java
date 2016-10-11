@@ -34,10 +34,10 @@ public class HealthFormListPage extends BasePageObject {
 	@FindBy(id = "iframe")
 	private WebElement formsIframe;
 
-	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout']")
+	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']")
 	private WebElement logout;
 
-	@FindBy(xpath = "//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms']")
+	@FindBy(xpath = "//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms'] | //a[./text()='health forms']")
 	private WebElement healthFormsLink;
 
 	/**
@@ -70,7 +70,7 @@ public class HealthFormListPage extends BasePageObject {
 
 	public OldCustomFormPages openOldCustomForm(String formName) throws InterruptedException {
 		driver.findElement(By.linkText(formName)).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		return PageFactory.initElements(driver, OldCustomFormPages.class);
 	}
 

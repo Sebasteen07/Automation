@@ -3,7 +3,7 @@ package com.medfusion.product.object.maps.patientportal1.page;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -74,8 +74,11 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(@href,'vov.start')]")
 	private WebElement lnkVirtualOfficeVisit;
 
-	@FindBy(xpath = "//div[@id='solutions']/ul/li[@class='sol_forms2']/a")
+	@FindBy(xpath = "//span[./text()='health forms'] | //a[./text()='Health Forms'] | //a[./text()='health forms']")
 	private WebElement healthFormsLink;
+
+	@FindBy(xpath = "//a[@title='Fill Out Forms']")
+	private WebElement fillOutFormsButton;
 
 	@FindBy(linkText = "New Assessment")
 	private WebElement lnkNewSymptomAssessment;
@@ -240,8 +243,15 @@ public class MyPatientPage extends BasePageObject {
 	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
-		driver.findElement(By.xpath("//span[./text()='health forms'] | //a[./text()='Health Forms']")).click();
+		try {
+			healthFormsLink.click();
 		IHGUtil.setFrame(driver, "iframe");
+		} catch (ElementNotVisibleException ex) {
+			IHGUtil.setFrame(driver, "iframe");
+			fillOutFormsButton.click();
+			IHGUtil.setFrame(driver, "iframe");
+		}
+
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 

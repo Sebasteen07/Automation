@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -244,7 +245,10 @@ public class FormBasicInfoPage extends PortalFormPage {
 	public FormEmergencyContactPage setBasicInfoFromField() throws Exception {
 		setStreetAddress();
 		return clickSaveContinue(FormEmergencyContactPage.class);
+	}
 
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath("//span[./text()='Basic Information About You']")).isDisplayed();
 	}
 
 }

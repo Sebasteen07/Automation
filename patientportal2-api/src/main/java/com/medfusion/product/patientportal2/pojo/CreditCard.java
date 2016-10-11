@@ -7,12 +7,9 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class CreditCard {
 
-	public enum CardType {
-		Visa, Mastercard, Discover, Amex
-	}
-
-	// https://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
-	private String[] visaNumbers = {"4012888888881881", "4222222222222"};
+	public enum CardType { Visa, Mastercard, Discover, Amex}
+	//https://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
+	private String[] visaNumbers = {"4012888888881881", "4111111111111111"};
 	private String[] mastercardNumbers = {"5555555555554444", "5105105105105100"};
 	private String[] discoverNumbers = {"6011111111111117", "6011000990139424"};
 	private String[] amexNumbers = {"378282246310005", "371449635398431"};
