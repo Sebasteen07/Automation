@@ -110,7 +110,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testFormPdfCcdPI() throws Exception {
 		TestcasesData portalData = new TestcasesData(new Portal());
-		PropertyFileLoader testData = new PropertyFileLoader("jalapeno-automation");
+		PropertyFileLoader testData = new PropertyFileLoader();
 		JalapenoPatient patientData = new JalapenoPatient(testData);
 		patientData.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
 		patientData.setDOBYear("1900");
@@ -261,7 +261,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testFormPatientDashboardPI() throws Exception {
-		PropertyFileLoader testData = new PropertyFileLoader("jalapeno-automation");
+		PropertyFileLoader testData = new PropertyFileLoader();
 		JalapenoPatient jp = new JalapenoPatient(testData);
 		jp.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
 		jp.setDOBYear("1900");
