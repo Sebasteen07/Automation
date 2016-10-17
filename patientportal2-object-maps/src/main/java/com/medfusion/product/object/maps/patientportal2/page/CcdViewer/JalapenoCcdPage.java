@@ -30,17 +30,32 @@ public class JalapenoCcdPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "saveRaw")
 	private WebElement saveRawButton;
 
-	@FindBy(how = How.LINK_TEXT, using = "Send my information")
-	private WebElement sendInformationLink;
+	@FindBy(how = How.ID, using = "secured_share")
+	private WebElement sendDirectInformationLink;
 
-	@FindBy(how = How.ID, using = "directaddr")
+	@FindBy(how = How.ID, using = "non_secured_share")
+	private WebElement sendUnsecureInformationLink;
+	
+	@FindBy(how = How.ID, using = "directAddr")
 	private WebElement directAddressBox;
 
-	@FindBy(how = How.XPATH, using = "//button[.='Send']")
-	private WebElement sendInformationButton;
+	@FindBy(how = How.ID, using = "emailAddr")
+	private WebElement unsecureAddressBox;
+	
+	@FindBy(how = How.ID, using = "emailAddrConfirm")
+	private WebElement unsecureConfirmationAddressBox;
+	
+	@FindBy(how = How.ID, using = "secureSubmitButton")
+	private WebElement sendDirectInformationButton;
+	
+	@FindBy(how = How.ID, using = "unsecureSubmitButton")
+	private WebElement sendUnsecureInformationButton;
 
-	@FindBy(how = How.XPATH, using = "//span[@class='success']")
-	private WebElement resultMessage;
+	@FindBy(how = How.XPATH, using = "//div[@id='direct_share']//span[@class='success']")
+	private WebElement resultMessageDirect;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='email_share']//span[@class='success']")
+	private WebElement resultMessageUnsecure;
 
 	@FindBy(how = How.ID, using = "healthOverview")
 	private WebElement healthOverview;
@@ -102,22 +117,51 @@ public class JalapenoCcdPage extends BasePageObject {
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
-	public boolean sendInformation(String emailAddress) {
+	public boolean sendInformationToDirectEmail(String emailAddress) {
 		log("Click on sending information");
-		sendInformationLink.click();
+		sendDirectInformationLink.click();
 
 		log("Input the direct email address: " + emailAddress);
 		directAddressBox.sendKeys(emailAddress);
 
 		log("Send the information");
-		sendInformationButton.click();
+		sendDirectInformationButton.click();
 
-		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessage));
-		log("Result: " + resultMessage.getText());
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(resultMessageDirect));
+		log("Result: " + resultMessageDirect.getText());
 
-		return resultMessage.getText().equals("Your health information was sent to " + emailAddress + "!");
+		return resultMessageDirect.getText().equals("Your health information was sent to " + emailAddress + "!");
 	}
+	
+	public boolean sendInformationToUnsecureEmail(String emailAddress) {
+		log("Click on sending information");
+		sendUnsecureInformationLink.click();
 
+		log("Input the unsecure email address: " + emailAddress + " and wrong confirmation e-mail");
+		unsecureAddressBox.sendKeys(emailAddress);
+		unsecureConfirmationAddressBox.sendKeys("WRONG" + emailAddress);
+
+		log("Try to send the information");
+		sendUnsecureInformationButton.click();
+
+		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessageUnsecure));
+		log("Result: " + resultMessageUnsecure.getText());
+		Assert.assertTrue(resultMessageUnsecure.getText().equals("E-mail address fields must match."));
+		
+		log("Input the unsecure email address: " + emailAddress + " and correct confirmation e-mail");
+		unsecureAddressBox.clear();
+		unsecureConfirmationAddressBox.clear();
+		unsecureAddressBox.sendKeys(emailAddress);
+		unsecureConfirmationAddressBox.sendKeys(emailAddress);
+
+		log("Send the information");
+		sendUnsecureInformationButton.click();
+
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(resultMessageUnsecure));
+		log("Result: " + resultMessageUnsecure.getText());
+		return resultMessageUnsecure.getText().equals("Your health information was sent to " + emailAddress + "!");
+	}
+	
 	public boolean checkPdfToDownload(WebDriver driver) throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
 		String pdfUrl = savePdfButton.getAttribute("href");
@@ -163,7 +207,8 @@ public class JalapenoCcdPage extends BasePageObject {
 		webElementsList.add(closeButton);
 		webElementsList.add(savePdfButton);
 		webElementsList.add(saveRawButton);
-		webElementsList.add(sendInformationLink);
+		webElementsList.add(sendDirectInformationLink);
+		webElementsList.add(sendUnsecureInformationLink);
 		webElementsList.add(healthOverview);
 		webElementsList.add(basicInformation);
 		webElementsList.add(careTeamMembers);

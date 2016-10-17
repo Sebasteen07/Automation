@@ -195,9 +195,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	@Override
+	//Checks elements located every time on PI Dashboard
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(home);
+		webElementsList.add(messages);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 

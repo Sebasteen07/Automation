@@ -17,13 +17,15 @@ import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.AccountActivity.ViewAccountActivityPage;
 import com.medfusion.product.object.maps.patientportal1.page.AChecker;
+import com.medfusion.product.object.maps.patientportal1.page.AChecker.LevelOfWCAG;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 
 public class MU2Accessibility extends BaseTestNGWebDriver {
 	private APIData testData;
-
+	LevelOfWCAG level = LevelOfWCAG.AA;
+  
 	@BeforeMethod(alwaysRun = true)
 	public void Setup() throws Exception {
 		log("Setting up MU2 Test data for " + IHGUtil.getEnvironmentType());
@@ -39,18 +41,18 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 		// Get source and iFrame HTML (AChecker cannot handle iFrames)
 		StringSelection source = new StringSelection(driver.getPageSource());
 		StringSelection iFrame = new StringSelection(driver.switchTo().frame(0).getPageSource());
-
+		
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the source code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(source, source);
-		achecker.Validate();
+		achecker.validate();
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -66,15 +68,15 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the source code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(source, source);
-		achecker.Validate();
+		achecker.validate();
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -91,11 +93,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -112,11 +114,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -137,11 +139,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -157,11 +159,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	@Test(enabled = true, groups = {"AccessibilityTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -182,11 +184,11 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 
 		// Open AChecker page
 		AChecker achecker = new AChecker(driver);
-		achecker.Setup();
+		achecker.setupLevel(level);
 
 		// Paste the iFrame code
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(iFrame, iFrame);
-		achecker.Validate();
+		achecker.validate();
 	}
 
 	// Wait for the patient page to finish loading before grabbing the HTML
