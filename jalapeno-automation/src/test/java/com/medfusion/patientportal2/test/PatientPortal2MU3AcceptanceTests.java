@@ -64,11 +64,17 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testLoginPage() throws Exception {
-		logStep("Load login page");
-		new JalapenoLoginPage(driver, testData.getUrl());
-
-		copySourceNavigateToACheckerAndValidate();
+	public void testLoginAndDashboardPages() throws Exception {
+		logStep("Load login page and copy source");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		StringSelection sourceLoginPage = new StringSelection(driver.getPageSource());
+		
+		logStep("Load patient dashboard page and validate it");
+		jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		AChecker achecker = copySourceNavigateToACheckerAndValidate();
+		
+		logStep("Validate login page");
+		pastAndValidateSource(achecker, sourceLoginPage);
 	}
 
 	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
@@ -100,20 +106,11 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		patientDemographicPage.fillInPatientData(patient);
 		patientDemographicPage.continueToSecurityPage();
 
-		logStep("Copy source of Patient Security Page");
-		StringSelection sourceSecurityPage = new StringSelection(driver.getPageSource());
+		logStep("Copy source of Patient Security Page and validate");
+		AChecker achecker = copySourceNavigateToACheckerAndValidate();
 
-		logStep("Navigate to AChecker");
-		AChecker achecker = new AChecker(driver);
-		achecker.setupLevel(level);
-
-		logStep("Check Patient Demographic Page");
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(sourceDemographicPage, sourceDemographicPage);
-		achecker.validate();
-
-		logStep("Check Patient Security Page");
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(sourceSecurityPage, sourceSecurityPage);
-		achecker.validate();
+		logStep("Validate Patient Demographic Page");
+		pastAndValidateSource(achecker, sourceDemographicPage);
 	}
 
 	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
@@ -134,21 +131,14 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 				PortalConstants.DateOfBirthYear);
 
-		logStep("Copy source of Account Details Page and continue");
-		StringSelection sourceDetailsPage = new StringSelection(driver.getPageSource());
+		logStep("Copy source of Account Details Page and validate");
+		AChecker achecker = copySourceNavigateToACheckerAndValidate();
 
-		logStep("Navigate to AChecker");
-		AChecker achecker = new AChecker(driver);
-		achecker.setupLevel(level);
-
-		logStep("Check Patient Verification Page");
+		logStep("Validate Patient Verification Page");
 		pastAndValidateSource(achecker, sourceVerificationPage);
-
-		logStep("Check Account Details Page");
-		pastAndValidateSource(achecker, sourceDetailsPage);
 	}
 
-	private void copySourceNavigateToACheckerAndValidate() {
+	private AChecker copySourceNavigateToACheckerAndValidate() {
 		logStep("Copy source");
 		StringSelection source = new StringSelection(driver.getPageSource());
 
@@ -158,6 +148,8 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Validate");
 		pastAndValidateSource(achecker, source);
+		
+		return achecker;
 	}
 
 	private void pastAndValidateSource(AChecker achecker, StringSelection source) {
