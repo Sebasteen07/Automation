@@ -126,7 +126,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 			calculatedFormPage.submitForm();
 
 			log("Step 3: Check if the PDF is downloadable.");
-			Utils.checkPDF(formsPage, formName, driver);
+			Utils.checkIfPDFCanBeDownloaded(formName, driver);
 
 			log("Step 4: Check if the date is correct");
 			Utils.verifyFormsDatePatientPortal(formsPage, formName, driver);

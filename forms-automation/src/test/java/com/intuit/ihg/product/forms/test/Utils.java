@@ -6,9 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -120,13 +123,14 @@ public class Utils {
 		return new Date(c.getTime().getTime() + 1000 * 3600 * timeZoneShift);
 	}
 
-	public static void checkPDF(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
+	public static void checkIfPDFCanBeDownloaded(String linkText, WebDriver driver) throws Exception {
 		URLStatusChecker status = new URLStatusChecker(driver);
 		String pdfLink;
+		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		try {
-			pdfLink = formsPage.getPDFDownloadLink(formName);
+			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
 		} catch (StaleElementReferenceException e) {
-			pdfLink = formsPage.getPDFDownloadLink(formName);
+			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
 		} catch (NoSuchElementException f) {
 			log("PDF not found!");
 			throw f;

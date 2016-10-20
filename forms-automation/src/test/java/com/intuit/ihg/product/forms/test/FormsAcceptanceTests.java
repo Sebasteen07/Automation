@@ -150,7 +150,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		fillOutputForm(diacriticString);
 
 		log("Step 3: Test if PDF is downloadable");
-		Utils.checkPDF(formsPage, SitegenConstants.PDF_CCD_FORM, driver);
+		Utils.checkIfPDFCanBeDownloaded(SitegenConstants.PDF_CCD_FORM, driver);
 
 		log("Step 4: Test if CCD is produced");
 		log("Calling rest");
@@ -297,6 +297,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Verify if there's submitted form on patient dashboard");
 		assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM), "Submitted form was not found on Patient Dashboard");
+		
+		log("Step 8: Open forms detail and check donwload link");
+		pDashboardPage.openFormDetails(SitegenConstants.PDF_CCD_FORM);
+		Utils.checkIfPDFCanBeDownloaded("View as PDF", driver);
 	}
 
 	/**

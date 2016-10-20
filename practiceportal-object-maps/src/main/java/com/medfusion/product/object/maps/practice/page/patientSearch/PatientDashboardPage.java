@@ -1,7 +1,6 @@
 package com.medfusion.product.object.maps.practice.page.patientSearch;
 
 import static org.testng.AssertJUnit.assertTrue;
-import junit.framework.Assert;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,6 +14,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
+
+import junit.framework.Assert;
 
 public class PatientDashboardPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(.,'Send Password Reset Email To Patient')]")
@@ -165,6 +167,11 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 60, lblactivationCode);
 		return lblactivationCode.getText().toString();
 
+	}
+
+	public ViewPatientFormPage openFormDetails(String formName) {
+		driver.findElement(By.xpath("//*[contains(./text(),'" + formName + "')]")).click();
+		return PageFactory.initElements(driver, ViewPatientFormPage.class);
 	}
 
 	/**
