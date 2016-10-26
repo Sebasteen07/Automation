@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
+
 import com.intuit.dc.framework.objectstore.exception.ObjectStoreException;
 import com.intuit.dc.framework.objectstore.mongo.config.MongoContext;
 import com.intuit.dc.framework.objectstore.mongo.domain.RepositoryBuilder;
@@ -19,10 +20,8 @@ import com.intuit.dc.framework.objectstore.mongo.service.MongoObjectStoreService
 import com.intuit.dc.framework.objectstore.service.IMongoStoreService;
 import com.intuit.dc.framework.objectstore.service.IObjectStoreService;
 import com.intuit.dc.framework.objectstore.utils.DCPropertyManager;
-import com.intuit.ihg.product.apiehcore.utils.EhcoreXmlUnitUtil;
-import com.intuit.ihg.product.apiehcore.utils.EhcoreXpathGenerationUtil;
-import com.intuit.ihg.product.apiehcore.utils.EhcoreMongoDBUtils;
 import com.intuit.ihg.product.apiehcore.utils.constants.EhcoreAPIConstants;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 public class EhcoreMongoDBUtils {
@@ -91,10 +90,13 @@ public class EhcoreMongoDBUtils {
 		Map<String, String> unsortedMap = new HashMap<String, String>();
 		SortedMap<String, String> sortedMap = new TreeMap<String, String>();
 
-
 		try {
 			objectService = new MongoObjectStoreService();
-			cdmList = objectService.retrieveNodeByQuery(dbName, collectionName, attrib, msg_guid);
+
+			BasicDBObject query = new BasicDBObject();
+			query.put(attrib, msg_guid);
+
+			cdmList = objectService.retrieveNodeByQuery(dbName, collectionName, query, null);
 			Iterator<DBObject> walker = cdmList.iterator();
 			logger.debug("cdmList Size ::" + cdmList.size());
 			while (walker.hasNext()) {
