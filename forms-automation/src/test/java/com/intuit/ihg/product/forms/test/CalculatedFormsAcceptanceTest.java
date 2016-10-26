@@ -33,13 +33,13 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	@Test(enabled = true)
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
-		log("step 1: navigate to SiteGen PracticeHomePage");
+		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = PageFactory.initElements(driver, SiteGenHomePage.class);
+		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
+		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
+		log("step 2: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
-		log("step 2: LOG IN MANUALLY AS SUPERUSER, the test will continue after that, waiting 30s");
 		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(testcasesData.getAutomationPracticeName());
 		String parentHandle = driver.getWindowHandle();
 		log("step 3: Click on Patient Forms");
@@ -85,9 +85,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		formsConfigPage.unpublishAllForms().editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
 				.editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage).publishForm(SitegenConstants.CALCULATED_PHQ9_FORM)
 				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
-
-		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		PortalUtil.setquestionnarieFrame(driver);
+		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
 	}
 
