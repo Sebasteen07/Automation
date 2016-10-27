@@ -1,14 +1,14 @@
 package com.intuit.ihg.product.object.maps.sitegen.page;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author bkrishnankutty
@@ -27,6 +27,9 @@ public class SiteGenLoginPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "userid")
 	private WebElement txtusername;
+
+	@FindBy(how = How.LINK_TEXT, using = "click here")
+	private WebElement internalEmployeeLoginLink;
 
 	/**
 	 * @author bkrishnankutty
@@ -89,6 +92,19 @@ public class SiteGenLoginPage extends BasePageObject {
 		login.click();
 		Thread.sleep(5000);
 		return PageFactory.initElements(driver, SiteGenHomePage.class);
+	}
+
+	/**
+	 * Opens internal login page and wait 30 seconds for user to login, then returns SG home page. Fails if the user doesn't login in 30 seconds.
+	 * 
+	 * @return SG home page
+	 */
+	public SiteGenHomePage clickOnLoginAsInternalEmployee() {
+		internalEmployeeLoginLink.click();
+		log("LOG IN MANUALLY AS SUPERUSER, the test will continue after that, waiting 30s");
+		SiteGenHomePage homePage = PageFactory.initElements(driver, SiteGenHomePage.class);
+		IHGUtil.waitForElement(driver, 30, homePage.lnkHome);
+		return homePage;
 	}
 
 }

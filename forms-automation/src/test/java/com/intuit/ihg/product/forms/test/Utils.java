@@ -10,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -136,6 +138,15 @@ public class Utils {
 			throw f;
 		}
 		Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
+	}
+
+	public static WebDriver getFirefoxDriverForDownloading() {
+		FirefoxProfile fxProfile = new FirefoxProfile();
+		fxProfile.setPreference("browser.download.folderList", 2);
+		fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
+		fxProfile.setPreference("browser.download.dir", System.getProperty("dir.downloads"));
+		fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
+		return new FirefoxDriver(fxProfile);
 	}
 
 	public static void logTestEnvironmentInfo(String testName) {

@@ -132,6 +132,7 @@ public class SitegenConstants {
 	public final static String PDF_CCD_FORM = "Form output test";
 	public final static String PRACTICE_FORM = "Form for Practice view test";
 	public final static String SPECIAL_CHARS_FORM = "Quotation mark \" custom form";
+	public final static String FORM_EXPORT_IMPORT = "FormExportImport";
 
 }
 

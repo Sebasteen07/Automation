@@ -17,9 +17,11 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
+import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
+import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.Sitegen;
@@ -450,6 +452,39 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(QuestionsService.getSetOfVisibleQuestions(1, driver), getExpectedQuestionsForFirstSection());
 		assertTrue(customFormPage.clickOnSaveAndContinueButton());
 		assertEquals(QuestionsService.getSetOfVisibleQuestions(2, driver), getExpectedQuestionsForSecondSection());
+	}
+
+	@Test(enabled = true)
+	public void testFormExportImport() throws Exception {
+		driver.close();
+		driver = Utils.getFirefoxDriverForDownloading();
+
+		Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
+		log("step 1: login to SG as superuser");
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testcasesData = new SitegenTestData(sitegen);
+		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
+		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
+		log("step 2: navigate to SiteGen PracticeHomePage");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin("Dev3 Forms QA Automation Practice");
+		String parentHandle = driver.getWindowHandle();
+		log("step 3: Click on Patient Forms");
+		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		assertTrue(pManageDiscreteForms.isPageLoaded());
+		log("step 4: Cleanup unpublished forms");
+		pManageDiscreteForms.deleteUnpublishedForms(SitegenConstants.FORM_EXPORT_IMPORT);
+		log("step 5: Export form");
+		assertTrue(pManageDiscreteForms.exportForm(SitegenConstants.FORM_EXPORT_IMPORT));
+		log("step 5: Import form");
+		pManageDiscreteForms.importForm(SitegenConstants.FORM_EXPORT_IMPORT);
+
+		log("step 6: Check imported form preview");
+		assertFalse(pManageDiscreteForms.openUnpublishedFormPreview(SitegenConstants.FORM_EXPORT_IMPORT).getMessageText().isEmpty());
+		
+		log("step 7: Close the window and logout from SiteGenerator");
+		driver.close();
+		driver.switchTo().window(parentHandle);
+		pSiteGenPracticeHomePage.clicklogout();
 	}
 
 	protected void logTestEnvironmentInfo(String testName) {
