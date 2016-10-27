@@ -80,7 +80,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT = "email address associated with your Patient Portal account has been changed";
 	private static final String PASSWORD_CHANGE_NOTIFICATION_EMAIL_CONTENT = "You recently changed your Patient Portal password.";
 	private static final String USERNAME_CHANGE_NOTIFICATION_EMAIL_CONTENT = "User ID associated with your Patient Portal account has been changed";
-	private static final String DIRECT_EMAIL_ADDRESS = "medfusion.qa8440@direct.healthvault.com";
+	private static final String DIRECT_EMAIL_ADDRESS = "medfusionwebmail@service2.directaddress.net";
 	
 	PropertyFileLoader testData;
 
