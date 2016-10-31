@@ -1,5 +1,8 @@
 package com.intuit.ihg.product.forms.test;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Charsets;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
@@ -474,14 +478,23 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 4: Cleanup unpublished forms");
 		pManageDiscreteForms.deleteUnpublishedForms(SitegenConstants.FORM_EXPORT_IMPORT);
 		log("step 5: Export form");
-		assertTrue(pManageDiscreteForms.exportForm(SitegenConstants.FORM_EXPORT_IMPORT));
-		log("step 5: Import form");
+		pManageDiscreteForms.exportForm(SitegenConstants.FORM_EXPORT_IMPORT);
+
+		log("step 6: Compare exported form file with representative file");
+		Path exportedFilePath = Paths.get(System.getProperty("user.dir") + "\\" + SitegenConstants.FORM_EXPORT_IMPORT + ".txt");
+		String exportedFileString = Files.readAllLines(exportedFilePath,Charsets.UTF_8).get(0).replaceAll("\"creationDate\":\\d+", "").replaceAll("\"lastModifiedDate\":\\d+", "");
+		String representativeFileString =
+				Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0)
+				.replaceAll("\"creationDate\":\\d+", "").replaceAll("\"lastModifiedDate\":\\d+", "");
+		assertEquals(exportedFileString, representativeFileString);
+
+		log("step 7: Import form");
 		pManageDiscreteForms.importForm(SitegenConstants.FORM_EXPORT_IMPORT);
 
-		log("step 6: Check imported form preview");
+		log("step 8: Check imported form preview");
 		assertFalse(pManageDiscreteForms.openUnpublishedFormPreview(SitegenConstants.FORM_EXPORT_IMPORT).getMessageText().isEmpty());
 		
-		log("step 7: Close the window and logout from SiteGenerator");
+		log("step 9: Close the window and logout from SiteGenerator");
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();

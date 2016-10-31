@@ -5,6 +5,7 @@ import static com.intuit.ifs.csscat.core.utils.Log4jUtil.log;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -140,13 +141,21 @@ public class Utils {
 		Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 	}
 
+	/**
+	 * Initializes and returns Firefox specific driver which allows downloading All downloaded files will be present directly in working directory (usually the
+	 * root directory of project).
+	 * 
+	 * @return Firefox specific driver which allows downloading
+	 */
 	public static WebDriver getFirefoxDriverForDownloading() {
 		FirefoxProfile fxProfile = new FirefoxProfile();
 		fxProfile.setPreference("browser.download.folderList", 2);
 		fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
-		fxProfile.setPreference("browser.download.dir", System.getProperty("dir.downloads"));
+		fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
 		fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
-		return new FirefoxDriver(fxProfile);
+		FirefoxDriver driver = new FirefoxDriver(fxProfile);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		return driver;
 	}
 
 	public static void logTestEnvironmentInfo(String testName) {

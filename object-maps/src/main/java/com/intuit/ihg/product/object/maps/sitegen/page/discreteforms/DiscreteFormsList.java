@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -48,8 +49,8 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 public class DiscreteFormsList extends BasePageObject {
 
 	private static final String FORM_OPTIONS_XPATH = "//td[contains(@class,'table_options')][contains(preceding-sibling::td/a/text(),'%s')]";
-	private static final String UNPUBLISHED_FORM_OPTIONS_XPATH =
-			"//td[contains(@class,'table_options')][contains(preceding-sibling::td/a/text(),'%s')][a/text()='Publish']";
+	private static final String PUBLISHED_FORM_OPTIONS_SELECTOR = "[a/text()='Unpublish']";
+	private static final String UNPUBLISHED_FORM_OPTIONS_SELECTOR = "[a/text()='Publish']";
 
 	@FindBy(xpath = ".//div[@id='modalDialog']//div/button[@class = 'red yes']")
 	private WebElement yesDeleteButton;
@@ -90,6 +91,9 @@ public class DiscreteFormsList extends BasePageObject {
 	@FindBy(id = "successMessage")
 	private WebElement importSuccessMessage;
 
+	@FindBy(id = "errorMessage")
+	private WebElement importErrorMessage;
+
 	@FindBy(xpath = "//button[contains(@class,'closeSearchDialog')]")
 	private WebElement importCloseBtn;
 
@@ -97,7 +101,8 @@ public class DiscreteFormsList extends BasePageObject {
 	private WebElement lastCreatedFormLink; // the most upper in the unpublished
 	// table
 
-	private final int waitingPeriodSeconds = 8;
+	private final int waitingSeconds = 8;
+	private final int waitingPeriodMS = 1000;
 
 	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
 
@@ -119,12 +124,24 @@ public class DiscreteFormsList extends BasePageObject {
 		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueDiscreteFormName)));
 	}
 
+	private List<WebElement> getFormsOptions(String partOfFormName) {
+		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName)));
+	}
+
+	private WebElement getPublishedFormOptions(String uniqueDiscreteFormName) {
+		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueDiscreteFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
+	}
+
+	private List<WebElement> getPublishedFormsOptions(String partOfFormName) {
+		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
+	}
+
 	private WebElement getUnpublishedFormsOption(String uniqueUnpublishedFormName) {
-		return driver.findElement(By.xpath(String.format(UNPUBLISHED_FORM_OPTIONS_XPATH, uniqueUnpublishedFormName)));
+		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueUnpublishedFormName) + UNPUBLISHED_FORM_OPTIONS_SELECTOR));
 	}
 
 	private List<WebElement> getUnpublishedFormsOptions(String partOfFormName) {
-		return driver.findElements(By.xpath(String.format(UNPUBLISHED_FORM_OPTIONS_XPATH, partOfFormName)));
+		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + UNPUBLISHED_FORM_OPTIONS_SELECTOR));
 	}
 
 	/**
@@ -145,7 +162,7 @@ public class DiscreteFormsList extends BasePageObject {
 			deleteButtons = driver.findElements(By.xpath(xpath));
 			deleteButtons.get(0).click();
 			yesDeleteButton.click();
-			utils.waitForElementToDisappear(deleteButtons.get(count - 1), 1000, waitingPeriodSeconds);
+			utils.waitForElementToDisappear(deleteButtons.get(count - 1), waitingPeriodMS, waitingSeconds);
 			count--;
 		}
 		return this;
@@ -159,7 +176,7 @@ public class DiscreteFormsList extends BasePageObject {
 			deleteButton = formOption.findElement(By.linkText("Delete"));
 			deleteButton.click();
 			yesDeleteButton.click();
-			utils.waitForElementToDisappear(deleteButton, 1000, waitingPeriodSeconds);
+			utils.waitForElementToDisappear(deleteButton, waitingPeriodMS, waitingSeconds);
 		}
 	}
 
@@ -180,7 +197,7 @@ public class DiscreteFormsList extends BasePageObject {
 		while (count > 0) {
 			unpublishButtonList = driver.findElements(By.xpath(xpath));
 			unpublishButtonList.get(0).click();
-			utils.waitForElementToDisappear(unpublishButtonList.get(count - 1), 1000, waitingPeriodSeconds);
+			utils.waitForElementToDisappear(unpublishButtonList.get(count - 1), waitingPeriodMS, waitingSeconds);
 			count--;
 		}
 		return this;
@@ -217,7 +234,7 @@ public class DiscreteFormsList extends BasePageObject {
 	 */
 	public DiscreteFormsList publishForm(String uniqueDiscreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
-		WebElement formOptions = getFormOptions(uniqueDiscreteFormName);
+		WebElement formOptions = getUnpublishedFormsOption(uniqueDiscreteFormName);
 		formOptions.findElement(By.linkText("Publish")).click();
 		new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfNestedElementLocatedBy(formOptions, By.linkText("Unpublish")));
 		return this;
@@ -225,16 +242,16 @@ public class DiscreteFormsList extends BasePageObject {
 
 	public DiscreteFormsList unpublishForm(String uniqueDiscreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
-		WebElement formOptions = getFormOptions(uniqueDiscreteFormName);
+		WebElement formOptions = getPublishedFormOptions(uniqueDiscreteFormName);
 		formOptions.findElement(By.linkText("Unpublish")).click();
 		new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfNestedElementLocatedBy(formOptions, By.linkText("Publish")));
 		return this;
 	}
 
-	public boolean exportForm(String uniqueDiscreteFormName) throws Exception {
+	public void exportForm(String uniqueDiscreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		log("Deleting previously downloaded file");
-		Path exportedFilePath = Paths.get(System.getProperty("dir.downloads") + uniqueDiscreteFormName + ".txt");
+		Path exportedFilePath = Paths.get(System.getProperty("user.dir") + "\\" + uniqueDiscreteFormName + ".txt");
 		Files.deleteIfExists(exportedFilePath);
 		log("Exporting file");
 		WebElement formOptions = getFormOptions(uniqueDiscreteFormName);
@@ -248,16 +265,6 @@ public class DiscreteFormsList extends BasePageObject {
 		if (tries == 0) {
 			throw new IllegalStateException("Exported file is empty");
 		}
-		log("Reading files and stripping dates");
-		String exportedFileString =
-				Files.readAllLines(exportedFilePath).get(0).replaceAll("\"creationDate\":\\d+", "").replaceAll("\"lastModifiedDate\":\\d+", "");
-		String representativeFileString =
-				Files.readAllLines(Paths.get(System.getProperty("dir.representatives") + uniqueDiscreteFormName + ".txt")).get(0)
-						.replaceAll("\"creationDate\":\\d+", "")
-						.replaceAll("\"lastModifiedDate\":\\d+", "");
-		log("Exported file: " + exportedFileString);
-		log("Representative file: " + representativeFileString);
-		return (exportedFileString.equals(representativeFileString));
 	}
 	
 	public FormWelcomePage openUnpublishedFormPreview(String uniqueUnpublishedFormName) throws Exception {
@@ -268,9 +275,14 @@ public class DiscreteFormsList extends BasePageObject {
 
 	public void importForm(String uniqueDiscreteFormName) throws Exception {
 		importBtn.click();
-		importBrowseBtn.sendKeys(System.getProperty("dir.downloads") + uniqueDiscreteFormName + ".txt");
+		importBrowseBtn.sendKeys(System.getProperty("user.dir") + "\\" + uniqueDiscreteFormName + ".txt");
 		importImportBtn.click();
+		try {
 		wait.until(ExpectedConditions.textToBePresentInElement(importSuccessMessage, "success"));
+		} catch (TimeoutException ex) {
+			wait.until(ExpectedConditions.visibilityOf(importErrorMessage));
+			throw new IllegalStateException("Form was not imported. Error message from UI: " + importErrorMessage.getText());
+		}
 		importCloseBtn.click();
 		IHGUtil.waitForElement(driver, 10, getFormOptions(uniqueDiscreteFormName));
 	}
