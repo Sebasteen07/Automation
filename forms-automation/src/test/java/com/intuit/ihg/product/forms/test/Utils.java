@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -159,9 +161,25 @@ public class Utils {
 	}
 
 	public static void logTestEnvironmentInfo(String testName) {
-		log(testName);
+		log("Test name: " + testName);
 		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
+	}
+
+	public static int getAutomationPracticeID(boolean persistentFormsPractice) throws Exception {
+		TestcasesData portalData = new TestcasesData(new Portal());
+		if (persistentFormsPractice) {
+			return getPracticeIDFromPIUrl(portalData.getPIFormsAltUrl());
+		} else {
+			return getPracticeIDFromPIUrl(portalData.getPIFormsUrl());
+		}
+	}
+
+	public static int getPracticeIDFromPIUrl(String PIurl) {
+		Pattern p = Pattern.compile(".+-(\\d+)/portal.+");
+		Matcher m = p.matcher(PIurl);
+		m.find();
+		return Integer.parseInt(m.group(1));
 	}
 
 	private static void logLogin(String url, String username, String password) {

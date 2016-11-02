@@ -12,13 +12,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 public class SocialHistoryPage extends ConfiguratorFormPage {
-
-	@FindBy(xpath = "//li[@data-section='socialhistory_section']/a")
-	private WebElement lnkSocialHistory;
 
 	@FindBy(id = "hide_socialhistory_section_check")
 	private WebElement hideSocialhistorySectionCheck;
@@ -77,12 +73,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p[@class='custom']/a")
 	private WebElement supplementalQuestion;
 
-	@FindBy(xpath = "//li[@class='additional']/a")
-	private WebElement newSection;
-
-	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p/a")
-	private WebElement newSectionButt;
-
 	@FindBy(id = "custom_title_socialhistory_section_0")
 	private WebElement customSectionName;
 
@@ -112,26 +102,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Indicates if the search page is loaded
-	 *
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkSocialHistory);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
 	 * Deselects the checkbox for hiding the page Adds a tea-drinking question so that the page does not hide again
 	 */
 	public void showThisPage() {
@@ -140,21 +110,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 			teacoffeeHealthhabits.click();
 		}
 
-	}
-
-	/**
-	 * Click on button to add a section
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void clickAddSection() throws InterruptedException {
-		scrollAndWait(0, 0, 0);
-		newSectionButt.click();
-		Thread.sleep(500);
-	}
-
-	public void clickOnNewSection() throws InterruptedException {
-		newSection.click();
 	}
 
 	/**

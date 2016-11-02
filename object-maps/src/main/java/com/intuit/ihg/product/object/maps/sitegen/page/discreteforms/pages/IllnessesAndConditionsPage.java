@@ -3,16 +3,10 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 
-public class IllnessesAndConditionsPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='familymedicalhistory_section']/a")
-	private WebElement lnkFamilyHistory;
+public class IllnessesAndConditionsPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
@@ -309,41 +303,6 @@ public class IllnessesAndConditionsPage extends BasePageObject {
 	public IllnessesAndConditionsPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkFamilyHistory);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Click on link - Family Medical History
-	 * 
-	 * @return
-	 */
-
-	public FormFamilyHistoryPage clicklnkFamilyHistory() {
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkFamilyHistory);
-		lnkFamilyHistory.click();
-		return PageFactory.initElements(driver, FormFamilyHistoryPage.class);
 	}
 }
 

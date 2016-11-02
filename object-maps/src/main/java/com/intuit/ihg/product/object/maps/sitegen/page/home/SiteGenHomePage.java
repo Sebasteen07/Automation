@@ -36,10 +36,10 @@ public class SiteGenHomePage extends BasePageObject {
 	private WebElement lnkMedfusionSiteAdministration;
 
 	@FindBy(xpath = ".//input[@id ='grpName']")
-	private WebElement searchPratciceField;
+	private WebElement searchPracticeField;
 
 	@FindBy(xpath = ".//input[@value ='Search']")
-	private WebElement searchPratciceButton;
+	private WebElement searchPracticeButton;
 
 	/**
 	 * @author bkrishnankutty
@@ -84,9 +84,8 @@ public class SiteGenHomePage extends BasePageObject {
 
 	public SiteGenPracticeHomePage searchPracticeFromSGAdmin(String practiceName) throws Exception {
 		log("Automation Practice: " + practiceName);
-		IHGUtil.waitForElement(driver, 30, this.searchPratciceField);
-		searchPratciceField.sendKeys(practiceName);
-		searchPratciceButton.click();
+		IHGUtil.waitForElement(driver, 30, this.searchPracticeField);
+		searchPracticeField.sendKeys(practiceName);
 		String xpath = "//*[contains(text(),'" + practiceName + "')]";
 		driver.findElement(By.xpath(xpath)).click();
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);

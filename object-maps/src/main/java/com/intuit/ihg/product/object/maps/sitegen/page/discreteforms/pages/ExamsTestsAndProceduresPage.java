@@ -1,19 +1,12 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.IllnessesAndConditionsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 
-public class ExamsTestsAndProceduresPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='conditions_section']/a")
-	private WebElement lnkConditions;
+public class ExamsTestsAndProceduresPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
@@ -67,41 +60,6 @@ public class ExamsTestsAndProceduresPage extends BasePageObject {
 	public ExamsTestsAndProceduresPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkConditions);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Click on link - Illnesses and Conditions
-	 * 
-	 * @return
-	 */
-
-	public IllnessesAndConditionsPage clicklnkConditions() {
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkConditions);
-		lnkConditions.click();
-		return PageFactory.initElements(driver, IllnessesAndConditionsPage.class);
 	}
 }
 

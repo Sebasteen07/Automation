@@ -12,7 +12,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.ViewIntegrationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.InterfaceSetUp.InterfaceAdministrationPage;
@@ -24,6 +23,8 @@ import com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTy
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+import com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin.PracticeInfoPage;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author bkrishnankutty
@@ -65,6 +66,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(xpath = "//div[@class='locationUrl']/a/img/..")
 	private WebElement patientPortalUrl;
+
+	@FindBy(linkText = "Practice Information")
+	private WebElement practiceInfoLink;
 
 	/**
 	 * @author bkrishnankutty
@@ -323,6 +327,11 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		System.out.println("### DELETE ALL COOKIES");
 		driver.manage().deleteAllCookies();
 		return homePage;
+	}
+
+	public PracticeInfoPage openPracticeInfo() {
+		practiceInfoLink.click();
+		return PageFactory.initElements(driver, PracticeInfoPage.class);
 	}
 
 }

@@ -3,17 +3,10 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 
-public class OtherDoctorsYouSeen extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='currentsymptoms']/a")
-	private WebElement lnkCurrentSymptoms;
-
-	@FindBy(id = "save_config_form")
-	private WebElement btnSave;
+public class OtherDoctorsYouSeen extends ConfiguratorFormPage {
 
 	@FindBy(id = "hide_currentproviders_check")
 	private WebElement hideCurrentprovidersCheck;
@@ -56,18 +49,5 @@ public class OtherDoctorsYouSeen extends BasePageObject {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-
-
-	/**
-	 * Click on link - Other Doctors You Seen
-	 * 
-	 * @return
-	 */
-
-	public CurrentSymptomsPage clicklnkCurrentSymptoms() {
-		lnkCurrentSymptoms.click();
-		return PageFactory.initElements(driver, CurrentSymptomsPage.class);
-	}
-
 }
 

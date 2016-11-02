@@ -3,19 +3,10 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 
-public class VaccinationsPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='surgerieshospitalizations_section']/a")
-	private WebElement lnkSurgsHosps;
-
-	@FindBy(id = "save_config_form")
-	private WebElement btnSave;
+public class VaccinationsPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "hide_immunizations_check")
 	private WebElement hideImmunizationsCheck;
@@ -69,41 +60,6 @@ public class VaccinationsPage extends BasePageObject {
 	public VaccinationsPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkSurgsHosps);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Click on link - Surgeries and Hospitalizations
-	 * 
-	 * @return
-	 */
-
-	public SurgeriesAndHospitalizationsPage clicklnkSurgsHosps() {
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkSurgsHosps);
-		lnkSurgsHosps.click();
-		return PageFactory.initElements(driver, SurgeriesAndHospitalizationsPage.class);
 	}
 }
 

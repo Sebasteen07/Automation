@@ -4,16 +4,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import com.medfusion.common.utils.IHGUtil;
 
-public class CurrentSymptomsPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='medications_section']/a")
-	private WebElement lnkMedications;
+public class CurrentSymptomsPage extends ConfiguratorFormPage {
 
 	@FindBy(xpath = "//h5[contains(text(), 'General Health')]/span/input")
 	private WebElement chckGeneralHealth;
@@ -49,21 +44,6 @@ public class CurrentSymptomsPage extends BasePageObject {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
 		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Click on link - Current Symptoms
-	 * 
-	 * @return PageFactory initialization for Medications Page
-	 */
-
-	public MedicationsPage clicklnkMedications() {
-
-		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkMedications);
-		lnkMedications.click();
-
-		return PageFactory.initElements(driver, MedicationsPage.class);
 	}
 
 	/**

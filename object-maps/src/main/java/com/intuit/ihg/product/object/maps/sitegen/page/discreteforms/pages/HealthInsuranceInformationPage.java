@@ -3,15 +3,11 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import com.medfusion.common.utils.IHGUtil;
 
-public class HealthInsuranceInformationPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='secondary_insurance']/a")
-	private WebElement lnkSecondaryInsurance;
+public class HealthInsuranceInformationPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "hide_insurance_check")
 	private WebElement hideInsuranceCheck;
@@ -104,17 +100,6 @@ public class HealthInsuranceInformationPage extends BasePageObject {
 	public HealthInsuranceInformationPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Click on link - Health Insurance Information
-	 * 
-	 * @return
-	 */
-
-	public SecondaryHealthInsurancePage clicklnkSecondaryInsurance() {
-		lnkSecondaryInsurance.click();
-		return PageFactory.initElements(driver, SecondaryHealthInsurancePage.class);
 	}
 
 	/**

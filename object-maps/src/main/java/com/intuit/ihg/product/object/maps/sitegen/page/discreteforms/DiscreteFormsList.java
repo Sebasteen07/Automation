@@ -15,7 +15,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.AllergiesPage;
@@ -35,6 +34,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.Socia
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SurgeriesAndHospitalizationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.VaccinationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
+import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
@@ -49,14 +49,18 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 public class DiscreteFormsList extends BasePageObject {
 
 	private static final String FORM_OPTIONS_XPATH = "//td[contains(@class,'table_options')][contains(preceding-sibling::td/a/text(),'%s')]";
+	private static final String ALL_FORMS_OPTIONS_XPATH = String.format(FORM_OPTIONS_XPATH, "");
 	private static final String PUBLISHED_FORM_OPTIONS_SELECTOR = "[a/text()='Unpublish']";
 	private static final String UNPUBLISHED_FORM_OPTIONS_SELECTOR = "[a/text()='Publish']";
 
 	@FindBy(xpath = ".//div[@id='modalDialog']//div/button[@class = 'red yes']")
 	private WebElement yesDeleteButton;
 
-	@FindBy(xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/" + "a[text() = 'Custom Form']")
+	@FindBy(xpath = ".//div[@class = 'admin_inner']/div[@class ='new_discrete_form']/" + "a[text() = '" + SitegenConstants.FORMS_CUSTOM_FORM_INITIAL_NAME + "']")
 	private WebElement customFormButton;
+	
+	@FindBy(linkText = SitegenConstants.FORMS_CUSTOM_FORM_INITIAL_NAME)
+	private WebElement customFormLink;
 
 	@FindBy(id = "addCalculatedForm")
 	private WebElement calculatedFormButton;
@@ -67,7 +71,7 @@ public class DiscreteFormsList extends BasePageObject {
 	@FindBy(xpath = "//a[contains(text(),'Registration & Health History Form')]")
 	private WebElement registrationHealthHistoryFormButton;
 
-	@FindBy(linkText = "General Registration and Health History")
+	@FindBy(linkText = SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME)
 	private WebElement lnkGeneralRegAndHealthHistory;
 
 	@FindBy(xpath = ".//div[@class='admin_inner']//" + "table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td[@class='first']/a")
@@ -124,8 +128,8 @@ public class DiscreteFormsList extends BasePageObject {
 		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueDiscreteFormName)));
 	}
 
-	private List<WebElement> getFormsOptions(String partOfFormName) {
-		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName)));
+	private WebElement getPublishedFormsOption(String uniqueUnpublishedFormName) {
+		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueUnpublishedFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
 	}
 
 	private WebElement getPublishedFormOptions(String uniqueDiscreteFormName) {
@@ -168,7 +172,7 @@ public class DiscreteFormsList extends BasePageObject {
 		return this;
 	}
 
-	public void deleteUnpublishedForms(String partOfFormName) throws Exception {
+	public void deleteUnpublishedFormsNamedLike(String partOfFormName) throws Exception {
 		IHGUtil utils = new IHGUtil(driver);
 		WebElement deleteButton;
 		List<WebElement> unpublishedFormsOptions = getUnpublishedFormsOptions(partOfFormName);
@@ -203,27 +207,16 @@ public class DiscreteFormsList extends BasePageObject {
 		return this;
 	}
 
-	/**
-	 * Description : Creates new custom form
-	 * 
-	 * @throws Exception
-	 */
-	public void createANewCustomForm() throws Exception {
-		IHGUtil.PrintMethodName();
+	public void createCustomForm() throws Exception {
+		int countOfUnpublishedForms = getCountOfUnpublishedForms();
 		customFormButton.click();
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath(ALL_FORMS_OPTIONS_XPATH + UNPUBLISHED_FORM_OPTIONS_SELECTOR), countOfUnpublishedForms + 1));
 	}
 
-	/**
-	 * Description : Creates new discrete form
-	 * 
-	 * @throws Exception
-	 */
-	public void createNewDiscreteForm() throws Exception {
-		IHGUtil.PrintMethodName();
-		System.out.println("CLICK ON DISCRETE FORM");
+	public void createRegistrationForm() throws Exception {
+		int countOfUnpublishedForms = getCountOfUnpublishedForms();
 		registrationHealthHistoryFormButton.click();
-
+		wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath(ALL_FORMS_OPTIONS_XPATH + UNPUBLISHED_FORM_OPTIONS_SELECTOR), countOfUnpublishedForms + 1));
 	}
 
 	/**
@@ -236,15 +229,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		WebElement formOptions = getUnpublishedFormsOption(uniqueDiscreteFormName);
 		formOptions.findElement(By.linkText("Publish")).click();
-		new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfNestedElementLocatedBy(formOptions, By.linkText("Unpublish")));
-		return this;
-	}
-
-	public DiscreteFormsList unpublishForm(String uniqueDiscreteFormName) throws Exception {
-		IHGUtil.PrintMethodName();
-		WebElement formOptions = getPublishedFormOptions(uniqueDiscreteFormName);
-		formOptions.findElement(By.linkText("Unpublish")).click();
-		new WebDriverWait(driver, 15).until(ExpectedConditions.presenceOfNestedElementLocatedBy(formOptions, By.linkText("Publish")));
+		IHGUtil.waitForElement(driver, 20, getPublishedFormsOption(uniqueDiscreteFormName));
 		return this;
 	}
 
@@ -267,6 +252,10 @@ public class DiscreteFormsList extends BasePageObject {
 		}
 	}
 	
+	public int getCountOfUnpublishedForms() {
+		return driver.findElements(By.xpath(ALL_FORMS_OPTIONS_XPATH + UNPUBLISHED_FORM_OPTIONS_SELECTOR)).size();
+	}
+
 	public FormWelcomePage openUnpublishedFormPreview(String uniqueUnpublishedFormName) throws Exception {
 		getUnpublishedFormsOption(uniqueUnpublishedFormName).findElement(By.linkText("Preview")).click();
 		PortalUtil.setquestionnarieFrame(driver);
@@ -334,24 +323,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Prepares practice for automated test - unpublishes and deletes all forms and creates a new one
-	 * 
-	 * @return Name of the newly created form
-	 */
-
-	public void createNewForm() throws Exception {
-		createNewDiscreteForm();
-		try {
-			driver.findElement(By.xpath("//a[contains(text(), 'General Registration and Health History')]"));
-		} catch (NoSuchElementException e) {
-			log("Form not visible after its creation! It's needed to reload the page. This is because of a defect!!!");
-			driver.navigate().refresh();
-			driver.findElement(By.xpath("//a[contains(text(), 'General Registration and Health History')]"));
-		}
-		log("A new form successfully created");
-	}
-
 	public boolean addCalculatedForm(String calculatedFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		System.out.println("CLICK ON CALCULATED FORM BUTTON");
@@ -394,14 +365,14 @@ public class DiscreteFormsList extends BasePageObject {
 
 	public void prepareFormForTest(String newFormName) throws Exception {
 		log("Open form and change welcome page text");
-		WelcomeScreenPage welcomePage = openDiscreteForm("General Registration and Health History");
+		WelcomeScreenPage welcomePage = openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME);
 		welcomePage.clickWelcomeMessagePage();
 		welcomePage.setWelcomeMessage(welcomeMessage);
 		log("Rename the form");
 		welcomePage.setFormName(newFormName);
 
 		log("substep 1: Click on Basic Information About You");
-		BasicInformationAboutYouPage basicInfoPage = welcomePage.clickLnkBasicInfoAboutYou();
+		BasicInformationAboutYouPage basicInfoPage = welcomePage.clicklnkBasicInfoAboutYourPage();
 		basicInfoPage.selectBasicInfo();
 
 		log("substep 2: Click on Emergency Contact Information");
@@ -452,9 +423,9 @@ public class DiscreteFormsList extends BasePageObject {
 		socialPage.setSectionName("Additional questions");
 		socialPage.clickInsertItemButton();
 		socialPage.setQuestionName("added question");
-		socialPage.clickSaveButton();
+		socialPage.saveOpenedForm();
 		socialPage.setQuestionType(QuestionType.multiSelect);
-		socialPage.clickSaveButton();
+		socialPage.saveOpenedForm();
 		socialPage.addPossibleAnswer("1 - 2");
 		socialPage.addPossibleAnswer("3 or 4");
 		socialPage.clickBackToTheList();

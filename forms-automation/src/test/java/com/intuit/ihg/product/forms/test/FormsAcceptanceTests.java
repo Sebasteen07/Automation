@@ -23,6 +23,7 @@ import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
@@ -239,7 +240,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * @throws Exception
 	 */
-	// todo
 	@Test(groups = {"Forms"})
 	public void testDiscreteFormDeleteCreatePublish() throws Exception {
 
@@ -328,7 +328,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Unpublish and delete all forms and create a new one");
 		driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
-		pManageDiscreteForms.createANewCustomForm();
+		pManageDiscreteForms.createCustomForm();
 
 		log("step 3: Open created custom form");
 		CustomFormPage customFormPage = pManageDiscreteForms.clickOnLastCreatedForm();
@@ -458,7 +458,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(QuestionsService.getSetOfVisibleQuestions(2, driver), getExpectedQuestionsForSecondSection());
 	}
 
-	@Test(enabled = true)
+	@Test
 	public void testFormExportImport() throws Exception {
 		driver.close();
 		driver = Utils.getFirefoxDriverForDownloading();
@@ -467,25 +467,27 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
+		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(true));
 		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
 		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
-		log("step 2: navigate to SiteGen PracticeHomePage");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin("Dev3 Forms QA Automation Practice");
+		log("step 2: navigate to SiteGen PracticeHomePage, practice with ID: " + automationPracticeID);
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
 		String parentHandle = driver.getWindowHandle();
 		log("step 3: Click on Patient Forms");
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 		log("step 4: Cleanup unpublished forms");
-		pManageDiscreteForms.deleteUnpublishedForms(SitegenConstants.FORM_EXPORT_IMPORT);
+		pManageDiscreteForms.deleteUnpublishedFormsNamedLike(SitegenConstants.FORM_EXPORT_IMPORT);
 		log("step 5: Export form");
 		pManageDiscreteForms.exportForm(SitegenConstants.FORM_EXPORT_IMPORT);
 
 		log("step 6: Compare exported form file with representative file");
 		Path exportedFilePath = Paths.get(System.getProperty("user.dir") + "\\" + SitegenConstants.FORM_EXPORT_IMPORT + ".txt");
-		String exportedFileString = Files.readAllLines(exportedFilePath,Charsets.UTF_8).get(0).replaceAll("\"creationDate\":\\d+", "").replaceAll("\"lastModifiedDate\":\\d+", "");
+		String exportedFileString =
+				stripVariablesFromExportedForm(Files.readAllLines(exportedFilePath, Charsets.UTF_8).get(0));
 		String representativeFileString =
-				Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0)
-				.replaceAll("\"creationDate\":\\d+", "").replaceAll("\"lastModifiedDate\":\\d+", "");
+				stripVariablesFromExportedForm(
+						Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0));
 		assertEquals(exportedFileString, representativeFileString);
 
 		log("step 7: Import form");
@@ -499,6 +501,73 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 	}
+
+	@Test(groups="Forms")
+	public void testEGQSitegen() throws Exception {
+		Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
+		log("step 1: login to SG as superuser");
+		Sitegen sitegen = new Sitegen();
+		SitegenTestData testcasesData = new SitegenTestData(sitegen);
+		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(false));
+		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
+		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
+		log("step 2: navigate to SiteGen PracticeHomePage - practice with id: " + automationPracticeID);
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
+		pSiteGenPracticeHomePage.openPracticeInfo().enableGenderQuestions().returnToPracticeHomePage();
+		String homePageWindowHandle = driver.getWindowHandle();
+		DiscreteFormsList formsList = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		formsList.initializePracticeForNewForm();
+		formsList.createRegistrationForm();
+		String formsListHandle = driver.getWindowHandle();
+		testEGQSitegenEnabledFlow(formsList);
+		driver.switchTo().window(homePageWindowHandle);
+		pSiteGenPracticeHomePage.openPracticeInfo().disableGenderQuestions().returnToPracticeHomePage();
+		driver.switchTo().window(formsListHandle);
+		testEGQSitegenDisabledFlow(formsList);
+	}
+
+	private void testEGQSitegenEnabledFlow(DiscreteFormsList formsList) throws Exception {
+		IHGUtil.PrintMethodName();
+		BasicInformationAboutYouPage basicInfoPage =
+				formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).clicklnkBasicInfoAboutYourPage();
+		String sexQuestionLabel = "What sex were you assigned at birth on your original birth certificate?";
+		log("check sex question label");
+		assertEquals(basicInfoPage.getSexQuetionLabel(), sexQuestionLabel);
+		log("check sex question allways required");
+		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
+		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
+		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
+		log("check question add/remove");
+		basicInfoPage.addQuestionToForm(sexQuestionLabel);
+		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
+		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		basicInfoPage.saveOpenedForm();
+		formsList = basicInfoPage.clickBackToTheList();
+	}
+
+	private void testEGQSitegenDisabledFlow(DiscreteFormsList formsList) throws Exception {
+		IHGUtil.PrintMethodName();
+		BasicInformationAboutYouPage basicInfoPage =
+				formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).clicklnkBasicInfoAboutYourPage();
+		String sexQuestionLabel = "Sex";
+		log("check sex question label");
+		assertEquals(basicInfoPage.getSexQuetionLabel(), sexQuestionLabel);
+		log("check sex question required/optional");
+		boolean atFirst = basicInfoPage.isQuestionRequired(sexQuestionLabel);
+		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
+		boolean afterClick = basicInfoPage.isQuestionRequired(sexQuestionLabel);
+		assertEquals(atFirst, !afterClick);
+		log("check question add/remove");
+		basicInfoPage.addQuestionToForm(sexQuestionLabel);
+		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
+		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		basicInfoPage.saveOpenedForm();
+		formsList = basicInfoPage.clickBackToTheList();
+	}
+
+
 
 	protected void logTestEnvironmentInfo(String testName) {
 		log(testName);
@@ -597,7 +666,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: Unpublish and delete all forms and create a new one");
 		driver.manage().window().maximize();
 		pManageDiscreteForms.initializePracticeForNewForm();
-		pManageDiscreteForms.createNewForm();
+		pManageDiscreteForms.createRegistrationForm();
 
 		log("step 3: Initialize the new form");
 		pManageDiscreteForms.prepareFormForTest(newFormName);
@@ -655,5 +724,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		expectedQuestions.add(new TextQuestion("QuestionS2FUP2", ""));
 		expectedQuestions.add(new TextQuestion("QuestionS2FUP2", ""));
 		return expectedQuestions;
+	}
+
+	private String stripVariablesFromExportedForm(String s) {
+		return s.replaceAll("\"\\w+Date\":\\d+", "").replaceAll("\"formId\":\"[^\"]+\"", "").replaceAll("\"copiedFrom\":\"[^\"]+\"", "")
+				.replaceAll("\"\\w+racticeId\":\\d+", "").replaceAll("\"environment\":\"\\w+\"", "");
 	}
 }

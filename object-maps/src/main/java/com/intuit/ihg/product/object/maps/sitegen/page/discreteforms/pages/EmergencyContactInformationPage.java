@@ -1,24 +1,14 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.HealthInsuranceInformationPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 
-public class EmergencyContactInformationPage extends BasePageObject {
-
-	@FindBy(xpath = "//li[@data-section='emergencycontact']/a")
-	private WebElement lnkEmergencyContact;
-
-	@FindBy(xpath = "//li[@data-section='insurance']/a")
-	private WebElement lnkInsurance;
+public class EmergencyContactInformationPage extends ConfiguratorFormPage {
 
 	@FindBy(xpath = "//input[@id='hide_emergencycontact_check']")
 	private WebElement chckHideEmergencyContact;
@@ -44,38 +34,6 @@ public class EmergencyContactInformationPage extends BasePageObject {
 	public EmergencyContactInformationPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkEmergencyContact);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Click on link - Emergency Contact Information
-	 * 
-	 * @return
-	 */
-
-	public HealthInsuranceInformationPage clicklnkInsurance() {
-		lnkInsurance.click();
-		return PageFactory.initElements(driver, HealthInsuranceInformationPage.class);
 	}
 
 	/**
