@@ -208,7 +208,7 @@ public class JalapenoCcdPage extends BasePageObject {
 		webElementsList.add(savePdfButton);
 		webElementsList.add(saveRawButton);
 		webElementsList.add(sendDirectInformationLink);
-		webElementsList.add(sendUnsecureInformationLink);
+		//webElementsList.add(sendUnsecureInformationLink);
 		webElementsList.add(healthOverview);
 		webElementsList.add(basicInformation);
 		webElementsList.add(careTeamMembers);
