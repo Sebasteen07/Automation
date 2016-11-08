@@ -1,8 +1,22 @@
 package com.medfusion.product.patientportal1.test;
 
+import static org.testng.Assert.assertNotNull;
+
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.tools.ant.types.selectors.DifferentSelector;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
+import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
@@ -43,7 +57,11 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep2Page;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
-import com.medfusion.product.object.maps.practice.page.askstaff.*;
+import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
+import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep2Page;
+import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep3Page;
+import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
+import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.medfusion.product.object.maps.practice.page.messages.PracticeMessagePage;
 import com.medfusion.product.object.maps.practice.page.messages.PracticeMessagesSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
@@ -51,15 +69,6 @@ import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearch
 import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentDetailsPage;
 import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.medfusion.product.object.maps.practice.page.virtualofficevisit.VirtualOfficeVisitSearchPage;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.ITestResult;
-
-import static org.testng.Assert.*;
-
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.flows.FamilyAccountTest;
 import com.medfusion.product.patientportal1.flows.ForgotUserIdTest;
@@ -75,11 +84,6 @@ import com.medfusion.product.practice.tests.BillPaymentTest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 import com.medfusion.product.practice.tests.PatientActivationTest;
 import com.medfusion.product.practice.tests.RecivePayNowTest;
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.Mailinator;
-import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 
 @Test
 public class PortalAcceptanceTests extends BaseTestNGWebDriver {
@@ -1069,7 +1073,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 			/*
 			 * assertTrue(verifyTextPresent(driver, "Home Phone : (958) 963-1234"));
 			 */
-			assertTrue(verifyTextPresent(driver, "His reason for visit is \"Cough\"."));
+			assertTrue(verifyTextPresent(driver, "Reason for visit: \"cough\"."));
 			log("step 12: Sent Message to Patient");
 			String practiceResponse = pSymptomAssessmentDetailsPage.sentMessage();
 

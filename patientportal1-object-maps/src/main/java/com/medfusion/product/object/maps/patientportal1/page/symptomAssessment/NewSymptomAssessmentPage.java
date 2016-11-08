@@ -28,8 +28,8 @@ public class NewSymptomAssessmentPage extends BasePageObject {
 
 	@FindBy(how = How.NAME, using = "submitButtonWrapper:_body:submitButton:submit")
 	private WebElement btnContinue;
-
-	@FindBy(xpath = "//button[@id='Button2'][2]")
+	
+	@FindBy(xpath = "//button[@id='Button2'][4]")
 	private WebElement btnDontHaveCough;
 
 	@FindBy(css = ".paperPad>div>p")
