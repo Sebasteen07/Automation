@@ -47,6 +47,7 @@ public class CustomFormPage extends BasePageObject {
 		super(driver);
 		PageFactory.initElements(driver, this);
 		utils = new IHGUtil(driver);
+		jse = (JavascriptExecutor) driver;
 		firstSection = new CustomFormPageSection(driver, "first");
 		secondSection = new CustomFormPageSection(driver, "second");
 		thirdSection = new CustomFormPageSection(driver, "third");
@@ -79,15 +80,13 @@ public class CustomFormPage extends BasePageObject {
 
 	public void saveForm() throws InterruptedException {
 		Thread.sleep(1000);
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript("window.scrollTo(0, 0);");
+		scrollAndWait(0, 0, 500);
 		saveFormButton.click();
 		utils.waitForElementToDisappear(loadingNotification, 500, 20);
 	}
 
-	public void leaveFormPage() {
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript("window.scrollTo(0, 0);");
+	public void leaveFormPage() throws InterruptedException {
+		scrollAndWait(0, 0, 500);
 		backToTheListButton.click();
 	}
 }

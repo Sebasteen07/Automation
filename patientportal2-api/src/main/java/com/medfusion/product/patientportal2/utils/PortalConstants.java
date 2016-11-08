@@ -99,6 +99,7 @@ public class PortalConstants {
 	public final static String NewPatientActivationMessageLink = "fuseaction=home.unlock";
 	public final static String DateOfBirtSlashFormat = "01/11/1987";
 	public final static String DateOfBirthMonth = "January";
+	public final static String DateOfBirthMonthNumber = "1";
 	public final static String DateOfBirthDay = "11";
 	public final static String DateOfBirthYear = "1987";
 	

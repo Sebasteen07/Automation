@@ -8,9 +8,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
-public abstract class JalapenoMyAccountPage extends MedfusionPage {
+public abstract class JalapenoMyAccountPage extends JalapenoMenu {
 
 	@FindBy(how = How.LINK_TEXT, using = "Profile")
 	protected WebElement profileTab;

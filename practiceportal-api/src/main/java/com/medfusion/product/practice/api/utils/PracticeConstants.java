@@ -103,7 +103,7 @@ public class PracticeConstants {
 
 	//OnlineBillpay Process
 	public final static String ProcessCardHolderName = "batchopen";
-	public final static String processCardNum = "4222222222222" ;
+	public final static String processCardNum = "4111111111111111";
 	public final static String processCardType = "Visa";
 	public final static String voidComment = "Testing void";
 	public final static String refundComment = "Testing Refund";

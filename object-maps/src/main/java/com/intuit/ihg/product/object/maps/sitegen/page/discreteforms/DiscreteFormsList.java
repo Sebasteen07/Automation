@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,7 +33,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.Welco
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 
 /**
  *
@@ -113,7 +112,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil utils = new IHGUtil(driver);
 
 		IHGUtil.PrintMethodName();
-		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
+		String xpath = ".//div[contains(@class,'admin_inner')]//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of UnPublished rows is :" + count);
 
@@ -329,7 +328,7 @@ public class DiscreteFormsList extends BasePageObject {
 		CurrentSymptomsPage symptomsPage = otherDocspage.clicklnkCurrentSymptoms();
 		symptomsPage.selectBasicSymptoms();
 
-		scrollToTheTop();
+		scrollAndWait(0, 0, 0);
 		log("substep 6: Go through the rest of the pages");
 		MedicationsPage medicationsPage = symptomsPage.clicklnkMedications();
 		AllergiesPage allergiesPage = medicationsPage.clicklnkAllergies();
@@ -352,16 +351,15 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	public void testAddingQuestion(SocialHistoryPage socialPage) throws Exception {
+		Thread.sleep(500);
 		socialPage.clickAddSection();
 		socialPage.clickOnNewSection();
 		socialPage.setSectionName("Additional questions");
 		socialPage.clickInsertItemButton();
 		socialPage.setQuestionName("added question");
 		socialPage.clickSaveButton();
-		// socialPage.errorMessageAppearedTest();
 		socialPage.setQuestionType(QuestionType.multiSelect);
 		socialPage.clickSaveButton();
-		// socialPage.errorMessageAppearedTest();
 		socialPage.addPossibleAnswer("1 - 2");
 		socialPage.addPossibleAnswer("3 or 4");
 		socialPage.clickBackToTheList();
@@ -377,11 +375,5 @@ public class DiscreteFormsList extends BasePageObject {
 		WelcomeScreenPage welcomePage = openDiscreteForm(formName);
 		welcomePage.setWelcomeMessage(newWelcomeMessage).saveOpenedForm().clickBackToTheList();
 		return this;
-	}
-
-	private void scrollToTheTop() {
-		log("Scroll to the top of page to see al sections");
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript("scroll(0, 0);");
 	}
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Medfusion" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+	<test name="PatientPortal2-AcceptanceTests">
+		<groups>
+            <run>
+                <include name="acceptance-solutions" />
+            </run>
+        </groups>
+        <classes>
+            <class name = "com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests" />
+        </classes>
+	</test>
+</suite>

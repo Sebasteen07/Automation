@@ -6,12 +6,6 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 
-
-
-
-
-
-
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -32,7 +26,8 @@ import com.intuit.ihg.common.utils.WebPoster;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.JalapenoPatientActivationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
@@ -345,48 +340,48 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		
 		IPatientActivation act = new PatientActivation();
 		newPat = act.activatePatient(driver, testData, newPat.email);			
-		JalapenoPatientActivationPage jalapenoPatientActivationPage;
+		PatientVerificationPage patientVerificationPage;
+		SecurityDetailsPage accountDetailsPage;
 		JalapenoHomePage jalapenoHomePage;		
 		try	{
 			log("Finishing of patient activation: step 1 - verifying identity");
-			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, newPat.unlockLink);
+			patientVerificationPage = new PatientVerificationPage(driver, newPat.unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load");
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
 					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
-			PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+					PortalConstants.DateOfBirthYear);
 			checkAlert(driver);
 			
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(newPat.firstName,
-				testData.getPassword(), testData.getSecretQuestion(), 
-				testData.getSecretAnswer(), "1234567890", deliveryPref);
+			jalapenoHomePage =
+					accountDetailsPage.fillAccountDetailsAndContinue(newPat.firstName, testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+							"1234567890", deliveryPref);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			log("Retrying");
 			log("Finishing of patient activation: step 1 - verifying identity AGAIN.");
-			jalapenoPatientActivationPage = new JalapenoPatientActivationPage(driver, newPat.unlockLink);
+			patientVerificationPage = new PatientVerificationPage(driver, newPat.unlockLink);
 			log("  Waiting up to 50 sec for 1st step activation page to load.");
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50))
 					  .until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			jalapenoPatientActivationPage.verifyPatientIdentity(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonth,
-				PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+					PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");
-			jalapenoHomePage = jalapenoPatientActivationPage.fillInPatientActivationWithDeliveryPreference(newPat.firstName,
-					testData.getPassword(), testData.getSecretQuestion(), 
-					testData.getSecretAnswer(), "1234567890", deliveryPref);
-			
+			jalapenoHomePage =
+					accountDetailsPage.fillAccountDetailsAndContinue(newPat.firstName, testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+							"1234567890", deliveryPref);
 		}		
 		
 		log("Logging out");
-		jalapenoHomePage.logout(driver);
+		jalapenoHomePage.clickOnLogout();
 		
 		log("Back to Practice Portal to assign external ID");
 		return act.editPatientRSDKExternalID(driver, testData, newPat);

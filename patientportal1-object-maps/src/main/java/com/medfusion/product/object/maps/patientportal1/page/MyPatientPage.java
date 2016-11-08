@@ -1,10 +1,21 @@
 package com.medfusion.product.object.maps.patientportal1.page;
 
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import com.medfusion.product.object.maps.patientportal1.page.healthform.HealthFormPage;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.ConsolidatedInboxPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 import com.medfusion.product.object.maps.patientportal1.page.makePaymentpage.MakePaymentPage;
@@ -12,7 +23,6 @@ import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccount
 import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.NewRxRenewalPage;
 import com.medfusion.product.object.maps.patientportal1.page.phr.PHRPage;
 import com.medfusion.product.object.maps.patientportal1.page.portaltophr.AcceptPhrTermsandConditions;
-import com.medfusion.product.object.maps.patientportal1.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.ApptRequestHistoryPage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
@@ -21,26 +31,13 @@ import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.N
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-
-import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-
-
-
 /**
  *
  * @author bkrishnankutty
  *
  */
 
-public class MyPatientPage  extends BasePageObject{
+public class MyPatientPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "My Patient Page";
 
@@ -77,8 +74,11 @@ public class MyPatientPage  extends BasePageObject{
 	@FindBy(xpath = "//a[contains(@href,'vov.start')]")
 	private WebElement lnkVirtualOfficeVisit;
 
-	@FindBy(linkText = "Fill Out Forms")
-	private WebElement lnkFillOutForms;
+	@FindBy(xpath = "//span[./text()='health forms'] | //a[./text()='Health Forms'] | //a[./text()='health forms']")
+	private WebElement healthFormsLink;
+
+	@FindBy(xpath = "//a[@title='Fill Out Forms']")
+	private WebElement fillOutFormsButton;
 
 	@FindBy(linkText = "New Assessment")
 	private WebElement lnkNewSymptomAssessment;
@@ -106,13 +106,13 @@ public class MyPatientPage  extends BasePageObject{
 
 	@FindBy(linkText = "My Messages")
 	private WebElement Mymessages;
-	
+
 	@FindBy(id = "touAck")
 	private WebElement touAck;
-	
+
 	@FindBy(id = "touAck-inputs:1:input:input_1")
 	private WebElement touCheckbox;
-	
+
 	@FindBy(xpath = "//div[@class='submitContainer']/input[@type='submit']")
 	private WebElement touSubmitBtn;
 
@@ -120,6 +120,7 @@ public class MyPatientPage  extends BasePageObject{
 
 	public MyPatientPage(WebDriver driver) {
 		super(driver);
+		jse = (JavascriptExecutor) driver;
 	}
 
 	public WebElement gettxtMyPatientPage() {
@@ -147,46 +148,45 @@ public class MyPatientPage  extends BasePageObject{
 		return PageFactory.initElements(driver, PortalLoginPage.class);
 	}
 
-
 	/**
 	 * Verify if the ViewAll button presents on page or not
+	 * 
 	 * @param driver
 	 * @return
 	 * @throws InterruptedException
 	 */
 
-	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException
-	{
+	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 		PortalUtil.setPortalFrame(driver);
 		return IHGUtil.waitForElement(driver, 10, myaccountLink);
 	}
 
-
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
-		//IHGUtil.setDefaultFrame(driver);
+		// IHGUtil.setDefaultFrame(driver);
 		driver.switchTo().defaultContent();
-		if(pPortalUtil.isFoundBasedOnCssSelector( "a[href*='exit.cfm']",driver )) {
-			System.out.println( "DEBUG: LOGOUT ELEMENT FOUND." );
+		if (pPortalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
+			System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 			// DEBUG
-			driver.manage().timeouts().implicitlyWait( PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+			scrollAndWait(0, 0, 0);
 			logout.click();
 		} else {
 			// Look in frame.
 			PortalUtil.setPortalFrame(driver);
-			if( pPortalUtil.isFoundBasedOnCssSelector( "a[href*='exit.cfm']",driver) ) {
-				System.out.println( "DEBUG: LOGOUT ELEMENT FOUND." );
+			if (pPortalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
+				System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 				// DEBUG
-				driver.manage().timeouts().implicitlyWait( PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 				logout.click();
 			}
-			System.out.println( "### WARNING: LOGOUT ELEMENT NOT FOUND." );
+			System.out.println("### WARNING: LOGOUT ELEMENT NOT FOUND.");
 		}
 
 		PortalLoginPage homePage = PageFactory.initElements(driver, PortalLoginPage.class);
 
-		System.out.println( "### DELETE ALL COOKIES" );
+		System.out.println("### DELETE ALL COOKIES");
 		driver.manage().deleteAllCookies();
 		return homePage;
 	}
@@ -209,13 +209,14 @@ public class MyPatientPage  extends BasePageObject{
 	public AskAStaffStep1Page clickAskAStaffLink() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver,20, askAStaffLink);
+		IHGUtil.waitForElement(driver, 20, askAStaffLink);
 		askAStaffLink.click();
 		return PageFactory.initElements(driver, AskAStaffStep1Page.class);
 	}
 
 	/**
 	 * Click on Button Viewallmessages
+	 * 
 	 * @return
 	 */
 	public ConsolidatedInboxPage clickViewAllMessages() {
@@ -239,14 +240,19 @@ public class MyPatientPage  extends BasePageObject{
 		return PageFactory.initElements(driver, VirtualOfficeVisitProviderPage.class);
 	}
 
-	public HealthFormPage clickFillOutFormsLink() {
+	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 20); // we need to wait until the form window disappears
+		IHGUtil.setDefaultFrame(driver);
+		try {
+			healthFormsLink.click();
+		IHGUtil.setFrame(driver, "iframe");
+		} catch (ElementNotVisibleException ex) {
+			IHGUtil.setFrame(driver, "iframe");
+			fillOutFormsButton.click();
+			IHGUtil.setFrame(driver, "iframe");
+		}
 
-		wait.until(ExpectedConditions.visibilityOf(lnkFillOutForms));
-		lnkFillOutForms.click();
-		return PageFactory.initElements(driver, HealthFormPage.class);
+		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
 	public NewSymptomAssessmentPage clickNewSymptomAssessmentLink() {
@@ -256,9 +262,9 @@ public class MyPatientPage  extends BasePageObject{
 		return PageFactory.initElements(driver, NewSymptomAssessmentPage.class);
 	}
 
-
 	/**
 	 * Click on PHR link and redirect to page AcceptPhrTermsandConditions
+	 * 
 	 * @return
 	 */
 	public AcceptPhrTermsandConditions clickViewMeaningfulUsePHRLink() {
@@ -270,6 +276,7 @@ public class MyPatientPage  extends BasePageObject{
 
 	/**
 	 * Click on Prescription Renewal link and redirect to page New Rx Renewal Page
+	 * 
 	 * @return NewRxRenewalPage
 	 */
 	public NewRxRenewalPage clickPrescriptionRenewal() {
@@ -291,8 +298,6 @@ public class MyPatientPage  extends BasePageObject{
 		makePaymentlnk.click();
 		return PageFactory.initElements(driver, MakePaymentPage.class);
 	}
-
-
 
 	/**
 	 * @Description:Click on Start Registration Button
@@ -317,13 +322,8 @@ public class MyPatientPage  extends BasePageObject{
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		log("Confirmation Text :" + registrationConfirmationtext.getText());
-		BaseTestSoftAssert
-				.verifyEquals(
-						true,
-						registrationConfirmationtext
-								.getText()
-								.contains(
-										"Thank you for filling out your registration and health history information!"));
+		BaseTestSoftAssert.verifyEquals(true,
+				registrationConfirmationtext.getText().contains("Thank you for filling out your registration and health history information!"));
 	}
 
 	public ConsolidatedInboxPage clickMymessages() {
@@ -346,8 +346,7 @@ public class MyPatientPage  extends BasePageObject{
 	/**
 	 * @Description:Click On PHR Link
 	 */
-	public void clickPHRWithoutInit(WebDriver pdriver)
- {
+	public void clickPHRWithoutInit(WebDriver pdriver) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		phrLink.click();
@@ -360,13 +359,13 @@ public class MyPatientPage  extends BasePageObject{
 			return false;
 		}
 	}
-	
+
 	public MyPatientPage acknowledgeTermsOfUse() {
 		log("Check Terms of use checkbox");
 		touCheckbox.click();
 		log("Click on Submit button");
-    	touSubmitBtn.click();
-    	
-    	return this;
+		touSubmitBtn.click();
+
+		return this;
 	}
 }

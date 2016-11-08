@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "forms-old-custom-acceptance" verbose = "2" >
+    <listeners>
+      <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+      <listener class-name="org.uncommons.reportng.HTMLReporter" />
+      <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+    </listeners>
+
+    <test name = "forms-old-custom" >
+        <groups>
+            <run>
+                <include name="OldCustomForms" />
+            </run>
+        </groups>
+        <classes>
+            <class name = "com.intuit.ihg.product.forms.test.OldCustomFormsAcceptanceTests" />
+        </classes>
+    </test>
+</suite>

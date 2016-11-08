@@ -9,7 +9,7 @@ public class CreditCard {
 	
 	public enum CardType { Visa, Mastercard, Discover, Amex}
 	//https://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
-	private String[] visaNumbers = {"4012888888881881", "4222222222222"};
+	private String[] visaNumbers = {"4012888888881881", "4111111111111111"};
 	private String[] mastercardNumbers = {"5555555555554444", "5105105105105100"};
 	private String[] discoverNumbers = {"6011111111111117", "6011000990139424"};
 	private String[] amexNumbers = {"378282246310005", "371449635398431"};
@@ -26,6 +26,23 @@ public class CreditCard {
 	private int currYear = Calendar.getInstance().get(Calendar.YEAR);
 	
 	public CreditCard() throws Exception {
+		this.name = "Name" + IHGUtil.createRandomNumericString();
+		Random rand = new Random();
+		this.type = CardType.values()[rand.nextInt(3)];
+		switch (type) {
+			case Visa:
+				this.cardNumber = visaNumbers[rand.nextInt(visaNumbers.length)];
+				break;
+			case Mastercard:
+				this.cardNumber = mastercardNumbers[rand.nextInt(mastercardNumbers.length)];
+				break;
+			case Discover:
+				this.cardNumber = discoverNumbers[rand.nextInt(discoverNumbers.length)];
+				break;
+			case Amex:
+				this.cardNumber = amexNumbers[rand.nextInt(amexNumbers.length)];
+				break;
+		}
 		this.zipCode = IHGUtil.createRandomZip();
 		this.cvvCode = IHGUtil.createRandomNumericString(3);
 		this.expMonth = IHGUtil.createRandomNumericStringInRange(currMonth, 12);
@@ -45,6 +62,7 @@ public class CreditCard {
 		this.cvvCode = cvvCode;
 	}
 
+	// TODO: Delete the constructor and solve conflicts
 	public CreditCard(CardType type, String name) throws Exception {
 		this();
 		this.type = type;

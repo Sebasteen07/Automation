@@ -17,6 +17,7 @@ import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOn
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
+import com.medfusion.product.object.maps.practice.page.referrals.ReferralsPage;
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
@@ -93,6 +94,9 @@ public class PracticeHomePage extends BasePageObject {
 	@FindBy(xpath=".//a[contains(@href, 'home.fa')]")
 	private WebElement familyManagement;
 	
+	@FindBy(xpath = ".//a[contains(@href, 'home.referral')]")
+	private WebElement referralsTab;
+
 	public PracticeHomePage(WebDriver driver) {
 		super(driver);
 	}
@@ -279,6 +283,22 @@ public class PracticeHomePage extends BasePageObject {
 
 		rxRenewal.click();
 		return PageFactory.initElements(driver, RxRenewalSearchPage.class);
+	}
+
+	/**
+	 * Will taky the staff member to the Referrals page where the staff member
+	 * can work with referrals
+	 * 
+	 * @return the Referrals page
+	 * @see referrals
+	 * 
+	 * @throws Exception
+	 */
+	public ReferralsPage clickOnReferrals() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElementInDefaultFrame(driver, 30, referralsTab);
+		referralsTab.click();
+		return PageFactory.initElements(driver, ReferralsPage.class);
 	}
 
 	/**
