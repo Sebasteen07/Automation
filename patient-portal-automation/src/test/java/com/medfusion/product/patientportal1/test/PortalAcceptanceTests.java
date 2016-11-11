@@ -1417,7 +1417,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Go to the Practice Portal and register the patient.");
 		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email, null, null, null);
 
-		activatePatient(unlockLink, patientActivationSearchTest.getZipCodeString(), email, testcasesData);
+		activatePatient(unlockLink, PracticeConstants.Zipcode, email, testcasesData);
 
 
 	}
