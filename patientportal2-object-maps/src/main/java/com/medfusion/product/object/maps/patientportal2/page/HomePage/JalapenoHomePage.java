@@ -20,6 +20,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -48,6 +49,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_discrete_forms")
 	private WebElement forms;
 
+	@FindBy(how = How.ID, using = "feature_ccdList")
+	private WebElement medicalRecordSummaries;
+	
 	@FindBy(how = How.ID, using = "unstartedformbutton")
 	private WebElement startRegistrationButton;
 
@@ -136,6 +140,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
 
+	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
+		log("Clicking on Medical Record Summaries button on dashboard");
+		medicalRecordSummaries.click();
+		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
+	}
+	
 	public FormWelcomePage clickStartRegistrationButton(WebDriver driver) throws Exception {
 		log("Clicking on Start Registration button.");
 		startRegistrationButton.click();
