@@ -27,7 +27,8 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
-import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
@@ -111,7 +112,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
-
+	
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() throws Exception {
 		log("Load login page");
@@ -309,7 +310,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
+		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
 		assertTrue(jalapenoCcdPage.assessCcdElements());
 		if ((IHGUtil.getEnvironmentType().toString().equals("DEV3")) || (IHGUtil.getEnvironmentType().toString().equals("QA1"))) {
@@ -341,13 +342,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-		JalapenoCcdPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
+		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
 		assertTrue(jalapenoCcdPage.assessCcdElements());
 		
 		assertTrue(jalapenoCcdPage.sendInformationToUnsecureEmail(email));
 		
 		//TODO: Check if email arrived once is in use
+	}
+	
+	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMedicalRecordSummaries() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Navigate to Medical Record Summaries Page");
+		MedicalRecordSummariesPage recordSummaries = jalapenoHomePage.clickOnMedicalRecordSummaries(driver);
+		
+		logStep("Send CCD if there is CCD older than 7 days");
+		recordSummaries.sendCCDIfNewestIsOlderThan(7);
+		
+		logStep("Set filter to third visible CCD");
+		recordSummaries.setFilterToThirdCCDDate();
+		
+		logStep("Select and send CCD to Direct email address");
+		recordSummaries.selectFirstVisibleCCD();
+		recordSummaries.sendFirstVisibleCCDUsingDirectProtocol(DIRECT_EMAIL_ADDRESS);
+		
+		logStep("Set filter to default position and check page elements");
+		recordSummaries.setFilterToDefaultPositionAndCheckElements();
 	}
 
 	@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)

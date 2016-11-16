@@ -11,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
@@ -118,12 +118,12 @@ public class JalapenoMessagesPage extends BasePageObject {
 		}
 	}
 
-	public JalapenoCcdPage findCcdMessage(WebDriver driver) {
+	public JalapenoCcdViewerPage findCcdMessage(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 
 		ccdDocument.click();
 
-		return PageFactory.initElements(driver, JalapenoCcdPage.class);
+		return PageFactory.initElements(driver, JalapenoCcdViewerPage.class);
 	}
 
 	public JalapenoHomePage backToHomePage(WebDriver driver) {

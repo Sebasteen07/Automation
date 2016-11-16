@@ -1,4 +1,4 @@
-package com.medfusion.product.object.maps.patientportal2.page.CcdViewer;
+package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,7 +19,7 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 
 
-public class JalapenoCcdPage extends BasePageObject {
+public class JalapenoCcdViewerPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "closeCcd")
 	private WebElement closeButton;
@@ -102,7 +102,7 @@ public class JalapenoCcdPage extends BasePageObject {
 	@FindBy(id = "basicInfo")
 	private WebElement ccdBasicInfo;
 
-	public JalapenoCcdPage(WebDriver driver) {
+	public JalapenoCcdViewerPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();

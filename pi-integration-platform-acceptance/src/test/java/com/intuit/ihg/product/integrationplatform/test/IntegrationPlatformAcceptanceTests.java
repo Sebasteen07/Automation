@@ -27,7 +27,7 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
-import com.medfusion.product.object.maps.patientportal2.page.CcdViewer.JalapenoCcdPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -336,7 +336,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "You have new health data"));
 		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 
-		JalapenoCcdPage jalapenoCcdPage = new JalapenoCcdPage(driver);
+		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
 
 		log("Step 6: Click on link View health data");
 		jalapenoCcdPage.clickBtnViewHealthData();
