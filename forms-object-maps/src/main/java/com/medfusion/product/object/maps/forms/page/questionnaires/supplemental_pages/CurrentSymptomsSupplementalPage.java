@@ -48,4 +48,9 @@ public class CurrentSymptomsSupplementalPage extends PortalFormPage {
 		answerCustomQuestion(1, "6'4\"");
 		answerCustomQuestion(2, "170 lbs");
 	}
+
+	@Override
+	public boolean isPageLoaded() {
+		throw new UnsupportedOperationException();
+	}
 }

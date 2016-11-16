@@ -40,6 +40,9 @@ public class HealthFormListPage extends BasePageObject {
 	@FindBy(xpath = "//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms'] | //a[./text()='health forms']")
 	private WebElement healthFormsLink;
 
+	@FindBy(xpath = "//span[./text()='Home'] | //*[./text()='my patient page'] | //*[./text()='My Patient Page']")
+	private WebElement homeLink;
+
 	/**
 	 * automatically switches to corresponding iframe
 	 * ({@link com.medfusion.product.object.maps.patientportal2.page.JalapenoPage#JalapenoNewCustomHealthFormPage(WebDriver driver) see customFormPage
@@ -131,6 +134,11 @@ public class HealthFormListPage extends BasePageObject {
 			throw f;
 		}
 		return formInfo;
+	}
+
+	public void goToHomePage() {
+		IHGUtil.setDefaultFrame(driver);
+		homeLink.click();
 	}
 
 }

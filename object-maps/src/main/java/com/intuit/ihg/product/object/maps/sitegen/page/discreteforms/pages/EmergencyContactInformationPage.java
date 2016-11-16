@@ -6,8 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-
 public class EmergencyContactInformationPage extends ConfiguratorFormPage {
 
 	@FindBy(xpath = "//input[@id='hide_emergencycontact_check']")

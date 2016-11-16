@@ -33,7 +33,8 @@ public class Portal {
 	public String formsAltPIUrl = "";
 	public String preferredLocationBeta = "";
 	public String formsAltUrl = "";
-	public String restUrl = "";
+	public String ccdRestAltUrl = "";
+	public String ccdRestUrl = "";
 	public String secureMessageNotificationUserEmail = "";
 	public String secureMessageNotificationUserPassword = "";
 }

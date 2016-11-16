@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -81,4 +82,10 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		Select selector = new Select(hospitalizationTimeFrame);
 		selector.selectByVisibleText(type);
 	}
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Surgeries & Hospitalizations"))).isDisplayed();
+	}
+
 }

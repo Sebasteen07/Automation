@@ -22,12 +22,12 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.Basic
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CurrentSymptomsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.EmergencyContactInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.ExamsTestsAndProceduresPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.FormFamilyHistoryPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.HealthInsuranceInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.IllnessesAndConditionsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.MedicationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.OtherDoctorsYouSeen;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.PastMedicalHistoryPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.ProceduresPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SecondaryHealthInsurancePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage.QuestionType;
@@ -128,8 +128,8 @@ public class DiscreteFormsList extends BasePageObject {
 		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueDiscreteFormName)));
 	}
 
-	private WebElement getPublishedFormsOption(String uniqueUnpublishedFormName) {
-		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueUnpublishedFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
+	private WebElement getPublishedFormsOption(String uniqueFormName) {
+		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
 	}
 
 	private WebElement getPublishedFormOptions(String uniqueDiscreteFormName) {
@@ -190,19 +190,15 @@ public class DiscreteFormsList extends BasePageObject {
 	 * @throws Exception
 	 */
 	public DiscreteFormsList unpublishAllForms() throws Exception {
-		List<WebElement> unpublishButtonList;
 		IHGUtil utils = new IHGUtil(driver);
-
 		IHGUtil.PrintMethodName();
-		String xpath = ".//div[@class='admin_inner']//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='unpublish']";
+		String xpath = "//a[contains(@class,'unpublish')]";
 		int count = driver.findElements(By.xpath(xpath)).size();
 		log("Number of Published rows is :" + count);
 
-		while (count > 0) {
-			unpublishButtonList = driver.findElements(By.xpath(xpath));
-			unpublishButtonList.get(0).click();
-			utils.waitForElementToDisappear(unpublishButtonList.get(count - 1), waitingPeriodMS, waitingSeconds);
-			count--;
+		for (WebElement unpublishButton : driver.findElements(By.xpath(xpath))) {
+			unpublishButton.click();
+			utils.waitForElementToDisappear(unpublishButton, waitingPeriodMS, waitingSeconds);
 		}
 		return this;
 	}
@@ -229,7 +225,6 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		WebElement formOptions = getUnpublishedFormsOption(uniqueDiscreteFormName);
 		formOptions.findElement(By.linkText("Publish")).click();
-		IHGUtil.waitForElement(driver, 20, getPublishedFormsOption(uniqueDiscreteFormName));
 		return this;
 	}
 
@@ -400,8 +395,8 @@ public class DiscreteFormsList extends BasePageObject {
 		AllergiesPage allergiesPage = medicationsPage.clicklnkAllergies();
 		VaccinationsPage vaccinationPage = allergiesPage.clicklnkVaccinations();
 		SurgeriesAndHospitalizationsPage surgsHospsPage = vaccinationPage.clicklnkSurgsHosps();
-		ExamsTestsAndProceduresPage proceduresPage = surgsHospsPage.clicklnkProcedures();
-		IllnessesAndConditionsPage conditionsPage = proceduresPage.clicklnkConditions();
+		ProceduresPage proceduresPage = surgsHospsPage.clicklnkProcedures();
+		PastMedicalHistoryPage conditionsPage = proceduresPage.clicklnkPastMedicalHistory();
 		FormFamilyHistoryPage familyMedicalHistoryPage = conditionsPage.clicklnkFamilyHistory();
 
 		log("substep 7: Click on Social History the last page of discrete form");

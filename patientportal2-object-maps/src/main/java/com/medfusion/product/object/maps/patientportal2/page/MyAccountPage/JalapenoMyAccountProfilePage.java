@@ -30,6 +30,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='gender_male']")
 	private WebElement maleRadioButton;
 
+	@FindBy(how = How.XPATH, using = "//input[@id='gender_female']")
+	private WebElement femaleRadioButton;
+
 	@FindBy(how = How.ID, using = "birthDate_year")
 	private WebElement DOByear;
 
@@ -166,5 +169,17 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		itemsToChange.put(zipCodeTextbox, "54321");
 
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
+	}
+
+	/**
+	 * 
+	 * @return proper gender or null if not specified
+	 */
+	public Gender getGender() {
+		if (maleRadioButton.isSelected())
+			return Gender.MALE;
+		if (femaleRadioButton.isSelected())
+			return Gender.FEMALE;
+		return null;
 	}
 }

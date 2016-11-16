@@ -110,7 +110,7 @@ public class Utils {
 		Date now = getCurrentTimeGMT(-4);
 		log("Date from web: " + submittedDate);
 		log("Current US date: " + now);
-		// "Form submitted max. 5 minutes before not found");
+		// date on web is max. 5 min after submit date
 		Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
 	}
 
@@ -182,10 +182,9 @@ public class Utils {
 		return Integer.parseInt(m.group(1));
 	}
 
-	private static void logLogin(String url, String username, String password) {
+	public static void logLogin(String url, String username, String password) {
 		log("URL: " + url);
 		log("username: " + username);
 		log("password: " + password);
 	}
-
 }

@@ -1,11 +1,13 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
@@ -17,6 +19,9 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 
 	@FindBy(id = "idonot_symptoms_general_group")
 	WebElement noSymptoms;
+
+	@FindBy(id = "idonot_symptoms_malespecific")
+	WebElement noMaleSymptoms;
 
 	@FindBy(id = "chills_symptom_general")
 	WebElement checkChills;
@@ -39,6 +44,12 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
+	@FindBy(xpath = "//h3[contains(./text(),'Male-Specific')]")
+	private WebElement maleQuestionsHeader;
+
+	@FindBy(xpath = "//h3[contains(./text(),'Female-Specific')]")
+	private WebElement femaleQuestionsHeader;
+
 	public WebElement getCheckEarache() {
 		return checkEarache;
 	}
@@ -55,8 +66,13 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 	 */
 	public void setNoSymptoms() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		noSymptoms.click();
+	}
+
+	public void setNoMaleSymptoms() throws Exception {
+		PortalUtil.PrintMethodName();
+		scrollAndWait(0, 0, 500);
+		noMaleSymptoms.click();
 	}
 
 	/**
@@ -76,5 +92,18 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 
 	public void closeForm() {
 		saveAndFinishLater.click();
+	}
+
+	public boolean areFemaleQuestionsDisplayed() {
+		return IHGUtil.waitForElement(driver, 10, femaleQuestionsHeader);
+	}
+
+	public boolean areMaleQuestionsDisplayed() {
+		return IHGUtil.waitForElement(driver, 10, maleQuestionsHeader);
+	}
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Current Symptoms"))).isDisplayed();
 	}
 }

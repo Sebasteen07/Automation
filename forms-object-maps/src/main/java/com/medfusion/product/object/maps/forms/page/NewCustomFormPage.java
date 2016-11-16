@@ -240,4 +240,9 @@ public class NewCustomFormPage extends PortalFormPage {
 		currentSection = sectionIndex;
 		new Select(chooseSectionMenuSelect).selectByIndex(sectionIndex);
 	}
+
+	@Override
+	public boolean isPageLoaded() {
+		throw new UnsupportedOperationException();
+	}
 }

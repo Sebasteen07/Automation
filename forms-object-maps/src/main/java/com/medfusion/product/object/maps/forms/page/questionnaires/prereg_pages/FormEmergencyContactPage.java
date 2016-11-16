@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -117,6 +118,11 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		clickSaveContinue();
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
+	}
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Emergency Contact Information"))).isDisplayed();
 	}
 
 }

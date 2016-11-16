@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import com.medfusion.common.utils.IHGUtil;
 
 public class CurrentSymptomsPage extends ConfiguratorFormPage {
@@ -40,6 +39,12 @@ public class CurrentSymptomsPage extends ConfiguratorFormPage {
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
 
+	@FindBy(xpath = "//div[contains(@class,'currentsymptoms')]//*[contains(text(),'Female-Specific')]//input")
+	private WebElement femaleSymptomsGroupInput;
+
+	@FindBy(xpath = "//div[contains(@class,'currentsymptoms')]//*[contains(text(),'Male-Specific')]//input")
+	private WebElement maleSymptomsGroupInput;
+
 	public CurrentSymptomsPage(WebDriver driver) {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
@@ -71,6 +76,20 @@ public class CurrentSymptomsPage extends ConfiguratorFormPage {
 
 	public void clickSave() {
 		btnSave.click();
+	}
+
+	public void addMaleSymptoms() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, maleSymptomsGroupInput);
+		scrollAndWait(0, 0, 1000);
+		if (!maleSymptomsGroupInput.isSelected())
+			maleSymptomsGroupInput.click();
+	}
+
+	public void addFemaleSymptoms() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, femaleSymptomsGroupInput);
+		scrollAndWait(0, 0, 1000);
+		if (!femaleSymptomsGroupInput.isSelected())
+			femaleSymptomsGroupInput.click();
 	}
 
 }

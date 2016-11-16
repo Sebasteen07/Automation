@@ -1,10 +1,11 @@
 package com.medfusion.product.patientportal1.utils;
 
 import java.net.URL;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.pojo.Portal;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 
 public class TestcasesData {
@@ -160,8 +161,12 @@ public class TestcasesData {
 		return portalobj.formsAltUrl;
 	}
 
-	public String getRestUrl() {
-		return portalobj.restUrl;
+	public String getCCDRestAltUrl() {
+		return portalobj.ccdRestAltUrl;
+	}
+
+	public String getCCDRestUrl() {
+		return portalobj.ccdRestUrl;
 	}
 
 	public String getSecureNotificationUser() {

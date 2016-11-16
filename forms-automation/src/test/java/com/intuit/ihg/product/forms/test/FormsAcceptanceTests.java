@@ -9,21 +9,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Charsets;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ifs.csscat.core.WebDriverFactory;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CurrentSymptomsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
@@ -47,8 +50,8 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages.
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormFamilyHistoryPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormMedicationsPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormPastMedicalHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSocialHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
@@ -79,7 +82,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		SitegenTestData testData = new SitegenTestData(new Sitegen());
 		SiteGenSteps sgSteps = new SiteGenSteps();
 
-		logTestEnvironmentInfo("formsConfigSmokeTest");
+		Utils.logTestEnvironmentInfo("formsConfigSmokeTest");
 		DiscreteFormsList formsPage = sgSteps.logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword()).clickLnkDiscreteForms();
 		assertTrue(formsPage.isPageLoaded());
 	}
@@ -161,7 +164,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Test if CCD is produced");
 		log("Calling rest");
-		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
+		xml = CCDTest.getFormCCD(timestamp, portalData.getCCDRestAltUrl());
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 5: Test if the submission date is correct");
@@ -187,7 +190,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 
-		FormIllnessConditionsPage illsPage = medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
+		FormPastMedicalHistoryPage illsPage = medsPage.clickSaveContinue(FormPastMedicalHistoryPage.class);
 		illsPage.checkMononucleosis();
 		illsPage.clickSaveContinueSamePage(3);
 
@@ -303,7 +306,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Verify if there's submitted form on patient dashboard");
 		assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM), "Submitted form was not found on Patient Dashboard");
-		
+
 		log("Step 8: Open forms detail and check donwload link");
 		pDashboardPage.openFormDetails(SitegenConstants.PDF_CCD_FORM);
 		Utils.checkIfPDFCanBeDownloaded("View as PDF", driver);
@@ -316,7 +319,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testSitegenFUPInteraction() throws Exception {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		logTestEnvironmentInfo("testCreateFormWithFUPs");
+		Utils.logTestEnvironmentInfo("testCreateFormWithFUPs");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData SGData = new SitegenTestData(sitegen);
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
@@ -483,11 +486,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 6: Compare exported form file with representative file");
 		Path exportedFilePath = Paths.get(System.getProperty("user.dir") + "\\" + SitegenConstants.FORM_EXPORT_IMPORT + ".txt");
-		String exportedFileString =
-				stripVariablesFromExportedForm(Files.readAllLines(exportedFilePath, Charsets.UTF_8).get(0));
-		String representativeFileString =
-				stripVariablesFromExportedForm(
-						Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0));
+		String exportedFileString = stripVariablesFromExportedForm(Files.readAllLines(exportedFilePath, Charsets.UTF_8).get(0));
+		String representativeFileString = stripVariablesFromExportedForm(
+				Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0));
 		assertEquals(exportedFileString, representativeFileString);
 
 		log("step 7: Import form");
@@ -495,15 +496,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 8: Check imported form preview");
 		assertFalse(pManageDiscreteForms.openUnpublishedFormPreview(SitegenConstants.FORM_EXPORT_IMPORT).getMessageText().isEmpty());
-		
+
 		log("step 9: Close the window and logout from SiteGenerator");
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 	}
 
-	@Test(groups="Forms")
-	public void testEGQSitegen() throws Exception {
+	@Test
+	public void testEGQ() throws Exception {
 		Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
 		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
@@ -513,17 +514,29 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 		log("step 2: navigate to SiteGen PracticeHomePage - practice with id: " + automationPracticeID);
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
+		log("step 3: enable EGQ");
 		pSiteGenPracticeHomePage.openPracticeInfo().enableGenderQuestions().returnToPracticeHomePage();
-		String homePageWindowHandle = driver.getWindowHandle();
+		String homePageSGWindow = driver.getWindowHandle();
+		log("step 4: open forms and clean current forms");
 		DiscreteFormsList formsList = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		formsList.initializePracticeForNewForm();
+		log("step 5: create form for test");
 		formsList.createRegistrationForm();
-		String formsListHandle = driver.getWindowHandle();
+		String formsSGListWindow = driver.getWindowHandle();
+		log("step 6: test behaving when EGQ are enabled - SG");
 		testEGQSitegenEnabledFlow(formsList);
-		driver.switchTo().window(homePageWindowHandle);
+		log("step 7: test behaving when EGQ are enabled - PI");
+		WebDriver portalDriver = WebDriverFactory.getWebDriver();
+		portalDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		HealthFormListPage formsListPI = testEGQEnabledPIFlow(portalDriver);
+		driver.switchTo().window(homePageSGWindow);
+		log("step 9: disable EGQ");
 		pSiteGenPracticeHomePage.openPracticeInfo().disableGenderQuestions().returnToPracticeHomePage();
-		driver.switchTo().window(formsListHandle);
+		driver.switchTo().window(formsSGListWindow);
+		log("step 9: test behaving when EGQ are disabled - SG");
 		testEGQSitegenDisabledFlow(formsList);
+		log("step 10: test behaving when EGQ are disabled - PI");
+		testEGQDisabledPIFlow(formsListPI);
 	}
 
 	private void testEGQSitegenEnabledFlow(DiscreteFormsList formsList) throws Exception {
@@ -537,13 +550,77 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
 		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
 		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
-		log("check question add/remove");
+		log("check adding question");
+		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
 		basicInfoPage.addQuestionToForm(sexQuestionLabel);
 		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
-		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
-		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		log("configure form");
+		CurrentSymptomsPage symptoms = basicInfoPage.clicklnkCurrentSymptoms();
+		symptoms.addMaleSymptoms();
+		symptoms.addFemaleSymptoms();
+		symptoms.clicklnkPastMedicalHistory().addFemaleQuestions();
+		int[] sectionsToHide = {2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14};
+		symptoms.hideSections(sectionsToHide);
+		log("save and leave");
 		basicInfoPage.saveOpenedForm();
 		formsList = basicInfoPage.clickBackToTheList();
+		formsList.publishForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME);
+	}
+
+	private HealthFormListPage testEGQEnabledPIFlow(WebDriver driver) throws Exception {
+		long timestamp = System.currentTimeMillis() / 1000L;
+		log("create patient and login to PI");
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoPatient patientData = new JalapenoPatient(testData);
+		patientData.setUrl(new TestcasesData(new Portal()).getPIFormsUrl());
+		patientData.setDOBYear("1900");
+		JalapenoHomePage home = CommonSteps.createAndLogInPatient(patientData, testData, driver);
+		HealthFormListPage formsList = home.clickOnHealthForms();
+		log("check question label");
+		FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).initToFirstPage(FormBasicInfoPage.class);
+		assertEquals(basicInfo.getGenderQuestionLabel(), "What sex were you assigned at birth on your original birth certificate?*");
+		log("check that answer is prefilled by information from my account");
+		assertEquals(basicInfo.getSelectedGender(), "Male");
+		log("check that answer is required");
+		basicInfo.setSex("Choose...");
+		basicInfo.clickSaveContinue();
+		assertTrue(basicInfo.isInputErrorMessageDisplayed());
+		basicInfo.setSex("Male");
+		FormCurrentSymptomsPage symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
+		log("check that only male-specific questions are displayed to male");
+		assertTrue(symptoms.areMaleQuestionsDisplayed());
+		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		symptoms.setNoMaleSymptoms();
+		FormPastMedicalHistoryPage medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
+		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		symptoms = medHistory.goBack(FormCurrentSymptomsPage.class);
+		basicInfo = medHistory.goBack(FormBasicInfoPage.class);
+		log("choose declined to answer");
+		basicInfo.setSex("Declined to answer");
+		symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
+		log("check that all questions are displayed to user who didn't answerd gender");
+		assertTrue(symptoms.areFemaleQuestionsDisplayed());
+		assertTrue(symptoms.areMaleQuestionsDisplayed());
+		symptoms.checkAnswer("Penile lesions");
+		symptoms.checkAnswer("Vaginal dryness");
+		medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
+		medHistory.setCountOfPregnancies(0);
+		medHistory.clickSaveContinue();
+		log("submit form");
+		medHistory.submitForm();
+		log("calling CCD rest");
+		String ccd = CCDTest.getFormCCD(timestamp, new TestcasesData(new Portal()).getCCDRestUrl());
+		log("check that answered questions are in CCD");
+		assertTrue(ccd.contains("Penile lesions"), "not found in ccd: " + ccd);
+		assertTrue(ccd.contains("Vaginal dryness"), "not found in ccd: " + ccd);
+		assertTrue(ccd.contains("None, I have never been pregnant"), "not found in ccd: " + ccd);
+		log("check that there is nullFlavor UNK for gender in CCD");
+		assertTrue(Pattern.compile("<administrativeGenderCode[^>]+nullFlavor=\"UNK\"").matcher(ccd).find(), "not found in ccd: " + ccd);
+		formsList.goToHomePage();
+		log("check that value in my account has been changed based on form answer");
+		JalapenoMyAccountProfilePage pMyAccountPage = home.clickOnMyAccount();
+		assertTrue(pMyAccountPage.getGender() == null);
+		return pMyAccountPage.clickOnMenuHealthForms();
 	}
 
 	private void testEGQSitegenDisabledFlow(DiscreteFormsList formsList) throws Exception {
@@ -558,21 +635,45 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
 		boolean afterClick = basicInfoPage.isQuestionRequired(sexQuestionLabel);
 		assertEquals(atFirst, !afterClick);
-		log("check question add/remove");
+		log("save and close");
 		basicInfoPage.addQuestionToForm(sexQuestionLabel);
-		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
-		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
-		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		basicInfoPage.makeQuestionOptional(sexQuestionLabel);
 		basicInfoPage.saveOpenedForm();
-		formsList = basicInfoPage.clickBackToTheList();
+		basicInfoPage.clickBackToTheList();
 	}
 
-
-
-	protected void logTestEnvironmentInfo(String testName) {
-		log(testName);
-		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
+	private void testEGQDisabledPIFlow(HealthFormListPage formsList) throws Exception {
+		long timestamp = System.currentTimeMillis() / 1000L;
+		String ccd;
+		log("check question label");
+		FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).initToFirstPage(FormBasicInfoPage.class);
+		assertEquals(basicInfo.getGenderQuestionLabel(), "Sex");
+		log("check that answer is prefilled by information from my account (declined -> choose ...)");
+		assertEquals(basicInfo.getSelectedGender(), "Choose...");
+		log("check that answer is not required");
+		basicInfo.setSex("Choose...");
+		FormCurrentSymptomsPage symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
+		log("check that all questions are displayed to user who didn't answered gender");
+		assertTrue(symptoms.areFemaleQuestionsDisplayed());
+		assertTrue(symptoms.areMaleQuestionsDisplayed());
+		symptoms.checkAnswer("Discharge from penis");
+		symptoms.checkAnswer("Vaginal itching/burning");
+		FormPastMedicalHistoryPage medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
+		assertTrue(medHistory.areFemaleQuestionsDisplayed());
+		medHistory.setCountOfPregnancies(5);
+		medHistory.clickSaveContinue();
+		log("submit form");
+		medHistory.submitForm();
+		log("calling CCD rest");
+		ccd = CCDTest.getFormCCD(timestamp, new TestcasesData(new Portal()).getCCDRestUrl());
+		log("check that prevously answered questions are not in CCD");
+		assertFalse(ccd.contains("Penile lesions"), "not found in ccd: " + ccd);
+		assertFalse(ccd.contains("Vaginal dryness"), "not found in ccd: " + ccd);
+		assertFalse(ccd.contains("None, I have never been pregnant"), "not found in ccd: " + ccd);
+		log("check that answered questions are in CCD");
+		assertTrue(ccd.contains("Discharge from penis"), "not found in ccd: " + ccd);
+		assertTrue(ccd.contains("Vaginal itching/burning"), "not found in ccd: " + ccd);
+		formsList.goToHomePage();
 	}
 
 	/**
@@ -652,7 +753,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	protected String createFormSG() throws Exception {
 		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
 
-		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
+		Utils.logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData SGData = new SitegenTestData(sitegen);
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());

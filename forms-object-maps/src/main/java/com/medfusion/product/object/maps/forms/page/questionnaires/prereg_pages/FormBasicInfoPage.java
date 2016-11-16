@@ -39,6 +39,9 @@ public class FormBasicInfoPage extends PortalFormPage {
 	@FindBy(id = "gender")
 	private WebElement gender;
 
+	@FindBy(xpath = "//label[@for='gender']")
+	private WebElement genderQuestionLabel;
+
 	@FindBy(id = "maritalstatus")
 	private WebElement maritalStatus;
 
@@ -70,7 +73,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setStreetAddress() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		address.clear();
 		address.sendKeys(IHGUtil.createRandomStreet());
 	}
@@ -82,7 +85,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setCity() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		city.clear();
 		city.sendKeys(IHGUtil.createRandomCity());
 	}
@@ -94,7 +97,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setState(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		Select selector = new Select(state);
 		selector.selectByVisibleText(type);
 	}
@@ -106,7 +109,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setZip() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		zip.clear();
 		zip.sendKeys(IHGUtil.createRandomZip());
 	}
@@ -118,7 +121,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setPrimaryPhoneNumber() throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		primaryPhone.clear();
 		primaryPhone.sendKeys("919-555-" + IHGUtil.createRandomNumericString(4));
 	}
@@ -130,7 +133,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setPrimaryPhoneType(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(type);
 	}
@@ -142,7 +145,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setSex(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(gender);
 		selector.selectByVisibleText(type);
 	}
@@ -154,7 +156,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setMaritalStatus(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(maritalStatus);
 		selector.selectByVisibleText(type);
 	}
@@ -166,7 +167,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setPreferredCommunication(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(preferredCommunication);
 		selector.selectByVisibleText(type);
 	}
@@ -178,7 +178,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setPreferredLanguage(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(preferredLanguage);
 		selector.selectByVisibleText(type);
 	}
@@ -190,7 +189,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setRace(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(race);
 		selector.selectByVisibleText(type);
 	}
@@ -202,7 +200,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setEthnicity(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(ethnicity);
 		selector.selectByVisibleText(type);
 	}
@@ -214,7 +211,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setWhoIsFillingOutForm(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+
 		Select selector = new Select(whoIsFillingOutForm);
 		selector.selectByVisibleText(type);
 	}
@@ -247,8 +244,17 @@ public class FormBasicInfoPage extends PortalFormPage {
 		return clickSaveContinue(FormEmergencyContactPage.class);
 	}
 
+	public String getGenderQuestionLabel() {
+		return genderQuestionLabel.getText().replaceAll("<[^<]+>", "").trim();
+	}
+
+	public String getSelectedGender() {
+		return new Select(gender).getFirstSelectedOption().getText();
+	}
+
+	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath("//span[./text()='Basic Information About You']")).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Basic Information About You"))).isDisplayed();
 	}
 
 }

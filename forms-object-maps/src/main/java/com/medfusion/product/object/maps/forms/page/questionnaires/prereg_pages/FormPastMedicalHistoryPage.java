@@ -1,15 +1,17 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
-public class FormIllnessConditionsPage extends PortalFormPage {
+public class FormPastMedicalHistoryPage extends PortalFormPage {
 
-	public FormIllnessConditionsPage(WebDriver driver) {
+	public FormPastMedicalHistoryPage(WebDriver driver) {
 		super(driver);
 	}
 
@@ -21,6 +23,13 @@ public class FormIllnessConditionsPage extends PortalFormPage {
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
+
+	@FindBy(xpath = "//h3[contains(./text(),'Female-Specific')]")
+	private WebElement femaleQuestionsHeader;
+
+	@FindBy(id = "howmanypregnancies_condition_femalespecific")
+	private WebElement countOfPregnancies;
+
 
 	/**
 	 * @Description:Set No Conditions
@@ -46,5 +55,21 @@ public class FormIllnessConditionsPage extends PortalFormPage {
 	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
 		setNoConditions();
 		return clickSaveContinue(FormFamilyHistoryPage.class);
+	}
+
+	public boolean areFemaleQuestionsDisplayed() {
+		return femaleQuestionsHeader.isDisplayed();
+	}
+
+	public void setCountOfPregnancies(int count) {
+		if (count < 0)
+			throw new IllegalArgumentException("can not set less then 0 pregnancies");
+		Select countOfPregnanciesSel = new Select(countOfPregnancies);
+		countOfPregnanciesSel.selectByIndex(count + 1);
+	}
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Past Medical History"))).isDisplayed();
 	}
 }

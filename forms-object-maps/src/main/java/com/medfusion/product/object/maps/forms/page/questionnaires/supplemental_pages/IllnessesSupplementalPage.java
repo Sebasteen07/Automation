@@ -38,4 +38,9 @@ public class IllnessesSupplementalPage extends PortalFormPage {
 		answerFirst("test answer 1");
 		answerSecond("test answer 2");
 	}
+
+	@Override
+	public boolean isPageLoaded() {
+		throw new UnsupportedOperationException();
+	}
 }

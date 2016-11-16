@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.forms.page.questionnaires;
 import java.rmi.UnexpectedException;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-public class PortalFormPage extends BasePageObject {
+public abstract class PortalFormPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[@id='container']//section/div[@class='done_frame']/a")
 	private WebElement submitForm;
@@ -37,6 +38,11 @@ public class PortalFormPage extends BasePageObject {
 
 	@FindBy(id = "modalButton")
 	private WebElement tryAgainButton;
+
+	@FindBy(id = "errorContainer")
+	private WebElement inputErrorMessage;
+
+	public static final String PAGE_LOADED_XPATH_TEMPLATE = "//span[./text()='%s']";
 
 	public PortalFormPage(WebDriver driver) {
 		super(driver);
@@ -119,6 +125,17 @@ public class PortalFormPage extends BasePageObject {
 		clickSaveContinueWithRetry(null, this.btnContinue, retries);
 	}
 
+	public <T extends PortalFormPage> T goBack(Class<T> previousPageClass) {
+		previousPageButton.click();
+		T prevPage = PageFactory.initElements(driver, previousPageClass);
+		if (prevPage.isPageLoaded())
+			return prevPage;
+		else
+			throw new IllegalStateException("Could not go back from page: " + this.getClass() + " to: " + previousPageClass);
+
+
+	}
+
 	/**
 	 * @Description Click on Submit Form Button
 	 * @return
@@ -195,5 +212,27 @@ public class PortalFormPage extends BasePageObject {
 			previousPageButton.click();
 			scrollToFooter(3);
 		}
+	}
+
+	public void checkAnswer(String answerLabel) {
+		WebElement input = getAnswerInputElement(answerLabel);
+		if (!input.isSelected())
+			input.click();
+	}
+
+	public void uncheckAnswer(String answerLabel) {
+		WebElement input = getAnswerInputElement(answerLabel);
+		if (input.isSelected())
+			input.click();
+	}
+
+	private WebElement getAnswerInputElement(String answerLabel) {
+		return driver.findElement(By.xpath("//span[text()='" + answerLabel + "']"));
+	}
+
+	public abstract boolean isPageLoaded();
+
+	public boolean isInputErrorMessageDisplayed() {
+		return IHGUtil.waitForElement(driver, 10, inputErrorMessage);
 	}
 }

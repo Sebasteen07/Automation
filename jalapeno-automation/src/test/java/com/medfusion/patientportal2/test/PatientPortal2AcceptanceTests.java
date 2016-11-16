@@ -936,7 +936,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Create and login patient");
 		JalapenoHomePage homePage = CommonSteps.createAndLogInPatient(new JalapenoPatient(testData), testData, driver);
 		logStep("Going to MyAccount page");
-		JalapenoMyAccountProfilePage myAccountPage = homePage.goToMyAccountPage();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
 		logStep("Modify some elements and check their values on My Account page");
 		assertTrue(myAccountPage.modifyAndValidatePageContent());
 	}
