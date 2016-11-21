@@ -41,7 +41,7 @@ public class ReferralsPage extends BasePageObject {
 	@FindBy(id = "id5")
 	private WebElement practiceNameTestField;
 
-	@FindBy(id = "id1c")
+	@FindBy(xpath = ".//select[@name='referralTypeDD']")
 	private WebElement referralType;
 
 	@FindBy(id = "id22")
