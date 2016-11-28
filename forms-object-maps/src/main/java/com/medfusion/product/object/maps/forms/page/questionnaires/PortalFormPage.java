@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -34,13 +35,16 @@ public abstract class PortalFormPage extends BasePageObject {
 	private WebElement saveAndFinishLink;
 
 	@FindBy(id = "errorDialog")
-	private WebElement errorDialog;
+	private WebElement submittErrorDialog;
 
 	@FindBy(id = "modalButton")
 	private WebElement tryAgainButton;
 
 	@FindBy(id = "errorContainer")
 	private WebElement inputErrorMessage;
+
+	@FindBy(id = "chooseSectionMenu")
+	private WebElement chooseSectionMenuSelect;
 
 	public static final String PAGE_LOADED_XPATH_TEMPLATE = "//span[./text()='%s']";
 
@@ -68,6 +72,7 @@ public abstract class PortalFormPage extends BasePageObject {
 			wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		}
 		continueButton.click();
+		TimeUnit.SECONDS.sleep(3);
 		if (nextPageClass == null)
 			return null;
 		else
@@ -127,13 +132,7 @@ public abstract class PortalFormPage extends BasePageObject {
 
 	public <T extends PortalFormPage> T goBack(Class<T> previousPageClass) {
 		previousPageButton.click();
-		T prevPage = PageFactory.initElements(driver, previousPageClass);
-		if (prevPage.isPageLoaded())
-			return prevPage;
-		else
-			throw new IllegalStateException("Could not go back from page: " + this.getClass() + " to: " + previousPageClass);
-
-
+		return PageFactory.initElements(driver, previousPageClass);
 	}
 
 	/**
@@ -150,7 +149,7 @@ public abstract class PortalFormPage extends BasePageObject {
 			wait.until(ExpectedConditions.visibilityOf(closeButton));
 		} catch (NoSuchElementException ex) {
 			log("Close button is not displayed");
-			if (errorDialog.isDisplayed()) {
+			if (submittErrorDialog.isDisplayed()) {
 				throw new UnexpectedException("***Oops, something went wrong*** dialog is displayed");
 			}
 		}
@@ -159,7 +158,8 @@ public abstract class PortalFormPage extends BasePageObject {
 		IHGUtil.setFrame(driver, "iframe");
 	}
 
-	public void clickSaveAndFinishAnotherTime() {
+	public void clickSaveAndFinishAnotherTime() throws InterruptedException {
+		scrollAndWait(0, 0, 500);
 		saveAndFinishLink.click();
 		try {
 			TimeUnit.SECONDS.sleep(10);
@@ -228,6 +228,11 @@ public abstract class PortalFormPage extends BasePageObject {
 
 	private WebElement getAnswerInputElement(String answerLabel) {
 		return driver.findElement(By.xpath("//span[text()='" + answerLabel + "']"));
+	}
+
+	public <T extends PortalFormPage> T selectSectionToUpdate(int sectionIndex, Class<T> nextPageClass) {
+		new Select(chooseSectionMenuSelect).selectByIndex(sectionIndex);
+		return PageFactory.initElements(driver, nextPageClass);
 	}
 
 	public abstract boolean isPageLoaded();

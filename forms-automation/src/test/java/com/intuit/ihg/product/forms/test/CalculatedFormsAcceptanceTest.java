@@ -48,14 +48,14 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 		log("step 4: Unpublish and delete all forms and add calculated form");
 		driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm();
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 5: Check if the added form is no longer in the Calculated Form Directory ");
 		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 6: Delete all Forms and check if the Calculated Form is back in Directory");
-		pManageDiscreteForms.initializePracticeForNewForm();
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
 
 		log("step 7: Close the window and logout from SiteGenerator");
@@ -82,7 +82,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 		DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
 		driver.manage().window().maximize();
-		formsConfigPage.unpublishAllForms().editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
+		formsConfigPage.unpublishForms(SitegenConstants.CALCULATED_PHQ9_FORM).unpublishForms(SitegenConstants.CALCULATED_ADHD_FORM)
+				.editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
 				.editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage).publishForm(SitegenConstants.CALCULATED_PHQ9_FORM)
 				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
 		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();

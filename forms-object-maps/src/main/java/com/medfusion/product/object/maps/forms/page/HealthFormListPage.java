@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,26 +44,9 @@ public class HealthFormListPage extends BasePageObject {
 	@FindBy(xpath = "//span[./text()='Home'] | //*[./text()='my patient page'] | //*[./text()='My Patient Page']")
 	private WebElement homeLink;
 
-	/**
-	 * automatically switches to corresponding iframe
-	 * ({@link com.medfusion.product.object.maps.patientportal2.page.JalapenoPage#JalapenoNewCustomHealthFormPage(WebDriver driver) see customFormPage
-	 * constructor})
-	 * 
-	 * @param formName
-	 * @return
-	 * @throws InterruptedException
-	 */
-	public NewCustomFormPage openNewCustomForm(String formName) {
-		driver.findElement(By.linkText(formName)).click();
-		if (!IHGUtil.exists(driver, newFormIframe)) {
-			driver.switchTo().defaultContent();
-		}
-		driver.switchTo().frame(newFormIframe);
-		return PageFactory.initElements(driver, NewCustomFormPage.class);
-	}
-
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
+		IHGUtil.setFrame(driver, "iframe");
 		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
 		if (!IHGUtil.exists(driver, newFormIframe)) {
 			driver.switchTo().defaultContent();
@@ -93,6 +77,7 @@ public class HealthFormListPage extends BasePageObject {
 		IHGUtil.setDefaultFrame(driver);
 		scrollAndWait(0, 0, 500);
 		logout.click();
+		TimeUnit.SECONDS.sleep(3);
 	}
 
 	/**

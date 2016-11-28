@@ -186,17 +186,6 @@ public class OldCustomFormPages extends BasePageObject {
 		return urlChecker.getHTTPStatusCode();
 	}
 
-	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
-		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='" + formName + "']"));
-		IHGUtil.waitForElement(driver, 10, formLink);
-		formLink.click();
-		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
-	}
-
 	public void selectOldCustomForm(String formName) throws Exception {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();

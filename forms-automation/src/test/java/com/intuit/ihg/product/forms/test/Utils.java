@@ -2,7 +2,8 @@ package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ifs.csscat.core.utils.Log4jUtil.log;
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -101,31 +102,22 @@ public class Utils {
 		return new PortalLoginPage(driver, url).login(userName, password);
 	}
 
-
-
 	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
 		IHGUtil.setFrame(driver, "iframe");
 		Thread.sleep(8000);
 		Date submittedDate = formsPage.getSubmittedDate(formName);
-		Date now = getCurrentTimeGMT(-4);
+		Date now = getCurrentESTTime();
 		log("Date from web: " + submittedDate);
 		log("Current US date: " + now);
 		// date on web is max. 5 min after submit date
 		Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
 	}
 
-	public static Date getCurrentTimeGMT(int timeZoneShift) {
-		Calendar c = Calendar.getInstance();
-		TimeZone z = c.getTimeZone();
-		int offset = z.getRawOffset();
-		if (z.inDaylightTime(new Date())) {
-			offset = offset + z.getDSTSavings();
-		}
-		int offsetHrs = offset / 1000 / 60 / 60;
-		int offsetMins = offset / 1000 / 60 % 60;
-		c.add(Calendar.HOUR_OF_DAY, (-offsetHrs));
-		c.add(Calendar.MINUTE, (-offsetMins));
-		return new Date(c.getTime().getTime() + 1000 * 3600 * timeZoneShift);
+	public static Date getCurrentESTTime() throws ParseException {
+		SimpleDateFormat ESTdate = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+		ESTdate.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
+		SimpleDateFormat parser = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+		return parser.parse(ESTdate.format(new Date()));
 	}
 
 	public static void checkIfPDFCanBeDownloaded(String linkText, WebDriver driver) throws Exception {

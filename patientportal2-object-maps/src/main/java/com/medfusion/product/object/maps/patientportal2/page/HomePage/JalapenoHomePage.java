@@ -146,7 +146,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
 	
-	public FormWelcomePage clickStartRegistrationButton(WebDriver driver) throws Exception {
+	public FormWelcomePage clickStartRegistrationButton() throws Exception {
 		log("Clicking on Start Registration button.");
 		startRegistrationButton.click();
 		log("Switch to the Forms iframe.");
@@ -155,13 +155,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
-	public PortalFormPage clickContinueRegistrationButton(WebDriver driver) throws Exception {
+	public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) throws Exception {
 		log("Clicking on Continue Registration button.");
 		continueRegistrationButton.click();
 		log("Switch to the Forms iframe.");
 		IHGUtil.setFrame(driver, "iframe");
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Forms']")));
-		return PageFactory.initElements(driver, FormWelcomePage.class);
+		return PageFactory.initElements(driver, pageClass);
 	}
 
 	public boolean isTextDisplayed(String text) {

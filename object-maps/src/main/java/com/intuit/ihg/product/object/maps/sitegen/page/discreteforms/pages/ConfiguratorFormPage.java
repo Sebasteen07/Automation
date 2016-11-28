@@ -53,6 +53,9 @@ public class ConfiguratorFormPage extends BasePageObject {
 	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p/a")
 	private WebElement newSectionButt;
 
+	@FindBy(id = "custom_form_name")
+	private WebElement formNameField;
+
 	public ConfiguratorFormPage(WebDriver driver) {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
@@ -315,6 +318,18 @@ public class ConfiguratorFormPage extends BasePageObject {
 		WebElement hideSectionInput = driver.findElement(By.xpath("//input[contains(@id,'hide_')][./ancestor::div[2][contains(@style,'block')]]"));
 		if (!hideSectionInput.isSelected())
 			hideSectionInput.click();
+	}
+
+	/**
+	 * Set the name of the form
+	 * 
+	 * @param newFormName - the name for the form
+	 * @throws InterruptedException
+	 */
+	public void setFormName(String newFormName) throws InterruptedException {
+		formNameField.clear();
+		formNameField.sendKeys(newFormName);
+		saveOpenedForm();
 	}
 
 }

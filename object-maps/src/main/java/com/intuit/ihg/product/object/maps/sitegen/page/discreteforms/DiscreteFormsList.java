@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.AllergiesPage;
@@ -132,12 +133,11 @@ public class DiscreteFormsList extends BasePageObject {
 		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
 	}
 
-	private WebElement getPublishedFormOptions(String uniqueDiscreteFormName) {
-		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, uniqueDiscreteFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
-	}
-
 	private List<WebElement> getPublishedFormsOptions(String partOfFormName) {
-		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		List<WebElement> opt = driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		return opt;
 	}
 
 	private WebElement getUnpublishedFormsOption(String uniqueUnpublishedFormName) {
@@ -145,34 +145,43 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	private List<WebElement> getUnpublishedFormsOptions(String partOfFormName) {
-		return driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + UNPUBLISHED_FORM_OPTIONS_SELECTOR));
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		List<WebElement> opt = driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, partOfFormName) + UNPUBLISHED_FORM_OPTIONS_SELECTOR));
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		return opt;
 	}
 
 	/**
-	 * Description: Deletes all the unpublished forms present in the Discrete Forms page.
+	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
 	 * 
 	 * @throws Exception
 	 */
-	public DiscreteFormsList deleteAllUnPublishedForms() throws Exception {
-		List<WebElement> deleteButtons;
+	public DiscreteFormsList unpublishForms(String partOfFormName) throws Exception {
 		IHGUtil utils = new IHGUtil(driver);
-
 		IHGUtil.PrintMethodName();
-		String xpath = ".//div[contains(@class,'admin_inner')]//table[@class = 'tablesorter tablesorter-default' ]/tbody/tr/td/a[@class='delete']";
-		int count = driver.findElements(By.xpath(xpath)).size();
-		log("Number of UnPublished rows is :" + count);
-
-		while (count > 0) {
-			deleteButtons = driver.findElements(By.xpath(xpath));
-			deleteButtons.get(0).click();
-			yesDeleteButton.click();
-			utils.waitForElementToDisappear(deleteButtons.get(count - 1), waitingPeriodMS, waitingSeconds);
-			count--;
+		WebElement unpublishButton;
+		List<WebElement> publishedFormsOptions = getPublishedFormsOptions(partOfFormName);
+		for (WebElement formOption : publishedFormsOptions) {
+			unpublishButton = formOption.findElement(By.linkText("Unpublish"));
+			unpublishButton.click();
+			utils.waitForElementToDisappear(unpublishButton, waitingPeriodMS, waitingSeconds);
+		}
+		publishedFormsOptions = getPublishedFormsOptions(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME);
+		for (WebElement formOption : publishedFormsOptions) {
+			unpublishButton = formOption.findElement(By.linkText("Unpublish"));
+			unpublishButton.click();
+			utils.waitForElementToDisappear(unpublishButton, waitingPeriodMS, waitingSeconds);
+		}
+		publishedFormsOptions = getPublishedFormsOptions(SitegenConstants.FORMS_CUSTOM_FORM_INITIAL_NAME);
+		for (WebElement formOption : publishedFormsOptions) {
+			unpublishButton = formOption.findElement(By.linkText("Unpublish"));
+			unpublishButton.click();
+			utils.waitForElementToDisappear(unpublishButton, waitingPeriodMS, waitingSeconds);
 		}
 		return this;
 	}
 
-	public void deleteUnpublishedFormsNamedLike(String partOfFormName) throws Exception {
+	public void deleteUnpublishedForms(String partOfFormName) throws Exception {
 		IHGUtil utils = new IHGUtil(driver);
 		WebElement deleteButton;
 		List<WebElement> unpublishedFormsOptions = getUnpublishedFormsOptions(partOfFormName);
@@ -182,25 +191,22 @@ public class DiscreteFormsList extends BasePageObject {
 			yesDeleteButton.click();
 			utils.waitForElementToDisappear(deleteButton, waitingPeriodMS, waitingSeconds);
 		}
-	}
-
-	/**
-	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
-	 * 
-	 * @throws Exception
-	 */
-	public DiscreteFormsList unpublishAllForms() throws Exception {
-		IHGUtil utils = new IHGUtil(driver);
-		IHGUtil.PrintMethodName();
-		String xpath = "//a[contains(@class,'unpublish')]";
-		int count = driver.findElements(By.xpath(xpath)).size();
-		log("Number of Published rows is :" + count);
-
-		for (WebElement unpublishButton : driver.findElements(By.xpath(xpath))) {
-			unpublishButton.click();
-			utils.waitForElementToDisappear(unpublishButton, waitingPeriodMS, waitingSeconds);
+		unpublishedFormsOptions = getUnpublishedFormsOptions(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME);
+		for (WebElement formOption : unpublishedFormsOptions) {
+			deleteButton = formOption.findElement(By.linkText("Delete"));
+			deleteButton.click();
+			yesDeleteButton.click();
+			utils.waitForElementToDisappear(deleteButton, waitingPeriodMS, waitingSeconds);
 		}
-		return this;
+		unpublishedFormsOptions = getUnpublishedFormsOptions(SitegenConstants.FORMS_CUSTOM_FORM_INITIAL_NAME);
+		for (WebElement formOption : unpublishedFormsOptions) {
+			deleteButton = formOption.findElement(By.linkText("Delete"));
+			deleteButton.click();
+			yesDeleteButton.click();
+			utils.waitForElementToDisappear(deleteButton, waitingPeriodMS, waitingSeconds);
+		}
+
+
 	}
 
 	public void createCustomForm() throws Exception {
@@ -225,6 +231,7 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		WebElement formOptions = getUnpublishedFormsOption(uniqueDiscreteFormName);
 		formOptions.findElement(By.linkText("Publish")).click();
+		Assert.assertTrue(IHGUtil.waitForElement(driver, 15, getPublishedFormsOption(uniqueDiscreteFormName)));
 		return this;
 	}
 
@@ -348,12 +355,12 @@ public class DiscreteFormsList extends BasePageObject {
 		return foundForm;
 	}
 
-	public void initializePracticeForNewForm() throws Exception {
+	public void initializePracticeForNewForm(String partOfNewFormName) throws Exception {
 		// name for the new form
 
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-		unpublishAllForms();
-		deleteAllUnPublishedForms();
+		unpublishForms(partOfNewFormName);
+		deleteUnpublishedForms(partOfNewFormName);
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
 	}
