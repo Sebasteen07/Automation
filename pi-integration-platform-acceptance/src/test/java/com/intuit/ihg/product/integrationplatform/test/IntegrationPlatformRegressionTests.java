@@ -41,7 +41,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String ccd = CCDPayload.getCCDPayload(testData);
 		Thread.sleep(6000);
 		log("Wait to generate CCD Payload");
-		log(ccd);
 		log("Step 2: Do Message Post Request");
 		log("ResponsePath: "+testData.ResponsePath);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, ccd, testData.ResponsePath);
