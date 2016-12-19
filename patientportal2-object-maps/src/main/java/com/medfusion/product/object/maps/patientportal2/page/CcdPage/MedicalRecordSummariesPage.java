@@ -146,7 +146,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	private String getOnlyDateFromElement(WebElement element) {
-		return element.getText().substring(0, element.getText().length() - 9);
+		return element.getText().substring(0, element.getText().length() - 6);
 	}
 
 	private void filterCCDs(String fromDate, String toDate) {
