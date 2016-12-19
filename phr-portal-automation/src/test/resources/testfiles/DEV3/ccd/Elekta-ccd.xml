@@ -10,7 +10,7 @@
 	</CcdMessageHeaders>
 	<PatientDemographics xmlns="">
 		<PatientIdentifier>
-			<PracticePatientId>sendpat</PracticePatientId>
+			<PracticePatientId>testphrsync</PracticePatientId>
 		</PatientIdentifier>
 		<Name>
 			<Prefix>Prefix</Prefix>

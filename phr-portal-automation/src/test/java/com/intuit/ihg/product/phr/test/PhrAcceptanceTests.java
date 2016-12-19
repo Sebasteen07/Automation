@@ -583,8 +583,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 7: Check for medications");
 		newRxRenewalPage.checkMedication();
-		Assert.assertEquals(PortalConstants.MedicineNameOne, newRxRenewalPage.medicineName0.getText());
-		Assert.assertEquals(PortalConstants.MedicineNameTwo, newRxRenewalPage.medicineName1.getText());
+		Assert.assertEquals(newRxRenewalPage.medicineName0.getText(), PortalConstants.MedicineNameOne);
+		Assert.assertEquals(newRxRenewalPage.medicineName1.getText(), PortalConstants.MedicineNameTwo);
 
 
 		log("step 8: Logout of Patient Portal");
