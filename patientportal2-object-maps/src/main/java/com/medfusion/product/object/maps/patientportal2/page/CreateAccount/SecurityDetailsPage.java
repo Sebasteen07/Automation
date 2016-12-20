@@ -18,10 +18,12 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 public class SecurityDetailsPage extends MedfusionPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='userid']")
+	public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
+
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='userid']")
 	private WebElement inputUserId;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='password']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='password']")
 	private WebElement inputPassword;
 
 	@FindBy(how = How.ID, using = "secretQuestion")
@@ -42,7 +44,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement selectPhoneType;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='preferredLocationId']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='preferredLocationId']")
 	private WebElement primaryLocationElement;
 
 	@FindBy(how = How.ID, using = "prevStep")
@@ -96,13 +98,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 	public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 			int statementPreference) {
 		IHGUtil.PrintMethodName();
-
 		fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
-
 		buttonFinishStep.click();
-
 		selectStatementIfRequired(statementPreference);
-
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
