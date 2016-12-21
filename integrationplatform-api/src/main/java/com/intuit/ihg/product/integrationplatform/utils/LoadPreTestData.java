@@ -73,4 +73,44 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+	
+	public MU2GetEventData loadAPITESTDATAFromProperty(MU2GetEventData testData) throws IOException {
+
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.PULLAPI_URL = propertyData.getPULLAPI_URL_MU2();
+		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
+		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
+		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();
+		testData.OAUTH_USERNAME = propertyData.getOAuthUsername_MU2();
+		testData.OAUTH_PASSWORD = propertyData.getOAuthPassword_MU2();
+		testData.PUSHAPI_URL = propertyData.getPUSHAPI_URL_MU2();
+		testData.PUSH_RESPONSEPATH = propertyData.getResponsePath();
+		testData.PORTAL_URL= propertyData.getPORTAL_URL_MU2();
+		testData.PORTAL_USERNAME= propertyData.getPORTAL_USERNAME_MU2();
+		testData.PORTAL_PASSWORD= propertyData.getPORTAL_PASSWORD_MU2();
+		testData.INTUIT_PATIENT_ID= propertyData.getINTUIT_PATIENT_ID_MU2();
+		testData.TRANSMIT_EMAIL= propertyData.getTRANSMIT_EMAIL_MU2();
+		testData.IMAGE_PATH= propertyData.getIMAGE_PATH_MU2();
+		testData.PATIENT_ID= propertyData.getPatient_ID_MU2();
+		testData.PATIENT_INVITE_RESTURL=propertyData.getPATIENT_INVITE_RESTURL();
+		testData.PATIENT_PRACTICEID=propertyData.getPATIENT_PRACTICEID();
+		testData.PATIENT_EXTERNAL_ID=propertyData.getPATIENT_EXTERNAL_ID();
+		testData.CCDPATH1=propertyData.getCCDPATH1();
+		testData.CCDPATH2=propertyData.getCCDPATH2();
+		testData.CCDPATH3=propertyData.getCCDPATH3();
+		
+		testData.HomePhoneNo=propertyData.getHomePhoneNo();
+		testData.SecretQuestion=propertyData.getSecretQuestion();
+		testData.SecretAnswer=propertyData.getSecretAnswer();
+		testData.BirthDay=propertyData.getBirthDay();
+		testData.PatientPassword=propertyData.getPatientPassword();
+		
+		testData.CCDMessageID1 = propertyData.getCCDMessageID1();
+		testData.CCDMessageID2 = propertyData.getCCDMessageID2();
+		testData.PatientExternalId_MU2 = propertyData.getPatientExternalId_MU2();
+		testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
+		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
+		
+		return testData;
+	}
 }

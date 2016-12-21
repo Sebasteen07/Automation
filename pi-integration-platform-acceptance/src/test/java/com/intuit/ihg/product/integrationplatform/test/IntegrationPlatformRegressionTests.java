@@ -1,15 +1,22 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
+import java.util.ArrayList;
+
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ihg.product.integrationplatform.flows.iEHDCSendCCD;
+import com.intuit.ihg.product.integrationplatform.flows.iPIDCSendPatientInvite;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
+import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
+import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
+import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
@@ -17,6 +24,9 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.patientportal2.utils.PortalConstants;
+import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
+import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
 
 /**
  * @author rkhambe
@@ -185,5 +195,108 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
-	}	 
+	}	
+	 
+	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testMU2GetEventForExistingPatient() throws Exception {
+			log("Test Case (testMU2GetEventForExistingPatient): Consolidated CCD related events verification in Pull Events");
+
+			log("Test case Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+			MU2GetEventData testData = new MU2GetEventData();
+			LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+			LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+			
+			
+			MU2Utils MU2UtilsObj = new MU2Utils();
+			MU2UtilsObj.mu2GetEvent(testData,driver);
+		}
+	 
+	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testMU2GetEventForNewPatient() throws Exception {	
+			log("Test Case (testMU2GetEventForNewPatient): Consolidated CCD related events verification for newly created patients");
+			log("Step 1:  Create Patient");
+			long timestamp = System.currentTimeMillis();
+			MU2GetEventData testData = new MU2GetEventData();
+			LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+			LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+			
+			EHDC EHDCObj = new EHDC();
+			
+			LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+			iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
+			ArrayList<String> patientDetail = sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID,testData.PATIENT_EXTERNAL_ID);
+			
+			log("Follwing are patient details");
+			for (String values : patientDetail) {
+				log(" " + values);
+			}
+			log("checking email for activation UrL link");
+			Thread.sleep(5000);
+			Mailinator mail = new Mailinator();
+			String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 20);
+			assertTrue(activationUrl!=null, "Error: Activation link not found.");
+			
+			PatientRegistrationUtils patientRegistrationUtilsObject= new PatientRegistrationUtils();
+			patientRegistrationUtilsObject.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
+			
+			Thread.sleep(12000);
+			log("Step 2:  Send CCD to Patient");
+			
+			iEHDCSendCCD sendCCDObj = new SendCCD();
+			
+			log("Send 1st CCD to Patient");
+			ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+			log(ccdDetail1.get(0));
+			Thread.sleep(8000);
+			
+			log("Send 2nd CCD to Patient");
+			ArrayList<String> ccdDetail2 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH1,testData.PATIENT_EXTERNAL_ID);
+			log(ccdDetail2.get(0));
+			Thread.sleep(8000);
+			
+			log("Send 3rd CCD to Patient");
+			ArrayList<String> ccdDetail3 =sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH2,testData.PATIENT_EXTERNAL_ID);
+			log(ccdDetail3.get(0));
+			Thread.sleep(8000);
+			
+			log("Send 4th CCD to Patient");
+			ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH3,testData.PATIENT_EXTERNAL_ID);
+			log(ccdDetail4.get(0));
+			
+			
+			log("Set username and password for MU2 : UserName "+patientDetail.get(4)+" password: "+testData.PatientPassword);
+			
+			RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
+			
+			Long since = timestamp / 1000L - 60 * 24;
+			log("Getting patients since timestamp: " + since);
+			log("PUSH_RESPONSEPATH: " + testData.PUSH_RESPONSEPATH);
+			RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.PUSH_RESPONSEPATH);
+			
+			MU2Utils MU2UtilsObj = new MU2Utils();
+			String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH);
+			
+			log("patientID : "+patientID);
+			
+			log("waiting for CCD to reflect on portal 2.0 ");
+			testData.PORTAL_USERNAME=patientDetail.get(4);
+			testData.PORTAL_PASSWORD=testData.PatientPassword;
+			testData.INTUIT_PATIENT_ID =patientID;
+			testData.CCDMessageID1 =ccdDetail4.get(0);
+			testData.CCDMessageID2 =ccdDetail3.get(0);
+			testData.PatientExternalId_MU2=patientDetail.get(0);
+			testData.PatientFirstName_MU2  = patientDetail.get(0);
+			testData.PatientLastName_MU2 = patientDetail.get(1);
+			
+			//testData.PatientExternalId_MU2 = propertyData.getPatientExternalId_MU2();
+			//testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
+			//testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
+			
+			Thread.sleep(50000);
+			
+			log("Step 4:  Login Portal 2.0");
+			
+			MU2UtilsObj.mu2GetEvent(testData,driver);
+	 }
 }

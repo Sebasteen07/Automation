@@ -169,4 +169,93 @@ public class PropertyFileLoader {
 		return property.getProperty("patientExternalIdAMDC");
 	}
 	
+	//MU2 EVENTS
+	public String getPULLAPI_URL_MU2() {
+		return property.getProperty("pullAPI_URL_MU2");
+	}
+	public String getOAuthAppToken_MU2() {
+		return property.getProperty("oAuthAppToken_MU2");
+	}
+	public String getOAuthUsername_MU2() {
+		return property.getProperty("oAuthUsername_MU2");
+	}
+	public String getOAuthPassword_MU2() {
+		return property.getProperty("oAuthPassword_MU2");
+	}
+	public String getPUSHAPI_URL_MU2() {
+		return property.getProperty("pushAPI_URL_MU2");
+	}
+	public String getPORTAL_URL_MU2() {
+		return property.getProperty("portal_URL_MU2");
+	}
+	public String getPORTAL_USERNAME_MU2() {
+		return property.getProperty("portal_USERNAME_MU2");
+	}
+	public String getPORTAL_PASSWORD_MU2() {
+		return property.getProperty("portal_PASSWORD_MU2");
+	}
+	public String getINTUIT_PATIENT_ID_MU2() {
+		return property.getProperty("intuit_PATIENT_ID_MU2");
+	}
+	public String getTRANSMIT_EMAIL_MU2() {
+		return property.getProperty("transmit_EMAIL_MU2");
+	}
+	public String getIMAGE_PATH_MU2() {
+		return property.getProperty("image_PATH_MU2");
+	}
+	public String getPatient_ID_MU2() {
+		return property.getProperty("patient_ID_MU2");
+	}
+	public String getPATIENT_INVITE_RESTURL() {
+		return property.getProperty("RestUrlPIDC");
+	}
+	public String getPATIENT_PRACTICEID() {
+		return property.getProperty("PracticeIdPIDC");
+	}
+	public String getPATIENT_EXTERNAL_ID() {
+		return property.getProperty("ExternalSystemIDPIDC");
+	}
+	public String getCCDPATH1() {
+		return property.getProperty("ccdXMLPath1");
+	}
+	public String getCCDPATH2() {
+		return property.getProperty("ccdXMLPath2");
+	}
+	public String getCCDPATH3() {
+		return property.getProperty("ccdXMLPath3");
+	}
+	public String getHomePhoneNo() {
+		return property.getProperty("homePhoneNo");
+	}
+	public String getSecretQuestion() {
+		return property.getProperty("secretQuestion");
+	}
+	public String getSecretAnswer() {
+		return property.getProperty("secretAnswer");
+	}
+	public String getBirthDay() {
+		return property.getProperty("birthDay");
+	}
+	public String getPatientPassword() {
+		return property.getProperty("patientPassword");
+	}
+	
+	
+	public String getCCDMessageID1() {
+		return property.getProperty("ccdMessageID1");
+	}
+	public String getCCDMessageID2() {
+		return property.getProperty("ccdMessageID2");
+	}
+
+	public String getPatientExternalId_MU2() {
+		return property.getProperty("patientExternalId_MU2");
+	}
+	public String getPatientFirstName_MU2() {
+		return property.getProperty("patientFirstName_MU2");
+	}
+	public String getPatientLastName_MU2() {
+		return property.getProperty("patientLastName_MU2");
+	}
+	
 }
