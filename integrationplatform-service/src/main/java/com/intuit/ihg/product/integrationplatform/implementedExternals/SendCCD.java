@@ -10,13 +10,13 @@ import com.intuit.ihg.product.integrationplatform.utils.SendCCDPayload;
 public class SendCCD implements iEHDCSendCCD {
 
 	@Override
-	public ArrayList<String> sendCCDToPractice(String RestUrl, String From, String IntegrationPracticeID, String PracticePatientId, String ccdXMLPath, String externalSystemID)
+	public ArrayList<String> sendCCDToPractice(String restUrl, String from, String integrationPracticeID, String practicePatientId, String ccdXMLPath, String externalSystemID)
 			throws Exception {
 		EHDCInfo testData = new EHDCInfo();
-		testData.setRestUrl(RestUrl);
-		testData.setFrom(From);
-		testData.setIntegrationPracticeID(IntegrationPracticeID);
-		testData.setPracticePatientId(PracticePatientId);
+		testData.setRestUrl(restUrl);
+		testData.setFrom(from);
+		testData.setIntegrationPracticeID(integrationPracticeID);
+		testData.setPracticePatientId(practicePatientId);
 		testData.setCcdXMLPath(ccdXMLPath);
 
 		String payload = SendCCDPayload.getCCDPayload(testData);
