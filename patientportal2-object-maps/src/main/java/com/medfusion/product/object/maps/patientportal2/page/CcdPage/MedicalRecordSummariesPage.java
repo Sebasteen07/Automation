@@ -38,7 +38,10 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][1]//input")
 	private WebElement firstVisibleCCDCheckbox;
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][2]//input")
+	private WebElement secondVisibleCCDCheckbox;
+	
 	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][1]//a")
 	private WebElement firstVisibleCCDDate;
 
@@ -95,6 +98,10 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		firstVisibleCCDCheckbox.click();
 	}
 	
+	public void selectSecondVisibleCCD(){
+		secondVisibleCCDCheckbox.click();
+	}
+	
 	public void sendFirstVisibleCCDUsingDirectProtocol(String directEmailAddress){
 		emailButton.click();
 		assertTrue(areEmailLightboxElementsPresent());
@@ -146,11 +153,20 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	private String getOnlyDateFromElement(WebElement element) {
-		return element.getText().substring(0, element.getText().length() - 6);
+		return element.getText().substring(0, element.getText().length() - 9);
 	}
 
 	private void filterCCDs(String fromDate, String toDate) {
 		updateWebElement(this.fromDate, fromDate);
 		updateWebElement(this.toDate, toDate);
 	}
+
+	public void selectDownload() {
+		downloadButton.click();
+	}
+
+	public void selectFirstVisibleCCDDate() {
+		firstVisibleCCDDate.click();
+	}
+
 }
