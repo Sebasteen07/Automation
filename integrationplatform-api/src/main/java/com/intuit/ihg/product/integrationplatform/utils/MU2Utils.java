@@ -72,7 +72,7 @@ public class MU2Utils {
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
 		Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 		
-		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElements();
+		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
 		Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
@@ -133,6 +133,8 @@ public class MU2Utils {
 		//RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
 		RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
 		
+		Thread.sleep(5000);
+		
 		String intuitPatientID1 = testData.INTUIT_PATIENT_ID;
 		Log4jUtil.log("First practicePatientID: " + intuitPatientID1);
 		
@@ -163,7 +165,7 @@ public class MU2Utils {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(stocks);
 			doc.getDocumentElement().normalize();
-
+			Log4jUtil.log("MU2Event response "+RestUtils.domToString(doc));
 			NodeList nodes = doc.getElementsByTagName(event);
 			for (int i = 0; i < nodes.getLength(); i++) {
 				
@@ -173,9 +175,15 @@ public class MU2Utils {
 					String readValue;
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
-					 
+					if(getValue(MU2Constants.RESOURCE_TYPE_NODE, element).contains(resourceType)) {
+						Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
+						Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
+						Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);
+						Log4jUtil.log("Matching response lastName "+getValue(LastName, element)+" with "+lastName);
+						Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(i));
+					}
 					if (recordedTimeStamp >= timeStamp) {
-						
+						 
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
 								&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)
 								&& getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID)
@@ -183,7 +191,8 @@ public class MU2Utils {
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								&& getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(i))) {
-							ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
+								 
+								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 							
 							break;
 						}

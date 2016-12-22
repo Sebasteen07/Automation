@@ -153,7 +153,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	private String getOnlyDateFromElement(WebElement element) {
-		return element.getText().substring(0, element.getText().length() - 9);
+		return element.getText().substring(0, element.getText().length() - 6);
 	}
 
 	private void filterCCDs(String fromDate, String toDate) {
@@ -167,6 +167,15 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	public void selectFirstVisibleCCDDate() {
 		firstVisibleCCDDate.click();
+	}
+	
+	public void setFilterToDefaultPositionAndCheckElementsNew(){
+		filterCCDs(getOnlyDateFromElementNew(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
+		assertTrue(areBasicPageElementsPresent());
+	}
+	
+	private String getOnlyDateFromElementNew(WebElement element) {
+		return element.getText().substring(0, element.getText().length() - 9);
 	}
 
 }
