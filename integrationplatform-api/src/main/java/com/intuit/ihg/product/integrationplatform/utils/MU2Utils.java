@@ -35,7 +35,7 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 public class MU2Utils {
 	public static List<String> eventList = new ArrayList<String>();
-	public static ArrayList<String> ccdMessageList = new ArrayList<String>(3);
+	public ArrayList<String> ccdMessageList = new ArrayList<String>(3);
 	public static final String PracticePatientId = "PracticePatientId";
 	public static final String FirstName = "FirstName";
 	public static final String LastName = "LastName";
@@ -53,9 +53,16 @@ public class MU2Utils {
 		Log4jUtil.log("PORTAL_USERNAME:"+testData.PORTAL_USERNAME);
 		Log4jUtil.log("PORTAL_PASSWORD:"+testData.PORTAL_PASSWORD);
 		
+		Log4jUtil.log("Before adding CCDMessageID1 to list :"+testData.CCDMessageID1);
+		Log4jUtil.log("Before adding CCDMessageID2 to list:"+testData.CCDMessageID2);
+		
 		ccdMessageList.add(testData.CCDMessageID1);
 		ccdMessageList.add(testData.CCDMessageID2);
 		ccdMessageList.add(testData.CCDMessageID1);
+		
+		Log4jUtil.log("After adding CCDMessageID1 to list :"+ccdMessageList.get(0));
+		Log4jUtil.log("After adding CCDMessageID2 to list:"+ccdMessageList.get(1));
+		
 		
 		Log4jUtil.log("MU2GetEvent Step 1: LogIn");
 		Log4jUtil.log("Practice URL: " + testData.PORTAL_URL);
@@ -143,7 +150,7 @@ public class MU2Utils {
 			// verify "View" event in response XML and return Action Time stamp
 			Log4jUtil.log("Verification of CCD '" + list.get(i) + "' event present in Pull API response xml");
 			ActionTimestamp = findEventInResonseXML(testData.PUSH_RESPONSEPATH, MU2Constants.EVENT, MU2Constants.RESOURCE_TYPE, list.get(i),
-					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,ccdMessageList.get(i));
+					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2);
 			Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
 			Log4jUtil.log("ActionTimestamp: "+ActionTimestamp);
 			Log4jUtil.log("TYPE FOUND: "+list.get(i));
@@ -154,7 +161,7 @@ public class MU2Utils {
  }
 	
 	
-	public static String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,String ccdMessageID) {
+	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName) {
 		IHGUtil.PrintMethodName();
 
 		String ActionTimestamp = null;
