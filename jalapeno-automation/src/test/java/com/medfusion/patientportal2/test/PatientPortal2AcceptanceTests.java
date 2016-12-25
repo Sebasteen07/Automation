@@ -5,6 +5,7 @@ import static org.testng.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -44,6 +45,8 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.rest.EmailRest.EmailBodyPojo;
+import com.medfusion.product.object.maps.patientportal2.rest.EmailRest.EmailRest;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
@@ -136,6 +139,31 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Log out");
 		loginPage = jalapenoHomePage.clickOnLogout();
 		assertTrue(loginPage.areBasicPageElementsPresent());
+	}
+
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	public void testSendAnEmailAndVerifyIfDelivered() throws Exception {
+		logStep("Send an email");
+		EmailRest email = new EmailRest();
+		EmailBodyPojo emailBody = new EmailBodyPojo();
+		String postUrl = "http://" + testData.getPracticeSvcsServer() + "/practice-svcs/services/message/practice/" + testData.getPracticeId();
+		String emailSubject = "Test Email " + System.currentTimeMillis();
+		String urlInEmail = "https://medfusion.com/";
+
+		emailBody.setSenderValue(testData.getPracticeStaffId());
+		emailBody.setRecipientValue(testData.getPracticeMemberId());
+		emailBody.setSubject(emailSubject);
+		emailBody.setHtmlBody("<a href='" + urlInEmail + "'>Click here!</a>");
+		emailBody.setTextBody("");
+		HttpResponse response = email.sendAnEmail(postUrl, emailBody);
+
+		logStep("Check status code of request");
+		log(response.toString());
+		assertEquals(response.getStatusLine().getStatusCode(), 200, "Error: Response status code is not 200!");
+
+		logStep("Check if email was delivered");
+		String elementContainingString = new Mailinator().getLinkFromEmail(testData.getUserEmail(), emailSubject, "Click here!", 120);
+		assertNotNull(elementContainingString, "Error: Email or email body was not found.");
 	}
 
 	@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
