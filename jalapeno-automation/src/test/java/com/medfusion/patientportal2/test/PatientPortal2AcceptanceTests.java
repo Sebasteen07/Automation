@@ -140,7 +140,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = jalapenoHomePage.clickOnLogout();
 		assertTrue(loginPage.areBasicPageElementsPresent());
 	}
-
+	/**
+  TODO: Uncomment when someone merges development into master at qa-main repository
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendAnEmailAndVerifyIfDelivered() throws Exception {
 		logStep("Send an email");
@@ -165,7 +166,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String elementContainingString = new Mailinator().getLinkFromEmail(testData.getUserEmail(), emailSubject, "Click here!", 120);
 		assertNotNull(elementContainingString, "Error: Email or email body was not found.");
 	}
-
+**/
 	@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginInvalidCredentials() throws Exception {
 
