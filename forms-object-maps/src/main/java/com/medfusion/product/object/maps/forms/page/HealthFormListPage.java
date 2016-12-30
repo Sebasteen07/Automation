@@ -26,14 +26,12 @@ public class HealthFormListPage extends BasePageObject {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
+		IHGUtil.setFrame(driver, "iframe");
 		PageFactory.initElements(driver, this);
 	}
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
-
-	@FindBy(id = "iframe")
-	private WebElement formsIframe;
 
 	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']")
 	private WebElement logout;
@@ -46,7 +44,6 @@ public class HealthFormListPage extends BasePageObject {
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		IHGUtil.setFrame(driver, "iframe");
 		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
 		if (!IHGUtil.exists(driver, newFormIframe)) {
 			driver.switchTo().defaultContent();

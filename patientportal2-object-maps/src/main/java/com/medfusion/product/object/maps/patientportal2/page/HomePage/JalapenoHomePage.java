@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -129,7 +128,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public HealthFormListPage clickOnHealthForms() throws Exception {
 		log("Clicking on Health Forms button");
 		forms.click();
-		IHGUtil.setFrame(driver, "iframe");
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
@@ -146,13 +144,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
 	
-	public FormWelcomePage clickStartRegistrationButton() throws Exception {
+	public void clickStartRegistrationButton() throws Exception {
 		log("Clicking on Start Registration button.");
 		startRegistrationButton.click();
 		log("Switch to the Forms iframe.");
 		IHGUtil.setFrame(driver, "iframe");
-		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Forms']")));
-		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
 	public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) throws Exception {

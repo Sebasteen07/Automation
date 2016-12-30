@@ -57,7 +57,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2:LogIn ##########");
 		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testcasesData.getFormUser(), testcasesData.getFormPassword());
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testcasesData.getFormPrimaryUser(), testcasesData.getFormPrimaryPassword());
 		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage to be loaded, but it was not.");
 
 		log("step 3: navigate to SiteGen PracticeHomePage ##########");
@@ -155,7 +155,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		String winHandlePatientPortal = driver.getWindowHandle();
 		log("step 12.1:Login to patient portal");
 		log("URL: " + pSiteGenPracticeHomePage.getPatientPortalUrl());
-		HealthFormListPage pHealthForm = Utils.loginPIAndOpenFormsList(driver, false);
+		HealthFormListPage pHealthForm = Utils.loginPIAndOpenFormsList(driver);
 
 		log("step 12.3: Open Form");
 		OldCustomFormPages oldCustomForm = pHealthForm.openOldCustomForm(customFormTitle);
@@ -218,7 +218,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"OldCustomForms"})
 	public void testCustomFormsPI() throws Exception {
-		testCustomForms(Utils.loginPIAndOpenFormsList(driver, true));
+		testCustomForms(Utils.loginPIAndOpenFormsList(driver));
 	}
 	// PROD uses Portal 1 template on which Selenium doesn't see Health Form link after submitting custom form
 	// @Test(groups = "OldPortalForms")

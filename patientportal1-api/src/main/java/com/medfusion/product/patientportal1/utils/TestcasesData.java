@@ -140,33 +140,32 @@ public class TestcasesData {
 		return portalobj.healthKeyPracticeUrl;
 	}
 
-	public String getFormsUrl() {
-		return portalobj.formsUrl;
+	public String getFormsPortal1UrlSecondary() {
+		return portalobj.formsPortal1UrlSecondary;
 	}
 
-	public String getPIFormsUrl() {
-		return portalobj.formsPIUrl;
+	public String getFormsPIUrlSecondary() {
+		return portalobj.formsPIUrlSecondary;
 	}
 
-	public String getPIFormsAltUrl() {
-
-		return portalobj.formsAltPIUrl;
+	public String getFormsPIUrlPrimary() {
+		return portalobj.formsPIUrlPrimary;
 	}
 
 	public String getPreferredLocationBeta() {
 		return portalobj.preferredLocationBeta;
 	}
 
-	public String getFormsAltUrl() {
-		return portalobj.formsAltUrl;
+	public String getFormsPortal1UrlPrimary() {
+		return portalobj.formsPortal1UrlPrimary;
 	}
 
-	public String getCCDRestAltUrl() {
-		return portalobj.ccdRestAltUrl;
+	public String getCCDRestUrlPrimary() {
+		return portalobj.ccdRestUrlPrimary;
 	}
 
-	public String getCCDRestUrl() {
-		return portalobj.ccdRestUrl;
+	public String getCCDRestUrlSecondary() {
+		return portalobj.ccdRestUrlSecondary;
 	}
 
 	public String getSecureNotificationUser() {

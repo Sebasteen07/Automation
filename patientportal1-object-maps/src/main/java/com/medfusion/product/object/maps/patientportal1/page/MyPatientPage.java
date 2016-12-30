@@ -3,7 +3,6 @@ package com.medfusion.product.object.maps.patientportal1.page;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -243,15 +242,7 @@ public class MyPatientPage extends BasePageObject {
 	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
-		try {
-			healthFormsLink.click();
-		IHGUtil.setFrame(driver, "iframe");
-		} catch (ElementNotVisibleException ex) {
-			IHGUtil.setFrame(driver, "iframe");
-			fillOutFormsButton.click();
-			IHGUtil.setFrame(driver, "iframe");
-		}
-
+		healthFormsLink.click();
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 

@@ -60,6 +60,18 @@ public class FormBasicInfoPage extends PortalFormPage {
 	@FindBy(id = "formeditor")
 	private WebElement whoIsFillingOutForm;
 
+	@FindBy(id = "genderidentity")
+	private WebElement genderIdentity;
+
+	@FindBy(id = "genderidentity_with_text")
+	private WebElement genderIdentityDetail;
+
+	@FindBy(id = "sexualorientation")
+	private WebElement sexualOrientation;
+
+	@FindBy(id = "sexualorientation_with_text")
+	private WebElement sexualOrientationDetail;
+
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
@@ -231,7 +243,24 @@ public class FormBasicInfoPage extends PortalFormPage {
 		setSex(PortalConstants.Sex);
 
 		return clickSaveContinue(FormEmergencyContactPage.class);
+	}
 
+	public void setGenderIdentity(String gi) throws Exception {
+		Select selector = new Select(genderIdentity);
+		selector.selectByVisibleText(gi);
+	}
+
+	public void setSexualOrientation(String so) throws Exception {
+		Select selector = new Select(sexualOrientation);
+		selector.selectByVisibleText(so);
+	}
+
+	public void setGenderIdentityDetails(String gi) throws Exception {
+		genderIdentityDetail.sendKeys(gi);
+	}
+
+	public void setSexualOrientationDetails(String so) throws Exception {
+		sexualOrientationDetail.sendKeys(so);
 	}
 
 	/**

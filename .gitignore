@@ -58,3 +58,4 @@ sitegen-automation/.gitignore
 .idea/
 *.iml
 forms-automation/FormExportImport.txt
+forms-automation/true/

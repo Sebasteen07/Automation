@@ -24,15 +24,21 @@ import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.Portal;
-import com.medfusion.portal.utils.TestcasesData;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.patientportal1.flows.CreatePatientTest;
+import com.medfusion.product.patientportal1.pojo.Portal;
+import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.tests.CommonSteps;
 
 public class Utils {
+
+	public static String newPatientDOBYear = "1900";
 
 	/**
 	 * 
@@ -42,64 +48,82 @@ public class Utils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, boolean persistentFormsPractice) throws Exception {
-		return loginPI(driver, persistentFormsPractice).clickOnHealthForms();
+	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver) throws Exception {
+		return loginPI(driver).clickOnHealthForms();
 	}
 
-	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, boolean persistentFormsPractice) throws Exception {
-		return loginPortal1(driver, persistentFormsPractice).clickOnHealthForms();
+	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver) throws Exception {
+		return loginPortal1(driver).clickOnHealthForms();
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver, boolean persistentFormsPractice) throws Exception {
-		String url;
+	public static JalapenoHomePage loginPI(WebDriver driver) throws Exception {
 		TestcasesData portalData = new TestcasesData(new Portal());
-		if (persistentFormsPractice) {
-			url = portalData.getPIFormsAltUrl();
-		} else {
-			url = portalData.getPIFormsUrl();
-		}
+		String url = portalData.getFormsPIUrlPrimary();
 		log("Login to PI");
 		logLogin(url, portalData.getUsername(), portalData.getPassword());
 		return new JalapenoLoginPage(driver, url).login(portalData.getUsername(), portalData.getPassword());
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, boolean persistentFormsPractice) throws Exception {
-		String url;
+	public static MyPatientPage loginPortal1(WebDriver driver) throws Exception {
 		TestcasesData portalData = new TestcasesData(new Portal());
-		if (persistentFormsPractice) {
-			url = portalData.getFormsAltUrl();
-		} else {
-			url = portalData.getFormsUrl();
-		}
+		String url = portalData.getFormsPortal1UrlPrimary();
 		log("Login to Portal 1");
 		logLogin(url, portalData.getUsername(), portalData.getPassword());
 		return new PortalLoginPage(driver, url).login(portalData.getUsername(), portalData.getPassword());
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver, boolean persistentFormsPractice, String userName, String password) throws Exception {
-		String url;
-		TestcasesData portalData = new TestcasesData(new Portal());
-		if (persistentFormsPractice) {
-			url = portalData.getPIFormsAltUrl();
-		} else {
-			url = portalData.getPIFormsUrl();
-		}
+	public static JalapenoHomePage loginPI(WebDriver driver, String userName, String password) throws Exception {
+		String url = new TestcasesData(new Portal()).getFormsPIUrlPrimary();
 		log("Login to PI");
 		logLogin(url, userName, password);
 		return new JalapenoLoginPage(driver, url).login(userName, password);
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, boolean persistentFormsPractice, String userName, String password) throws Exception {
-		String url;
-		TestcasesData portalData = new TestcasesData(new Portal());
-		if (persistentFormsPractice) {
-			url = portalData.getFormsAltUrl();
-		} else {
-			url = portalData.getFormsUrl();
-		}
+	public static MyPatientPage loginPortal1(WebDriver driver, String userName, String password) throws Exception {
+		String url = new TestcasesData(new Portal()).getFormsPortal1UrlPrimary();
 		log("Login to Portal 1");
 		logLogin(url, userName, password);
 		return new PortalLoginPage(driver, url).login(userName, password);
+	}
+
+	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PatientData p) throws Exception {
+		return createAndLoginPatientPI(driver, PracticeType.PRIMARY, p);
+	}
+
+	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PatientData p) throws Exception {
+		return createAndLoginPatientPortal1(driver, PracticeType.PRIMARY, p);
+	}
+
+	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
+		String url = getPortalURL(practiceType, false);
+		CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
+		MyPatientPage home = patientCreation.createPatient(driver, new com.medfusion.product.patientportal1.utils.TestcasesData(new com.medfusion.product.patientportal1.pojo.Portal()));
+		logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
+		p.setDob(patientCreation.getDob());
+		p.setEmail(patientCreation.getEmail());
+		p.setFirstName(patientCreation.getFirstName());
+		p.setLastName(patientCreation.getLastName());
+		p.setPassword(patientCreation.getPassword());
+		p.setUrl(patientCreation.getUrl());
+		return home;
+	}
+
+	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		JalapenoPatient jp = new JalapenoPatient(testData);
+		String url = getPortalURL(practiceType, true);
+		jp.setUrl(url);
+		jp.setDOBYear(newPatientDOBYear);
+		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver);
+		String patientDOB = jp.getDOBMonthText() + "/" + jp.getDOBDay() + "/" + jp.getDOBYear();
+		logLogin(jp.getUrl(), jp.getEmail(), jp.getPassword());
+		p.setDob(patientDOB);
+		p.setEmail(jp.getEmail());
+		p.setFirstName(jp.getFirstName());
+		p.setLastName(jp.getLastName());
+		p.setPassword(jp.getPassword());
+		p.setUrl(jp.getUrl());
+		return home;
 	}
 
 	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
@@ -158,12 +182,19 @@ public class Utils {
 		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
 	}
 
-	public static int getAutomationPracticeID(boolean persistentFormsPractice) throws Exception {
-		TestcasesData portalData = new TestcasesData(new Portal());
-		if (persistentFormsPractice) {
-			return getPracticeIDFromPIUrl(portalData.getPIFormsAltUrl());
-		} else {
-			return getPracticeIDFromPIUrl(portalData.getPIFormsUrl());
+	public static int getAutomationPracticeID() throws Exception {
+		return getAutomationPracticeID(PracticeType.PRIMARY);
+	}
+
+	public static int getAutomationPracticeID(PracticeType practiceType) throws Exception {
+		TestcasesData data = new TestcasesData(new Portal());
+		switch(practiceType){
+			case PRIMARY:
+				return getPracticeIDFromPIUrl(data.getFormsPIUrlPrimary());
+			case SECONDARY:
+				return getPracticeIDFromPIUrl(data.getFormsPIUrlSecondary());
+			default:
+				throw new IllegalArgumentException("unknown practice type");
 		}
 	}
 
@@ -179,4 +210,21 @@ public class Utils {
 		log("username: " + username);
 		log("password: " + password);
 	}
+
+	private static String getPortalURL(PracticeType practiceType, boolean PI) throws Exception {
+		TestcasesData data = new TestcasesData(new Portal());
+		switch (practiceType) {
+			case PRIMARY:
+				if (PI)
+					return data.getFormsPIUrlPrimary();
+				return data.getFormsPortal1UrlPrimary();
+			case SECONDARY:
+				if (PI)
+					return data.getFormsPIUrlSecondary();
+				return data.getFormsPortal1UrlSecondary();
+			default:
+				throw new IllegalArgumentException("ïnvalid practiceType");
+		}
+	}
+
 }

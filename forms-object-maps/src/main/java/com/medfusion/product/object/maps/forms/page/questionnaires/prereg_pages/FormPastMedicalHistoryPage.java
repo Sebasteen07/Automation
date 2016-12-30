@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
@@ -58,7 +59,7 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 	}
 
 	public boolean areFemaleQuestionsDisplayed() {
-		return femaleQuestionsHeader.isDisplayed();
+		return IHGUtil.waitForElement(driver, 3, femaleQuestionsHeader);
 	}
 
 	public void setCountOfPregnancies(int count) {

@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.forms.test;
 
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
@@ -30,7 +29,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 *        case to run========= Practices configured on: DEV3, MANUAL login to the SG as superuser ============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
 		log("step 1: login to SG as superuser");
@@ -40,7 +39,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 		log("step 2: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
-		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(testcasesData.getAutomationPracticeName());
+		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(String.valueOf(Utils.getAutomationPracticeID()));
 		String parentHandle = driver.getWindowHandle();
 		log("step 3: Click on Patient Forms");
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
@@ -48,15 +47,15 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 		log("step 4: Unpublish and delete all forms and add calculated form");
 		driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ9_FORM);
-		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ2_FORM);
+		assertTrue(pManageDiscreteForms.addCalculatedForm(SitegenConstants.CALCULATED_PHQ2_FORM));
 
 		log("step 5: Check if the added form is no longer in the Calculated Form Directory ");
-		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
+		assertFalse(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ2_FORM));
 
 		log("step 6: Delete all Forms and check if the Calculated Form is back in Directory");
-		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ9_FORM);
-		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ9_FORM));
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.CALCULATED_PHQ2_FORM);
+		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ2_FORM));
 
 		log("step 7: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle
@@ -78,13 +77,11 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testData = new SitegenTestData(sitegen);
-		SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps().logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword());
+		SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps().logInUserToSG(driver, testData.getFormPrimaryUser(), testData.getFormPrimaryPassword());
 
 		DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
 		driver.manage().window().maximize();
-		formsConfigPage.unpublishForms(SitegenConstants.CALCULATED_PHQ9_FORM).unpublishForms(SitegenConstants.CALCULATED_ADHD_FORM)
-				.editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
-				.editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage).publishForm(SitegenConstants.CALCULATED_PHQ9_FORM)
+		formsConfigPage.unpublishForms(SitegenConstants.CALCULATED_ADHD_FORM).editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage)
 				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
 		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		PortalUtil.setquestionnarieFrame(driver);
@@ -97,25 +94,18 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 *         configured on: DEV3
 	 */
 	@Test(groups = "OldPortalForms")
-	public void testAllCalculatedFormsPortal1() throws Exception {
-		testAllCalculatedForms(Utils.loginPortal1AndOpenFormsList(driver, true));
+	public void testCalculatedFormPortal1() throws Exception {
+		testCalculatedForm(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	@Test(groups = "CalculatedForms")
-	public void testAllCalculatedFormsPI() throws Exception {
-		testAllCalculatedForms(Utils.loginPIAndOpenFormsList(driver, true));
+	public void testCalculatedFormPI() throws Exception {
+		testCalculatedForm(Utils.loginPIAndOpenFormsList(driver));
 	}
 
-	private void testAllCalculatedForms(HealthFormListPage formsPage) throws Exception {
-		String[] formNames = {SitegenConstants.CALCULATED_PHQ2_FORM, SitegenConstants.CALCULATED_PHQ9_FORM, SitegenConstants.CALCULATED_ADHD_FORM};
-		log("For each calculated form:");
-		for (String formName : formNames) {
-			log("Step 1: Open Form named " + formName);
-			try {
-				formsPage.openDiscreteForm(formName);
-			} catch (StaleElementReferenceException e) {
-				formsPage.openDiscreteForm(formName);
-			}
+	private void testCalculatedForm(HealthFormListPage formsPage) throws Exception {
+		log("Step 1: Open Form named " + SitegenConstants.CALCULATED_PHQ9_FORM);
+		formsPage.openDiscreteForm(SitegenConstants.CALCULATED_PHQ9_FORM);
 
 			log("Step 2: Fill in the form with all the required answers and submit.");
 			FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
@@ -126,12 +116,10 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 			calculatedFormPage.submitForm();
 
 			log("Step 3: Check if the PDF is downloadable.");
-			Utils.checkIfPDFCanBeDownloaded(formName, driver);
+		Utils.checkIfPDFCanBeDownloaded(SitegenConstants.CALCULATED_PHQ9_FORM, driver);
 
 			log("Step 4: Check if the date is correct");
-			Utils.verifyFormsDatePatientPortal(formsPage, formName, driver);
-
-		}
+		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.CALCULATED_PHQ9_FORM, driver);
 	}
 
 	/**
@@ -141,12 +129,12 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {
-		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver, true));
+		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormValidationPI() throws Exception {
-		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver, true));
+		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	private void testCalculatedFormValidation(HealthFormListPage healthFormsList) throws Exception {

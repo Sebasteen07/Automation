@@ -185,7 +185,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	public PastMedicalHistoryPage clicklnkPastMedicalHistory() throws InterruptedException {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkPastMedicalHistory);
-		scrollAndWait(0, 0, 500);
+		scrollAndWait(0, 0, 1000);
 		lnkPastMedicalHistory.click();
 		return PageFactory.initElements(driver, PastMedicalHistoryPage.class);
 	}
