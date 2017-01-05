@@ -13,7 +13,9 @@
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>
 	    		<include name="testMU2GetEventForExistingPatient"/>
-	    		<include name="testMU2GetEventForNewPatient"/>    		
+	    		<include name="testMU2GetEventForNewPatient"/>
+	    		<include name="testPIDCPatientRegistrationV1"/>
+	    		<include name="testPIDCPatientRegistrationV2"/>    	
       		</methods>
 	</classes>
 </test>

@@ -568,6 +568,64 @@ public class RestUtils {
 
 
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public static void isPatientRegistered(String xmlFileName, ArrayList practicePatientId, ArrayList firstName, ArrayList lastName, ArrayList patientID,
+			ArrayList gender,ArrayList race,ArrayList ethnicity,ArrayList preferredLanguage,ArrayList preferredCommunication)
+			throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for (int i = 0; i < patients.getLength(); i++) {
+			for (int j = 0; j < practicePatientId.size(); j++)
+				if (patients.item(i).getTextContent().equals(practicePatientId.get(j))) {
+					Log4jUtil.log("For Patient: "+patients.item(i).getTextContent());
+					Log4jUtil.log("Searching: External Patient ID:" + practicePatientId.get(j) + ", and Actual External Patient ID is:"
+						+ patients.item(i).getTextContent().toString());
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
+				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+						"Patient has different status than expected. Status is: " + status.getTextContent());
+				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+					Log4jUtil.log("Searching: Patient FirstName:" + firstName.get(j) + ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
+					Assert.assertEquals(nfirstName.getTextContent(), firstName.get(j),
+						"Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
+				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+					Log4jUtil.log("Searching: Patient LastName:" + lastName.get(j) + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
+					Assert.assertEquals(nlastName.getTextContent(), lastName.get(j),
+							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
+				 
+				//Addition of Gender, Ethnicity, Race, PreferredCommunication, PreferredLanguage
+				Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
+					Log4jUtil.log("Searching: Patient Gender:" + gender.get(j) + ", and Actual Patient Gedner is:" + ngender.getTextContent().toString());
+					Assert.assertEquals(ngender.getTextContent(), gender.get(j), "Patient has different Gender than expected. Gender is: " + ngender.getTextContent());
+				Node nrace = patient.getElementsByTagName(IntegrationConstants.RACE).item(0);
+					Log4jUtil.log("Searching: Patient Race:" + race.get(j) + ", and Actual Patient race is:" + nrace.getTextContent().toString());
+					Assert.assertEquals(nrace.getTextContent(), race.get(j), "Patient has different race than expected. race is: " + nrace.getTextContent());
+				Node nethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
+					Log4jUtil.log("Searching: Patient Ethnicity:" + ethnicity.get(j) + ", and Actual Patient ethnicity is:" + nethnicity.getTextContent().toString());
+					Assert.assertEquals(nethnicity.getTextContent(), ethnicity.get(j), "Patient has different ethnicity than expected. ethnicity is: " + nethnicity.getTextContent());
+				Node npreferredLanguage = patient.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE).item(0);
+					Log4jUtil.log("Searching: Patient Language:" + preferredLanguage.get(j) + ", and Actual Patient preferredLanguage is:" + npreferredLanguage.getTextContent().toString());
+					Assert.assertEquals(npreferredLanguage.getTextContent(), preferredLanguage.get(j), "Patient has different preferredLanguage than expected. preferredLanguage is: " + npreferredLanguage.getTextContent());
+				Node npreferredCommunication = patient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+					Log4jUtil.log("Searching: Patient Communication:" + preferredCommunication.get(j) + ", and Actual Patient preferredCommunication is:" + npreferredCommunication.getTextContent().toString());
+					Log4jUtil.log("------------------------------------------------------------------------------------------------------:");
+					Assert.assertEquals(npreferredCommunication.getTextContent(), preferredCommunication.get(j), "Patient has different preferredCommunication than expected. preferredCommunication is: " + npreferredCommunication.getTextContent());
+	
+				if (patientID != null) {
+					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+					Assert.assertEquals(nPatientId.getTextContent(), patientID, "Patient has different MedfusionPatientId than expected. MedfusionPatientId is: "
+							+ nPatientId.getTextContent());
+					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID + ", and Actual Medfusion Patient ID is:" + nPatientId.getTextContent().toString());
+				}
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
+
+	}
 
 	public static String prepareCCD(String ccdPath) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		Document doc = buildDOMXML(ccdPath);

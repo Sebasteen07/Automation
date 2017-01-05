@@ -237,8 +237,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 20);
 			assertTrue(activationUrl!=null, "Error: Activation link not found.");
 			
-			PatientRegistrationUtils patientRegistrationUtilsObject= new PatientRegistrationUtils();
-			patientRegistrationUtilsObject.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
+			//PatientRegistrationUtils patientRegistrationUtilsObject= new PatientRegistrationUtils();
+			PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
 			
 			Thread.sleep(12000);
 			log("Step 2:  Send CCD to Patient");
@@ -289,14 +289,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.PatientFirstName_MU2  = patientDetail.get(0);
 			testData.PatientLastName_MU2 = patientDetail.get(1);
 			
-			//testData.PatientExternalId_MU2 = propertyData.getPatientExternalId_MU2();
-			//testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
-			//testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
-			
 			Thread.sleep(50000);
 			
 			log("Step 4:  Login Portal 2.0");
 			
 			MU2UtilsObj.mu2GetEvent(testData,driver);
+	 }
+	 
+	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientRegistrationV1() throws Exception {
+		 	log("Test Case: PIDC Patient Registration v1 channel");
+		 	PatientRegistrationUtils.pidcPatientRegistration("v1",driver);
+	 }
+	 
+	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientRegistrationV2() throws Exception {
+		 	log("Test Case: PIDC Patient Registration v2 channel");
+		 	PatientRegistrationUtils.pidcPatientRegistration("v2",driver);
 	 }
 }
