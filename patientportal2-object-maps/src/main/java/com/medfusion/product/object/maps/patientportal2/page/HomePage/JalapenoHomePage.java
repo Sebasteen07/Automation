@@ -66,7 +66,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "familyAccountBtn")
 	private WebElement viewDifferentPatientButton;
 
-	@FindBy(how = How.ID, using = "listBadge")
+	@FindBy(how = How.ID, using = "listBadge_0")
 	private WebElement listBadgeDropdownButton;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
