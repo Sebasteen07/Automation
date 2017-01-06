@@ -207,13 +207,13 @@ public class PropertyFileLoader {
 		return property.getProperty("patient_ID_MU2");
 	}
 	public String getPATIENT_INVITE_RESTURL() {
-		return property.getProperty("RestUrlPIDC");
+		return property.getProperty("restUrlPIDC");
 	}
 	public String getPATIENT_PRACTICEID() {
-		return property.getProperty("PracticeIdPIDC");
+		return property.getProperty("practiceIdPIDC");
 	}
 	public String getPATIENT_EXTERNAL_ID() {
-		return property.getProperty("ExternalSystemIDPIDC");
+		return property.getProperty("externalSystemIDPIDC");
 	}
 	public String getCCDPATH1() {
 		return property.getProperty("ccdXMLPath1");
@@ -258,4 +258,109 @@ public class PropertyFileLoader {
 		return property.getProperty("patientLastName_MU2");
 	}
 	
+	
+	//PIDC
+	public String getUrl() {
+		return property.getProperty("url");
+	}
+
+	public String getUserName() {
+		return property.getProperty("username");
+	}
+
+	public String getPassword() {
+		return property.getProperty("password");
+	}
+
+	public String getRestUrl() {
+		return property.getProperty("restUrl");
+	}
+
+	public String getRestUrl1() {
+		return property.getProperty("restUrl1");
+	}
+
+	public String getRestUrl2() {
+		return property.getProperty("restUrl2");
+	}
+
+	public String getPatientPath() {
+		return property.getProperty("patientPath");
+	}
+
+	public String getOAuthAppToken() {
+		return property.getProperty("oAuthAppToken");
+	}
+
+	public String getOAuthUsername() {
+		return property.getProperty("oAuthUsername");
+	}
+
+	public String getOAuthPassword() {
+		return property.getProperty("oAuthPassword");
+	}
+
+	public String getBirthday() {
+		return property.getProperty("birthDay");
+	}
+
+	public String getZipCode() {
+		return property.getProperty("zipCode");
+	}
+
+	public String getSSN() {
+		return property.getProperty("SSN");
+	}
+
+	public String getEmail() {
+		return property.getProperty("email");
+	}
+
+	public String getRace() {
+		return property.getProperty("race");
+	}
+
+	public String getRelation() {
+		return property.getProperty("relation");
+	}
+
+	public String getPreferredLanguage() {
+		return property.getProperty("preferredLanguage");
+	}
+
+	public String getEthnicity() {
+		return property.getProperty("ethnicity");
+	}
+
+	public String getMaritalStatus() {
+		return property.getProperty("maritalStatus");
+	}
+
+	public String getChooseCommunication() {
+		return property.getProperty("chooseCommunication");
+	}
+
+	public String getInsurance_Type() {
+		return property.getProperty("insurance_Type");
+	}
+
+	public String getBatchSize() {
+		return property.getProperty("batchSize");
+	}
+
+	public String getPracticeURL() {
+		return property.getProperty("practiceURL");
+	}
+	public String getPortalVersion() {
+		return property.getProperty("portalVersion");
+	}
+	
+	public String getCSVFilePath() {
+		return property.getProperty("csvFilePath");
+	}
+	public String getPracticeId_PIDC() {
+		return property.getProperty("practiceId_PIDC");
+	}
+	
+	//PIDC END
 }

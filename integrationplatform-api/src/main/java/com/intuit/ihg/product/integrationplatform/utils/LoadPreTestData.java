@@ -2,6 +2,8 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
 
+import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
+
 public class LoadPreTestData {
 
 	public EHDC loadEHDCDataFromProperty(EHDC testData) throws IOException {
@@ -111,6 +113,52 @@ public class LoadPreTestData {
 		testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
 		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
 		
+		return testData;
+	}
+	
+	public PIDCInfo loadDataFromProperty(PIDCInfo testData, String channelVersion) throws Exception {
+
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+	
+		testData.setBatchSize(propertyData.getBatchSize());
+
+		testData.setoAuthProperty(propertyData.getOAuthProperty());
+		testData.setoAuthKeyStore(propertyData.getOAuthKeyStore());
+		testData.setoAuthAppToken(propertyData.getOAuthAppToken());
+		testData.setoAuthUsername(propertyData.getOAuthUsername());
+		testData.setoAuthPassword(propertyData.getOAuthPassword());
+
+		testData.setPatientPath(propertyData.getPatientPath());
+		testData.setResponsePath(propertyData.getResponsePath());
+		testData.setUsername(propertyData.getUserName());
+		testData.setPassword(propertyData.getPassword());
+		//testData.setRestUrl(propertyData.getRestUrl());	
+		if (channelVersion.contains("v1")) {
+			testData.setRestUrl(propertyData.getRestUrl1());
+		}
+		if (channelVersion.contains("v2")) {
+			testData.setRestUrl(propertyData.getRestUrl2());
+		}
+		testData.setBirthDay(propertyData.getBirthday());
+		testData.setZipCode(propertyData.getZipCode());
+		testData.setSSN(propertyData.getSSN());
+		testData.setEmail(propertyData.getEmail());
+		testData.setPatientPassword(propertyData.getPatientPassword());
+		testData.setSecretQuestion(propertyData.getSecretQuestion());
+		testData.setSecretAnswer(propertyData.getSecretAnswer());
+		testData.setPracticeURL(propertyData.getPracticeURL());
+		testData.setHomePhoneNo(propertyData.getHomePhoneNo());
+
+		testData.setRelation(propertyData.getRelation());
+		//testData.setPreferredLanguage(propertyData.getPreferredLanguage());
+		//testData.race = propertyData.getRace();
+		//testData.ethnicity = propertyData.getEthnicity();
+		testData.setMaritalStatus(propertyData.getMaritalStatus());
+		testData.setChooseCommunication(propertyData.getChooseCommunication());
+		testData.setInsurance_Type(propertyData.getInsurance_Type());
+		testData.setCsvFilePath(propertyData.getCSVFilePath());
+		testData.setPortalVersion(propertyData.getPortalVersion());
+		testData.setPracticeId(propertyData.getPracticeId_PIDC());
 		return testData;
 	}
 }

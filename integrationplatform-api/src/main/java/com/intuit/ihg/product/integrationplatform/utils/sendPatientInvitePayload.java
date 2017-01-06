@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +28,17 @@ public class sendPatientInvitePayload {
 	public static String zip;
 	public static String dateOfBirth;
 	public static String date;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ArrayList<String> firstNameGroup = new ArrayList();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ArrayList<String> lastNameGroup = new ArrayList();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ArrayList<String> emailGroup = new ArrayList();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ArrayList<String> zipGroup = new ArrayList();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ArrayList<String> dateGroup = new ArrayList();
+	
 
 	public static String getPIDCPayload(PIDCInfo testData) {
 
@@ -56,7 +68,7 @@ public class sendPatientInvitePayload {
 			mainRootElement.appendChild(BatchId);
 
 			Element BatchSize = doc.createElement("BatchSize");
-			BatchSize.appendChild(doc.createTextNode("1"));
+			BatchSize.appendChild(doc.createTextNode(testData.getBatchSize()));
 			mainRootElement.appendChild(BatchSize);
 			// End BatchID and BatchSize
 
@@ -126,20 +138,34 @@ public class sendPatientInvitePayload {
 			KeyValuePair.appendChild(Value);
 
 			mainRootElement.appendChild(Destination);
-			Long timestamp = System.currentTimeMillis();
-			firstName = "Name" + timestamp;
-			lastName = "TestPatient" + timestamp;
-			email = firstName + "@mailinator.com";
-			zip = "27560";
+			
+			zip = testData.getZipCode();
 
-			date = "01/01/1987";
+			date = testData.getBirthDay(); //"01/01/1987";
 			String dt = date.substring(0, 2);
 			String month = date.substring(3, 5);
 			String year = date.substring(6);
 			dateOfBirth = year + "-" + month + "-" + dt + "T12:00:01";
-
+			if(testData.getPortalVersion().contains("2.0")) {
+				dateOfBirth = year + "-" + dt + "-" + month + "T12:00:01";
+			}
+			int batchSize = Integer.parseInt(testData.getBatchSize());
+						
+			for(int i=0;i<batchSize;i++) {
+				//Adding wait time so that time stamp will have different values-=
+				Thread.sleep(5000);
+				Long timestamp = System.currentTimeMillis();
+				firstName = "Name" + timestamp;
+				lastName = "TestPatient" + timestamp;
+				email = firstName + "@mailinator.com";
+				firstNameGroup.add(firstName);
+				lastNameGroup.add(lastName);
+				emailGroup.add(email);
+				zipGroup.add(zip);
+				dateGroup.add(date);
+				
 				Element Patient = doc.createElement("Patient");
-
+				
 				Element PatientIdentifier = doc.createElement("PatientIdentifier");
 				Patient.appendChild(PatientIdentifier);
 
@@ -205,23 +231,49 @@ public class sendPatientInvitePayload {
 
 				Element Race = doc.createElement("Race");
 				Patient.appendChild(Race);
-				Race.appendChild(doc.createTextNode("American Indian or Alaska Native"));
+				Race.appendChild(doc.createTextNode(testData.getRace().get(i)));
 
 				Element Ethnicity = doc.createElement("Ethnicity");
 				Patient.appendChild(Ethnicity);
-				Ethnicity.appendChild(doc.createTextNode("Hispanic or Latino"));
+				//System.out.println(i+"Race "+testData.getEthnicity().get(i));
+				Ethnicity.appendChild(doc.createTextNode(testData.getEthnicity().get(i)));
 
 				Element Gender = doc.createElement("Gender");
 				Patient.appendChild(Gender);
-				Gender.appendChild(doc.createTextNode("MALE"));
-
+				Gender.appendChild(doc.createTextNode(testData.getGender().get(i)));
+				
+				//Enable after implementation
+				if(version.contains("v2_REMOVEME")) {
+					Element GenderIdentity = doc.createElement("GenderIdentity");
+					Patient.appendChild(GenderIdentity);
+					
+					Element ValueGI = doc.createElement("Value");
+					GenderIdentity.appendChild(ValueGI);
+					ValueGI.appendChild(doc.createTextNode(testData.getGenderIdentity().get(i)));
+					
+					Element CommentGI = doc.createElement("Comment");
+					GenderIdentity.appendChild(CommentGI);
+					CommentGI.appendChild(doc.createTextNode(" "));
+					
+					Element SexualOrientation = doc.createElement("SexualOrientation");
+					Patient.appendChild(SexualOrientation);
+					
+					Element ValueSO = doc.createElement("Value");
+					SexualOrientation.appendChild(ValueSO);
+					ValueSO.appendChild(doc.createTextNode(testData.getSexualOrientation().get(i)));
+					
+					Element CommentSO = doc.createElement("Comment");
+					SexualOrientation.appendChild(CommentSO);
+					CommentSO.appendChild(doc.createTextNode(" "));
+				}
+				
 				Element PreferredLanguage = doc.createElement("PreferredLanguage");
 				Patient.appendChild(PreferredLanguage);
-				PreferredLanguage.appendChild(doc.createTextNode("English"));
+				PreferredLanguage.appendChild(doc.createTextNode(testData.getPreferredLanguage().get(i)));
 
 				Element PreferredCommunication = doc.createElement("PreferredCommunication");
 				Patient.appendChild(PreferredCommunication);
-				PreferredCommunication.appendChild(doc.createTextNode("US Mail"));
+				PreferredCommunication.appendChild(doc.createTextNode(testData.getPreferredCommunication().get(i)));
 
 				Element SocialSecurityNumber = doc.createElement("SocialSecurityNumber");
 				Patient.appendChild(SocialSecurityNumber);
@@ -257,7 +309,6 @@ public class sendPatientInvitePayload {
 				Element ZipCode = doc.createElement("ZipCode");
 				HomeAddress.appendChild(ZipCode);
 				ZipCode.appendChild(doc.createTextNode(zip));
-
 
 				// WorkAddress
 				Element WorkAddress = doc.createElement("WorkAddress");
@@ -370,7 +421,7 @@ public class sendPatientInvitePayload {
 				Name = doc.createElement("Name");
 				Employment.appendChild(Name);
 				Name.appendChild(doc.createTextNode("Name"));
-				// ////////////////////////////
+
 				// Address
 				Address = doc.createElement("Address");
 				Employment.appendChild(Address);
@@ -401,7 +452,6 @@ public class sendPatientInvitePayload {
 				Phone = doc.createElement("Phone");
 				Employment.appendChild(Phone);
 				Phone.appendChild(doc.createTextNode("Phone"));
-				// ////////////////////////////
 
 				Element Billing = doc.createElement("Billing");
 				Patient.appendChild(Billing);
@@ -487,7 +537,6 @@ public class sendPatientInvitePayload {
 				Element PrimaryInsurance = doc.createElement("PrimaryInsurance");
 				Patient.appendChild(PrimaryInsurance);
 
-				// setting values from here in future get values from patientDetail
 				Element CompanyName = doc.createElement("CompanyName");
 				PrimaryInsurance.appendChild(CompanyName);
 				CompanyName.appendChild(doc.createTextNode("Aviva"));
@@ -598,7 +647,6 @@ public class sendPatientInvitePayload {
 				Element SecondaryInsurance = doc.createElement("SecondaryInsurance");
 				Patient.appendChild(SecondaryInsurance);
 
-				// setting values from here in future get values from patientDetail
 				CompanyName = doc.createElement("CompanyName");
 				SecondaryInsurance.appendChild(CompanyName);
 				CompanyName.appendChild(doc.createTextNode("Aviva1"));
@@ -816,8 +864,8 @@ public class sendPatientInvitePayload {
 				PatientRelationToSubscriber.appendChild(doc.createTextNode("SELF"));
 
 				mainRootElement.appendChild(Patient);
+			}
 
-			// output DOM XML to console
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
@@ -825,7 +873,7 @@ public class sendPatientInvitePayload {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-			System.out.println("\n Payload Created Successfully..");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
