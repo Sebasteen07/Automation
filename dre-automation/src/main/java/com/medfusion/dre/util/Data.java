@@ -4,7 +4,7 @@ package com.medfusion.dre.util;
 import java.io.FileInputStream;
 import java.util.Map;
 
-import com.medfusion.plus.plusautomation.DreAcceptanceTest;
+import com.medfusion.dre.dreautomation.DreAcceptanceTests;
 
 public class Data {
 
@@ -12,7 +12,7 @@ public class Data {
 
 	static {
 		try {			
-			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data/" + DreAcceptanceTest.retrieverName + ".properties");
+			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data/" + DreAcceptanceTests.retrieverName + ".properties");
 			retrieverProperties.load(inputStream);
 			inputStream.close();
 		} catch (Exception e) {
