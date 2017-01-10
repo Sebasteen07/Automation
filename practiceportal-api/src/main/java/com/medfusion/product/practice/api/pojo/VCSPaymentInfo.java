@@ -1,11 +1,10 @@
 package com.medfusion.product.practice.api.pojo;
 
 public class VCSPaymentInfo {
-	
-	public VCSPaymentInfo(String cardHolderName, String creditCardType,
-			String creditCardNumber, String creditCardExpirationYear, String creditCardExpirationMonth,
-			String amountToCharge, String cVVCode, String cardholderZip,
-			String accountNumber, String patientName, String paymentComment, String serviceLocation) {
+
+	public VCSPaymentInfo(String cardHolderName, String creditCardType, String creditCardNumber, String creditCardExpirationYear,
+			String creditCardExpirationMonth, String amountToCharge, String cVVCode, String cardholderZip, String accountNumber, String patientName,
+			String paymentComment, String serviceLocation) {
 		this.cardHolderName = cardHolderName;
 		this.creditCardType = creditCardType;
 		this.creditCardNumber = creditCardNumber;
@@ -19,7 +18,7 @@ public class VCSPaymentInfo {
 		this.patientName = patientName;
 		this.paymentComment = paymentComment;
 	}
-	
+
 	public String cardHolderName;
 	public String creditCardType;
 	public String creditCardNumber;
@@ -32,9 +31,11 @@ public class VCSPaymentInfo {
 	public String accountNumber;
 	public String patientName;
 	public String paymentComment;
-	
-	public String toString(){
-		return "Payment info " + cardHolderName + ", " + creditCardType + ", " + creditCardNumber + ", " + creditCardExpirationYear + ", " + creditCardExpirationMonth + ", " + amountToCharge + ", " + cVVCode + ", " + cardholderZip + ", " + accountNumber + ", " + patientName + ", " + paymentComment + ", " + serviceLocation;
-		
+
+	public String toString() {
+		return "Payment info " + cardHolderName + ", " + creditCardType + ", " + creditCardNumber + ", " + creditCardExpirationYear + ", "
+				+ creditCardExpirationMonth + ", " + amountToCharge + ", " + cVVCode + ", " + cardholderZip + ", " + accountNumber + ", " + patientName + ", "
+				+ paymentComment + ", " + serviceLocation;
+
 	}
 }

@@ -35,26 +35,24 @@ public class IntegrationTestData {
 	/**
 	 * Returns site gen url from excel sheet
 	 */
-/*	public String getSiteGenUrl() {
-		return integrationobj.variable;
-	}*/
+	/*
+	 * public String getSiteGenUrl() { return integrationobj.variable; }
+	 */
 	/**
 	 * Returns patient portal login url from excel sheet
 	 */
 	public String getAMDCUrl() {
 		return integrationobj.AMDCUrl;
 	}
-	
+
 	public String getAMDCUserName() {
 		return integrationobj.AMDCUserName;
 	}
-	
+
 	public String getAMDCPassword() {
 		return integrationobj.AMDCPassword;
 	}
-	
-	
 
-	
+
 
 }

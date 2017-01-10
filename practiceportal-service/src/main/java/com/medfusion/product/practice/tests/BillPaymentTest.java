@@ -11,15 +11,15 @@ import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillP
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 
-public class BillPaymentTest extends BaseTestNGWebDriver{
+public class BillPaymentTest extends BaseTestNGWebDriver {
 
 	public String billPaymentTest(WebDriver driver, PracticeTestData practiceTestData, String accountNumber) throws Exception {
-		
+
 		log("Test Case: TestLoginLogout");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("Get Data from Excel");	
+		log("Get Data from Excel");
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
@@ -42,12 +42,12 @@ public class BillPaymentTest extends BaseTestNGWebDriver{
 
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
-		
-		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs())+PracticeConstants.BillPaymentSubject;
+
+		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BillPaymentSubject;
 		return uniquePracticeResponse;
-		
-		
+
+
 	}
-	
- 
+
+
 }

@@ -114,7 +114,7 @@ public class PatientDemographicPage extends MedfusionPage {
 		buttonContinue.click();
 		return PageFactory.initElements(driver, SecurityDetailsPage.class);
 	}
-	
+
 	public void tryToContinueToSecurityPage() {
 		buttonContinue.click();
 	}

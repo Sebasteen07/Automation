@@ -20,67 +20,69 @@ public class StatementPreferenceTestData {
 		// filtering the entire file
 		StmtPrefObj = (StatementPreference) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return StmtPrefObj.Url;
 	}
-	public String getUserName(){
+
+	public String getUserName() {
 		return StmtPrefObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return StmtPrefObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return StmtPrefObj.RestUrl;
 	}
-	
-	public String getStatementPath(){
+
+	public String getStatementPath() {
 		return StmtPrefObj.StatementPath;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return StmtPrefObj.ResponsePath;
 	}
-		
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return StmtPrefObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return StmtPrefObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return StmtPrefObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return StmtPrefObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return StmtPrefObj.OAuthPassword;
 	}
+
 	public String getPracticeURL() {
 		return StmtPrefObj.PracticeURL;
-	}	
-	
+	}
+
 	public String getPracticeUserName() {
 		return StmtPrefObj.PracticeUserName;
-	}	
-	
+	}
+
 	public String getPracticePassword() {
 		return StmtPrefObj.PracticePassword;
 	}
-	
-		public String getFirstName() {
+
+	public String getFirstName() {
 		return StmtPrefObj.FirstName;
-	}	
-	
+	}
+
 	public String getLastName() {
 		return StmtPrefObj.LastName;
 	}
-		
+
 }

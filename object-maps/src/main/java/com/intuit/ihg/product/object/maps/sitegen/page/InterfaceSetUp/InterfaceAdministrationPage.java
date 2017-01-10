@@ -67,8 +67,7 @@ public class InterfaceAdministrationPage extends BasePageObject {
 
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 6,
-					btnActivateIntegrationType);
+			result = IHGUtil.waitForElement(driver, 6, btnActivateIntegrationType);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -125,21 +124,21 @@ public class InterfaceAdministrationPage extends BasePageObject {
 	 * @author bkrishnankutty
 	 * @Desc:- click on Link Home
 	 * @return SiteGenLoginPage
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * 
 	 */
 	public SiteGenHomePage clickLinkHome() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, lnkHome);
-		try{
+		try {
 			lnkHome.click();
 		} catch (Exception e) {
 			Actions ac = new Actions(driver);
 			ac.clickAndHold(lnkHome);
 			log("Clicked on Home Icon");
 		}
-		
+
 		return PageFactory.initElements(driver, SiteGenHomePage.class);
 	}
 }

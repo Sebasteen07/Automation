@@ -3,16 +3,10 @@ package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
-import com.medfusion.common.utils.IHGUtil;
 
 public class AllergiesPage extends ConfiguratorFormPage {
-
-	@FindBy(xpath = "//li[@data-section='immunizations']/a")
-	private WebElement lnkVaccinations;
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
@@ -122,39 +116,5 @@ public class AllergiesPage extends ConfiguratorFormPage {
 	public AllergiesPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkVaccinations);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Click on link - Vaccinations
-	 * 
-	 * @return
-	 * @throws InterruptedException
-	 */
-
-	public VaccinationsPage clicklnkVaccinations() throws InterruptedException {
-		SitegenlUtil.setDefaultFrame(driver);
-		Thread.sleep(500);
-		lnkVaccinations.click();
-		return PageFactory.initElements(driver, VaccinationsPage.class);
 	}
 }

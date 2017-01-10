@@ -24,8 +24,7 @@ public class MDVIPPaymentMethods {
 	}
 
 	public void addNewPayment() {
-		WebElement element = driver
-				.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-payment-method']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/settings/payment-methods/add-payment-method']"));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element).click().perform();

@@ -12,13 +12,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 public class SocialHistoryPage extends ConfiguratorFormPage {
-
-	@FindBy(xpath = "//li[@data-section='socialhistory_section']/a")
-	private WebElement lnkSocialHistory;
 
 	@FindBy(id = "hide_socialhistory_section_check")
 	private WebElement hideSocialhistorySectionCheck;
@@ -77,12 +73,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p[@class='custom']/a")
 	private WebElement supplementalQuestion;
 
-	@FindBy(xpath = "//li[@class='additional']/a")
-	private WebElement newSection;
-
-	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p/a")
-	private WebElement newSectionButt;
-
 	@FindBy(id = "custom_title_socialhistory_section_0")
 	private WebElement customSectionName;
 
@@ -112,28 +102,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Indicates if the search page is loaded
-	 *
-	 * @return true or false
-	 */
-	public boolean isSearchPageLoaded() {
-
-		IHGUtil.PrintMethodName();
-		SitegenlUtil.setSiteGenFrame(driver);
-
-		boolean result = false;
-		try {
-			result = IHGUtil.waitForElement(driver, 6, lnkSocialHistory);
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
-
-		return result;
-	}
-
-	/**
-	 * Deselects the checkbox for hiding the page Adds a tea-drinking question
-	 * so that the page does not hide again
+	 * Deselects the checkbox for hiding the page Adds a tea-drinking question so that the page does not hide again
 	 */
 	public void showThisPage() {
 		if (hideSocialhistorySectionCheck.isSelected()) {
@@ -144,25 +113,9 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Click on button to add a section
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void clickAddSection() throws InterruptedException {
-		scrollAndWait(0, 0, 0);
-		newSectionButt.click();
-		Thread.sleep(500);
-	}
-
-	public void clickOnNewSection() throws InterruptedException {
-		newSection.click();
-	}
-
-	/**
 	 * Description: Sets the name of the section. Name is passe as parameter
 	 * 
-	 * @param newName:
-	 *            A name to be set
+	 * @param newName: A name to be set
 	 * @throws InterruptedException
 	 *
 	 */
@@ -174,8 +127,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	/**
 	 * Description: Sets the name of the section. Name is passe as parameter
 	 * 
-	 * @param newName:
-	 *            A name to be set
+	 * @param newName: A name to be set
 	 *
 	 */
 	public void setQuestionName(String newName) {
@@ -187,29 +139,27 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 		Select questionTypeSel = new Select(questionTypeSelect);
 
 		switch (type) {
-		case shortText:
-			questionTypeSel.selectByIndex(1);
-			break;
-		case longText:
-			questionTypeSel.selectByIndex(2);
-			break;
-		case multiSelect:
-			questionTypeSel.selectByIndex(3);
-			break;
-		case singleSelect:
-			questionTypeSel.selectByIndex(4);
-			break;
-		default:
-			throw new Exception();
+			case shortText:
+				questionTypeSel.selectByIndex(1);
+				break;
+			case longText:
+				questionTypeSel.selectByIndex(2);
+				break;
+			case multiSelect:
+				questionTypeSel.selectByIndex(3);
+				break;
+			case singleSelect:
+				questionTypeSel.selectByIndex(4);
+				break;
+			default:
+				throw new Exception();
 		}
 	}
 
 	/**
-	 * Description: Enters possible answers to the text field. Answers are comma
-	 * separated values
+	 * Description: Enters possible answers to the text field. Answers are comma separated values
 	 * 
-	 * @param newAnswerText
-	 *            Answer text that will be shown to patient
+	 * @param newAnswerText Answer text that will be shown to patient
 	 */
 	public void addPossibleAnswer(String newAnswerText) {
 		addAnswerButton.click();
@@ -221,8 +171,7 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	}
 
 	/**
-	 * Asserts that error notification message appeared. For example when user
-	 * tried to save form with incomplete question
+	 * Asserts that error notification message appeared. For example when user tried to save form with incomplete question
 	 */
 	public void errorMessageAppearedTest() {
 		assertTrue(errorNotification.isDisplayed());

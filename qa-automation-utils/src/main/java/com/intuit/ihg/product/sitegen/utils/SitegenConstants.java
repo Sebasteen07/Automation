@@ -46,27 +46,27 @@ public class SitegenConstants {
 
 
 
-	//for Custom Forms
+	// for Custom Forms
 	public final static String FORMTYPE = "Custom Health Form";
 	public final static String FORMTITLE = "Auto CustomForm";
 	public final static String FORMINSTRUCTIONS = "Automation Custom Health Form Instructions";
 	public final static String FORMMESSAGE = "Automation Custom Health Form Message";
 	public final static String FORMCATEGORY = "Insurance and Referrals";
 	public final static String FORMCATEGORY2 = "Demographics";
-    public final static String FORMCATEGORY3 = "Vital Signs";
+	public final static String FORMCATEGORY3 = "Vital Signs";
 	public final static String FORMQUESTION1 = "Provide Insurance Information";
-    public final static String FORMQUESTION2 = "Provide Demographics information"; 
+	public final static String FORMQUESTION2 = "Provide Demographics information";
 	public final static String FORMQUESTION3 = "Vitals information";
 	public final static String FORMANSWERSET1 = "Insurance";
-	public final static String FORMANSWERSET2 = "Demographics" ;
+	public final static String FORMANSWERSET2 = "Demographics";
 	public final static String FORMANSWERSET3 = "Vitals";
-    public final static String FORMLAYOUTPAGE = "3";
-    public final static String FORMLAYOUTPAGE2 = "1";
-    public final static String FORMLAYOUTPAGE3 = "2";
-    public final static String FORMLAYOUTPAGE0 = "0";
+	public final static String FORMLAYOUTPAGE = "3";
+	public final static String FORMLAYOUTPAGE2 = "1";
+	public final static String FORMLAYOUTPAGE3 = "2";
+	public final static String FORMLAYOUTPAGE0 = "0";
 
 
-	//for Merchant AccountSetup for Practise through Paypal
+	// for Merchant AccountSetup for Practise through Paypal
 	public final static String PROCESSORVALUE1 = "PayPal";
 	public final static String PROCESSORVALUE2 = "QuickBooks Merchant Service";
 	public final static String SetUPPracticeUserName = "MedfusionTest";
@@ -76,18 +76,18 @@ public class SitegenConstants {
 	public final static String PartnerValue3 = "PayPal";
 	public final static String expSuccessMessage = "Saved Merchant Account Settings.";
 
-	//for Merchant AccountSetup for Practise through QBMS
+	// for Merchant AccountSetup for Practise through QBMS
 	public final static String merchantAcctQBMSToken = "TGT-89-ekYCphhcqO2giValwo8eVA";
 	public final static String merchantAcctQBMSTokenForPROD = "SDK-TGT-114-Sf0PrGeE78PRcCpnliGOFg";
 	public final static String statusValue1 = "Production";
 	public final static String statusValue2 = "Test";
 
-	//Import Staff and Export Staff
+	// Import Staff and Export Staff
 	public final static String IMPORTSTAFFFILENAME = "FileImportStaff.csv";
 	public final static String FILEIMPORTSTATUS = "Finished";
-	public final static String FILEPATH ="testfiles/FileImportStaff.csv";
+	public final static String FILEPATH = "testfiles/FileImportStaff.csv";
 
-	//Custom Forms item types
+	// Custom Forms item types
 	public final static String CUSTOMFORM_ITEM_TYPE1 = "Question";
 	public final static String CUSTOMFORM_ITEM_TYPE2 = "Heading";
 	public final static String QUESTION_TYPE1 = "Single-Line Text";
@@ -111,16 +111,16 @@ public class SitegenConstants {
 	public final static String QUESTIONTITLE7 = "Do you have any of these symptoms?";
 	public final static String QUESTIONTITLE8 = "If yes, choose its severity?.";
 	public final static String CUSTOMFORMNAME = "Auto Form";
-	public final static String PATIENT_FIRSTNAME = "AutoPatient";	
-	public final static String PATIENT_LASTTNAME = "medfusion";	
-	public final static String PATIENT_DOBMONTH = "January";	
+	public final static String PATIENT_FIRSTNAME = "AutoPatient";
+	public final static String PATIENT_LASTTNAME = "medfusion";
+	public final static String PATIENT_DOBMONTH = "January";
 	public final static String PATIENT_DOBDAY = "1";
 	public final static String PATIENT_DOBYEAR = "1987";
 
 	public final static String DISCRETEFORMNAME = "Automation Discrete Form";
-	public final static String DISCRETEFORM_PATIENT_FIRSTNAME = "";	
-	public final static String DISCRETEFORM_PATIENT_LASTTNAME = "";	
-	public final static String DISCRETEFORM_PATIENT_DOBMONTH = "January";	
+	public final static String DISCRETEFORM_PATIENT_FIRSTNAME = "";
+	public final static String DISCRETEFORM_PATIENT_LASTTNAME = "";
+	public final static String DISCRETEFORM_PATIENT_DOBMONTH = "January";
 	public final static String DISCRETEFORM_PATIENT_DOBDAY = "1";
 	public final static String DISCRETEFORM_PATIENT_DOBYEAR = "1987";
 	public final static String DISCRETEFORM_WELCOME_MESSAGE = "New welcome message for patien.";
@@ -132,6 +132,9 @@ public class SitegenConstants {
 	public final static String PDF_CCD_FORM = "Form output test";
 	public final static String PRACTICE_FORM = "Form for Practice view test";
 	public final static String SPECIAL_CHARS_FORM = "Quotation mark \" custom form";
+	public final static String FORM_EXPORT_IMPORT = "FormExportImport";
 
+	public final static String FORMS_REGISTRATION_FORM_INITIAL_NAME = "General Registration and Health History";
+	public final static String FORMS_CUSTOM_FORM_INITIAL_NAME = "Custom Form";
 }
 

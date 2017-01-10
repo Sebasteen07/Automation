@@ -10,28 +10,27 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-public class AppointmentRequestFirstPage extends BasePageObject{
-	
-	
+public class AppointmentRequestFirstPage extends BasePageObject {
+
+
 	public AppointmentRequestFirstPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-	
-	@FindBy( how = How.NAME, using=":submit")
+
+	@FindBy(how = How.NAME, using = ":submit")
 	private WebElement btnContinue;
-	
-	
+
+
 	/**
 	 * @Description:Click on Continue Button
 	 */
-	public void clickContinueBtn()
-	{
+	public void clickContinueBtn() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		btnContinue.click();
-		
-		
+
+
 	}
 
 }

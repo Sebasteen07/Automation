@@ -1,14 +1,10 @@
 package com.intuit.ihg.common.entities;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/26/13
- * Time: 4:39 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/26/13 Time: 4:39 PM To change this template use File | Settings | File Templates.
  */
 
-public class BillPay  {
+public class BillPay {
 	public static final String PHONE_NUMBER = "BillPay.PhoneNumber";
 	public static final String CARD_NUMBER = "BillPay.CardNumber";
 	public static final String CARD_CCV = "BillPay.CardCcv";
@@ -17,7 +13,7 @@ public class BillPay  {
 	public static final String CARD_ADDRESS_1 = "BillPay.CardAddress1";
 	public static final String CARD_ZIP = "BillPay.CardZip";
 	public static final String DESCRIPTION = "BillPay.Description";
-	
+
 	private String phoneNumber = "";
 	private String cardNumber = "";
 	private String cardCcv = "";
@@ -26,8 +22,8 @@ public class BillPay  {
 	private String cardAddress1 = "";
 	private String cardZip = "";
 	private String description;
-	
-	
+
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}

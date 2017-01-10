@@ -15,12 +15,9 @@ import com.medfusion.common.utils.IHGUtil;
 public class PortalUtil extends IHGUtil {
 
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
-	Dimension screenResolution = new Dimension((int) toolkit.getScreenSize()
-			.getWidth(), (int) toolkit.getScreenSize().getHeight());
+	Dimension screenResolution = new Dimension((int) toolkit.getScreenSize().getWidth(), (int) toolkit.getScreenSize().getHeight());
 
-	Dimension halfWidthscreenResolution = new Dimension((int) toolkit
-			.getScreenSize().getWidth() / 2, (int) toolkit.getScreenSize()
-			.getHeight());
+	Dimension halfWidthscreenResolution = new Dimension((int) toolkit.getScreenSize().getWidth() / 2, (int) toolkit.getScreenSize().getHeight());
 
 	protected WebDriver driver;
 
@@ -56,15 +53,12 @@ public class PortalUtil extends IHGUtil {
 	}
 
 
-	public boolean isFoundBasedOnCssSelector(final String cssPath,
-			WebDriver driver) throws InterruptedException {
+	public boolean isFoundBasedOnCssSelector(final String cssPath, WebDriver driver) throws InterruptedException {
 
-		return isFoundBasedOnCssSelector(cssPath,
-				PortalConstants.FIND_ELEMENTS_MAX_WAIT_SECONDS, driver);
+		return isFoundBasedOnCssSelector(cssPath, PortalConstants.FIND_ELEMENTS_MAX_WAIT_SECONDS, driver);
 	}
 
-	public boolean isFoundBasedOnCssSelector(final String cssPath,
-			int timeOutInSeconds, WebDriver driver) throws InterruptedException {
+	public boolean isFoundBasedOnCssSelector(final String cssPath, int timeOutInSeconds, WebDriver driver) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
 		System.out.println("DEBUG: Looking for cssSelector: " + cssPath);
@@ -98,10 +92,7 @@ public class PortalUtil extends IHGUtil {
 		}
 
 		// Restore implicit wait.
-		driver.manage()
-		.timeouts()
-		.implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS,
-				TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		return found;
 	}
 
@@ -110,13 +101,13 @@ public class PortalUtil extends IHGUtil {
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
 	}
-	
+
 	public static boolean isExistsElement(WebDriver driver, WebElement element) {
 		try {
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			System.out.println("Where on the page is the top left-hand corner of the rendered element"+p);
+			System.out.println("Where on the page is the top left-hand corner of the rendered element" + p);
 			return true;
 		} catch (Exception e) {
 			return false;

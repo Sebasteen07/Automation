@@ -10,14 +10,14 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AppointmentDetailsPage extends BasePageObject {
-	
-	
+
+
 	@FindBy(how = How.ID, using = "appointmentDate")
 	private WebElement appointmentDate;
 
 	@FindBy(how = How.ID, using = "appointmentTime")
 	private WebElement appointmentTime;
-	
+
 	@FindBy(how = How.ID, using = "locationName")
 	private WebElement locationName;
 
@@ -68,7 +68,7 @@ public class AppointmentDetailsPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "createButton")
 	private WebElement createButton;
-	
+
 
 	public AppointmentDetailsPage(WebDriver driver) {
 
@@ -77,11 +77,10 @@ public class AppointmentDetailsPage extends BasePageObject {
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public void scheduleAppointment(String appointmentDateS, String location, String providerNameS, String patientIdS, String patientFirstNameS,
-									String patientMiddleNameS, String patientLastNameS, String patientDOBS, String patientMailingAddessLine1S,
-									String patientMailingAddessLine2S, String patientCityS, String patientZipS, String patientPhoneNumberS,
-									String patientEmailS, String patientCopaymentS, String patientOutstandingBalanceS) {
+			String patientMiddleNameS, String patientLastNameS, String patientDOBS, String patientMailingAddessLine1S, String patientMailingAddessLine2S,
+			String patientCityS, String patientZipS, String patientPhoneNumberS, String patientEmailS, String patientCopaymentS, String patientOutstandingBalanceS) {
 		IHGUtil.PrintMethodName();
 		appointmentDate.sendKeys(appointmentDateS);
 		locationName.click();
@@ -103,5 +102,5 @@ public class AppointmentDetailsPage extends BasePageObject {
 		patientOutstandingBalance.sendKeys(patientOutstandingBalanceS);
 		createButton.click();
 	}
-	
+
 }

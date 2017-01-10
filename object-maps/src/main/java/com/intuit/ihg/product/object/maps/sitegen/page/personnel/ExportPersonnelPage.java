@@ -63,21 +63,17 @@ public class ExportPersonnelPage extends BasePageObject {
 	/**
 	 * @author bkrishnankutty
 	 * 
-	 * @Desc:-Simulates Export staff download link click by accessing the link
-	 *                  URL and downloading it via the URLStatusChecker class.
-	 *                  Will return a boolean value indicating if the download
-	 *                  was successful or not.
+	 * @Desc:-Simulates Export staff download link click by accessing the link URL and downloading it via the URLStatusChecker class. Will return a boolean value
+	 *                  indicating if the download was successful or not.
 	 * 
 	 * @return the http status code from the download
 	 */
 	public int clickLinkDownloadExportStaff() throws Exception {
 		IHGUtil.PrintMethodName();
-		return validateBlueButtonDownload(
-				lnkDownloadExportedFile.getAttribute("href"), RequestMethod.GET);
+		return validateBlueButtonDownload(lnkDownloadExportedFile.getAttribute("href"), RequestMethod.GET);
 	}
 
-	private int validateBlueButtonDownload(String url, RequestMethod method)
-			throws URISyntaxException, IOException {
+	private int validateBlueButtonDownload(String url, RequestMethod method) throws URISyntaxException, IOException {
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);
 		urlChecker.setURIToCheck(url);
 		urlChecker.setHTTPRequestMethod(RequestMethod.GET);

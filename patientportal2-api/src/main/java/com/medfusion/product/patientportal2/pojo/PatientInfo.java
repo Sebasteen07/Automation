@@ -1,8 +1,8 @@
 package com.medfusion.product.patientportal2.pojo;
 
 public class PatientInfo {
-	
-	//all are public instead of boilerplate setters+getters. NEVER USE FOR SENSITIVE DATA
+
+	// all are public instead of boilerplate setters+getters. NEVER USE FOR SENSITIVE DATA
 	public String memberId;
 	public String practicePatientId;
 	public int billingAccountNumber;
@@ -13,11 +13,12 @@ public class PatientInfo {
 	public int deliveryPref;
 	public String unlockLink;
 	public String firstName;
-	public String lastName;	
+	public String lastName;
 	public String zipCode;
 	public String email;
-	
-	public PatientInfo(String memberId, String practicePatientId, int billingAccountNumber, String balance, String stmtId, String username, String password, int deliveryPref){
+
+	public PatientInfo(String memberId, String practicePatientId, int billingAccountNumber, String balance, String stmtId, String username, String password,
+			int deliveryPref) {
 		this.memberId = memberId;
 		this.practicePatientId = practicePatientId;
 		this.billingAccountNumber = billingAccountNumber;
@@ -27,7 +28,9 @@ public class PatientInfo {
 		this.password = password;
 		this.deliveryPref = deliveryPref;
 	}
-	public PatientInfo(String memberId, String practicePatientId, int billingAccountNumber, String balance, String stmtId, String username, String password, int deliveryPref, String unlockLink, String firstName, String lastName, String zipCode, String email){
+
+	public PatientInfo(String memberId, String practicePatientId, int billingAccountNumber, String balance, String stmtId, String username, String password,
+			int deliveryPref, String unlockLink, String firstName, String lastName, String zipCode, String email) {
 		this.memberId = memberId;
 		this.practicePatientId = practicePatientId;
 		this.billingAccountNumber = billingAccountNumber;
@@ -35,7 +38,7 @@ public class PatientInfo {
 		this.stmtId = stmtId;
 		this.username = username;
 		this.password = password;
-		this.deliveryPref = deliveryPref;		
+		this.deliveryPref = deliveryPref;
 		this.unlockLink = unlockLink;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -43,7 +46,8 @@ public class PatientInfo {
 		this.email = email;
 
 	}
-	public PatientInfo(){
-		
+
+	public PatientInfo() {
+
 	}
 }

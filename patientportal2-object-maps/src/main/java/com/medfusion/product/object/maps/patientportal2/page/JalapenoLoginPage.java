@@ -108,7 +108,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	}
 
 	private void selectStatementIfRequired() {
-		if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+		if (new IHGUtil(driver).exists(electronicPaymentPreference, 10)) {
 			electronicPaymentPreference.click();
 			okButton.click();
 		}

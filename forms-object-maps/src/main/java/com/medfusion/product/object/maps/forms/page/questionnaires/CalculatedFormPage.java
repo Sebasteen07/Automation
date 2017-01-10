@@ -61,7 +61,7 @@ public class CalculatedFormPage extends PortalFormPage {
 		log("Filling the form with the rightmost answers.");
 		for (WebElement radioButton : rightmostRadioTableList) {
 			radioButton.sendKeys(" "); // radioButton.click(); doesn't work with
-										// ADHD Forms
+			// ADHD Forms
 		}
 
 		IHGUtil iHGUtil = new IHGUtil(driver);

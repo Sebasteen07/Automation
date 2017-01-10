@@ -22,19 +22,19 @@ public class ManageYourPersonnelPage extends BasePageObject {
 
 	@FindBy(linkText = "Personnel (Non-Physicians)")
 	private WebElement lnkPersonnel;
-	
+
 	@FindBy(linkText = "Import Personnel and Physicians")
 	private WebElement lnkImportPersonnelAndPhysicians;
-	
+
 	@FindBy(linkText = "Export Personnel")
 	private WebElement lnkExportPersonnel;
-	
+
 	@FindBy(linkText = "List by Location")
 	private WebElement lnkListByLocation;
-	
+
 	@FindBy(linkText = "List All Personnel")
 	private WebElement lnkListAllPersonnel;
-	
+
 	@FindBy(xpath = "//input[@value='Import Personnel and Physicians']")
 	private WebElement btnImportPersonnelAndPhysicians;
 
@@ -67,7 +67,7 @@ public class ManageYourPersonnelPage extends BasePageObject {
 
 		return result;
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ImportPersonnelAndPhysicians
@@ -78,11 +78,10 @@ public class ManageYourPersonnelPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkImportPersonnelAndPhysicians.click();
-		return PageFactory.initElements(driver,
-				ImportPersonnelAndPhysiciansPage.class);
+		return PageFactory.initElements(driver, ImportPersonnelAndPhysiciansPage.class);
 
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ImportPersonnelAndPhysicians
@@ -94,11 +93,10 @@ public class ManageYourPersonnelPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		btnImportPersonnelAndPhysicians.click();
-		return PageFactory.initElements(driver,
-				ImportPersonnelAndPhysiciansPage.class);
+		return PageFactory.initElements(driver, ImportPersonnelAndPhysiciansPage.class);
 
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ExportPersonnel
@@ -109,11 +107,10 @@ public class ManageYourPersonnelPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkExportPersonnel.click();
-		return PageFactory.initElements(driver,
-				ExportPersonnelPage.class);
+		return PageFactory.initElements(driver, ExportPersonnelPage.class);
 
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ListAllPersonnel
@@ -124,8 +121,7 @@ public class ManageYourPersonnelPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkListAllPersonnel.click();
-		return PageFactory.initElements(driver,
-				ManageYourPersonnelPage.class);
+		return PageFactory.initElements(driver, ManageYourPersonnelPage.class);
 
 	}
 

@@ -15,61 +15,61 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSear
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 
-public class OnlineBillPaySearchPage extends BasePageObject{
+public class OnlineBillPaySearchPage extends BasePageObject {
 
-	@FindBy(id="id6")
+	@FindBy(id = "id6")
 	private WebElement monthPicker;
 
-	@FindBy(id="id1a")
+	@FindBy(id = "id1a")
 	private WebElement inputAccountNumber;
 
-	@FindBy(name="buttons:submit")
+	@FindBy(name = "buttons:submit")
 	private WebElement getPayments;
 
-	@FindBy(id="MfAjaxFallbackDefaultDataTable")
+	@FindBy(id = "MfAjaxFallbackDefaultDataTable")
 	private WebElement searchResults;
 
-	@FindBy(name="searchParams:0:input:Date Begin:month")
+	@FindBy(name = "searchParams:0:input:Date Begin:month")
 	private WebElement startMonth;
 
-	@FindBy(name="searchParams:0:input:Date End:month")
+	@FindBy(name = "searchParams:0:input:Date End:month")
 	private WebElement endMonth;
-	
-	@FindBy(name="searchParams:0:input:Date Begin:year")
+
+	@FindBy(name = "searchParams:0:input:Date Begin:year")
 	private WebElement startYear;
-	
-	@FindBy(name="searchParams:0:input:Date End:year")
+
+	@FindBy(name = "searchParams:0:input:Date End:year")
 	private WebElement endYear;
 
 
-	@FindBy(xpath="//input[@name='secureComm:subject']")
+	@FindBy(xpath = "//input[@name='secureComm:subject']")
 	private WebElement setSubject;
 
-	@FindBy(xpath="//textarea[@name='secureComm:body']")
+	@FindBy(xpath = "//textarea[@name='secureComm:body']")
 	private WebElement setSubjectBody;
 
-	@FindBy(xpath="//input[@name='secureComm:sendComm']")
+	@FindBy(xpath = "//input[@name='secureComm:sendComm']")
 	private WebElement sendCommunicationbtn;
 
-	@FindBy( xpath = ".//a[contains(@href, 'paymybill.statementUpload')]")
+	@FindBy(xpath = ".//a[contains(@href, 'paymybill.statementUpload')]")
 	private WebElement eStatementUploadLink;
-	
-	@FindBy( xpath = ".//a[contains(@href, 'paymybill.patsearch_wicket')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'paymybill.patsearch_wicket')]")
 	private WebElement patientSearchLink;
 
-	@FindBy( xpath = ".//tbody/tr[1]/td[9]/span/span")
+	@FindBy(xpath = ".//tbody/tr[1]/td[9]/span/span")
 	private WebElement post;
-	
-	@FindBy( name ="searchParams:1:input")
+
+	@FindBy(name = "searchParams:1:input")
 	private List<WebElement> status;
-	
+
 	private long createdTs;
-	
+
 	public long getCreatedTs() {
 		IHGUtil.PrintMethodName();
 		return createdTs;
 	}
-	
+
 	public OnlineBillPaySearchPage(WebDriver driver) {
 		super(driver);
 		createdTs = System.currentTimeMillis();
@@ -77,7 +77,7 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 	}
 
 	/**
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @Description:Search ForBillPay Today
 	 */
 	public void searchForBillPayToday() throws InterruptedException {
@@ -89,15 +89,16 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 		Select endYearSelect = new Select(endYear);
 		Select startYearSelect = new Select(startYear);
 
-		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
+		String index = endMonthSelect.getFirstSelectedOption().getAttribute("index");
 		startMonthSelect.selectByIndex(Integer.parseInt(index));
 		Thread.sleep(2000);
-		
-		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+
+		String index3 = endYearSelect.getFirstSelectedOption().getAttribute("index");
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
 		Thread.sleep(2000);
 
 	}
+
 	/**
 	 * @Description:Search For BillPayment
 	 * @param SaccountNumber
@@ -127,7 +128,7 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 		} catch (Exception e) {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
-		//Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
+		// Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
 		driver.findElement(By.xpath(".//*[@id='id2a']/span")).click();
 		driver.switchTo().defaultContent();
 		Thread.sleep(10000);
@@ -139,11 +140,10 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 	/**
 	 * @Description:Set Payment Communication Details
 	 */
-	public void setPaymentCommunicationDetails()
-	{
+	public void setPaymentCommunicationDetails() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		setSubject.sendKeys(createdTs+PracticeConstants.BillPaymentSubject);
+		setSubject.sendKeys(createdTs + PracticeConstants.BillPaymentSubject);
 		setSubjectBody.sendKeys(PracticeConstants.BillPaymentBody);
 		sendCommunicationbtn.click();
 	}
@@ -155,9 +155,9 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 		patientSearchLink.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 
 	 * @return
@@ -172,33 +172,31 @@ public class OnlineBillPaySearchPage extends BasePageObject{
 		} catch (Exception e) {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
-		//Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
+		// Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
 		Thread.sleep(10000);
-		String title=post.getAttribute("title").toString();
+		String title = post.getAttribute("title").toString();
 		return title;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param value
 	 * @return
 	 * @throws Exception
 	 */
-	public OnlineBillPayDetailPage searchForBillStatus(int value)  throws Exception{
+	public OnlineBillPayDetailPage searchForBillStatus(int value) throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
-		for(WebElement pstatus : status)
-			{
-				if(Integer.parseInt(pstatus.getAttribute("value"))==value)
-				{
-					pstatus.click();
-				}
+		for (WebElement pstatus : status) {
+			if (Integer.parseInt(pstatus.getAttribute("value")) == value) {
+				pstatus.click();
 			}
-		
+		}
+
 		return PageFactory.initElements(driver, OnlineBillPayDetailPage.class);
 	}
-	
+
 
 }

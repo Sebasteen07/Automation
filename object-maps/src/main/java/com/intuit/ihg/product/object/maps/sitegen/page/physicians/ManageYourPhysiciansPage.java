@@ -28,16 +28,16 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 
 	@FindBy(linkText = "Edit Physician")
 	private WebElement lnkEditPhysician;
-	
+
 	@FindBy(linkText = "Import Personnel and Physicians")
 	private WebElement lnkImportPersonnelAndPhysicians;
-	
+
 	@FindBy(linkText = "Export Personnel")
 	private WebElement lnkExportPersonnel;
-	
+
 	@FindBy(linkText = "List by Location")
 	private WebElement lnkListByLocation;
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- constructor for this Page
@@ -102,8 +102,7 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 	 * @param title
 	 * @return
 	 */
-	public String getProviderName(String lastname, String firstName,
-			String title) {
+	public String getProviderName(String lastname, String firstName, String title) {
 		String str = lastname + ", " + firstName + ": " + title;
 
 		return str;
@@ -113,18 +112,14 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 	 * @author bkrishnankutty
 	 * @Desc:- Clean the Test data
 	 * @return void
-	 * @throws Exception
-	 *             Note :- This method is not important from Deployment
-	 *             acceptance perspective ie y assert is here
+	 * @throws Exception Note :- This method is not important from Deployment acceptance perspective ie y assert is here
 	 */
 	public void cleanTestPhysiciansData() throws Exception {
 		while (islnkEditPhysicianDisplayed()) {
 			AddPhysicianPage pAddPhysicianPage = clicklnkEditPhysician();
-			AddPhysicianStep2EditLocationInfoPage pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage
-					.deletePhysician();
+			AddPhysicianStep2EditLocationInfoPage pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.deletePhysician();
 			pAddPhysicianStep2EditLocationInfoPage.deletePhysican();
-			assertTrue(SitegenlUtil.verifyTextPresent(driver,
-					"Information Updated", 2));
+			assertTrue(SitegenlUtil.verifyTextPresent(driver, "Information Updated", 2));
 		}
 
 	}
@@ -149,7 +144,7 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 		return result;
 	}
 
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ImportPersonnelAndPhysicians
@@ -160,11 +155,10 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkImportPersonnelAndPhysicians.click();
-		return PageFactory.initElements(driver,
-				AddPhysicianStep2EditLocationInfoPage.class);
+		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ExportPersonnel
@@ -175,11 +169,10 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkExportPersonnel.click();
-		return PageFactory.initElements(driver,
-				AddPhysicianStep2EditLocationInfoPage.class);
+		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- To click on Link ListAllPhysicians
@@ -190,8 +183,7 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		lnkListAllPhysicians.click();
-		return PageFactory.initElements(driver,
-				ManageYourPhysiciansPage.class);
+		return PageFactory.initElements(driver, ManageYourPhysiciansPage.class);
 
 	}
 }

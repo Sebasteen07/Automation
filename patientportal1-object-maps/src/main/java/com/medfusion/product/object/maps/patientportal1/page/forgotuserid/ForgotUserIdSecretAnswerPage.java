@@ -14,10 +14,10 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 
 	public static final String PAGE_NAME = "Patient Portal Forgot User ID Secret Answer Page";
 
-	@FindBy(xpath=".//*[@fieldid='security.secretAnswer']")
+	@FindBy(xpath = ".//*[@fieldid='security.secretAnswer']")
 	private WebElement securityAnswer;
 
-	@FindBy(name="buttons:submit")
+	@FindBy(name = "buttons:submit")
 	private WebElement btnSendEmail;
 
 	@FindBy(xpath = ".//select[@name='inputs:0:input:input:month']")
@@ -29,7 +29,7 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 	@FindBy(xpath = ".//input[@name='inputs:0:input:input:year']")
 	private WebElement yearDropDown;
 
-	@FindBy( xpath = ".//input[@name = 'buttons:submit']")
+	@FindBy(xpath = ".//input[@name = 'buttons:submit']")
 	private WebElement continueButton;
 
 	public ForgotUserIdSecretAnswerPage(WebDriver driver) {
@@ -39,6 +39,7 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 
 	/**
 	 * Indicates whether the page is loaded by checking for a specific element on the screen.
+	 * 
 	 * @return
 	 */
 	public boolean isPageLoaded() {
@@ -57,6 +58,7 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 
 	/**
 	 * Will answer the patient's security question with the supplied answer.
+	 * 
 	 * @param answer
 	 * @return step 3 in forgot user id process
 	 */
@@ -69,10 +71,10 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 		return PageFactory.initElements(driver, ForgotUserIdConfirmationPage.class);
 	}
 
-	public void selectDOB(String day, String month, String year ) {
+	public void selectDOB(String day, String month, String year) {
 
 		Select selMonth = new Select(monthDropDown);
-		selMonth.selectByVisibleText(month);	
+		selMonth.selectByVisibleText(month);
 		dateDropDown.sendKeys(day);
 		yearDropDown.sendKeys(year);
 		continueButton.click();

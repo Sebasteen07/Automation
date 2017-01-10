@@ -18,9 +18,9 @@ public class Sitegen {
 	public String personnelType = "";
 	public String personnelTypeUserName = "";
 	public String personnelTypePswd = "";
-	public String qbmsUser = "" ;
-	public String qbmsPassword = "" ;
+	public String qbmsUser = "";
+	public String qbmsPassword = "";
 	public String formUser = "";
 	public String formPassword = "";
-	
+
 }

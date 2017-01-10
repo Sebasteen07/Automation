@@ -14,8 +14,7 @@ public class PortalConstants {
 	public final static String CreditCardType = "Visa";
 	public final static String CreditCardNumber = "4111111111111111";
 	/*
-	 * VISA 4222222222222 (13)Characters VISA 4111111111111111 (16)Characters
-	 * VISA 4012888888881881 (16)Characters
+	 * VISA 4222222222222 (13)Characters VISA 4111111111111111 (16)Characters VISA 4012888888881881 (16)Characters
 	 */
 	public final static String Year = "2023";
 	public final static String Month = "01";
@@ -38,23 +37,23 @@ public class PortalConstants {
 	public final static String PharmacyList = "CVS, 1 Pharm Cr, Cary, NC";
 	public final static String RenewalConfirmation = "Thank you for submitting your Prescription Renewal.";
 	public final static String MyPatientPage = "My Patient Page";
-	
+
 	public final static String Subject = "Subject";
-	
-	// Added variables for Prescription test in Integration Platform 
+
+	// Added variables for Prescription test in Integration Platform
 	public final static String Quantity = "3";
 	public final static String No_Of_Refills = "12.00";
 	public final static String Prescription_No = "#12345";
 	public final static String Additional_Info = "New prescription request";
 	public static final String Medication_Dosage = "MedicationDosage";
-	
+
 	public static final String Medication_Name_Tag = "MedicationName";
 	public static final String Quantity_Tag = "Quantity";
 	public static final String Refill_Number_Tag = "RefillNumber";
 	public static final String Prescription_Number_Tag = "PrescriptionNumber";
 	public static final String Additional_Information_Tag = "AdditionalInformation";
-	
-	//new added variables for post prescription API
+
+	// new added variables for post prescription API
 	public static final String RxRenewal_Subject_Tag = "Prescription Renewal Approved";
 
 	// MakePayment Fields
@@ -101,5 +100,5 @@ public class PortalConstants {
 	public final static String DateOfBirthMonth = "January";
 	public final static String DateOfBirthDay = "11";
 	public final static String DateOfBirthYear = "1987";
-	
+
 }

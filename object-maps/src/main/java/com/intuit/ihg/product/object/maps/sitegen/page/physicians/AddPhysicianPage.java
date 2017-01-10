@@ -105,9 +105,8 @@ public class AddPhysicianPage extends BasePageObject {
 	 * @param userID
 	 * @param password
 	 */
-	public AddPhysicianStep2EditLocationInfoPage addPhysician(String firstName,
-			String lastName, String title, String dDEANumber, String email,
-			String userID, String password) {
+	public AddPhysicianStep2EditLocationInfoPage addPhysician(String firstName, String lastName, String title, String dDEANumber, String email, String userID,
+			String password) {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -126,8 +125,7 @@ public class AddPhysicianPage extends BasePageObject {
 		txtPassword.sendKeys(password);
 		txtConfirmPassword.sendKeys(password);
 		btnAddPhysican.click();
-		return PageFactory.initElements(driver,
-				AddPhysicianStep2EditLocationInfoPage.class);
+		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}
 
@@ -149,8 +147,7 @@ public class AddPhysicianPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		btnDeletePhysican.click();
-		return PageFactory.initElements(driver,
-				AddPhysicianStep2EditLocationInfoPage.class);
+		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}
 

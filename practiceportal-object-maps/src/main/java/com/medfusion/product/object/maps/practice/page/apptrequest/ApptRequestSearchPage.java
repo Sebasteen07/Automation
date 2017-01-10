@@ -21,46 +21,46 @@ public class ApptRequestSearchPage extends BasePageObject {
 	public final static String PAGE_NAME = "Appt Request Search Page";
 
 	// Finds all Status radio options
-	@FindBy(name="searchParams:1:input")
+	@FindBy(name = "searchParams:1:input")
 	private List<WebElement> status;
 
-	@FindBy(name="searchParams:3:input")
+	@FindBy(name = "searchParams:3:input")
 	private WebElement location;
 
-	@FindBy(name="searchParams:2:input")
+	@FindBy(name = "searchParams:2:input")
 	private WebElement provider;
 
-	@FindBy(name="buttons:submit")
+	@FindBy(name = "buttons:submit")
 	private WebElement filterApptRequests;
 
-	@FindBy(id="MfAjaxFallbackDefaultDataTable")
+	@FindBy(id = "MfAjaxFallbackDefaultDataTable")
 	private WebElement searchResults;
 
-	@FindBy(xpath=".//table/tbody/tr/td[3]/span")
+	@FindBy(xpath = ".//table/tbody/tr/td[3]/span")
 	private List<WebElement> searchResultReason;
 
-	@FindBy(name="searchParams:0:input:Date Begin:month")
+	@FindBy(name = "searchParams:0:input:Date Begin:month")
 	private WebElement startMonth;
 
-	@FindBy(name="searchParams:0:input:Date End:month")
+	@FindBy(name = "searchParams:0:input:Date End:month")
 	private WebElement endMonth;
 
-	@FindBy( xpath = ".//select[@name = 'searchParams:0:input:Date End:day']")
+	@FindBy(xpath = ".//select[@name = 'searchParams:0:input:Date End:day']")
 	public WebElement endDateDropDwn;
 
-	@FindBy( xpath = "searchParams:0:input:Date Begin:month")
+	@FindBy(xpath = "searchParams:0:input:Date Begin:month")
 	public WebElement startMonthDropDwn;
 
-	@FindBy( xpath = ".//select[@name= 'searchParams:0:input:Date Begin:day']")
+	@FindBy(xpath = ".//select[@name= 'searchParams:0:input:Date Begin:day']")
 	public WebElement startDateDropDwn;
-	
-	@FindBy(name="searchParams:0:input:Date Begin:year")
+
+	@FindBy(name = "searchParams:0:input:Date Begin:year")
 	private WebElement startYear;
-	
-	@FindBy(name="searchParams:0:input:Date End:year")
+
+	@FindBy(name = "searchParams:0:input:Date End:year")
 	private WebElement endYear;
 
-	@FindBy( xpath = ".//span/a[@title='Go to last page']")
+	@FindBy(xpath = ".//span/a[@title='Go to last page']")
 	public WebElement gotoLastPage;
 
 	public ApptRequestSearchPage(WebDriver driver) {
@@ -69,6 +69,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 
 	/**
 	 * Indicates if the search page is loaded
+	 * 
 	 * @return true or false
 	 */
 	public boolean isSearchPageLoaded() {
@@ -86,9 +87,9 @@ public class ApptRequestSearchPage extends BasePageObject {
 	}
 
 	/**
-	 * Searches for requests using default options on the page.
-	 * Call the getApptDetails method to access the search results.
-	 * @throws InterruptedException 
+	 * Searches for requests using default options on the page. Call the getApptDetails method to access the search results.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public void searchForApptRequests() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -98,11 +99,10 @@ public class ApptRequestSearchPage extends BasePageObject {
 	}
 
 	/**
-	 * Searches for requests using default options on the page.
-	 * Also sets the to and from month value same -
-	 * Effectively searching only for the day's appointments
+	 * Searches for requests using default options on the page. Also sets the to and from month value same - Effectively searching only for the day's appointments
 	 * Call the getApptDetails method to access the search results.
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
 	public void searchForApptRequestsForToday() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -112,26 +112,25 @@ public class ApptRequestSearchPage extends BasePageObject {
 		Select startMonthSelect = new Select(startMonth);
 		Select endYearSelect = new Select(endYear);
 		Select startYearSelect = new Select(startYear);
-		
+
 		IHGUtil.waitForElement(driver, 6, startMonth);
-		String index= endMonthSelect.getFirstSelectedOption().getAttribute("index")  ;
+		String index = endMonthSelect.getFirstSelectedOption().getAttribute("index");
 		startMonthSelect.selectByIndex(Integer.parseInt(index));
-		
+
 		IHGUtil.waitForElement(driver, 6, startYear);
-		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+		String index3 = endYearSelect.getFirstSelectedOption().getAttribute("index");
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
 
 		searchForApptRequests(ApptRequestStatus.OPEN, null, null);
 	}
 
 	/**
-	 * Searches for requests using default options on the page.
-	 * Call the getApptDetails method to access the search results.
+	 * Searches for requests using default options on the page. Call the getApptDetails method to access the search results.
 	 * 
 	 * @param requestStatus as defined in ApptRequestStatus public fields
 	 * @param providerText the visible text option in the select box
 	 * @param locationText the visible text option in the select box
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public void searchForApptRequests(int requestStatus, String providerText, String locationText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -150,32 +149,32 @@ public class ApptRequestSearchPage extends BasePageObject {
 		String strDate = sdfDate.format(now);
 		String date = strDate.substring(0, 2);
 		if (date.startsWith("0")) {
-			date = strDate.substring(1,2) ;
+			date = strDate.substring(1, 2);
 		}
 
 		String month = strDate.substring(3, 5);
-		int startMnthValue = Integer.parseInt(month)-1;
+		int startMnthValue = Integer.parseInt(month) - 1;
 
-		log("Select the Start Month in search filter options");	
+		log("Select the Start Month in search filter options");
 		IHGUtil.waitForElement(driver, 6, startMonth);
 		Select startMonthSelect = new Select(startMonth);
 		startMonthSelect.selectByValue(String.valueOf(startMnthValue));
-		
+
 		log("Select the Start date in search filter options");
 		int i = 1;
-		do{
-			try{
+		do {
+			try {
 				IHGUtil.waitForElement(driver, 6, startDateDropDwn);
 				Select startDate = new Select(startDateDropDwn);
 				startDate.selectByValue(date);
 				i = 3;
-			}catch(StaleElementReferenceException e){
+			} catch (StaleElementReferenceException e) {
 				log(e.getCause().toString());
 				log(i + ". try");
 				i++;
 			}
-		}while(i < 3);
-		
+		} while (i < 3);
+
 		log("Select end date in search filter options");
 		IHGUtil.waitForElement(driver, 6, endDateDropDwn);
 		Select endDate = new Select(endDateDropDwn);
@@ -185,12 +184,12 @@ public class ApptRequestSearchPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 6, endMonth);
 		Select endMonthSelect = new Select(endMonth);
 		endMonthSelect.getFirstSelectedOption().getAttribute("index");
-		
+
 		log("Select end Year in search filter options");
 		IHGUtil.waitForElement(driver, 6, startYear);
 		Select endYearSelect = new Select(endYear);
 		Select startYearSelect = new Select(startYear);
-		String index3= endYearSelect.getFirstSelectedOption().getAttribute("index");
+		String index3 = endYearSelect.getFirstSelectedOption().getAttribute("index");
 		startYearSelect.selectByIndex(Integer.parseInt(index3));
 
 		// Set provider if supplied
@@ -203,7 +202,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 		if (locationText != null) {
 			Select locationSelect = new Select(location);
 			locationSelect.selectByVisibleText(locationText);
-		}		
+		}
 
 		filterApptRequests.click();
 		IHGUtil.waitForElement(driver, 10, searchResults);
@@ -228,17 +227,17 @@ public class ApptRequestSearchPage extends BasePageObject {
 		} catch (Exception e) {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
-		int i =0;
-		if(!PracticeUtil.isExistsElement(driver,gotoLastPage)){
-			for (WebElement complaint : searchResultReason) {	
+		int i = 0;
+		if (!PracticeUtil.isExistsElement(driver, gotoLastPage)) {
+			for (WebElement complaint : searchResultReason) {
 				i++;
-				if(complaint.getText().contains(subjectSubString)) {
-					complaint.click();	
-					log("Value :"+i);
+				if (complaint.getText().contains(subjectSubString)) {
+					complaint.click();
+					log("Value :" + i);
 					return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
 				}
 			}
-		}else{
+		} else {
 
 			PracticeUtil.setPracticeFrame(driver);
 			driver.findElement(By.xpath(".//span/a[@title='Go to last page']")).click();
@@ -246,10 +245,10 @@ public class ApptRequestSearchPage extends BasePageObject {
 			PracticeUtil.setPracticeFrame(driver);
 			Thread.sleep(3000);
 			List<WebElement> lastPageElements = driver.findElements(By.xpath(".//table/tbody/tr/td[3]/span"));
-			log("Size :"+lastPageElements.size());
+			log("Size :" + lastPageElements.size());
 			for (WebElement complaint1 : lastPageElements) {
-				if(complaint1.getText().contains(subjectSubString)) {
-					complaint1.click();				
+				if (complaint1.getText().contains(subjectSubString)) {
+					complaint1.click();
 					return PageFactory.initElements(driver, ApptRequestDetailStep1Page.class);
 				}
 			}

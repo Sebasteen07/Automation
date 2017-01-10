@@ -6,7 +6,7 @@ import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PayNowTestData {
-	
+
 	private PayNow payNowObj = null;
 	private ExcelSheetReader excelReader = null;
 
@@ -20,69 +20,69 @@ public class PayNowTestData {
 		// filtering the entire file
 		payNowObj = (PayNow) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return payNowObj.Url;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return payNowObj.RestUrl;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return payNowObj.ResponsePath;
 	}
-	
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return payNowObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return payNowObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return payNowObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return payNowObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return payNowObj.OAuthPassword;
 	}
-	
-	public String getPaymentPath(){
+
+	public String getPaymentPath() {
 		return payNowObj.PaymentPath;
 	}
-	
-	public String getPracticeURL(){
+
+	public String getPracticeURL() {
 		return payNowObj.PracticeURL;
 	}
-	
-	public String getPracticeUserName(){
+
+	public String getPracticeUserName() {
 		return payNowObj.PracticeUserName;
 	}
-	
-	public String getPracticePassword(){
+
+	public String getPracticePassword() {
 		return payNowObj.PracticePassword;
 	}
-	
-	public String getFirstName(){
+
+	public String getFirstName() {
 		return payNowObj.FirstName;
 	}
-	
-	public String getLastName(){
+
+	public String getLastName() {
 		return payNowObj.LastName;
 	}
-	
-	public String getZip(){
+
+	public String getZip() {
 		return payNowObj.Zip;
 	}
-	
-	public String getEmail(){
+
+	public String getEmail() {
 		return payNowObj.Email;
 	}
-	
+
 }

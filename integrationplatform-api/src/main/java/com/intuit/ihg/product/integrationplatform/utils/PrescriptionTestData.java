@@ -6,7 +6,7 @@ import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PrescriptionTestData {
-	
+
 	private Prescription PrescriptionObj = null;
 	private ExcelSheetReader excelReader = null;
 
@@ -18,55 +18,55 @@ public class PrescriptionTestData {
 		// reading the entire file
 		excelReader = new ExcelSheetReader(url.getFile());
 		// filtering the entire file
-		
+
 		PrescriptionObj = (Prescription) excelReader.getSingleExcelRow(aptData, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return PrescriptionObj.Url;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return PrescriptionObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return PrescriptionObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return PrescriptionObj.RestUrl;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return PrescriptionObj.ResponsePath;
 	}
-	
-	public String getFrom(){
+
+	public String getFrom() {
 		return PrescriptionObj.From;
 	}
-	
-	public String getPrescriptionPath(){
+
+	public String getPrescriptionPath() {
 		return PrescriptionObj.PrescriptionPath;
 	}
-		
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return PrescriptionObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return PrescriptionObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return PrescriptionObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return PrescriptionObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return PrescriptionObj.OAuthPassword;
 	}
 
@@ -77,29 +77,29 @@ public class PrescriptionTestData {
 	public String getPhoneNumber() {
 		return PrescriptionObj.PhoneNumber;
 	}
-	
+
 	public String getPracticeURL() {
 		return PrescriptionObj.PracticeURL;
-	}	
-	
+	}
+
 	public String getPracticeUserName() {
 		return PrescriptionObj.PracticeUserName;
-	}	
-	
+	}
+
 	public String getPracticePassword() {
 		return PrescriptionObj.PracticePassword;
-	}	
-	
+	}
+
 	public String getGmailUserName() {
 		return PrescriptionObj.GmailUserName;
-	}	
-	
+	}
+
 	public String getGmailPassword() {
 		return PrescriptionObj.GmailPassword;
-	}	
-	
+	}
+
 	public String getPracticeName() {
 		return PrescriptionObj.PracticeName;
 	}
-	
+
 }

@@ -23,8 +23,7 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
  * @author bkrishnankutty
  * @Date 2-12-2013
  * @Description :- Page Object for Patient Portal LoginPage
- * @Note :- Old Frame work this page is
- *       com.intuit.ihg.product.portal.desktop.main.beta.PortalLoginPage
+ * @Note :- Old Frame work this page is com.intuit.ihg.product.portal.desktop.main.beta.PortalLoginPage
  */
 
 public class PortalLoginPage extends BasePageObject {
@@ -114,8 +113,7 @@ public class PortalLoginPage extends BasePageObject {
 		username.sendKeys(sUsername);
 		password.sendKeys(sPassword);
 		login.click();
-		IHGUtil.waitForElement(driver, 30,
-				driver.findElement(By.xpath("//iframe[contains(@src,'patient.dashboard')]")));
+		IHGUtil.waitForElement(driver, 30, driver.findElement(By.xpath("//iframe[contains(@src,'patient.dashboard')]")));
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 
@@ -176,10 +174,8 @@ public class PortalLoginPage extends BasePageObject {
 	 */
 
 	/*
-	 * public static void closeModaldialog1() throws Exception{
-	 * Thread.sleep(2000); Robot rb = new Robot();
-	 * rb.keyPress(KeyEvent.VK_ENTER); rb.keyRelease(KeyEvent.VK_ENTER);
-	 * Thread.sleep(2000); }
+	 * public static void closeModaldialog1() throws Exception{ Thread.sleep(2000); Robot rb = new Robot(); rb.keyPress(KeyEvent.VK_ENTER);
+	 * rb.keyRelease(KeyEvent.VK_ENTER); Thread.sleep(2000); }
 	 */
 
 	public PortalLoginPage clickLogout(WebDriver driver, WebElement logout) throws InterruptedException {
@@ -199,8 +195,7 @@ public class PortalLoginPage extends BasePageObject {
 			if (portalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
 				System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 				// DEBUG
-				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS,
-						TimeUnit.SECONDS);
+				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 				logout.click();
 			}
 			System.out.println("### WARNING: LOGOUT ELEMENT NOT FOUND.");
@@ -214,17 +209,14 @@ public class PortalLoginPage extends BasePageObject {
 	}
 
 	/**
-	 * Added new method for login because if patients try to access secure
-	 * message using Email notification link. It directly moves to Patient
-	 * Message Inbox page.
+	 * Added new method for login because if patients try to access secure message using Email notification link. It directly moves to Patient Message Inbox page.
 	 * 
 	 * @param sUsername
 	 * @param sPassword
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public MessageCenterInboxPage loginNavigateToInboxPage(String sUsername, String sPassword)
-			throws InterruptedException {
+	public MessageCenterInboxPage loginNavigateToInboxPage(String sUsername, String sPassword) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 

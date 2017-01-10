@@ -5,24 +5,20 @@ import org.openqa.selenium.SearchContext;
 
 public class ByAngularButtonText extends ByAngular.BaseBy {
 
-    public ByAngularButtonText(String rootSelector, String buttonText) {
-        super(rootSelector);
-        this.searchText = buttonText;
-    }
+	public ByAngularButtonText(String rootSelector, String buttonText) {
+		super(rootSelector);
+		this.searchText = buttonText;
+	}
 
-    private String searchText;
+	private String searchText;
 
-    protected Object getObject(SearchContext context, JavascriptExecutor javascriptExecutor) {
-        return javascriptExecutor.executeScript(
-                "var using = arguments[0] || document;\n" +
-                        "var searchText = '" + searchText + "';\n" +
-                        "\n" +
-                        ByAngular.functions.get("findByButtonText")
-                , context);
-    }
+	protected Object getObject(SearchContext context, JavascriptExecutor javascriptExecutor) {
+		return javascriptExecutor.executeScript(
+				"var using = arguments[0] || document;\n" + "var searchText = '" + searchText + "';\n" + "\n" + ByAngular.functions.get("findByButtonText"), context);
+	}
 
-    @Override
-    public String toString() {
-        return "searchText(" + searchText + ')';
-    }
+	@Override
+	public String toString() {
+		return "searchText(" + searchText + ')';
+	}
 }

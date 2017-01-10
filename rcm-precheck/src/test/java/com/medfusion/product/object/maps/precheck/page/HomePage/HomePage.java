@@ -12,17 +12,17 @@ import com.medfusion.product.object.maps.precheck.page.DashboardLoginPage;
 import com.medfusion.product.object.maps.precheck.page.AppointmentDetails.AppointmentDetailsPage;
 
 public class HomePage extends BasePageObject {
-	
-	
+
+
 	@FindBy(how = How.XPATH, using = ".//div[@id='body']/div[1]/span")
 	private WebElement rightNavMenu;
-	
+
 	@FindBy(how = How.XPATH, using = ".//*[@id='menu']/a[2]/span[2]")
 	private WebElement createNewAppointmentButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@data-ng-click='logout()']/span[2]")
 	private WebElement signOutButton;
-	
+
 
 	public HomePage(WebDriver driver) {
 
@@ -31,26 +31,25 @@ public class HomePage extends BasePageObject {
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public AppointmentDetailsPage addNewAppointment() {
 
 		IHGUtil.PrintMethodName();
-		if(!createNewAppointmentButton.isDisplayed()) 
+		if (!createNewAppointmentButton.isDisplayed())
 			rightNavMenu.click();
 		createNewAppointmentButton.click();
-		
+
 		return PageFactory.initElements(driver, AppointmentDetailsPage.class);
 	}
-	
+
 	public DashboardLoginPage logOut() {
 
 		IHGUtil.PrintMethodName();
 		rightNavMenu.click();
 		signOutButton.click();
-		
+
 		return PageFactory.initElements(driver, DashboardLoginPage.class);
 	}
-	
 
 
 

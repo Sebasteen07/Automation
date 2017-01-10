@@ -16,11 +16,11 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
  * @author bkrishnankutty
  * @Date 6/10/2013
  * @Description :- Page Object for SiteGen AdminHomePage
- * @Note :if you log in  as a super user, you will land on this page
+ * @Note :if you log in as a super user, you will land on this page
  */
 public class SiteGenAdminHomePage extends BasePageObject {
 
-	@FindBy(id ="grpName")
+	@FindBy(id = "grpName")
 	private WebElement searchField;
 
 	@FindBy(xpath = "//input[@value='Search']")
@@ -47,16 +47,16 @@ public class SiteGenAdminHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, searchField);
 		searchField.sendKeys(searchItem);
 		List<WebElement> suggestionList = driver.findElements(By.xpath(".//div[@id='ac2update']/ul/li/a"));
-		for(WebElement suggestion :suggestionList) {
-			if(suggestion.isDisplayed() && suggestion.getText().equals(searchItem)) {
+		for (WebElement suggestion : suggestionList) {
+			if (suggestion.isDisplayed() && suggestion.getText().equals(searchItem)) {
 				try {
 					suggestion.click();
 				} catch (Exception e) {
 					SitegenlUtil sUtil = new SitegenlUtil(driver);
 					sUtil.pressEnterKey();
 					break;
-				}	
-			}else{
+				}
+			} else {
 				SitegenlUtil sUtil = new SitegenlUtil(driver);
 				sUtil.pressTabKey();
 				sUtil.pressEnterKey();

@@ -6,7 +6,7 @@ import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PaymentTestData {
-	
+
 	private Payment paymentObj = null;
 	private ExcelSheetReader excelReader = null;
 
@@ -20,85 +20,85 @@ public class PaymentTestData {
 		// filtering the entire file
 		paymentObj = (Payment) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return paymentObj.Url;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return paymentObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return paymentObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return paymentObj.RestUrl;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return paymentObj.ResponsePath;
 	}
-	
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return paymentObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return paymentObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return paymentObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return paymentObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return paymentObj.OAuthPassword;
 	}
-	
-	public String getFrom(){
+
+	public String getFrom() {
 		return paymentObj.From;
-	}	
-	
-	public String getcommunicationXML(){
+	}
+
+	public String getcommunicationXML() {
 		return paymentObj.communicationXML;
 	}
-	
-	public String getPaymentPath(){
+
+	public String getPaymentPath() {
 		return paymentObj.PaymentPath;
 	}
-	
-	public String getCommRestUrl(){
+
+	public String getCommRestUrl() {
 		return paymentObj.CommRestUrl;
 	}
-	
-	public String getPracticeURL(){
+
+	public String getPracticeURL() {
 		return paymentObj.PracticeURL;
 	}
-	
-	public String getPracticeUserName(){
+
+	public String getPracticeUserName() {
 		return paymentObj.PracticeUserName;
 	}
-	
-	public String getPracticePassword(){
+
+	public String getPracticePassword() {
 		return paymentObj.PracticePassword;
 	}
-	
-	public String getGmailUserName(){
+
+	public String getGmailUserName() {
 		return paymentObj.GmailUserName;
 	}
-	
-	public String getGmailPassword(){
+
+	public String getGmailPassword() {
 		return paymentObj.GmailPassword;
 	}
-	
-	public String getPracticeName(){
+
+	public String getPracticeName() {
 		return paymentObj.PracticeName;
 	}
-	
+
 }

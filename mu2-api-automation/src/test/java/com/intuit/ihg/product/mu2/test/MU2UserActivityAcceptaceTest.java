@@ -22,16 +22,16 @@ import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 
-public class MU2UserActivityAcceptaceTest  extends BaseTestNGWebDriver {
-	
+public class MU2UserActivityAcceptaceTest extends BaseTestNGWebDriver {
+
 	@AfterMethod
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
 
-	
-	
-	//@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+
+
+	// @Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUserActivityLog() throws Exception {
 		log("Test Case: testUserActivityLog");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -58,40 +58,34 @@ public class MU2UserActivityAcceptaceTest  extends BaseTestNGWebDriver {
 		viewAccountActivity.clickOnViewAccountActivity();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Activity Log']")));
-				
-		List<Object> viewList=IHGUtil.searchResultTable(driver,"//table[@id='activityTable']/tbody",new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED)));
-		if(!viewList.isEmpty())
-		{
+
+		List<Object> viewList =
+				IHGUtil.searchResultTable(driver, "//table[@id='activityTable']/tbody", new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED)));
+		if (!viewList.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) viewList.get(1)).booleanValue());
+		} else {
+			BaseTestSoftAssert.assertTrue(false, "Health Information Viewed event not present");
 		}
-		else
-		{
-			BaseTestSoftAssert.assertTrue(false,"Health Information Viewed event not present");	
-		}
-		
-				
-		List<Object> downloadList=IHGUtil.searchResultTable(driver,"//table[@id='activityTable']/tbody",new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_DOWNLOADED)));
-		if(!downloadList.isEmpty())
-		{
+
+
+		List<Object> downloadList =
+				IHGUtil.searchResultTable(driver, "//table[@id='activityTable']/tbody", new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_DOWNLOADED)));
+		if (!downloadList.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) downloadList.get(1)).booleanValue());
+		} else {
+			BaseTestSoftAssert.assertTrue(false, "Health Information Downloaded event not present");
 		}
-		else
-		{
-			BaseTestSoftAssert.assertTrue(false,"Health Information Downloaded event not present");	
-		}
-		
-		List<Object> transmitList=IHGUtil.searchResultTable(driver,"//table[@id='activityTable']/tbody",new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_TRANSMITTED)));
-		if(!transmitList.isEmpty())
-		{
+
+		List<Object> transmitList = IHGUtil.searchResultTable(driver, "//table[@id='activityTable']/tbody",
+				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_TRANSMITTED)));
+		if (!transmitList.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) transmitList.get(1)).booleanValue());
+		} else {
+			BaseTestSoftAssert.assertTrue(false, "Health Information Transmitted event not present");
 		}
-		else
-		{
-			BaseTestSoftAssert.assertTrue(false,"Health Information Transmitted event not present");	
-		}
-	
-			 WebElement closeViewer = driver.findElement(By.linkText("Close Viewer"));
-			 closeViewer.click();
+
+		WebElement closeViewer = driver.findElement(By.linkText("Close Viewer"));
+		closeViewer.click();
 	}
 
 }

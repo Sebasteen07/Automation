@@ -110,8 +110,7 @@ public class CustomFormPageForSitegen extends BasePageObject {
 	}
 
 	/**
-	 * Description : Verify whether the form is displayed in the Health forms
-	 * page.
+	 * Description : Verify whether the form is displayed in the Health forms page.
 	 * 
 	 * @param formName
 	 * @return

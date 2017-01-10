@@ -5,10 +5,18 @@ import static com.intuit.ifs.csscat.core.utils.Log4jUtil.log;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -28,9 +36,8 @@ public class Utils {
 	/**
 	 * 
 	 * @param driver
-	 * @param persistentFormsPractice False for tests which do sitegen management, true otherwise.
-	 *        Tests which do sitegen management operates on own practice because they can damage
-	 *        forms.
+	 * @param persistentFormsPractice False for tests which do sitegen management, true otherwise. Tests which do sitegen management operates on own practice
+	 *        because they can damage forms.
 	 * @return
 	 * @throws Exception
 	 */
@@ -121,13 +128,14 @@ public class Utils {
 		return new Date(c.getTime().getTime() + 1000 * 3600 * timeZoneShift);
 	}
 
-	public static void checkPDF(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
+	public static void checkIfPDFCanBeDownloaded(String linkText, WebDriver driver) throws Exception {
 		URLStatusChecker status = new URLStatusChecker(driver);
 		String pdfLink;
+		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		try {
-			pdfLink = formsPage.getPDFDownloadLink(formName);
+			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
 		} catch (StaleElementReferenceException e) {
-			pdfLink = formsPage.getPDFDownloadLink(formName);
+			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
 		} catch (NoSuchElementException f) {
 			log("PDF not found!");
 			throw f;
@@ -135,10 +143,43 @@ public class Utils {
 		Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 	}
 
+	/**
+	 * Initializes and returns Firefox specific driver which allows downloading All downloaded files will be present directly in working directory (usually the
+	 * root directory of project).
+	 * 
+	 * @return Firefox specific driver which allows downloading
+	 */
+	public static WebDriver getFirefoxDriverForDownloading() {
+		FirefoxProfile fxProfile = new FirefoxProfile();
+		fxProfile.setPreference("browser.download.folderList", 2);
+		fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
+		fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
+		fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
+		FirefoxDriver driver = new FirefoxDriver(fxProfile);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		return driver;
+	}
+
 	public static void logTestEnvironmentInfo(String testName) {
-		log(testName);
+		log("Test name: " + testName);
 		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
 		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
+	}
+
+	public static int getAutomationPracticeID(boolean persistentFormsPractice) throws Exception {
+		TestcasesData portalData = new TestcasesData(new Portal());
+		if (persistentFormsPractice) {
+			return getPracticeIDFromPIUrl(portalData.getPIFormsAltUrl());
+		} else {
+			return getPracticeIDFromPIUrl(portalData.getPIFormsUrl());
+		}
+	}
+
+	public static int getPracticeIDFromPIUrl(String PIurl) {
+		Pattern p = Pattern.compile(".+-(\\d+)/portal.+");
+		Matcher m = p.matcher(PIurl);
+		m.find();
+		return Integer.parseInt(m.group(1));
 	}
 
 	private static void logLogin(String url, String username, String password) {

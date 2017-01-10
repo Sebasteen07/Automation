@@ -12,16 +12,16 @@ import com.medfusion.common.utils.IHGUtil;
 
 
 public class AppointmentReqtStep3Page extends BasePageObject {
-	
+
 	public static final String PAGE_NAME = "Appt Request Page - Step 3";
-	
-	@FindBy( how = How.NAME, using=":submit")
+
+	@FindBy(how = How.NAME, using = ":submit")
 	private WebElement submit;
-	
-	@FindBy( how = How.NAME, using=":change")
+
+	@FindBy(how = How.NAME, using = ":change")
 	private WebElement change;
-	
-	@FindBy( how = How.NAME, using=":cancel")
+
+	@FindBy(how = How.NAME, using = ":cancel")
 	private WebElement cancel;
 
 	public AppointmentReqtStep3Page(WebDriver driver) {
@@ -30,20 +30,20 @@ public class AppointmentReqtStep3Page extends BasePageObject {
 	}
 
 	public void clickSubmit() {
-		IHGUtil.waitForElement(driver,5, submit);
+		IHGUtil.waitForElement(driver, 5, submit);
 		submit.click();
-		
+
 	}
-	
+
 	// TODO - return page element.
-	public void clickChange() {	
+	public void clickChange() {
 		change.click();
 	}
-	
+
 	// TODO - return page element.
-	public void clickCancel() {	
+	public void clickCancel() {
 		cancel.click();
 	}
-	
+
 
 }

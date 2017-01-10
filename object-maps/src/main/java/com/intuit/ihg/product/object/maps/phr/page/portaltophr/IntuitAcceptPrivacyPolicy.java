@@ -11,30 +11,30 @@ import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 
 
 
-public class IntuitAcceptPrivacyPolicy extends BasePageObject{
-	
-	@FindBy(name="touCheckboxValue")
+public class IntuitAcceptPrivacyPolicy extends BasePageObject {
+
+	@FindBy(name = "touCheckboxValue")
 	private WebElement chkIntuitTermsofServiceAndPrivacyPolicy;
-	
-	@FindBy(css="input.custom_text_button")
+
+	@FindBy(css = "input.custom_text_button")
 	private WebElement btnAccept;
-		
+
 
 	public IntuitAcceptPrivacyPolicy(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * Accept the terms and condition from phr side
+	 * 
 	 * @return
 	 */
-	public PhrHomePage acceptIntuitTermsAndCondition()
-	{
+	public PhrHomePage acceptIntuitTermsAndCondition() {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		log("=============="+driver.getCurrentUrl()+"==============");
-		log("=============="+driver.getPageSource().toString()+"==============");
+		log("==============" + driver.getCurrentUrl() + "==============");
+		log("==============" + driver.getPageSource().toString() + "==============");
 		chkIntuitTermsofServiceAndPrivacyPolicy.click();
 		btnAccept.click();
 		return PageFactory.initElements(driver, PhrHomePage.class);

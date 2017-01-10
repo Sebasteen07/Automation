@@ -10,21 +10,21 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-public class CreateCustomForms extends BasePageObject{
-	
-	
-	@FindBy(linkText="Create a Custom Form")
+public class CreateCustomForms extends BasePageObject {
+
+
+	@FindBy(linkText = "Create a Custom Form")
 	private WebElement lnkCreateCustomForm;
-	
-	@FindBy( xpath = "//*[contains(text(),'Manage Your Forms')]")
+
+	@FindBy(xpath = "//*[contains(text(),'Manage Your Forms')]")
 	private WebElement lnkManageYourForms;
-		
+
 
 	public CreateCustomForms(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * Indicates if the search page is loaded
 	 * 
@@ -44,31 +44,31 @@ public class CreateCustomForms extends BasePageObject{
 
 		return result;
 	}
-	
+
 	/**
-	 * Click on link - Create custom form	
+	 * Click on link - Create custom form
+	 * 
 	 * @return
 	 */
-	
-	public CreateCustomFormPage clicklnkCreateCustomForm()
-	{	
+
+	public CreateCustomFormPage clicklnkCreateCustomForm() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkCreateCustomForm);
 		lnkCreateCustomForm.click();
 		// Close the browser window
-		return PageFactory.initElements(driver,CreateCustomFormPage.class);
+		return PageFactory.initElements(driver, CreateCustomFormPage.class);
 	}
-	
-	
-	
+
+
 
 	/**
 	 * * @author Shanthala
+	 * 
 	 * @Desc:- click on Manage your forms
 	 * @return ViewIntegrationsPage
 	 * @throws InterruptedException
 	 * 
-	 */	
+	 */
 	public ManageYourFormsPage clicklnkManageCustomForm() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		log("Clicking on Manage Custom Forms");
@@ -76,13 +76,13 @@ public class CreateCustomForms extends BasePageObject{
 		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 50, lnkManageYourForms);
 		log("Waited for link -> Manage your forms");
-		try{
+		try {
 			lnkManageYourForms.click();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Actions ac = new Actions(driver);
 			ac.click(lnkManageYourForms).build().perform();
-		}	
-		for(String winHandle : driver.getWindowHandles()){
+		}
+		for (String winHandle : driver.getWindowHandles()) {
 			driver.switchTo().window(winHandle);
 		}
 

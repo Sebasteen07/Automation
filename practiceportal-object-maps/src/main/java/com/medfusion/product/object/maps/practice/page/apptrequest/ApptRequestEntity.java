@@ -1,7 +1,7 @@
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 public class ApptRequestEntity {
-	
+
 	private int processOption;
 	private String subject;
 	private String body;
@@ -86,5 +86,5 @@ public class ApptRequestEntity {
 		this.apptDate = apptDate;
 		return this;
 	}
-	
+
 }

@@ -9,6 +9,5 @@ import com.medfusion.product.patientportal2.pojo.Portal;
 public interface IPayBillsPayment {
 	String payBillsPayment(WebDriver driver, Portal portInfo, PatientInfo patInfo, CreditCard creditCard, String amount);
 
-	String payBillsPayment(WebDriver driver, Portal portInfo, PatientInfo patInfo, CreditCard creditCard, String amount,
-			String location);
+	String payBillsPayment(WebDriver driver, Portal portInfo, PatientInfo patInfo, CreditCard creditCard, String amount, String location);
 }

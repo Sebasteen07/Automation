@@ -13,11 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/20/13
- * Time: 6:09 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 6:09 PM To change this template use File | Settings | File Templates.
  */
 public class ExcelSheetUtil {
 
@@ -39,37 +35,29 @@ public class ExcelSheetUtil {
 		PRIMITIVE_TYPE_MAP.put(Double.TYPE, Double.class);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static Object _readFieldValueObject(Class<?> fieldClz, Type type,
-			Map<String, Object> dataMap, String combinedFieldName)
-			throws Exception {
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private static Object _readFieldValueObject(Class<?> fieldClz, Type type, Map<String, Object> dataMap, String combinedFieldName) throws Exception {
 		Object fieldValue = null;
 
 		if (fieldClz.isArray()) {// Take care of Arrays
 			int size = getArraySize(dataMap, combinedFieldName);
 			if (size > 0) {
-				fieldValue = Array.newInstance(fieldClz.getComponentType(),
-                        size);
+				fieldValue = Array.newInstance(fieldClz.getComponentType(), size);
 				for (int j = 0; j < size; j++) {
-					Array.set(
-							fieldValue,
-							j,
-							readFieldValue(fieldClz.getComponentType(),
-									combinedFieldName + "." + j, dataMap));
+					Array.set(fieldValue, j, readFieldValue(fieldClz.getComponentType(), combinedFieldName + "." + j, dataMap));
 				}
 			}
 		} else if (fieldClz.isAssignableFrom(List.class)) {// Take
-																		// care
-																		// of
-																		// Collections
+			// care
+			// of
+			// Collections
 			ArrayList list = ArrayList.class.newInstance();
 			int size = getArraySize(dataMap, combinedFieldName);
 			if (size > 0) {
 				fieldValue = list;
 				Class<?> itemClz = getListItemType(type);
 				for (int j = 0; j < size; j++) {
-					list.add(readFieldValue(itemClz, combinedFieldName + "."
-							+ j, dataMap));
+					list.add(readFieldValue(itemClz, combinedFieldName + "." + j, dataMap));
 				}
 			}
 		} else {
@@ -113,16 +101,13 @@ public class ExcelSheetUtil {
 	 * @param filter
 	 * @return
 	 */
-	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(Class<?> class1, String filename, int sheetNumber,
-			String[] columnNames, Filter filter){
+	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(Class<?> class1, String filename, int sheetNumber, String[] columnNames, Filter filter) {
 		return ExcelSheetUtil.getDataFromSpreadsheet(class1, filename, null, sheetNumber, columnNames, filter, false);
 	}
 
 	/**
-	 * Reads data from spreadsheet. If sheetName and sheetNumber both are
-	 * supplied the sheetName takes precedence. Put the excel sheet in the same
-	 * folder as the test case and specify class1 as <code>this.getClass()</code>
-	 * .
+	 * Reads data from spreadsheet. If sheetName and sheetNumber both are supplied the sheetName takes precedence. Put the excel sheet in the same folder as the
+	 * test case and specify class1 as <code>this.getClass()</code> .
 	 *
 	 * @param class1
 	 * @param filename
@@ -135,23 +120,21 @@ public class ExcelSheetUtil {
 	 * @throws Exception
 	 */
 
-	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(
-			Class<?> class1, String filename, String sheetName, int sheetNumber,
-			String[] fields, Filter filter, boolean readHeaders) {
+	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(Class<?> class1, String filename, String sheetName, int sheetNumber, String[] fields,
+			Filter filter, boolean readHeaders) {
 
 		System.gc(); // KEEPME
 
 		// Let CSVUtil handle CSV Files
 		if (filename.toLowerCase().endsWith(".csv")) {
-			return CSVUtil.getDataFromCSVFile(class1, filename, fields, filter,
-					readHeaders);
+			return CSVUtil.getDataFromCSVFile(class1, filename, fields, filter, readHeaders);
 		}
 
 		Workbook w = null;
 		InputStream is = null;
 		try {
 			if (class1 != null) {
-				is =class1.getResourceAsStream(filename);    //ClassLoader.getSystemResource
+				is = class1.getResourceAsStream(filename); // ClassLoader.getSystemResource
 			} else {
 				is = new FileInputStream(filename);
 			}
@@ -163,8 +146,7 @@ public class ExcelSheetUtil {
 			w = Workbook.getWorkbook(is);
 
 			if (w.getSheetNames().length <= sheetNumber) {
-				throw new Exception("Sheet # " + sheetNumber + " for "
-						+ filename + " not found.");
+				throw new Exception("Sheet # " + sheetNumber + " for " + filename + " not found.");
 			}
 
 			if (sheetName != null) {
@@ -207,13 +189,9 @@ public class ExcelSheetUtil {
 			int testEnvColumnIndex = -1;
 			// Search for Title & Env column
 			for (int i = 0; i < columnCount; i++) {
-				if (testTitleColumnIndex == -1
-						&& TestObject.TEST_TITLE.equalsIgnoreCase(sheet
-								.getCell(i, 0).getContents())) {
+				if (testTitleColumnIndex == -1 && TestObject.TEST_TITLE.equalsIgnoreCase(sheet.getCell(i, 0).getContents())) {
 					testTitleColumnIndex = i;
-				} else if (testEnvColumnIndex == -1
-						&& TestObject.TEST_ENV.equalsIgnoreCase(sheet.getCell(
-								i, 0).getContents())) {
+				} else if (testEnvColumnIndex == -1 && TestObject.TEST_ENV.equalsIgnoreCase(sheet.getCell(i, 0).getContents())) {
 					testEnvColumnIndex = i;
 				}
 
@@ -226,23 +204,15 @@ public class ExcelSheetUtil {
 			// The first row is the header
 			StringBuffer sbBlank = new StringBuffer();
 			for (int i = 1; i < sheet.getRows(); i++) {
-				if (testTitleColumnIndex != -1
-						&& testEnvColumnIndex != -1
-						&& ((sheet.getCell(testTitleColumnIndex, i)
-								.getContents() == null || sheet
-								.getCell(testTitleColumnIndex, i).getContents()
-								.trim().length() == 0) || (sheet.getCell(
-								testEnvColumnIndex, i).getContents() == null || sheet
-								.getCell(testEnvColumnIndex, i).getContents()
-								.trim().length() == 0))) {
+				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1
+						&& ((sheet.getCell(testTitleColumnIndex, i).getContents() == null || sheet.getCell(testTitleColumnIndex, i).getContents().trim().length() == 0)
+								|| (sheet.getCell(testEnvColumnIndex, i).getContents() == null || sheet.getCell(testEnvColumnIndex, i).getContents().trim().length() == 0))) {
 					sbBlank.append(i + 1).append(',');
 				}
 			}
 			if (sbBlank.length() > 0) {
 				sbBlank.deleteCharAt(sbBlank.length() - 1);
-				throw new Exception(
-						"Blank TestTitle and/or Env value(s) found on Row(s) "
-								+ sbBlank.toString() + ".");
+				throw new Exception("Blank TestTitle and/or Env value(s) found on Row(s) " + sbBlank.toString() + ".");
 			}
 
 			Set<String> uniqueDataSet = new TreeSet<String>();
@@ -252,21 +222,10 @@ public class ExcelSheetUtil {
 			for (int i = 1; i < sheet.getRows(); i++) {
 				// Check for duplicate Title & Env
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1) {
-					String uniqueString = sheet
-							.getCell(testTitleColumnIndex, i).getContents()
-							+ "$$$$####$$$$"
-							+ sheet.getCell(testEnvColumnIndex, i)
-									.getContents();
+					String uniqueString = sheet.getCell(testTitleColumnIndex, i).getContents() + "$$$$####$$$$" + sheet.getCell(testEnvColumnIndex, i).getContents();
 					if (uniqueDataSet.contains(uniqueString))
-						throw new Exception(
-								"Duplicate TestTitle and Env combination found in the spreadsheet "
-										+ "with TestTitle = {"
-										+ sheet.getCell(testTitleColumnIndex, i)
-												.getContents()
-										+ "} "
-										+ "and Env = {"
-										+ sheet.getCell(testEnvColumnIndex, i)
-												.getContents() + "}");
+						throw new Exception("Duplicate TestTitle and Env combination found in the spreadsheet " + "with TestTitle = {"
+								+ sheet.getCell(testTitleColumnIndex, i).getContents() + "} " + "and Env = {" + sheet.getCell(testEnvColumnIndex, i).getContents() + "}");
 
 					uniqueDataSet.add(uniqueString);
 				}
@@ -276,8 +235,7 @@ public class ExcelSheetUtil {
 
 				// Create the mapping between headers and column data
 				for (int j = 0; j < columnCount; j++) {
-					rowDataMap.put(sheet.getCell(j, 0).getContents(), sheet
-							.getCell(j, i).getContents());
+					rowDataMap.put(sheet.getCell(j, 0).getContents(), sheet.getCell(j, i).getContents());
 				}
 
 				if (fields == null) {
@@ -297,11 +255,8 @@ public class ExcelSheetUtil {
 
 			sheet = null;
 
-			if ((!readHeaders && sheetData.isEmpty())
-					|| (readHeaders && sheetData.size() <= 1))
-				logger.warn("No matching data found on spreadsheet: "
-						+ filename + " with filter criteria: "
-						+ filter.toString());
+			if ((!readHeaders && sheetData.isEmpty()) || (readHeaders && sheetData.size() <= 1))
+				logger.warn("No matching data found on spreadsheet: " + filename + " with filter criteria: " + filter.toString());
 
 			return sheetData.iterator();
 		} catch (Throwable e) {
@@ -316,13 +271,12 @@ public class ExcelSheetUtil {
 				try {
 					is.close();
 				} catch (Exception e) {
-				}// KEEPME
+				} // KEEPME
 			}
 		}
 	}
 
-	public static List<Object[]> getDataList(List<Object[]> table,
-			Filter filter) {
+	public static List<Object[]> getDataList(List<Object[]> table, Filter filter) {
 
 		List<Object[]> sheetData = new ArrayList<Object[]>();
 
@@ -349,16 +303,12 @@ public class ExcelSheetUtil {
 	/**
 	 * Create Entity Objects based on data in spreadsheet.
 	 *
-	 * This method is only for Data Provider. Because it also filer the data
-	 * based on the dpTagsInclude/dpTagsExclude which is defined in testng
-	 * configuration file
+	 * This method is only for Data Provider. Because it also filer the data based on the dpTagsInclude/dpTagsExclude which is defined in testng configuration
+	 * file
 	 */
-	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1,
-			LinkedHashMap<String, Class<?>> entityclass1Map, String filename,
-			int sheetNumber, String[] fields, Filter filter)
-			throws Exception {
-		return ExcelSheetUtil.getObjectsFromSpreadsheet(class1,
-				entityclass1Map, filename, null, sheetNumber, fields, filter);
+	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1, LinkedHashMap<String, Class<?>> entityclass1Map, String filename, int sheetNumber,
+			String[] fields, Filter filter) throws Exception {
+		return ExcelSheetUtil.getObjectsFromSpreadsheet(class1, entityclass1Map, filename, null, sheetNumber, fields, filter);
 	}
 
 	/**
@@ -373,13 +323,10 @@ public class ExcelSheetUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1,
-			LinkedHashMap<String, Class<?>> entityclass1Map, String filename,
-			String sheetName, int sheetNumber, String[] fields,
-			Filter filter) throws Exception {
+	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1, LinkedHashMap<String, Class<?>> entityclass1Map, String filename,
+			String sheetName, int sheetNumber, String[] fields, Filter filter) throws Exception {
 
-		Iterator<Object[]> dataIterator = getDataFromSpreadsheet(class1,
-				filename, sheetName, sheetNumber, fields, filter, true);
+		Iterator<Object[]> dataIterator = getDataFromSpreadsheet(class1, filename, sheetName, sheetNumber, fields, filter, true);
 
 		List<Object[]> list = new ArrayList<Object[]>();
 
@@ -404,8 +351,7 @@ public class ExcelSheetUtil {
 			if (entityclass1Map != null) {
 				for (Map.Entry<String, Class<?>> entry : entityclass1Map.entrySet()) {
 					temp.put(entry.getKey(), Boolean.TRUE);
-					rowData.add(readObject(entry.getValue(), entry.getKey(),
-							map));
+					rowData.add(readObject(entry.getValue(), entry.getKey(), map));
 				}
 			}
 
@@ -413,43 +359,39 @@ public class ExcelSheetUtil {
 				int docIdx = ((String) headerArray[i]).indexOf(".");
 				if (docIdx < 0) {
 					rowData.add(0, rowDataArray[i]);
-				} else if (temp.get(((String) headerArray[i]).substring(0,
-						docIdx)) == null) {
+				} else if (temp.get(((String) headerArray[i]).substring(0, docIdx)) == null) {
 					rowData.add(0, rowDataArray[i]);
 				}
 			}
 
-			list.add(rowData.toArray(new Object[] { rowData.size() }));
+			list.add(rowData.toArray(new Object[] {rowData.size()}));
 		}
 
 		return list.iterator();
 	}
 
-	public static Map<String, Object> getFieldsDataNeedToBeSet(
-			Map<String, Object> map, String key) {
+	public static Map<String, Object> getFieldsDataNeedToBeSet(Map<String, Object> map, String key) {
 		Map<String, Object> result = new LinkedHashMap<String, Object>();
 
 		for (String key2 : map.keySet()) {
 			if (key2.equalsIgnoreCase(key)) {
-				if(map.get(key2) != null)
+				if (map.get(key2) != null)
 					result.put(key2, map.get(key2).toString());
 			}
 			if (key2.toLowerCase().startsWith(key.toLowerCase() + ".")) {
-				if(map.get(key2) != null)
-					result.put(key2.substring(key.length() + 1), map.get(key2)
-							.toString());
+				if (map.get(key2) != null)
+					result.put(key2.substring(key.length() + 1), map.get(key2).toString());
 			}
 		}
 		return result;
 	}
 
-	public static Map<String, Object> getFieldsNeedToBeSet(
-			Map<String, Object> map, String key) {
+	public static Map<String, Object> getFieldsNeedToBeSet(Map<String, Object> map, String key) {
 		Map<String, Object> result = new LinkedHashMap<String, Object>();
 		String lastKey = "";
 		for (String key2 : map.keySet()) {
 			if (key2.equalsIgnoreCase(key))
-					result.put(key2, map.get(key2));
+				result.put(key2, map.get(key2));
 			if (key2.toLowerCase().startsWith(key.toLowerCase() + ".")) {
 				String newkey = key2.substring(key.length() + 1);
 				if (newkey.contains("."))
@@ -461,24 +403,20 @@ public class ExcelSheetUtil {
 		return result;
 	}
 
-	private static Class<?> getListItemType(Type type)
-			throws ClassNotFoundException {
+	private static Class<?> getListItemType(Type type) throws ClassNotFoundException {
 
 		Class<?> itemClz = null;
 
 		if (type instanceof ParameterizedType) {
 			ParameterizedType pt = (ParameterizedType) type;
-			itemClz = Class.forName(pt.getActualTypeArguments()[0].toString()
-					.substring("class ".length()));
+			itemClz = Class.forName(pt.getActualTypeArguments()[0].toString().substring("class ".length()));
 		}
 		return itemClz;
 	}
 
 	public static Object getValue(Map<String, Object> map, String key) {
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			if ((entry.getKey() == null && key == null)
-					|| (entry.getKey() != null && entry.getKey()
-							.equalsIgnoreCase(key)))
+			if ((entry.getKey() == null && key == null) || (entry.getKey() != null && entry.getKey().equalsIgnoreCase(key)))
 				return entry.getValue();
 		}
 		return null;
@@ -487,44 +425,38 @@ public class ExcelSheetUtil {
 	private static boolean isPrimitive(Class<?> clz) {
 		if (clz.isPrimitive())
 			return true;
-		else if (clz.getCanonicalName().equals(
-				"java.lang." + clz.getSimpleName()))
+		else if (clz.getCanonicalName().equals("java.lang." + clz.getSimpleName()))
 			return true;
 		else
 			return false;
 	}
 
-	private static Object readFieldValue(Class<?> fieldClz, String fieldName,
-			Map<String, Object> dataMap) throws Exception {
+	private static Object readFieldValue(Class<?> fieldClz, String fieldName, Map<String, Object> dataMap) throws Exception {
 		Object fieldValue = null;
 		String tempValue = (String) getValue(dataMap, fieldName);
 
 		// Return null when field is atomic and value is null or blank
 		if ((tempValue == null || tempValue.length() == 0)
-				&& (fieldClz.isEnum()
-						|| fieldClz.getName().equals("java.util.Calendar")
-						|| fieldClz.getName().equals("java.math.BigDecimal") || isPrimitive(fieldClz)))
+				&& (fieldClz.isEnum() || fieldClz.getName().equals("java.util.Calendar") || fieldClz.getName().equals("java.math.BigDecimal") || isPrimitive(fieldClz)))
 			return null;
 
 		if (fieldClz.isEnum()) {
 			try {
-				fieldValue = fieldClz.getMethod("valueOf", String.class)
-						.invoke(fieldClz, tempValue);
+				fieldValue = fieldClz.getMethod("valueOf", String.class).invoke(fieldClz, tempValue);
 			} catch (Exception e) {
 				logger.warn("Ex", e);
 			}
 		} else if (fieldClz.getName().equals("java.util.Calendar")) {// Take
-																		// care
-																		// of
-																		// Date
+			// care
+			// of
+			// Date
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(new SimpleDateFormat("MM/dd/yyyy")
-					.parse(tempValue));
+			calendar.setTime(new SimpleDateFormat("MM/dd/yyyy").parse(tempValue));
 			fieldValue = calendar;
 		} else if (fieldClz.getName().equals("java.math.BigDecimal")) {// Take
-																		// care
-																		// of
-																		// BigDecimal
+			// care
+			// of
+			// BigDecimal
 			fieldValue = new BigDecimal(tempValue);
 		} else if (isPrimitive(fieldClz)) {// Take care of primitives
 			Constructor<?> constructor;
@@ -533,8 +465,7 @@ public class ExcelSheetUtil {
 					fieldValue = tempValue;
 				} else {
 					if (PRIMITIVE_TYPE_MAP.containsKey(fieldClz))
-						constructor = PRIMITIVE_TYPE_MAP.get(fieldClz)
-								.getConstructor(String.class);
+						constructor = PRIMITIVE_TYPE_MAP.get(fieldClz).getConstructor(String.class);
 					else
 						constructor = fieldClz.getConstructor(String.class);
 
@@ -550,51 +481,42 @@ public class ExcelSheetUtil {
 		return fieldValue;
 	}
 
-	public static Object readObject(Class<?> clz, String objectName,
-			Map<String, Object> dataMap) throws Exception {
+	public static Object readObject(Class<?> clz, String objectName, Map<String, Object> dataMap) throws Exception {
 		Object object = null;
 		if (clz == null)
 			return null;
 		if (objectName == null)
 			objectName = clz.getSimpleName();
 		Map<String, Object> fieldMap = getFieldsNeedToBeSet(dataMap, objectName);
-		Map<String, Object> datamap = getFieldsDataNeedToBeSet(dataMap,
-				objectName);
+		Map<String, Object> datamap = getFieldsDataNeedToBeSet(dataMap, objectName);
 
 		for (String fieldName : fieldMap.keySet()) {
 			String first = "" + fieldName.charAt(0);
-			String realfieldName = fieldName.replaceFirst(first,
-					first.toLowerCase());
+			String realfieldName = fieldName.replaceFirst(first, first.toLowerCase());
 			Object fieldValue = null;
 			Class<?> type = null;
 			try {
 				Class<?>[] parameterTypes = new Class<?>[] {};
-				Method method = clz
-						.getMethod("get" + fieldName, parameterTypes);
+				Method method = clz.getMethod("get" + fieldName, parameterTypes);
 				type = method.getReturnType();
-				fieldValue = _readFieldValueObject(type,
-						method.getGenericReturnType(), datamap, fieldName);
+				fieldValue = _readFieldValueObject(type, method.getGenericReturnType(), datamap, fieldName);
 			} catch (NoSuchMethodException ex) {
 				try {
 					Class<?>[] parameterTypes = new Class<?>[] {};
-					Method method = clz.getMethod("is" + fieldName,
-							parameterTypes);
+					Method method = clz.getMethod("is" + fieldName, parameterTypes);
 					type = method.getReturnType();
-					fieldValue = _readFieldValueObject(type,
-							method.getGenericReturnType(), datamap, fieldName);
+					fieldValue = _readFieldValueObject(type, method.getGenericReturnType(), datamap, fieldName);
 				} catch (NoSuchMethodException ex2) {
 					try {
 						Field field = clz.getDeclaredField(realfieldName);
 						fieldValue = _readFieldValueObject(field.getType(), field.getGenericType(), datamap, fieldName);
-					}catch (NoSuchFieldException ex3) {
-						//Can't find field, get**,is*** method, set it to String.class
-						try{
+					} catch (NoSuchFieldException ex3) {
+						// Can't find field, get**,is*** method, set it to String.class
+						try {
 							fieldValue = _readFieldValueObject(String.class, String.class, datamap, fieldName);
 							type = String.class;
-						}
-						catch(Exception e)
-						{
-							logger.warn("Ex:"+clz.getName(), e);
+						} catch (Exception e) {
+							logger.warn("Ex:" + clz.getName(), e);
 						}
 					}
 				}
@@ -602,15 +524,13 @@ public class ExcelSheetUtil {
 
 			// execute the Setter Method
 			try {
-				if(fieldValue != null){
+				if (fieldValue != null) {
 
-					if(object == null)
-					{
-						try{
+					if (object == null) {
+						try {
 							object = clz.newInstance();
-						}catch(InstantiationException e)
-						{
-							//handle no null parameter constructor
+						} catch (InstantiationException e) {
+							// handle no null parameter constructor
 							Class<?>[] parameterTypes = new Class<?>[1];
 							parameterTypes[0] = fieldValue.getClass();
 							Constructor<?> constructor = clz.getDeclaredConstructor(parameterTypes);
@@ -627,12 +547,10 @@ public class ExcelSheetUtil {
 					try {
 						Class<?>[] parameterTypes = new Class<?>[1];
 						parameterTypes[0] = type;
-						Method method = object.getClass().getMethod(
-								"set" + fieldName, parameterTypes);
+						Method method = object.getClass().getMethod("set" + fieldName, parameterTypes);
 						method.invoke(object, fieldValue);
 					} catch (Exception ex) {
-						Field field2 = object.getClass().getDeclaredField(
-								realfieldName);
+						Field field2 = object.getClass().getDeclaredField(realfieldName);
 						field2.setAccessible(true);
 						field2.set(object, fieldValue);
 					}

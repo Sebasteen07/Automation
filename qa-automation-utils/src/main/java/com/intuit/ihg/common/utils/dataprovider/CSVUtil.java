@@ -8,11 +8,7 @@ import java.net.URLConnection;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/20/13
- * Time: 6:07 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 6:07 PM To change this template use File | Settings | File Templates.
  */
 public class CSVUtil {
 
@@ -84,7 +80,8 @@ public class CSVUtil {
 			// The first row is the header
 			StringBuffer sbBlank = new StringBuffer();
 			for (int i = 1; i < csvData.length; i++) {
-				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1 && (csvData[i][testTitleColumnIndex].trim().length() == 0 || csvData[i][testEnvColumnIndex].trim().length() == 0)) {
+				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1
+						&& (csvData[i][testTitleColumnIndex].trim().length() == 0 || csvData[i][testEnvColumnIndex].trim().length() == 0)) {
 					sbBlank.append(i + 1).append(',');
 				}
 			}
@@ -104,7 +101,8 @@ public class CSVUtil {
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1) {
 					String uniqueString = csvData[i][testTitleColumnIndex] + "$$$$####$$$$" + csvData[i][testEnvColumnIndex];
 					if (uniqueDataSet.contains(uniqueString))
-						throw new Exception("Duplicate TestTitle and Env combination found in the spreadsheet " + "with TestTitle = {" + csvData[i][testTitleColumnIndex] + "} " + "and Env = {" + csvData[i][testEnvColumnIndex] + "}");
+						throw new Exception("Duplicate TestTitle and Env combination found in the spreadsheet " + "with TestTitle = {" + csvData[i][testTitleColumnIndex]
+								+ "} " + "and Env = {" + csvData[i][testEnvColumnIndex] + "}");
 
 					uniqueDataSet.add(uniqueString);
 				}
@@ -148,7 +146,7 @@ public class CSVUtil {
 				try {
 					is.close();
 				} catch (Exception e) {
-				}// KEEPME
+				} // KEEPME
 			}
 		}
 	}
@@ -228,7 +226,7 @@ public class CSVUtil {
 		List<String[]> list = new ArrayList<String[]>();
 		String inputLine; // String that holds current file line
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8")); // KEEPME
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8")); // KEEPME
 		while ((inputLine = reader.readLine()) != null) {
 			try {
 				String[] item = null;

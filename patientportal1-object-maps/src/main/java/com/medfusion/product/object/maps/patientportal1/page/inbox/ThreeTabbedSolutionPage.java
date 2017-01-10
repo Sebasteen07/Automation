@@ -48,7 +48,7 @@ public class ThreeTabbedSolutionPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, OfficeMessagesPage.class);
 	}
-	
+
 	public void clickHealthMessages() {
 
 		try {
@@ -59,7 +59,7 @@ public class ThreeTabbedSolutionPage extends BasePageObject {
 			System.out.println("### WARNING: The Link not found");
 		}
 
-		//return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
+		// return PageFactory.initElements(driver, ConsolidatedInboxPage.class);
 	}
 
 }

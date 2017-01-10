@@ -87,14 +87,13 @@ public class ManageUserPermissionsPage extends BasePageObject {
 	 * @return
 	 * @throws Exception
 	 */
-	public SiteGenPracticeHomePage givePermission2Nurse(String personneltype1,
-			String personneltype2, String solutions, String locations,
-			String users) throws Exception {
+	public SiteGenPracticeHomePage givePermission2Nurse(String personneltype1, String personneltype2, String solutions, String locations, String users)
+			throws Exception {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElementInDefaultFrame(driver,30,dropDownPersonneltypes);
-		
+		IHGUtil.waitForElementInDefaultFrame(driver, 30, dropDownPersonneltypes);
+
 		log("Wait for personnel types to get loaded");
 		Thread.sleep(2000);
 		Select personaltype = new Select(dropDownPersonneltypes);
@@ -108,7 +107,7 @@ public class ManageUserPermissionsPage extends BasePageObject {
 
 		log("Wait for drop down locations to get loaded");
 		Thread.sleep(2000);
-		IHGUtil.waitForElement(driver,30,dropDownLocations);
+		IHGUtil.waitForElement(driver, 30, dropDownLocations);
 		Select location = new Select(dropDownLocations);
 		location.selectByVisibleText(locations);
 
@@ -116,11 +115,11 @@ public class ManageUserPermissionsPage extends BasePageObject {
 		Thread.sleep(2000);
 		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(presenceOfElementLocated(By.name("user")));
-		
+
 		log("Wait for drop down users to get loaded");
 		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 30, dropDownUsers);
-		Select user = new Select(dropDownUsers);	
+		Select user = new Select(dropDownUsers);
 		user.selectByVisibleText(users); // change
 
 		Thread.sleep(5000);
@@ -130,24 +129,24 @@ public class ManageUserPermissionsPage extends BasePageObject {
 			SitegenlUtil sutil = new SitegenlUtil(driver);
 			sutil.checkAlert(driver);
 			Thread.sleep(5000);
-		}
-		else{
+		} else {
 			log("Permission has been added");
 		}
-		IHGUtil.waitForElement(driver,30,lnkHome);
+		IHGUtil.waitForElement(driver, 30, lnkHome);
 		lnkHome.click();
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
 
-		
+
 
 	}
-	private static Function<WebDriver,WebElement> presenceOfElementLocated(final By locator) {
-	    return new Function<WebDriver, WebElement>() {
-	        @Override
-	        public WebElement apply(WebDriver driver) {
-	            return driver.findElement(locator);
-	        }
-	    };
+
+	private static Function<WebDriver, WebElement> presenceOfElementLocated(final By locator) {
+		return new Function<WebDriver, WebElement>() {
+			@Override
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(locator);
+			}
+		};
 	}
 
 }

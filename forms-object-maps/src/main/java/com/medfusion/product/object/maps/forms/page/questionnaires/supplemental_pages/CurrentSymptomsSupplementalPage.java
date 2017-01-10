@@ -33,8 +33,7 @@ public class CurrentSymptomsSupplementalPage extends PortalFormPage {
 	/**
 	 * Send string answer to selected question
 	 * 
-	 * @param questionNumber
-	 *            index of the question to answer
+	 * @param questionNumber index of the question to answer
 	 * @param answer
 	 */
 	public void answerCustomQuestion(int questionNumber, String answer) {
@@ -42,9 +41,7 @@ public class CurrentSymptomsSupplementalPage extends PortalFormPage {
 	}
 
 	/**
-	 * Fills out the questions on the page for form PDF test Fills out weight in
-	 * lbs and height in foots and inches or whatever the correct imperial units
-	 * are
+	 * Fills out the questions on the page for form PDF test Fills out weight in lbs and height in foots and inches or whatever the correct imperial units are
 	 */
 	public void fillLogicalAnswersForPdfTest() {
 		answerCustomQuestion(0, "Random comment");

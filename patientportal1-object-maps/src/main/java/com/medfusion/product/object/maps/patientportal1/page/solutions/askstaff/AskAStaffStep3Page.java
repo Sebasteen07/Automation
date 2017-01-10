@@ -11,19 +11,19 @@ import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class AskAStaffStep3Page extends BasePageObject {
-	
+
 	public static final String PAGE_NAME = "Ask A Staff Page - Step 3";
-	
-	@FindBy(linkText="Back to My Patient Page")
+
+	@FindBy(linkText = "Back to My Patient Page")
 	private WebElement lnkBackToMyPatientPage;
-	
-	@FindBy(xpath=".//a[contains(@href, 'AskaReqHistory')]")
+
+	@FindBy(xpath = ".//a[contains(@href, 'AskaReqHistory')]")
 	private WebElement lnkHistory;
 
 	public AskAStaffStep3Page(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	/**
 	 * Sends user back to My Patient Page
 	 * 
@@ -32,12 +32,12 @@ public class AskAStaffStep3Page extends BasePageObject {
 	public MyPatientPage clickBackToMyPatientPage() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		lnkBackToMyPatientPage.click();
-		
+
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-	
+
 	/**
 	 * Sends user to Ask A Staff History page
 	 * 
@@ -46,7 +46,7 @@ public class AskAStaffStep3Page extends BasePageObject {
 	public AskAStaffHistoryPage clickAskAStaffHistory() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		lnkHistory.click();
 		return PageFactory.initElements(driver, AskAStaffHistoryPage.class);
 	}

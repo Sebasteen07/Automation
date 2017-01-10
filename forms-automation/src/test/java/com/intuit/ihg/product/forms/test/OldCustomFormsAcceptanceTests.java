@@ -36,14 +36,12 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @Author:-Shanthala : Modified :bbinisha : Modified-Modified: Prokop Rehacek
 	 * @Date:- 07-03-2013
 	 * @User Story ID in Rally : US6152 and US6151 and US7626
-	 * @StepsToReproduce: Go to siteGen Enter the credentials Search for the practice Click on Custom
-	 *                    Form Click on Create Custom Form Publish Custom Form and check for preview
-	 *                    Unpublish Custom Form, check for Preview and delete unpublished custom form
+	 * @StepsToReproduce: Go to siteGen Enter the credentials Search for the practice Click on Custom Form Click on Create Custom Form Publish Custom Form and
+	 *                    check for preview Unpublish Custom Form, check for Preview and delete unpublished custom form
 	 *
 	 *                    === Prerequisite for the test case to run========= Nurse Named :-
 	 *
-	 *                    ====Valid Custom Form details required. Test data would be updated after
-	 *                    getting proper test data
+	 *                    ====Valid Custom Form details required. Test data would be updated after getting proper test data
 	 *                    =============================================================
 	 * @AreaImpacted :- Description
 	 * @throws Exception
@@ -235,7 +233,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(driver.getPageSource().contains("Female question"));
 		oldCustomForm.submitInsuranceHealthForm();
 		pHealthForm.clickOnHealthForms();
-		Utils.checkPDF(pHealthForm, "Ivan Insurance Health Form ( Testing)", driver);
+		Utils.checkIfPDFCanBeDownloaded("Ivan Insurance Health Form ( Testing)", driver);
 		Utils.verifyFormsDatePatientPortal(pHealthForm, "Ivan Insurance Health Form ( Testing)", driver);
 
 		log("step 3: Login to Practice Portal");

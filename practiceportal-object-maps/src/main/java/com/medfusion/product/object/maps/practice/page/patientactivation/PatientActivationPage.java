@@ -18,94 +18,94 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
-public class PatientActivationPage extends BasePageObject{
+public class PatientActivationPage extends BasePageObject {
 
-	@FindBy(css="a[href*='activate.newpat']")
+	@FindBy(css = "a[href*='activate.newpat']")
 	private WebElement addNewPatient;
-	
-	//Patient registration page
-	@FindBy(css="input[name='firstname']")
+
+	// Patient registration page
+	@FindBy(css = "input[name='firstname']")
 	private WebElement firstName;
 
-	@FindBy(css="input[name='lastname']")
+	@FindBy(css = "input[name='lastname']")
 	private WebElement lastName;
-	
-	@FindBy(css="input[name='member_gender'][value='M']")
+
+	@FindBy(css = "input[name='member_gender'][value='M']")
 	private WebElement male;
-	
-	@FindBy(css="input[name='member_gender'][value='F']")
+
+	@FindBy(css = "input[name='member_gender'][value='F']")
 	private WebElement female;
-	
-	@FindBy(css="input[name='member_emrid']")
+
+	@FindBy(css = "input[name='member_emrid']")
 	private WebElement patientId;
-	
-	@FindBy(css="input[name='email']")
+
+	@FindBy(css = "input[name='email']")
 	private WebElement email;
-	
-	@FindBy(css="input[name='cemail']")
+
+	@FindBy(css = "input[name='cemail']")
 	private WebElement confirmEmail;
-	
-	@FindBy(css="input[name='member_zip']")
+
+	@FindBy(css = "input[name='member_zip']")
 	private WebElement zip;
-	
-	@FindBy(css="input[type='submit']")
+
+	@FindBy(css = "input[type='submit']")
 	private WebElement btnSubmit;
-	
-	@FindBy(css="input[onclick*='checkVerified()']")
+
+	@FindBy(css = "input[onclick*='checkVerified()']")
 	private WebElement btnVerified;
-	
-	@FindBy(css="input[onclick*='checkGenKey()']")
+
+	@FindBy(css = "input[onclick*='checkGenKey()']")
 	private WebElement btnGenerateKey;
-	
-	@FindBy(css="a[href*='activationCode']")
+
+	@FindBy(css = "a[href*='activationCode']")
 	private WebElement unlockLink;
-	
-	@FindBy(how = How.XPATH, using ="//input[@value='Done']")
+
+	@FindBy(how = How.XPATH, using = "//input[@value='Done']")
 	private WebElement btnDone;
-	
-	@FindBy( how = How.NAME, using="birthday")
+
+	@FindBy(how = How.NAME, using = "birthday")
 	private WebElement birthday;
-	
-	@FindBy( how = How.NAME, using="zipcode")
+
+	@FindBy(how = How.NAME, using = "zipcode")
 	private WebElement zipcode;
-	
-	@FindBy( how = How.NAME, using="ssn")
+
+	@FindBy(how = How.NAME, using = "ssn")
 	private WebElement ssn;
 
-	@FindBy( how = How.NAME, using="buttons:submit")
+	@FindBy(how = How.NAME, using = "buttons:submit")
 	private WebElement Submit;
-	
-	@FindBy(css="input[name='member_ssn1']")
+
+	@FindBy(css = "input[name='member_ssn1']")
 	private WebElement SSN1;
-	
-	@FindBy(css="input[name='member_ssn2']")
+
+	@FindBy(css = "input[name='member_ssn2']")
 	private WebElement SSN2;
-	
-	@FindBy(css="input[name='member_ssn3']")
+
+	@FindBy(css = "input[name='member_ssn3']")
 	private WebElement SSN3;
-	
-	@FindBy(css="input[name='member_home_ac']")
+
+	@FindBy(css = "input[name='member_home_ac']")
 	private WebElement Home_No1;
-	
-	@FindBy(css="input[name='member_home_pre']")
+
+	@FindBy(css = "input[name='member_home_pre']")
 	private WebElement Home_No2;
-	
-	@FindBy(css="input[name='member_home_suff']")
+
+	@FindBy(css = "input[name='member_home_suff']")
 	private WebElement Home_No3;
-	
-	@FindBy(css="input[name='member_addr1']")
+
+	@FindBy(css = "input[name='member_addr1']")
 	private WebElement AddLine1;
-	
-	@FindBy(css="input[name='member_addr2']")
+
+	@FindBy(css = "input[name='member_addr2']")
 	private WebElement AddLine2;
-	
-	@FindBy(css="input[name='member_city']")
+
+	@FindBy(css = "input[name='member_city']")
 	private WebElement City;
-	
-	@FindBy(name="member_state")
+
+	@FindBy(name = "member_state")
 	private WebElement State;
-	
-	@FindBy(xpath=".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
+
+	@FindBy(xpath = ".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
 
 	private String firstNameString = "";
@@ -166,8 +166,7 @@ public class PatientActivationPage extends BasePageObject{
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
 
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
-				PortalConstants.DateOfBirthYear);
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
@@ -184,24 +183,25 @@ public class PatientActivationPage extends BasePageObject{
 		clickDone();
 
 	}
-	
-	public String setInitialDetailsAllFields(String firstName, String lastName, String gender, String patientID,
-			String homePhone, String email, String month, String day, String year, String address1, 
-			String address2, String city, String state, String zipCode) {
+
+	public String setInitialDetailsAllFields(String firstName, String lastName, String gender, String patientID, String homePhone, String email, String month,
+			String day, String year, String address1, String address2, String city, String state, String zipCode) {
 		IHGUtil.PrintMethodName();
-		
+
 		log("Patient Name is " + firstName + " " + lastName);
 		this.firstName.sendKeys(firstName);
 		this.lastName.sendKeys(lastName);
-		if (gender.equals("M"))this.male.click();
-		else this.female.click();
-		
+		if (gender.equals("M"))
+			this.male.click();
+		else
+			this.female.click();
+
 		log("PatientID " + patientID);
 		this.patientId.sendKeys(patientID);
 		this.Home_No1.sendKeys(homePhone.substring(0, 3));
 		this.Home_No2.sendKeys(homePhone.substring(3, 6));
 		this.Home_No3.sendKeys(homePhone.substring(6, 10));
-		
+
 		log("Patient email is " + email);
 		this.email.sendKeys(email);
 		this.confirmEmail.sendKeys(email);
@@ -233,7 +233,7 @@ public class PatientActivationPage extends BasePageObject{
 		clickDone();
 		return unlocklink;
 	}
-	
+
 	public void setDOB(String month, String day, String year) {
 
 		Select dobMonth = new Select(driver.findElement(By.name("dob_m")));
@@ -277,9 +277,10 @@ public class PatientActivationPage extends BasePageObject{
 
 		lastName.sendKeys(testData.getLastName());
 		male.click();
-		/*SSN1.sendKeys(testData.getSSN().subSequence(0, 3));
-		SSN2.sendKeys(testData.getSSN().subSequence(3, 5));
-		SSN3.sendKeys(testData.getSSN().subSequence(5, 9));*/
+		/*
+		 * SSN1.sendKeys(testData.getSSN().subSequence(0, 3)); SSN2.sendKeys(testData.getSSN().subSequence(3, 5)); SSN3.sendKeys(testData.getSSN().subSequence(5,
+		 * 9));
+		 */
 		Log4jUtil.log("Patientid is :" + patientIdString);
 		patientId.sendKeys(patientIdString);
 		Home_No1.sendKeys(testData.getHomePhoneNo().substring(0, 3));
@@ -288,8 +289,7 @@ public class PatientActivationPage extends BasePageObject{
 		Log4jUtil.log("Email is :" + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
-				PortalConstants.DateOfBirthYear);
+		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 		AddLine1.sendKeys(testData.getAddress1());
 		AddLine2.sendKeys(testData.getAddress2());
 		City.sendKeys(testData.getCity());
@@ -311,10 +311,10 @@ public class PatientActivationPage extends BasePageObject{
 		clickDone();
 		return activationCode;
 	}
-	
-	public boolean checkGuardianUrl (String url){
+
+	public boolean checkGuardianUrl(String url) {
 		IHGUtil.PrintMethodName();
 		return url.contains("guardian");
 	}
-	
+
 }

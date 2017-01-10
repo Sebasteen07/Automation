@@ -76,9 +76,8 @@ public class CreateIntegrationStep1Page extends BasePageObject {
 	 * @throws InterruptedException
 	 */
 
-	public CreateIntegrationStep2Page addNewIntegrationEng(
-			String externalSystem, String channel, String integrationName,
-			String reviewType) throws InterruptedException {
+	public CreateIntegrationStep2Page addNewIntegrationEng(String externalSystem, String channel, String integrationName, String reviewType)
+			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 
 		Select selExternalSystem = new Select(dropDownExternalSystem);
@@ -96,8 +95,7 @@ public class CreateIntegrationStep1Page extends BasePageObject {
 
 		btnContinue.click();
 
-		return PageFactory.initElements(driver,
-				CreateIntegrationStep2Page.class);
+		return PageFactory.initElements(driver, CreateIntegrationStep2Page.class);
 
 	}
 }

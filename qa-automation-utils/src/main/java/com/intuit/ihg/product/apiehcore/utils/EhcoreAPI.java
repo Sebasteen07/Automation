@@ -22,5 +22,5 @@ public class EhcoreAPI {
 	public String allscriptsccdexporturl = "";
 	public String allscriptsccdimporturl = "";
 	public String mongoproperty = "";
-	
+
 }

@@ -6,7 +6,7 @@ import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AppointmentTestData {
-	
+
 	private Appointment AppointmentObj = null;
 	private ExcelSheetReader excelReader = null;
 
@@ -20,52 +20,52 @@ public class AppointmentTestData {
 		// filtering the entire file
 		AppointmentObj = (Appointment) excelReader.getSingleExcelRow(aptData, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return AppointmentObj.Url;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return AppointmentObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return AppointmentObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return AppointmentObj.RestUrl;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return AppointmentObj.ResponsePath;
 	}
-	
-	public String getFrom(){
+
+	public String getFrom() {
 		return AppointmentObj.From;
 	}
-	
-	public String getAppointmentPath(){
+
+	public String getAppointmentPath() {
 		return AppointmentObj.AppointmentPath;
 	}
-		
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return AppointmentObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return AppointmentObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return AppointmentObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return AppointmentObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return AppointmentObj.OAuthPassword;
 	}
 
@@ -75,30 +75,30 @@ public class AppointmentTestData {
 
 	public String getPhoneNumber() {
 		return AppointmentObj.PhoneNumber;
-	}	
-	
+	}
+
 	public String getPracticeURL() {
 		return AppointmentObj.PracticeURL;
-	}	
-	
+	}
+
 	public String getPracticeUserName() {
 		return AppointmentObj.PracticeUserName;
-	}	
-	
+	}
+
 	public String getPracticePassword() {
 		return AppointmentObj.PracticePassword;
 	}
-	
+
 	public String getGmailUserName() {
 		return AppointmentObj.GmailUserName;
-	}	
-	
+	}
+
 	public String getGmailPassword() {
 		return AppointmentObj.GmailPassword;
-	}	
-	
+	}
+
 	public String getPracticeName() {
 		return AppointmentObj.PracticeName;
 	}
-	
+
 }

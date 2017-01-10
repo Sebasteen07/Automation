@@ -28,14 +28,14 @@ public class Appointments implements IAppointments {
 		List<Appointment> allAppointments = parseWebElementsToAppointments(appointmentsPage.getAppointments());
 		appointmentsPage.goToPastAppointments();
 		allAppointments.addAll(parseWebElementsToAppointments(appointmentsPage.getAppointments()));
-		
+
 		return allAppointments;
 	}
 
 	@Override
 	public List<Appointment> getUpcomingAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException {
 		JalapenoAppointmentsPage appointmentsPage = logInAndGoToAppointmentsPage(driver, portal.url, patientInfo.username, patientInfo.password);
-		
+
 		return parseWebElementsToAppointments(appointmentsPage.getAppointments());
 	}
 
@@ -43,29 +43,29 @@ public class Appointments implements IAppointments {
 	public List<Appointment> getPastAppointmentsForPatient(WebDriver driver, Jalapeno portal, PatientInfo patientInfo) throws ParseException {
 		JalapenoAppointmentsPage appointmentsPage = logInAndGoToAppointmentsPage(driver, portal.url, patientInfo.username, patientInfo.password);
 		appointmentsPage.goToPastAppointments();
-		
+
 		return parseWebElementsToAppointments(appointmentsPage.getAppointments());
 	}
-	
+
 	private JalapenoAppointmentsPage logInAndGoToAppointmentsPage(WebDriver driver, String portalURL, String username, String password) throws ParseException {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
 		JalapenoHomePage homePage = loginPage.login(username, password);
-		
+
 		// TODO: use method for getting to this page through button after the button is added
 		return homePage.goToAppointmentsPage(portalURL);
 	}
-	
+
 	private List<Appointment> parseWebElementsToAppointments(List<WebElement> elements) throws ParseException {
-		List<Appointment> appointments = new ArrayList<Appointment>();		
+		List<Appointment> appointments = new ArrayList<Appointment>();
 		for (WebElement element : elements) {
 			DateFormat df = new SimpleDateFormat("M/d/yy h:mm a", Locale.US);
-		    Date date =  df.parse(element.findElement(By.xpath("./div[1]")).getText());
-		    String provider = element.findElement(By.xpath("./div[2]/div[1]")).getText();
-		    String location = element.findElement(By.xpath("./div[2]/div[2]")).getText();
-		    boolean canceled = "Cancelled".equals(element.findElement(By.xpath("./div[3]")).getText());
-		    appointments.add(new Appointment(date, provider, location, canceled));
-		}		
-	    return appointments;
+			Date date = df.parse(element.findElement(By.xpath("./div[1]")).getText());
+			String provider = element.findElement(By.xpath("./div[2]/div[1]")).getText();
+			String location = element.findElement(By.xpath("./div[2]/div[2]")).getText();
+			boolean canceled = "Cancelled".equals(element.findElement(By.xpath("./div[3]")).getText());
+			appointments.add(new Appointment(date, provider, location, canceled));
+		}
+		return appointments;
 	}
 
 }

@@ -26,14 +26,12 @@ public class QuestionsService {
 		Set<Question> result = new HashSet<Question>();
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		Log4jUtil.log("parse visible text questions");
-		List<WebElement> textQuestions = driver
-				.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + TXT_QUESTIONS_FILTER));
+		List<WebElement> textQuestions = driver.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + TXT_QUESTIONS_FILTER));
 		for (WebElement textQuestion : textQuestions) {
 			result.add(parseTextQuestion(textQuestion));
 		}
 		Log4jUtil.log("parse visible select questions");
-		List<WebElement> selQuestions = driver
-				.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + SEL_QUESTIONS_FILTER));
+		List<WebElement> selQuestions = driver.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + SEL_QUESTIONS_FILTER));
 		for (WebElement selQuestion : selQuestions) {
 			result.add(parseSelectQuestion(selQuestion));
 		}
@@ -43,8 +41,7 @@ public class QuestionsService {
 
 	/**
 	 * 
-	 * @param question
-	 *            WebElement &lt;ul&gt; object containing question
+	 * @param question WebElement &lt;ul&gt; object containing question
 	 * @return question object
 	 */
 	public static Question parseQuestion(WebElement question) {

@@ -16,18 +16,18 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
  * @Description :- Page Object for SiteGen Practice HomePage
  * @Note :This is home page for practice
  */
-public class ManageYourLocationsPage extends BasePageObject{
-	
-	
-	@FindBy(name="btn_add")
+public class ManageYourLocationsPage extends BasePageObject {
+
+
+	@FindBy(name = "btn_add")
 	private WebElement btnAddNewLocation;
-	
-	@FindBy(linkText="Add Location")
+
+	@FindBy(linkText = "Add Location")
 	private WebElement lnkAddLocation;
-	
-	@FindBy(linkText="Edit Location")
+
+	@FindBy(linkText = "Edit Location")
 	private WebElement lnkEditLocation;
-		
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- constructor for this Page
@@ -38,27 +38,27 @@ public class ManageYourLocationsPage extends BasePageObject{
 		// TODO Auto-generated constructor stub
 	}
 
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:-Indicates if the search page is loaded
 	 * @return true or false
 	 */
 	public boolean isSearchPageLoaded() {
-		
+
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
-		
+
 		boolean result = false;
 		try {
 			result = IHGUtil.waitForElement(driver, 6, btnAddNewLocation);
-			} catch (Exception e) {
+		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- click on link AddLocation
@@ -66,13 +66,12 @@ public class ManageYourLocationsPage extends BasePageObject{
 	 * 
 	 */
 
-	public AddLocationPage clicklnkAddLocation()
-	{	
+	public AddLocationPage clicklnkAddLocation() {
 		SitegenlUtil.setDefaultFrame(driver);
 		lnkAddLocation.click();
-		return PageFactory.initElements(driver,AddLocationPage.class);
+		return PageFactory.initElements(driver, AddLocationPage.class);
 	}
-	
+
 
 	/**
 	 * @author bkrishnankutty
@@ -84,48 +83,42 @@ public class ManageYourLocationsPage extends BasePageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	
-	public boolean checkTheData(String practiceName,String State) throws Exception
-	{
-	  boolean flag =false;
-	  if((SitegenlUtil.verifyTextPresent(driver,practiceName,1000) == true) && (SitegenlUtil.verifyTextPresent(driver,State,00) == true))
-		{
-		  flag = true;
-		  return flag;
+
+	public boolean checkTheData(String practiceName, String State) throws Exception {
+		boolean flag = false;
+		if ((SitegenlUtil.verifyTextPresent(driver, practiceName, 1000) == true) && (SitegenlUtil.verifyTextPresent(driver, State, 00) == true)) {
+			flag = true;
+			return flag;
 		}
-	  return flag;
+		return flag;
 	}
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- Clean the data
 	 * @return void
-	  
+	 * 
 	 * @param practiceName
 	 * @param State
-	 * @throws Exception
-	 * Note :- assertion is here becoz this func is not important from deployment acceptance point of view
+	 * @throws Exception Note :- assertion is here becoz this func is not important from deployment acceptance point of view
 	 */
-	public void  cleaningTestdata (String practiceName,String State) throws Exception
-	{
+	public void cleaningTestdata(String practiceName, String State) throws Exception {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
-		
-		if(checkTheData(practiceName,State) == true)
-		{
+
+		if (checkTheData(practiceName, State) == true) {
 			lnkEditLocation.click();
 			EditSiteGenAutomationPage pEditSiteGenAutomationPage = PageFactory.initElements(driver, EditSiteGenAutomationPage.class);
 			Assert.assertTrue(pEditSiteGenAutomationPage.isSearchPageLoaded(), "Expected the Edit your location Page  to be loaded, but it was not.");
 			pEditSiteGenAutomationPage.deleteLocation();
 			Assert.assertTrue(this.isSearchPageLoaded(), "Expected the Manage your location Page  to be loaded, but it was not.");
-			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver,practiceName,1000),"Clean process is unable to clean data ,kindly check it manually");
-			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver,State,1000),"Clean process is unable to clean data ,kindly check it manually");
-		}
-		else{
-		     log("The data is already clean");
+			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver, practiceName, 1000), "Clean process is unable to clean data ,kindly check it manually");
+			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver, State, 1000), "Clean process is unable to clean data ,kindly check it manually");
+		} else {
+			log("The data is already clean");
 		}
 	}
-		
 
-	
+
+
 }

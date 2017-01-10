@@ -17,7 +17,7 @@ public class OfficeMessagesPage extends BasePageObject {
 		super(driver);
 
 	}
-	
+
 	public boolean findUnreadMessage(String sSubject) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();

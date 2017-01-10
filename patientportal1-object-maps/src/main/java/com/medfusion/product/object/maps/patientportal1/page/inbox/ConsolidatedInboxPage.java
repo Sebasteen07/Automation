@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -72,11 +71,9 @@ public class ConsolidatedInboxPage extends BasePageObject {
 	}
 
 	/**
-	 * Search inbox and open message based on unique string in message
-	 * subject
+	 * Search inbox and open message based on unique string in message subject
 	 * 
-	 * @param uniqueSubString
-	 *               used to find specific message in Inbox
+	 * @param uniqueSubString used to find specific message in Inbox
 	 * @return Consolidated Inbox Message or null if no message is found
 	 * @throws InterruptedException
 	 */
@@ -95,28 +92,16 @@ public class ConsolidatedInboxPage extends BasePageObject {
 		return PageFactory.initElements(driver, ConsolidatedInboxMessage.class);
 
 		/*
-		 * try { PortalUtil.setConsolidatedInboxFrame(driver); if
-		 * (uniqueSubString != null && !uniqueSubString.isEmpty()) { if
-		 * (inboxMessageList.getText().contains(uniqueSubString)) {
-		 * inboxMessageList.click(); //return
-		 * PageFactory.initElements(driver,
+		 * try { PortalUtil.setConsolidatedInboxFrame(driver); if (uniqueSubString != null && !uniqueSubString.isEmpty()) { if
+		 * (inboxMessageList.getText().contains(uniqueSubString)) { inboxMessageList.click(); //return PageFactory.initElements(driver,
 		 * ConsolidatedInboxMessage.class); } }
 		 * 
-		 * return PageFactory.initElements(driver,
-		 * ConsolidatedInboxMessage.class); } catch(Exception e) {
-		 * IHGUtil.setFrame(driver, "iframebody"); clickMessageLink();
-		 * Thread.sleep(5000); clickOfficeMessagesLink();
-		 * Thread.sleep(10000);
-		 * PortalUtil.setConsolidatedInboxFrame(driver); if
-		 * (uniqueSubString != null && !uniqueSubString.isEmpty()) { for
-		 * (WebElement message : inboxMessageTableList) { if
-		 * (message.getText().contains(uniqueSubString)) {
-		 * message.click(); System.out.println(
-		 * "@#@#@#@#@# The Email exhists in patient portal with a subject:"
-		 * +message.getText());
+		 * return PageFactory.initElements(driver, ConsolidatedInboxMessage.class); } catch(Exception e) { IHGUtil.setFrame(driver, "iframebody");
+		 * clickMessageLink(); Thread.sleep(5000); clickOfficeMessagesLink(); Thread.sleep(10000); PortalUtil.setConsolidatedInboxFrame(driver); if (uniqueSubString
+		 * != null && !uniqueSubString.isEmpty()) { for (WebElement message : inboxMessageTableList) { if (message.getText().contains(uniqueSubString)) {
+		 * message.click(); System.out.println( "@#@#@#@#@# The Email exhists in patient portal with a subject:" +message.getText());
 		 * 
-		 * return PageFactory.initElements(driver,
-		 * ConsolidatedInboxMessage.class); } } } return null; }
+		 * return PageFactory.initElements(driver, ConsolidatedInboxMessage.class); } } } return null; }
 		 */
 	}
 
@@ -144,11 +129,9 @@ public class ConsolidatedInboxPage extends BasePageObject {
 	}
 
 	/**
-	 * Search inbox and open message based on unique string in message
-	 * subject
+	 * Search inbox and open message based on unique string in message subject
 	 * 
-	 * @param uniqueSubString
-	 *               used to find specific message in Inbox
+	 * @param uniqueSubString used to find specific message in Inbox
 	 * @return Consolidated Inbox Message or null if no message is found
 	 * @throws InterruptedException
 	 */
@@ -168,12 +151,13 @@ public class ConsolidatedInboxPage extends BasePageObject {
 			clickOfficeMessagesLink();
 			Thread.sleep(10000);
 			PortalUtil.setConsolidatedInboxFrame(driver);
-			List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='MfAjaxFallbackDefaultDataTable']/tbody",
-							new ArrayList<String>(Arrays.asList(uniqueSubString)));
+			List<Object> list =
+					IHGUtil.searchResultTable(driver, "//table[@id='MfAjaxFallbackDefaultDataTable']/tbody", new ArrayList<String>(Arrays.asList(uniqueSubString)));
 			if (!list.isEmpty()) {
 				BaseTestSoftAssert.assertTrue(((Boolean) list.get(1)).booleanValue());
-				driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']/tbody".concat("/tr["
-								+ Integer.parseInt(list.get(0).toString()) + "]/td[3]"))).click();
+				driver
+						.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']/tbody".concat("/tr[" + Integer.parseInt(list.get(0).toString()) + "]/td[3]")))
+						.click();
 			} else {
 				BaseTestSoftAssert.assertTrue(false, "Message Not Found");
 			}
@@ -230,8 +214,8 @@ public class ConsolidatedInboxPage extends BasePageObject {
 		} catch (Exception ex) {
 			System.out.println("### WARNING: The Link not found (CI not enabled)");
 		}
-		
+
 		return PageFactory.initElements(driver, ThreeTabbedSolutionPage.class);
-	} 
+	}
 
 }

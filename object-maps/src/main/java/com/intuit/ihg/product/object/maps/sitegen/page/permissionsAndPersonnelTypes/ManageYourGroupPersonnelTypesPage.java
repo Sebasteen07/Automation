@@ -21,7 +21,7 @@ public class ManageYourGroupPersonnelTypesPage extends BasePageObject {
 
 	@FindBy(xpath = "(//a[contains(text(),'Manage Permissions')])[4]")
 	private WebElement lnkManagePermissions;
-	
+
 	/**
 	 * @author bkrishnankutty
 	 * @Desc:- constructor for this Page
@@ -63,7 +63,6 @@ public class ManageYourGroupPersonnelTypesPage extends BasePageObject {
 		SitegenlUtil.setSiteGenFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkManagePermissions);
 		lnkManagePermissions.click();
-		return PageFactory
-				.initElements(driver, ManageUserPermissionsPage.class);
+		return PageFactory.initElements(driver, ManageUserPermissionsPage.class);
 	}
 }

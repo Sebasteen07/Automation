@@ -44,8 +44,7 @@ public class PortalFormPage extends BasePageObject {
 
 	/**
 	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the
-	 *        continue button
+	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the continue button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */

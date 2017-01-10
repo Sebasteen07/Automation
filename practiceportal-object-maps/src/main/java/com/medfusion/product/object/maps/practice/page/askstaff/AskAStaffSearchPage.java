@@ -13,48 +13,45 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 
 public class AskAStaffSearchPage extends BasePageObject {
-	
+
 	public static final String PAGE_NAME = "Ask A Staff Search Page";
-	
+
 	// Finds all Status radio options
-	@FindBy(name="searchParams:1:input")
+	@FindBy(name = "searchParams:1:input")
 	private List<WebElement> status;
-	
-	@FindBy(name="searchParams:2:input")
+
+	@FindBy(name = "searchParams:2:input")
 	private WebElement location;
-	
-	@FindBy(name="searchParams:3:input")
+
+	@FindBy(name = "searchParams:3:input")
 	private WebElement questionType;
-	
-	@FindBy(name="buttons:submit")
+
+	@FindBy(name = "buttons:submit")
 	private WebElement getRequests;
-	
-	@FindBy(id="MfAjaxFallbackDefaultDataTable")
+
+	@FindBy(id = "MfAjaxFallbackDefaultDataTable")
 	private WebElement searchResults;
-	
-	@FindBy(xpath=".//table/tbody/tr/td[6]/span")
+
+	@FindBy(xpath = ".//table/tbody/tr/td[6]/span")
 	private List<WebElement> searchResultComplaints;
-	
+
 
 	public AskAStaffSearchPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	/**
-	 * Searches for questions using default options on the page.
-	 * Call the getQuestionDetails method to access the search results.
+	 * Searches for questions using default options on the page. Call the getQuestionDetails method to access the search results.
 	 */
 	public void searchForQuestions() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		
+
 		searchForQuestions(AskAStaffRequestStatus.NONE, null, null);
 	}
-	
+
 	/**
-	 * Searches for questions with all available options.
-	 * Call the getQuestionDetails method to access the search results
-	 * from this page.
+	 * Searches for questions with all available options. Call the getQuestionDetails method to access the search results from this page.
 	 * 
 	 * @param requestStatus as defined in AskAStaffRequestStatus public fields
 	 * @param locationText the visible text option in the select box
@@ -63,7 +60,7 @@ public class AskAStaffSearchPage extends BasePageObject {
 	public void searchForQuestions(int requestStatus, String locationText, String questionTypeText) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		
+
 		// Set status if supplied
 		if (AskAStaffRequestStatus.NONE != requestStatus) {
 			for (WebElement s : status) {
@@ -72,13 +69,13 @@ public class AskAStaffSearchPage extends BasePageObject {
 				}
 			}
 		}
-		
+
 		// Set location if supplied
 		if (locationText != null) {
 			Select locationSelect = new Select(location);
 			locationSelect.selectByVisibleText(locationText);
-		}		
-		
+		}
+
 		// Set question type if supplied
 		if (questionTypeText != null) {
 			Select questionTypeSelect = new Select(questionType);
@@ -87,7 +84,7 @@ public class AskAStaffSearchPage extends BasePageObject {
 
 		getRequests.click();
 	}
-	
+
 	/**
 	 * Called after the searchForQuestions method to find a specific question to process.
 	 * 
@@ -101,21 +98,21 @@ public class AskAStaffSearchPage extends BasePageObject {
 	public AskAStaffQuestionDetailStep1Page getQuestionDetails(String subjectSubString) throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		
+
 		try {
 			searchResults.isDisplayed();
 		} catch (Exception e) {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
-		
+
 		for (WebElement complaint : searchResultComplaints) {
 			if (complaint.getText().contains(subjectSubString)) {
-				complaint.click();				
+				complaint.click();
 				return PageFactory.initElements(driver, AskAStaffQuestionDetailStep1Page.class);
 			}
 		}
-		
-		return null;		
+
+		return null;
 	}
 
 }

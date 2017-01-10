@@ -18,7 +18,7 @@ public class JalapenoForgotPasswordPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "forgotFormContinueButton")
 	public WebElement continueButton;
-	
+
 	public JalapenoForgotPasswordPage(WebDriver driver, String url) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -30,11 +30,11 @@ public class JalapenoForgotPasswordPage extends BasePageObject {
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public JalapenoForgotPasswordPage(WebDriver driver) {
-		super(driver);		
+		super(driver);
 	}
-	
+
 	public boolean assessForgotPasswordPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -43,20 +43,20 @@ public class JalapenoForgotPasswordPage extends BasePageObject {
 
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
-	
+
 	public JalapenoForgotPasswordPage2 fillInDataPage(String email) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		
+
 		log("Setting email address as " + email);
 		inputEmail.sendKeys(email);
-		
+
 		log("Clicking on Continue button");
-		
+
 		continueButton.click();
-		
-		//waitForPageTitle(null, 60);
+
+		// waitForPageTitle(null, 60);
 
 		return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
 	}
-	
+
 }

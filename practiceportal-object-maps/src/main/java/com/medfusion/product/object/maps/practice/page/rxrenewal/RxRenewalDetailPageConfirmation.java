@@ -6,38 +6,38 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
-public class RxRenewalDetailPageConfirmation extends BasePageObject{
+public class RxRenewalDetailPageConfirmation extends BasePageObject {
 
-	@FindBy(xpath="//input[@name='confirmAction' and @value='3']")
+	@FindBy(xpath = "//input[@name='confirmAction' and @value='3']")
 	private WebElement radioCallInTheRx;
-	
-	@FindBy(xpath="//input[@name='confirmAction' and @value='2']")
+
+	@FindBy(xpath = "//input[@name='confirmAction' and @value='2']")
 	private WebElement radioSendToCallInQueue;
-	
-	@FindBy(xpath="//input[@name='confirmAction' and @value='7']")
+
+	@FindBy(xpath = "//input[@name='confirmAction' and @value='7']")
 	private WebElement radioPrintRx;
-	
-	@FindBy(xpath="//input[@name='submit:submit']")
+
+	@FindBy(xpath = "//input[@name='submit:submit']")
 	private WebElement btnContinue;
-	
-	@FindBy(xpath="//input[@name='submit:cancel']")
+
+	@FindBy(xpath = "//input[@name='submit:cancel']")
 	private WebElement btnCancel;
 
 	public RxRenewalDetailPageConfirmation(WebDriver driver) {
 		super(driver);
-		
+
 	}
-	
-public void clickCallInTheRx() {
-		
+
+	public void clickCallInTheRx() {
+
 		radioCallInTheRx.click();
 	}
-	
-public RxRenewalConfirmCommunication clickContinue() {
-		
+
+	public RxRenewalConfirmCommunication clickContinue() {
+
 		btnContinue.click();
-		
+
 		return PageFactory.initElements(driver, RxRenewalConfirmCommunication.class);
 	}
-	
+
 }

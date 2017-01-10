@@ -14,42 +14,42 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 
-public class AppointmentRequestStep1Page extends BasePageObject{
-	
+public class AppointmentRequestStep1Page extends BasePageObject {
+
 	public static final String PAGE_NAME = "Appt Request Page - Step 1";
-	
-	@FindBy( how = How.NAME, using="locprovider:locationWrapper:_body:location")
+
+	@FindBy(how = How.NAME, using = "locprovider:locationWrapper:_body:location")
 	private WebElement dropDownLocation;
-	
-	@FindBy( how = How.NAME, using="locprovider:providerWrapper:_body:provider")
+
+	@FindBy(how = How.NAME, using = "locprovider:providerWrapper:_body:provider")
 	private WebElement provider;
-	
-	@FindBy( how = How.NAME, using="insuranceWrapper:_body:insurance")
+
+	@FindBy(how = How.NAME, using = "insuranceWrapper:_body:insurance")
 	private WebElement insurance;
-	
-	@FindBy( how = How.NAME, using=":submit")
+
+	@FindBy(how = How.NAME, using = ":submit")
 	private WebElement btnContinue;
 
 	public AppointmentRequestStep1Page(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public AppointmentRequestStep2Page requestAppointment( String title,String sLocation, String sProvider, String sInsurance ) throws InterruptedException {
+
+	public AppointmentRequestStep2Page requestAppointment(String title, String sLocation, String sProvider, String sInsurance) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		
+
 		// Set Location if available (it could default if only one location)
 		if (dropDownLocation.isDisplayed()) {
 			Select selectLocation = new Select(dropDownLocation);
 			selectLocation.selectByVisibleText(sLocation);
 		}
-		
+
 		// Set provider
-		if( sProvider != null && provider.isDisplayed() ) {
+		if (sProvider != null && provider.isDisplayed()) {
 			try {
 				Select providerSelect = new Select(provider);
-				
+
 				for (WebElement option : providerSelect.getOptions()) {
 					Log4jUtil.log("Appt Request Provider Option: " + option.getText() + ", Needs to be: " + sProvider);
 					if (option.getText().contains(sProvider)) {
@@ -57,15 +57,15 @@ public class AppointmentRequestStep1Page extends BasePageObject{
 					}
 				}
 				// rperkinsjr - Commenting line below as for automation practices this seems to be a select box
-				// 				so code will follow select procedures
+				// so code will follow select procedures
 				// provider.sendKeys( sProvider );
-			} catch( Exception ex ) {
+			} catch (Exception ex) {
 				log("Couldn't set provider - may be read only: " + ex.getMessage(), "WARN");
 			}
 		}
-		
-		if( sInsurance != null )  {
-			insurance.sendKeys( sInsurance );
+
+		if (sInsurance != null) {
+			insurance.sendKeys(sInsurance);
 		}
 
 		btnContinue.click();

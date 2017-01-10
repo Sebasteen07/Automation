@@ -9,13 +9,13 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
 
-public class PhrManagePermissionsPage extends BasePageObject{
+public class PhrManagePermissionsPage extends BasePageObject {
 
-	@FindBy(css="a[href*='emergencyTerms']")
+	@FindBy(css = "a[href*='emergencyTerms']")
 	private WebElement btnAllowEmergencyAccess;
 
-//	<a class="permission_anchortag1" href="/phr/ui/action/emergencyAccess.do">Edit</a>
-	@FindBy(css="a[class*='permission_anchortag1']")
+	// <a class="permission_anchortag1" href="/phr/ui/action/emergencyAccess.do">Edit</a>
+	@FindBy(css = "a[class*='permission_anchortag1']")
 	private WebElement btnEdit;
 
 	public PhrManagePermissionsPage(WebDriver driver) {
@@ -25,7 +25,7 @@ public class PhrManagePermissionsPage extends BasePageObject{
 	public boolean hasAllowEmergencyAccess() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil ihgUtil = new IHGUtil(driver);
-		return ihgUtil.isFoundBasedOnCssSelector( "a[href*='emergencyTerms']" );
+		return ihgUtil.isFoundBasedOnCssSelector("a[href*='emergencyTerms']");
 	}
 
 	public PhrEmergencyTermsOfUse clickAllowEmergencyAccess() {
@@ -34,9 +34,9 @@ public class PhrManagePermissionsPage extends BasePageObject{
 
 		return PageFactory.initElements(driver, PhrEmergencyTermsOfUse.class);
 	}
-	
 
-	public PhrEmergencyAccessPage clickEdit(){
+
+	public PhrEmergencyAccessPage clickEdit() {
 		IHGUtil.PrintMethodName();
 		btnEdit.click();
 		return PageFactory.initElements(driver, PhrEmergencyAccessPage.class);

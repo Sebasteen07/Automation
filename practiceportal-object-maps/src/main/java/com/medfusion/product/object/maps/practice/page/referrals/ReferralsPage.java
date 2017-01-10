@@ -104,9 +104,7 @@ public class ReferralsPage extends BasePageObject {
 	}
 
 
-	public void sendReferralToAnotherPractice(String patientFirstName, String patientLastName, String practiceName,
-			boolean patientExists)
-			throws Exception {
+	public void sendReferralToAnotherPractice(String patientFirstName, String patientLastName, String practiceName, boolean patientExists) throws Exception {
 		IHGUtil.waitForElement(driver, 30, sendReferrals);
 		sendReferrals.click();
 		driver.switchTo().frame("iframe");
@@ -130,8 +128,7 @@ public class ReferralsPage extends BasePageObject {
 		buttonSubmit.click();
 	}
 
-	public void checkReferalArrived(String patientFirstName, String patientLastName)
-			throws Exception {
+	public void checkReferalArrived(String patientFirstName, String patientLastName) throws Exception {
 		IHGUtil.waitForElement(driver, 30, incomingReferrals);
 		incomingReferrals.click();
 		driver.switchTo().frame("iframe");

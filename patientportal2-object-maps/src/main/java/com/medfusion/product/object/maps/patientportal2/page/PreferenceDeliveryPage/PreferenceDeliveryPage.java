@@ -19,35 +19,34 @@ public class PreferenceDeliveryPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement updateMissingInfoButton;
-	
-	
-	public PreferenceDeliveryPage(WebDriver driver) {	
+
+
+	public PreferenceDeliveryPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public void clickOKButton() {
-		
+
 		IHGUtil.PrintMethodName();
 		log("Clicking on updateMissingInfoButton button");
 		updateMissingInfoButton.click();
 	}
-	
+
 	public void clickElectronicPaymentPreference() {
-		
+
 		IHGUtil.PrintMethodName();
 		log("Clicking on Electronically radiobutton");
 		inputPaymentElectronic.click();
 	}
-	
+
 	public void clickPaperPaymentPreference() {
-		
+
 		IHGUtil.PrintMethodName();
 		log("Clicking on In the mail radiobutton");
 		inputPaymentPaper.click();
 	}
-	
-	
+
 
 
 }

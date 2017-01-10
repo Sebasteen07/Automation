@@ -38,7 +38,7 @@ public class IntegrationConstants {
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "You have new health data";
 
-	//Appointment Request constants
+	// Appointment Request constants
 	public static final String REASON = "Reason";
 	public static final String CREATED_TIME = "CreatedDateTime";
 	public static final String UPDATE_TIME = "UpdatedDateTime";
@@ -52,8 +52,8 @@ public class IntegrationConstants {
 	public static final String AR_SM_SUBJECT = "This is reply to Appointment";
 	public static final String AR_SM_BODY = "New Reply to AR for";
 	public static final String AR_REASON = "Carpel Tunnel";
-	
-	//Prescription Constant
+
+	// Prescription Constant
 	public static final String MEDICATION = "Medication";
 	public static final String DOSAGE = "200gm";
 	public static final String QUANTITY = "2";
@@ -63,8 +63,8 @@ public class IntegrationConstants {
 	public static final CharSequence NO_OF_REFILLS = "12";
 	public static final CharSequence PRESCRIPTION_NO = "#12345";
 	public static final CharSequence ADDITIONAL_INFO = "New prescription request";
-	
-	//New added variables for Post Prescription
+
+	// New added variables for Post Prescription
 	public static final String PRESCRIPTION = "Prescription";
 	public static final String ID = "id";
 	public static final String PRESCRIPTION_RENEWAL_REQUEST = "PrescriptionRenewalRequest";
@@ -74,43 +74,43 @@ public class IntegrationConstants {
 	public static final String QUANTITY_TAG = "Quantity";
 	public static final String REFILL_NUMBER_TAG = "RefillNumber";
 	public static final String PRESCRIPTION_NUMBER_TAG = "PrescriptionNumber";
-	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";	
-	
-	//Read Communication
+	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";
+
+	// Read Communication
 	public static final String READCOMMUNICATION = "ReadCommunication";
 	public static final String READDATETIMESTAMP = "readdatetimestamp";
-	
-	//All Script CCD
+
+	// All Script CCD
 	public static final String TRANSPORTSTATUS = "ns4:TransportStatus";
 	public static final String CCDSTATUS = "Success";
-	
-	//Form Export
+
+	// Form Export
 	public static final String MEDFUSIONPATIENTID = "IntuitPatientId";
 	public static final String CCDTAG = "CcdXml";
-	
-	//Added new constants for PIDC Regression 
+
+	// Added new constants for PIDC Regression
 	public static final String GENDER = "Gender";
 	public static final String SSN = "SocialSecurityNumber";
 	public static final String CITY = "City";
 	public static final String ZIPCODE = "ZipCode";
 	public static final String HOMEPHONE = "HomePhone";
-	
+
 	public static final String MIDDLENAME = "MiddleName";
 	public static final String MOBILEPHONE = "MobilePhone";
 	public static final String WORKPHONE = "WorkPhone";
-	
+
 	public static final String PREFERREDLANGUAGE = "PreferredLanguage";
 	public static final String RACE = "Race";
 	public static final String ETHINICITY = "Ethnicity";
 	public static final String MARRITALSTATUS = "MaritalStatus";
-	public static final String CHOOSECOMMUNICATION= "PreferredCommunication";
-	
-	public static final String PATIENTRELATIONTOSUBSCRIBER= "PatientRelationToSubscriber";
-	
+	public static final String CHOOSECOMMUNICATION = "PreferredCommunication";
+
+	public static final String PATIENTRELATIONTOSUBSCRIBER = "PatientRelationToSubscriber";
+
 	public static final String PRIMARYINSURANCE = "PrimaryInsurance";
 	public static final String POLICYNUMBER = "PolicyNumber";
 	public static final String COMPANYNAME = "CompanyName";
-	
+
 	public static final String DATEOFBIRTH = "DateOfBirth";
 	public static final String SUBSCRIBERDATEOFBIRTH = "SubscriberDateOfBirth";
 	public static final String CLAIMSPHONE = "ClaimsPhone";
@@ -118,33 +118,33 @@ public class IntegrationConstants {
 	public static final String GROUPNUMBER = "GroupNumber";
 	public static final String MEDFUSIONID = "MedfusionPatientId";
 	public static final String NName = "Name";
-	
-	public static final String PAYMENTTYPE = "PaymentType";
-	public static final String ACCOUNTNUMBER ="PatientAccountNumber";
-	public static final String PAYMENTSTATUS ="PaymentStatus";
-	public static final String AMOUNT ="AmountPaid";
-	public static final String PAYMENTINFO="PaymentInformation";
-	public static final String SUBMITTED="SUBMITTED";
-	public static final String POSTED="POSTED";
-	public static final String ACCEPTED="ACCEPTED";
-	public static final String CCTYPE="CCType";
-	public static final String LASTDIGITS="CCLast4Digits";
-	public static final String CONFIRMNUMBER="ConfirmationNumber";
-	public static final String PAYMENT="Payment";
-	public static final String PAYNOWPAYMENT="Pay Now Payment";
-	public static final String VCSPAYMENT="VCS Payment";
-	public static final String BILLPAYMENT="BillPayment";
-	
-	//Email notification constant
-	public static final String EMAIL_BODY_LINK="fuseaction=com.start";
-	public static final String PI_EMAIL_BODY_LINK="portal/#/user";
 
-	//Statement Preference
-	public static final String STMT_PREF="StatementPreference";
-	public static final String MEDFUSION_MEMBER_ID="MedfusionMemberId";
-	public static final String PREFERENCES="Preferences";
-	public static final String PREFERENCE="Preference";
-	public static final String PREF_NAME="Name";
-	public static final String PREF_VALUE="Value";
+	public static final String PAYMENTTYPE = "PaymentType";
+	public static final String ACCOUNTNUMBER = "PatientAccountNumber";
+	public static final String PAYMENTSTATUS = "PaymentStatus";
+	public static final String AMOUNT = "AmountPaid";
+	public static final String PAYMENTINFO = "PaymentInformation";
+	public static final String SUBMITTED = "SUBMITTED";
+	public static final String POSTED = "POSTED";
+	public static final String ACCEPTED = "ACCEPTED";
+	public static final String CCTYPE = "CCType";
+	public static final String LASTDIGITS = "CCLast4Digits";
+	public static final String CONFIRMNUMBER = "ConfirmationNumber";
+	public static final String PAYMENT = "Payment";
+	public static final String PAYNOWPAYMENT = "Pay Now Payment";
+	public static final String VCSPAYMENT = "VCS Payment";
+	public static final String BILLPAYMENT = "BillPayment";
+
+	// Email notification constant
+	public static final String EMAIL_BODY_LINK = "fuseaction=com.start";
+	public static final String PI_EMAIL_BODY_LINK = "portal/#/user";
+
+	// Statement Preference
+	public static final String STMT_PREF = "StatementPreference";
+	public static final String MEDFUSION_MEMBER_ID = "MedfusionMemberId";
+	public static final String PREFERENCES = "Preferences";
+	public static final String PREFERENCE = "Preference";
+	public static final String PREF_NAME = "Name";
+	public static final String PREF_VALUE = "Value";
 }
 

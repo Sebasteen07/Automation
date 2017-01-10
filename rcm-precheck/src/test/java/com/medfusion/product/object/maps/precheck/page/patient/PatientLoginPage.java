@@ -53,8 +53,7 @@ public class PatientLoginPage extends BasePageObject {
 					log("WebElement " + w.toString() + "is NOT displayed");
 					return false;
 				}
-			}
-			catch (Throwable e) {
+			} catch (Throwable e) {
 				log(e.getStackTrace().toString());
 				return false;
 			}

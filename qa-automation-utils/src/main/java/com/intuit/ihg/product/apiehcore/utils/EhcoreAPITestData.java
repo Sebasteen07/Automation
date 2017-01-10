@@ -38,7 +38,7 @@ public class EhcoreAPITestData {
 	public String getHost() {
 		return ehcoreapiObj.host;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns port nuber from excel sheet
@@ -70,7 +70,7 @@ public class EhcoreAPITestData {
 	public String getMongoServerAddress() {
 		return ehcoreapiObj.mongo_serverAddress;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns Practice ID from excel sheet.
@@ -78,7 +78,7 @@ public class EhcoreAPITestData {
 	public String getPracticeID() {
 		return ehcoreapiObj.practiceId;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns Mongo Server Address from excel sheet.
@@ -86,7 +86,7 @@ public class EhcoreAPITestData {
 	public String getProviderID() {
 		return ehcoreapiObj.providerId;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns Mongo Server Address from excel sheet.
@@ -94,6 +94,7 @@ public class EhcoreAPITestData {
 	public String getPatientID() {
 		return ehcoreapiObj.patientId;
 	}
+
 	/**
 	 * 
 	 * @return : Returns Mongo Server Address from excel sheet.
@@ -101,18 +102,18 @@ public class EhcoreAPITestData {
 	public String getCCD() {
 		return ehcoreapiObj.ccd;
 	}
-	
+
 	/**
 	 * @return : Returns URL from excel sheet.
 	 */
 	public String getUrl() {
 		return ehcoreapiObj.url;
 	}
-	
+
 	public String getProtocol() {
 		return ehcoreapiObj.protocol;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns All Scripts ccdexporturl from excel sheet.
@@ -120,8 +121,8 @@ public class EhcoreAPITestData {
 	public String getAllscriptsccdexporturl() {
 		return ehcoreapiObj.allscriptsccdexporturl;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @return : Returns All Scripts ccd import url from excel sheet.
@@ -129,7 +130,7 @@ public class EhcoreAPITestData {
 	public String getAllscriptsccdimporturl() {
 		return ehcoreapiObj.allscriptsccdimporturl;
 	}
-	
+
 	/**
 	 * 
 	 * @return : Returns mongo properties from excel sheet.

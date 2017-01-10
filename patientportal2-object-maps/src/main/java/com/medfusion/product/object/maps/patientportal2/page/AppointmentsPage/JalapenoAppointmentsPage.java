@@ -15,34 +15,34 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoAppointmentsPage extends BasePageObject {
-	
+
 	private static final String NO_APPOINTMENTS_TEXT_ID = "noAppointments";
 
 	@FindBy(how = How.LINK_TEXT, using = "Upcoming")
 	public WebElement upcomingAppointmentsButton;
-	
+
 	@FindBy(how = How.LINK_TEXT, using = "Past")
 	public WebElement pastAppointmentsButton;
-	
+
 	@FindBy(how = How.LINK_TEXT, using = "Previous Requests")
 	public WebElement previousAppointmentsRequestsButton;
-	
+
 	@FindBy(how = How.ID, using = "appointmentSolutionBtn")
 	public WebElement appointmentSolutionButton;
-	
+
 	@FindBy(how = How.ID, using = NO_APPOINTMENTS_TEXT_ID)
 	public WebElement noAppointmentsText;
-	
+
 	@FindBy(how = How.XPATH, using = "//ul[contains(@class, 'myAccountList')]")
 	public WebElement appointments;
-	
+
 	public JalapenoAppointmentsPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public List<WebElement> getAppointments() {
 		IHGUtil util = new IHGUtil(driver);
 		if (util.isFoundBy(By.id(NO_APPOINTMENTS_TEXT_ID), 5)) {
@@ -51,7 +51,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 		List<WebElement> result = appointments.findElements(By.xpath(".//div[@class='row']"));
 		return result;
 	}
-	
+
 	public void goToUpcomingAppointments() {
 		if (upcomingAppointmentsButton.isDisplayed()) {
 			log("Going to upcoming appointments page");
@@ -60,7 +60,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 			log("Upcoming appointments button not found");
 		}
 	}
-	
+
 	public void goToPastAppointments() {
 		if (pastAppointmentsButton.isDisplayed()) {
 			log("Going to past appointments page");
@@ -69,26 +69,26 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 			log("Past appointments button not found");
 		}
 	}
-	
+
 	private ArrayList<WebElement> getBasicAppointmentsPageElements() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(upcomingAppointmentsButton);
 		webElementsList.add(pastAppointmentsButton);
 		webElementsList.add(previousAppointmentsRequestsButton);
 		webElementsList.add(appointmentSolutionButton);
-		
+
 		return webElementsList;
 	}
-	
+
 	public boolean assessAppointmentsPageElementsNoAppointments() {
 		ArrayList<WebElement> webElementsList = getBasicAppointmentsPageElements();
 		webElementsList.add(noAppointmentsText);
 
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
-	
+
 	public boolean assessAppointmentsPageElementsWithAppointments() {
-		ArrayList<WebElement> webElementsList = getBasicAppointmentsPageElements();		
+		ArrayList<WebElement> webElementsList = getBasicAppointmentsPageElements();
 
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}

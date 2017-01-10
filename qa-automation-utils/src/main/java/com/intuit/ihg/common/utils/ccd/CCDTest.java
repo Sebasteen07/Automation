@@ -28,27 +28,28 @@ public class CCDTest {
 	}
 
 	static void validateCDA(ClinicalDocument document) {
-    	ValidationResult result = new ValidationResult();
+		ValidationResult result = new ValidationResult();
 		CDAUtil.validate(document, result);
 
 		System.out.println(result.getAllDiagnostics().size());
 
 		for (Diagnostic diagnostic : result.getAllDiagnostics()) {
 			CDADiagnostic cdaDiagnostic = new CDADiagnostic(diagnostic);
-			if(cdaDiagnostic.isError()) {
+			if (cdaDiagnostic.isError()) {
 				EObject target = cdaDiagnostic.getTarget();
 				System.out.println(cdaDiagnostic.getMessage());
 				System.out.println("target: " + target);
 				System.out.println("");
 			}
 		}
-    }
+	}
 
 	/**
 	 * Retrieves CCD produced by form using rest call.
-	 * @param timeStamp The time (unix timestamp) to define when the form was submitted. The form should be
-	 * 					submitted sometime between the timestamp time and present time
-	 * @param restUrl	URL for the rest call (includes practice integration ID retrievable from - SiteGenerator > Interface Setup > External Systems)
+	 * 
+	 * @param timeStamp The time (unix timestamp) to define when the form was submitted. The form should be submitted sometime between the timestamp time and
+	 *        present time
+	 * @param restUrl URL for the rest call (includes practice integration ID retrievable from - SiteGenerator > Interface Setup > External Systems)
 	 * @return Method returns CCD in the form of xml as a String value
 	 */
 	public static String getFormCCD(long timeStamp, String restUrl) throws Exception {
@@ -61,27 +62,26 @@ public class CCDTest {
 
 		try {
 			xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+		} catch (Exception requestException) {
+			// Try to get response code from the exception message using regular expression
+			int errorCode;
+			Pattern pattern = Pattern.compile("\\d\\d\\d");
+			Matcher matcher = pattern.matcher(requestException.getMessage());
+
+			if (!matcher.find()) {
+				System.out.print("Error code not found");
+				throw requestException;
+			} else {
+				errorCode = Integer.parseInt(matcher.group());
+
+				if (errorCode == 204) { // CCD may not have yet been generated
+					TimeUnit.SECONDS.sleep(10);
+					xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
+				} else {
+					throw requestException;
+				}
+			}
 		}
-		catch (Exception requestException) {
-            // Try to get response code from the exception message using regular expression
-            int errorCode;
-            Pattern pattern = Pattern.compile("\\d\\d\\d");
-            Matcher matcher = pattern.matcher(requestException.getMessage());
-
-            if (!matcher.find()) {
-                System.out.print("Error code not found");
-                throw requestException;
-            } else {
-                errorCode = Integer.parseInt(matcher.group());
-
-                if (errorCode == 204) { // CCD may not have yet been generated
-                    TimeUnit.SECONDS.sleep(10);
-                    xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
-                } else {
-                    throw requestException;
-                }
-            }
-        }
 
 		xml = StringEscapeUtils.unescapeXml(xml);
 

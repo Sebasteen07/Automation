@@ -25,24 +25,21 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 * Tect Case in TestLink: MF-1265
 	 * 
 	 * @author phajek
-	 * @Date: 13/02/2015 StepsToReproduce: Log in to SG as SU Go to Forms Config Unpublish all forms
-	 *        Delete all forms Search and add a new Calculated form Test if it is displayed in
-	 *        Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms
-	 *        directory === Prerequisite for the test case to run========= Practices configured on:
-	 *        DEV3, MANUAL login to the SG as superuser
-	 *        ============================================================
+	 * @Date: 13/02/2015 StepsToReproduce: Log in to SG as SU Go to Forms Config Unpublish all forms Delete all forms Search and add a new Calculated form Test if
+	 *        it is displayed in Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms directory === Prerequisite for the test
+	 *        case to run========= Practices configured on: DEV3, MANUAL login to the SG as superuser ============================================================
 	 * @throws Exception
 	 */
 	@Test(enabled = true)
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
-		log("step 1: navigate to SiteGen PracticeHomePage");
+		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
-		SiteGenHomePage sHomePage = PageFactory.initElements(driver, SiteGenHomePage.class);
+		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
+		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
+		log("step 2: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
-		log("step 2: LOG IN MANUALLY AS SUPERUSER, the test will continue after that, waiting 30s");
 		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(testcasesData.getAutomationPracticeName());
 		String parentHandle = driver.getWindowHandle();
 		log("step 3: Click on Patient Forms");
@@ -71,9 +68,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @author Adam W Steps: Login to Site Generator, click on Patient Forms, open calculated form
-	 *         change welcome screen, save the form, exit, publish it, test changes in preview do the
-	 *         same for a second form
+	 * @author Adam W Steps: Login to Site Generator, click on Patient Forms, open calculated form change welcome screen, save the form, exit, publish it, test
+	 *         changes in preview do the same for a second form
 	 */
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
@@ -89,16 +85,15 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		formsConfigPage.unpublishAllForms().editFormsWelcomePage(SitegenConstants.CALCULATED_PHQ9_FORM, newWelcomeMessage)
 				.editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage).publishForm(SitegenConstants.CALCULATED_PHQ9_FORM)
 				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
-
-		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		PortalUtil.setquestionnarieFrame(driver);
+		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
 		assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
 	}
 
 	/**
 	 * @author: Petr H
-	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, fill in the
-	 *         form, submit the form, check if PDF was generated Practices configured on: DEV3
+	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, fill in the form, submit the form, check if PDF was generated Practices
+	 *         configured on: DEV3
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testAllCalculatedFormsPortal1() throws Exception {
@@ -130,7 +125,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 			calculatedFormPage.submitForm();
 
 			log("Step 3: Check if the PDF is downloadable.");
-			Utils.checkPDF(formsPage, formName, driver);
+			Utils.checkIfPDFCanBeDownloaded(formName, driver);
 
 			log("Step 4: Check if the date is correct");
 			Utils.verifyFormsDatePatientPortal(formsPage, formName, driver);
@@ -140,9 +135,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 	/**
 	 * @author: Petr H
-	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, try to save
-	 *         without any answer, try to save it with one answer missing and finally saves it with
-	 *         all the correct answers Practices configured on: DEV3
+	 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, try to save without any answer, try to save it with one answer missing and
+	 *         finally saves it with all the correct answers Practices configured on: DEV3
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {

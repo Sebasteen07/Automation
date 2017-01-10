@@ -23,19 +23,15 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
 
-public class PracticeUtil extends IHGUtil implements Runnable{
+public class PracticeUtil extends IHGUtil implements Runnable {
 
 	public static String[] exeArg = null;
 	public static int timeout = 0;
 
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
-	Dimension screenResolution = new Dimension(
-			(int) toolkit.getScreenSize().getWidth(), 
-			(int) toolkit.getScreenSize().getHeight() );
+	Dimension screenResolution = new Dimension((int) toolkit.getScreenSize().getWidth(), (int) toolkit.getScreenSize().getHeight());
 
-	Dimension halfWidthscreenResolution = new Dimension(
-			(int) toolkit.getScreenSize().getWidth() / 2, 
-			(int) toolkit.getScreenSize().getHeight() );
+	Dimension halfWidthscreenResolution = new Dimension((int) toolkit.getScreenSize().getWidth() / 2, (int) toolkit.getScreenSize().getHeight());
 
 	protected WebDriver driver;
 
@@ -45,13 +41,12 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	}
 
 	/**
-	 * @author bbinisha
-	 * Sets frame for Practice portal pages. This is typically Wicket pages.
+	 * @author bbinisha Sets frame for Practice portal pages. This is typically Wicket pages.
 	 * @param driver
 	 */
 	public static void setPracticeFrame(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver,"iframebody");
+		IHGUtil.setFrame(driver, "iframebody");
 	}
 
 	/**
@@ -59,17 +54,13 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	 * @Description : Set the Arguments
 	 * @param args
 	 */
-	public void setExeArg(String[] args)
-	{
-		PracticeUtil.exeArg=null;
-		PracticeUtil.exeArg=args;
-		try
-		{
-			timeout=Integer.parseInt(PracticeUtil.exeArg[PracticeUtil.exeArg.length-1]);
-		}
-		catch(NumberFormatException nfe)
-		{
-			timeout=15000;
+	public void setExeArg(String[] args) {
+		PracticeUtil.exeArg = null;
+		PracticeUtil.exeArg = args;
+		try {
+			timeout = Integer.parseInt(PracticeUtil.exeArg[PracticeUtil.exeArg.length - 1]);
+		} catch (NumberFormatException nfe) {
+			timeout = 15000;
 		}
 	}
 
@@ -78,8 +69,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	 * @Description : Get the Arguments.
 	 * @return
 	 */
-	public String[] getExeArg()
-	{
+	public String[] getExeArg() {
 		return exeArg;
 	}
 
@@ -90,29 +80,24 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	 * @return
 	 * @throws Exception
 	 */
-	public String getFilepath (String directoryName ) throws Exception {
+	public String getFilepath(String directoryName) throws Exception {
 
-		String filePath="";
+		String filePath = "";
 		File targetDataDrivenFile = null;
-		targetDataDrivenFile = new File(TestConfig.getTestRoot() 
-				+ File.separator + "src" 
-				+ File.separator + "test" 
-				+ File.separator + "resources" 
-				+ File.separator + directoryName);
+		targetDataDrivenFile =
+				new File(TestConfig.getTestRoot() + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + directoryName);
 
-		// To extract the excel sheet from the jar and use it         
+		// To extract the excel sheet from the jar and use it
 
-		if (targetDataDrivenFile.exists())
-		{
-			filePath = String.valueOf(targetDataDrivenFile.toString()+File.separator).trim();
-		}
-		else {
-			new File(targetDataDrivenFile.getParent()+"/"+directoryName+"/").mkdirs();
-			File destination=new File(targetDataDrivenFile.getParent()+"/"+directoryName+"/");
-			copyResourcesRecursively(super.getClass().getResource("/"+directoryName+"/"),destination);
+		if (targetDataDrivenFile.exists()) {
+			filePath = String.valueOf(targetDataDrivenFile.toString() + File.separator).trim();
+		} else {
+			new File(targetDataDrivenFile.getParent() + "/" + directoryName + "/").mkdirs();
+			File destination = new File(targetDataDrivenFile.getParent() + "/" + directoryName + "/");
+			copyResourcesRecursively(super.getClass().getResource("/" + directoryName + "/"), destination);
 			filePath = String.valueOf(destination.toString()).trim();
 
-		} 
+		}
 		return filePath;
 	}
 
@@ -123,16 +108,13 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	 * @param destination
 	 * @return Returns true if all files are moved else returns false
 	 */
-	public static boolean copyResourcesRecursively( 
-			final URL originUrl, final File destination) {
+	public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();
 			if (urlConnection instanceof JarURLConnection) {
-				return ReadFilePath.copyJarResourcesRecursively(destination,
-						(JarURLConnection) urlConnection);
+				return ReadFilePath.copyJarResourcesRecursively(destination, (JarURLConnection) urlConnection);
 			} else {
-				return ReadFilePath.copyFilesRecusively(new File(originUrl.getPath()),
-						destination);
+				return ReadFilePath.copyFilesRecusively(new File(originUrl.getPath()), destination);
 			}
 		} catch (final IOException e) {
 			e.printStackTrace();
@@ -143,34 +125,28 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	/**
 	 * @description : Used to run the Autoit IT command in the command prompt.
 	 * @return void
-	 */ 
+	 */
 	public void run() {
 		// TODO Auto-generated method stub
-		String command="";
-		for(int i=0;i<PracticeUtil.exeArg.length;i++)
-		{
-			if(i<PracticeUtil.exeArg.length)
-			{
-				if(PracticeUtil.exeArg[i].contains(" "))
-				{
-					PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\"";
+		String command = "";
+		for (int i = 0; i < PracticeUtil.exeArg.length; i++) {
+			if (i < PracticeUtil.exeArg.length) {
+				if (PracticeUtil.exeArg[i].contains(" ")) {
+					PracticeUtil.exeArg[i] = "\"" + PracticeUtil.exeArg[i] + "\"";
 				}
-				command+=PracticeUtil.exeArg[i]+" ";
-			}
-			else
-			{
-				if(PracticeUtil.exeArg[i].contains(" "))
-				{
-					PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\"";
+				command += PracticeUtil.exeArg[i] + " ";
+			} else {
+				if (PracticeUtil.exeArg[i].contains(" ")) {
+					PracticeUtil.exeArg[i] = "\"" + PracticeUtil.exeArg[i] + "\"";
 				}
-				command+=PracticeUtil.exeArg[i];
+				command += PracticeUtil.exeArg[i];
 			}
-		}   
+		}
 		try {
 			Thread.sleep(timeout);
-			ReadFilePath path=new ReadFilePath();
+			ReadFilePath path = new ReadFilePath();
 
-			Runtime.getRuntime().exec(path.getFilepath("AutoIT")+File.separator+command);
+			Runtime.getRuntime().exec(path.getFilepath("AutoIT") + File.separator + command);
 
 		} catch (Exception e) {
 
@@ -182,7 +158,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	public void tabBrowsing(int n) throws AWTException, InterruptedException {
 		Robot rb = new Robot();
 		Thread.sleep(3000);
-		for ( int i=0 ; i<n ; i++) {
+		for (int i = 0; i < n; i++) {
 			rb.keyPress(KeyEvent.VK_TAB);
 			rb.keyRelease(KeyEvent.VK_TAB);
 		}
@@ -190,7 +166,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 
 	public void pressEnterKey() throws AWTException, InterruptedException {
 		Robot rb = new Robot();
-		Thread.sleep(5000);		
+		Thread.sleep(5000);
 		rb.keyPress(KeyEvent.VK_ENTER);
 		rb.keyRelease(KeyEvent.VK_ENTER);
 		Thread.sleep(5000);
@@ -204,8 +180,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	}
 
 	/**
-	 * @author :bbinisha
-	 * Description: This method switches the driver control to the print pop up window
+	 * @author :bbinisha Description: This method switches the driver control to the print pop up window
 	 * @throws InterruptedException
 	 */
 	public void switchToNewWindow() throws InterruptedException {
@@ -219,7 +194,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 	public void tabBack(int n) throws AWTException, InterruptedException {
 		Robot rb = new Robot();
 		Thread.sleep(3000);
-		for ( int i=0 ; i<n ; i++) {
+		for (int i = 0; i < n; i++) {
 			rb.keyPress(KeyEvent.VK_SHIFT);
 			rb.keyPress(KeyEvent.VK_TAB);
 			Thread.sleep(3000);
@@ -230,6 +205,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 
 	/**
 	 * Will return true if Element exist else false
+	 * 
 	 * @param element :- WebElement
 	 * @return boolean
 	 */
@@ -239,7 +215,7 @@ public class PracticeUtil extends IHGUtil implements Runnable{
 			Actions builder = new Actions(driver);
 			builder.moveToElement(element).build().perform();
 			Point p = element.getLocation();
-			System.out.println("Where on the page is the top left-hand corner of the rendered element"+p);
+			System.out.println("Where on the page is the top left-hand corner of the rendered element" + p);
 			return true;
 		} catch (Exception e) {
 			return false;

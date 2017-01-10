@@ -17,7 +17,7 @@ public class MessageCenterInboxPage extends BasePageObject {
 
 	@FindBy(xpath = ".//a[contains(@class, 'messageTab') and text() = 'Inbox']")
 	private WebElement inboxTab;
-	
+
 	@FindBy(xpath = ".//table[@class='fixedDataTable']/tbody/tr[1]")
 	private WebElement firstMessageRow;
 
@@ -45,18 +45,16 @@ public class MessageCenterInboxPage extends BasePageObject {
 	}
 
 	/**
-	 * Search inbox and open message based on unique string in message
-	 * subject
+	 * Search inbox and open message based on unique string in message subject
 	 * 
-	 * @param uniqueSubString
-	 *               used to find specific message in Inbox
+	 * @param uniqueSubString used to find specific message in Inbox
 	 * @return New Inbox Message or null if no message is found
 	 * @throws InterruptedException
 	 */
 	public MessagePage openMessageInInbox(String uniqueSubString, int maxCount) {
 		IHGUtil.PrintMethodName();
 		log("Opening message with subject " + uniqueSubString);
-		
+
 		for (int i = 1; i <= (maxCount + 1); i++) {
 			try {
 				PortalUtil.setPortalFrame(driver);
@@ -82,7 +80,7 @@ public class MessageCenterInboxPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 10, firstMessageRow);
 		firstMessageRow.click();
-		
+
 		return PageFactory.initElements(driver, MessagePage.class);
 	}
 

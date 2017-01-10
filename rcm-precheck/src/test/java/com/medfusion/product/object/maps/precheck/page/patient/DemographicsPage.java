@@ -15,55 +15,55 @@ public class DemographicsPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "demographicsConfirmButton")
 	private WebElement demographicsConfirmButton;
-	
+
 	@FindBy(how = How.ID, using = "firstName")
 	private WebElement firstNameInput;
-	
+
 	@FindBy(how = How.ID, using = "middleName")
 	private WebElement middleNameInput;
-	
+
 	@FindBy(how = How.ID, using = "lastName")
 	private WebElement lastNameInput;
-	
+
 	@FindBy(how = How.ID, using = "dob")
 	private WebElement dobInput;
-	
+
 	@FindBy(how = How.ID, using = "street")
 	private WebElement streetInput;
 
 	@FindBy(how = How.ID, using = "street2")
 	private WebElement street2Input;
-	
+
 	@FindBy(how = How.ID, using = "city")
 	private WebElement cityInput;
-	
+
 	@FindBy(how = How.ID, using = "state")
 	private WebElement stateInput;
-	
+
 	@FindBy(how = How.ID, using = "zip")
 	private WebElement zipInput;
-	
+
 	@FindBy(how = How.ID, using = "phone")
 	private WebElement phoneInput;
-	
+
 	@FindBy(how = How.ID, using = "email")
 	private WebElement emailInput;
-	
+
 	@FindBy(how = How.ID, using = "preferredPharmacyName")
 	private WebElement preferredPharmacyNameInput;
-	
+
 	@FindBy(how = How.ID, using = "preferredPharmacyPhoneNumber")
 	private WebElement preferredPharmacyPhoneNumber;
-	
-	
+
+
 	public DemographicsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
-	
-	public void fillInDemogprahicsData(String firstName,String middleName, String lastName, String dob, String address1, String address2, String city, String state, String zip, String phone,
-			String email, String pharmacy, String pharmacyPhoneNumber) {
-		
+
+	public void fillInDemogprahicsData(String firstName, String middleName, String lastName, String dob, String address1, String address2, String city,
+			String state, String zip, String phone, String email, String pharmacy, String pharmacyPhoneNumber) {
+
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(firstNameInput);
 		webElementsList.add(middleNameInput);
@@ -80,9 +80,9 @@ public class DemographicsPage extends BasePageObject {
 		webElementsList.add(preferredPharmacyPhoneNumber);
 
 		for (WebElement w : webElementsList) {
-						w.clear();
-		}	
-		
+			w.clear();
+		}
+
 		firstNameInput.sendKeys(firstName);
 		middleNameInput.sendKeys(middleName);
 		lastNameInput.sendKeys(lastName);
@@ -95,9 +95,9 @@ public class DemographicsPage extends BasePageObject {
 		phoneInput.sendKeys(phone);
 		emailInput.sendKeys(email);
 		preferredPharmacyNameInput.sendKeys(pharmacy);
-		preferredPharmacyPhoneNumber.sendKeys(pharmacyPhoneNumber);	
+		preferredPharmacyPhoneNumber.sendKeys(pharmacyPhoneNumber);
 	}
-	
+
 	public PatientHomePage clickConfirmDemographics() {
 		demographicsConfirmButton.click();
 		return PageFactory.initElements(driver, PatientHomePage.class);

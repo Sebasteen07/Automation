@@ -25,19 +25,19 @@ public class JalapenoAccountPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='ladda-button ng-binding primary inviteBtn']")
 	private WebElement inviteNewButton;
-	
+
 	@FindBy(how = How.ID, using = "trustedRepFirstName")
 	private WebElement trustedRepFirstNameInput;
-	
+
 	@FindBy(how = How.ID, using = "trustedRepLastName")
 	private WebElement trustedRepLastNameInput;
-	
+
 	@FindBy(how = How.ID, using = "trustedRepEmail")
 	private WebElement trustedRepEmailInput;
-	
+
 	@FindBy(how = How.ID, using = "trustedRepRelationship")
 	private WebElement trustedRepRelationshipSelect;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='button primary ladda-button ng-binding inviteBtn pull-right']")
 	private WebElement sendInvitationButton;
 
@@ -89,7 +89,7 @@ public class JalapenoAccountPage extends BasePageObject {
 	}
 
 	private void waitUntilSuccessMessageLoads(WebDriverWait wait, String fullName) {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@data-ng-show='inviteSuccess' and contains(.,'You have successfully invited "
-				+ fullName + " to be your trusted representative')]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(
+				By.xpath("//*[@data-ng-show='inviteSuccess' and contains(.,'You have successfully invited " + fullName + " to be your trusted representative')]")));
 	}
 }

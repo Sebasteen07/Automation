@@ -20,223 +20,224 @@ public class PIDCTestData {
 		// filtering the entire file
 		PidcObj = (PIDC) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return PidcObj.Url;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return PidcObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return PidcObj.Password;
 	}
-	
-	public String getRestUrl(){
+
+	public String getRestUrl() {
 		return PidcObj.RestUrl;
 	}
-	
-	public String getPatientPath(){
+
+	public String getPatientPath() {
 		return PidcObj.PatientPath;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return PidcObj.ResponsePath;
 	}
-	
-	public String getOAuthProperty(){
+
+	public String getOAuthProperty() {
 		return PidcObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return PidcObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return PidcObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return PidcObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return PidcObj.OAuthPassword;
-	}	
-	
-	public String getGmailUsername(){
+	}
+
+	public String getGmailUsername() {
 		return PidcObj.GmailUsername;
-	}	
-	
-	public String getGmailPassword(){
+	}
+
+	public String getGmailPassword() {
 		return PidcObj.GmailPassword;
 	}
-	
-	public String getBirthDay(){
+
+	public String getBirthDay() {
 		return PidcObj.BirthDay;
 	}
-	
-	public String getZipCode(){
+
+	public String getZipCode() {
 		return PidcObj.ZipCode;
 	}
-	
-	public String getSSN(){
+
+	public String getSSN() {
 		return PidcObj.SSN;
 	}
-	
-	public String getEmail(){
+
+	public String getEmail() {
 		return PidcObj.Email;
 	}
-	
-	public String getPatientPassword(){
+
+	public String getPatientPassword() {
 		return PidcObj.PatientPassword;
-	}	
-	
-	public String getSecretQuestion(){
+	}
+
+	public String getSecretQuestion() {
 		return PidcObj.SecretQuestion;
-	}	
-	
-	public String getSecretAnswer(){
+	}
+
+	public String getSecretAnswer() {
 		return PidcObj.SecretAnswer;
 	}
-	public String getPracticeURL(){
+
+	public String getPracticeURL() {
 		return PidcObj.PracticeURL;
-	}	
-	
-	public String getPracticeUserName(){
+	}
+
+	public String getPracticeUserName() {
 		return PidcObj.PracticeUserName;
-	}	
-	
-	public String getPracticePassword(){
+	}
+
+	public String getPracticePassword() {
 		return PidcObj.PracticePassword;
 	}
-	
-	public String getLastName(){
+
+	public String getLastName() {
 		return PidcObj.LastName;
 	}
-	
-	public String getCity(){
+
+	public String getCity() {
 		return PidcObj.City;
-	}	
-	
-	public String getState(){
+	}
+
+	public String getState() {
 		return PidcObj.State;
-	}	
-	
-	public String getAddress1(){
+	}
+
+	public String getAddress1() {
 		return PidcObj.Address1;
 	}
-	
-	public String getAddress2(){
+
+	public String getAddress2() {
 		return PidcObj.Address2;
 	}
-	
-	public String getHomePhoneNo(){
+
+	public String getHomePhoneNo() {
 		return PidcObj.HomePhoneNo;
 	}
-	
-	public String getInsurance_Type(){
+
+	public String getInsurance_Type() {
 		return PidcObj.Insurance_Type;
 	}
-	
-	public String getInsurance_Name(){
+
+	public String getInsurance_Name() {
 		return PidcObj.Insurance_Name;
 	}
-	
-	public String getRelation(){
+
+	public String getRelation() {
 		return PidcObj.Relation;
 	}
-	
-	public String getPreferredLanguage(){
+
+	public String getPreferredLanguage() {
 		return PidcObj.PreferredLanguage;
 	}
-	
-	public String getRace(){
+
+	public String getRace() {
 		return PidcObj.Race;
 	}
-	
-	public String getEthnicity(){
+
+	public String getEthnicity() {
 		return PidcObj.Ethnicity;
 	}
-	
-	public String getMaritalStatus(){
+
+	public String getMaritalStatus() {
 		return PidcObj.MaritalStatus;
 	}
-	
-	public String getChooseCommunication(){
+
+	public String getChooseCommunication() {
 		return PidcObj.ChooseCommunication;
 	}
-	
-	public String getBatch_PatientPath(){
+
+	public String getBatch_PatientPath() {
 		return PidcObj.Batch_PatientPath;
 	}
-	
-	public String getPortalURL(){
+
+	public String getPortalURL() {
 		return PidcObj.PortalURL;
 	}
-	
-	public String getPortalRestUrl(){
+
+	public String getPortalRestUrl() {
 		return PidcObj.PortalRestUrl;
 	}
-	
-	public String getHealthKeyPatientUserName(){
+
+	public String getHealthKeyPatientUserName() {
 		return PidcObj.HealthKeyPatientUserName;
 	}
-	
-	public String getHealthKeyPatientPath(){
+
+	public String getHealthKeyPatientPath() {
 		return PidcObj.HealthKeyPatientPath;
 	}
-	
-	public String getInsuranceHealthKeyPatientUserName(){
+
+	public String getInsuranceHealthKeyPatientUserName() {
 		return PidcObj.InsuranceHealthKeyPatientUserName;
 	}
-	
-	public String getInsurancePortalURL(){
+
+	public String getInsurancePortalURL() {
 		return PidcObj.InsurancePortalURL;
 	}
-	
-	public String getInsurancePortalRestURL(){
+
+	public String getInsurancePortalRestURL() {
 		return PidcObj.InsurancePortalRestURL;
 	}
-	
-	public String getInsurancePatientID(){
+
+	public String getInsurancePatientID() {
 		return PidcObj.InsurancePatientID;
 	}
-	
-	public String getInsuranceHealthKeyPatientUserName1(){
+
+	public String getInsuranceHealthKeyPatientUserName1() {
 		return PidcObj.InsuranceHealthKeyPatientUserName1;
 	}
-	
-	public String getInsurancePatientID1(){
+
+	public String getInsurancePatientID1() {
 		return PidcObj.InsurancePatientID1;
 	}
-	
-	public String getSecondInsuranceName(){
+
+	public String getSecondInsuranceName() {
 		return PidcObj.SecondInsuranceName;
 	}
-	
-	public String getTestPatientIDUserName(){
+
+	public String getTestPatientIDUserName() {
 		return PidcObj.TestPatientIDUserName;
 	}
-	
-	public String getFnameSC(){
+
+	public String getFnameSC() {
 		return PidcObj.FnameSC;
 	}
-	
-	public String getMnameSC(){
+
+	public String getMnameSC() {
 		return PidcObj.MnameSC;
 	}
-	
-	public String getLnameSC(){
+
+	public String getLnameSC() {
 		return PidcObj.LnameSC;
 	}
-	
-	public String getAddress1SC(){
+
+	public String getAddress1SC() {
 		return PidcObj.Address1SC;
 	}
-	
-	public String getAddress2SC(){
+
+	public String getAddress2SC() {
 		return PidcObj.Address1SC;
 	}
 }

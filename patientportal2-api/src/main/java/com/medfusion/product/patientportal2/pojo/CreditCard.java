@@ -6,7 +6,7 @@ import java.util.Random;
 import com.medfusion.common.utils.IHGUtil;
 
 public class CreditCard {
-	
+
 	public enum CardType { Visa, Mastercard, Discover, Amex}
 	//https://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
 	private String[] visaNumbers = {"4012888888881881", "4111111111111111"};
@@ -21,10 +21,10 @@ public class CreditCard {
 	private String expMonth;
 	private String expYear;
 	private String cvvCode;
-	
+
 	private int currMonth = Calendar.getInstance().get(Calendar.MONTH);
 	private int currYear = Calendar.getInstance().get(Calendar.YEAR);
-	
+
 	public CreditCard() throws Exception {
 		this.name = "Name" + IHGUtil.createRandomNumericString();
 		Random rand = new Random();
@@ -46,13 +46,13 @@ public class CreditCard {
 		this.zipCode = IHGUtil.createRandomZip();
 		this.cvvCode = IHGUtil.createRandomNumericString(3);
 		this.expMonth = IHGUtil.createRandomNumericStringInRange(currMonth, 12);
-		//to ensure that format of month will be MM
-		if (expMonth.length() == 1) expMonth = "0" + expMonth;
+		// to ensure that format of month will be MM
+		if (expMonth.length() == 1)
+			expMonth = "0" + expMonth;
 		this.expYear = IHGUtil.createRandomNumericStringInRange(currYear, currYear + 10);
 	}
-	
-	public CreditCard(CardType type, String name, String cardNumber,
-			String zipCode, String expMonth, String expYear, String cvvCode) {
+
+	public CreditCard(CardType type, String name, String cardNumber, String zipCode, String expMonth, String expYear, String cvvCode) {
 		this.type = type;
 		this.name = name;
 		this.cardNumber = cardNumber;
@@ -68,20 +68,20 @@ public class CreditCard {
 		this.type = type;
 		this.name = name;
 		Random rand = new Random();
-		
+
 		switch (type) {
-		case Visa:
-			this.cardNumber = visaNumbers[rand.nextInt(visaNumbers.length)];
-			break;
-		case Mastercard:
-			this.cardNumber = mastercardNumbers[rand.nextInt(mastercardNumbers.length)];
-			break;
-		case Discover:
-			this.cardNumber = discoverNumbers[rand.nextInt(discoverNumbers.length)];
-			break;
-		case Amex:
-			this.cardNumber = amexNumbers[rand.nextInt(amexNumbers.length)];
-			break;
+			case Visa:
+				this.cardNumber = visaNumbers[rand.nextInt(visaNumbers.length)];
+				break;
+			case Mastercard:
+				this.cardNumber = mastercardNumbers[rand.nextInt(mastercardNumbers.length)];
+				break;
+			case Discover:
+				this.cardNumber = discoverNumbers[rand.nextInt(discoverNumbers.length)];
+				break;
+			case Amex:
+				this.cardNumber = amexNumbers[rand.nextInt(amexNumbers.length)];
+				break;
 		}
 	}
 
@@ -139,8 +139,8 @@ public class CreditCard {
 
 	public void setCvvCode(String cvvCode) {
 		this.cvvCode = cvvCode;
-	}	
-	
+	}
+
 	public String getLastFourDigits() {
 		return this.cardNumber.substring(cardNumber.length() - 4);
 	}

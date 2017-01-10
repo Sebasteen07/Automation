@@ -8,8 +8,8 @@ import com.medfusion.common.utils.IHGUtil;
 public class GETestData {
 
 	private GE geObj = null;
-	
-	public GETestData(GE sheetName) throws Exception{
+
+	public GETestData(GE sheetName) throws Exception {
 		// which enviroment data need to picked
 		String temp = IHGUtil.getEnvironmentType().toString();
 		// file name
@@ -19,56 +19,56 @@ public class GETestData {
 		// filtering the entire file
 		geObj = (GE) excelReader.getSingleExcelRow(sheetName, temp);
 	}
-	
-	
-	public String getPHR_URL(){
+
+
+	public String getPHR_URL() {
 		return geObj.PHR_URL;
 	}
-	
-	public String getURL(){
+
+	public String getURL() {
 		return geObj.URL;
 	}
-	
-	public String getUserName(){
+
+	public String getUserName() {
 		return geObj.UserName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return geObj.Password;
 	}
-	
-	
-	public String getRestUrl(){
+
+
+	public String getRestUrl() {
 		return geObj.RestUrl;
 	}
-	
-	public String getCCDPath(){
+
+	public String getCCDPath() {
 		return geObj.CCDPath;
 	}
-	
-	public String getResponsePath(){
+
+	public String getResponsePath() {
 		return geObj.ResponsePath;
 	}
-	
-	
-	public String getOAuthProperty(){
+
+
+	public String getOAuthProperty() {
 		return geObj.OAuthProperty;
 	}
-	
-	public String getOAuthKeyStore(){
+
+	public String getOAuthKeyStore() {
 		return geObj.OAuthKeyStore;
 	}
-	
-	public String getOAuthAppToken(){
+
+	public String getOAuthAppToken() {
 		return geObj.OAuthAppToken;
 	}
-	
-	public String getOAuthUsername(){
+
+	public String getOAuthUsername() {
 		return geObj.OAuthUsername;
 	}
-	
-	public String getOAuthPassword(){
+
+	public String getOAuthPassword() {
 		return geObj.OAuthPassword;
-	}	
-	
+	}
+
 }

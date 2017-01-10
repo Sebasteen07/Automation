@@ -6,16 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vvalsan
- * Date: 3/20/13
- * Time: 5:05 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 5:05 PM To change this template use File | Settings | File Templates.
  */
 public class Filter {
-    	// //////////////// Enum /////////////
+	// //////////////// Enum /////////////
 	static enum Operator {
-		EqualsIgnoreCase,And;
+		EqualsIgnoreCase, And;
 	}
 
 	public static Filter and(Filter left, Filter right) {
@@ -27,8 +23,7 @@ public class Filter {
 	}
 
 
-	private static boolean match(Filter filter,
-			Map<String, Object> parameters) {
+	private static boolean match(Filter filter, Map<String, Object> parameters) {
 		String name = (filter.name != null ? filter.name.toUpperCase() : null);
 		Object values[] = filter.values;
 		Operator operator = filter.operator;
@@ -39,23 +34,17 @@ public class Filter {
 			return left.match(parameters) && right.match(parameters);
 		} else if (!parameters.containsKey(name)) {
 			return false;
-		} else if (Operator.EqualsIgnoreCase
-				.equals(operator)
-				&& (values == null || (values.length == 1 && values[0] == null))) {
+		} else if (Operator.EqualsIgnoreCase.equals(operator) && (values == null || (values.length == 1 && values[0] == null))) {
 			return (parameters.get(name) == null);
 		} else if (Operator.EqualsIgnoreCase.equals(operator)) {
-			return parameters.get(name).toString().toLowerCase()
-					.equals(values[0].toString().toLowerCase());
+			return parameters.get(name).toString().toLowerCase().equals(values[0].toString().toLowerCase());
 		} else if (values == null || values[0] == null) {
-			throw new RuntimeException(
-					"Null values are not supported for Filter Operation: "
-							+ operator);
+			throw new RuntimeException("Null values are not supported for Filter Operation: " + operator);
 		} else {// By the time the control reaches here values is not null
 
-	}
+		}
 
-		throw new RuntimeException("Should not reach here. Not Implemented Yet"
-				+ "\n" + filter + "\n" + parameters);
+		throw new RuntimeException("Should not reach here. Not Implemented Yet" + "\n" + filter + "\n" + parameters);
 	}
 
 	private String name;
@@ -75,7 +64,7 @@ public class Filter {
 	}
 
 	public Filter(String name, Object value, Operator condition) {
-		this(name, new Object[] { value }, condition);
+		this(name, new Object[] {value}, condition);
 	}
 
 	public Filter(String name, Object[] values, Operator condition) {
@@ -136,11 +125,9 @@ public class Filter {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		if (name != null) {
-			sb.append(name + " " + operator.toString() + " "
-					+ Arrays.toString(values));
+			sb.append(name + " " + operator.toString() + " " + Arrays.toString(values));
 		} else {
-			sb.append((left != null ? left.toString() : "") + " "
-					+ operator.toString() + " " + right.toString());
+			sb.append((left != null ? left.toString() : "") + " " + operator.toString() + " " + right.toString());
 		}
 
 		return "(" + sb.toString() + ")";

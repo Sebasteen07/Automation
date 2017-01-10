@@ -9,8 +9,8 @@ import com.intuit.ihg.common.utils.WebPoster;
 public class RCMUtil extends IHGUtil {
 
 	protected WebDriver driver;
-	
-	
+
+
 	public static int timeout = 0;
 	public static String[] exeArg = null;
 
@@ -23,28 +23,23 @@ public class RCMUtil extends IHGUtil {
 		return driver;
 	}
 
-	public void postStatementToPatient(String rcmStatementRest,String env) throws Exception {
+	public void postStatementToPatient(String rcmStatementRest, String env) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
 		WebPoster poster = new WebPoster();
-				
-		Assert.assertNotNull( 
-				"### Test property rcmStatementRest not defined", 
-				rcmStatementRest);
-		poster.setServiceUrl( rcmStatementRest.trim() );
-		
-		poster.setContentType( "application/json;" );
-		poster.addHeader( "requestId", "stmtstaticpost" );
-		poster.addHeader( "Authentication-Type", "2wayssl" );
+
+		Assert.assertNotNull("### Test property rcmStatementRest not defined", rcmStatementRest);
+		poster.setServiceUrl(rcmStatementRest.trim());
+
+		poster.setContentType("application/json;");
+		poster.addHeader("requestId", "stmtstaticpost");
+		poster.addHeader("Authentication-Type", "2wayssl");
 		log("Expected Status Code =#####");
-		poster.setExpectedStatusCode( 200 );	// HTTP Status Code
+		poster.setExpectedStatusCode(200); // HTTP Status Code
 		log("send Statement to patient #####");
-		poster.postFromResourceFile( 
-					"testfiles/" 
-					+ env
-					+ "/statement.txt" );			
-				
-		
+		poster.postFromResourceFile("testfiles/" + env + "/statement.txt");
+
+
 	}
 }
