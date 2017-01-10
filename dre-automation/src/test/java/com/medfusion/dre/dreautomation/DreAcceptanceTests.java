@@ -1,6 +1,7 @@
 package com.medfusion.dre.dreautomation;
 
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.testng.Assert;
@@ -34,7 +35,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -43,7 +45,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = true, groups = {"Retrievers"})
+	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingMeditechPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Meditech";
@@ -63,7 +65,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -92,7 +95,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -121,7 +125,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -130,7 +135,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = true, groups = {"Retrievers"})
+	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingCernerPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Cerner";
@@ -150,7 +155,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -179,7 +185,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -188,7 +195,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = true, groups = {"Retrievers"})
+	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingAthenaPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Athena";
@@ -208,7 +215,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -237,7 +245,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -246,7 +255,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = true, groups = {"Retrievers"})
+	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingMedfusionPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Medfusion";
@@ -266,7 +275,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");
@@ -295,7 +305,8 @@ public class DreAcceptanceTests extends HTTPCalls {
 		executeRequestGetContent(httpPut);
 		
 		log("Step 5: Verify the retrieval was successful");
-		String status = retriever.verifyJobStatus(httpPost);
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
 		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
 		
 		log("Step 6: Delete the connection");

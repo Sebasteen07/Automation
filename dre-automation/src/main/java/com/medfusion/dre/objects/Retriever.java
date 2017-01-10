@@ -3,7 +3,7 @@ package com.medfusion.dre.objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import com.medfusion.dre.util.HTTPCalls;
 import org.json.JSONObject;
 
@@ -50,14 +50,14 @@ public class Retriever extends HTTPCalls {
 		return payload;
 	}
 
-	public String verifyJobStatus(HttpPost httpPost) throws InterruptedException {
+	public String verifyJobStatus(HttpGet httpGet) throws InterruptedException {
 		String response = new String();
 		Thread.sleep(180000);  // Initially wait 3 minutes before checking
-		executeRequestGetContent(httpPost);
+		executeRequestGetContent(httpGet);
 
 		for (int i = 0; i < 10; i++) {
 			Thread.sleep(30000);
-			String finalStatus = executeRequestGetContent(httpPost);
+			String finalStatus = executeRequestGetContent(httpGet);
 
 			if (isContain(finalStatus, "SUCCESS")) {
 				response = "SUCCESS";
@@ -67,9 +67,14 @@ public class Retriever extends HTTPCalls {
 			  System.out.println("At " + (i * 30 + 180) + " seconds, job is still processing");
 			  response = "SUBMITTED";
 			}
-			else if (isContain(finalStatus, "FAILED") || isContain(finalStatus, "ERROR_USER_AUTH")) {
+			else if (isContain(finalStatus, "FAILED")) {
 				System.out.println("Retrieval has failed");
 				response = "FAILED";
+				break;
+			}
+			else if (isContain(finalStatus, "ERROR_USER_AUTH")) {
+				System.out.println("Incorrect user credentials");
+				response = "INVALID_CREDS";
 				break;
 			}
 		}

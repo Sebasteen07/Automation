@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -62,6 +63,14 @@ public class HTTPCalls extends Logging {
 		httpPut.setEntity(httpEntity);
 
 		return httpPut;
+	}
+	
+	public HttpGet buildHttpGet(String url) {
+		HttpGet httpGet = new HttpGet(url);
+		httpGet.setHeader("Content-Type", "application/json");
+		httpGet.setHeader("Authorization", buildBasicAuthorizationString());
+
+		return httpGet;
 	}
 
 	public HttpDelete buildHttpDelete(String url) {
