@@ -20,28 +20,28 @@ import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 public class sendPatientInvitePayload {
 	static String output;
 
-	public static String emailType;
-	public static String version = "v1";
-	public static String firstName;
-	public static String lastName;
-	public static String email;
-	public static String zip;
-	public static String dateOfBirth;
-	public static String date;
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList<String> firstNameGroup = new ArrayList();
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList<String> lastNameGroup = new ArrayList();
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList<String> emailGroup = new ArrayList();
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList<String> zipGroup = new ArrayList();
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList<String> dateGroup = new ArrayList();
+	public String emailType;
+	public String version = "v1";
+	public String firstName;
+	public String lastName;
+	public String email;
+	public String zip;
+	public String dateOfBirth;
+	public String date;
+	
+	public  ArrayList<String> firstNameGroup = new ArrayList<String>(100);
+	
+	public  ArrayList<String> lastNameGroup = new ArrayList<String>(100);
+	
+	public  ArrayList<String> emailGroup = new ArrayList<String>(100);
+	
+	public  ArrayList<String> zipGroup = new ArrayList<String>(100);
+	
+	public  ArrayList<String> dateGroup = new ArrayList<String>(100);
 	
 
-	public static String getPIDCPayload(PIDCInfo testData) {
-
+	public  String getPIDCPayload(PIDCInfo testData,String portalVersion) {
+		
 		if (testData.getRestUrl().contains("v1")) {
 			version = "v1";
 		} else {
@@ -146,7 +146,7 @@ public class sendPatientInvitePayload {
 			String month = date.substring(3, 5);
 			String year = date.substring(6);
 			dateOfBirth = year + "-" + month + "-" + dt + "T12:00:01";
-			if(testData.getPortalVersion().contains("2.0")) {
+			if(portalVersion.contains("2.0")) {
 				dateOfBirth = year + "-" + dt + "-" + month + "T12:00:01";
 			}
 			int batchSize = Integer.parseInt(testData.getBatchSize());
@@ -168,8 +168,7 @@ public class sendPatientInvitePayload {
 				
 				Element PatientIdentifier = doc.createElement("PatientIdentifier");
 				Patient.appendChild(PatientIdentifier);
-
-				// System.out.println("in XML PIDCDetailsObj.getPracticePatientId() is :-" + PIDCDetails.getPracticePatientId());
+				
 				Element PracticePatientId = doc.createElement("PracticePatientId");
 				PatientIdentifier.appendChild(PracticePatientId);
 				PracticePatientId.appendChild(doc.createTextNode(firstName));
@@ -231,16 +230,17 @@ public class sendPatientInvitePayload {
 
 				Element Race = doc.createElement("Race");
 				Patient.appendChild(Race);
-				Race.appendChild(doc.createTextNode(testData.getRace().get(i)));
-
+				//Race.appendChild(doc.createTextNode(testData.getRace().get(i)));
+				Race.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getRace()));
+				
 				Element Ethnicity = doc.createElement("Ethnicity");
 				Patient.appendChild(Ethnicity);
 				//System.out.println(i+"Race "+testData.getEthnicity().get(i));
-				Ethnicity.appendChild(doc.createTextNode(testData.getEthnicity().get(i)));
+				Ethnicity.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getEthnicity()));
 
 				Element Gender = doc.createElement("Gender");
 				Patient.appendChild(Gender);
-				Gender.appendChild(doc.createTextNode(testData.getGender().get(i)));
+				Gender.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGender()));
 				
 				//Enable after implementation
 				if(version.contains("v2_REMOVEME")) {
@@ -249,7 +249,8 @@ public class sendPatientInvitePayload {
 					
 					Element ValueGI = doc.createElement("Value");
 					GenderIdentity.appendChild(ValueGI);
-					ValueGI.appendChild(doc.createTextNode(testData.getGenderIdentity().get(i)));
+					//ValueGI.appendChild(doc.createTextNode(testData.getGenderIdentity().get(i)));
+					ValueGI.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGenderIdentity()));
 					
 					Element CommentGI = doc.createElement("Comment");
 					GenderIdentity.appendChild(CommentGI);
@@ -260,7 +261,7 @@ public class sendPatientInvitePayload {
 					
 					Element ValueSO = doc.createElement("Value");
 					SexualOrientation.appendChild(ValueSO);
-					ValueSO.appendChild(doc.createTextNode(testData.getSexualOrientation().get(i)));
+					ValueSO.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getSexualOrientation()));
 					
 					Element CommentSO = doc.createElement("Comment");
 					SexualOrientation.appendChild(CommentSO);
@@ -269,11 +270,11 @@ public class sendPatientInvitePayload {
 				
 				Element PreferredLanguage = doc.createElement("PreferredLanguage");
 				Patient.appendChild(PreferredLanguage);
-				PreferredLanguage.appendChild(doc.createTextNode(testData.getPreferredLanguage().get(i)));
+				PreferredLanguage.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getPreferredLanguage()));
 
 				Element PreferredCommunication = doc.createElement("PreferredCommunication");
 				Patient.appendChild(PreferredCommunication);
-				PreferredCommunication.appendChild(doc.createTextNode(testData.getPreferredCommunication().get(i)));
+				PreferredCommunication.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getPreferredCommunication()));
 
 				Element SocialSecurityNumber = doc.createElement("SocialSecurityNumber");
 				Patient.appendChild(SocialSecurityNumber);

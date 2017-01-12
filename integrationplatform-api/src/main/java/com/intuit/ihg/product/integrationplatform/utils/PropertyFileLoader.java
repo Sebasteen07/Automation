@@ -358,9 +358,31 @@ public class PropertyFileLoader {
 	public String getCSVFilePath() {
 		return property.getProperty("csvFilePath");
 	}
+	
 	public String getPracticeId_PIDC() {
 		return property.getProperty("practiceId_PIDC");
 	}
+	
+	
+	public String getRestUrl1_20() {
+		return property.getProperty("restUrl1_20");
+	}
+	public String getRestUrl2_20() {
+		return property.getProperty("restUrl2_20");
+	}
+	public String getPracticeId_PIDC_20() {
+		return property.getProperty("practiceId_PIDC_20");
+	}
+	public String getOAuthAppToken_20() {
+		return property.getProperty("oAuthAppToken_20");
+	}
+	public String getOAuthUsername_20() {
+		return property.getProperty("oAuthUsername_20");
+	}
+	public String getOAuthPassword_20() {
+		return property.getProperty("oAuthPassword_20");
+	}
+	
 	
 	//PIDC END
 }
