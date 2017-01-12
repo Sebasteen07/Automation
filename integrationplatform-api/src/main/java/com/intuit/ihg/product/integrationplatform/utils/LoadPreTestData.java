@@ -116,7 +116,7 @@ public class LoadPreTestData {
 		return testData;
 	}
 	
-	public PIDCInfo loadDataFromProperty(PIDCInfo testData, String channelVersion) throws Exception {
+	public PIDCInfo loadDataFromProperty(PIDCInfo testData, String channelVersion, String portalVersion) throws Exception {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 	
@@ -124,21 +124,13 @@ public class LoadPreTestData {
 
 		testData.setoAuthProperty(propertyData.getOAuthProperty());
 		testData.setoAuthKeyStore(propertyData.getOAuthKeyStore());
-		testData.setoAuthAppToken(propertyData.getOAuthAppToken());
-		testData.setoAuthUsername(propertyData.getOAuthUsername());
-		testData.setoAuthPassword(propertyData.getOAuthPassword());
-
+		
 		testData.setPatientPath(propertyData.getPatientPath());
 		testData.setResponsePath(propertyData.getResponsePath());
 		testData.setUsername(propertyData.getUserName());
 		testData.setPassword(propertyData.getPassword());
 		//testData.setRestUrl(propertyData.getRestUrl());	
-		if (channelVersion.contains("v1")) {
-			testData.setRestUrl(propertyData.getRestUrl1());
-		}
-		if (channelVersion.contains("v2")) {
-			testData.setRestUrl(propertyData.getRestUrl2());
-		}
+		
 		testData.setBirthDay(propertyData.getBirthday());
 		testData.setZipCode(propertyData.getZipCode());
 		testData.setSSN(propertyData.getSSN());
@@ -150,15 +142,45 @@ public class LoadPreTestData {
 		testData.setHomePhoneNo(propertyData.getHomePhoneNo());
 
 		testData.setRelation(propertyData.getRelation());
-		//testData.setPreferredLanguage(propertyData.getPreferredLanguage());
-		//testData.race = propertyData.getRace();
-		//testData.ethnicity = propertyData.getEthnicity();
 		testData.setMaritalStatus(propertyData.getMaritalStatus());
 		testData.setChooseCommunication(propertyData.getChooseCommunication());
 		testData.setInsurance_Type(propertyData.getInsurance_Type());
 		testData.setCsvFilePath(propertyData.getCSVFilePath());
-		testData.setPortalVersion(propertyData.getPortalVersion());
-		testData.setPracticeId(propertyData.getPracticeId_PIDC());
+		//testData.setPortalVersion(propertyData.getPortalVersion());
+		
+		
+		if (channelVersion.contains("v1")) {
+			testData.setRestUrl_20(propertyData.getRestUrl1_20());
+		}
+		if (channelVersion.contains("v2")) {
+			testData.setRestUrl_20(propertyData.getRestUrl2_20());
+		}
+		
+		if(portalVersion.contains("1.0")) {
+			if (channelVersion.contains("v1")) {
+				testData.setRestUrl(propertyData.getRestUrl1());
+			}
+			if (channelVersion.contains("v2")) {
+				testData.setRestUrl(propertyData.getRestUrl2());
+			}
+			testData.setPracticeId(propertyData.getPracticeId_PIDC());
+			testData.setoAuthAppToken(propertyData.getOAuthAppToken());
+			testData.setoAuthUsername(propertyData.getOAuthUsername());
+			testData.setoAuthPassword(propertyData.getOAuthPassword());
+		}
+		if(portalVersion.contains("2.0")) {
+			if (channelVersion.contains("v1")) {
+				testData.setRestUrl(propertyData.getRestUrl1_20());
+			}
+			if (channelVersion.contains("v2")) {
+				testData.setRestUrl(propertyData.getRestUrl2_20());
+			}
+			testData.setPracticeId(propertyData.getPracticeId_PIDC_20());
+			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
+			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
+			testData.setoAuthPassword(propertyData.getOAuthPassword_20());
+		}
+		
 		return testData;
 	}
 }

@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
+import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
@@ -44,88 +45,68 @@ public class PatientRegistrationUtils {
 		Log4jUtil.log("Logging out");
 		jalapenoHomePage.clickOnLogout();
 	}
-	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+		
 	public static void csvFileReader(PIDCInfo testData,String csvFilePath) throws IOException {
 		
-		String[][] arrayValues = new String[300][300];
+		String[][] patientValues = new String[500][500];
+		int[] maxValue = new int[500];
 		BufferedReader bufRdr = new BufferedReader(new FileReader(csvFilePath));
-		String line = null;
+		String line1 = null;
 		int row = 0;
 		int col = 0;
-		int max = 0;
 		int nextLine = 0;
-		int[] maxValue = new int[300];
-
-		ArrayList race = new ArrayList();
-		ArrayList ethenicity = new ArrayList();
-		ArrayList gender = new ArrayList();
-		ArrayList preferredLanguage = new ArrayList();
-		ArrayList preferredCommunication = new ArrayList();
-		ArrayList genderIdentity = new ArrayList();
-		ArrayList sexualOrientation = new ArrayList();
-		// read each line of text file
-		while ((line = bufRdr.readLine()) != null) {
-			StringTokenizer st = new StringTokenizer(line, ",");
-			//System.out.println("row"+row);
-			max = 0;
-			while (st.hasMoreTokens()) {
-				
-				arrayValues[row][col] = st.nextToken();
-				//System.out.println(nextLine+" values := "+arrayValues[row][col]);
-				if(row==0 && nextLine !=0) {
-					race.add(arrayValues[row][col]);
-				}
-				if(row==1 && nextLine !=0) {
-					ethenicity.add(arrayValues[row][col]);
-				}
-				if(row==2 && nextLine !=0) {
-					gender.add(arrayValues[row][col]);
-				}
-				if(row==3 && nextLine !=0) {
-					preferredLanguage.add(arrayValues[row][col]);
-				}
-				if(row==4 && nextLine !=0) {
-					preferredCommunication.add(arrayValues[row][col]);
-				}
-				if(row==5 && nextLine !=0) {
-					genderIdentity.add(arrayValues[row][col]);
-				}
-				if(row==6 && nextLine !=0) {
-					sexualOrientation.add(arrayValues[row][col]);
-				}
-				
-				nextLine++;
-				col++;
-				max++;
-			}
+		while ((line1 = bufRdr.readLine()) != null ) {
+			StringTokenizer st = new StringTokenizer(line1, ",");
+			
 			nextLine=0;
+			while (st.hasMoreTokens()) {
+				patientValues[row][col] = st.nextToken();
+				col++;
+				nextLine++;
+			}
+			
 			row++;
-			maxValue[row] = max;
+			maxValue[row] = nextLine;
 		}
-		// close the file
 		bufRdr.close();
-		
 		Arrays.sort(maxValue);
-		int maxa = (maxValue[maxValue.length - 1]-1);
+		int maxLength = (maxValue[maxValue.length - 1]-1);
+		int counter = 0;
+		String[][] setValues = new String[500][500];
+		for(int i =0;i< row;i++) {
+			for(int j=0;j<=maxLength;j++) {
+				setValues[i][j] = patientValues[i][counter];
+				//System.out.println("i: "+i+"  j: "+j+"  patientValues : "+patientValues[i][counter]);				
+				counter++;
+			}
+			testData.patientDetailList.add(new PatientDetail(setValues[i][0], setValues[i][1], setValues[i][2], setValues[i][3], setValues[i][4], setValues[i][5], setValues[i][6]));
+		}
 		
-		testData.setRace(race);
-		testData.setEthnicity(ethenicity);
-		testData.setGender(gender);
-		testData.setPreferredLanguage(preferredLanguage);
-		testData.setPreferredCommunication(preferredCommunication);
-		updateCommasWithInValues(genderIdentity);
-		testData.setGenderIdentity(genderIdentity);
-		updateCommasWithInValues(sexualOrientation);
-		testData.setSexualOrientation(sexualOrientation);
+		updateCommasWithInValues1(testData.patientDetailList);
 		
+		int batchSize =(row-1);
 		if(testData.getBatchSize()==null) {
-			testData.setBatchSize(Integer.toString(maxa));
+			testData.setBatchSize(Integer.toString(batchSize));
 		}
 		if(testData.getBatchSize().length() == 0) {
-			testData.setBatchSize(Integer.toString(maxa));
+			testData.setBatchSize(Integer.toString(batchSize));
 		}	
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void updateCommasWithInValues1(ArrayList csvValues) {
+		String oldString="";
+		for(int i=0;i<csvValues.size();i++) {
+			if(((PatientDetail) csvValues.get(i)).getGenderIdentity().toString().contains("~!")) {
+				 oldString = ((PatientDetail) csvValues.get(i)).getGenderIdentity().toString().replace("~!", ",");
+				 ((PatientDetail) csvValues.set(i, csvValues.get(i))).setGenderIdentity(oldString);
+			}
+			if(((PatientDetail) csvValues.get(i)).getSexualOrientation().toString().contains("~!")) {
+				 oldString = ((String) csvValues.get(i)).replace("~!", ",");
+				 oldString = ((PatientDetail) csvValues.get(i)).getSexualOrientation().toString().replace("~!", ",");
+				 ((PatientDetail) csvValues.set(i, csvValues.get(i))).setSexualOrientation(oldString);
+			}
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -155,24 +136,24 @@ public class PatientRegistrationUtils {
 		myPatientPage.clickLogout(driver);
 	}
 	
-	public static void pidcPatientRegistration(String ChannelVersion,WebDriver driver) throws Exception {
+	public static void pidcPatientRegistration(String ChannelVersion,WebDriver driver,String portalVersion) throws Exception {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
 		Long timestamp = System.currentTimeMillis();
-		LoadPreTestDataObj.loadDataFromProperty(testData, ChannelVersion);
+		LoadPreTestDataObj.loadDataFromProperty(testData, ChannelVersion,portalVersion);
 		
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.getCsvFilePath();
-				
 		Log4jUtil.log("Loading CSVfile : "+workingDir);
 		csvFileReader(testData,workingDir);
 		
 		Thread.sleep(600);
 		if (ChannelVersion.contains("v1")) {
-			replaceUnknownForv1(ChannelVersion, testData.getGender());
+			replaceUnknownForv1(ChannelVersion, testData);
 		}
 		Log4jUtil.log("Payload Batchsize :"+testData.getBatchSize());
-		String patient = sendPatientInvitePayload.getPIDCPayload(testData);
+		sendPatientInvitePayload payloadObj = new sendPatientInvitePayload();
+		String patient = payloadObj.getPIDCPayload(testData,portalVersion);
 		
 		Thread.sleep(600);
 		
@@ -190,16 +171,16 @@ public class PatientRegistrationUtils {
 		for (int i=0;i<Integer.parseInt(testData.getBatchSize());i++) {
 			Thread.sleep(15000);
 			Log4jUtil.log("Patient No: "+(i+1));
-			Log4jUtil.log(sendPatientInvitePayload.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
-			String activationUrl = mail.getLinkFromEmail(sendPatientInvitePayload.emailGroup.get(i), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
-			
-			if(testData.getPortalVersion().contains("1.0")) {
-				registerPatient10(activationUrl, driver,sendPatientInvitePayload.zipGroup.get(i),sendPatientInvitePayload.emailGroup.get(i),testData.getPatientPassword(),testData.getSecretQuestion(),testData.getSecretAnswer());
+			//if(portal1 == true)
+			if(portalVersion.contains("1.0")) {
+				registerPatient10(activationUrl, driver,payloadObj.zipGroup.get(i),payloadObj.emailGroup.get(i),testData.getPatientPassword(),testData.getSecretQuestion(),testData.getSecretAnswer());
 			}
-			if(testData.getPortalVersion().contains("2.0")) {
-				registerPatient(activationUrl, sendPatientInvitePayload.emailGroup.get(i), testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getHomePhoneNo(), driver, sendPatientInvitePayload.zipGroup.get(i),testData.getBirthDay());
+			if(portalVersion.contains("2.0")) {
+				registerPatient(activationUrl, payloadObj.emailGroup.get(i), testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getHomePhoneNo(), driver, payloadObj.zipGroup.get(i),testData.getBirthDay());
 			}
 			Thread.sleep(10000);
 		}
@@ -213,19 +194,18 @@ public class PatientRegistrationUtils {
 
 		Log4jUtil.log("Step 9: Find the patient and check if he is registered");
 
-		RestUtils.isPatientRegistered(testData.getResponsePath(), sendPatientInvitePayload.firstNameGroup, sendPatientInvitePayload.firstNameGroup, sendPatientInvitePayload.lastNameGroup, null ,testData.getGender(),testData.getRace(),testData.getEthnicity(),testData.getPreferredLanguage(),testData.getPreferredCommunication());
+		RestUtils.isPatientRegistered(testData.getResponsePath(), payloadObj.firstNameGroup, payloadObj.firstNameGroup, payloadObj.lastNameGroup, null ,testData);
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static ArrayList replaceUnknownForv1(String ChannelVersion, ArrayList genderGroup) {
+
+	public static void replaceUnknownForv1(String ChannelVersion, PIDCInfo testData) {
 		if (ChannelVersion.contains("v1")) {
-			for (int i = 0; i < genderGroup.size(); i++) {
-				if (genderGroup.get(i).equals("UNKNOWN")) {
-					genderGroup.set(i, "MALE");
+			for (int i = 0; i < testData.patientDetailList.size(); i++) {
+				if (testData.patientDetailList.get(i).getGender().equals("UNKNOWN")) {
+					testData.patientDetailList.get(i).setGender("MALE");
 				}
 			}
 		}
-		return genderGroup;
 	}
 	
 	public static Boolean checkMessageProcessingOntime(String processingUrl, String ResponsePath) throws InterruptedException, ParserConfigurationException,SAXException,IOException, URISyntaxException {

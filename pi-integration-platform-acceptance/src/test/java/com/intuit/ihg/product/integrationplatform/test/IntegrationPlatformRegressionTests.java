@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import java.util.ArrayList;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -27,6 +28,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
+//import com.intuit.ihg.product.support.utils.SupportConstants;
 
 /**
  * @author rkhambe
@@ -296,15 +298,26 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			MU2UtilsObj.mu2GetEvent(testData,driver);
 	 }
 	 
-	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testPIDCPatientRegistrationV1() throws Exception {
-		 	log("Test Case: PIDC Patient Registration v1 channel");
-		 	PatientRegistrationUtils.pidcPatientRegistration("v1",driver);
+	 @DataProvider(name = "portalVersion")
+		public Object[][] portalVersionForRegistration() {
+			Object[][] obj = new Object[][] {{"1.0"},{"2.0"},
+			};
+			return obj;
 	 }
 	 
-	 @Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testPIDCPatientRegistrationV2() throws Exception {
-		 	log("Test Case: PIDC Patient Registration v2 channel");
-		 	PatientRegistrationUtils.pidcPatientRegistration("v2",driver);
+	 @Test(enabled = true,dataProvider = "portalVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientRegistrationV1(String portalVersion) throws Exception {
+		 	log("Test Case: PIDC Patient Registration v1 channel for portal-"+portalVersion);
+		 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+		 	PatientRegistrationUtils.pidcPatientRegistration("v1",driver,portalVersion); 	
+	 }
+	 
+	 @Test(enabled = true,dataProvider = "portalVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPatientRegistrationV2(String portalVersion) throws Exception {
+		 	log("Test Case: PIDC Patient Registration v2 channel for portal-"+portalVersion);
+		 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+		 	PatientRegistrationUtils.pidcPatientRegistration("v2",driver,portalVersion);
 	 }
 }

@@ -64,6 +64,14 @@ public class PIDCInfo {
 	private String address2SC = "";
 	private String portalVersion = "";
 	private String csvFilePath = "";
+	public ArrayList<PatientDetail> patientDetailList = new ArrayList<PatientDetail>();
+	
+	private String restUrl_20="";
+	private String practiceId_PIDC_20="";
+	private String oAuthAppToken_20 = "";
+	private String oAuthUsername_20 = "";
+	private String oAuthPassword_20 = "";
+
 	
 	public String getRestUrl() {
 		return restUrl;
@@ -545,6 +553,54 @@ public class PIDCInfo {
 
 	public void setSexualOrientation(ArrayList<String> sexualOrientation) {
 		this.sexualOrientation = sexualOrientation;
+	}
+
+	public ArrayList<PatientDetail> getPatientDetailList() {
+		return patientDetailList;
+	}
+
+	public void setPatientDetailList(ArrayList<PatientDetail> patientDetailList) {
+		this.patientDetailList = patientDetailList;
+	}
+
+	public String getRestUrl_20() {
+		return restUrl_20;
+	}
+
+	public void setRestUrl_20(String restUrl_20) {
+		this.restUrl_20 = restUrl_20;
+	}
+
+	public String getPracticeId_PIDC_20() {
+		return practiceId_PIDC_20;
+	}
+
+	public void setPracticeId_PIDC_20(String practiceId_PIDC_20) {
+		this.practiceId_PIDC_20 = practiceId_PIDC_20;
+	}
+
+	public String getoAuthAppToken_20() {
+		return oAuthAppToken_20;
+	}
+
+	public void setoAuthAppToken_20(String oAuthAppToken_20) {
+		this.oAuthAppToken_20 = oAuthAppToken_20;
+	}
+
+	public String getoAuthUsername_20() {
+		return oAuthUsername_20;
+	}
+
+	public void setoAuthUsername_20(String oAuthUsername_20) {
+		this.oAuthUsername_20 = oAuthUsername_20;
+	}
+
+	public String getoAuthPassword_20() {
+		return oAuthPassword_20;
+	}
+
+	public void setoAuthPassword_20(String oAuthPassword_20) {
+		this.oAuthPassword_20 = oAuthPassword_20;
 	}
 
 }
