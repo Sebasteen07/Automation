@@ -27,9 +27,7 @@ public class AccountPage {
 		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//li[@href='#/new-tabs-layout/create']")));
 	}
 
-	public void updateMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone)
-			throws InterruptedException {
-
+	public void updateMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone) {
 		Select inputSalutation = new Select(driver.findElement(By.id("salutationInput")));
 		inputSalutation.selectByVisibleText(salutation);
 		driver.findElement(By.id("mailingStreetInput")).clear();
@@ -50,13 +48,10 @@ public class AccountPage {
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", inputPhone);
 		inputPhone.clear();
 		inputPhone.sendKeys(phone);
-
 		inputPhone.sendKeys(Keys.TAB, Keys.TAB, Keys.TAB, Keys.ENTER);
 	}
 
-	public void resetMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone)
-			throws InterruptedException {
-
+	public void resetMemberProfile(String salutation, String street, String city, String state, String zip, String email, String phone) {
 		Select inputSalutation = new Select(driver.findElement(By.id("salutationInput")));
 		inputSalutation.selectByVisibleText(salutation);
 		driver.findElement(By.id("mailingStreetInput")).clear();
@@ -77,7 +72,6 @@ public class AccountPage {
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", inputPhone);
 		inputPhone.clear();
 		inputPhone.sendKeys(phone);
-
 		inputPhone.sendKeys(Keys.TAB, Keys.TAB, Keys.TAB, Keys.ENTER);
 	}
 

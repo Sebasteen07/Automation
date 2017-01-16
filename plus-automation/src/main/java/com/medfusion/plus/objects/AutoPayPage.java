@@ -52,7 +52,7 @@ public class AutoPayPage {
 		}
 	}
 
-	public void clickBackButton() throws InterruptedException {
+	public void clickBackButton() {
 		driver.navigate().back();
 	}
 }

@@ -26,7 +26,8 @@ public class SelectAProfilePage {
 		// this will wait for element to be visible for 5 seconds
 	}
 
-	public void clickProfile() {
+	public void clickProfile() throws InterruptedException {
+		Thread.sleep(1000);
 		WebElement element = driver.findElement(By.xpath("//*[contains(@href,'#/new-tabs-layout/profile-tabs/')]"));
 
 		Actions actions = new Actions(driver);
@@ -34,7 +35,8 @@ public class SelectAProfilePage {
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void clickAddAPerson() {
+	public void clickAddAPerson() throws InterruptedException {
+		Thread.sleep(1000);
 		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/create']"));
 
 		Actions actions = new Actions(driver);
@@ -51,7 +53,8 @@ public class SelectAProfilePage {
 	}
 
 	public void clickMoreOptions() throws InterruptedException {
-		WebElement element = driver.findElement(By.xpath("//button[@class='button button-icon ion-more']"));
+		Thread.sleep(1000);
+		WebElement element = driver.findElement(By.xpath("//span[@class='mf-icon mf-icon__menu-dots mf-color__brand']"));
 
 		Actions actions = new Actions(driver);
 

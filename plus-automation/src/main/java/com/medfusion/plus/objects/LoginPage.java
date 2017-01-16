@@ -24,11 +24,11 @@ public class LoginPage {
 		this.driver = driver;
 		ngWebDriver = new NgWebDriver(driver);
 		this.driver.manage().window().maximize();
-		driver.findElement(By.linkText("Sign in")).click();
+		driver.findElement(By.xpath("//button[@class='mf-cta__primary buffer-vertical--small']")).click();
 		ngWebDriver.waitForAngularRequestsToFinish();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='button mf-button-secondary mf-button-circle']")));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//button[@class='mf-cta__secondary']")));
 		username = driver.findElement(By.id("username"));
 		password = driver.findElement(By.id("password"));
 	}
@@ -47,7 +47,7 @@ public class LoginPage {
 		return true;
 	}
 
-	public void login(String userName, String securepassword) throws InterruptedException {
+	public void login(String userName, String securepassword) {
 		username.clear();
 		username.sendKeys(userName);
 
@@ -58,6 +58,7 @@ public class LoginPage {
 	}
 
 	public void goToSupportPage() throws InterruptedException {
+		Thread.sleep(1000);
 		driver.findElement(By.xpath("//button[@href='#/support']")).click();
 	}
 

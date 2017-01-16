@@ -23,11 +23,11 @@ public class HelpAndSupport {
 		ngWebDriver.waitForAngularRequestsToFinish();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@href='https://medfusionplus.com/tos/index.html']")));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//li[@href='https://medfusionplus.com/tos/index.html']")));
 	}
 
 	public void goToFAQ() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='https://medfusionplus.com/faq/']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='https://medfusionplus.com/faq/']"));
 
 		Actions actions = new Actions(driver);
 
@@ -35,39 +35,43 @@ public class HelpAndSupport {
 	}
 
 	public void goToSupportRequest() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/support/support-request']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/support/support-request']"));
 
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToRequestProvider() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/support/provider-request']"));
+	public void goToRequestProvider() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/support/provider-request']"));
 
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToSendFeedback() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/send-feedback']"));
+	public void goToSendFeedback() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/support/send-feedback']"));
 
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToAboutMedfusionPlus() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='#/new-tabs-layout/support/about-the-app']"));
+	public void goToAboutMedfusionPlus() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement element = driver.findElement(By.xpath("//li[@href='#/new-tabs-layout/support/about-the-app']"));
 
 		Actions actions = new Actions(driver);
 
 		actions.moveToElement(element).click().perform();
 	}
 
-	public void goToPrivacyStatement() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='https://medfusionplus.com/privacy/index.html']"));
+	public void goToPrivacyStatement() throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement element = driver.findElement(By.xpath("//li[@href='https://medfusionplus.com/privacy/index.html']"));
 
 		Actions actions = new Actions(driver);
 
@@ -75,7 +79,7 @@ public class HelpAndSupport {
 	}
 
 	public void goToTermsOfService() {
-		WebElement element = driver.findElement(By.xpath("//div[@href='https://medfusionplus.com/tos/index.html']"));
+		WebElement element = driver.findElement(By.xpath("//li[@href='https://medfusionplus.com/tos/index.html']"));
 
 		Actions actions = new Actions(driver);
 
@@ -97,7 +101,7 @@ public class HelpAndSupport {
 		driver.switchTo().window(windowBefore);
 	}
 
-	public void clickBackButton() throws InterruptedException {
+	public void clickBackButton() {
 		driver.navigate().back();
 	}
 }
