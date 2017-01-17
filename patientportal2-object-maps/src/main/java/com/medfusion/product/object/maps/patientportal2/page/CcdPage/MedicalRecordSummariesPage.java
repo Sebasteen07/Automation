@@ -127,7 +127,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	private void setFilterToElementsDate(WebElement element) {
 		String date = getOnlyDateFromElement(element);
 		filterCCDs(date, date);
-		new WebDriverWait(driver, 30).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][2]//a")));
+		new WebDriverWait(driver, 30).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")));
 		assertEquals("Something went wrong when filtering CCDs.", date, getOnlyDateFromElement(firstVisibleCCDDate));
 	}
 
