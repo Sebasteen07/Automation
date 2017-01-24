@@ -98,7 +98,7 @@ public class MU2Utils {
 		
 		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
 		Log4jUtil.log("MU2GetEvent Step 6: Click on link View health data");
-		//jalapenoCcdPage.clickBtnViewHealthData();
+		
 		Log4jUtil.log("MU2GetEvent Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
 		jalapenoCcdPage.verifyCCDViewerAndClose();
 		Log4jUtil.log("Page refreshing...");
