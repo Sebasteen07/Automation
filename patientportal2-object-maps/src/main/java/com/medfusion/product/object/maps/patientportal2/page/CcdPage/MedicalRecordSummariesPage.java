@@ -60,6 +60,16 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//*[@class='notification-message']/p[@data-ng-if='vm.transmitSuccess']")
 	private WebElement successNotificationMessage;	
 	
+	//Adding new radioButton and acknowledgement check box
+	
+	@FindBy(how = How.ID, using = "secureTransmit")
+	private WebElement secureTransmit;
+	
+	@FindBy(how = How.ID, using = "unsecureTransmit")
+	private WebElement unsecureTransmit;
+	
+	@FindBy(how = How.ID, using = "acknowledgement")
+	private WebElement acknowledgement;
 	
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -101,11 +111,37 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	public void selectSecondVisibleCCD(){
 		secondVisibleCCDCheckbox.click();
 	}
+	public void selectAllVisibleCCD(){
+		selectAll.click();
+	}
+	public void selectDirectProtocol(){
+		secureTransmit.click();
+	}
+	public void selectStandardEmail(){
+		unsecureTransmit.click();
+	}
+	public void acknowledgeToSendUnsecureEmail(){
+		acknowledgement.click();
+	}
+	
+	
 	
 	public void sendFirstVisibleCCDUsingDirectProtocol(String directEmailAddress){
 		emailButton.click();
 		assertTrue(areEmailLightboxElementsPresent());
+		selectDirectProtocol();
 		emailAddressInput.sendKeys(directEmailAddress);
+		transmitButton.click();
+		log("Wait for success notification message");
+		new WebDriverWait(driver, 60).until(ExpectedConditions.textToBePresentInElement(successNotificationMessage, "Your health data has been successfully sent"));
+	}
+	
+	public void sendFirstVisibleCCDUsingStandardEmail(String directEmailAddress){
+		emailButton.click();
+		assertTrue(areEmailLightboxElementsPresent());
+		selectStandardEmail();
+		emailAddressInput.sendKeys(directEmailAddress);
+		acknowledgement.click();
 		transmitButton.click();
 		log("Wait for success notification message");
 		new WebDriverWait(driver, 60).until(ExpectedConditions.textToBePresentInElement(successNotificationMessage, "Your health data has been successfully sent"));
@@ -118,6 +154,11 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	
 	private boolean areEmailLightboxElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(secureTransmit);
+		webElementsList.add(unsecureTransmit);
+		if(unsecureTransmit.isSelected()==true) {
+			webElementsList.add(acknowledgement);
+		}
 		webElementsList.add(emailAddressInput);
 		webElementsList.add(transmitButton);
 

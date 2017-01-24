@@ -35,7 +35,7 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 public class MU2Utils {
 	public static List<String> eventList = new ArrayList<String>();
-	public ArrayList<String> ccdMessageList = new ArrayList<String>(3);
+	public ArrayList<String> ccdMessageList = new ArrayList<String>(10);
 	public static final String PracticePatientId = "PracticePatientId";
 	public static final String FirstName = "FirstName";
 	public static final String LastName = "LastName";
@@ -56,6 +56,13 @@ public class MU2Utils {
 		ccdMessageList.add(testData.CCDMessageID1);
 		ccdMessageList.add(testData.CCDMessageID2);
 		ccdMessageList.add(testData.CCDMessageID1);
+		ccdMessageList.add(testData.CCDMessageID2);
+		ccdMessageList.add(testData.CCDMessageID1);
+		ccdMessageList.add(testData.CCDMessageID2);
+		ccdMessageList.add(testData.CCDMessageID1);
+		ccdMessageList.add(testData.CCDMessageID2);
+		ccdMessageList.add(testData.CCDMessageID1);
+		ccdMessageList.add(testData.CCDMessageID2);
 		
 		Log4jUtil.log("MU2GetEvent Step 1: LogIn");
 		Log4jUtil.log("Practice URL: " + testData.PORTAL_URL);
@@ -77,8 +84,12 @@ public class MU2Utils {
 		Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
-		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email");
+		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
+		Thread.sleep(5000);
+		long transmitTimestamp = System.currentTimeMillis();
+		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
+		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
 		Log4jUtil.log("MU2GetEvent Step 5: view  First CCD");
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCDDate();
@@ -130,7 +141,7 @@ public class MU2Utils {
 		Log4jUtil.log("Updated PULL API URL: " + restPullUrl);
 
 		Log4jUtil.log("Step 10: Send Pull API HTTP GET Request and save response to " +testData.PUSH_RESPONSEPATH);
-		//RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
+		
 		RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
 		
 		Thread.sleep(5000);
@@ -143,7 +154,7 @@ public class MU2Utils {
 			// verify "View" event in response XML and return Action Time stamp
 			Log4jUtil.log("Verification of CCD '" + list.get(i) + "' event present in Pull API response xml");
 			ActionTimestamp = findEventInResonseXML(testData.PUSH_RESPONSEPATH, MU2Constants.EVENT, MU2Constants.RESOURCE_TYPE, list.get(i),
-					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2);
+					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,transmitTimestamp);
 			Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
 			Log4jUtil.log("ActionTimestamp: "+ActionTimestamp);
 			Log4jUtil.log("TYPE FOUND: "+list.get(i));
@@ -154,7 +165,7 @@ public class MU2Utils {
  }
 	
 	
-	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName) {
+	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp) {
 		IHGUtil.PrintMethodName();
 
 		String ActionTimestamp = null;
@@ -176,6 +187,12 @@ public class MU2Utils {
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
 					
+					if(transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+						Log4jUtil.log("Standard Email");
+					}
+					if(transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+						Log4jUtil.log("Direct Protocol");
+					}
 					if (recordedTimeStamp >= timeStamp) {
 						 
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
@@ -186,6 +203,7 @@ public class MU2Utils {
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								&& getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(i))) {
 								
+								
 								Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
 								Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
 								Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);
@@ -194,10 +212,10 @@ public class MU2Utils {
 							
 								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 							
-							break;
+							//break;
 						}
 					} else {
-						 // Log4jUtil.log("Event is not found in the pull events response XML");
+						 
 					}
 				}
 			}

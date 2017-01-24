@@ -224,6 +224,9 @@ public class PropertyFileLoader {
 	public String getCCDPATH3() {
 		return property.getProperty("ccdXMLPath3");
 	}
+	public String getCCDPATH4() {
+		return property.getProperty("ccdXMLPath4");
+	}
 	public String getHomePhoneNo() {
 		return property.getProperty("homePhoneNo");
 	}
@@ -383,6 +386,9 @@ public class PropertyFileLoader {
 		return property.getProperty("oAuthPassword_20");
 	}
 	
+	public String getStandard_Email() {
+		return property.getProperty("standard_Email");
+	}
 	
 	//PIDC END
 }
