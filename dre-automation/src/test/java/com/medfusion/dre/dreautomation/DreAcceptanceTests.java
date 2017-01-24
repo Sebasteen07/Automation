@@ -45,36 +45,6 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = false, groups = {"Retrievers"})
-	public void testRetrievingMeditechPortal() throws InterruptedException {
-		log("Step 1: Get Data from Properties");
-		retrieverName = "Meditech";
-		String claireRestUrl = Data.get("ClaireRESTUrl");
-		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
-
-		log("Step 2: Create a connection for Meditech");
-		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
-		String newConnection = executeRequestGetContent(httpPost);
-		
-		log("Step 3: Verify that connection hasn't been made already");
-		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
-		
-		log("Step 4: Refreshing the connection to start the retrieval process");
-		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
-		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
-		executeRequestGetContent(httpPut);
-		
-		log("Step 5: Verify the retrieval was successful");
-		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
-		String status = retriever.verifyJobStatus(httpGet);
-		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
-		
-		log("Step 6: Delete the connection");
-		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
-		executeRequestAndGetStatus(httpDelete);
-		httpDelete.releaseConnection();
-	}
-	
 	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingMayoClinicPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
@@ -135,36 +105,6 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = false, groups = {"Retrievers"})
-	public void testRetrievingCernerPortal() throws InterruptedException {
-		log("Step 1: Get Data from Properties");
-		retrieverName = "Cerner";
-		String claireRestUrl = Data.get("ClaireRESTUrl");
-		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
-
-		log("Step 2: Create a connection for Cerner");
-		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
-		String newConnection = executeRequestGetContent(httpPost);
-		
-		log("Step 3: Verify that connection hasn't been made already");
-		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
-		
-		log("Step 4: Refreshing the connection to start the retrieval process");
-		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
-		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
-		executeRequestGetContent(httpPut);
-		
-		log("Step 5: Verify the retrieval was successful");
-		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
-		String status = retriever.verifyJobStatus(httpGet);
-		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
-		
-		log("Step 6: Delete the connection");
-		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
-		executeRequestAndGetStatus(httpDelete);
-		httpDelete.releaseConnection();
-	}
-	
 	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingEClinicalPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
@@ -173,36 +113,6 @@ public class DreAcceptanceTests extends HTTPCalls {
 		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
 
 		log("Step 2: Create a connection for EClinical");
-		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
-		String newConnection = executeRequestGetContent(httpPost);
-		
-		log("Step 3: Verify that connection hasn't been made already");
-		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
-		
-		log("Step 4: Refreshing the connection to start the retrieval process");
-		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
-		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
-		executeRequestGetContent(httpPut);
-		
-		log("Step 5: Verify the retrieval was successful");
-		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
-		String status = retriever.verifyJobStatus(httpGet);
-		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
-		
-		log("Step 6: Delete the connection");
-		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
-		executeRequestAndGetStatus(httpDelete);
-		httpDelete.releaseConnection();
-	}
-	
-	@Test(enabled = false, groups = {"Retrievers"})
-	public void testRetrievingAthenaPortal() throws InterruptedException {
-		log("Step 1: Get Data from Properties");
-		retrieverName = "Athena";
-		String claireRestUrl = Data.get("ClaireRESTUrl");
-		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
-
-		log("Step 2: Create a connection for Athena");
 		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
 		String newConnection = executeRequestGetContent(httpPost);
 		
@@ -255,14 +165,14 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = false, groups = {"Retrievers"})
-	public void testRetrievingMedfusionPortal() throws InterruptedException {
+	@Test(enabled = true, groups = {"Retrievers"})
+	public void testRetrievingGreenwayMHRPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
-		retrieverName = "Medfusion";
+		retrieverName = "GreenwayMHR";
 		String claireRestUrl = Data.get("ClaireRESTUrl");
 		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
 
-		log("Step 2: Create a connection for Medfusion");
+		log("Step 2: Create a connection for Greenway MHR");
 		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
 		String newConnection = executeRequestGetContent(httpPost);
 		
@@ -286,13 +196,133 @@ public class DreAcceptanceTests extends HTTPCalls {
 	}
 	
 	@Test(enabled = true, groups = {"Retrievers"})
-	public void testRetrievingGreenwayMHRPortal() throws InterruptedException {
+	public void testInvalidUserCredentialsForEpic() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
-		retrieverName = "GreenwayMHR";
+		retrieverName = "Epic";
 		String claireRestUrl = Data.get("ClaireRESTUrl");
 		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
 
-		log("Step 2: Create a connection for Greenway MHR");
+		log("Step 2: Create a connection for Epic");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generateInvalidPayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval returns ERROR_USER_AUTH");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyErrorStatus(httpGet);
+		Assert.assertEquals(status, "ERROR_USER_AUTH", "Did not receiver correct status");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();	
+	}
+	
+	@Test(enabled = false, groups = {"Retrievers"})
+	public void testRetrievingAthenaPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		retrieverName = "Athena";
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Athena");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval was successful");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
+		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();
+	}
+	
+	@Test(enabled = false, groups = {"Retrievers"})
+	public void testRetrievingCernerPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		retrieverName = "Cerner";
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Cerner");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval was successful");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
+		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();
+	}
+	
+	@Test(enabled = false, groups = {"Retrievers"})
+	public void testRetrievingMeditechPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		retrieverName = "Meditech";
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Meditech");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval was successful");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
+		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();
+	}
+	
+	@Test(enabled = false, groups = {"Retrievers"})
+	public void testRetrievingMedfusionPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		retrieverName = "Medfusion";
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Medfusion");
 		HttpPost httpPost = buildHttpPost(claireRestUrl + "rest/v1/users/" + retriever.Useruuid + "/connections", retriever.generatePayload());
 		String newConnection = executeRequestGetContent(httpPost);
 		
