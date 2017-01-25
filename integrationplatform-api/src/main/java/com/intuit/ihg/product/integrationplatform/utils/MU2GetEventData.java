@@ -28,6 +28,7 @@ public class MU2GetEventData {
 		public String CCDPATH1="";
 		public String CCDPATH2="";
 		public String CCDPATH3="";
+		public String CCDPATH4="";
 		
 		public String HomePhoneNo="";
 		public String SecretQuestion="";
@@ -37,7 +38,12 @@ public class MU2GetEventData {
 		
 		public String CCDMessageID1="";
 		public String CCDMessageID2="";
+		public String CCDMessageID3="";
+		public String CCDMessageID4="";
+		
 		public String PatientExternalId_MU2="";
         public String PatientFirstName_MU2="";
         public String PatientLastName_MU2="";
+
+        public String Standard_Email="";
 }

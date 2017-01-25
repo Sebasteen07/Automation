@@ -100,6 +100,7 @@ public class LoadPreTestData {
 		testData.CCDPATH1=propertyData.getCCDPATH1();
 		testData.CCDPATH2=propertyData.getCCDPATH2();
 		testData.CCDPATH3=propertyData.getCCDPATH3();
+		testData.CCDPATH4=propertyData.getCCDPATH4();
 		
 		testData.HomePhoneNo=propertyData.getHomePhoneNo();
 		testData.SecretQuestion=propertyData.getSecretQuestion();
@@ -113,6 +114,7 @@ public class LoadPreTestData {
 		testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
 		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
 		
+		testData.Standard_Email = propertyData.getStandard_Email();
 		return testData;
 	}
 	
