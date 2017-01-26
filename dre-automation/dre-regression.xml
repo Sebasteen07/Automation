@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "DRE-Regression" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-</listeners>
- 	
-<test name = "Integration-Platform-Regression" >
-	<classes>
-		<class name = "com.medfusion.dre.dreautomation.test.DreAcceptanceTests" />
-		<methods>
-	    		<include name="testRetrievingEpicPortal" />
-	    		<include name="testRetrievingMayoClinicPortal"/>
-	    		<include name="testRetrievingPracticeFusionPortal"/>
-	    		<include name="testRetrievingEClinicalPortal"/>
-	    		<include name="testRetrievingNextMDPortal"/>
-	    		<include name="testRetrievingGreenwayMHRPortal"/>    	
-				<include name="testInvalidUserCredentialsForEpic"/>    	
-				<include name="testRetrievingAthenaPortal"/>    	
-				<include name="testRetrievingCernerPortal"/>				
-				<include name="testRetrievingMeditechPortal"/>		
-				<include name="testRetrievingMedfusionPortal"/>				
-      		</methods>
-	</classes>
-</test>
+<suite name = "Retrievers" verbose = "2" >
+	<listeners>
+		<listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+
+	<test name = "Retrievers" >
+		<classes>
+			<class name = "com.medfusion.dre.dreautomation.DreAcceptanceTests" />
+
+		</classes>
+	</test>
 </suite>
