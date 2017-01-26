@@ -9,8 +9,7 @@ import org.testng.annotations.Test;
 
 import com.medfusion.dre.objects.Retriever;
 import com.medfusion.factory.RetrieversFactory;
-import com.medfusion.dre.util.Data;
-import com.medfusion.dre.util.HTTPCalls;
+import com.medfusion.dre.util.*;
 
 public class DreAcceptanceTests extends HTTPCalls {
 	public static String retrieverName = null;
