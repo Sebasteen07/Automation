@@ -76,7 +76,7 @@ public class Retriever extends HTTPCalls {
 			Thread.sleep(30000);
 			String finalStatus = executeRequestGetContent(httpGet);
 
-			if (isContain(finalStatus, "SUCCESS")) {
+			if (isContain(finalStatus, "SUCCESS") || isContain(finalStatus, "PARTIAL_SUCCESS")) {
 				response = "SUCCESS";
 				break;
 			} 
@@ -108,7 +108,7 @@ public class Retriever extends HTTPCalls {
 			Thread.sleep(15000);
 			String finalStatus = executeRequestGetContent(httpGet);
 
-			if (isContain(finalStatus, "SUCCESS")) {
+			if (isContain(finalStatus, "SUCCESS") || isContain(finalStatus, "PARTIAL_SUCCESS")) {
 				response = "SUCCESS";
 				break;
 			} 

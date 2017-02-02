@@ -164,7 +164,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = true, groups = {"Retrievers"})
+	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingGreenwayMHRPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "GreenwayMHR";
@@ -224,7 +224,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();	
 	}
 	
-	@Test(enabled = false, groups = {"Retrievers"})
+	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingAthenaPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Athena";
@@ -254,7 +254,7 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
-	@Test(enabled = false, groups = {"Retrievers"})
+	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingCernerPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
 		retrieverName = "Cerner";
