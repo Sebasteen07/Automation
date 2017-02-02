@@ -1,8 +1,9 @@
 package com.medfusion.dre.util;
 
 import org.junit.Rule;
-import org.junit.rules.TestWatchman;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,20 +13,24 @@ public class Logging extends BaseTestNGWebDriver {
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	// TODO Add non deprecated logging
 	@Rule
-	public TestWatchman watchman = new TestWatchman() {
-		public void starting(FrameworkMethod method) {
-			logger.info("<<< Test {} has STARTED >>>", method.getName());
-		}
+	public TestRule watchman = new TestWatcher() {
 
-		public void succeeded(FrameworkMethod method) {
-			logger.info("<<< Test {} SUCCEED >>>\n\n", method.getName());
-		}
+	    public void succeeded(final Description description) {
+	        logger.info(String.format("Success: %s", description));
+	    }
 
-		public void failed(Throwable e, FrameworkMethod method) {
-			logger.error("<<< Test {} FAILED >>>", method.getName());
-			logger.error("With reason:", method.getName(), e.getMessage());
-		}
-	};
+	    public void failed(final Throwable e, final Description description) {
+	        logger.info(String.format("Failed: %s", description), e);
+	    }
+
+	    public void starting(final Description description) {
+	        logger.info(String.format("Starting: %s", description));
+	    }
+
+	    public void finished(final Description description) {
+	        logger.info(String.format("Finished: %s", description));
+	    }
+
+	    };
 }
