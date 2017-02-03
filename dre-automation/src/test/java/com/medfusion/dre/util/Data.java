@@ -1,23 +1,20 @@
 package com.medfusion.dre.util;
 
-
 import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Properties;
-
-import com.medfusion.dre.dreautomation.DreAcceptanceTests;
 
 public class Data {
 
 	private static TreeProperties retrieverProperties = new TreeProperties();
 
-	static {
+	public static void getData(String retrieverName) {
 		try {			
             Properties testConfig = new Properties();
             testConfig.load(new FileInputStream("testConfig.properties"));
             String env = testConfig.getProperty("test.environment");
 			
-			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data-" + env + "/" + DreAcceptanceTests.retrieverName + ".properties");
+			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data-" + env + "/" + retrieverName + ".properties");
 			retrieverProperties.load(inputStream);
 			inputStream.close();
 		} catch (Exception e) {
