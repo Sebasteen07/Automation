@@ -128,7 +128,7 @@ public class NewRxRenewalPage extends BasePageObject {
 		PortalUtil.setPortalFrame(driver);
 		chooseFromList.click();
 		try {
-			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup']/option"));
+			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']/option"));
 			for (WebElement li : list) {
 				int count = 1;
 				if (li.getText().contains("CVS")) {
