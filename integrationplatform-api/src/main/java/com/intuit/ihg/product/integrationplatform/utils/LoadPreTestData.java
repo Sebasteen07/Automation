@@ -185,4 +185,42 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+	
+	public AppointmentData loadAppointmentDataFromProperty(AppointmentData testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.AppointmentPath= propertyData.getAppointmentRequestURL();
+		testData.EmailUserName= propertyData.getEmail_AD();
+		testData.MFPatientId = propertyData.getMedfusionPatientId_AD();
+		testData.MFPracticeId = propertyData.getMedfusionPracticeId_AD();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
+		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
+		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
+		
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.PracticeName = propertyData.getIntegrationPracticeID_AD();
+		//testData.PracticeName = propertyData.getPatientPracticeID_AD();
+		testData.URL = propertyData.getPracticeURL_AD();
+		testData.UserName = propertyData.getUserName_AD();
+		testData.Password = propertyData.getPassword_AD();
+		testData.PatientPracticeId = propertyData.getPatientPracticeID_AD();
+		testData.PreviousAppointmentId = propertyData.getPreviousAppointmentId();
+		testData.PATIENT_EXTERNAL_ID = propertyData.getPATIENT_EXTERNAL_ID();
+		testData.PATIENT_INVITE_RESTURL=propertyData.getPATIENT_INVITE_RESTURL();
+		testData.From = propertyData.getProviderIdentifier_AD();
+		
+		testData.FirstName = propertyData.getFirstName_AD();
+		testData.LastName = propertyData.getLastName_AD();
+		testData.SecretQuestion=propertyData.getSecretQuestion();
+		testData.SecretAnswer=propertyData.getSecretAnswer();
+		testData.HomePhoneNo=propertyData.getHomePhoneNo();
+		testData.BatchSize=propertyData.getBatchSize_AD();
+		testData.csvFilePath = propertyData.getCSVFILEPATH_AD();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getProtalUserName_AD();
+		testData.practicePassword = propertyData.getPortalPassword_AD();
+		
+		return testData;
+	}
 }

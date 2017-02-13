@@ -391,4 +391,91 @@ public class PropertyFileLoader {
 	}
 	
 	//PIDC END
+	
+	//Appointment Data Request from partner
+	public String getAppointmentRequestURL() {
+		return property.getProperty("appointmentRequestURL");
+	}
+	public String getOAuthAppToken_AD() {
+		return property.getProperty("oAuthAppToken_AD");
+	}
+	public String getOAuthUsername_AD() {
+		return property.getProperty("oAuthUsername_AD");
+	}
+	public String getoAuthPassword_AD() {
+		return property.getProperty("oAuthPassword_AD");
+	}
+	public String getIntegrationPracticeID_AD() {
+		return property.getProperty("integrationPracticeID_AD");
+	}
+	public String getMedfusionPracticeId_AD() {
+		return property.getProperty("medfusionPracticeId_AD");
+	}
+	public String getUserName_AD() {
+		return property.getProperty("userName_AD");
+	}
+	public String getPassword_AD() {
+		return property.getProperty("password_AD");
+	}
+	public String getPatientPracticeID_AD() {
+		return property.getProperty("patientPracticeID_AD");
+	}
+	public String getMedfusionPatientId_AD() {
+		return property.getProperty("medfusionPatientId_AD");
+	}
+	public String getEmail_AD() {
+		return property.getProperty("email_AD");
+	}
+	public String getProviderIdentifier_AD() {
+		return property.getProperty("providerIdentifier_AD");
+	}
+	public String getProviderName_AD() {
+		return property.getProperty("providerName_AD");
+	}
+	public String getAppointmentTime_AD() {
+		return property.getProperty("appointmentTime_AD");
+	}
+	public String getAppointmentLocation_AD() {
+		return property.getProperty("appointmentLocation_AD");
+	}
+	public String getAppointmentStatus_AD() {
+		return property.getProperty("appointmentStatus_AD");
+	}
+	public String getAppointmentDescription_AD() {
+		return property.getProperty("appointmentDescription_AD");
+	}
+	public String getAppointmentReason_AD() {
+		return property.getProperty("appointmentReason_AD");
+	}
+	public String getAppointmentType_AD() {
+		return property.getProperty("appointmentType_AD");
+	}
+	public String getPracticeURL_AD() {
+		return property.getProperty("practiceURL_AD");
+	}
+	public String getPreviousAppointmentId() {
+		return property.getProperty("previousAppointmentId");
+	}
+	public String getFirstName_AD() {
+		return property.getProperty("firstName_AD");
+	}
+	public String getLastName_AD() {
+		return property.getProperty("lastName_AD");
+	}
+	public String getBatchSize_AD() {
+		return property.getProperty("batchSize");
+	}
+	public String getCSVFILEPATH_AD() {
+		return property.getProperty("csvFilePath_AD");
+	}
+	public String getPracticePortalURL_AD() {
+		return property.getProperty("portalUrl");
+	}
+	public String getProtalUserName_AD() {
+		return property.getProperty("portalUserName");
+	}
+	public String getPortalPassword_AD() {
+		return property.getProperty("portalPassword");
+	}
+	
 }
