@@ -24,7 +24,7 @@ public class AppointmentDataUtils {
 	public String updatedLocation = "";
 	public String updatedProvider = "";
 	public void checkAppointment(AppointmentData testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Generate Payload  with Status as "+testData.Status);
+		Log4jUtil.log("Generate Payload with Status as "+testData.Status);
 		AppointmentDataPayload apObj =new AppointmentDataPayload();
 		String appointmentDataPayload = apObj.getAppointmentDataPayload(testData);
 		//Log4jUtil.log("appointmentDataPayload "+appointmentDataPayload);
@@ -61,28 +61,31 @@ public class AppointmentDataUtils {
 		Log4jUtil.log(" Goto Appointments Page");
 		homePage.goToAppointmentsPage(testData.URL);
 		JalapenoAppointmentsPage JAPage = new JalapenoAppointmentsPage(driver);
-		Thread.sleep(12000);
+		Thread.sleep(8000);
 		
 		Log4jUtil.log("appointmentType "+testData.appointmentType);
 		if(testData.appointmentType == "FUTURE"){
 			futureAppointment(JAPage,apObj,testData); 
+			Thread.sleep(8000);
 		}
 		
-		if(testData.appointmentType == "PAST"){
-			JAPage.goToUpcomingAppointments();
+		if(testData.appointmentType == "PAST" || testData.BatchSize.equalsIgnoreCase("2")){
+			Log4jUtil.log("calling past ");
+			//JAPage.goToUpcomingAppointments();
 			pastAppointment(JAPage,apObj,testData);	
-			
 		}
 		homePage.clickOnLogout();
 	}
 	
 	public void pastAppointment(JalapenoAppointmentsPage JAPage,AppointmentDataPayload apObj ,AppointmentData testData ) {
+		Log4jUtil.log("Match Past Appointment Details");
 		JAPage.goToPastAppointments();
 		List<WebElement> appointMentListPast = JAPage.getAppointments();
-		Log4jUtil.log("list size = "+appointMentListPast.size());
+		Log4jUtil.log("Past list size = "+appointMentListPast.size());
 		for(int i=0;i<appointMentListPast.size();i++) {
 			
-			if(appointMentListPast.get(i).getText().contains(apObj.providerNamePlace[0]) && !testData.Status.equalsIgnoreCase("CANCEL")) {
+			if(appointMentListPast.get(i).getText().contains(apObj.providerNamePlace[1]) && !testData.Status.equalsIgnoreCase("CANCEL")) {
+				Log4jUtil.log("providerName = "+apObj.providerNamePlace[1]);
 				Log4jUtil.log("Past appointment Data Matched ! ");
 			}			
 		}
@@ -90,11 +93,10 @@ public class AppointmentDataUtils {
 	
 	public void futureAppointment(JalapenoAppointmentsPage JAPage,AppointmentDataPayload apObj,AppointmentData testData) {
 		JAPage.goToUpcomingAppointments();		
-		Log4jUtil.log("Step 7: Match Appointment Details");
+		Log4jUtil.log("Match Future Appointment Details");
 		List<WebElement> appointMentList = JAPage.getAppointments();
-		Log4jUtil.log("list size = "+appointMentList.size());
+		Log4jUtil.log("Future list size = "+appointMentList.size());
 		for(int i=0;i<appointMentList.size();i++) {
-			
 			if(appointMentList.get(i).getText().contains(apObj.providerNamePlace[0]) && !testData.Status.equalsIgnoreCase("CANCEL")) {
 				Log4jUtil.log("posted appointment data Matched ! ");
 				Log4jUtil.log("appointMentList.get(i).getText() "+appointMentList.get(i).getText());
@@ -133,15 +135,13 @@ public class AppointmentDataUtils {
 					Log4jUtil.log(" updatedProvider  "+updatedProvider);
 					String headerColor = appointMentList.get(i).getCssValue("border-bottom-color");
 					Assert.assertEquals("rgba(255, 0, 0, 1)", headerColor, "Color Matched !");
-					Log4jUtil.log(" headerColor  "+headerColor);
-					
+					Log4jUtil.log(" Canceled Color code  "+headerColor);
 				}
 				else {
 					//Assert.assertTrue(false, "appointmentData not found");
 				}
 			}
 		}
-	
 	}
 	
 	
@@ -178,7 +178,7 @@ public class AppointmentDataUtils {
 				//System.out.println("i: "+i+"  j: "+j+"  appointmentDataValue : "+appointmentDataValue[i][counter]);				
 				counter++;
 			}
-			testData.appointmentDetailList.add(new AppointmentDetail(setValues[i][0], setValues[i][1], setValues[i][2], setValues[i][3]));
+			testData.appointmentDetailList.add(new AppointmentDetail(setValues[i][0], setValues[i][1], setValues[i][2], setValues[i][3], setValues[i][4], setValues[i][5], setValues[i][6], setValues[i][7], setValues[i][8], setValues[i][9], setValues[i][10], setValues[i][11]));
 		}
 	}
 	

@@ -350,12 +350,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.FirstName=testData.FirstName;
 			testData.LastName=testData.LastName;
 			testData.EmailUserName=testData.EmailUserName;
-			testData.BatchSize = "1";
+			testData.BatchSize = "2";
 			
 			testData.Time = testData.appointmentDetailList.get(1).getTime();
 			testData.appointmentType = "FUTURE";
 			testData.Location = "NEW";
 			
+			testData.Type=testData.appointmentDetailList.get(1).getType();
+			testData.Reason=testData.appointmentDetailList.get(1).getReason();
+			testData.Description=testData.appointmentDetailList.get(1).getDescription();
 			
 			log("Step 2: Setup Oauth client");
 			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
@@ -370,6 +373,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.Location = "Update";
 			testData.appointmentType = "FUTURE";
 			
+			testData.Type=testData.appointmentDetailList.get(3).getType();
+			testData.Reason=testData.appointmentDetailList.get(3).getReason();
+			testData.Description=testData.appointmentDetailList.get(3).getDescription();
+			testData.BatchSize = "1";
+			
 			aDUtils.checkAppointment(testData, driver);
 			Thread.sleep(3000);
 			
@@ -377,6 +385,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.Time = testData.appointmentDetailList.get(4).getTime();
 			testData.Location = "Cancel";
 			testData.appointmentType = "FUTURE";
+			
+			testData.Type=testData.appointmentDetailList.get(4).getType();
+			testData.Reason=testData.appointmentDetailList.get(4).getReason();
+			testData.Description=testData.appointmentDetailList.get(4).getDescription();
+			testData.BatchSize = "1";
 			
 			aDUtils.checkAppointment(testData, driver);
 	 }
@@ -435,6 +448,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.UserName = patient.getEmail();
 			testData.Password = patient.getPassword();
 			
+			testData.Type=testData.appointmentDetailList.get(1).getType();
+			testData.Reason=testData.appointmentDetailList.get(1).getReason();
+			testData.Description=testData.appointmentDetailList.get(1).getDescription();
+			
+			
 			aDUtils.checkAppointment(testData, driver);
 			Thread.sleep(6000);
 			
@@ -444,6 +462,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.Location = testData.appointmentDetailList.get(3).getLocation();
 			testData.appointmentType = "FUTURE";
 			testData.PatientPracticeId = patient.getFirstName();
+			testData.BatchSize = "1";
+			testData.Type=testData.appointmentDetailList.get(3).getType();
+			testData.Reason=testData.appointmentDetailList.get(3).getReason();
+			testData.Description=testData.appointmentDetailList.get(3).getDescription();
+			
 			
 			aDUtils.checkAppointment(testData, driver);
 			
@@ -454,6 +477,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.Location = testData.appointmentDetailList.get(4).getLocation();
 			testData.appointmentType = "FUTURE";
 			testData.PatientPracticeId = patient.getFirstName();
+			testData.BatchSize = "1";
+			
+			testData.Type=testData.appointmentDetailList.get(4).getType();
+			testData.Reason=testData.appointmentDetailList.get(4).getReason();
+			testData.Description=testData.appointmentDetailList.get(4).getDescription();
 			
 			aDUtils.checkAppointment(testData, driver);
 			

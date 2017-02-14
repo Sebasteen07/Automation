@@ -34,6 +34,7 @@ public class AppointmentDataPayload {
 	public String[] localTime =new String[50];
 	public String[] locationIdentifier =new String[50];
 	public String[] providerNamePlace =new String[50];
+	
 	public String formattedTime =null;
 	public String appointmentLocation =null;
 	
@@ -85,13 +86,17 @@ public class AppointmentDataPayload {
 			mainRootElement.appendChild(AppointmentMessageHeader);
 			// End AppointmentMessageHeader Node
 				
-			String[] time={testData.Time,testData.Time};
-			String[] status = {testData.Status,testData.Status};
+			String[] time={testData.Time,testData.appointmentDetailList.get(2).getTime()};
+			String[] status = {testData.Status,testData.appointmentDetailList.get(2).getStatus()};
 					
 			String[] pId = {testData.PatientPracticeId,testData.PatientPracticeId};
 			String[] fN = {testData.FirstName,testData.FirstName};
 			String[] lN = {testData.LastName,testData.LastName};
 			String[] email = {testData.EmailUserName,testData.EmailUserName};
+			
+			String[] typeAppointment = {testData.Type,testData.appointmentDetailList.get(2).getType()};
+			String[] reasonAppointment = {testData.Reason,testData.appointmentDetailList.get(2).getReason()};
+			String[] descriptionAppointment = {testData.Description,testData.appointmentDetailList.get(2).getDescription()};
 			
 			// Start Appointments Node
 			int batchSize = Integer.parseInt(testData.BatchSize);
@@ -123,6 +128,10 @@ public class AppointmentDataPayload {
 					testData.PreviousAppointmentId = appointmentID;
 				}
 				
+				if(i>0) {
+					appointmentID = random11Numbers();
+				}
+				
 				Node AppointmentId = doc.createElement("AppointmentId");
 				AppointmentId.appendChild(doc.createTextNode(appointmentID));
 				Appointments.appendChild(AppointmentId);
@@ -133,18 +142,17 @@ public class AppointmentDataPayload {
 				Appointments.appendChild(Status);
 				
 				Node Type = doc.createElement("Type");
-				Type.appendChild(doc.createTextNode("NEW APPOINTMENT"));
+				Type.appendChild(doc.createTextNode(typeAppointment[i]));
 				Appointments.appendChild(Type);
 				
 				Node Reason = doc.createElement("Reason");
-				Reason.appendChild(doc.createTextNode("Testing NEW APPOINTMENT"));
+				Reason.appendChild(doc.createTextNode(reasonAppointment[i]));
 				Appointments.appendChild(Reason);
 				
 				Node Description = doc.createElement("Description");
-				Description.appendChild(doc.createTextNode("New Appointment Schedule"));
+				Description.appendChild(doc.createTextNode(descriptionAppointment[i]));
 				Appointments.appendChild(Description);
 				
-
 				String appointmentTime = time[i]; //"2017-02-07T15:30:59.999Z";
 				//appointmentTime = "2017-03-07T15:30:59.999Z";
 				Node Time = doc.createElement("Time");
@@ -160,26 +168,18 @@ public class AppointmentDataPayload {
 					Date date1 = utcFormat.parse(appointmentTime);
 					//DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 					DateFormat localFormat = new SimpleDateFormat("M-dd-yy h:mm a");
-					//MM-dd-yyyy hh:mm:ss
 					localFormat.setTimeZone(TimeZone.getDefault());
 					
 					formattedTime =localFormat.format(date1);
 					//System.out.println("Raw	 : " + formattedTime);
 					
 					formattedTime = formattedTime.replace("-","/");
-					
-					//System.out.println("	 : " + appointmentTime);
-					//System.out.println("	 : " + formattedTime);
-					
+										
 					String[] patientAppointmentTime =  formattedTime.split(" ");
 					localDay[i] = patientAppointmentTime[0];
 					
-					//String[] patientTime = patientAppointmentTime[1].split("\\.");
 					localTime[i] = patientAppointmentTime[1]+" "+patientAppointmentTime[2];
 			        
-					//System.out.println("patientAppointmentDay : " + localDay[i]);
-					//System.out.println("patientAppointmentTime : " + localTime[i]);
-					
 					
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -193,20 +193,20 @@ public class AppointmentDataPayload {
 				
 				Node AppointmentAddress = doc.createElement("AppointmentAddress");
 				Node Address1 = doc.createElement("Address1");
-				Address1.appendChild(doc.createTextNode("5501, Dillard Drive"));
+				Address1.appendChild(doc.createTextNode(testData.appointmentDetailList.get(i+1).getAddress1()));
 				AppointmentAddress.appendChild(Address1);
 				Node Address2 = doc.createElement("Address2");
-				Address2.appendChild(doc.createTextNode(""));
+				Address2.appendChild(doc.createTextNode(testData.appointmentDetailList.get(i+1).getAddress2()));
 				AppointmentAddress.appendChild(Address2);
 				Node City = doc.createElement("City");
-				City.appendChild(doc.createTextNode("Cary"));
+				City.appendChild(doc.createTextNode(testData.appointmentDetailList.get(i+1).getCity()));
 				AppointmentAddress.appendChild(City);
 				
 				Node State = doc.createElement("State");
-				State.appendChild(doc.createTextNode("NC"));
+				State.appendChild(doc.createTextNode(testData.appointmentDetailList.get(i+1).getState()));
 				AppointmentAddress.appendChild(State);
 				Node ZipCode = doc.createElement("ZipCode");
-				ZipCode.appendChild(doc.createTextNode("27567"));
+				ZipCode.appendChild(doc.createTextNode(testData.appointmentDetailList.get(i+1).getZipCode()));
 				AppointmentAddress.appendChild(ZipCode);
 				Appointments.appendChild(AppointmentAddress);
 				

@@ -39,6 +39,11 @@ public class AppointmentData {
 	public String Status="";
 	public String Time = "";
 	public String Location = "";
+	
+	public String Type = "";
+	public String Reason = "";
+	public String Description = "";
+	
 	public String appointmentType = "";
 	public ArrayList<AppointmentDetail> appointmentDetailList = new ArrayList<AppointmentDetail>();
 	public String csvFilePath="";
