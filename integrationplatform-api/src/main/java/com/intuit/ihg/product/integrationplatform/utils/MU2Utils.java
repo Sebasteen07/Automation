@@ -278,7 +278,7 @@ public class MU2Utils {
 		return textFileString;
 	}
 	
-	public String getMedfusionID(String filePath) throws IOException {
+	public String getMedfusionID(String filePath,String patientDetail) throws IOException {
 		String getResponse = readFromFile(filePath);
 		String[] patientArray = getResponse.split("</Patient>");
 		String batchSize = ExtractString("<BatchSize>(.*?)</BatchSize>",getResponse);
