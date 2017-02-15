@@ -1019,10 +1019,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: " + patientData.getUsername());
 		log("Password: " + patientData.getPassword());
 
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
+		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3") || IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("QA1")) {
 
-			log("****Symptom Assessment scenario wont work with DEV3 environment-Known Issue****");
-			log("**Issue details: 3rd party not being able to hit our server on dev3 ***");
+			log("****Symptom Assessment scenario wont work with DEV3 or QA1 environments-Known Issue****");
+			log("**Issue details: 3rd party not being able to hit our server on dev3 and QA1***");
 
 		} else {
 
