@@ -157,7 +157,7 @@ public class MyPatientPage extends BasePageObject {
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 		PortalUtil.setPortalFrame(driver);
-		return IHGUtil.waitForElement(driver, 10, myaccountLink);
+		return IHGUtil.waitForElement(driver, 15, myaccountLink);
 	}
 
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
