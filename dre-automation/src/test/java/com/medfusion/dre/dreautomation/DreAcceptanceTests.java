@@ -284,6 +284,66 @@ public class DreAcceptanceTests extends HTTPCalls {
 		httpDelete.releaseConnection();
 	}
 	
+	@Test(enabled = true, groups = {"Retrievers"})
+	public void testRetrievingKryptiqPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		Data.getData("Kryptiq");
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Meditech");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + retriever.Useruuid + "/connections", retriever.generatePayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval was successful");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
+		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();
+	}
+	
+	@Test(enabled = true, groups = {"Retrievers"})
+	public void testRetrievingQuestPortal() throws InterruptedException {
+		log("Step 1: Get Data from Properties");
+		Data.getData("Quest");
+		String claireRestUrl = Data.get("ClaireRESTUrl");
+		Retriever retriever = RetrieversFactory.getRetriever(Data.getMapFor("retriever"));
+
+		log("Step 2: Create a connection for Medfusion");
+		HttpPost httpPost = buildHttpPost(claireRestUrl + retriever.Useruuid + "/connections", retriever.generatePayload());
+		String newConnection = executeRequestGetContent(httpPost);
+		
+		log("Step 3: Verify that connection hasn't been made already");
+		Assert.assertFalse(Retriever.isContain(newConnection, "jobStatus"), "A connection has been made.");
+		
+		log("Step 4: Refreshing the connection to start the retrieval process");
+		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
+		HttpPut httpPut = buildHttpPut(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
+		executeRequestGetContent(httpPut);
+		
+		log("Step 5: Verify the retrieval was successful");
+		HttpGet httpGet = buildHttpGet(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
+		String status = retriever.verifyJobStatus(httpGet);
+		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
+		
+		log("Step 6: Delete the connection");
+		HttpDelete httpDelete = buildHttpDelete(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}",""));
+		executeRequestAndGetStatus(httpDelete);
+		httpDelete.releaseConnection();
+	}
+	
 	@Test(enabled = false, groups = {"Retrievers"})
 	public void testRetrievingMeditechPortal() throws InterruptedException {
 		log("Step 1: Get Data from Properties");
