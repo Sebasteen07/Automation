@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,7 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -85,6 +83,7 @@ public class MU2Utils {
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 		Thread.sleep(5000);
+		
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
@@ -95,7 +94,7 @@ public class MU2Utils {
 		Thread.sleep(5000);
 		
 		Log4jUtil.log("Page refreshing...");
-		
+		/*
 		jse.executeScript("window.scrollBy(0,200)", "");
 		
 		//code to Download CCD on firefox 
@@ -117,7 +116,7 @@ public class MU2Utils {
 			rb.keyRelease(KeyEvent.VK_ENTER);
 			Thread.sleep(2000);
 		}
-		
+		*/
 		Log4jUtil.log("====== Consolidated CCD - VDT events generated successfully ======");
 		Thread.sleep(5000);
 		

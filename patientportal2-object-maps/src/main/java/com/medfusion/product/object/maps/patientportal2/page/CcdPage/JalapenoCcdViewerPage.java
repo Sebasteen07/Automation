@@ -96,7 +96,7 @@ public class JalapenoCcdViewerPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "idp6454816")
 	private WebElement insurance;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[3]/div[1]/div/a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/div/div/a")
 	private WebElement BtnViewHealthData;
 
 	@FindBy(id = "basicInfo")

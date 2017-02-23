@@ -382,6 +382,9 @@ public class PropertyFileLoader {
 	public String getOAuthPassword_20() {
 		return property.getProperty("oAuthPassword_20");
 	}
+	public String getStandard_Email() {
+		return property.getProperty("standardEmail_MU2");
+	}
 	
 	
 	//PIDC END
