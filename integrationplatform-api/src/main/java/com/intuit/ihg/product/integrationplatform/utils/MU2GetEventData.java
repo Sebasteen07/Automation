@@ -40,4 +40,6 @@ public class MU2GetEventData {
 		public String PatientExternalId_MU2="";
         public String PatientFirstName_MU2="";
         public String PatientLastName_MU2="";
+        
+        public String Standard_Email="";
 }

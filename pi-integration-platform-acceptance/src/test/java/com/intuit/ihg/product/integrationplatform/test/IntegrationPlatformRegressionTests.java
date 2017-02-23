@@ -277,7 +277,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.PUSH_RESPONSEPATH);
 			
 			MU2Utils MU2UtilsObj = new MU2Utils();
-			String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH);
+			String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
 			
 			log("patientID : "+patientID);
 			
