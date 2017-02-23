@@ -36,19 +36,19 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "downloadButton")
 	private WebElement downloadButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][1]//input")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[2]/tr/td[1]/input")
 	private WebElement firstVisibleCCDCheckbox;
 	
-	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][2]//input")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[1]/input")
 	private WebElement secondVisibleCCDCheckbox;
 	
-	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][1]//a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[2]/tr/td[2]/a")
 	private WebElement firstVisibleCCDDate;
 
-	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][2]//a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[2]/a")
 	private WebElement secondVisibleCCDDate;
 
-	@FindBy(how = How.XPATH, using = "//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[4]/tr/td[2]/a")
 	private WebElement thirdVisibleCCDDate;
 
 	@FindBy(how = How.ID, using = "emailAddress")
@@ -208,6 +208,10 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	public void selectFirstVisibleCCDDate() {
 		firstVisibleCCDDate.click();
+	}
+	
+	public void selectSecondVisibleCCDDate() {
+		secondVisibleCCDDate.click();
 	}
 	
 	public void setFilterToDefaultPositionAndCheckElementsNew(){

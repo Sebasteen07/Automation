@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,7 +20,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,7 +33,6 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
@@ -55,14 +58,6 @@ public class MU2Utils {
 		
 		ccdMessageList.add(testData.CCDMessageID1);
 		ccdMessageList.add(testData.CCDMessageID2);
-		ccdMessageList.add(testData.CCDMessageID1);
-		ccdMessageList.add(testData.CCDMessageID2);
-		ccdMessageList.add(testData.CCDMessageID1);
-		ccdMessageList.add(testData.CCDMessageID2);
-		ccdMessageList.add(testData.CCDMessageID1);
-		ccdMessageList.add(testData.CCDMessageID2);
-		ccdMessageList.add(testData.CCDMessageID1);
-		ccdMessageList.add(testData.CCDMessageID2);
 		
 		Log4jUtil.log("MU2GetEvent Step 1: LogIn");
 		Log4jUtil.log("Practice URL: " + testData.PORTAL_URL);
@@ -81,6 +76,9 @@ public class MU2Utils {
 		
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,400)", "");
+		
 		Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
@@ -96,20 +94,17 @@ public class MU2Utils {
 		
 		Thread.sleep(5000);
 		
-		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
-		Log4jUtil.log("MU2GetEvent Step 6: Click on link View health data");
-		
-		Log4jUtil.log("MU2GetEvent Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		jalapenoCcdPage.verifyCCDViewerAndClose();
 		Log4jUtil.log("Page refreshing...");
 		
+		jse.executeScript("window.scrollBy(0,200)", "");
+		
 		//code to Download CCD on firefox 
-		/*
-		Log4jUtil.log("Step 8: Download CCD");
+		
+		Log4jUtil.log("Step 6: Download CCD");
 		Thread.sleep(4000);
-		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
-		MedicalRecordSummariesPageObject.selectDownload();
-		Thread.sleep(2000);	
+		//MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
+		//MedicalRecordSummariesPageObject.selectDownload();
+		//Thread.sleep(2000);	
 		IHGUtil.PrintMethodName();
 		
 		if( driver instanceof FirefoxDriver) {
@@ -122,16 +117,16 @@ public class MU2Utils {
 			rb.keyRelease(KeyEvent.VK_ENTER);
 			Thread.sleep(2000);
 		}
-		*/
+		
 		Log4jUtil.log("====== Consolidated CCD - VDT events generated successfully ======");
 		Thread.sleep(5000);
 		
 		homePage.clickOnLogout();
 		
-		Log4jUtil.log("MU2GetEvent Step 8: Waiting for Events sync in DWH");
+		Log4jUtil.log("MU2GetEvent Step 7: Waiting for Events sync in DWH");
 		Thread.sleep(430000);
 		
-		Log4jUtil.log("MU2GetEvent Step 9: Setup Oauth client 2.O");
+		Log4jUtil.log("MU2GetEvent Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
 		
 		// Build new Rest URL with epoch milliseconds
@@ -140,7 +135,7 @@ public class MU2Utils {
 		String restPullUrl = new StringBuilder(testData.PULLAPI_URL).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
 		Log4jUtil.log("Updated PULL API URL: " + restPullUrl);
 
-		Log4jUtil.log("Step 10: Send Pull API HTTP GET Request and save response to " +testData.PUSH_RESPONSEPATH);
+		Log4jUtil.log("Step 9: Send Pull API HTTP GET Request and save response to " +testData.PUSH_RESPONSEPATH);
 		
 		RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
 		
@@ -155,7 +150,10 @@ public class MU2Utils {
 			Log4jUtil.log("Verification of CCD '" + list.get(i) + "' event present in Pull API response xml");
 			ActionTimestamp = findEventInResonseXML(testData.PUSH_RESPONSEPATH, MU2Constants.EVENT, MU2Constants.RESOURCE_TYPE, list.get(i),
 					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,transmitTimestamp);
-			Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
+			if(!list.get(i).equalsIgnoreCase(MU2Constants.DOWNLOAD_ACTION)) {
+				Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
+			}
+			
 			Log4jUtil.log("ActionTimestamp: "+ActionTimestamp);
 			Log4jUtil.log("TYPE FOUND: "+list.get(i));
 			eventTime = generateDate(ActionTimestamp);
@@ -194,21 +192,27 @@ public class MU2Utils {
 						Log4jUtil.log("Direct Protocol");
 					}
 					if (recordedTimeStamp >= timeStamp) {
-						 
+						
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
 								&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)
 								&& getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID)
 								&& getValue(PracticePatientId, element).equalsIgnoreCase(patientExternalId)
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
-								&& getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(i))) {
+								) {
 								
+							
+								for(int j=0;j<ccdMessageList.size();j++) {
+									if(getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(j)) ) {
+										Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(j));
+									}
+								}
 								
 								Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
 								Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
 								Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);
 								Log4jUtil.log("Matching response lastName "+getValue(LastName, element)+" with "+lastName);
-								Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(i));
+								
 							
 								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 							
@@ -228,6 +232,7 @@ public class MU2Utils {
 	public static List<String> eventList() {
 		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.VIEW_ACTION);
+		//eventList.add(MU2Constants.DOWNLOAD_ACTION);
 		return eventList;
 	}
 	

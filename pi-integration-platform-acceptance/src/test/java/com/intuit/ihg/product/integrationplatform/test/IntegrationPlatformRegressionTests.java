@@ -302,7 +302,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.PatientFirstName_MU2  = patientDetail.get(0);
 			testData.PatientLastName_MU2 = patientDetail.get(1);
 			
-			Thread.sleep(50000);
+			Thread.sleep(70000);
 			
 			log("Step 4:  Login Portal 2.0");
 			
