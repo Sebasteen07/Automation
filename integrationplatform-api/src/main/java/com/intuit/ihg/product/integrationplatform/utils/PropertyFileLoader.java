@@ -383,7 +383,7 @@ public class PropertyFileLoader {
 		return property.getProperty("oAuthPassword_20");
 	}
 	public String getStandard_Email() {
-		return property.getProperty("standardEmail_MU2");
+		return property.getProperty("standard_Email");
 	}
 	
 	
