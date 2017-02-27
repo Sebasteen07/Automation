@@ -47,7 +47,10 @@ public class JalapenoMessagesPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
 	private WebElement lableSent;
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
+	private WebElement statementLinkText;
+	
 	private static final int maxCount = 15;
 
 	public JalapenoMessagesPage(WebDriver driver) {
@@ -164,5 +167,10 @@ public class JalapenoMessagesPage extends BasePageObject {
 		// PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 60, lableSent);
 		return lableSent.getText().toString();
+	}
+	
+	public void openPDFStatement() {
+		log("Statement: "+statementLinkText.getText());
+		statementLinkText.click();
 	}
 }
