@@ -114,6 +114,7 @@ public class ReferralsPage extends BasePageObject {
 			autocompleteName.click();
 		} else {
 			memberNameTestField.sendKeys(Keys.TAB);
+			practiceNameTestField.click();
 			genger.click();
 			new Select(month).selectByIndex(4);
 			new Select(day).selectByIndex(4);
