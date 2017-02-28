@@ -223,4 +223,49 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+	
+	public StatementEventData loadStatementEventDataFromProperty(StatementEventData testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.Url = propertyData.getUrl_SE();
+		testData.UserName = propertyData.getUserName_SE();
+		testData.Password = propertyData.getPassword_SE();
+		testData.Email = propertyData.getEmail_SE();
+		testData.RestUrl = propertyData.getRestUrl_SE();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthUsername = propertyData.getOAuthUsername_SE();
+		testData.OAuthPassword = propertyData.getOAuthPassword_SE();
+		testData.FirstName = propertyData.getFirstName_SE();
+		testData.LastName = propertyData.getLastName_SE();
+		testData.PatientID = propertyData.getPatientID_SE();
+		testData.MFPatientID = propertyData.getMFPatientID_SE();
+		testData.StatementEventURL = propertyData.getStatementEventURL();
+		
+		testData.StatementFormat = propertyData.getStatementFormat_SE();
+		testData.Address1 = propertyData.getAddress1_SE();
+		testData.Address2 = propertyData.getAddress2_SE();
+		testData.City = propertyData.getCity_SE();
+		testData.State = propertyData.getState_SE();
+		testData.ZipCode = propertyData.getZipCode_SE();
+		testData.NewCharges = propertyData.getNewCharges_SE();
+		testData.TotalCharges = propertyData.getTotalCharges_SE();
+		testData.AmountDue = propertyData.getAmountDue_SE();
+		testData.BalanceForwardType = propertyData.getBalanceForwardType_SE();
+		testData.BalanceForwardAmount = propertyData.getBalanceForwardAmount_SE();
+		testData.OutstandingBalance = propertyData.getOutstandingBalance_SE();
+		testData.StatementComment = propertyData.getStatementComment_SE();
+		testData.DunningMessage = propertyData.getDunningMessage_SE();
+		testData.PracticeProviderName = propertyData.getPracticeProviderName_SE();
+		testData.PaymentDueDate = propertyData.getPaymentDueDate();
+		testData.RestURLPIDC = propertyData.getRestUrlPIDC_SE();
+		testData.PracticeName = propertyData.getPracticeName_SE();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getPortalUserName_SE();
+		testData.practicePassword = propertyData.getPortalPassword_SE();
+		testData.emailSubject = propertyData.getStatementEmailSubject();
+		return testData;
+	}
+		
 }

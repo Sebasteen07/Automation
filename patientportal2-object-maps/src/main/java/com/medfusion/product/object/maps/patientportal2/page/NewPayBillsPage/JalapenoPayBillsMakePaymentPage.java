@@ -73,7 +73,10 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "visa")
 	private WebElement visaCard;
-
+	
+	@FindBy(how = How.ID, using = "statement_details")
+	private WebElement statementDetails;
+	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -236,5 +239,9 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 		webElementsList.add(visaCard);
 
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
+	
+	public void gotoStatementDetail() {
+		statementDetails.click();
 	}
 }

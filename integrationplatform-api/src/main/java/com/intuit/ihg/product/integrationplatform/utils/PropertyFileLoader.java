@@ -478,4 +478,115 @@ public class PropertyFileLoader {
 		return property.getProperty("portalPassword");
 	}
 	
+	//Start POST STATEMENT & Get EVENT
+	//Set Payload Atttributes
+	
+	public String getStatementFormat_SE() {
+		return property.getProperty("statementFormat_SE");
+	}
+	public String getAddress1_SE() {
+		return property.getProperty("address1_SE");
+	}
+	public String getAddress2_SE() {
+		return property.getProperty("address2_SE");
+	}		
+	public String getCity_SE() {
+		return property.getProperty("city_SE");
+	}
+	public String getState_SE() {
+		return property.getProperty("state_SE");
+	}
+	public String getZipCode_SE() {
+		return property.getProperty("zipCode_SE");
+	}
+	public String getNewCharges_SE() {
+		return property.getProperty("newCharges_SE");
+	}
+	public String getTotalCharges_SE() {
+		return property.getProperty("totalCharges_SE");
+	}
+	public String getAmountDue_SE() {
+		return property.getProperty("amountDue_SE");
+	}
+	public String getBalanceForwardType_SE() {
+		return property.getProperty("balanceForwardType_SE");
+	}
+	
+	public String getBalanceForwardAmount_SE() {
+		return property.getProperty("balanceForwardAmount_SE");
+	}
+	public String getOutstandingBalance_SE() {
+		return property.getProperty("outstandingBalance_SE");
+	}
+	public String getStatementComment_SE() {
+		return property.getProperty("statementComment_SE");
+	}
+	public String getDunningMessage_SE() {
+		return property.getProperty("dunningMessage_SE");
+	}
+	public String getPracticeProviderName_SE() {
+		return property.getProperty("practiceProviderName_SE");
+	}
+	
+	//set application attributes 
+	public String getUrl_SE() {
+		return property.getProperty("url_SE");
+	}
+	public String getUserName_SE() {
+		return property.getProperty("userName_SE");
+	}
+	public String getPassword_SE() {
+		return property.getProperty("password_SE");
+	}
+	public String getEmail_SE() {
+		return property.getProperty("email_SE");
+	}
+	public String getRestUrl_SE() {
+		return property.getProperty("restUrl_SE");
+	}
+	public String getOAuthAppToken_SE() {
+		return property.getProperty("oAuthAppToken_SE");
+	}
+	public String getOAuthUsername_SE() {
+		return property.getProperty("oAuthUsername_SE");
+	}
+	public String getOAuthPassword_SE() {
+		return property.getProperty("oAuthPassword_SE");
+	}
+	public String getFirstName_SE() {
+		return property.getProperty("firstName_SE");
+	}
+	public String getLastName_SE() {
+		return property.getProperty("lastName_SE");
+	}
+	public String getPatientID_SE() {
+		return property.getProperty("patientID_SE");
+	}
+	public String getMFPatientID_SE() {
+		return property.getProperty("mfPatientID_SE");
+	}
+	public String getStatementEventURL() {
+		return property.getProperty("statementEventURL");
+	}
+	public String getPaymentDueDate() {
+		return property.getProperty("paymentDueDate");
+	}
+	public String getRestUrlPIDC_SE() {
+		return property.getProperty("restUrlPIDC_SE");
+	}
+	public String getPracticeName_SE() {
+		return property.getProperty("practiceName_SE");
+	}
+	
+	public String getStatementEmailSubject() {
+		return property.getProperty("statementEmailSubject");
+	}
+	public String getPortalUserName_SE() {
+		return property.getProperty("portalUserName_SE");
+	}
+	public String getPortalPassword_SE() {
+		return property.getProperty("portalPassword_SE");
+	}
+	
+	
 }
