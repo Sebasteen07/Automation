@@ -113,6 +113,7 @@ public class LoadPreTestData {
 		testData.PatientExternalId_MU2 = propertyData.getPatientExternalId_MU2();
 		testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
 		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
+		testData.Standard_Email = propertyData.getStandard_Email();
 		
 		testData.Standard_Email = propertyData.getStandard_Email();
 		return testData;

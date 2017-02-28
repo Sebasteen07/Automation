@@ -385,6 +385,9 @@ public class PropertyFileLoader {
 	public String getOAuthPassword_20() {
 		return property.getProperty("oAuthPassword_20");
 	}
+	public String getStandard_Email() {
+		return property.getProperty("standard_Email");
+	}
 	
 	public String getStandard_Email() {
 		return property.getProperty("standard_Email");

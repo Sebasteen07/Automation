@@ -85,6 +85,7 @@ public class MU2Utils {
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 		Thread.sleep(5000);
+		
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
@@ -95,6 +96,7 @@ public class MU2Utils {
 		Thread.sleep(5000);
 		
 		Log4jUtil.log("Page refreshing...");
+		/*
 		
 		jse.executeScript("window.scrollBy(0,200)", "");
 		
