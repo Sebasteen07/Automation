@@ -15,7 +15,6 @@ import com.intuit.ihg.product.integrationplatform.flows.iEHDCSendCCD;
 import com.intuit.ihg.product.integrationplatform.flows.iPIDCSendPatientInvite;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
-//import com.intuit.ihg.product.support.utils.SupportConstants;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
@@ -132,9 +131,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
 
 		log("Step 5: Get processing status until it is completed");
-		//String orignal = "dev3vip-events-core-svc\\.qhg\\.local";
-		//String modified = "dev3aapp11.qhg.local:8080";
-		//processingUrl = processingUrl.replaceAll(orignal, modified);
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -254,7 +250,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 20);
 		assertTrue(activationUrl!=null, "Error: Activation link not found.");
 		
-		//PatientRegistrationUtils patientRegistrationUtilsObject= new PatientRegistrationUtils();
 		PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
 		
 		Thread.sleep(12000);
@@ -305,7 +300,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.PatientFirstName_MU2  = patientDetail.get(0);
 		testData.PatientLastName_MU2 = patientDetail.get(1);
 		
-		Thread.sleep(50000);
+		Thread.sleep(70000);
 		
 		log("Step 4:  Login Portal 2.0");
 		

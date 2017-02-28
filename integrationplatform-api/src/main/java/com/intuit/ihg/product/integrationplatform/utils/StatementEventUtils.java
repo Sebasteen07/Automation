@@ -311,23 +311,22 @@ public class StatementEventUtils {
 	public String getMedfusionID(String email,String SearchStringFrom) throws IOException {
 		String medfusionID ="";	
 		String[] patientArray = SearchStringFrom.split("</Patient>");
-		//Log4jUtil.log(" patientArray length "+patientArray.length);
+		
 		String batchSize = ExtractString("<BatchSize>(.*?)</BatchSize>",SearchStringFrom);
 		Log4jUtil.log(" batchSize "+batchSize);
 		int batchSizeInt = Integer.parseInt(batchSize);
 		if (batchSizeInt == 1) {
 			medfusionID = ExtractString("<MedfusionPatientId>(.*?)</MedfusionPatientId>", SearchStringFrom);
 		} else {
-			//Log4jUtil.log(" ID "+email);
 			
 		for(int i=0;i<patientArray.length;i++) {
-			//Log4jUtil.log(" patientArray[i] "+patientArray[i]);
+			
 			if(patientArray[i].contains(email)) {
 				medfusionID = ExtractString("<MedfusionPatientId>(.*?)</MedfusionPatientId>", patientArray[i]);
 			}
 		}
 		}
-		//Log4jUtil.log("medfusionID "+medfusionID);
+		
 		return medfusionID;
 	}
 	

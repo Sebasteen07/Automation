@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,7 +21,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-
 public class StatementsMessagePayload {
 	public String output;
 	public String amountDue;
@@ -38,11 +36,10 @@ public class StatementsMessagePayload {
 	
 	DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder icBuilder;
+	
 	long timestamp =  (System.currentTimeMillis());
 	Date d = new Date(timestamp);
 	currentTime = d.toInstant();
-	
-	System.out.println(currentTime.toString());
 	
 	DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -51,21 +48,11 @@ public class StatementsMessagePayload {
 	Date localDate = utcFormat.parse(currentTime.toString());
 	DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	localFormat.setTimeZone(TimeZone.getDefault());
-	
 	localTime =localFormat.format(localDate);
 	
 	portalDateFormat(localDate);
-	
-	
 	Date paymentDueDate = utcFormat.parse(testData.PaymentDueDate);
-	
 	paymentPortalDueDate = portalDateFormat(paymentDueDate);
-	
-	System.out.println("formattedUTCTime : "+formattedUTCTime);
-	System.out.println("localTime : "+localTime);
-	System.out.println("localDateTime : "+localDateTime);
-	
-	System.out.println("paymentPortalDueDate : "+paymentPortalDueDate);
 	
 	amountDue  =randomNumbers(3);
 	amountDue = amountDue.replaceFirst ("^0*", "");
@@ -79,7 +66,6 @@ public class StatementsMessagePayload {
 		patientID = testData.PatientID;
 	}
 	
-	System.out.println("patientID is: "+patientID);
 	try {
 		icBuilder = icFactory.newDocumentBuilder();
 		Document doc = icBuilder.newDocument();
@@ -97,7 +83,6 @@ public class StatementsMessagePayload {
 		Sender.setAttribute("VendorName", "Meridian Medical Management");
 		StatementMessageHeaders.appendChild(Sender);
 		mainRootElement.appendChild(StatementMessageHeaders);
-		
 		
 		Element Statement = doc.createElement("Statement");	
 		Statement.setAttribute("id", randomNumbers(11));
@@ -119,12 +104,10 @@ public class StatementsMessagePayload {
 		StatementBillingAccountNumber.appendChild(doc.createTextNode(billAccountNumber));
 		Statement.appendChild(StatementBillingAccountNumber);
 		
-		
 		Node PracticePatientId = doc.createElement("PracticePatientId");
 		PracticePatientId.appendChild(doc.createTextNode(patientID));
 		Statement.appendChild(PracticePatientId);
 	
-		//222541
 		if(!(testData.MFPatientID=="") || !testData.MFPatientID.isEmpty()){
 			Node MedfusionMemberId = doc.createElement("MedfusionMemberId");
 			MedfusionMemberId.appendChild(doc.createTextNode(testData.MFPatientID));
@@ -202,13 +185,10 @@ public class StatementsMessagePayload {
 		OutstandingBalance.appendChild(doc.createTextNode("0.00"));
 		Statement.appendChild(OutstandingBalance);
 		
-		
 		Node AgingBalances = doc.createElement("AgingBalances");
 		for(int i=0;i<12;i++) {
-			
 		
 		Node AgingBalance = doc.createElement("AgingBalance");
-		
 		Node AgingBalanceType = doc.createElement("AgingBalanceType");
 		AgingBalanceType.appendChild(doc.createTextNode("Insurance"));
 		AgingBalance.appendChild(AgingBalanceType);
@@ -225,7 +205,6 @@ public class StatementsMessagePayload {
 		}
 		
 		Statement.appendChild(AgingBalances);
-		
 		
 		Node InsurancePayments = doc.createElement("InsurancePayments");
 		InsurancePayments.appendChild(doc.createTextNode("500.00"));
@@ -257,7 +236,6 @@ public class StatementsMessagePayload {
 		Node PatientInformation = doc.createElement("PatientInformation");
 		
 		Node PatientAccountNumber = doc.createElement("PatientAccountNumber");
-		//PatientBalance.appendChild(doc.createTextNode("00000259701"));
 		PatientAccountNumber.appendChild(doc.createTextNode("XXXXX"));
 		PatientInformation.appendChild(PatientAccountNumber);
 		Node PatientName = doc.createElement("PatientName");
@@ -269,7 +247,6 @@ public class StatementsMessagePayload {
 		
 		Encounter.appendChild(PatientInformation);
 		
-		
 		Node ExternalEncounterID = doc.createElement("ExternalEncounterID");
 		ExternalEncounterID.appendChild(doc.createTextNode("12345ab"));
 		Encounter.appendChild(ExternalEncounterID);
@@ -278,11 +255,9 @@ public class StatementsMessagePayload {
 		EncounterDateTime.appendChild(doc.createTextNode("2014-01-01T17:17:08"));
 		Encounter.appendChild(EncounterDateTime);
 		
-		
 		Node EncounterLocationId = doc.createElement("EncounterLocationId");
 		EncounterLocationId.appendChild(doc.createTextNode("12345west"));
 		Encounter.appendChild(EncounterLocationId);
-		
 		
 		Node EncounterLocation = doc.createElement("EncounterLocation");
 		EncounterLocation.appendChild(doc.createTextNode("West Clinic"));
@@ -353,11 +328,8 @@ public class StatementsMessagePayload {
 		EncountersICDCode.appendChild(EncounterICDCode);
 		Encounter.appendChild(EncountersICDCode);
 		
-		
 		Node EncounterCharges = doc.createElement("EncounterCharges");
 		Node EncounterCharge = doc.createElement("EncounterCharge");
-		
-		
 		
 		Node ExternalEncounterChargeID = doc.createElement("ExternalEncounterChargeID");
 		ExternalEncounterChargeID.appendChild(doc.createTextNode("GUID"));
@@ -367,11 +339,9 @@ public class StatementsMessagePayload {
 		EncounterChargeDateTime.appendChild(doc.createTextNode("2014-01-01T17:17:08"));
 		EncounterCharge.appendChild(EncounterChargeDateTime);
 		
-		
 		Node EncounterChargeCPTCode = doc.createElement("EncounterChargeCPTCode");
 		EncounterChargeCPTCode.appendChild(doc.createTextNode("99213"));
 		EncounterCharge.appendChild(EncounterChargeCPTCode);
-		
 		
 		Node EncounterChargeDescription = doc.createElement("EncounterChargeDescription");
 		EncounterChargeDescription.appendChild(doc.createTextNode("LDL Lab"));
@@ -395,7 +365,6 @@ public class StatementsMessagePayload {
 		PatientPaymentMethod.appendChild(doc.createTextNode("Cash"));
 		EncounterCharge.appendChild(PatientPaymentMethod);
 		
-		
 		Node InsuranceCharge = doc.createElement("InsuranceCharge");
 		InsuranceCharge.appendChild(doc.createTextNode("92.00"));
 		EncounterCharge.appendChild(InsuranceCharge);
@@ -414,7 +383,6 @@ public class StatementsMessagePayload {
 		
 		EncounterCharges.appendChild(EncounterCharge);
 		Encounter.appendChild(EncounterCharges);
-		
 		
 		Encounters.appendChild(Encounter);
 		Statement.appendChild(Encounters);
