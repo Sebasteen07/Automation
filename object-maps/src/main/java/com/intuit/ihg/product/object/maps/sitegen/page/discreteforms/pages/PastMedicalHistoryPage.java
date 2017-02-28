@@ -4,9 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
+import com.medfusion.common.utils.IHGUtil;
 
-public class IllnessesAndConditionsPage extends ConfiguratorFormPage {
+public class PastMedicalHistoryPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
@@ -299,8 +299,17 @@ public class IllnessesAndConditionsPage extends ConfiguratorFormPage {
 	@FindBy(id = "conditions_anythingelse_line")
 	private WebElement conditionsCommentsCheck;
 
+	@FindBy(xpath = "//div[contains(@class,'conditions_section')]//*[contains(text(),'Female-Specific')]//input")
+	private WebElement femaleGroupInput;
 
-	public IllnessesAndConditionsPage(WebDriver driver) {
+	public void addFemaleQuestions() {
+		IHGUtil.waitForElement(driver, 10, femaleGroupInput);
+		if (!femaleGroupInput.isSelected()) {
+			femaleGroupInput.click();
+		}
+	}
+
+	public PastMedicalHistoryPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}

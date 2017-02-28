@@ -1,10 +1,11 @@
 package com.medfusion.product.patientportal1.utils;
 
 import java.net.URL;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.pojo.Portal;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 
 public class TestcasesData {
@@ -139,29 +140,32 @@ public class TestcasesData {
 		return portalobj.healthKeyPracticeUrl;
 	}
 
-	public String getFormsUrl() {
-		return portalobj.formsUrl;
+	public String getFormsPortal1UrlSecondary() {
+		return portalobj.formsPortal1UrlSecondary;
 	}
 
-	public String getPIFormsUrl() {
-		return portalobj.formsPIUrl;
+	public String getFormsPIUrlSecondary() {
+		return portalobj.formsPIUrlSecondary;
 	}
 
-	public String getPIFormsAltUrl() {
-
-		return portalobj.formsAltPIUrl;
+	public String getFormsPIUrlPrimary() {
+		return portalobj.formsPIUrlPrimary;
 	}
 
 	public String getPreferredLocationBeta() {
 		return portalobj.preferredLocationBeta;
 	}
 
-	public String getFormsAltUrl() {
-		return portalobj.formsAltUrl;
+	public String getFormsPortal1UrlPrimary() {
+		return portalobj.formsPortal1UrlPrimary;
 	}
 
-	public String getRestUrl() {
-		return portalobj.restUrl;
+	public String getCCDRestUrlPrimary() {
+		return portalobj.ccdRestUrlPrimary;
+	}
+
+	public String getCCDRestUrlSecondary() {
+		return portalobj.ccdRestUrlSecondary;
 	}
 
 	public String getSecureNotificationUser() {

@@ -51,13 +51,22 @@ public class OldCustomFormPages extends BasePageObject {
 
 	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:1:field")
 	private WebElement middleName;
-
+	
 	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:14:field")
-	private WebElement maritalStatus;
+	private WebElement sexOrientation;
+
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:16:field")
+	private WebElement genderIdentity;
+	
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:17:field")
+	private WebElement genderSpecify;
 
 	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:18:field")
-	private WebElement communicationMethod;
+	private WebElement maritalStatus;
 
+	@FindBy(name = "content:categories:0:questions:0:question:inputFieldsPanel:fieldsContainer:fields:22:field")
+	private WebElement communicationMethod;
+	
 	@FindBy(xpath = "//div[@class='sectionInfo']")
 	public WebElement formInfo;
 
@@ -111,12 +120,18 @@ public class OldCustomFormPages extends BasePageObject {
 		IHGUtil.waitForElement(driver, 20, middleName);
 		middleName.clear();
 		middleName.sendKeys("Middle");
-		Select selectstate1 = new Select(maritalStatus);
-		selectstate1.selectByVisibleText("Single");
+		Select selectstate1 = new Select(sexOrientation);
+		selectstate1.selectByVisibleText("Bisexual");
+		Select selectstate2 = new Select(genderIdentity);
+		selectstate2.selectByVisibleText("Additional gender category/(or other), please specify");
+		genderSpecify.sendKeys("something");
+		
+		Select selectstate3 = new Select(maritalStatus);
+		selectstate3.selectByVisibleText("Single");
 
 		if (driver.getPageSource().contains("Preferred Communication Method")) {
-			Select selectstate2 = new Select(communicationMethod);
-			selectstate2.selectByVisibleText("US mail");
+			Select selectstate4 = new Select(communicationMethod);
+			selectstate4.selectByVisibleText("US mail");
 		}
 		Thread.sleep(1000);
 		blindPartial.click();
@@ -136,8 +151,8 @@ public class OldCustomFormPages extends BasePageObject {
 
 		dateOfCancer.sendKeys("10/15/2013");
 
-		Select selectstate3 = new Select(feelings);
-		selectstate3.selectByVisibleText("happy");
+		Select selectstate5 = new Select(feelings);
+		selectstate5.selectByVisibleText("happy");
 	}
 
 	/**
@@ -184,17 +199,6 @@ public class OldCustomFormPages extends BasePageObject {
 		urlChecker.mimicWebDriverCookieState(true);
 
 		return urlChecker.getHTTPStatusCode();
-	}
-
-	public CustomFormPageForSitegen selectCustomForm(String formName) throws Exception {
-		IHGUtil.PrintMethodName();
-		Thread.sleep(3000);
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframe");
-		WebElement formLink = driver.findElement(By.xpath(".//ul/li/a[@title='" + formName + "']"));
-		IHGUtil.waitForElement(driver, 10, formLink);
-		formLink.click();
-		return PageFactory.initElements(driver, CustomFormPageForSitegen.class);
 	}
 
 	public void selectOldCustomForm(String formName) throws Exception {

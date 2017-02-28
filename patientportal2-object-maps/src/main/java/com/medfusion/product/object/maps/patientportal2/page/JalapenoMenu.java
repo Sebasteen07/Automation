@@ -10,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
@@ -43,8 +45,13 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='forms_lhn']/a/span")
 	private WebElement healthFormsMenu;
-	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "Account")
+
+	// please note that bellow links are not the same, each lead to different page (based on Linked Account settings)
+	@FindBy(how = How.LINK_TEXT, using = "Account")
 	private WebElement accountButton;
+
+	@FindBy(how = How.LINK_TEXT, using = "My Account")
+	private WebElement myAccountButton;
 
 	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
 	private WebElement rightDropdownButton;
@@ -63,7 +70,6 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(homeMenu);
-		webElementsList.add(accountButton);
 		webElementsList.add(signoutButton);
 
 		return assessPageElements(webElementsList);
@@ -105,22 +111,20 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
 
-	// TODO JalapenoHealthForms page does not exists - do we need it?
-	// public JalapenoHealthForms clickOnMenuHealthForms() {
-	// log("Clicking on Health Forms menu button");
-	// healthFormsMenu.click();
-	// return PageFactory.initElements(driver, JalapenoHealthForms.class);
-	// }
+	public HealthFormListPage clickOnMenuHealthForms() {
+		log("Clicking on Health Forms menu button");
+		healthFormsMenu.click();
+		IHGUtil.setFrame(driver, "iframe");
+		return PageFactory.initElements(driver, HealthFormListPage.class);
+	}
 
-	public JalapenoMyAccountProfilePage goToMyAccountPage() {
+	public JalapenoMyAccountProfilePage goToAccountPage() {
 		JalapenoAccountPage accountPage = clickOnAccount();
 		return accountPage.clickOnEditMyAccount();
 	}
 
 	public JalapenoAccountPage clickOnAccount() {
-
 		log("Clicking on Account button - regular resolution");
-
 		try {
 			accountButton.click();
 		} catch (NoSuchElementException ex) {
@@ -128,8 +132,19 @@ public abstract class JalapenoMenu extends MedfusionPage {
 			rightDropdownButton.click();
 			accountButton.click();
 		}
-
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
+	}
+
+	public JalapenoMyAccountProfilePage clickOnMyAccount() {
+		log("Clicking on Account button - regular resolution");
+		try {
+			myAccountButton.click();
+		} catch (NoSuchElementException ex) {
+			log("Did not find Account button, trying mobile version size");
+			rightDropdownButton.click();
+			accountButton.click();
+		}
+		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}
 
 	public JalapenoLoginPage clickOnLogout() {

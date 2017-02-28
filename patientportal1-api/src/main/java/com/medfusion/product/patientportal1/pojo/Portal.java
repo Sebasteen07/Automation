@@ -28,12 +28,13 @@ public class Portal {
 	public String Family_Password = "";
 	public String Relationship = "";
 	public String healthKeyPracticeUrl = "";
-	public String formsUrl = "";
-	public String formsPIUrl = "";
-	public String formsAltPIUrl = "";
+	public String formsPortal1UrlSecondary = "";
+	public String formsPIUrlSecondary = "";
+	public String formsPIUrlPrimary = "";
 	public String preferredLocationBeta = "";
-	public String formsAltUrl = "";
-	public String restUrl = "";
+	public String formsPortal1UrlPrimary = "";
+	public String ccdRestUrlPrimary = "";
+	public String ccdRestUrlSecondary = "";
 	public String secureMessageNotificationUserEmail = "";
 	public String secureMessageNotificationUserPassword = "";
 }

@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -58,5 +59,11 @@ public class FormMedicationsPage extends PortalFormPage {
 		IHGUtil.waitForElement(driver, 10, btnSubmit);
 		btnSubmit.click();
 		// return PageFactory.initElements(driver, MyPatientPage.class);
+	}
+
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Medications"))).isDisplayed();
 	}
 }

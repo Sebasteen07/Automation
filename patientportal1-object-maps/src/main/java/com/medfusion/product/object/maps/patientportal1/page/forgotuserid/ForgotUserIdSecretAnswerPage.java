@@ -71,6 +71,10 @@ public class ForgotUserIdSecretAnswerPage extends BasePageObject {
 		return PageFactory.initElements(driver, ForgotUserIdConfirmationPage.class);
 	}
 
+	public boolean areDOBoptionsVisible() {
+		return IHGUtil.waitForElement(driver, 5, monthDropDown);
+	}
+
 	public void selectDOB(String day, String month, String year) {
 
 		Select selMonth = new Select(monthDropDown);

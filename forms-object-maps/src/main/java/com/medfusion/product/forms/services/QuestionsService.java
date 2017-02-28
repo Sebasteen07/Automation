@@ -18,20 +18,20 @@ import com.medfusion.product.forms.pojo.SelectableAnswer;
 import com.medfusion.product.forms.pojo.TextQuestion;
 
 public class QuestionsService {
-	public static final String QUESTIONS_BASE_XPATH = "//form[%d]//fieldset/ul[not(contains(@class, 'hiddenFUP'))]";
+	public static final String QUESTIONS_BASE_XPATH = "//form[not(./div[contains(@style,'none')])]//fieldset/ul[not(contains(@class, 'hiddenFUP'))]";
 	private static final String TXT_QUESTIONS_FILTER = "[count(./li)=1]";
 	private static final String SEL_QUESTIONS_FILTER = "[./label]";
 
-	public static Set<Question> getSetOfVisibleQuestions(int sectionIndex, WebDriver driver) {
+	public static Set<Question> getSetOfVisibleQuestions(WebDriver driver) {
 		Set<Question> result = new HashSet<Question>();
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		Log4jUtil.log("parse visible text questions");
-		List<WebElement> textQuestions = driver.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + TXT_QUESTIONS_FILTER));
+		List<WebElement> textQuestions = driver.findElements(By.xpath(QUESTIONS_BASE_XPATH + TXT_QUESTIONS_FILTER));
 		for (WebElement textQuestion : textQuestions) {
 			result.add(parseTextQuestion(textQuestion));
 		}
 		Log4jUtil.log("parse visible select questions");
-		List<WebElement> selQuestions = driver.findElements(By.xpath(String.format(QUESTIONS_BASE_XPATH, sectionIndex) + SEL_QUESTIONS_FILTER));
+		List<WebElement> selQuestions = driver.findElements(By.xpath(QUESTIONS_BASE_XPATH + SEL_QUESTIONS_FILTER));
 		for (WebElement selQuestion : selQuestions) {
 			result.add(parseSelectQuestion(selQuestion));
 		}

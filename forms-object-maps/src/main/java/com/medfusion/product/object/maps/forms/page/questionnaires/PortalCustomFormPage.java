@@ -33,4 +33,9 @@ public class PortalCustomFormPage extends PortalFormPage {
 	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);
 	}
+
+	@Override
+	public boolean isPageLoaded() {
+		throw new UnsupportedOperationException();
+	}
 }

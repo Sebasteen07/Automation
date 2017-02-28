@@ -89,4 +89,10 @@ public class CustomFormPage extends BasePageObject {
 		scrollAndWait(0, 0, 500);
 		backToTheListButton.click();
 	}
+
+	public void setFormName(String newFormName) throws InterruptedException {
+		customFormNameFiled.clear();
+		customFormNameFiled.sendKeys(newFormName);
+		saveForm();
+	}
 }

@@ -17,23 +17,25 @@ import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class AuthUserLinkAccountPage extends MedfusionPage {
+	
+  public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='password']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='password']")
 	private WebElement passwordInput;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='userid']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='userid']")
 	private WebElement userIdInput;
 
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[1]")
 	private WebElement relationshipFirstSelect;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='email']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='email']")
 	private WebElement emailInput;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='firstName']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='firstName']")
 	private WebElement firstNameInput;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='lastName']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='lastName']")
 	private WebElement lastNameInput;
 
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[2]")
@@ -42,7 +44,7 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "next")
 	private WebElement continueButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='nextStep']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement enterPortalButton;
 
 	@FindBy(how = How.ID, using = "paymentPreference_Electronic")

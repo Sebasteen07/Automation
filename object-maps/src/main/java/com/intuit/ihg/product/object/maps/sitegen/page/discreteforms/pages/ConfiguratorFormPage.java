@@ -1,4 +1,4 @@
-package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
+package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -8,21 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.AllergiesPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CurrentSymptomsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.EmergencyContactInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.ExamsTestsAndProceduresPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.FormFamilyHistoryPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.HealthInsuranceInformationPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.IllnessesAndConditionsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.MedicationsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.OtherDoctorsYouSeen;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SecondaryHealthInsurancePage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SocialHistoryPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.SurgeriesAndHospitalizationsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.VaccinationsPage;
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGUtil;
 
@@ -35,6 +21,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	public static final String QUESTION_REQUIRED_INFO_BY_QUESTION_TITLE = "(//label[text()='%s']/preceding-sibling::input)[2]";
 	public static final String QUESTION_REQUIRED_ASTERISK_BY_QUESTION_TITLE = "//label[text()='%s']/preceding-sibling::a";
 	public static final String QUESTION_CHECKBOX_BY_QUESTION_TITLE = "//label[text()='%s']/preceding-sibling::input[@type='checkbox']";
+	public static final String SECTIONLINK_BY_ORDINAL_NUMBER = "//div[contains(@class,'section_list')]/ul[2]/li[%d]";
 
 	@FindBy(className = "back")
 	private WebElement backToTheList;
@@ -65,6 +52,9 @@ public class ConfiguratorFormPage extends BasePageObject {
 
 	@FindBy(xpath = "//div[@class='configuration_section socialhistory_section']/p/a")
 	private WebElement newSectionButt;
+
+	@FindBy(id = "custom_form_name")
+	private WebElement formNameField;
 
 	public ConfiguratorFormPage(WebDriver driver) {
 		super(driver);
@@ -126,7 +116,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	private WebElement lnkInsurance;
 
 	@FindBy(xpath = "//li[@data-section='conditions_section']/a")
-	private WebElement lnkConditions;
+	private WebElement lnkPastMedicalHistory;
 
 	@FindBy(xpath = "//li[@data-section='socialhistory_section']/a")
 	private WebElement lnkSocialHistory;
@@ -192,11 +182,12 @@ public class ConfiguratorFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, HealthInsuranceInformationPage.class);
 	}
 
-	public IllnessesAndConditionsPage clicklnkConditions() {
+	public PastMedicalHistoryPage clicklnkPastMedicalHistory() throws InterruptedException {
 		SitegenlUtil.setDefaultFrame(driver);
-		IHGUtil.waitForElement(driver, 30, lnkConditions);
-		lnkConditions.click();
-		return PageFactory.initElements(driver, IllnessesAndConditionsPage.class);
+		IHGUtil.waitForElement(driver, 30, lnkPastMedicalHistory);
+		scrollAndWait(0, 0, 1000);
+		lnkPastMedicalHistory.click();
+		return PageFactory.initElements(driver, PastMedicalHistoryPage.class);
 	}
 
 	public SocialHistoryPage clicklnkSocialHistory() {
@@ -235,11 +226,10 @@ public class ConfiguratorFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, OtherDoctorsYouSeen.class);
 	}
 
-	public ExamsTestsAndProceduresPage clicklnkProcedures() {
-		SitegenlUtil.setDefaultFrame(driver);
+	public ProceduresPage clicklnkProcedures() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 30, lnkProcedures);
 		lnkProcedures.click();
-		return PageFactory.initElements(driver, ExamsTestsAndProceduresPage.class);
+		return PageFactory.initElements(driver, ProceduresPage.class);
 	}
 
 	public SurgeriesAndHospitalizationsPage clicklnkSurgsHosps() {
@@ -279,6 +269,16 @@ public class ConfiguratorFormPage extends BasePageObject {
 		asterisk.click();
 	}
 
+	public void makeQuestionOptional(String questionLabel) {
+		if (isQuestionRequired(questionLabel))
+			clickQuestionRequiredAsterisk(questionLabel);
+	}
+
+	public void makeQuestionRequired(String questionLabel) {
+		if (!isQuestionRequired(questionLabel))
+			clickQuestionRequiredAsterisk(questionLabel);
+	}
+
 	public boolean isQuestionInForm(String questionLabel) {
 		return driver.findElement(By.xpath(String.format(QUESTION_CHECKBOX_BY_QUESTION_TITLE, questionLabel))).isSelected();
 	}
@@ -292,13 +292,44 @@ public class ConfiguratorFormPage extends BasePageObject {
 		}
 	}
 
-	public void removeQuestionToForm(String questionLabel){
+	public void removeQuestionFromForm(String questionLabel) {
 		if (isQuestionInForm(questionLabel)) {
 			WebElement questionChckbox = driver.findElement(By.xpath(String.format(QUESTION_CHECKBOX_BY_QUESTION_TITLE, questionLabel)));
 			if (!questionChckbox.isDisplayed())
 				throw new IllegalStateException("question: " + questionLabel + " is not displayed, currently on page: " + getCurrentDisplayedPageTitle());
 			questionChckbox.click();
 		}
+	}
+
+	public void hideSections(int[] sectionNumbers) throws InterruptedException {
+		for (int i : sectionNumbers) {
+			scrollAndWait(0, 0, 500);
+			goToSection(i);
+			hideCurrentSection();
+		}
+	}
+
+	public void goToSection(int ordinalNumber) {
+		driver.findElement(By.xpath(String.format(SECTIONLINK_BY_ORDINAL_NUMBER, ordinalNumber + 1))).click();
+	}
+
+	public void hideCurrentSection() throws InterruptedException {
+		scrollAndWait(0, 0, 500);
+		WebElement hideSectionInput = driver.findElement(By.xpath("//input[contains(@id,'hide_')][./ancestor::div[2][contains(@style,'block')]]"));
+		if (!hideSectionInput.isSelected())
+			hideSectionInput.click();
+	}
+
+	/**
+	 * Set the name of the form
+	 * 
+	 * @param newFormName - the name for the form
+	 * @throws InterruptedException
+	 */
+	public void setFormName(String newFormName) throws InterruptedException {
+		formNameField.clear();
+		formNameField.sendKeys(newFormName);
+		saveOpenedForm();
 	}
 
 }

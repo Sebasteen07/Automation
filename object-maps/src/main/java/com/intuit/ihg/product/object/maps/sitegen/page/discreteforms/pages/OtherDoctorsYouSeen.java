@@ -4,8 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-
 public class OtherDoctorsYouSeen extends ConfiguratorFormPage {
 
 	@FindBy(id = "hide_currentproviders_check")

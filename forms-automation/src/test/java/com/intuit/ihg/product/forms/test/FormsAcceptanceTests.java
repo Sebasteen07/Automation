@@ -9,15 +9,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Charsets;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.ccd.CCDTest;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -26,6 +27,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFor
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
+import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.WelcomeScreenPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
@@ -33,7 +35,6 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.forms.pojo.Question;
 import com.medfusion.product.forms.pojo.SelectQuestion;
 import com.medfusion.product.forms.pojo.SelectableAnswer;
@@ -47,8 +48,8 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages.
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormFamilyHistoryPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormIllnessConditionsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormMedicationsPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormPastMedicalHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSocialHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.CurrentSymptomsSupplementalPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages.IllnessesSupplementalPage;
@@ -64,11 +65,8 @@ import com.medfusion.product.object.maps.practice.page.customform.SearchPatientF
 import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
-import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
-import com.medfusion.product.patientportal2.tests.CommonSteps;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
@@ -79,19 +77,19 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		SitegenTestData testData = new SitegenTestData(new Sitegen());
 		SiteGenSteps sgSteps = new SiteGenSteps();
 
-		logTestEnvironmentInfo("formsConfigSmokeTest");
-		DiscreteFormsList formsPage = sgSteps.logInUserToSG(driver, testData.getFormUser(), testData.getFormPassword()).clickLnkDiscreteForms();
+		Utils.logTestEnvironmentInfo("formsConfigSmokeTest");
+		DiscreteFormsList formsPage = sgSteps.logInUserToSG(driver, testData.getFormPrimaryUser(), testData.getFormPrimaryPassword()).clickLnkDiscreteForms();
 		assertTrue(formsPage.isPageLoaded());
 	}
 
 	@Test(groups = {"Forms"})
 	public void testQuotationMarksInFormPI() throws Exception {
-		testQuotationMarksInForm(Utils.loginPIAndOpenFormsList(driver, true));
+		testQuotationMarksInForm(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testQuotationMarksInFormPortal1() throws Exception {
-		testQuotationMarksInForm(Utils.loginPortal1AndOpenFormsList(driver, true));
+		testQuotationMarksInForm(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	private void testQuotationMarksInForm(HealthFormListPage formsPage) throws Exception {
@@ -116,33 +114,27 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = {"Forms"})
 	public void testFormPdfCcdPI() throws Exception {
-		TestcasesData portalData = new TestcasesData(new Portal());
-		PropertyFileLoader testData = new PropertyFileLoader();
-		JalapenoPatient patientData = new JalapenoPatient(testData);
-		patientData.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
-		patientData.setDOBYear("1900");
-		HealthFormListPage hflp = CommonSteps.createAndLogInPatient(patientData, testData, driver).clickOnHealthForms();
-		testFormPdfCcd(hflp, portalData);
+		PatientData p = new PatientData();
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
-		JalapenoHomePage jhp = Utils.loginPI(driver, true, patientData.getEmail(), patientData.getPassword());
+		JalapenoHomePage jhp = Utils.loginPI(driver, p.getEmail(), p.getPassword());
 		assertTrue(jhp.areMenuElementsPresent());
 		JalapenoMyAccountProfilePage pMyAccountPage = jhp.clickOnAccount().clickOnEditMyAccount();
-		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"),
-				patientData.getDOBMonthText() + "/" + patientData.getDOBDay() + "/" + patientData.getDOBYear());
+		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPdfCcdPortal1() throws Exception {
-		TestcasesData portalData = new TestcasesData(new Portal());
-		CreatePatientTest patientCreation = new CreatePatientTest(null, null, new TestcasesData(new Portal()).getFormsAltUrl());
-		HealthFormListPage hflp = patientCreation.createPatient(driver, new TestcasesData(new Portal())).clickOnHealthForms();
-		testFormPdfCcd(hflp, portalData);
+		PatientData p = new PatientData();
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
-		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, true, patientCreation.getEmail(), patientCreation.getPassword()).clickMyAccountLink();
-		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), portalData.getDOB());
+		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();
+		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
 	}
 
-	private void testFormPdfCcd(HealthFormListPage formsPage, TestcasesData portalData) throws Exception {
+	private void testFormPdfCcd(HealthFormListPage formsPage) throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml;
 		// easy bruising is mapped to following term in Forms Configurator in
@@ -158,10 +150,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Test if PDF is downloadable");
 		Utils.checkIfPDFCanBeDownloaded(SitegenConstants.PDF_CCD_FORM, driver);
-
 		log("Step 4: Test if CCD is produced");
 		log("Calling rest");
-		xml = CCDTest.getFormCCD(timestamp, portalData.getRestUrl());
+		xml = CCDTest.getFormCCD(timestamp, new TestcasesData(new Portal()).getCCDRestUrlPrimary());
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 5: Test if the submission date is correct");
@@ -171,12 +162,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testFormPracticePortalPI() throws Exception {
-		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver, true));
+		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPracticePortalPortal1() throws Exception {
-		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver, true));
+		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	private void testFormPracticePortal(HealthFormListPage formsPage) throws Exception {
@@ -187,7 +178,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		FormMedicationsPage medsPage = demographPage.clickSaveContinue(FormMedicationsPage.class);
 		medsPage.setNoMedications();
 
-		FormIllnessConditionsPage illsPage = medsPage.clickSaveContinue(FormIllnessConditionsPage.class);
+		FormPastMedicalHistoryPage illsPage = medsPage.clickSaveContinue(FormPastMedicalHistoryPage.class);
 		illsPage.checkMononucleosis();
 		illsPage.clickSaveContinueSamePage(3);
 
@@ -208,12 +199,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testPartiallyCompletedFormPI() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver, true));
+		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testPartiallyCompletedFormPortal1() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver, true));
+		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	private void testPartiallyCompletedForm(HealthFormListPage formsPage) throws Exception {
@@ -241,47 +232,41 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 * @throws Exception
 	 */
 	@Test(groups = {"Forms"})
-	public void testDiscreteFormDeleteCreatePublish() throws Exception {
+	public void testDiscreteFormDeleteCreatePublishPI() throws Exception {
+		String newFormName = SitegenConstants.DISCRETEFORMNAME;
+		String welcomeMessage = createFormSG(newFormName);
 
-		String welcomeMessage = createFormSG();
-
-		log("step 7: Log in to Patient Portal 1.0");
-		MyPatientPage pMyPatientPage = Utils.loginPortal1(driver, false);
+		log("step 7: create patient and Log in to PI");
+		PatientData p = new PatientData();
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
 
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
-		FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-		assertEquals(pFormWelcomePage.getMessageText(), welcomeMessage);
-		FormBasicInfoPage firstRegPage = pFormWelcomePage.clickSaveContinue(FormBasicInfoPage.class);
-		firstRegPage.clickSaveAndFinishAnotherTime();
-		pMyPatientPage.logout(driver);
-
-		log("step 9: Log in to Patient Portal Inspired");
-		JalapenoHomePage pHomePage = Utils.loginPI(driver, false);
-
-		log("step 10: Click On Start Registration Button and verify welcome page of the previously created form");
-		pHomePage.clickContinueRegistrationButton(driver);
-		firstRegPage = new FormBasicInfoPage(driver);
-		assertEquals(firstRegPage.isPageLoaded(), true);
+		home.clickStartRegistrationButton();
+		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
+		// if there is only one reg. form
+		if (welcomePage.isPageLoaded())
+			assertEquals(welcomePage.getMessageText(), welcomeMessage);
+		// if there are more reg. forms
+		else
+			assertEquals(PageFactory.initElements(driver, HealthFormListPage.class).openDiscreteForm(newFormName).getMessageText(), welcomeMessage);
 	}
 
 	@Test(groups = {"Forms"})
 	public void testFormPatientDashboardPI() throws Exception {
-		PropertyFileLoader testData = new PropertyFileLoader();
-		JalapenoPatient jp = new JalapenoPatient(testData);
-		jp.setUrl(new TestcasesData(new Portal()).getPIFormsAltUrl());
-		jp.setDOBYear("1900");
-		HealthFormListPage hflp = CommonSteps.createAndLogInPatient(jp, testData, driver).clickOnHealthForms();
-		testFormPatientDashboard(hflp, jp.getEmail(), jp.getFirstName(), jp.getLastName());
+		PatientData p = new PatientData();
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPatientDashboardPortal1() throws Exception {
-		CreatePatientTest cpt = new CreatePatientTest(null, null, new TestcasesData(new Portal()).getFormsAltUrl());
-		HealthFormListPage hflp = cpt.createPatient(driver, new TestcasesData(new Portal())).clickOnHealthForms();
-		testFormPatientDashboard(hflp, cpt.getEmail(), cpt.getFirstName(), cpt.getLastName());
+		PatientData p = new PatientData();
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
 	private void testFormPatientDashboard(HealthFormListPage formsPage, String email, String firstName, String lastName) throws Exception {
+
 		log("step 1: Open form :" + SitegenConstants.PDF_CCD_FORM);
 		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).initToFirstPage(FormBasicInfoPage.class);
 
@@ -303,7 +288,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Verify if there's submitted form on patient dashboard");
 		assertTrue(pDashboardPage.verifySubmittedForm(SitegenConstants.PDF_CCD_FORM), "Submitted form was not found on Patient Dashboard");
-		
+
 		log("Step 8: Open forms detail and check donwload link");
 		pDashboardPage.openFormDetails(SitegenConstants.PDF_CCD_FORM);
 		Utils.checkIfPDFCanBeDownloaded("View as PDF", driver);
@@ -316,10 +301,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testSitegenFUPInteraction() throws Exception {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		logTestEnvironmentInfo("testCreateFormWithFUPs");
+		Utils.logTestEnvironmentInfo("testCreateFormWithFUPs");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData SGData = new SitegenTestData(sitegen);
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage =
+				new SiteGenSteps().logInUserToSG(driver, SGData.getFormSecondaryUser(), SGData.getFormSecondaryPassword());
 
 		log("step 1: Click on Patient Forms");
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
@@ -327,11 +313,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Unpublish and delete all forms and create a new one");
 		driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm();
-		pManageDiscreteForms.createCustomForm();
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.FORM_FUP_SG);
 
 		log("step 3: Open created custom form");
-		CustomFormPage customFormPage = pManageDiscreteForms.clickOnLastCreatedForm();
+		CustomFormPage customFormPage = pManageDiscreteForms.createAndOpenCustomForm(SitegenConstants.FORM_FUP_SG);
 		customFormPage.clickOnSection(1);
 		CustomFormPageSection section1 = customFormPage.getFirstSection();
 
@@ -357,7 +342,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 8: save and reopen form");
 		customFormPage.saveForm();
 		customFormPage.leaveFormPage();
-		customFormPage = pManageDiscreteForms.clickOnLastCreatedForm();
+		customFormPage = pManageDiscreteForms.openCustomForm(SitegenConstants.FORM_FUP_SG);
 		customFormPage.clickOnSection(1);
 		section1 = customFormPage.getFirstSection();
 
@@ -386,41 +371,40 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = {"Forms"})
 	public void testCustomFormWithFUPsPI() throws Exception {
-		testCustomFormWithFUPs(Utils.loginPIAndOpenFormsList(driver, true));
+		testCustomFormWithFUPs(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testCustomFormWithFUPsPortal1() throws Exception {
-		testCustomFormWithFUPs(Utils.loginPortal1AndOpenFormsList(driver, true));
+		testCustomFormWithFUPs(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
 	private void testCustomFormWithFUPs(HealthFormListPage healthFormPage) throws Exception {
 		log("step 1: Open PI-testBeforeSubmit form");
-		NewCustomFormPage customFormPage = healthFormPage.openNewCustomForm("PI-testBeforeSubmit");
+		NewCustomFormPage customFormPage = healthFormPage.openDiscreteForm("PI-testBeforeSubmit").initToFirstPage(NewCustomFormPage.class);
 		log("step 2: Clear all answers of 1st section");
-		customFormPage.goToFirstSection();
 		customFormPage.clearAllInputs();
 		log("step 3: Check that FUPs are hidden after clear");
 		List<WebElement> initiallyVisibleQuestionsFirstSection = customFormPage.getVisibleQuestions();
 		assertEquals(initiallyVisibleQuestionsFirstSection.size(), 3);
 		log("step 4: Test interactivity");
 		log("step 4.1: Test top lvl required flag");
-		assertFalse(customFormPage.clickOnSaveAndContinueButton());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
+		assertTrue(customFormPage.isInputErrorMessageDisplayed());
 		customFormPage.fillMultiLineAnswer(initiallyVisibleQuestionsFirstSection.get(0), "1st multiline answer");
-		assertTrue(customFormPage.clickOnSaveAndContinueButton());
-		customFormPage.clickOnGoToPrevious();
 		log("step 4.2: Test showing of FUPs");
 		customFormPage.fillSingleLineAnswer(initiallyVisibleQuestionsFirstSection.get(1), "1st singleline answer");
 		customFormPage.selectAnswers(initiallyVisibleQuestionsFirstSection.get(2), Arrays.asList(1, 2));
 		List<WebElement> visibleQuestionsFirstSection = customFormPage.getVisibleQuestions();
 		assertEquals(visibleQuestionsFirstSection.size(), 7);
 		log("step 4.3: Test FUP required flag");
-		assertFalse(customFormPage.clickOnSaveAndContinueButton());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
+		assertTrue(customFormPage.isInputErrorMessageDisplayed());
 		log("step 4.4: Test answering FUPs");
 		customFormPage.selectAnswer(visibleQuestionsFirstSection.get(3), 1);
 		customFormPage.selectAnswer(visibleQuestionsFirstSection.get(4), 1);
 		customFormPage.selectAnswers(visibleQuestionsFirstSection.get(5), Arrays.asList(1, 2));
-		assertTrue(customFormPage.clickOnSaveAndContinueButton());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
 		log("step 4.5: Test second section behaving");
 		customFormPage.clearAllInputs();
 		List<WebElement> initiallyVisibleQuestionsSecondSection = customFormPage.getVisibleQuestions();
@@ -440,23 +424,94 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(customFormPage.isHeadingDisplayed("Heading22"));
 		assertTrue(customFormPage.isTextDisplayed("Text22"));
 		log("step 4.7: Test consents's required flag");
-		assertFalse(customFormPage.clickOnSaveAndContinueButton());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
+		assertTrue(customFormPage.isInputErrorMessageDisplayed());
 		customFormPage.consentAllVisibleStatements("InMyName");
-		assertTrue(customFormPage.clickOnSaveAndContinueButton());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
 		log("step 4.8: Test section update button");
-		customFormPage.selectSectionToUpdate(2);
-		assertTrue(customFormPage.isSectionDisplayed(2));
+		customFormPage.selectSectionToUpdate(2, NewCustomFormPage.class);
 		customFormPage.selectAnswer(visibleQuestionsSecondSection.get(1), 1);
 		log("step 5: Save the form");
-		customFormPage.clickOnGoToPrevious();
-		customFormPage.clickOnSaveAndFinishButton();
+		customFormPage.goBack(NewCustomFormPage.class);
+		customFormPage.clickSaveAndFinishAnotherTime();
 		log("step 6: Open the form and checks saved values");
 		IHGUtil.setFrame(driver, "iframe");
-		customFormPage = healthFormPage.openNewCustomForm("PI-testBeforeSubmit");
-		assertEquals(QuestionsService.getSetOfVisibleQuestions(1, driver), getExpectedQuestionsForFirstSection());
-		assertTrue(customFormPage.clickOnSaveAndContinueButton());
-		assertEquals(QuestionsService.getSetOfVisibleQuestions(2, driver), getExpectedQuestionsForSecondSection());
+		customFormPage = healthFormPage.openDiscreteForm("PI-testBeforeSubmit").initToFirstPage(NewCustomFormPage.class);
+		assertEquals(QuestionsService.getSetOfVisibleQuestions(driver), getExpectedQuestionsForFirstSection());
+		customFormPage = customFormPage.clickSaveContinue(NewCustomFormPage.class);
+		assertEquals(QuestionsService.getSetOfVisibleQuestions(driver), getExpectedQuestionsForSecondSection());
 	}
+
+	@Test(groups = {"Forms"})
+	public void testEGQEnabledPI() throws Exception {
+		log("create patient and login to PI");
+		PatientData p = new PatientData();
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		testEGQEnabled(home.clickOnHealthForms());
+		log("verify that value in my account has been changed based on form answer");
+		JalapenoMyAccountProfilePage pMyAccountPage = home.clickOnAccount().clickOnEditMyAccount();
+		assertTrue(pMyAccountPage.getGender() == null);
+	}
+
+	@Test(groups = "OldPortalForms")
+	public void testEGQEnabledPortal1() throws Exception {
+		log("create patient and login to Portal 1");
+		PatientData p = new PatientData();
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		testEGQEnabled(home.clickOnHealthForms());
+		log("verify that value in my account has been changed based on form answer");
+		MyAccountPage pMyAccountPage = home.clickMyAccountLink();
+		assertTrue(pMyAccountPage.getGender() == null);
+	}
+
+	private void testEGQEnabled(HealthFormListPage formsList) throws Exception {
+		long timestamp = System.currentTimeMillis() / 1000L;
+		log("verify question labels");
+		FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME).initToFirstPage(FormBasicInfoPage.class);
+		assertEquals(basicInfo.getGenderQuestionLabel(), "What sex were you assigned at birth on your original birth certificate?*");
+		log("verify that answer is prefilled by information from my account");
+		assertEquals(basicInfo.getSelectedGender(), "Male");
+		log("verify that answer is required");
+		basicInfo.setSex("Choose...");
+		basicInfo.clickSaveContinue();
+		assertTrue(basicInfo.isInputErrorMessageDisplayed());
+		basicInfo.setSex("Male");
+		basicInfo.setSexualOrientation("Don't know");
+		basicInfo.setGenderIdentity("Additional gender category or other, please specify");
+		basicInfo.setGenderIdentityDetails("GI custom text");
+		FormCurrentSymptomsPage symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
+		log("verify that only male-specific questions are displayed to male");
+		assertTrue(symptoms.areMaleQuestionsDisplayed());
+		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		symptoms.setNoMaleSymptoms();
+		FormPastMedicalHistoryPage medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
+		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		symptoms = medHistory.goBack(FormCurrentSymptomsPage.class);
+		basicInfo = medHistory.goBack(FormBasicInfoPage.class);
+		log("choose declined to answer");
+		basicInfo.setSex("Declined to answer");
+		symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
+		log("verify that all questions are displayed to user who didn't answerd gender");
+		assertTrue(symptoms.areFemaleQuestionsDisplayed());
+		assertTrue(symptoms.areMaleQuestionsDisplayed());
+		symptoms.checkAnswer("Penile lesions");
+		symptoms.checkAnswer("Vaginal dryness");
+		medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
+		medHistory.setCountOfPregnancies(0);
+		medHistory.clickSaveContinue();
+		log("submit form");
+		medHistory.submitForm();
+		log("calling CCD rest");
+		String ccd = CCDTest.getFormCCD(timestamp, new TestcasesData(new Portal()).getCCDRestUrlPrimary());
+		log("verify that answered questions are in CCD");
+		assertTrue(ccd.contains("Penile lesions"), "not found in ccd: " + ccd);
+		assertTrue(ccd.contains("Vaginal dryness"), "not found in ccd: " + ccd);
+		assertTrue(ccd.contains("None, I have never been pregnant"), "not found in ccd: " + ccd);
+		log("verify that there is nullFlavor UNK for gender in CCD");
+		assertTrue(Pattern.compile("<administrativeGenderCode[^>]+nullFlavor=\"UNK\"").matcher(ccd).find(), "not found in ccd: " + ccd);
+		formsList.goToHomePage();
+	}
+
 
 	@Test
 	public void testFormExportImport() throws Exception {
@@ -467,7 +522,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(true));
+		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID());
 		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
 		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 		log("step 2: navigate to SiteGen PracticeHomePage, practice with ID: " + automationPracticeID);
@@ -477,17 +532,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
 		assertTrue(pManageDiscreteForms.isPageLoaded());
 		log("step 4: Cleanup unpublished forms");
-		pManageDiscreteForms.deleteUnpublishedFormsNamedLike(SitegenConstants.FORM_EXPORT_IMPORT);
+		pManageDiscreteForms.deleteUnpublishedForms(SitegenConstants.FORM_EXPORT_IMPORT);
 		log("step 5: Export form");
 		pManageDiscreteForms.exportForm(SitegenConstants.FORM_EXPORT_IMPORT);
 
 		log("step 6: Compare exported form file with representative file");
 		Path exportedFilePath = Paths.get(System.getProperty("user.dir") + "\\" + SitegenConstants.FORM_EXPORT_IMPORT + ".txt");
-		String exportedFileString =
-				stripVariablesFromExportedForm(Files.readAllLines(exportedFilePath, Charsets.UTF_8).get(0));
-		String representativeFileString =
-				stripVariablesFromExportedForm(
-						Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0));
+		String exportedFileString = stripVariablesFromExportedForm(Files.readAllLines(exportedFilePath, Charsets.UTF_8).get(0));
+		String representativeFileString = stripVariablesFromExportedForm(
+				Files.readAllLines(Paths.get(ClassLoader.getSystemResource(SitegenConstants.FORM_EXPORT_IMPORT + ".txt").toURI()), Charsets.UTF_8).get(0));
 		assertEquals(exportedFileString, representativeFileString);
 
 		log("step 7: Import form");
@@ -495,84 +548,104 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 8: Check imported form preview");
 		assertFalse(pManageDiscreteForms.openUnpublishedFormPreview(SitegenConstants.FORM_EXPORT_IMPORT).getMessageText().isEmpty());
-		
+
 		log("step 9: Close the window and logout from SiteGenerator");
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 	}
 
-	@Test(groups="Forms")
-	public void testEGQSitegen() throws Exception {
+	@Test
+	public void testEGQEnablingSG() throws Exception {
 		Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
 		log("step 1: login to SG as superuser");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(false));
+		String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(PracticeType.SECONDARY));
 		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
 		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 		log("step 2: navigate to SiteGen PracticeHomePage - practice with id: " + automationPracticeID);
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
+		log("step 3: enable EGQ");
 		pSiteGenPracticeHomePage.openPracticeInfo().enableGenderQuestions().returnToPracticeHomePage();
-		String homePageWindowHandle = driver.getWindowHandle();
+		String homePageSGWindow = driver.getWindowHandle();
+		log("step 4: open EGQ form");
 		DiscreteFormsList formsList = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
-		formsList.initializePracticeForNewForm();
-		formsList.createRegistrationForm();
-		String formsListHandle = driver.getWindowHandle();
-		testEGQSitegenEnabledFlow(formsList);
-		driver.switchTo().window(homePageWindowHandle);
+		String formsSGListWindow = driver.getWindowHandle();
+		WelcomeScreenPage welcomePage = formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME);
+		log("step 5: test behaving when EGQ are enabled - SG");
+		testEGQSitegenEnabledFlow(formsList, welcomePage);
+		log("step 6: test behaving when EGQ are enabled - PI");
+		driver.switchTo().window(homePageSGWindow);
+		pSiteGenPracticeHomePage.clickLnkDiscreteForms();
+		HealthFormListPage formsListPI = testEGQEnabledPIFlow(driver);
+		String PIwindow = driver.getWindowHandle();
+		log("step 7: disable EGQ");
+		driver.switchTo().window(homePageSGWindow);
 		pSiteGenPracticeHomePage.openPracticeInfo().disableGenderQuestions().returnToPracticeHomePage();
-		driver.switchTo().window(formsListHandle);
+		log("step 8: test behaving when EGQ are disabled - SG");
+		driver.switchTo().window(formsSGListWindow);
 		testEGQSitegenDisabledFlow(formsList);
+		log("step 9: test behaving when EGQ are disabled - PI");
+		driver.switchTo().window(PIwindow);
+		IHGUtil.setFrame(driver, "iframe");
+		testEGQDisabledPIFlow(formsListPI);
 	}
 
-	private void testEGQSitegenEnabledFlow(DiscreteFormsList formsList) throws Exception {
+	private void testEGQSitegenEnabledFlow(DiscreteFormsList formsList, WelcomeScreenPage welcomePage) throws Exception {
 		IHGUtil.PrintMethodName();
-		BasicInformationAboutYouPage basicInfoPage =
-				formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).clicklnkBasicInfoAboutYourPage();
-		String sexQuestionLabel = "What sex were you assigned at birth on your original birth certificate?";
-		log("check sex question label");
-		assertEquals(basicInfoPage.getSexQuetionLabel(), sexQuestionLabel);
-		log("check sex question allways required");
-		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
-		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
-		assertTrue(basicInfoPage.isQuestionRequired(sexQuestionLabel));
-		log("check question add/remove");
-		basicInfoPage.addQuestionToForm(sexQuestionLabel);
-		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
-		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
-		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		BasicInformationAboutYouPage basicInfoPage = welcomePage.clicklnkBasicInfoAboutYourPage();
+		log("verify egq questions are displayed");
+		assertTrue(basicInfoPage.areEGQQuestionsDisplayed());
+		log("verify sex question allways required");
+		assertTrue(basicInfoPage.isQuestionRequired(BasicInformationAboutYouPage.EGQ_SEX_QUESTION_LABEL));
+		basicInfoPage.clickQuestionRequiredAsterisk(BasicInformationAboutYouPage.EGQ_SEX_QUESTION_LABEL);
+		assertTrue(basicInfoPage.isQuestionRequired(BasicInformationAboutYouPage.EGQ_SEX_QUESTION_LABEL));
+		log("add egq questions");
+		basicInfoPage.addQuestionToForm("What is your sexual orientation?");
+		basicInfoPage.addQuestionToForm("What is your current gender identity?");
 		basicInfoPage.saveOpenedForm();
-		formsList = basicInfoPage.clickBackToTheList();
+		basicInfoPage.clickBackToTheList();
+	}
+
+	private HealthFormListPage testEGQEnabledPIFlow(WebDriver driver) throws Exception {
+		log("create patient, login to PI and open form");
+		PatientData p = new PatientData();
+		HealthFormListPage formsList = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p).clickOnHealthForms();
+		FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME).clickSaveContinue(FormBasicInfoPage.class);
+		log("check 'decline to answer' and submit form");
+		basicInfo.setSex("Declined to answer");
+		basicInfo.clickSaveContinue();
+		basicInfo.submitForm();
+		return formsList;
 	}
 
 	private void testEGQSitegenDisabledFlow(DiscreteFormsList formsList) throws Exception {
 		IHGUtil.PrintMethodName();
 		BasicInformationAboutYouPage basicInfoPage =
-				formsList.openDiscreteForm(SitegenConstants.FORMS_REGISTRATION_FORM_INITIAL_NAME).clicklnkBasicInfoAboutYourPage();
-		String sexQuestionLabel = "Sex";
-		log("check sex question label");
-		assertEquals(basicInfoPage.getSexQuetionLabel(), sexQuestionLabel);
-		log("check sex question required/optional");
-		boolean atFirst = basicInfoPage.isQuestionRequired(sexQuestionLabel);
-		basicInfoPage.clickQuestionRequiredAsterisk(sexQuestionLabel);
-		boolean afterClick = basicInfoPage.isQuestionRequired(sexQuestionLabel);
+				formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME).clicklnkBasicInfoAboutYourPage();
+		log("verify that EGQ questions are not displayed");
+		assertFalse(basicInfoPage.areEGQQuestionsDisplayed());
+		log("verify sex question required/optional");
+		boolean atFirst = basicInfoPage.isQuestionRequired("Sex");
+		basicInfoPage.clickQuestionRequiredAsterisk("Sex");
+		boolean afterClick = basicInfoPage.isQuestionRequired("Sex");
 		assertEquals(atFirst, !afterClick);
-		log("check question add/remove");
-		basicInfoPage.addQuestionToForm(sexQuestionLabel);
-		assertTrue(basicInfoPage.isQuestionInForm(sexQuestionLabel));
-		basicInfoPage.removeQuestionToForm(sexQuestionLabel);
-		assertFalse(basicInfoPage.isQuestionInForm(sexQuestionLabel));
+		log("close form");
 		basicInfoPage.saveOpenedForm();
-		formsList = basicInfoPage.clickBackToTheList();
+		basicInfoPage.clickBackToTheList();
 	}
 
-
-
-	protected void logTestEnvironmentInfo(String testName) {
-		log(testName);
-		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
+	private void testEGQDisabledPIFlow(HealthFormListPage formsList) throws Exception {
+		log("verify question label");
+		FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME).initToFirstPage(FormBasicInfoPage.class);
+		assertEquals(basicInfo.getGenderQuestionLabel(), "Sex");
+		log("verify that answer is prefilled by information from my account (declined -> choose ...)");
+		assertEquals(basicInfo.getSelectedGender(), "Choose...");
+		log("verify that answer is not required");
+		basicInfo.setSex("Choose...");
+		basicInfo.clickSaveContinue();
+		basicInfo.submitForm();
 	}
 
 	/**
@@ -649,13 +722,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(status.getDownloadStatusCode(viewFormPage.getDownloadURL(), RequestMethod.GET), 200);
 	}
 
-	protected String createFormSG() throws Exception {
-		String newFormName = SitegenConstants.DISCRETEFORMNAME + IHGUtil.createRandomNumericString().substring(0, 4);
+	protected String createFormSG(String newFormName) throws Exception {
 
-		logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
+		Utils.logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData SGData = new SitegenTestData(sitegen);
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, SGData.getFormUser(), SGData.getFormPassword());
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, SGData.getFormPrimaryUser(), SGData.getFormPrimaryPassword());
 		// Get the current window handle before opening new window
 		String parentHandle = driver.getWindowHandle();
 
@@ -665,11 +737,11 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 2: Unpublish and delete all forms and create a new one");
 		driver.manage().window().maximize();
-		pManageDiscreteForms.initializePracticeForNewForm();
-		pManageDiscreteForms.createRegistrationForm();
+		pManageDiscreteForms.initializePracticeForNewForm(SitegenConstants.DISCRETEFORMNAME);
+		WelcomeScreenPage welcomePage = pManageDiscreteForms.createAndOpenRegistrationForm(newFormName);
 
 		log("step 3: Initialize the new form");
-		pManageDiscreteForms.prepareFormForTest(newFormName);
+		pManageDiscreteForms.prepareFormForTest(welcomePage);
 
 		log("step 4: Publish the saved Discrete Form");
 		pManageDiscreteForms.publishForm(newFormName);
@@ -677,7 +749,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 5: Close the window and logout from SiteGenerator");
 		// Switching back to original window using previously saved handle
 		// descriptor
-		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
 

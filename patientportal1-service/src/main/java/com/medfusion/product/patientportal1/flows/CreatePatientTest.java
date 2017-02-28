@@ -1,6 +1,7 @@
 package com.medfusion.product.patientportal1.flows;
 
 import org.openqa.selenium.WebDriver;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
@@ -17,6 +18,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 	private String url = "";
 	private String firstName = "";
 	private String lastName = "";
+	private String dob = "";
 
 	// Getters for getting the email and password value and reusing in other tests
 	public String getEmail() {
@@ -51,7 +53,13 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		return lastName;
 	}
 
+	public String getDob() {
+		return dob;
+	}
 
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
 
 	public CreatePatientTest(String email, String password, String url) {
 		super();
@@ -90,6 +98,7 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		email = PortalUtil.createRandomEmailAddress(testcasesData.getEmail());
 		firstName = testcasesData.getFirstName() + PortalUtil.createRandomNumber();
 		lastName = testcasesData.getLastName() + PortalUtil.createRandomNumber();
+		setDob(testcasesData.getDOB());
 		password = testcasesData.getPassword();
 		log("email:-" + email);
 		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName, lastName, email, testcasesData.getPhoneNumber(), testcasesData.getZip(),
@@ -121,6 +130,4 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 		log("Password: " + password);
 		return pMyPatientPage;
 	}
-
-
 }

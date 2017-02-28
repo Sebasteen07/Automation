@@ -4,9 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
-
-public class ExamsTestsAndProceduresPage extends ConfiguratorFormPage {
+public class ProceduresPage extends ConfiguratorFormPage {
 
 	@FindBy(id = "save_config_form")
 	private WebElement btnSave;
@@ -56,8 +54,11 @@ public class ExamsTestsAndProceduresPage extends ConfiguratorFormPage {
 	@FindBy(id = "procedures_anythingelse_line")
 	private WebElement proceduresComments;
 
+	@FindBy(xpath = "//div[contains(@class,'conditions_section')]//*[contains(text(),'Female-Specific')]//input")
+	private WebElement femaleGroupInput;
 
-	public ExamsTestsAndProceduresPage(WebDriver driver) {
+
+	public ProceduresPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}

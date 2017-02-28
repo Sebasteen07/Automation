@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,6 +21,11 @@ public class FormFamilyHistoryPage extends PortalFormPage {
 	 */
 	public void setNoFamilyHistory() throws Exception {
 		noFamilyHistory.click();
+	}
+
+	@Override
+	public boolean isPageLoaded() {
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Family Medical History"))).isDisplayed();
 	}
 
 }

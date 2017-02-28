@@ -133,6 +133,8 @@ public class SitegenConstants {
 	public final static String PRACTICE_FORM = "Form for Practice view test";
 	public final static String SPECIAL_CHARS_FORM = "Quotation mark \" custom form";
 	public final static String FORM_EXPORT_IMPORT = "FormExportImport";
+	public final static String FORM_EGQ_NAME = "EGQ Form";
+	public final static String FORM_FUP_SG = "SG FUP Form";
 
 	public final static String FORMS_REGISTRATION_FORM_INITIAL_NAME = "General Registration and Health History";
 	public final static String FORMS_CUSTOM_FORM_INITIAL_NAME = "Custom Form";

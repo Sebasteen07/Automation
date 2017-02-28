@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>16.7.0</version>
+        <version>17.1.0</version>
     </parent>
 	
 	<artifactId>integrationplatform-api</artifactId>
@@ -44,13 +44,28 @@
 		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>qa-automation-utils</artifactId>
-  			<version>16.7.0</version>
+  			<version>17.1.0</version>
   		</dependency>
   		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal1-api</artifactId>
-  			<version>16.7.0</version>
+  			<version>17.1.0</version>
   		</dependency>
+  		 <dependency>
+  			<groupId>com.intuit.ihg</groupId>
+  			<artifactId>patientportal1-api</artifactId>
+  			<version>17.1.0</version>
+  		</dependency>
+  		 <dependency>
+  			<groupId>com.intuit.ihg</groupId>
+  			<artifactId>patientportal2-object-maps</artifactId>
+  			<version>17.1.0</version>
+  		</dependency>
+  		<dependency>
+       		<groupId>com.intuit.ihg</groupId>
+       		<artifactId>patientportal1-object-maps</artifactId>
+       		<version>17.1.0</version>
+       	</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
@@ -73,7 +88,6 @@
 		    <artifactId>commons-io</artifactId>
 		    <version>2.4</version>
 	    </dependency>
-		
 		<dependency>
 			<groupId>com.allscripts</groupId>
 			<artifactId>connecthub-schemas</artifactId>
@@ -83,21 +97,21 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>16.7.0</version>
+	      <version>17.1.0</version>
 	      <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 	      <groupId>com.intuit.health.eh.adapters</groupId>
 	      <artifactId>allscripts-ehr-adapter-dto</artifactId>
-	      <version>16.7.0</version>
+	      <version>17.1.0</version>
 	      <scope>compile</scope>
     	</dependency>
     	
     	<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>16.7.0</version>
+			<version>17.1.0</version>
 		</dependency>
 		
   		<dependency>
@@ -109,9 +123,13 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>16.7.0</version>
+	  		<version>17.1.0</version>
 	  	</dependency>
-	  	
+	  	<dependency>
+	  		<groupId>com.intuit.ifs.csscat.core</groupId>
+			<artifactId>Core</artifactId>
+			<version>1.16</version>
+		</dependency>
 	  	<dependency>
 	  		<groupId>com.allscripts</groupId>
 	  		<artifactId>connecthub-schemas</artifactId>

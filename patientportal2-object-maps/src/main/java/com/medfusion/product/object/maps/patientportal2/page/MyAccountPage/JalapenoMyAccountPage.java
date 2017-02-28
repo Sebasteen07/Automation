@@ -37,7 +37,6 @@ public abstract class JalapenoMyAccountPage extends JalapenoMenu {
 		webElementsList.add(profileTab);
 		webElementsList.add(securityTab);
 		webElementsList.add(preferencesTab);
-		webElementsList.add(previousStep);
 		if (includeSaveChangesBtn) {
 			webElementsList.add(saveAccountChanges);
 		}

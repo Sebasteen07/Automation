@@ -816,7 +816,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToMyAccountPage();
+		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToAccountPage();
 
 		log("Step 4: Click on Preferences Tab");
 		JalapenoMyAccountPreferencesPage myPreferencePage = myAccountProfilePage.goToPreferencesTab(driver);
@@ -895,7 +895,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
 
 			log("Step 19: Check for update in Statement Preference");
-			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToMyAccountPage();
+			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToAccountPage();
 			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
 
 			assertTrue(myPreferencePage1.checkStatementPreferenceUpdated(StatementPreferenceType.valueOf(statementPreference[i])));

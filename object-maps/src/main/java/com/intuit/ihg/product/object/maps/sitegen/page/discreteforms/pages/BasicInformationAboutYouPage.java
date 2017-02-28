@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.ConfiguratorFormPage;
 import com.medfusion.common.utils.IHGUtil;
 
 public class BasicInformationAboutYouPage extends ConfiguratorFormPage {
@@ -13,6 +12,8 @@ public class BasicInformationAboutYouPage extends ConfiguratorFormPage {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
+
+	public static final String EGQ_SEX_QUESTION_LABEL = "What sex were you assigned at birth on your original birth certificate?";
 
 	@FindBy(id = "streetaddr1")
 	private WebElement chckAddress;
@@ -33,7 +34,14 @@ public class BasicInformationAboutYouPage extends ConfiguratorFormPage {
 	private WebElement sexQuestionLabel;
 
 	@FindBy(id = "gender")
-	private WebElement chckGender; // sex
+	private WebElement chckGender;
+
+	@FindBy(id = "sexualorientation")
+	private WebElement sexualOrientation;
+
+	@FindBy(id = "genderidentity")
+	private WebElement genderIdentity;
+
 
 
 	/**
@@ -57,11 +65,17 @@ public class BasicInformationAboutYouPage extends ConfiguratorFormPage {
 	 */
 	public void selectAdditionalInfo() {
 		selectBasicInfo();
-
 	}
 
 	public String getSexQuetionLabel() {
 		return sexQuestionLabel.getText();
 	}
 
+	public boolean areEGQQuestionsDisplayed() {
+		if (EGQ_SEX_QUESTION_LABEL.equals(getSexQuetionLabel()) && genderIdentity.isDisplayed() && sexualOrientation.isDisplayed())
+			return true;
+		if ("Sex".equals(getSexQuetionLabel()) && !IHGUtil.exists(driver, 1, genderIdentity) && !IHGUtil.exists(driver, 1, sexualOrientation))
+			return false;
+		throw new IllegalStateException("sex question illegal state");
+	}
 }

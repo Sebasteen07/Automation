@@ -87,6 +87,7 @@ public class SiteGenLoginPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		System.out.println("### DEBUG LOGIN: [" + username + "] [" + password + "]");
+		IHGUtil.waitForElement(driver, 10, txtusername);
 		txtusername.sendKeys(username);
 		txtpassword.sendKeys(password);
 		login.click();

@@ -109,14 +109,22 @@ public class SitegenTestData {
 	/**
 	 * Returns password for Form scenario
 	 */
-	public String getFormUser() {
-		return sitegenobj.formUser;
+	public String getFormPrimaryUser() {
+		return sitegenobj.formPrimaryUser;
 	}
 
 	/**
 	 * Returns the username for Form scenario
 	 */
-	public String getFormPassword() {
-		return sitegenobj.formPassword;
+	public String getFormPrimaryPassword() {
+		return sitegenobj.formPrimaryPassword;
+	}
+
+	public String getFormSecondaryUser() {
+		return sitegenobj.formSecondaryUser;
+	}
+
+	public String getFormSecondaryPassword() {
+		return sitegenobj.formSecondaryPassword;
 	}
 }

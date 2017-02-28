@@ -13,6 +13,7 @@ import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.AccountActivity.ViewAccountActivityPage;
@@ -105,8 +106,11 @@ public class MyAccountPage extends BasePageObject {
 	@FindBy(name = "inputs:14:input:input")
 	private WebElement dateOfBirth;
 
-	@FindBy(name = "inputs:15:input:input")
-	private WebElement gender;
+	@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Male']]")
+	private WebElement genderMaleRadio;
+
+	@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Female']]")
+	private WebElement genderFemaleRadio;
 
 	@FindBy(name = "inputs:16:input:input")
 	private WebElement raceDropDown;
@@ -486,5 +490,18 @@ public class MyAccountPage extends BasePageObject {
 	public void submit() {
 		btnSubmit.click();
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
+	}
+
+	/**
+	 * 
+	 * @return proper gender or null if not specified
+	 */
+	public Gender getGender() {
+		PortalUtil.setPortalFrame(driver);
+		if (genderMaleRadio.isSelected())
+			return Gender.MALE;
+		if (genderFemaleRadio.isSelected())
+			return Gender.FEMALE;
+		return null;
 	}
 }

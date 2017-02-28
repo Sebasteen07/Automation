@@ -16,6 +16,8 @@ import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class PatientDemographicPage extends MedfusionPage {
 
+	public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
+
 	@FindBy(how = How.ID, using = "firstName")
 	private WebElement inputPatientFirstName;
 
@@ -25,13 +27,13 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "email")
 	private WebElement inputEmailAddresss;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='birthDate_month']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_month']")
 	private WebElement inputDateOfBirthMonth;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='birthDate_day']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_day']")
 	private WebElement inputDateOfBirthDay;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='birthDate_year']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']")
 	private WebElement inputDateOfBirthYear;
 
 	@FindBy(how = How.ID, using = "gender_male")
@@ -52,13 +54,13 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "state")
 	private WebElement inputState;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='postalCode']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
 	private WebElement inputZipCode;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='cancelStep']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='cancelStep']")
 	private WebElement buttonCancel;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='tab-pane active']//*[@id='nextStep']")
+	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
 
 	public PatientDemographicPage(WebDriver driver) {

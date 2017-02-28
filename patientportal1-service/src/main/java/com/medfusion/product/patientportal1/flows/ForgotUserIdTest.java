@@ -68,7 +68,8 @@ public class ForgotUserIdTest extends BaseTestNGWebDriver {
 
 		log("step 4: Enter patient email and DOB");
 		ForgotUserIdSecretAnswerPage step2 = step1.enterEmail(email);
-		step2.selectDOB(testcasesData.getDob_Day(), testcasesData.getDob_Month(), testcasesData.getDob_Year());
+		if (step2.areDOBoptionsVisible())
+			step2.selectDOB(testcasesData.getDob_Day(), testcasesData.getDob_Month(), testcasesData.getDob_Year());
 
 		log("step 5: Answer patient security question");
 		ForgotUserIdConfirmationPage step3 = step2.answerSecurityQuestion(testcasesData.getAnswer());

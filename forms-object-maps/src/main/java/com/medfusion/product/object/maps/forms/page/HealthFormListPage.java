@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,14 +26,12 @@ public class HealthFormListPage extends BasePageObject {
 		super(driver);
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
+		IHGUtil.setFrame(driver, "iframe");
 		PageFactory.initElements(driver, this);
 	}
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
-
-	@FindBy(id = "iframe")
-	private WebElement formsIframe;
 
 	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']")
 	private WebElement logout;
@@ -40,23 +39,8 @@ public class HealthFormListPage extends BasePageObject {
 	@FindBy(xpath = "//span[./text()='health forms'] | //span[./text()='Health Forms'] | //a[./text()='Health Forms'] | //a[./text()='health forms']")
 	private WebElement healthFormsLink;
 
-	/**
-	 * automatically switches to corresponding iframe
-	 * ({@link com.medfusion.product.object.maps.patientportal2.page.JalapenoPage#JalapenoNewCustomHealthFormPage(WebDriver driver) see customFormPage
-	 * constructor})
-	 * 
-	 * @param formName
-	 * @return
-	 * @throws InterruptedException
-	 */
-	public NewCustomFormPage openNewCustomForm(String formName) {
-		driver.findElement(By.linkText(formName)).click();
-		if (!IHGUtil.exists(driver, newFormIframe)) {
-			driver.switchTo().defaultContent();
-		}
-		driver.switchTo().frame(newFormIframe);
-		return PageFactory.initElements(driver, NewCustomFormPage.class);
-	}
+	@FindBy(xpath = "//span[./text()='Home'] | //*[./text()='my patient page'] | //*[./text()='My Patient Page']")
+	private WebElement homeLink;
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -90,6 +74,7 @@ public class HealthFormListPage extends BasePageObject {
 		IHGUtil.setDefaultFrame(driver);
 		scrollAndWait(0, 0, 500);
 		logout.click();
+		TimeUnit.SECONDS.sleep(3);
 	}
 
 	/**
@@ -131,6 +116,11 @@ public class HealthFormListPage extends BasePageObject {
 			throw f;
 		}
 		return formInfo;
+	}
+
+	public void goToHomePage() {
+		IHGUtil.setDefaultFrame(driver);
+		homeLink.click();
 	}
 
 }

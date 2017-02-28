@@ -37,7 +37,8 @@ public class FormWelcomePage extends PortalFormPage {
 	 * 
 	 * @return True if Continue button (which is the main functional part of the page) is loaded, otherwise false
 	 */
-	public boolean isWelcomePageLoaded() {
+	@Override
+	public boolean isPageLoaded() {
 		boolean result = false;
 
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
@@ -62,7 +63,7 @@ public class FormWelcomePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public <T extends PortalFormPage> T initToFirstPage(Class<T> nextPageClass) throws Exception {
-		if (isWelcomePageLoaded()) {
+		if (isPageLoaded()) {
 			return clickSaveContinue(nextPageClass);
 		} else {
 			goToFirstPage();
