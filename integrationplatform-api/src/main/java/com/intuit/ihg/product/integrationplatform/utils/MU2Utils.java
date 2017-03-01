@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,30 +86,20 @@ public class MU2Utils {
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 		Thread.sleep(5000);
-		
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
-		Log4jUtil.log("MU2GetEvent Step 5: view  First CCD");
-		MedicalRecordSummariesPageObject.selectFirstVisibleCCDDate();
-		
 		Thread.sleep(5000);
 		
 		Log4jUtil.log("Page refreshing...");
-		/*
 		
 		jse.executeScript("window.scrollBy(0,200)", "");
 		
-		//code to Download CCD on firefox 
-		
+		//code to Download CCD on fire fox 
 		Log4jUtil.log("Step 6: Download CCD");
 		Thread.sleep(4000);
-		//MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
-		//MedicalRecordSummariesPageObject.selectDownload();
-		//Thread.sleep(2000);	
-		IHGUtil.PrintMethodName();
-		
+		MedicalRecordSummariesPageObject.selectDownload();
 		if( driver instanceof FirefoxDriver) {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
@@ -163,8 +154,7 @@ public class MU2Utils {
 			Log4jUtil.log("CCD '" + list.get(i) + "' event portal Time: " + eventTime);
 		}
  }
-	
-	
+
 	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp) {
 		IHGUtil.PrintMethodName();
 
@@ -234,7 +224,10 @@ public class MU2Utils {
 	public static List<String> eventList() {
 		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.VIEW_ACTION);
-		//eventList.add(MU2Constants.DOWNLOAD_ACTION);
+		if(IHGUtil.getEnvironmentType().equals("DEV3")) {
+			eventList.add(MU2Constants.DOWNLOAD_ACTION);	
+		}
+		
 		return eventList;
 	}
 	
