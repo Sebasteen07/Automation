@@ -80,7 +80,7 @@ public class StatementEventUtils {
 		}
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 		
-		if(testData.StatementType.equalsIgnoreCase("NEW")) {
+		if(testData.StatementType.equalsIgnoreCase("NEW") && !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
 			Thread.sleep(2000);
 			Log4jUtil.log("step 6: Login to Practice Portal");
 			
@@ -104,25 +104,29 @@ public class StatementEventUtils {
 			
 			String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 			driver.findElement(By.xpath(searchResult)).click();
+			String editPatientD =null;
+			if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
+				//Since GI & SO Values are added.
+				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
+			}
+			else {
+				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
+			}
 			
-			String editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
 			driver.findElement(By.xpath(editPatientD)).click();
 			
 			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
 			String patientExternalID = driver.findElement(By.xpath(externalID)).getAttribute("value");
 			
-			Log4jUtil.log("Actual patient ID "+patientExternalID);
+			Log4jUtil.log("On Demand PatientID "+patientExternalID);	
 			Log4jUtil.log("Expected patient ID "+SMPObj.patientID);
 			
 			Assert.assertEquals(SMPObj.patientID, patientExternalID, "Patient External ID Matched !");
-
-			Log4jUtil.log("On Demand PatientID "+patientExternalID);	
-			
 			pPracticeHomePage.logOut();
 		}
 		
 		Mailinator mail = new Mailinator();
-		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject,testData.PracticeName, 5);
+		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject,testData.PracticeName, 20);
 		Assert.assertTrue(link!=null, "Statement Message link not found in mail.");
 		Log4jUtil.log("statement link  "+link);
 		
@@ -159,10 +163,15 @@ public class StatementEventUtils {
 		WebElement amountDue = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[7]"));
 		WebElement paymentDueDate = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[6]"));
 		WebElement accountNumber = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[5]"));
-		WebElement statementComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[12]"));
-		WebElement dunningComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[27]"));
+		WebElement statementComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[13]"));
+		WebElement dunningComment;
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+			dunningComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[39]"));
+		} else {
+			dunningComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[34]"));
+		}
 		WebElement practiceName = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[11]"));
-		WebElement totalCharge = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[15]"));
+		WebElement totalCharge = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[16]"));
 		
 		Log4jUtil.log(amountDue.isDisplayed()+" Expected amount Due is :- "+amountDue.getText());	
 		Log4jUtil.log("amountDue: "+SMPObj.amountDue);
@@ -178,9 +187,15 @@ public class StatementEventUtils {
 		Assert.assertEquals(accountNumber.getText(), SMPObj.billAccountNumber);
 		Assert.assertEquals(statementComment.getText(), testData.StatementComment);
 		Assert.assertEquals(dunningComment.getText(), testData.DunningMessage);
-		Assert.assertEquals(practiceName.getText(), testData.PracticeName);
 		Assert.assertEquals(totalCharge.getText(), "$"+testData.TotalCharges);
-	
+		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+			Assert.assertEquals(practiceName.getText(), testData.PracticeName);
+		} else {
+			testData.PracticeName = testData.PracticeName.substring(0, 17) + "& " + testData.PracticeName.substring(17, testData.PracticeName.length());
+			Assert.assertEquals(practiceName.getText(), testData.PracticeName);
+		}
+			
+		
 		driver.switchTo().defaultContent();
 	    long transitTimeStamp1 = System.currentTimeMillis();
 	    Thread.sleep(8000);
@@ -200,14 +215,13 @@ public class StatementEventUtils {
 	    jalapenoHomePage.clickOnLogout();
 	   
 	    Log4jUtil.log("Waiting for Statement Events to Sync");
-	    Thread.sleep(430000);	
+	    Thread.sleep(480000);	
 	    String getEvent =testData.StatementEventURL+timeStamp;
 	    Log4jUtil.log("Get Link"+getEvent);
 	    RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
 	   
 	   
 	    Log4jUtil.log("transitTimeStamp :- "+transitTimeStamp1);  
-	    //Log4jUtil.log("transitTimeStamp2 :- "+transitTimeStamp2);
 	    Thread.sleep(5000);
 	   
 		List<String> list = eventList();
@@ -248,12 +262,8 @@ public class StatementEventUtils {
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
 					
-					if(transmitTimestamp > recordedTimeStamp && action.contains("View")) {
-						Log4jUtil.log("Event Generated From Email View");
-					}
-					if(transmitTimestamp < recordedTimeStamp && action.contains("View")) {
-						Log4jUtil.log("Event Generated From Paybill View");
-					}
+					Log4jUtil.log(recordedTimeStamp+"  >   "+timeStamp);
+
 					if (recordedTimeStamp >= timeStamp) {
 						 
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
@@ -264,7 +274,12 @@ public class StatementEventUtils {
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								) {
 								
-								
+								if(transmitTimestamp > recordedTimeStamp && action.contains("View")) {
+									Log4jUtil.log("Event Generated From Email View");
+								}
+								if(transmitTimestamp < recordedTimeStamp && action.contains("View")) {
+									Log4jUtil.log("Event Generated From Paybill View");
+								}
 								Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
 								Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
 								Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);

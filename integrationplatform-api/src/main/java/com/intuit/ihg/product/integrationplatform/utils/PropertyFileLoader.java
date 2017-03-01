@@ -389,10 +389,6 @@ public class PropertyFileLoader {
 		return property.getProperty("standard_Email");
 	}
 	
-	public String getStandard_Email() {
-		return property.getProperty("standard_Email");
-	}
-	
 	//PIDC END
 	
 	//Appointment Data Request from partner

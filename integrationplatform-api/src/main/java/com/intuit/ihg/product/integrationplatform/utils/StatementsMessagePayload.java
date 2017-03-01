@@ -60,6 +60,7 @@ public class StatementsMessagePayload {
 	if(testData.PatientID=="" || testData.PatientID.isEmpty()) {
 		patientID = randomNumbers(11);
 		patientID = patientID.replaceFirst ("^0*", "");
+		testData.PatientID =patientID; 
 	}
 	else
 	{

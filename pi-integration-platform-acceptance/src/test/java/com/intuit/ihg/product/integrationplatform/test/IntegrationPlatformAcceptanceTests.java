@@ -333,7 +333,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(messagesPage.isMessageDisplayed(driver, "You have new health data"));
+		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 
 		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
