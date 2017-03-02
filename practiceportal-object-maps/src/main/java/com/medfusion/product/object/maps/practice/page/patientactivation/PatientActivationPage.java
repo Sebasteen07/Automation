@@ -5,7 +5,6 @@ import static org.testng.AssertJUnit.*;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 
@@ -266,16 +265,16 @@ public class PatientActivationPage extends BasePageObject {
 		btnDone.click();
 	}
 
-	public String setFullDetails(PIDCTestData testData) {
+	public String setFullDetails(String testDataEmail,String testDataLastName,String homePhoneNo,String address1,String address2,String city,String testDataState,String zipCode) {
 		firstNameString = "MF" + IHGUtil.createRandomNumericString();
 		patientIdString = IHGUtil.createRandomNumericString();
-		emailAddressString = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		emailAddressString = IHGUtil.createRandomEmailAddress(testDataEmail);
 
 		IHGUtil.PrintMethodName();
 		Log4jUtil.log("First Name is :" + firstNameString);
 		firstName.sendKeys(firstNameString);
 
-		lastName.sendKeys(testData.getLastName());
+		lastName.sendKeys(testDataLastName);
 		male.click();
 		/*
 		 * SSN1.sendKeys(testData.getSSN().subSequence(0, 3)); SSN2.sendKeys(testData.getSSN().subSequence(3, 5)); SSN3.sendKeys(testData.getSSN().subSequence(5,
@@ -283,19 +282,19 @@ public class PatientActivationPage extends BasePageObject {
 		 */
 		Log4jUtil.log("Patientid is :" + patientIdString);
 		patientId.sendKeys(patientIdString);
-		Home_No1.sendKeys(testData.getHomePhoneNo().substring(0, 3));
-		Home_No2.sendKeys(testData.getHomePhoneNo().substring(3, 6));
-		Home_No3.sendKeys(testData.getHomePhoneNo().substring(6, 10));
+		Home_No1.sendKeys(homePhoneNo.substring(0, 3));
+		Home_No2.sendKeys(homePhoneNo.substring(3, 6));
+		Home_No3.sendKeys(homePhoneNo.substring(6, 10));
 		Log4jUtil.log("Email is :" + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
 		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
-		AddLine1.sendKeys(testData.getAddress1());
-		AddLine2.sendKeys(testData.getAddress2());
-		City.sendKeys(testData.getCity());
+		AddLine1.sendKeys(address1);
+		AddLine2.sendKeys(address2);
+		City.sendKeys(city);
 		Select stateSelect = new Select(State);
-		stateSelect.selectByVisibleText(testData.getState());
-		zip.sendKeys(testData.getZipCode());
+		stateSelect.selectByVisibleText(testDataState);
+		zip.sendKeys(zipCode);
 
 		clickRegPatient();
 		IHGUtil.waitForElement(driver, 30, btnVerified);

@@ -106,7 +106,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
 		log("Step 5: Enter all the details and click on Register");
-		String unlockcode = patientActivationPage.setFullDetails(testData);
+		
+		String unlockcode = patientActivationPage.setFullDetails(testData.getEmail(),testData.getLastName(),testData.getHomePhoneNo(),testData.getAddress1(),testData.getAddress2(),testData.getCity(),testData.getState(),testData.getZipCode());
 
 		String firstNameString = patientActivationPage.getFirstNameString();
 		String patientIdString = patientActivationPage.getPatientIdString();
