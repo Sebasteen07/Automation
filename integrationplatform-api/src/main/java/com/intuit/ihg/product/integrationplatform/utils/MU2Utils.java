@@ -117,7 +117,7 @@ public class MU2Utils {
 		homePage.clickOnLogout();
 		
 		Log4jUtil.log("MU2GetEvent Step 7: Waiting for Events sync in DWH");
-		Thread.sleep(430000);
+		Thread.sleep(720000);
 		
 		Log4jUtil.log("MU2GetEvent Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);

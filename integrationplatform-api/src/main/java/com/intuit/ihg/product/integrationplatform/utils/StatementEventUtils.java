@@ -215,7 +215,7 @@ public class StatementEventUtils {
 	    jalapenoHomePage.clickOnLogout();
 	   
 	    Log4jUtil.log("Waiting for Statement Events to Sync");
-	    Thread.sleep(480000);	
+	    Thread.sleep(720000);	
 	    String getEvent =testData.StatementEventURL+timeStamp;
 	    Log4jUtil.log("Get Link"+getEvent);
 	    RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
@@ -253,9 +253,13 @@ public class StatementEventUtils {
 			doc.getDocumentElement().normalize();
 			
 			NodeList nodes = doc.getElementsByTagName(event);
+			
+			Log4jUtil.log("Node length   "+nodes.getLength());
+			
 			for (int i = 0; i < nodes.getLength(); i++) {
 				
 				Node node = nodes.item(i);
+				
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
 					String readValue;
