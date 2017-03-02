@@ -227,7 +227,7 @@ public class StatementEventUtils {
 		List<String> list = eventList();
 		for (int i = 0; i < list.size(); i++) {
 			// verify "View" event in response XML and return Action Time stamp
-		Log4jUtil.log("Verification of CCD '" + list.get(i) + "' event present in Pull API response xml");
+		Log4jUtil.log("Verification of EStatement '" + list.get(i) + "' event present in Pull API response xml");
 		ActionTimestamp = findEventInResonseXML(testData.ResponsePath, MU2Constants.EVENT, RESOURCE_TYPE, list.get(i),
 				timeStamp, testData.MFPatientID,testData.PatientID,testData.FirstName,testData.LastName,transitTimeStamp1);
 		Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
