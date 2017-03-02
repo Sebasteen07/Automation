@@ -215,7 +215,7 @@ public class StatementEventUtils {
 	    jalapenoHomePage.clickOnLogout();
 	   
 	    Log4jUtil.log("Waiting for Statement Events to Sync");
-	    Thread.sleep(480000);	
+	    Thread.sleep(720000);	
 	    String getEvent =testData.StatementEventURL+timeStamp;
 	    Log4jUtil.log("Get Link"+getEvent);
 	    RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
