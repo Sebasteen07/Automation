@@ -105,14 +105,8 @@ public class StatementEventUtils {
 			String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 			driver.findElement(By.xpath(searchResult)).click();
 			String editPatientD =null;
-			if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
-				//Since GI & SO Values are added.
-				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
-			}
-			else {
-				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
-			}
-			
+			editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
+
 			driver.findElement(By.xpath(editPatientD)).click();
 			
 			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";

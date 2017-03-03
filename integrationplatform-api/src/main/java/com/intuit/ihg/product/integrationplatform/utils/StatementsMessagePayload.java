@@ -41,7 +41,6 @@ public class StatementsMessagePayload {
 		Date resultdate = new Date(timestamp);
 
 		formattedUTCTime = utcFormat.format(resultdate);
-		System.out.print(formattedUTCTime);
 
 		Date localDate = utcFormat.parse(formattedUTCTime);
 		DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -51,7 +50,7 @@ public class StatementsMessagePayload {
 		portalDateFormat(localDate);
 		Date paymentDueDate = utcFormat.parse(testData.PaymentDueDate);
 		paymentPortalDueDate = portalDateFormat(paymentDueDate);
-	
+
 		amountDue = randomNumbers(3);
 		amountDue = amountDue.replaceFirst("^0*", "");
 		billAccountNumber = randomNumbers(2);
@@ -410,7 +409,7 @@ public class StatementsMessagePayload {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-		System.out.print(output);
+		// System.out.print(output);
 		return output;
 	}
 	

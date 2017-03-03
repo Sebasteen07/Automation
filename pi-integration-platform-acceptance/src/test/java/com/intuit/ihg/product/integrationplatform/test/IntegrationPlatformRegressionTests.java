@@ -503,16 +503,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("step 9:Verify the Search Result");
 		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
-		//Assert.assertTrue(true, pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 
-		String xpath1 = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
-		driver.findElement(By.xpath(xpath1)).click();
+		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
+		driver.findElement(By.xpath(searchResult)).click();
 		
-		String xpath2 = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
-		driver.findElement(By.xpath(xpath2)).click();
+		String editPatientID = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
+		driver.findElement(By.xpath(editPatientID)).click();
 		
-		String xpath3 = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
-		String patientExternalID = driver.findElement(By.xpath(xpath3)).getAttribute("value");
+		String onDemandID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
+		String patientExternalID = driver.findElement(By.xpath(onDemandID)).getAttribute("value");
 		
 		log("Actual patient ID "+patientExternalID);
 		log("Expected patient ID "+patient.getFirstName());
