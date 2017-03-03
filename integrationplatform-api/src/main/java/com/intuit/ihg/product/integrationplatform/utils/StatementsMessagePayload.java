@@ -4,7 +4,6 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -30,34 +29,33 @@ public class StatementsMessagePayload {
 	public String formattedUTCTime;
 	public String billAccountNumber;
 	public String paymentPortalDueDate;
-	public static Instant currentTime;
-	
+
 	public String getStatementsMessagePayload(StatementEventData testData) throws ParseException {
 	
-	DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
-	DocumentBuilder icBuilder;
+		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder icBuilder;
 	
-	long timestamp =  (System.currentTimeMillis());
-	Date d = new Date(timestamp);
-	currentTime = d.toInstant();
+		long timestamp = (System.currentTimeMillis());
+		SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date resultdate = new Date(timestamp);
+
+		formattedUTCTime = utcFormat.format(resultdate);
+		System.out.print(formattedUTCTime);
+
+		Date localDate = utcFormat.parse(formattedUTCTime);
+		DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		localFormat.setTimeZone(TimeZone.getDefault());
+		localTime = localFormat.format(localDate);
 	
-	DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-	formattedUTCTime =utcFormat.format(d);
+		portalDateFormat(localDate);
+		Date paymentDueDate = utcFormat.parse(testData.PaymentDueDate);
+		paymentPortalDueDate = portalDateFormat(paymentDueDate);
 	
-	Date localDate = utcFormat.parse(currentTime.toString());
-	DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	localFormat.setTimeZone(TimeZone.getDefault());
-	localTime =localFormat.format(localDate);
-	
-	portalDateFormat(localDate);
-	Date paymentDueDate = utcFormat.parse(testData.PaymentDueDate);
-	paymentPortalDueDate = portalDateFormat(paymentDueDate);
-	
-	amountDue  =randomNumbers(3);
-	amountDue = amountDue.replaceFirst ("^0*", "");
-	billAccountNumber = randomNumbers(2);
-	if(testData.PatientID=="" || testData.PatientID.isEmpty()) {
+		amountDue = randomNumbers(3);
+		amountDue = amountDue.replaceFirst("^0*", "");
+		billAccountNumber = randomNumbers(2);
+		if (testData.PatientID == "" || testData.PatientID.isEmpty()) {
 		patientID = randomNumbers(11);
 		patientID = patientID.replaceFirst ("^0*", "");
 		testData.PatientID =patientID; 
@@ -412,7 +410,7 @@ public class StatementsMessagePayload {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-		//System.out.print(output);
+		System.out.print(output);
 		return output;
 	}
 	
