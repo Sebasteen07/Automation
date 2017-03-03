@@ -33,10 +33,10 @@ public class NewRxRenewalPage extends BasePageObject {
 	@FindBy(name = "submitButton")
 	private WebElement clickSubmitbtn;
 
-	@FindBy(xpath = "//div[@id='medForm']/div/div[@class='fieldWrapper']/div[2]/input")
+	@FindBy(xpath = "//*[@id=\"medForm\"]/div[1]/div/div[2]/input")
 	private WebElement medicationName;
 
-	@FindBy(xpath = "//div[@id='medForm']/div[2]/div[@class='fieldWrapper']/div[2]/input")
+	@FindBy(xpath = "//*[@id=\"medForm\"]/div[2]/div/div[2]/input")
 	private WebElement dosage;
 
 	@FindBy(xpath = "//input[@name='pharmacyPanel:radioGroup']")
@@ -60,17 +60,23 @@ public class NewRxRenewalPage extends BasePageObject {
 
 	@FindBy(xpath = "//div[@class='paperPad']/div[4]/p")
 	public WebElement renewalConfirmationmessage;
-	@FindBy(xpath = "//div[@id='medForm']/div[3]/div[@class='fieldWrapper']/div[2]/input")
+	@FindBy(xpath = "//*[@id=\"medForm\"]/div[3]/div/div[2]/input")
 	private WebElement quantity;
 
-	@FindBy(xpath = "//div[@id='medForm']/div[4]/div[@class='fieldWrapper']/div[2]/input")
+	@FindBy(xpath = "//*[@id=\"medForm\"]/div[4]/div/div[2]/input")
 	private WebElement numberOfRefills;
 
-	@FindBy(xpath = "//div[@id='medForm']/div[5]/div[@class='fieldWrapper']/div[2]/input")
+	@FindBy(xpath = "//*[@id=\"medForm\"]/div[5]/div/div[2]/input")
 	private WebElement prescriptionNo;
 
-	@FindBy(xpath = "//div[@id='medicationForm']/div[2]/div[@class='medicationBorder']/div[3]/div[@class='fieldWrapper']/div[2]/textarea")
+	@FindBy(xpath = "//*[@id=\"medicationForm\"]/div[2]/div/div[3]/div/div[2]/textarea")
 	public WebElement additionalInformation;
+
+	@FindBy(xpath = "//*[@id=\"pageContent\"]/div/div[5]/div[2]/select")
+	public WebElement selectProvider;
+	
+	@FindBy(xpath = "//*[@id=\"pageContent\"]/div/form/div[2]/div[2]/input")
+	public WebElement continueToSetMedicalDetail;
 
 	/**
 	 * @Description:Choose the provider name from Drop Down
@@ -190,7 +196,15 @@ public class NewRxRenewalPage extends BasePageObject {
 	 */
 	public void setMedicationDetails() {
 		IHGUtil.PrintMethodName();
+		// New code added in order to incorporate new page.
 		PortalUtil.setPortalFrame(driver);
+		Select oSelect = new Select(selectProvider);
+		oSelect.selectByIndex(1);
+		IHGUtil.waitForElement(driver, 10, continueToSetMedicalDetail);
+		continueToSetMedicalDetail.click();
+		// End
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 10, medicationName);
 		medicationName.sendKeys(PortalConstants.MedicationName + "" + createdTs);
 		dosage.sendKeys(PortalConstants.Dosage);
 		quantity.sendKeys(PortalConstants.Quantity);
