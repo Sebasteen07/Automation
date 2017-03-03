@@ -16,7 +16,7 @@
         		<include name="testAMDCSecureMessageWithReadCommnunication" />
         		<include name="testPIDCPatientRegistration" />
         		<include name="testPIDCPatientUpdate" />
-        		<include name="testGEAdaptersendCCD" />
+        		<exclude name="testGEAdaptersendCCD" />
         		<include name="testE2EFormsExport" />
         		<include name="testE2EAppointmentRequest" />
         		<include name="testE2ERxPrescription" />
