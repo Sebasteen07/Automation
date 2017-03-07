@@ -59,6 +59,12 @@ public class PortalLoginPage extends BasePageObject {
 
 	@FindBy(linkText = "Forgot Your Password?")
 	private WebElement forgotUserPwd;
+	
+	@FindBy(xpath = "//*[@id=\"editForm\"]/span[2]/span/div/div[2]/span[2]/div[3]/input")
+	private WebElement selectBoth;
+
+	@FindBy(name = "buttons:submit")
+	private WebElement submitStatementDeliveryPreference;
 
 	public PortalLoginPage(WebDriver driver) {
 		super(driver);
@@ -104,7 +110,12 @@ public class PortalLoginPage extends BasePageObject {
 	 * @throws InterruptedException
 	 */
 	public MyPatientPage login(String sUsername, String sPassword) throws InterruptedException {
+		return login(sUsername, sPassword, "no");
+	}
+	
+	public MyPatientPage login(String sUsername, String sPassword, String firstTime) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		String userFirstTimeLogin = firstTime;
 		PortalUtil.setPortalFrame(driver);
 		new IHGUtil(driver).addCookieForGoogleAnalytics();
 		log("Patient Login Credentials: [" + sUsername + "] [" + sPassword + "]");
@@ -113,6 +124,11 @@ public class PortalLoginPage extends BasePageObject {
 		username.sendKeys(sUsername);
 		password.sendKeys(sPassword);
 		login.click();
+		Thread.sleep(1000);
+		if (userFirstTimeLogin.equalsIgnoreCase("loginFirstTime")) {
+			selectBoth.click();
+			submitStatementDeliveryPreference.click();
+		}
 		IHGUtil.waitForElement(driver, 30, driver.findElement(By.xpath("//iframe[contains(@src,'patient.dashboard')]")));
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}

@@ -640,6 +640,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			for (int i = 0; i < count; i++) {
 				String updatedValue = pMyAccountPage.updateDropDownValue(i, dropValues[k].charAt(0));
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase("Race")) {
+					updatedValue = "Unreported or refused to report";
+				}
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase("Ethnicity")) {
+					updatedValue = "Unreported";
+				}
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase("Language")) {
+					updatedValue = "Other";
+				}
 				log("Updated Value :" + updatedValue);
 				Thread.sleep(30000);
 				Long since = timestamp / 1000L - 60 * 24;
@@ -801,7 +810,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Login to Second Patient Portal");
 		loginpage = new PortalLoginPage(driver, testData.getUrl());
-		pMyPatientPage = loginpage.login(email, testData.getPassword());
+		pMyPatientPage = loginpage.login(email, testData.getPassword(), "loginFirstTime");
 
 		log("Step 8: Assert Webelements in MyPatientPage");
 		// assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
@@ -1254,7 +1263,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PIDCTestData testData = loadDataFromExcel();
 		log("Patient Payload: " + testData.getPatientPath());
 		Long timestamp = System.currentTimeMillis();
-		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		String firstName = "Name" + timestamp;
+		String email = firstName + "@mailinator.com"; 
 		String practicePatientId = "Patient" + timestamp;
 		log("Created Email address: " + email);
 		log("PracticePatientId :" + practicePatientId);
@@ -1285,13 +1295,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
-
-		GmailBot gBot = new GmailBot();
-		log("Step 5: Checking for the activation link inside the patient Gmail inbox");
-
-		// Searching for the link for patient activation in the Gmail Inbox
-		String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(), PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLink, 3, false, true);
+		
+		log("Step 5: Checking for the activation link inside the patient Mailinator inbox");
+		Mailinator mail = new Mailinator();
+		String activationUrl =
+ mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText,
+ 20);
 
 		log("Step 6: Moving to the link obtained from the email message");
 		// Moving to the Link from email

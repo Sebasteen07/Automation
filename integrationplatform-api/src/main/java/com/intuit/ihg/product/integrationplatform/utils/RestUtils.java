@@ -1451,12 +1451,12 @@ public class RestUtils {
 			NodeList nameNode = ele1.getElementsByTagName(IntegrationConstants.NName);
 			Element ele = (Element) nameNode.item(0);
 			{
-				String fName = "FNAME&apos;" + randomNo;
+				String fName = "FNAME" + randomNo;
 				Node fnameNode = ele.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 				fnameNode.setTextContent(fName);
 
 				testData(escapeXml(fName));
-				String lName = "TestPatient1&amp;" + randomNo;
+				String lName = "TestPatient1" + randomNo;
 				Node LnameNode = ele.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				LnameNode.setTextContent(lName);
 				testData(escapeXml(lName));

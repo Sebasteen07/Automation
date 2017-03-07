@@ -177,12 +177,7 @@ public class MU2Utils {
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
 					
-					if(transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
-						Log4jUtil.log("Standard Email");
-					}
-					if(transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
-						Log4jUtil.log("Direct Protocol");
-					}
+					
 					if (recordedTimeStamp >= timeStamp) {
 						
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
@@ -193,7 +188,12 @@ public class MU2Utils {
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								) {
 								
-							
+								if(transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+									Log4jUtil.log("Standard Email");
+								}
+								if(transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+									Log4jUtil.log("Direct Protocol");
+								}
 								for(int j=0;j<ccdMessageList.size();j++) {
 									if(getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(j)) ) {
 										Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(j));
@@ -224,10 +224,7 @@ public class MU2Utils {
 	public static List<String> eventList() {
 		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.VIEW_ACTION);
-		if(IHGUtil.getEnvironmentType().equals("DEV3")) {
-			eventList.add(MU2Constants.DOWNLOAD_ACTION);	
-		}
-		
+		eventList.add(MU2Constants.DOWNLOAD_ACTION);
 		return eventList;
 	}
 	
