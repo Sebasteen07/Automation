@@ -441,7 +441,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 23: Validate message subject");
 		Thread.sleep(1000);
-		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have new health data"));
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have a new health data summary"));
 
 		log("Step 24: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
