@@ -440,7 +440,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 23: Validate message subject");
 		Thread.sleep(1000);
-		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have new health data"));
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have a new health data summary"));
 
 		log("Step 24: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
@@ -559,7 +559,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Patient Batch Payload: " + testData.getBatch_PatientPath());
 		log("Step 2 : Generate POST PIDC payload with batch size 3");
 		String batchPatient = RestUtils.generateBatchPIDC(testData.getBatch_PatientPath());
-		log("batchPatient: \n " + batchPatient);
 
 		List<String> patientData = RestUtils.patientDatails;
 		log("Paient1 (PracticePatientId, FirstName, LastName):" + patientData.get(0) + "," + patientData.get(1) + "," + patientData.get(2));
@@ -624,8 +623,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
-		log("getUserName " + testData.getUserName());
-		log("getPassword " + testData.getPassword());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
 
@@ -1279,7 +1276,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 2 : Generate POST PIDC payload with special character data");
 		String patient = RestUtils.generatePIDCSpecialCharacter(testData.getPatientPath(), practicePatientId, testData.getFnameSC(), testData.getMnameSC(),
 				testData.getLnameSC(), testData.getAddress1SC(), testData.getAddress2SC(), email);
-		log("patient : " + patient);
 		List<String> patientData = RestUtils.patientDatails;
 
 		log("Step 3: POST PIDC payload");
@@ -1298,16 +1294,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
 
-		// GmailBot gBot = new GmailBot();
 		log("Step 5: Checking for the activation link inside the patient Mailinator inbox");
-
-		// Searching for the link for patient activation in the Gmail Inbox
+		// Searching for the link for patient activation in the Mailinator Inbox
 		Mailinator mail = new Mailinator();
 		String activationUrl =
  mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText,
- 5);
-		// gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(),
-		// PortalConstants.NewPatientActivationMessage,PortalConstants.NewPatientActivationMessageLink, 3, false, true);
+ 20);
 
 		log("Step 6: Moving to the link obtained from the email message");
 		// Moving to the Link from email

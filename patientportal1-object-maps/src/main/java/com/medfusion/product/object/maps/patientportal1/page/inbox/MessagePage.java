@@ -45,7 +45,7 @@ public class MessagePage extends BasePageObject {
 	@FindBy(id = "closeCcd")
 	private WebElement btnCloseViewer;
 
-	@FindBy(linkText = "Send my information")
+	@FindBy(linkText = "Send my information securely by Direct Protocol")
 	private WebElement btnShareWithDoctor;
 
 	@FindBy(xpath = "//form/div/button")
