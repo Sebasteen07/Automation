@@ -1,16 +1,20 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.Gender;
@@ -33,6 +37,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='gender_female']")
 	private WebElement femaleRadioButton;
 
+	@FindBy(how = How.XPATH, using = "//input[@id='gender_unknown']")
+	private WebElement declineToAnswerRadioButton;
+
 	@FindBy(how = How.ID, using = "birthDate_year")
 	private WebElement DOByear;
 
@@ -44,6 +51,18 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.ID, using = "state")
 	private WebElement stateSelect;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='genderIdentitySelect']")
+	private WebElement genderQuestion;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='saveAccountChanges']")
+	private WebElement saveMyChanges;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='race']")
+	private WebElement race;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='ethnicity']")
+	private WebElement ethnicity;
 
 	public JalapenoMyAccountProfilePage(WebDriver driver) throws InterruptedException {
 		super(driver);
@@ -66,6 +85,45 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public String getDOB() {
 		return getDOBmonth() + "/" + getDOBday() + "/" + getDOByear();
+	}
+
+	public boolean checkExtendedGenderQuestion() throws NoSuchElementException
+	{
+		// String genderValue = "";
+		new Select(ethnicity).selectByIndex(1);
+		new Select(race).selectByIndex(1);
+
+		if (!declineToAnswerRadioButton.isDisplayed())
+ {
+			log("Cheking Decline to answer radio button");
+			return false;
+		}
+
+		List<String> list1 = Arrays.asList("Male", "Female", "Transgender female/Trans woman/Male-to-female (MTF)",
+				"Transgender male/Trans man/Female-to-male (FTM)", "Genderqueer, neither exclusively male nor female",
+				"Additional gender category/(or other)");
+
+		for (String genderValue : list1) {
+
+			try {
+			log("Checking gender value: " + genderValue);
+			new Select(genderQuestion).selectByVisibleText(genderValue);
+			log("Value " + genderValue + " is verified.");
+			saveMyChanges.click();
+			IHGUtil.waitForElement(driver, 30, genderQuestion);
+			} catch (NoSuchElementException e) {
+				log("Gender value: " + genderValue + "is missing.");
+				return false;
+			}
+			try {
+				genderQuestion.equals(genderValue);
+				log("Gender is saved properly.");
+			} catch (NoSuchElementException e) {
+				log("Gender has not been saved.");
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean checkForAddress(WebDriver driver, String addressLine1, String city, String zipCode) {

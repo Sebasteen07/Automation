@@ -11,8 +11,9 @@ import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class CommonSteps {
 
-	public static JalapenoHomePage createAndLogInPatient(JalapenoPatient patient, PropertyFileLoader testData, WebDriver driver) {
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+	public static JalapenoHomePage createAndLogInPatient(JalapenoPatient patient, PropertyFileLoader testData,
+			WebDriver driver, String practiceUrl) {
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, practiceUrl);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
