@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -176,8 +175,7 @@ public class MU2Utils {
 					String readValue;
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
-					
-					
+
 					if (recordedTimeStamp >= timeStamp) {
 						
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
@@ -187,13 +185,14 @@ public class MU2Utils {
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								) {
-								
-								if(transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
-									Log4jUtil.log("Standard Email");
-								}
-								if(transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
-									Log4jUtil.log("Direct Protocol");
-								}
+							
+							if (transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+								Log4jUtil.log("Standard Email");
+							}
+							if (transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+								Log4jUtil.log("Direct Protocol");
+							}
+
 								for(int j=0;j<ccdMessageList.size();j++) {
 									if(getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(j)) ) {
 										Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(j));
