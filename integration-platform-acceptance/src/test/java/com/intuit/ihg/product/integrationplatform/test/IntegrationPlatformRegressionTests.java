@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.GW;
@@ -25,6 +24,7 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
@@ -42,8 +42,8 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalConstants;
 
 
 
@@ -106,7 +106,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
 		log("Step 5: Enter all the details and click on Register");
-		
 		String unlockcode = patientActivationPage.setFullDetails(testData.getEmail(),testData.getLastName(),testData.getHomePhoneNo(),testData.getAddress1(),testData.getAddress2(),testData.getCity(),testData.getState(),testData.getZipCode());
 
 		String firstNameString = patientActivationPage.getFirstNameString();
@@ -558,7 +557,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: Regression Test for Post PIDC (batch size of 3 patients)");
 		PIDCTestData testData = loadDataFromExcel();
 		log("Patient Batch Payload: " + testData.getBatch_PatientPath());
-
 		log("Step 2 : Generate POST PIDC payload with batch size 3");
 		String batchPatient = RestUtils.generateBatchPIDC(testData.getBatch_PatientPath());
 
@@ -596,7 +594,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			pPatientSearchPage.searchAllPatientInPatientSearch(patientData.get(1), patientData.get(2), 2);
 
 			log("Step 8: Verify the Search Result");
-			Thread.sleep(120000);
+			Thread.sleep(12000);
 			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 			verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(patientData.get(1)));
 
@@ -1263,8 +1261,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PIDCTestData testData = loadDataFromExcel();
 		log("Patient Payload: " + testData.getPatientPath());
 		Long timestamp = System.currentTimeMillis();
+
 		String firstName = "Name" + timestamp;
-		String email = firstName + "@mailinator.com"; 
+		String email = firstName + "@mailinator.com"; // IHGUtil.createRandomEmailAddress(testData.getEmail());
 		String practicePatientId = "Patient" + timestamp;
 		log("Created Email address: " + email);
 		log("PracticePatientId :" + practicePatientId);
@@ -1277,7 +1276,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 2 : Generate POST PIDC payload with special character data");
 		String patient = RestUtils.generatePIDCSpecialCharacter(testData.getPatientPath(), practicePatientId, testData.getFnameSC(), testData.getMnameSC(),
 				testData.getLnameSC(), testData.getAddress1SC(), testData.getAddress2SC(), email);
-
 		List<String> patientData = RestUtils.patientDatails;
 
 		log("Step 3: POST PIDC payload");
@@ -1295,8 +1293,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
-		
+
 		log("Step 5: Checking for the activation link inside the patient Mailinator inbox");
+		// Searching for the link for patient activation in the Mailinator Inbox
 		Mailinator mail = new Mailinator();
 		String activationUrl =
  mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText,
