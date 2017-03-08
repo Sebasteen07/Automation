@@ -5,7 +5,6 @@ import static org.testng.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -45,8 +44,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
-import com.medfusion.product.object.maps.patientportal2.rest.EmailRest.EmailBodyPojo;
-import com.medfusion.product.object.maps.patientportal2.rest.EmailRest.EmailRest;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
@@ -311,7 +308,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements());
+		assertTrue(messagesPage.areBasicPageElementsPresent());
 
 		logStep("Waiting for message from practice portal");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
@@ -351,7 +348,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoCcdPage.sendInformationToDirectEmail(DIRECT_EMAIL_ADDRESS));
 
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
-		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
 		jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
 

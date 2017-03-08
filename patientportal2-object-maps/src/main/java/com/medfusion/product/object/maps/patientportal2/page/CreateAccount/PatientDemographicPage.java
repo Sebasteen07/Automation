@@ -62,6 +62,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
+	
 
 	public PatientDemographicPage(WebDriver driver) {
 		super(driver);
@@ -151,4 +152,5 @@ public class PatientDemographicPage extends MedfusionPage {
 		updateWebElement(inputState, state);
 		updateWebElement(inputZipCode, zipCode);
 	}
+	
 }

@@ -242,7 +242,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = "Test " + Long.toString(timestamp);
@@ -328,7 +328,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 5: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -524,7 +524,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 14:Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 15: Find & validate message in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
@@ -661,7 +661,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 16: Click on messages solution");
 		JalapenoMessagesPage messagesPage = inboxPage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements(), "Inbox failed to load properly.");
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 17: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, reply_Subject));
