@@ -78,6 +78,7 @@ public class NewRxRenewalPage extends BasePageObject {
 	@FindBy(xpath = "//*[@id=\"pageContent\"]/div/form/div[2]/div[2]/input")
 	public WebElement continueToSetMedicalDetail;
 
+	
 	/**
 	 * @Description:Choose the provider name from Drop Down
 	 * @param pProvider

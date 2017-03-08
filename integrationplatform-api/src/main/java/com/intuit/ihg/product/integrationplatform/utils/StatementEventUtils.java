@@ -105,14 +105,8 @@ public class StatementEventUtils {
 			String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 			driver.findElement(By.xpath(searchResult)).click();
 			String editPatientD =null;
-			if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3")) {
-				//Since GI & SO Values are added.
-				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
-			}
-			else {
-				editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
-			}
-			
+			editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
+
 			driver.findElement(By.xpath(editPatientD)).click();
 			
 			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
@@ -227,7 +221,7 @@ public class StatementEventUtils {
 		List<String> list = eventList();
 		for (int i = 0; i < list.size(); i++) {
 			// verify "View" event in response XML and return Action Time stamp
-		Log4jUtil.log("Verification of Estatement '" + list.get(i) + "' event present in Pull API response xml");
+		Log4jUtil.log("Verification of EStatement '" + list.get(i) + "' event present in Pull API response xml");
 		ActionTimestamp = findEventInResonseXML(testData.ResponsePath, MU2Constants.EVENT, RESOURCE_TYPE, list.get(i),
 				timeStamp, testData.MFPatientID,testData.PatientID,testData.FirstName,testData.LastName,transitTimeStamp1);
 		Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
@@ -253,9 +247,13 @@ public class StatementEventUtils {
 			doc.getDocumentElement().normalize();
 			
 			NodeList nodes = doc.getElementsByTagName(event);
+			
+			Log4jUtil.log("Node length   "+nodes.getLength());
+			
 			for (int i = 0; i < nodes.getLength(); i++) {
 				
 				Node node = nodes.item(i);
+				
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
 					String readValue;
