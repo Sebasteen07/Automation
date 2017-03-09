@@ -59,12 +59,13 @@ public class PortalLoginPage extends BasePageObject {
 
 	@FindBy(linkText = "Forgot Your Password?")
 	private WebElement forgotUserPwd;
-	
+
 	@FindBy(xpath = "//*[@id=\"editForm\"]/span[2]/span/div/div[2]/span[2]/div[3]/input")
 	private WebElement selectBoth;
 
 	@FindBy(name = "buttons:submit")
 	private WebElement submitStatementDeliveryPreference;
+
 
 	public PortalLoginPage(WebDriver driver) {
 		super(driver);
@@ -112,7 +113,7 @@ public class PortalLoginPage extends BasePageObject {
 	public MyPatientPage login(String sUsername, String sPassword) throws InterruptedException {
 		return login(sUsername, sPassword, "no");
 	}
-	
+
 	public MyPatientPage login(String sUsername, String sPassword, String firstTime) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		String userFirstTimeLogin = firstTime;
