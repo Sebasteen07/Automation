@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Retrievers" verbose = "2" >
+	<listeners>
+		<listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+
+	<test name = "Dev-Retrievers" >
+		<classes>
+			<class name = "com.medfusion.dre.dreautomation.DreAcceptanceTests" />
+				<methods>
+					<include name="testRetrievingEpicPortal" />
+					<include name="testInvalidUserCredentialsForEpic" />
+					<include name="testRetrievingEClinicalPortal" />
+					<include name="testRetrievingCernerPortal" />
+					<include name="testRetrievingNextMDPortal" />
+				</methods>
+		</classes>
+	</test>
+</suite>
