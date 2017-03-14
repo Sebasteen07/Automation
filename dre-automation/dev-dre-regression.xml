@@ -10,6 +10,7 @@
 		<classes>
 			<class name = "com.medfusion.dre.dreautomation.DreAcceptanceTests" />
 				<methods>
+					<include name="testRetrievingAthenaPortal" />
 					<include name="testRetrievingEpicPortal" />
 					<include name="testInvalidUserCredentialsForEpic" />
 					<include name="testRetrievingEClinicalPortal" />
