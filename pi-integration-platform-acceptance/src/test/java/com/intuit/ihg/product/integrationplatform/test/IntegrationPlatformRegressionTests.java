@@ -19,6 +19,8 @@ import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
+import com.intuit.ihg.product.integrationplatform.utils.BulkAdmin;
+import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
@@ -26,6 +28,10 @@ import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.integrationplatform.utils.SecureExchangeEmailPage;
+import com.intuit.ihg.product.integrationplatform.utils.SecureExchangeLoginPage;
+import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
+import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessagePayload;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.medfusion.common.utils.IHGUtil;
@@ -588,4 +594,155 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 4: Call Statement Post");
 		sEventObj.generateViewEvent(driver,testData);
 	 }
+	 
+		@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testBulkSecureMessage() throws Exception {
+			log("Test Case: Bulk Secure Message");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+			log("Step 1: Get Data from property file");
+			LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+			BulkAdmin testData = new BulkAdmin();
+			LoadPreTestDataObj.loadDataFromPropertyBulk(testData);
+			Thread.sleep(3000);
+			
+			log("Step 2: Setup Oauth client");
+			if (BulkMessagePayload.checkWithPrevioudBulkMessageID) {
+				testData.PatientsUserNameArray[0] = testData.oUserName;
+				testData.PatientsPasswordArray[0] = testData.oPassword;
+				testData.PatientsIDArray[0] = testData.oPatientID;
+				testData.PatientEmailArray[0] = testData.oEmailID;
+				testData.AddAttachment = "no";
+				testData.MaxPatients = "1";
+				testData.NumberOfAttachments = "1";
+			}
+			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+			
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessagePayload(testData);																																																																									// testData.getFrom(),
+			Thread.sleep(6000);
+			
+			//log("message xml : " + message);
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed==true, "Message processing was not completed in time");
+			log("testData.MaxPatients : "+testData.MaxPatients);
+			
+			for (int i = 1; i <= Integer.parseInt(testData.MaxPatients); i++) {
+				// Loop through different patients email and login to view the message.
+				log("Patient is - " + testData.PatientsUserNameArray[i - 1]);
+				String subject = "New message from PI Automation rsdk Integrated";
+				log("Step 6: Check secure message in patient Email inbox");
+
+				String link = "";
+				Mailinator mail = new Mailinator();
+				String email = testData.PatientEmailArray[i-1]; 
+				String messageLink = "Sign in to view this message";
+				link = mail.getLinkFromEmail(email, subject, messageLink, 20);
+
+				link = link.replace("login?redirectoptout=true", "login");
+				log("Step 7: Login to Patient Portal");
+				log("Link is " + link);
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+				JalapenoHomePage homePage = loginPage.login(testData.PatientsUserNameArray[i - 1], testData.PatientsPasswordArray[i - 1]);
+				
+				Thread.sleep(5000);
+				log("Detecting if Home Page is opened");
+				assertTrue(homePage.isHomeButtonPresent(driver));
+				log("Click on messages solution");
+				JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+				assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+				log("Step 8: Find message in Inbox");
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				long epoch = System.currentTimeMillis() / 1000;
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+				log("Step 11: Check if attachment is present or not");
+				String readdatetimestamp = RestUtils.readTime(epoch);
+				log("Message Read Time:" + readdatetimestamp);
+				if(testData.AddAttachment.equalsIgnoreCase("yes")) {
+					String attachmentFileName = driver.findElement(By.xpath("// a [contains(text(),'bulk1.pdf')]")).getText();
+					log("attachmentFileName "+attachmentFileName);
+					assertFalse(attachmentFileName.equalsIgnoreCase("1.pdf"));
+				}
+				homePage.clickOnLogout();
+			}
+			if (testData.resendPreviousMessage.contains("yes") && BulkMessagePayload.messageIdCounter == 0) {
+
+				BulkMessagePayload.checkWithPrevioudBulkMessageID = true;
+				log("Step 12: Start Bulk mass admin for patient with  No attachment but previous Message ID");
+				testBulkSecureMessage();
+			}
+		}
+		
+		 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+		 public void testSendDirectMessage() throws Exception {
+				log("Test Case: Send Secure Direct Message from Partner to SES ");
+			 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			 	log("Execution Browser: " + TestConfig.getBrowserType());
+			 	log("Step 1: Set Test Data from Property file");
+			 	SendDirectMessage testData = new SendDirectMessage();
+			 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+			 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+			 	log("Step 2: Generate Payload");
+			 	SendDirectMessagePayload directMessagePayload = new SendDirectMessagePayload();
+			 	String payload = directMessagePayload.getSendDirectMessagePayload(testData);
+			 	
+			 	log("Step 3: Setup Oauth client");
+			 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+			 	log("Step 4: Do Send Direct Message Post Request");
+				RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
+				
+				log("Step 5: Verify MFMessageId, PartnerMessageId and StatusCode");
+				String mfMsgID =RestUtils.verifyDirectMessageResponse(testData.ResponsePath,directMessagePayload.partnerMessageId);
+				
+				log("Step 6: Verify messageStatus by invoking Get Status on MFMessageId");
+				String getStatusUrl=testData.RestUrl.replaceAll("directmessages", "directmessage");
+				String processingUrl = getStatusUrl+"/"+mfMsgID+"/status";
+				
+				boolean completed = false;
+				for (int i = 0; i < 3; i++) {
+					// wait 10 seconds so the message can be processed
+					Thread.sleep(60000);
+					RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+					if (RestUtils.isSendDirectMessageProcessed(testData.ResponsePath)) {
+						completed = true;
+						break;
+					}
+				}
+				assertTrue(completed==true, "Message processing was not completed in time");
+				
+				Thread.sleep(4000);
+				RestUtils.verifyDirectMessageGetStatus(testData.ResponsePath,mfMsgID,testData.FromEmalID,testData.ToEmalID);
+				
+				log("Step 7: Login to Secue Exchange Services");
+				SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,testData.SecureDirectMessageURL);
+				SecureExchangeEmailPage SecureEmailPageObject = SecureLoginPageObject.SecureLogin(testData.SecureDirectMessageUsername, testData.SecureDirectMessagePassword);
+				Thread.sleep(6000);
+				
+				log("Step 8: Check if Secure Email is recieved");
+				log("tocName : "+testData.TOCName);
+				SecureEmailPageObject.verifySecureEmail(testData.Subject,testData.AttachmentType,testData.FileName,testData.ToEmalID,testData.FromEmalID,testData.TOCName);	
+				
+				log("Step 9: Logout");	
+				SecureEmailPageObject.SignOut();
+		 }
 }

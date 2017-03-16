@@ -717,7 +717,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("You have new health data"));
+		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
 		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
@@ -973,7 +973,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("You have a new health data summary"));
+		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
 		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
@@ -1057,7 +1057,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Validate message subject and send date");
 		Thread.sleep(1000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated("You have new health data"));
+		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
 		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
 		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));

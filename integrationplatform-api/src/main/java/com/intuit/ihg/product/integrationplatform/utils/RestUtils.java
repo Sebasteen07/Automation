@@ -2146,6 +2146,56 @@ public class RestUtils {
 
 		return domToString(doc);
 	}
+	
+	public static String verifyDirectMessageResponse(String xmlFileName, String PartnerMessageId) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+			
+		Node MFnode = doc.getElementsByTagName("MFMessageId").item(0);
+		Element mfElem = (Element) MFnode;
+		Log4jUtil.log("Searching for MFMessageId :" +mfElem.getTextContent().toString());
+		
+		Node PartnerNode = doc.getElementsByTagName("PartnerMessageId").item(0);
+		Element partnerElem = (Element) PartnerNode;
+		Log4jUtil.log("Verifying PartnerMessageId actual "+partnerElem.getTextContent().toString()+" with Expected "+PartnerMessageId);
+		Assert.assertEquals(partnerElem.getTextContent().toString(), PartnerMessageId);
+		
+		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
+		Element statusElem = (Element) StatusNode;
+		Log4jUtil.log("Verifying Status actual "+statusElem.getTextContent().toString()+" with Expected 200");
+		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		
+		return mfElem.getTextContent().toString();
+	}
+	
+	public static void verifyDirectMessageGetStatus(String xmlFileName, String MFMessageId, String fromAddress, String toAddress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
+		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
+		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
+		
+		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
+		Log4jUtil.log("Verifying fromAddress actual "+mdnConfirmationDateNode.item(0).getTextContent());
+		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
+		
+		NodeList fromAddressNode = doc.getElementsByTagName("fromAddress");
+		Log4jUtil.log("Verifying fromAddress actual "+fromAddressNode.item(0).getTextContent()+" with expected as "+fromAddress);
+		Assert.assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
+		
+		NodeList toAddressNode = doc.getElementsByTagName("toAddress");
+		Log4jUtil.log("Verifying toAddress actual  "+toAddressNode.item(0).getTextContent()+" with expected as "+toAddress);
+		Assert.assertEquals(toAddressNode.item(0).getTextContent(), toAddress);
 
+		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
+		Log4jUtil.log("Verifying toAddress actual "+StatusCode.item(0).getTextContent()+" with expected as 200");
+		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+	}
+	
+	public static boolean isSendDirectMessageProcessed(String xmlFileName ) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
+		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
+		return true;
+	}
 }
-
