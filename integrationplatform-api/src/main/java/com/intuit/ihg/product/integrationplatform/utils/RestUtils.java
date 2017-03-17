@@ -2174,11 +2174,7 @@ public class RestUtils {
 		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
 		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
 		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
-		
-		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
-		Log4jUtil.log("Verifying fromAddress actual "+mdnConfirmationDateNode.item(0).getTextContent());
-		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
-		
+				
 		NodeList fromAddressNode = doc.getElementsByTagName("fromAddress");
 		Log4jUtil.log("Verifying fromAddress actual "+fromAddressNode.item(0).getTextContent()+" with expected as "+fromAddress);
 		Assert.assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
@@ -2196,6 +2192,12 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
 		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
+		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
+		
+		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
+		Log4jUtil.log("Verifying fromAddress actual "+mdnConfirmationDateNode.item(0).getTextContent());
+		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
+
 		return true;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
@@ -761,10 +762,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		phrDocuments.closeViewer();
 
 		log("step 18:Click Logout");
+		Thread.sleep(3000);
 		phrDocuments.clickLogout();
-
-		// driver.switchTo().defaultContent();
-
+		
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

@@ -739,7 +739,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				Thread.sleep(6000);
 				
 				log("Step 8: Check if Secure Email is recieved");
-				log("tocName : "+testData.TOCName);
 				SecureEmailPageObject.verifySecureEmail(testData.Subject,testData.AttachmentType,testData.FileName,testData.ToEmalID,testData.FromEmalID,testData.TOCName);	
 				
 				log("Step 9: Logout");	

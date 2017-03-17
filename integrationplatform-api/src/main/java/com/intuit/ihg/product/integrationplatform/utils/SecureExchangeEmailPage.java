@@ -19,12 +19,6 @@ public class SecureExchangeEmailPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[5]/ul/li/a")
 	public WebElement viewTOC;
 	
-	//@FindBy(how = How.ID, using = "explorerLink_1_ATTACHMENT0_XML")
-	//public WebElement TOCDocument;
-	
-	//@FindBy(how = How.XPATH, using = "//*[@id=\"contentDiv_1_ATTACHMENT0_XML\"]/h1")
-	//public WebElement tocName;
-	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Hi pmemrqa')]")
 	public WebElement userName;
 	
@@ -50,7 +44,7 @@ public class SecureExchangeEmailPage {
 
 	public SecureExchangeEmailPage verifySecureEmail(String subject,String AttachmentType,String fileName,String toEmail,String fromEmail,String attachTOCName) throws InterruptedException {
 		Log4jUtil.log("Switching frame");
-		driver.switchTo().defaultContent(); // you are now outside both frames
+		driver.switchTo().defaultContent();
 		driver.switchTo().frame("webMailFrame");
 		Log4jUtil.log("SearchBy  "+searchOrder.getText());
 		

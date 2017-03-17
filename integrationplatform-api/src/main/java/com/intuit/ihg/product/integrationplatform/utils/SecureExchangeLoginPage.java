@@ -21,7 +21,7 @@ public class SecureExchangeLoginPage {
 		this.driver = driver;
 		driver.get(url);
 		driver.manage().window().maximize();
-		Thread.sleep(5000);
+		Thread.sleep(7000);
 		PageFactory.initElements(driver, this);
 	}
 
