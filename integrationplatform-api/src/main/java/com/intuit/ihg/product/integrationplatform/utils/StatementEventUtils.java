@@ -131,7 +131,7 @@ public class StatementEventUtils {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
-		Assert.assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		Assert.assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 		
 		Log4jUtil.log("Expect an estatement message");
 		Assert.assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));

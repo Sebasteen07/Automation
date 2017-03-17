@@ -19,7 +19,9 @@
 	    		<include name="testAppointmentRequestForExistingPatient"/>
 	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
-	    		<include name="testStatementEventForNewSelfPatient"/>   
+	    		<include name="testStatementEventForNewSelfPatient"/>
+	    		<include name="testBulkSecureMessage"/>
+	    		<include name="testSendDirectMessage"/>
       		</methods>
 	</classes>
 </test>
