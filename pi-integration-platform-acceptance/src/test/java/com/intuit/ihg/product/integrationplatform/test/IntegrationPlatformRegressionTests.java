@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -693,8 +695,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 		}
 		
-		 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-		 public void testSendDirectMessage() throws Exception {
+		 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)	
+		 @Parameters({ "acceptance" })
+		 public void testSendDirectMessage(@Optional("4") int testRun) throws Exception {
 				log("Test Case: Send Secure Direct Message from Partner to SES ");
 			 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
 			 	log("Execution Browser: " + TestConfig.getBrowserType());
@@ -702,6 +705,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			 	SendDirectMessage testData = new SendDirectMessage();
 			 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 			 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+			 	
+			 	String[] typeOfAttachment = new String[] {"xml", "pdf", "png", "none"};
+			 	String testSubject=testData.Subject;
+			 	for(int i=0;i<testRun;i++) {
+			 	testData.AttachmentType = typeOfAttachment[i];
+			 	testData.Subject = testSubject;
+			 	String[] fileNameUpdate = testData.FileName.split("\\.");
+			 	testData.FileName = fileNameUpdate[0]+"."+typeOfAttachment[i];
+			 	log("FileName  "+testData.FileName);
 			 	log("Step 2: Generate Payload");
 			 	SendDirectMessagePayload directMessagePayload = new SendDirectMessagePayload();
 			 	String payload = directMessagePayload.getSendDirectMessagePayload(testData);
@@ -719,7 +731,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				String processingUrl = getStatusUrl+"/"+mfMsgID+"/status";
 				
 				boolean completed = false;
-				for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
 					// wait 10 seconds so the message can be processed
 					Thread.sleep(60000);
 					RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
@@ -743,5 +755,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				
 				log("Step 9: Logout");	
 				SecureEmailPageObject.SignOut();
+			 	}
 		 }
 }

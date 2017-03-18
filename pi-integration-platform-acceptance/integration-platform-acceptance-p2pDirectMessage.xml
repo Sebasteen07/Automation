@@ -7,6 +7,7 @@
 </listeners>
  	
 <test name = "Integration-Platform-Acceptance-P2PSendDirectMessages" >
+	<parameter name="acceptance" value="1"/> 
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>

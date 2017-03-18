@@ -2195,7 +2195,7 @@ public class RestUtils {
 		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
 		
 		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
-		Log4jUtil.log("Verifying fromAddress actual "+mdnConfirmationDateNode.item(0).getTextContent());
+		Log4jUtil.log("Verifying if mdnConfirmationDate is present "+mdnConfirmationDateNode.item(0).getTextContent());
 		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
 
 		return true;
