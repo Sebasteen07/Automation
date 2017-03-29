@@ -197,13 +197,15 @@ public class NewRxRenewalPage extends BasePageObject {
 	 */
 	public void setMedicationDetails() {
 		IHGUtil.PrintMethodName();
-		// New code added in order to incorporate new page.
-		PortalUtil.setPortalFrame(driver);
-		Select oSelect = new Select(selectProvider);
-		oSelect.selectByIndex(1);
-		IHGUtil.waitForElement(driver, 10, continueToSetMedicalDetail);
-		continueToSetMedicalDetail.click();
-		// End
+		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("Dev3")) {
+			// New code added in order to incorporate new page.
+			PortalUtil.setPortalFrame(driver);
+			Select oSelect = new Select(selectProvider);
+			oSelect.selectByIndex(1);
+			IHGUtil.waitForElement(driver, 10, continueToSetMedicalDetail);
+			continueToSetMedicalDetail.click();
+			// End
+		}
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 10, medicationName);
 		medicationName.sendKeys(PortalConstants.MedicationName + "" + createdTs);

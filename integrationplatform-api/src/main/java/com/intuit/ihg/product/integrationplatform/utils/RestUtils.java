@@ -2173,8 +2173,10 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
 		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
-		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
-				
+		Assert.assertTrue(
+				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed") || messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
+				"Get Request response is " + messageStatusNode.item(0).getTextContent());
+
 		NodeList fromAddressNode = doc.getElementsByTagName("fromAddress");
 		Log4jUtil.log("Verifying fromAddress actual "+fromAddressNode.item(0).getTextContent()+" with expected as "+fromAddress);
 		Assert.assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
@@ -2192,11 +2194,127 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
 		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
-		Assert.assertEquals(messageStatusNode.item(0).getTextContent(), "confirmed");
+
+		Assert.assertTrue(
+				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed") || messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
+				"Get Request response is " + messageStatusNode.item(0).getTextContent());
 		
 		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
 		Log4jUtil.log("Verifying if mdnConfirmationDate is present "+mdnConfirmationDateNode.item(0).getTextContent());
 		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
+
+		return true;
+	}
+	
+	public static boolean validateDirectorySearchResponse(String xmlFileName,String firstName,String lastName,String organizationName,String nationalProvider,String specialityType,String classification,String specialization,String street,String city,String state,String zipCode,String directAddress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
+		Log4jUtil.log("Verifying StatusCode actual  "+StatusCode.item(0).getTextContent()+" with expected as 200");
+		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+		
+		NodeList nodes = doc.getElementsByTagName("DirectoryInfo");
+		
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Element DirInfo = (Element) nodes.item(i);
+			
+			Element FirstNameElem = (Element) DirInfo.getElementsByTagName("FirstName").item(0);
+			if(firstName !=null) {
+				Log4jUtil.log("FirstName : "+FirstNameElem.getTextContent()+"  :  "+firstName.trim());
+				Assert.assertEquals(FirstNameElem.getTextContent().toLowerCase(), firstName.trim().toLowerCase());
+			}
+			
+			Element LastNameElem = (Element) DirInfo.getElementsByTagName("LastName").item(0);
+			if(lastName!=null) {
+				Log4jUtil.log("LastName : "+LastNameElem.getTextContent()+"  : "+lastName.trim());
+				Assert.assertEquals(LastNameElem.getTextContent().toLowerCase(), lastName.trim().toLowerCase());
+			}
+			
+			Element OrgElem = (Element) DirInfo.getElementsByTagName("OrganizationName").item(0);
+			if(organizationName!=null) {
+				Log4jUtil.log("OrganizationName : "+OrgElem.getTextContent()+"   :   "+organizationName.trim());
+				Assert.assertEquals(OrgElem.getTextContent().toLowerCase(), organizationName.trim().toLowerCase());
+			}
+			
+			Element NationalProviderIdElem = (Element) DirInfo.getElementsByTagName("NationalProviderId").item(0);
+			if( nationalProvider!=null) {
+				Log4jUtil.log("NationalProviderId : "+NationalProviderIdElem.getTextContent()+" : "+nationalProvider.trim());	
+				Assert.assertEquals(NationalProviderIdElem.getTextContent().toLowerCase(), nationalProvider.trim().toLowerCase());
+			}
+			
+			Element SpecialtyTypeElem = (Element) DirInfo.getElementsByTagName("SpecialtyType").item(0);
+			if( specialityType!=null ) {
+				Log4jUtil.log("SpecialtyType : "+SpecialtyTypeElem.getTextContent()+" specialityType "+specialityType.trim());
+				Assert.assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(), specialityType.trim().toLowerCase());
+			}
+			
+			Element SpecialtyClassificationElem = (Element) DirInfo.getElementsByTagName("SpecialtyClassification").item(0);
+			if( classification!=null ) {
+				Log4jUtil.log("SpecialtyClassification : "+SpecialtyClassificationElem.getTextContent()+"  : "+classification.trim());
+				Assert.assertEquals(SpecialtyClassificationElem.getTextContent().toLowerCase(), classification.trim().toLowerCase());
+			}
+			
+			Element SpecialtySpecializationElem = (Element) DirInfo.getElementsByTagName("SpecialtySpecialization").item(0);
+			if(specialization!=null ) {
+				Log4jUtil.log("SpecialtySpecialization : "+SpecialtySpecializationElem.getTextContent()+" : "+specialization.trim());
+				Assert.assertEquals(SpecialtySpecializationElem.getTextContent().toLowerCase(), specialization.trim().toLowerCase());
+			}
+			
+			Element StreetElem = (Element) DirInfo.getElementsByTagName("Street").item(0);
+			if(street!=null) {
+				Log4jUtil.log("Street : "+StreetElem.getTextContent()+"  :  "+street.trim());
+				BaseTestSoftAssert.assertTrue((StreetElem.getTextContent().toLowerCase().contains(street.trim().toLowerCase())));
+			}
+			
+			Element CityElem = (Element) DirInfo.getElementsByTagName("City").item(0);
+			if(city!=null) {
+				Log4jUtil.log("City : "+CityElem.getTextContent()+"  :  "+city.trim());	
+				Assert.assertEquals(CityElem.getTextContent().toLowerCase(), city.trim().toLowerCase());
+			}
+			
+			Element StateElem = (Element) DirInfo.getElementsByTagName("State").item(0);
+			if(state!=null) {
+				Log4jUtil.log("State : "+StateElem.getTextContent()+"  :  "+state.trim());	
+				Assert.assertEquals(StateElem.getTextContent().toLowerCase(), state.trim().toLowerCase());
+			}
+			
+			Element ZipCodeElem = (Element) DirInfo.getElementsByTagName("ZipCode").item(0);
+			if(zipCode!=null) {
+				Log4jUtil.log("ZipCode : "+ZipCodeElem.getTextContent()+"  :  "+zipCode.trim());
+				Assert.assertEquals(ZipCodeElem.getTextContent().toLowerCase(), zipCode.trim().toLowerCase());
+			}
+			
+			Element DirectAddressElem = (Element) DirInfo.getElementsByTagName("DirectAddress").item(0);
+			if(directAddress!=null) {
+			//
+			}
+		}
+		return true;
+	}
+
+	public static Boolean setupOauthHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException {
+		IHGUtil.PrintMethodName();
+
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+		HttpPost httpPostReq = new HttpPost(strUrl);
+		httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+
+		StringEntity se = new StringEntity(payload);
+		httpPostReq.setEntity(se);
+		httpPostReq.addHeader("Accept", "application/xml");
+		httpPostReq.addHeader("Content-Type", "application/xml");
+		httpPostReq.addHeader("Noun", "Encounter");
+		httpPostReq.addHeader("Verb", "Completed");
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
+
+		String sResp = EntityUtils.toString(resp.getEntity());
+
+		Log4jUtil.log("Check for http 200/202 response");
+		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202, "Get Request response is "
+				+ resp.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
 
 		return true;
 	}

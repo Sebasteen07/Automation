@@ -376,4 +376,23 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+
+	public DirectorySearch loadDirectorySearchDataFromProperty(DirectorySearch testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.RestUrl = propertyData.getRestURL_SD();
+		
+		testData.RestUrl = propertyData.getRestURL_SD();
+		testData.DirectAddressOrganization = propertyData.getDirectAddress_organization_DS();
+		testData.DirectAddressProvider = propertyData.getDirectAddress_provider_DS();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_DS();
+		testData.OAuthUsername = propertyData.getOAuthUsername_DS();
+		testData.OAuthPassword = propertyData.getOAuthPassword_DS();
+		testData.SearchLength = propertyData.getSearchLength();
+		testData.CSVFilePath = propertyData.getCSVFilePath_DS();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		
+		return testData;
+	}
 }

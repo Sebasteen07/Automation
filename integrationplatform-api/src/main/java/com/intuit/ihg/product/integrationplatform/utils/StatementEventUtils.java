@@ -108,7 +108,7 @@ public class StatementEventUtils {
 			editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
 
 			driver.findElement(By.xpath(editPatientD)).click();
-			
+			Thread.sleep(3000);
 			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
 			String patientExternalID = driver.findElement(By.xpath(externalID)).getAttribute("value");
 			
