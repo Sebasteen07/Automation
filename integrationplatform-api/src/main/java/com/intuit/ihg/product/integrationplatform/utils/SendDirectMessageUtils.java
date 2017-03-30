@@ -29,16 +29,7 @@ public class SendDirectMessageUtils {
 	 	Thread.sleep(3000);
 	 	Log4jUtil.log("Step 4: Do Send Direct Message Post Request");
 		
-	 	//RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
-		Boolean responseCompleted = false;
-		for (int k = 0; k < 3; k++) {
-			if (RestUtils.setupOauthHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath)) {
-				responseCompleted = true;
-				break;
-			}
-			Thread.sleep(60000);
-	 	}
-		Assert.assertTrue(responseCompleted, "Response processing was not completed in time");
+		RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
 
 		Log4jUtil.log("Step 5: Verify MFMessageId, PartnerMessageId and StatusCode");
 		String mfMsgID =RestUtils.verifyDirectMessageResponse(testData.ResponsePath,directMessagePayload.partnerMessageId);
@@ -62,7 +53,7 @@ public class SendDirectMessageUtils {
 		Thread.sleep(4000);
 		RestUtils.verifyDirectMessageGetStatus(testData.ResponsePath,mfMsgID,testData.FromEmalID,testData.ToEmalID);
 		
-		Log4jUtil.log("Step 7: Login to Secue Exchange Services");
+		Log4jUtil.log("Step 7: Login to Secure Exchange Services");
 		SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,testData.SecureDirectMessageURL);
 		SecureExchangeEmailPage SecureEmailPageObject = SecureLoginPageObject.SecureLogin(testData.SecureDirectMessageUsername, testData.SecureDirectMessagePassword);
 		Thread.sleep(8000);

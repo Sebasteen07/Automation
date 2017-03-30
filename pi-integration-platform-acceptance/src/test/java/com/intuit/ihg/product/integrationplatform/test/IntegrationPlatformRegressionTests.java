@@ -713,7 +713,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 
 	 @Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	 public void testSendDirectMessageXML() throws Exception {
-		log("Test Case: Send Secure Direct Message from Partner to SES ");
+		log("Test Case: Send Secure Direct Message with XML as attachment");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data from Property file");
@@ -723,7 +723,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 
 	 @Test(enabled = true,dataProvider = "attachmentType", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	 public void testSendDirectMessageAll(String typeOfAttachmentUsed) throws Exception {
-		log("Test Case: Send Secure Direct Message from Partner to SES ");
+		log("Test Case: Send Secure Direct Message");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data from Property file ");

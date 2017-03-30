@@ -2291,31 +2291,4 @@ public class RestUtils {
 		return true;
 	}
 
-	public static Boolean setupOauthHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException {
-		IHGUtil.PrintMethodName();
-
-		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
-		Log4jUtil.log("Post Request Url: " + strUrl);
-		HttpPost httpPostReq = new HttpPost(strUrl);
-		httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-
-		StringEntity se = new StringEntity(payload);
-		httpPostReq.setEntity(se);
-		httpPostReq.addHeader("Accept", "application/xml");
-		httpPostReq.addHeader("Content-Type", "application/xml");
-		httpPostReq.addHeader("Noun", "Encounter");
-		httpPostReq.addHeader("Verb", "Completed");
-		Log4jUtil.log("Post Request Url4: ");
-		HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
-
-		String sResp = EntityUtils.toString(resp.getEntity());
-
-		Log4jUtil.log("Check for http 200/202 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202, "Get Request response is "
-				+ resp.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
-		Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
-		writeFile(responseFilePath, sResp);
-
-		return true;
-	}
 }
