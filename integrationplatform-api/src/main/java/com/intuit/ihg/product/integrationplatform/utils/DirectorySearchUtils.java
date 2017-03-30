@@ -13,7 +13,7 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class DirectorySearchUtils {
 	public void directorySearchParam(String testType) throws Exception {
-		Log4jUtil.log("Test Case: Directory Search from Partner to SES ");
+		Log4jUtil.log("Test Case: Setting data for directory search");
 		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		Log4jUtil.log("Execution Browser: " + TestConfig.getBrowserType());
 		Log4jUtil.log("Step 1: Set Test Data from Property file");
@@ -80,7 +80,7 @@ public class DirectorySearchUtils {
 		for(int i=0;i<maxSearchLength;i++){
 			String payload = DirectorySearchObject.getDirectSearchPayload(testData,i);
 			Assert.assertTrue(payload!=null);
-			Log4jUtil.log("Step 4: Do Send Direct Message Post Request");
+			Log4jUtil.log("Step 4: Do Directory Search Post Request");
 			RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
 			
 			Thread.sleep(4000);
