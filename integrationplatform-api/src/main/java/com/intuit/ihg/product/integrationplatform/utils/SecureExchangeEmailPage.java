@@ -74,18 +74,13 @@ public class SecureExchangeEmailPage {
 			    driver.switchTo().window(winHandle);
 			}
 			// Perform the actions on new window
-			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");
-			
-			String[] attachTOCNameA = fileName.split("\\.");
-			attachTOCNameA[0] = attachTOCNameA[0].toUpperCase();	
-			Log4jUtil.log("attachTOCNameA: "+attachTOCNameA[0]);
-			
-			WebElement tocDocument= driver.findElement(By.id("explorerLink_1_"+attachTOCNameA[0]+"_XML"));
+			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");			
+			WebElement tocDocument= driver.findElement(By.xpath("//a[contains(text(),'Document')]"));
 		
-			Thread.sleep(3000);
 			tocDocument.click();
-			
-			WebElement tocName= driver.findElement(By.xpath("//*[@id=\"contentDiv_1_"+attachTOCNameA[0]+"_XML\"]/h1"));
+			//wait for TOC to load
+			Thread.sleep(3000);
+			WebElement tocName= driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div/div/div/h1"));
 			Log4jUtil.log("Verify the TOC name Actual "+tocName.getText()+" expected name is "+attachTOCName);
 			Assert.assertEquals(tocName.getText(), attachTOCName);
 			driver.close();

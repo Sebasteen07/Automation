@@ -1,0 +1,21 @@
+firstName,lastName,organizationName,nationalProviderId,specialtyType,specialtyClassification,specialtySpecialization,street,city,state,zipcode,directAddress,type
+Andrew,Cookson, , , , , , , ,VA,20194,ajctestorg@eval.directaddress.net,PROVIDER
+ , ,HariGatewayOrg, , , , , ,Herndon,VA,20190,medfusiontf@service2.directaddress.net,ORGANIZATION
+CHRIS,ABATELLI, , , , , , ,WYANDANCH,NY,11798,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , , , , ,20194,ajctestorg@eval.directaddress.net,PROVIDER
+ , , ,1245319599, , , , , , , ,ajctestorg@eval.directaddress.net,PROVIDER
+  , , , , , , , , , ,12345,medfusiontf@service2.directaddress.net,ORGANIZATION
+ , ,Altruista Health, , , , , , , , ,medfusiontf@service2.directaddress.net,ORGANIZATION
+Kasia,O'Connell, , , , , , , , , ,ajctestorg@eval.directaddress.net,PROVIDER
+Kasia,O'Connell, , ,Agencies, , , ,Rockville,MD, ,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , ,5501 dillard dr, , , ,medfusiontf@service2.directaddress.net,ORGANIZATION
+ , , , , , , , , ,NC, ,medfusiontf@service2.directaddress.net,ORGANIZATION
+ , ,Medfusion Test 2, , , , ,5501 dillard dr,Cary,NC,27518,medfusiontf@service2.directaddress.net,ORGANIZATION
+Andrew, , , , , , , , , , ,ajctestorg@eval.directaddress.net,PROVIDER
+ ,Cookson, , , , , , , , , ,ajctestorg@eval.directaddress.net,PROVIDER
+ , ,AJC Test Org, , , , , , , , ,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , ,11502 Olde Tiverton Cir, , , ,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , , ,Reston, , ,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , , , ,VA, ,ajctestorg@eval.directaddress.net,PROVIDER
+Andrew, ,AJC Test Org, , , , ,11502 Olde Tiverton Cir,Reston,VA,20194,ajctestorg@eval.directaddress.net,PROVIDER
+ , , , , , , ,11502 Olde Tiverton Cir,Reston,VA,20194,ajctestorg@eval.directaddress.net,PROVIDER

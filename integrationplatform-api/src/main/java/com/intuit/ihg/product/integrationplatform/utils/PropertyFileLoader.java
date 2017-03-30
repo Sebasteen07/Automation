@@ -849,4 +849,30 @@ public class PropertyFileLoader {
 		return property.getProperty("messageStatus_SDM");
 	}
 	
+	//Directory Search
+	public String getRestURL_SD() {
+		return property.getProperty("restUrl_DS");
+	}
+	public String getDirectAddress_organization_DS() {
+		return property.getProperty("directAddress_organization_DS");
+	}
+	public String getDirectAddress_provider_DS() {
+		return property.getProperty("directAddress_provider_DS");
+	}
+	public String getOAuthAppToken_DS() {
+		return property.getProperty("oAuthAppToken_DS");
+	}
+	public String getOAuthUsername_DS() {
+		return property.getProperty("oAuthUsername_DS");
+	}
+	public String getOAuthPassword_DS() {
+		return property.getProperty("oAuthPassword_DS");
+	}
+	public String getSearchLength() {
+		return property.getProperty("searchLength");
+	}
+	public String getCSVFilePath_DS() {
+		return property.getProperty("csvFilePath_DS");
+	}
+	
 }

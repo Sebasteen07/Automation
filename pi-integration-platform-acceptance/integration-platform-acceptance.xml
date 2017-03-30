@@ -7,7 +7,6 @@
 </listeners>
  	
 <test name = "Integration-Platform-Acceptance" >
-	<parameter name="acceptance" value="1"/> 
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
 		<methods>
@@ -17,10 +16,11 @@
         		<include name="testE2EAppointmentRequest20" />
 				<include name="testE2E_OLBP20" />
 				<include name="testStatementPreference" />
-      		</methods>
+      	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testSendDirectMessage"/>
+				<include name="testSendDirectMessageXML"/>
+				<include name="testDirectorySearchSingleValue"/>
 	    		<include name="testAppointmentRequestForExistingPatient"/>  	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>

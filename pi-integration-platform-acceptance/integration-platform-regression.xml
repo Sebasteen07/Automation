@@ -21,7 +21,8 @@
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    		<include name="testStatementEventForNewSelfPatient"/>
 	    		<include name="testBulkSecureMessage"/>
-	    		<include name="testSendDirectMessage"/>
+	    		<include name="testSendDirectMessageAll"/>
+	    		<include name="testDirectorySearch"/>	
       		</methods>
 	</classes>
 </test>
