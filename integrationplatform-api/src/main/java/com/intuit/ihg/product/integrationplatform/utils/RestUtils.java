@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,6 +45,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
@@ -2207,7 +2210,7 @@ public class RestUtils {
 	}
 	
 	public static boolean validateDirectorySearchResponse(String xmlFileName,String firstName,String lastName,String organizationName,String nationalProvider,String specialityType,String classification,String specialization,String street,String city,String state,String zipCode,String directAddress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
-		Document doc = buildDOMXML(xmlFileName);
+		Document doc = buildUTFDOMXML(xmlFileName);
 		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
 		Log4jUtil.log("Verifying StatusCode actual  "+StatusCode.item(0).getTextContent()+" with expected as 200");
 		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
@@ -2290,5 +2293,18 @@ public class RestUtils {
 		}
 		return true;
 	}
-
+	
+	private static Document buildUTFDOMXML(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+	    InputStream inputStream= new FileInputStream(xmlFileName);
+	    Reader reader = new InputStreamReader(inputStream,"UTF-8");
+	    InputSource is = new InputSource(reader);
+	    is.setEncoding("UTF-8");
+	        
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();	
+		Document doc = dBuilder.parse(is);
+		doc.getDocumentElement().normalize();
+		return doc;
+	}
 }
