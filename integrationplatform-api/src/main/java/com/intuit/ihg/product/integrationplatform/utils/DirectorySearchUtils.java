@@ -97,8 +97,49 @@ public class DirectorySearchUtils {
 			String state = testData.DirectorySearchList.get(count).getState();
 			String zipCode = testData.DirectorySearchList.get(count).getZipcode();
 			String directAddress = testData.DirectorySearchList.get(count).getDirectAddress();
+			String type  = testData.DirectorySearchList.get(count).getType();
 			
-			Log4jUtil.log("Step 5: Validate the Response message for Data "+(i+1)+" in csv");
+			String displayHeaders="";
+			if(firstName!=null) {
+				displayHeaders=testData.DirectorySearchList.get(0).getFirstName();
+			}
+			if(lastName!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getLastName();
+			}
+			if(OrganizationName!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getOrganizationName();
+			}
+			if(nationalProvider!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getNationalProviderId();
+			}
+			if(specialityType!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getSpecialtyType();
+			}
+			if(classification!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getSpecialtyClassification();
+			}
+			if(specialization!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getSpecialtySpecialization();
+			}
+			if(street!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getStreet();
+			}
+			if(city!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getCity();
+			}
+			if(state!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getState();
+			}
+			if(zipCode!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getZipcode();
+			}
+			if(directAddress!=null) {
+				displayHeaders=displayHeaders+" "+testData.DirectorySearchList.get(0).getDirectAddress();
+			}
+			
+			Log4jUtil.log("Data Set "+(i+1)+" for Directory Search having type : "+type+" with values of "+displayHeaders);	
+			
+			Log4jUtil.log("Step 5: Validate the Response message");
 			RestUtils.validateDirectorySearchResponse(testData.ResponsePath,firstName,lastName,OrganizationName,nationalProvider,specialityType,classification,specialization,street,city,state,zipCode,directAddress );
 		}
 	}
