@@ -29,7 +29,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "removeCardOkButton")
 	private WebElement removeCardOkButton;
 
-	@FindBy(how = How.ID, using = "pay_history")
+	@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'pay_history']")
 	private WebElement payHistoryButton;
 
 	@FindBy(how = How.ID, using = "accountNumber")
