@@ -716,7 +716,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage pMessage = inboxPage.clickFirstMessageRow();
 
 		log("Step 7: Validate message subject and send date");
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
@@ -732,6 +732,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo().defaultContent();
 
 		log("Step 10: Go to patient page");
+		Thread.sleep(2000);
 		pMyPatientPage = pMessage.clickMyPatientPage();
 
 		log("Step 11: Click PHR");
@@ -1071,7 +1072,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 10: Click on Send Information link");
 		String Email = testData.getEmail();
 		pMessage.generateTransmitEvent(Email);
-
+		Thread.sleep(2000);
 		log("Step 11: Verify if CCD Viewer is loaded and click Close Viewer");
 		pMessage.verifyCCDViewerAndClose();
 
@@ -1108,6 +1109,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		phrDocuments.closeViewer();
 
 		log("step 20:Click Logout");
+		Thread.sleep(3000);
 		phrDocuments.clickLogout();
 
 	}
@@ -1168,14 +1170,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			pPatientSearchPage.searchForPatientInPatientSearch(firstName, lastName);
 
 			log("Step 9: Verify the Search Result");
-			Thread.sleep(120000);
+			Thread.sleep(12000);
 			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 			verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(firstName));
 
 			log("Step 10: Click on Patient");
 			PatientDashboardPage patientPage = pPatientSearchPage.clickOnPatient(firstName, lastName);
 
-			Thread.sleep(120000);
+			Thread.sleep(12000);
 			log("Step 11: Set External Patient ID");
 			String externalPatientID = patientPage.setExternalPatientID();
 
@@ -1249,8 +1251,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 
 			}
-
-			log("Step 25: Logout");
+			if(i==2) {
+				Thread.sleep(10000);
+				log("Step 25: Verify 204 response when no new forms is present");
+				long timeStamp204 = System.currentTimeMillis();
+				Long sinceTime = timeStamp204 / 1000;
+				RestUtils.setupHttpGetRequestExceptOauth(getURL + "?since=" + sinceTime + ",0", testData.getResponsePath());
+				Thread.sleep(800);
+				log("Step 26: Invoke ccdExchangePdfBatch api when there are no forms");
+				String ccdExchangePDFBatchURL = RestUtils.headerUrl;
+				RestUtils.setupHttpGetRequestExceptOauth(ccdExchangePDFBatchURL, testData.getResponsePath());
+			}
+			log("Step 27: Logout");
 			pMyPatientPage.clickLogout(driver);
 
 		}

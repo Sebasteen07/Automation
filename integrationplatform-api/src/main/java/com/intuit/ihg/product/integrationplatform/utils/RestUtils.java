@@ -69,6 +69,7 @@ public class RestUtils {
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
 	public static String paymentID;
+	public static String headerUrl;
 	public static int responseCode;
 	public static List<String> patientDatails = new ArrayList<String>();
 
@@ -1642,11 +1643,22 @@ public class RestUtils {
 		httpGetReq.addHeader("Content-Type", "application/xml");
 		HttpResponse resp = client.execute(httpGetReq);
 		HttpEntity entity = resp.getEntity();
-		String sResp = EntityUtils.toString(entity);
-
-		Log4jUtil.log("Check for http 200 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+		String sResp ="";
+		if(entity!=null){
+		sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+		} else
+		{
+			Log4jUtil.log("Check for http 204 response");
+		}
+		
+		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+		
+		if (resp.containsHeader("Next-URI")) {
+			Header[] h = resp.getHeaders("Next-URI");
+			headerUrl = h[0].getValue();
+		}
 		writeFile(responseFilePath, sResp);
 
 	}
