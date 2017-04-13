@@ -1259,8 +1259,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				RestUtils.setupHttpGetRequestExceptOauth(getURL + "?since=" + sinceTime + ",0", testData.getResponsePath());
 				Thread.sleep(800);
 				log("Step 26: Invoke ccdExchangeBatch api when there are no forms");
-				String ccdExchangePDFBatchURL = RestUtils.headerUrl;
-				RestUtils.setupHttpGetRequestExceptOauth(ccdExchangePDFBatchURL, testData.getResponsePath());
+				String ccdExchangeBatchURL = RestUtils.headerUrl;
+				RestUtils.setupHttpGetRequestExceptOauth(ccdExchangeBatchURL, testData.getResponsePath());
 			}
 			log("Step 27: Logout");
 			pMyPatientPage.clickLogout(driver);
