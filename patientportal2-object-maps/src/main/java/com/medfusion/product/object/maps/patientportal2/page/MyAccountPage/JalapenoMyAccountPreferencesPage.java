@@ -32,7 +32,11 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
 	private WebElement successfulUpdateMessage;
+	
+	@FindBy(how = How.ID, using = "preferredLanguage")
+	private WebElement preferredLanguage;
 
+	
 	public JalapenoMyAccountPreferencesPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -92,4 +96,16 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
 		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
+	
+	
+	private void setStatementLanguage(String statementLanguageType) {
+		Select statementSelect = new Select(this.preferredLanguage);
+		statementSelect.selectByVisibleText(statementLanguageType);
+	}
+	
+	public void setStatementLanguage(WebDriver driver, String statementLanguageType) {
+		setStatementLanguage(statementLanguageType);
+		saveAccountChanges.click();
+	}
+
 }

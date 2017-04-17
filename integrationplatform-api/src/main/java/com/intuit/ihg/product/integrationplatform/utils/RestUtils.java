@@ -352,6 +352,18 @@ public class RestUtils {
 			Node idNode1 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID).item(0);
 			idNode1.setTextContent(medfusionPatientID);
 		}
+		
+		if (medfusionPatientID != null &&  doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0) !=null) {
+			Node idNode2 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+			idNode2.setTextContent(medfusionPatientID);
+		}
+		else {
+			if(doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0) !=null)
+			{
+				Element mfID = (Element) doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+				mfID.getParentNode().removeChild(mfID);
+			}
+		}
 
 		return domToString(doc);
 	}
@@ -1595,6 +1607,7 @@ public class RestUtils {
 			if (patient.item(i).getTextContent().equalsIgnoreCase(patientID)) {
 				Element ele = (Element) patient.item(i).getParentNode().getParentNode();
 				Node node = null;
+				Log4jUtil.log("nodeName "+nodeName);
 				switch (nodeName) {
 					case 'R':
 						node = ele.getElementsByTagName(IntegrationConstants.RACE).item(0);
@@ -1611,6 +1624,9 @@ public class RestUtils {
 					case 'C':
 						node = ele.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
 						break;
+					case 'G':
+						node = ele.getElementsByTagName(IntegrationConstants.GENDER).item(0);
+						break;	
 					default:
 						break;
 				}
@@ -1654,13 +1670,11 @@ public class RestUtils {
 		
 		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-		
+		writeFile(responseFilePath, sResp);
 		if (resp.containsHeader("Next-URI")) {
 			Header[] h = resp.getHeaders("Next-URI");
 			headerUrl = h[0].getValue();
 		}
-		writeFile(responseFilePath, sResp);
-
 	}
 
 	/**
@@ -1832,11 +1846,14 @@ public class RestUtils {
 						"Medfusion Patient Last Name has different than expected. Last Name is: " + nlastName.getTextContent());
 				try {
 					if (updateData.get(2) != null) {
-						Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
-						Log4jUtil
-								.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
-						BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10),
-								"Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
+						if(updateData.get(10)!=null) {
+							Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
+							Log4jUtil
+									.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
+							BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10),
+									"Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
+							
+						}
 						Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
 						Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2) + ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
 						BaseTestSoftAssert.verifyEquals(nAddress1.getTextContent(), updateData.get(2),
@@ -1860,12 +1877,14 @@ public class RestUtils {
 						Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:" + nEthnicity.getTextContent().toString());
 						BaseTestSoftAssert.verifyEquals(nEthnicity.getTextContent(), updateData.get(8),
 								"Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
-						Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
-						Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9) + ", and Actual communication value is:"
-								+ nChooseCommunication.getTextContent().toString());
-						BaseTestSoftAssert.verifyEquals(nChooseCommunication.getTextContent(), updateData.get(9),
-								"Patient has different ChooseCommunication than expected. ChooseCommunication is: " + nChooseCommunication.getTextContent());
-
+						if(updateData.get(9)!=null) {
+							Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+							Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9) + ", and Actual communication value is:"
+									+ nChooseCommunication.getTextContent().toString());
+							BaseTestSoftAssert.verifyEquals(nChooseCommunication.getTextContent(), updateData.get(9),
+									"Patient has different ChooseCommunication than expected. ChooseCommunication is: " + nChooseCommunication.getTextContent());
+						}
+						
 					}
 				} catch (Exception e) {
 					Log4jUtil.log("#####");

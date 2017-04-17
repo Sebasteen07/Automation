@@ -144,7 +144,9 @@ public class LoadPreTestData {
 		testData.setSecretAnswer(propertyData.getSecretAnswer());
 		testData.setPracticeURL(propertyData.getPracticeURL());
 		testData.setHomePhoneNo(propertyData.getHomePhoneNo());
-
+		testData.setCity(propertyData.getCity());
+		testData.setState(propertyData.getState());
+		testData.setLastName(propertyData.getLastName());
 		testData.setRelation(propertyData.getRelation());
 		testData.setMaritalStatus(propertyData.getMaritalStatus());
 		testData.setChooseCommunication(propertyData.getChooseCommunication());
@@ -183,6 +185,17 @@ public class LoadPreTestData {
 			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
 			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
 			testData.setoAuthPassword(propertyData.getOAuthPassword_20());
+			
+			testData.setFnameSC(propertyData.getFirstName_AD());
+			testData.setLnameSC(propertyData.getLastName_AD());
+			testData.setSecretQuestion(propertyData.getSecretQuestion());
+			testData.setSecretAnswer(propertyData.getSecretAnswer());
+			
+			testData.setPortalURL(propertyData.getUrl());
+			testData.setPracticeUserName(propertyData.getPracticeUserName());
+			testData.setPracticePassword(propertyData.getPracticePassword());
+			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
+			testData.setPreferredLanguageType(propertyData.getLanguageType());
 		}
 		
 		return testData;
@@ -222,7 +235,6 @@ public class LoadPreTestData {
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
-		
 		return testData;
 	}
 	

@@ -8,23 +8,30 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
+
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='address1']")
 	private WebElement address1Textbox;
-
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='address2']")
+	private WebElement address2Textbox;
+	
 	@FindBy(how = How.XPATH, using = "//input[@id='city']")
 	private WebElement cityTextbox;
 
@@ -63,7 +70,25 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//select[@id='ethnicity']")
 	private WebElement ethnicity;
-
+	
+	@FindBy(how = How.XPATH, using = "//select[@id='sexualOrientationSelect']")
+	private WebElement sexualOrientation;
+	
+	@FindBy(how = How.ID, using = "firstName")
+	private WebElement firstName;
+	
+	@FindBy(how = How.ID, using = "lastName")
+	private WebElement lastName;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='phone4']")
+	private WebElement phone4;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='phone5']")
+	private WebElement phone5;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='phone6']")
+	private WebElement phone6;
+	
 	public JalapenoMyAccountProfilePage(WebDriver driver) throws InterruptedException {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -239,5 +264,117 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		if (femaleRadioButton.isSelected())
 			return Gender.FEMALE;
 		return null;
+	}
+	
+	public int countDropDownValue(char key) {
+		IHGUtil.PrintMethodName();
+		Select select = null;
+		int size = 0;
+		switch (key) {
+			case 'R':
+				select = new Select(race);
+				break;
+			case 'E':
+				select = new Select(ethnicity);
+				break;
+			case 'G':
+				select = new Select(genderQuestion);
+				break;
+			case 'S':
+				select = new Select(sexualOrientation);
+				break;
+			default:
+				break;
+		}
+		
+		List<WebElement> element = select.getOptions();
+		size = element.size();
+
+		return size;
+	}
+	
+	public String updateDropDownValue(int i, char key) {
+		IHGUtil.PrintMethodName();
+		Select select = null;
+		String changeValue = null;
+		switch (key) {
+			case 'R':
+				select = new Select(race);
+				break;
+			case 'E':
+				select = new Select(ethnicity);
+				break;
+			case 'G':
+				select = new Select(genderQuestion);
+				break;
+			case 'S':
+				select = new Select(sexualOrientation);
+				break;
+			default:
+
+				break;
+		}
+		select.selectByIndex(i);
+		WebElement option = select.getFirstSelectedOption();
+		changeValue = option.getText();
+		saveMyChanges.click();
+		return changeValue;
+	}
+	
+	
+	public String updateGenderValue(int i, char key) {
+		IHGUtil.PrintMethodName();
+		String changeValue = null;
+		switch (key) {
+			case 'M':
+				changeValue = "Male";
+				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(maleRadioButton));
+				if(maleRadioButton.isSelected()!=true)
+				maleRadioButton.click();
+				
+				break;
+			case 'F':
+				changeValue = "Female";
+				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(femaleRadioButton));
+				femaleRadioButton.click();
+				break;
+			case 'D':
+				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(declineToAnswerRadioButton));
+				declineToAnswerRadioButton.click();
+				changeValue = "Decline to answer";
+				break;
+			default:
+
+				break;
+		}
+		saveMyChanges.click();
+		return changeValue;
+	}
+	
+	public void updateDemographics(List<String> updateData) {
+		firstName.clear();
+		firstName.sendKeys(updateData.get(0));
+		lastName.clear();
+		lastName.sendKeys(updateData.get(1));
+		String[] DOB = updateData.get(5).split("/");
+		DOBday.sendKeys(Keys.BACK_SPACE);
+		DOBday.sendKeys(DOB[1]);
+		new Select(DOBmonth).selectByIndex(Integer.parseInt(DOB[0]));
+		DOByear.sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,Keys.END),DOB[2]);
+		address1Textbox.clear();
+		address1Textbox.sendKeys(updateData.get(2));
+		address2Textbox.clear();
+		address2Textbox.sendKeys(updateData.get(3));
+		phone4.clear();
+		phone4.sendKeys(updateData.get(4).substring(0, 3));
+		phone5.clear();
+		phone5.sendKeys(updateData.get(4).substring(3, 6));
+		phone6.clear();
+		phone6.sendKeys(updateData.get(4).substring(6, 10));
+		new Select(race).selectByVisibleText(updateData.get(7));
+		new Select(ethnicity).selectByVisibleText(updateData.get(8));
+		zipCodeTextbox.clear();
+		zipCodeTextbox.sendKeys(updateData.get(11));
+		saveMyChanges.click();
 	}
 }

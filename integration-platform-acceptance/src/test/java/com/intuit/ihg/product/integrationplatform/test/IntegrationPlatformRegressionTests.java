@@ -284,7 +284,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
+			Thread.sleep(12000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
@@ -306,7 +306,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 15: Validate message loads and is the right message");
 		assertTrue(msg.isSubjectLocated(reply_Subject));
 
-		Thread.sleep(120000);
+		Thread.sleep(12000);
 		log("Step 16: Reply to the message");
 		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY, null);
 
@@ -377,7 +377,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		pPatientSearchPage.searchForPatientInPatientSearch(firstName, lastName);
 
 		log("Step 9: Verify the Search Result");
-		Thread.sleep(120000);
+		Thread.sleep(12000);
 		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 		verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(firstName));
 
@@ -426,7 +426,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 19: Logout of Practice Portal");
 		pPracticeHomePage.logOut();
 
-		Thread.sleep(120000);
+		Thread.sleep(12000);
 		log("Step 20: Login to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getUrl());
 		pMyPatientPage = portalloginpage.login(email, testData.getPassword());
@@ -500,7 +500,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		pPatientSearchPage.searchForPatientInPatientSearch(firstName, lastName);
 
 		log("Step 9: Verify the Search Result");
-		Thread.sleep(120000);
+		Thread.sleep(12000);
 		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 		verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(firstName));
 

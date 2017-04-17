@@ -1,8 +1,10 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -15,6 +17,7 @@ import com.intuit.ihg.product.integrationplatform.flows.iEHDCSendCCD;
 import com.intuit.ihg.product.integrationplatform.flows.iPIDCSendPatientInvite;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
 import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
+import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
@@ -24,26 +27,39 @@ import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
 import com.intuit.ihg.product.integrationplatform.utils.DirectorySearchUtils;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
+import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
+import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
+import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
@@ -506,7 +522,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		pPatientSearchPage.searchForPatientInPatientSearch(patient.getFirstName(), patient.getLastName());
 
 		log("step 9:Verify the Search Result");
-		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
+		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 
 		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
@@ -522,7 +538,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Expected patient ID "+patient.getFirstName());
 		
 		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
-			
 	 }
 
 	 
@@ -730,4 +745,277 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
 		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, typeOfAttachmentUsed);
 	 }
+	 
+	 
+	 @DataProvider(name = "channelVersion")
+	 public Object[][] channelVersionPIDC() {
+		Object[][] obj = new Object[][] {{"v1"},{"v2"}};
+			return obj;
+	 }
+	 
+	 @Test(enabled = true,dataProvider = "channelVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testOnDemandProvisionPIDC(String version) throws Exception {
+     	log("Test Case: Test OnDemand Provision with PIDC");
+	    log("Execution Environment: " + IHGUtil.getEnvironmentType());
+   	    log("Execution Browser: " + TestConfig.getBrowserType());
+	    log("Step 1: Set Test Data from Property file ");
+	    Long timestamp = System.currentTimeMillis();
+	 	AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	PIDCInfo testData = new PIDCInfo();		
+	 	LoadPreTestDataObj.loadDataFromProperty(testData,version,"2.0");
+	 	
+		log("Step 2: Create patient");
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		Thread.sleep(5000);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
+		Long since = timestamp / 1000L - 60 * 24;
+		Thread.sleep(5000);
+		homePage.clickOnLogout();
+	
+		log("Step 3: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(), testData.getoAuthPassword());
+		
+		log("Step 4: Get request to fetch Medfusion ID");
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		Thread.sleep(2000);
+		String responseXML = RestUtils.prepareCCD(testData.getResponsePath());
+		String medfusionID = aDUtils.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID "+medfusionID);
+		String practicePatientId = IHGUtil.createRandomNumericString();
+		log("patientExternalID on Demand  "+practicePatientId);
+		String patientPayload = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, patient.getFirstName(), patient.getLastName(), patient.getDOBDay(), patient.getDOBMonth(), patient.getDOBYear(), patient.getEmail(), patient.getZipCode(), medfusionID);
+		if(version.equalsIgnoreCase("v2"))
+		patientPayload = patientPayload.replaceAll("v1", "v2");
+		
+		Thread.sleep(600);		
+		
+		log("Step 5: Post Patient");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patientPayload, testData.getResponsePath());
+		
+		boolean completed = false;
+		for (int i = 0; i < 1; i++) {
+			// wait 60 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequestExceptOauth(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+		
+		log("Step 6: Do a GET on PIDC Url to get registered patient for version "+version);
+		log("Getting patients since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		log("Step 7: Find the patient and verify PracticePatientId/Medfusion Patient Id and Patient's demographics details");
+		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId, patient.getFirstName(), patient.getLastName(), medfusionID);
+	 }
+	 
+	 @Test(enabled = true,dataProvider = "channelVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testPIDCPatientDemographicsUpdate(String version) throws Exception {
+		log("Test Case: PIDC Patient Update for Race, Ethnicity, Gender and Language all the values for Version "+version);
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		PIDCInfo testData = new PIDCInfo();
+		Long timestamp = System.currentTimeMillis();
+		LoadPreTestDataObj.loadDataFromProperty(testData,version,"2.0");		 
+		 
+		log("Step 2: LogIn to "+testData.getPortalURL());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getUsername(), testData.getPassword());
+		 
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		JalapenoAccountPage accountPageObject = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage accountProfilePageObject = accountPageObject.clickOnEditMyAccount();
+		
+		String dropValues[] = {"Race", "Ethnicity"};
+		for (int k = 0; k < dropValues.length; k++) {
+			log("Updating Values of '" + dropValues[k] + "' field");
+			int count = accountProfilePageObject.countDropDownValue(dropValues[k].charAt(0));
+			log("Total number of values in '" + dropValues[k] + "' field drop-down:" + count);
+			for (int i = 0; i < count; i++) {
+				String updatedValue = accountProfilePageObject.updateDropDownValue(i, dropValues[k].charAt(0));
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase(IntegrationConstants.RACE)) {
+					updatedValue = "Unreported or refused to report";
+				}
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase(IntegrationConstants.ETHINICITY)) {
+					updatedValue = "Unreported";
+				}
+				
+				log("Updated Value :" + updatedValue);
+				Thread.sleep(40000);
+				Long since = timestamp / 1000L - 60 * 24;
+				if (!updatedValue.equalsIgnoreCase("Choose One")) {
+					log("Do a GET on PIDC Url to fetch updated patient for "+version);
+					RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+					Thread.sleep(800);
+					RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValues[k].charAt(0), testData.getPracticeId_PIDC_20());
+				}
+			}
+		}
+		String[] gender = null;
+		gender= new String[]{"Male","Decline to answer","Female"};
+		Thread.sleep(300);
+		for(int m=0;m<gender.length;m++) {
+			log("gender to update  : "+gender[m]);
+			Thread.sleep(5000);
+			JavascriptExecutor jse = (JavascriptExecutor)driver;
+			jse.executeScript("window.scrollBy(0,350)", "");
+			Thread.sleep(5000);
+			String updatedValue = accountProfilePageObject.updateGenderValue(m, gender[m].charAt(0));
+			log("Updated Value :" + updatedValue);
+			Thread.sleep(40000);
+			Long since = timestamp / 1000L - 60 * 24;
+			log("Do a GET on PIDC Url to fetch updated patient for "+version);
+			RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			Thread.sleep(800);
+			if(!gender[m].equalsIgnoreCase("Decline to answer") && version.equalsIgnoreCase("v2")) {
+				 RestUtils.validateNode(testData.getResponsePath(), updatedValue, 'G', testData.getPracticeId_PIDC_20());
+			}
+		}
+		Thread.sleep(8000);
+		
+		log("Step 4: Click on Preferences Tab");
+		JalapenoMyAccountPreferencesPage myPreferencePage = accountProfilePageObject.goToPreferencesTab(driver);
+		String[] languageType = testData.getPreferredLanguageType().split(",");
+		Long since1 = timestamp / 1000L - 60 * 24;
+		for(int v=0;v<languageType.length;v++) {
+			myPreferencePage.setStatementLanguage(driver,languageType[v]);	
+			if (languageType[v].equalsIgnoreCase("Declined to Answer") ) {
+				languageType[v] = "Other";
+			}
+			Thread.sleep(40000);
+			log("Do a GET on PIDC Url to fetch updated patient for "+version);
+			RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since1 + ",0", testData.getResponsePath());
+			Thread.sleep(800);
+			RestUtils.validateNode(testData.getResponsePath(), languageType[v], 'L', testData.getPracticeId_PIDC_20());
+		}
+	 }
+	 
+	@Test(enabled = true,dataProvider = "channelVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientDemographicsUpdateWithSpecialCharacter(String version) throws Exception {
+		log("Step 1: Test Case: Patient Update with special character data");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		PIDCInfo testData = new PIDCInfo(); 
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Long timestamp = System.currentTimeMillis();
+		LoadPreTestDataObj.loadDataFromProperty(testData,version,"2.0");
+	
+		log("Step 2: LogIn to ");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getUsername(), testData.getPassword());
+		Thread.sleep(800);
+		
+		log("Step 3: Click on myaccountLink on MyPatientPage");
+		JalapenoAccountPage accountPageObject = homePage.clickOnAccount();
+	  	JalapenoMyAccountProfilePage accountProfilePageObject = accountPageObject.clickOnEditMyAccount();
+	  	Thread.sleep(3000);
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		patientData.add("Fname" + "'" + randomString); 
+		patientData.add("TestPatient" + "'" + randomString);  
+		patientData.add("Line1" + "&" + randomString);  
+		patientData.add('"' + randomString + '"'); 
+		patientData.add("1" + IHGUtil.createRandomNumericString()); 
+		patientData.add("1/1/1987"); 
+		patientData.add("2");
+		patientData.add("White"); 
+		patientData.add("Hispanic or Latino"); 
+		patientData.add(null); 
+		patientData.add(null); 
+		patientData.add("12345");
+		
+		log("Step 4: Update patient demographics datails with special charcters data");
+		accountProfilePageObject.updateDemographics(patientData);
+		Thread.sleep(40000);
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		log("Step 5: Invoke Get PIDC and verify patient details for version "+version);
+		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		Thread.sleep(10000);
+		RestUtils.checkPatientRegistered(testData.getResponsePath(), patientData);
+	}
+	
+	@Test(enabled = true,dataProvider = "channelVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientRegistrationfromPractice(String version) throws Exception {
+		log("Test Case: Patient Registration from Practice Portal" + version);
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		PIDCInfo testData = new PIDCInfo();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Long timestamp = System.currentTimeMillis();
+		
+		log("Step 1: Load Data from Property file");
+		LoadPreTestDataObj.loadDataFromProperty(testData,version,"2.0");
+		
+		log("Step 2: Login to Portal 2.0");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("Step 3: Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		log("Step 4: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		log("Step 5: Enter all the details and click on Register");
+		patientActivationPage.setFullDetails(testData.getEmail(),testData.getLastName(),testData.getHomePhoneNo(),testData.getAddress1(),testData.getAddress2(),testData.getCity(),testData.getState(),testData.getZipCode());
+		String firstNameString = patientActivationPage.getFirstNameString();
+		String patientIdString = patientActivationPage.getPatientIdString();
+		String emailAddressString = patientActivationPage.getEmailAddressString();
+		String firstName = "mf.patient"+IHGUtil.createRandomNumericString();;
+		String unlocklink = patientActivationPage.getUnlockLink();
+		
+		log("Step 6: Logout of Practice Portal");
+		practiceHome.logOut();
+		String[] Date = testData.getBirthDay().split("/");
+		
+		log("Step 7: Moving to linkUrl to finish Create Patient procedure");
+		PatientVerificationPage patientAccountActivationPage = new PatientVerificationPage(driver, unlocklink);
+		Thread.sleep(3000);
+		SecurityDetailsPage accountDetailsPage = patientAccountActivationPage.fillPatientInfoAndContinue(testData.getZipCode(), Date[1], Date[0], Date[2]);
+		
+		log("Step 8: Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage =
+				accountDetailsPage.fillAccountDetailsAndContinue(firstName, testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),testData.getHomePhoneNo());
+	
+		log("Step 9: Detecting if Home Page is opened");
+		Thread.sleep(2000);
+		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
+		
+		log("Step 10: Do a GET on PIDC Url to get registered patient for version "+version);
+		Long since = timestamp / 1000L - 60 * 24;
+
+		log("Step 11: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(),
+				testData.getoAuthPassword());
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		firstNameString = firstNameString.replaceAll("&amp;","&");
+		List<String> patientData = new ArrayList<String>();
+		patientData.add(firstNameString);
+		patientData.add(testData.getLastName());
+		patientData.add(testData.getHomePhoneNo());
+		patientData.add(testData.getAddress1());
+		patientData.add(testData.getAddress2());
+		patientData.add(testData.getCity());
+		patientData.add(testData.getZipCode());
+		patientData.add(testData.getSSN());
+		patientData.add("MALE");
+		patientData.add(emailAddressString);
+
+		log("Step 12: Find the patient and check if he is registered");
+		RestUtils.isPatientRegistered(testData.getResponsePath(), patientIdString, patientData.get(0), patientData.get(1), null);
+
+		log("Step 13: Verify patient Demographics Details");
+		RestUtils.verifyPatientDetails(testData.getResponsePath(), patientIdString, patientData, null);
+	}
 }

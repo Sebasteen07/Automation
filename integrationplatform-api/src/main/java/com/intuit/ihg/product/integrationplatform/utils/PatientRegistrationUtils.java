@@ -43,13 +43,14 @@ public class PatientRegistrationUtils {
 		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("Logging out");
+		Thread.sleep(2000);
 		jalapenoHomePage.clickOnLogout();
 	}
 		
 	public static void csvFileReader(PIDCInfo testData,String csvFilePath) throws IOException {
 		
-		String[][] patientValues = new String[500][500];
-		int[] maxValue = new int[500];
+		String[][] patientValues = new String[800][800];
+		int[] maxValue = new int[800];
 		BufferedReader bufRdr = new BufferedReader(new FileReader(csvFilePath));
 		String line1 = null;
 		int row = 0;
