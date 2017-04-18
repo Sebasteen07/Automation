@@ -88,7 +88,7 @@ public class DirectorySearchPayload {
 			mainRootElement.appendChild(ZipCode);
 		}
 		
-		if(testData.DirectorySearchList.get(counter).getType() !=null) {
+		if(testData.DirectorySearchList.get(counter).getDirectAddress() !=null) {
 			Element DirectAddress = doc.createElement("DirectAddress");
 			DirectAddress.appendChild(doc.createTextNode(testData.DirectorySearchList.get(counter).getDirectAddress()));
 			mainRootElement.appendChild(DirectAddress);

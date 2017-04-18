@@ -365,6 +365,9 @@ public class PropertyFileLoader {
 	public String getPracticeId_PIDC() {
 		return property.getProperty("practiceId_PIDC");
 	}
+	public String getPatientID() {
+		return property.getProperty("patientID");
+	}
 	
 	
 	public String getRestUrl1_20() {
@@ -388,8 +391,24 @@ public class PropertyFileLoader {
 	public String getStandard_Email() {
 		return property.getProperty("standard_Email");
 	}
-	
-	
+	public String getPracticeUserName() {
+		return property.getProperty("practiceUserName");		
+	}
+	public String getPracticePassword() {
+		return property.getProperty("practicePassword");		
+	}
+	public String getCity() {
+		return property.getProperty("city");		
+	}
+	public String getState() {
+		return property.getProperty("state");		
+	}
+	public String getLastName() {
+		return property.getProperty("lnameSC");		
+	}
+	public String getLanguageType() {
+		return property.getProperty("preferredLanguage");	
+	}
 	//PIDC END
 	
 	//Appointment Data Request from partner
