@@ -16,6 +16,10 @@
 	    		<include name="testMU2GetEventForNewPatient"/>
 	    		<include name="testPIDCPatientRegistrationV1"/>
 	    		<include name="testPIDCPatientRegistrationV2"/>    	
+	    		<include name="testAppointmentRequestForExistingPatient"/>
+	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
+	    	 	<include name="testStatementEventForExistingPatient"/>
+	    		<include name="testStatementEventForNewSelfPatient"/>   
       		</methods>
 	</classes>
 </test>

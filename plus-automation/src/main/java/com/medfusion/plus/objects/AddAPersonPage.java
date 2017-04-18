@@ -28,7 +28,7 @@ public class AddAPersonPage {
 		zipCode = driver.findElement(By.id("zip"));
 	}
 
-	public void addNewPerson(String personName, String zip) throws InterruptedException {
+	public void addNewPerson(String personName, String zip) {
 		name.clear();
 		name.sendKeys(personName);
 		zipCode.clear();

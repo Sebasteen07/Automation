@@ -14,13 +14,13 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.mu2.utils.APIData;
 import com.intuit.ihg.product.mu2.utils.APITestData;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
 import com.intuit.ihg.product.mu2.utils.UtilityFunctions;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
@@ -71,7 +71,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 
 		log("Step 4: Validate message subject");
 		Thread.sleep(9000);
-		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have new health data"));
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have a new health data summary"));
 
 		log("====== Consolidated CCD related events generation Started ======");
 

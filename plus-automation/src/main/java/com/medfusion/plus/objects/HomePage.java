@@ -21,11 +21,12 @@ public class HomePage {
 		ngWebDriver.waitForAngularRequestsToFinish();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@icon='ion-person']")));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@icon-on='mf-icon mf-color__inverse mf-icon__profile']")));
 	}
 
-	public void selectPersonTab() {
-		WebElement element = driver.findElement(By.cssSelector(".tab-item[icon='ion-person']"));
+	public void selectPersonTab() throws InterruptedException {
+		Thread.sleep(2000);
+		WebElement element = driver.findElement(By.xpath("//a[@icon-on='mf-icon mf-color__inverse mf-icon__profile']"));
 
 		Actions actions = new Actions(driver);
 

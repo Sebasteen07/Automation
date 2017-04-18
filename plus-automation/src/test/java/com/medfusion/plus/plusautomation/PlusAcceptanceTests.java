@@ -22,6 +22,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import com.medfusion.plus.angular.NgWebDriver;
+import com.medfusion.plus.objects.AboutPage;
 import com.medfusion.plus.objects.AccountPage;
 import com.medfusion.plus.objects.AddACard;
 import com.medfusion.plus.objects.AddAPersonPage;
@@ -39,8 +40,10 @@ import com.medfusion.plus.objects.PlusPojos;
 import com.medfusion.plus.objects.ProfilePage;
 import com.medfusion.plus.objects.PropertyLoader;
 import com.medfusion.plus.objects.SelectAProfilePage;
+import com.medfusion.plus.objects.SendFeedbackPage;
 import com.medfusion.plus.objects.SettingsPage;
 import com.medfusion.plus.objects.SupportPage;
+import com.medfusion.plus.objects.SupportRequestPage;
 
 public class PlusAcceptanceTests {
 
@@ -86,7 +89,7 @@ public class PlusAcceptanceTests {
 		// driver.quit();
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testLoginInValidCredentials() throws InterruptedException {
 
 		log.info("Testcase for verifying Invalid Login");
@@ -104,7 +107,7 @@ public class PlusAcceptanceTests {
 		log.info("Test case executed successfully");
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testLoginValidCredentials() throws InterruptedException {
 
 		log.info("Testcase for verifying Valid Login");
@@ -118,7 +121,7 @@ public class PlusAcceptanceTests {
 		loginPage.login(plusData.getValidUserName(), plusData.getValidPassword());
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testSupportPageOnSignIn() throws InterruptedException {
 		log.info("Go to the Login Page");
 		LoginPage loginPage = new LoginPage(driver);
@@ -142,14 +145,24 @@ public class PlusAcceptanceTests {
 
 		log.info("Verify the New Support Request page loads");
 		assertTrue(CommonUtils.verifyTextPresent(driver, "Where should we email you?"));
-		supportPage.clickBackButton();
+		SupportRequestPage supportRequestPage = new SupportRequestPage(driver);
+		supportRequestPage.clickBackButton();
+
+		log.info("Go to the Send Feedback page");
+		supportPage.goToSendFeedback();
+
+		log.info("Verify the Send Feedback page loads");
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Where should we email you?"));
+		SendFeedbackPage sendFeedbackPage = new SendFeedbackPage(driver);
+		sendFeedbackPage.clickBackButton();
 
 		log.info("Go to the About Medfusion Plus page");
 		supportPage.goToAboutMedfusionPlus();
 
 		log.info("Verify the About Medfusion Plus page loads");
 		assertTrue(CommonUtils.verifyTextPresent(driver, "At some point in our lives, we are all patients"));
-		supportPage.clickBackButton();
+		AboutPage aboutPage = new AboutPage(driver);
+		aboutPage.clickBackButton();
 
 		log.info("Go to the Privacy Statement page");
 		supportPage.goToPrivacyStatement();
@@ -169,7 +182,7 @@ public class PlusAcceptanceTests {
 		driver.close();
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testSupportPageOnceLoggedIn() throws InterruptedException {
 		log.info("Log into Plus");
 		LoginPage loginPage = new LoginPage(driver);
@@ -209,11 +222,12 @@ public class PlusAcceptanceTests {
 		assertTrue(CommonUtils.verifyTextPresent(driver, "Tell us about the practice where you see your provider"));
 		supportPage.clickBackButton();
 
-		// log.info("Go to the Send Feedback page");
-		// supportPage.goToSendFeedback();
-		//
-		// log.info("Verify the Send Feedback page loads");
-		// assertTrue(CommonUtils.verifyTextPresent(driver, "Drop us a note"));
+		log.info("Go to the Send Feedback page");
+		supportPage.goToSendFeedback();
+
+		log.info("Verify the Send Feedback page loads");
+		assertTrue(CommonUtils.verifyTextPresent(driver, "Drop us a note"));
+		supportPage.clickBackButton();
 
 		log.info("Go to the About Medfusion Plus page");
 		supportPage.goToAboutMedfusionPlus();
@@ -240,7 +254,7 @@ public class PlusAcceptanceTests {
 		driver.close();
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testEditMyProfile() throws InterruptedException {
 		log.info("Log into Plus");
 		LoginPage loginPage = new LoginPage(driver);
@@ -270,7 +284,7 @@ public class PlusAcceptanceTests {
 		Assert.assertEquals(profilePage.verifyZipCode(), String.valueOf(zipCode));
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testAddAndDeleteAProfile() throws InterruptedException {
 		log.info("Log into Plus");
 		LoginPage loginPage = new LoginPage(driver);
@@ -307,7 +321,7 @@ public class PlusAcceptanceTests {
 		Assert.assertTrue(profileList.verifyProfileNotPresent(name));
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = false, groups = { "Plus" })
 	public void testVerifyAccountSettings() throws InterruptedException {
 		String salutation = plusData.getSalutation();
 		String street = plusData.getStreet();
@@ -347,10 +361,11 @@ public class PlusAcceptanceTests {
 		Assert.assertEquals(action.getPhone(), phone);
 
 		log.info("Reset values to previous values");
-		action.resetMemberProfile("Mr", "5501 Dillard Dr", "Cary", "NC", "27518-9233", "test@example.com", "(919) 867-5309");
+		action.resetMemberProfile("Mr", "5501 Dillard Dr", "Cary", "NC", "27518-9233", "test@example.com",
+				"(919) 867-5309");
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = false, groups = { "Plus" })
 	public void testAddANewCard() throws InterruptedException {
 		String name = plusData.getCardName();
 		String number = plusData.getCardNum();
@@ -395,7 +410,7 @@ public class PlusAcceptanceTests {
 		Assert.assertTrue(payment.verifyPaymentMethodListed(name));
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = false, groups = { "Plus" })
 	public void testAddNewBankAccount() throws InterruptedException {
 		String name = plusData.getBankName();
 		String rNumber = plusData.getRoutingNumber();
@@ -437,7 +452,7 @@ public class PlusAcceptanceTests {
 		Assert.assertTrue(payment.verifyPaymentMethodListed(name));
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = false, groups = { "Plus" })
 	public void testVerifyAutopay() throws InterruptedException {
 		log.info("Log into Plus");
 		LoginPage loginPage = new LoginPage(driver);
@@ -472,7 +487,7 @@ public class PlusAcceptanceTests {
 		action.disableAutopay();
 	}
 
-	@Test(enabled = true, groups = {"Plus"})
+	@Test(enabled = true, groups = { "Plus" })
 	public void testVerifyNotificationSettings() throws InterruptedException {
 		log.info("Log into Plus");
 		LoginPage loginPage = new LoginPage(driver);

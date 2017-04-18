@@ -21,11 +21,12 @@ public class ConnectionsPage {
 		ngWebDriver.waitForAngularRequestsToFinish();
 
 		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//li[@ui-sref='.connection-create-step1({ profileId: selectedProfile.id })']")));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("li[href*='connections/profile']")));
 	}
 
-	public void clickEditMyProfile() {
-		WebElement element = driver.findElement(By.xpath("//li[@ui-sref='^.profile({ profileId: selectedProfile.id })']"));
+	public void clickEditMyProfile() throws InterruptedException {
+		Thread.sleep(2000);
+		WebElement element = driver.findElement(By.cssSelector("li[href*='connections/profile']"));
 
 		Actions actions = new Actions(driver);
 

@@ -31,7 +31,7 @@ public class SendPatientInvite implements iPIDCSendPatientInvite {
 		String zip = payloadObj.zip;
 		String birthday = payloadObj.date;
 		String email = payloadObj.email;
-		System.out.println(payload);
+		
 		String response = RequestUtils.getStatus(testData.getRestUrl(), payload, externalSystemID);
 		ArrayList<String> newPatientDetails = new ArrayList<String>();
 		newPatientDetails.add(firstName);

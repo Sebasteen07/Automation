@@ -45,7 +45,7 @@ public class MessagePage extends BasePageObject {
 	@FindBy(id = "closeCcd")
 	private WebElement btnCloseViewer;
 
-	@FindBy(linkText = "Send my information")
+	@FindBy(linkText = "Send my information securely by Direct Protocol")
 	private WebElement btnShareWithDoctor;
 
 	@FindBy(xpath = "//form/div/button")
@@ -238,7 +238,7 @@ public class MessagePage extends BasePageObject {
 
 	public boolean isSubjectLocated(String subject) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(1000); // wait for loaded
+		Thread.sleep(5000); // wait for loaded
 		PortalUtil.setPortalFrame(driver);
 		log("Looking for message with Header " + subject);
 		WebElement messageHeader = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//*[contains(text(),'" + subject + "')]"))));

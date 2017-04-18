@@ -12,7 +12,6 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,7 +25,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class RequestUtils {
 
-	private HttpsURLConnection postConnection;
+	private HttpURLConnection postConnection;
 	private URLConnection getConnection;
 	private static String processingURL;
 	private static String getResponse;
@@ -40,7 +39,7 @@ public class RequestUtils {
 		//Log4jUtil.log("externalSystemID  : " + externalSystemID);
 		
 		URL obj = new URL(url);
-		postConnection = (HttpsURLConnection) obj.openConnection();
+		postConnection = (HttpURLConnection) obj.openConnection();
 
 		postConnection.setUseCaches(false);
 		postConnection.setRequestMethod("POST");

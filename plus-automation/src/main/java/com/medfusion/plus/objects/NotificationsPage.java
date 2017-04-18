@@ -52,7 +52,7 @@ public class NotificationsPage {
 		}
 	}
 
-	public void clickBackButton() throws InterruptedException {
+	public void clickBackButton() {
 		driver.navigate().back();
 	}
 

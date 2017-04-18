@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,29 +85,20 @@ public class MU2Utils {
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 		Thread.sleep(5000);
-		
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
-		Log4jUtil.log("MU2GetEvent Step 5: view  First CCD");
-		MedicalRecordSummariesPageObject.selectFirstVisibleCCDDate();
-		
 		Thread.sleep(5000);
 		
 		Log4jUtil.log("Page refreshing...");
-		/*
+		
 		jse.executeScript("window.scrollBy(0,200)", "");
 		
-		//code to Download CCD on firefox 
-		
+		//code to Download CCD on fire fox 
 		Log4jUtil.log("Step 6: Download CCD");
 		Thread.sleep(4000);
-		//MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
-		//MedicalRecordSummariesPageObject.selectDownload();
-		//Thread.sleep(2000);	
-		IHGUtil.PrintMethodName();
-		
+		MedicalRecordSummariesPageObject.selectDownload();
 		if( driver instanceof FirefoxDriver) {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
@@ -116,14 +109,14 @@ public class MU2Utils {
 			rb.keyRelease(KeyEvent.VK_ENTER);
 			Thread.sleep(2000);
 		}
-		*/
+		
 		Log4jUtil.log("====== Consolidated CCD - VDT events generated successfully ======");
 		Thread.sleep(5000);
 		
 		homePage.clickOnLogout();
 		
 		Log4jUtil.log("MU2GetEvent Step 7: Waiting for Events sync in DWH");
-		Thread.sleep(430000);
+		Thread.sleep(720000);
 		
 		Log4jUtil.log("MU2GetEvent Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
@@ -160,8 +153,7 @@ public class MU2Utils {
 			Log4jUtil.log("CCD '" + list.get(i) + "' event portal Time: " + eventTime);
 		}
  }
-	
-	
+
 	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp) {
 		IHGUtil.PrintMethodName();
 
@@ -183,13 +175,7 @@ public class MU2Utils {
 					String readValue;
 					readValue = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 					Long recordedTimeStamp = Long.valueOf(readValue);
-					
-					if(transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
-						Log4jUtil.log("Standard Email");
-					}
-					if(transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
-						Log4jUtil.log("Direct Protocol");
-					}
+
 					if (recordedTimeStamp >= timeStamp) {
 						
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
@@ -199,8 +185,14 @@ public class MU2Utils {
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
 								) {
-								
 							
+							if (transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+								Log4jUtil.log("Standard Email");
+							}
+							if (transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+								Log4jUtil.log("Direct Protocol");
+							}
+
 								for(int j=0;j<ccdMessageList.size();j++) {
 									if(getValue(PracticeResourceId, element).equalsIgnoreCase(ccdMessageList.get(j)) ) {
 										Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(j));
@@ -231,7 +223,7 @@ public class MU2Utils {
 	public static List<String> eventList() {
 		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.VIEW_ACTION);
-		//eventList.add(MU2Constants.DOWNLOAD_ACTION);
+		eventList.add(MU2Constants.DOWNLOAD_ACTION);
 		return eventList;
 	}
 	

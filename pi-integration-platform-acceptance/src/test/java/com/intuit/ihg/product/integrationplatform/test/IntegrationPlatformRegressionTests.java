@@ -2,16 +2,23 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.flows.iEHDCSendCCD;
 import com.intuit.ihg.product.integrationplatform.flows.iPIDCSendPatientInvite;
+import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
+import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
@@ -19,16 +26,23 @@ import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
+import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
+import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.intuit.ihg.product.integrationplatform.implementedExternals.SendCCD;
-import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatientInvite;
-//import com.intuit.ihg.product.support.utils.SupportConstants;
+import com.medfusion.product.practice.api.pojo.Practice;
 
 /**
  * @author rkhambe
@@ -117,9 +131,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
 
 		log("Step 5: Get processing status until it is completed");
-		String orignal = "dev3vip-events-core-svc\\.qhg\\.local";
-		String modified = "dev3aapp11.qhg.local:8080";
-		processingUrl = processingUrl.replaceAll(orignal, modified);
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -239,7 +250,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 20);
 			assertTrue(activationUrl!=null, "Error: Activation link not found.");
 			
-			//PatientRegistrationUtils patientRegistrationUtilsObject= new PatientRegistrationUtils();
 			PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
 			
 			Thread.sleep(12000);
@@ -266,7 +276,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH3,testData.PATIENT_EXTERNAL_ID);
 			log(ccdDetail4.get(0));
 			
-			
 			log("Set username and password for MU2 : UserName "+patientDetail.get(4)+" password: "+testData.PatientPassword);
 			
 			RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
@@ -277,7 +286,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.PUSH_RESPONSEPATH);
 			
 			MU2Utils MU2UtilsObj = new MU2Utils();
-			String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
+		String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
 			
 			log("patientID : "+patientID);
 			
@@ -291,7 +300,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.PatientFirstName_MU2  = patientDetail.get(0);
 			testData.PatientLastName_MU2 = patientDetail.get(1);
 			
-			Thread.sleep(70000);
+		Thread.sleep(70000);
 			
 			log("Step 4:  Login Portal 2.0");
 			
@@ -300,8 +309,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 
 	 @DataProvider(name = "portalVersion")
 		public Object[][] portalVersionForRegistration() {
-			Object[][] obj = new Object[][] {{"1.0"},{"2.0"},
-			};
+		Object[][] obj = new Object[][] {{"1.0"},{"2.0"},};
 			return obj;
 	 }
 	 
@@ -319,5 +327,266 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
 			log("Execution Browser: " + TestConfig.getBrowserType());
 		 	PatientRegistrationUtils.pidcPatientRegistration("v2",driver,portalVersion);
+	 }
+	 
+	 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testAppointmentRequestForExistingPatient() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+	 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();		
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+		
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData,workingDir);
+		
+		testData.Status = "NEW";
+		testData.FirstName=testData.FirstName;
+		testData.LastName=testData.LastName;
+		testData.EmailUserName=testData.EmailUserName;
+		testData.BatchSize = "2";
+		
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+		
+		testData.Type=testData.appointmentDetailList.get(1).getType();
+		testData.Reason=testData.appointmentDetailList.get(1).getReason();
+		testData.Description=testData.appointmentDetailList.get(1).getDescription();
+		
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+		
+		aDUtils.checkAppointment(testData, driver);
+		Thread.sleep(6000);
+		//homePage.clickOnLogout();
+		Thread.sleep(3000);
+		
+		testData.Status = "UPDATE";
+		testData.Time =  testData.appointmentDetailList.get(3).getTime(); 
+		testData.Location = "Update";
+		testData.appointmentType = "FUTURE";
+		
+		testData.Type=testData.appointmentDetailList.get(3).getType();
+		testData.Reason=testData.appointmentDetailList.get(3).getReason();
+		testData.Description=testData.appointmentDetailList.get(3).getDescription();
+		testData.BatchSize = "1";
+		
+		aDUtils.checkAppointment(testData, driver);
+		Thread.sleep(3000);
+		
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime();
+		testData.Location = "Cancel";
+		testData.appointmentType = "FUTURE";
+		
+		testData.Type=testData.appointmentDetailList.get(4).getType();
+		testData.Reason=testData.appointmentDetailList.get(4).getReason();
+		testData.Description=testData.appointmentDetailList.get(4).getDescription();
+		testData.BatchSize = "1";
+		
+		aDUtils.checkAppointment(testData, driver);
+		
+	 }
+
+	 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testAppointmentRequestForNewSelfPatient() throws Exception {
+	 	log("Test Case: Appointment Request for New Patient From Partner");
+	 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+	 	log("Execution Browser: " + TestConfig.getBrowserType());
+	 	AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	AppointmentData testData = new AppointmentData();		
+	 	LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		log("Step 1: Create patient");
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
+		
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+		
+		homePage.clickOnLogout();
+	
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+		
+		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.ResponsePath);
+		Thread.sleep(2000);
+		//log("responsePath- "+RestUtils.prepareCCD(testData.ResponsePath));
+		
+		String responseXML = RestUtils.prepareCCD(testData.ResponsePath);
+		String medfusionID = aDUtils.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID "+medfusionID);
+		
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData,workingDir);
+		
+		log("Step 3: Post New AppointMentData with MFPatientID");
+		
+		testData.FirstName=patient.getFirstName();
+		testData.LastName=patient.getLastName();
+		testData.EmailUserName=patient.getEmail();
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.MFPatientId=medfusionID;
+		testData.BatchSize = "1";
+		testData.Status = testData.appointmentDetailList.get(1).getStatus(); //"NEW";
+		testData.Time = testData.appointmentDetailList.get(1).getTime(); //"2017-02-13T21:30:00.000Z";
+		testData.Location =testData.appointmentDetailList.get(1).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.UserName = patient.getEmail();
+		testData.Password = patient.getPassword();
+		
+		testData.Type=testData.appointmentDetailList.get(1).getType();
+		testData.Reason=testData.appointmentDetailList.get(1).getReason();
+		testData.Description=testData.appointmentDetailList.get(1).getDescription();
+		
+		
+		aDUtils.checkAppointment(testData, driver);
+		Thread.sleep(6000);
+		
+		log("Step 4: Post UPDATE AppointMentData ");
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime(); //"2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(3).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+		testData.Type=testData.appointmentDetailList.get(3).getType();
+		testData.Reason=testData.appointmentDetailList.get(3).getReason();
+		testData.Description=testData.appointmentDetailList.get(3).getDescription();
+		
+		
+		aDUtils.checkAppointment(testData, driver);
+		
+		log("Step 5: Post CANCEL AppointMentData ");
+		Thread.sleep(3000);
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime(); //"2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(4).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+		
+		testData.Type=testData.appointmentDetailList.get(4).getType();
+		testData.Reason=testData.appointmentDetailList.get(4).getReason();
+		testData.Description=testData.appointmentDetailList.get(4).getDescription();
+		
+		aDUtils.checkAppointment(testData, driver);
+		
+		log("step 6: Login to Practice Portal");
+		
+		Practice practice = new Practice();
+		practice.url = testData.portalURL; 
+		practice.username = testData.practiceUserName; 
+		practice.password = testData.practicePassword;
+		
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practice.url);
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practice.username, practice.password);
+
+		log("step 7: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		log("step 8:Set Patient Search Fields");
+		// pPatientSearchPage.setPatientSearchFields();
+		pPatientSearchPage.searchForPatientInPatientSearch(patient.getFirstName(), patient.getLastName());
+
+		log("step 9:Verify the Search Result");
+		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
+		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+
+		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
+		driver.findElement(By.xpath(searchResult)).click();
+		
+		String editPatientID = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
+		driver.findElement(By.xpath(editPatientID)).click();
+		
+		String onDemandID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
+		String patientExternalID = driver.findElement(By.xpath(onDemandID)).getAttribute("value");
+		
+		log("Actual patient ID "+patientExternalID);
+		log("Expected patient ID "+patient.getFirstName());
+		
+		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
+			
+	 }
+
+	 
+	 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testStatementEventForExistingPatient() throws Exception {
+		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
+	 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
+	 	log("Execution Browser: " + TestConfig.getBrowserType());
+	 	StatementEventData testData = new StatementEventData();
+	 	log("Step 1: load from external property file");
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		log("url is "+testData.Url);
+		log("Step 2: Call Statement Post");
+		StatementEventUtils sEventObj = new StatementEventUtils();
+		sEventObj.generateViewEvent(driver,testData);
+	 	
+	 }
+	 
+	 @Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	 public void testStatementEventForNewSelfPatient() throws Exception {
+		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Create patient");
+		StatementEventData testData = new StatementEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		log("Statement Event for Practice: "+testData.PracticeName);
+		
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		patient.setUrl(testData.Url);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
+		
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+		
+		StatementEventUtils sEventObj = new StatementEventUtils();
+		
+		homePage.clickOnLogout();
+		
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+		
+		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
+		Thread.sleep(2000);
+		
+		String responseXML = RestUtils.prepareCCD(testData.ResponsePath);
+		String medfusionID = sEventObj.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID "+medfusionID);
+		log("Step 3: set patient details ");
+		testData.UserName = patient.getUsername();
+		testData.Password = patient.getPassword();
+		testData.FirstName = patient.getFirstName();
+		testData.LastName = patient.getLastName();
+		testData.Email = patient.getEmail();
+		testData.PatientID = "";
+		testData.MFPatientID = medfusionID;
+		testData.UserName = patient.getEmail();
+		testData.StatementType="New";
+		testData.since = since;
+		log("Step 4: Call Statement Post");
+		sEventObj.generateViewEvent(driver,testData);
 	 }
 }

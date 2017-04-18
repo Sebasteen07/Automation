@@ -100,6 +100,7 @@ public class LoadPreTestData {
 		testData.CCDPATH1=propertyData.getCCDPATH1();
 		testData.CCDPATH2=propertyData.getCCDPATH2();
 		testData.CCDPATH3=propertyData.getCCDPATH3();
+		testData.CCDPATH4=propertyData.getCCDPATH4();
 		
 		testData.HomePhoneNo=propertyData.getHomePhoneNo();
 		testData.SecretQuestion=propertyData.getSecretQuestion();
@@ -114,6 +115,7 @@ public class LoadPreTestData {
 		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
 		testData.Standard_Email = propertyData.getStandard_Email();
 		
+		testData.Standard_Email = propertyData.getStandard_Email();
 		return testData;
 	}
 	
@@ -184,4 +186,87 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+	
+	public AppointmentData loadAppointmentDataFromProperty(AppointmentData testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.AppointmentPath= propertyData.getAppointmentRequestURL();
+		testData.EmailUserName= propertyData.getEmail_AD();
+		testData.MFPatientId = propertyData.getMedfusionPatientId_AD();
+		testData.MFPracticeId = propertyData.getMedfusionPracticeId_AD();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
+		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
+		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
+		
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.PracticeName = propertyData.getIntegrationPracticeID_AD();
+		//testData.PracticeName = propertyData.getPatientPracticeID_AD();
+		testData.URL = propertyData.getPracticeURL_AD();
+		testData.UserName = propertyData.getUserName_AD();
+		testData.Password = propertyData.getPassword_AD();
+		testData.PatientPracticeId = propertyData.getPatientPracticeID_AD();
+		testData.PreviousAppointmentId = propertyData.getPreviousAppointmentId();
+		testData.PATIENT_EXTERNAL_ID = propertyData.getPATIENT_EXTERNAL_ID();
+		testData.PATIENT_INVITE_RESTURL=propertyData.getPATIENT_INVITE_RESTURL();
+		testData.From = propertyData.getProviderIdentifier_AD();
+		
+		testData.FirstName = propertyData.getFirstName_AD();
+		testData.LastName = propertyData.getLastName_AD();
+		testData.SecretQuestion=propertyData.getSecretQuestion();
+		testData.SecretAnswer=propertyData.getSecretAnswer();
+		testData.HomePhoneNo=propertyData.getHomePhoneNo();
+		testData.BatchSize=propertyData.getBatchSize_AD();
+		testData.csvFilePath = propertyData.getCSVFILEPATH_AD();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getProtalUserName_AD();
+		testData.practicePassword = propertyData.getPortalPassword_AD();
+		
+		return testData;
+	}
+	
+	public StatementEventData loadStatementEventDataFromProperty(StatementEventData testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.Url = propertyData.getUrl_SE();
+		testData.UserName = propertyData.getUserName_SE();
+		testData.Password = propertyData.getPassword_SE();
+		testData.Email = propertyData.getEmail_SE();
+		testData.RestUrl = propertyData.getRestUrl_SE();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthUsername = propertyData.getOAuthUsername_SE();
+		testData.OAuthPassword = propertyData.getOAuthPassword_SE();
+		testData.FirstName = propertyData.getFirstName_SE();
+		testData.LastName = propertyData.getLastName_SE();
+		testData.PatientID = propertyData.getPatientID_SE();
+		testData.MFPatientID = propertyData.getMFPatientID_SE();
+		testData.StatementEventURL = propertyData.getStatementEventURL();
+		
+		testData.StatementFormat = propertyData.getStatementFormat_SE();
+		testData.Address1 = propertyData.getAddress1_SE();
+		testData.Address2 = propertyData.getAddress2_SE();
+		testData.City = propertyData.getCity_SE();
+		testData.State = propertyData.getState_SE();
+		testData.ZipCode = propertyData.getZipCode_SE();
+		testData.NewCharges = propertyData.getNewCharges_SE();
+		testData.TotalCharges = propertyData.getTotalCharges_SE();
+		testData.AmountDue = propertyData.getAmountDue_SE();
+		testData.BalanceForwardType = propertyData.getBalanceForwardType_SE();
+		testData.BalanceForwardAmount = propertyData.getBalanceForwardAmount_SE();
+		testData.OutstandingBalance = propertyData.getOutstandingBalance_SE();
+		testData.StatementComment = propertyData.getStatementComment_SE();
+		testData.DunningMessage = propertyData.getDunningMessage_SE();
+		testData.PracticeProviderName = propertyData.getPracticeProviderName_SE();
+		testData.PaymentDueDate = propertyData.getPaymentDueDate();
+		testData.RestURLPIDC = propertyData.getRestUrlPIDC_SE();
+		testData.PracticeName = propertyData.getPracticeName_SE();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getPortalUserName_SE();
+		testData.practicePassword = propertyData.getPortalPassword_SE();
+		testData.emailSubject = propertyData.getStatementEmailSubject();
+		return testData;
+	}
+		
 }

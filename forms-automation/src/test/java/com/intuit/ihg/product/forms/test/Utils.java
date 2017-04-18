@@ -114,7 +114,7 @@ public class Utils {
 		String url = getPortalURL(practiceType, true);
 		jp.setUrl(url);
 		jp.setDOBYear(newPatientDOBYear);
-		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver);
+		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver, url);
 		String patientDOB = jp.getDOBMonthText() + "/" + jp.getDOBDay() + "/" + jp.getDOBYear();
 		logLogin(jp.getUrl(), jp.getEmail(), jp.getPassword());
 		p.setDob(patientDOB);
