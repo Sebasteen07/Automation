@@ -197,7 +197,8 @@ public class StatementEventUtils {
 	    jalapenoHomePage.clickOnMenuPayBills();
 	    Thread.sleep(2000);
 	   
-	    WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"statementPanel\"]/div/div/div[1]/table/tfoot/tr/td[2]"));
+	    //WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"statementPanel\"]/div/div/div[1]/table/tfoot/tr/td[2]"));
+	    WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"balanceDue\"]/span[1]/strong"));
 	    Log4jUtil.log("due Amount "+paymentDue.getText());
 	   
 	    //long transitTimeStamp2 = System.currentTimeMillis();
