@@ -133,6 +133,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		log("Logging out");
+		Thread.sleep(3000);
 		jalapenoHomePage.clickOnLogout();
 
 		log("Step 10: Do a GET on PIDC Url to get registered patient");
