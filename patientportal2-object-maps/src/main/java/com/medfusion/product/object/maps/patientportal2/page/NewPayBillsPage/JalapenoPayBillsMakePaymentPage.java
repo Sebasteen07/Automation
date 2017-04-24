@@ -74,7 +74,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "visa")
 	private WebElement visaCard;
 	
-	@FindBy(how = How.ID, using = "statement_details")
+	@FindBy(how = How.ID, using = "viewStatementDetail")
 	private WebElement statementDetails;
 	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
