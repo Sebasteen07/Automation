@@ -71,7 +71,7 @@ public class HealthFormListPage extends BasePageObject {
 	}
 
 	public void logout() throws InterruptedException, IOException {
-		IHGUtil.setDefaultFrame(driver);
+		// IHGUtil.setDefaultFrame(driver);
 		scrollAndWait(0, 0, 500);
 		logout.click();
 		TimeUnit.SECONDS.sleep(3);
