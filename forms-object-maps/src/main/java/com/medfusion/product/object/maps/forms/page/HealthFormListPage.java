@@ -70,8 +70,10 @@ public class HealthFormListPage extends BasePageObject {
 		return wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//li[./a[starts-with(./text(), '" + formName + "')]]//a)[2]"))).getAttribute("href");
 	}
 
-	public void logout() throws InterruptedException, IOException {
-		// IHGUtil.setDefaultFrame(driver);
+	public void logout(boolean pi) throws InterruptedException, IOException {
+		if (pi) {
+			IHGUtil.setDefaultFrame(driver);
+		}
 		scrollAndWait(0, 0, 500);
 		logout.click();
 		TimeUnit.SECONDS.sleep(3);
