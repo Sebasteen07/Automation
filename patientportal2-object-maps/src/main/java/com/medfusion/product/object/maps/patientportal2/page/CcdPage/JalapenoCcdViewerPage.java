@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
+
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -12,14 +14,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 
 
-public class JalapenoCcdViewerPage extends BasePageObject {
+public class JalapenoCcdViewerPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "closeCcd")
 	private WebElement closeButton;
@@ -200,8 +202,9 @@ public class JalapenoCcdViewerPage extends BasePageObject {
 		}
 	}
 
-	public boolean assessCcdElements() {
-
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(closeButton);
@@ -212,14 +215,10 @@ public class JalapenoCcdViewerPage extends BasePageObject {
 		webElementsList.add(healthOverview);
 		webElementsList.add(basicInformation);
 		webElementsList.add(careTeamMembers);
-		/*
-		 * webElementsList.add(history); webElementsList.add(problems); webElementsList.add(medication); webElementsList.add(allergies);
-		 * webElementsList.add(pastMedicalHistory); webElementsList.add(procedures); webElementsList.add(vitalSigns); webElementsList.add(results);
-		 * webElementsList.add(advanceDirectives); webElementsList.add(insurance);
-		 */
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
 
+		return assessPageElements(webElementsList);
+	}
+	
 
 	/**
 	 * Click on the View health data
@@ -241,4 +240,5 @@ public class JalapenoCcdViewerPage extends BasePageObject {
 			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
+
 }

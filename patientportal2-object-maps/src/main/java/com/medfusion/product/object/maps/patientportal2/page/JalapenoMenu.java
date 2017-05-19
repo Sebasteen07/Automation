@@ -15,6 +15,7 @@ import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -61,6 +62,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "signout")
 	private WebElement signoutButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='ccdList_lhn']/a/span")
+	private WebElement healthRecordMenu;	
 
 	public JalapenoMenu(WebDriver driver) {
 		super(driver);
@@ -166,4 +170,12 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
 
+	
+	public MedicalRecordSummariesPage goToHealthRecorPage() {
+				
+		log("Clicking on Health Record menu button");
+		healthRecordMenu.click();
+		
+		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
+	}
 }
