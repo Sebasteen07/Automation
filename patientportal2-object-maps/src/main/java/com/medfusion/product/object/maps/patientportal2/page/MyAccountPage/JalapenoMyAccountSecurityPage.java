@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 
+
 public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//button[contains(@class, 'listItemBtn')]")
@@ -138,6 +139,14 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 		confirmPasswordInput.sendKeys(newPassword);
 		saveAccountChanges.click();
 		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(passwordSuccessfulUpdateMessage));
+	}
+	
+	public JalapenoMyAccountPreferencesPage goToPrefererencesTab() {
+	
+		log("Click on Preferences");
+		preferencesTab.click();
+		
+		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
 	}
 
 	public boolean areBasicPageElementsPresent() {
