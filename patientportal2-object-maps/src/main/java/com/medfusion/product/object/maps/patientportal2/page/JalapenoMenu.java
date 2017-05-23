@@ -171,7 +171,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	}
 
 	
-	public MedicalRecordSummariesPage goToHealthRecorPage() {
+	public MedicalRecordSummariesPage goToHealthRecordsPage() {
 				
 		log("Clicking on Health Record menu button");
 		healthRecordMenu.click();

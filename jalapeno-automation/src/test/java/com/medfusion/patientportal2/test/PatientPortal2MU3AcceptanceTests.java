@@ -94,7 +94,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.areBasicPageElementsPresent());
 
-		logStep("Click on View heatlth dat in message");
+		logStep("Click on View heatlh data in message");
 		JalapenoCcdViewerPage ccdViewerPage = messagesPage.findCcdMessage(driver);
 		
 		copySourceNavigateToACheckerAndValidate(ccdViewerPage);
@@ -185,7 +185,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
 		
 		logStep("Click on Health record menu");
-		MedicalRecordSummariesPage healthRecordPage = homePage.goToHealthRecorPage();
+		MedicalRecordSummariesPage healthRecordPage = homePage.goToHealthRecordsPage();
 		assertTrue(healthRecordPage.areBasicPageElementsPresent());
 			
 		logStep("Copy source of Health Record Page and validate");

@@ -32,7 +32,7 @@ public abstract class MedfusionPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "ng-app")
 	private WebElement htmlTag;
 	@FindBy(how = How.XPATH, using = "/html")
-	private WebElement ccdViewerhtmlTag;
+	private WebElement ccdViewerHtmlTag;
 	
 	
 	public MedfusionPage(WebDriver driver) {
@@ -253,8 +253,8 @@ public abstract class MedfusionPage extends BasePageObject {
 	}
 
 	public StringSelection getIframeSource() {
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(ccdViewerhtmlTag));
-		return new StringSelection("<!DOCTYPE html>" + ccdViewerhtmlTag.getAttribute("outerHTML"));
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(ccdViewerHtmlTag));
+		return new StringSelection("<!DOCTYPE html>" + ccdViewerHtmlTag.getAttribute("outerHTML"));
 	}
 	
 }
