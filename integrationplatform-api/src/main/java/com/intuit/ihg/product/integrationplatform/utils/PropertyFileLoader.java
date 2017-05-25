@@ -867,6 +867,34 @@ public class PropertyFileLoader {
 	public String getMessageStatus_SDM() {
 		return property.getProperty("messageStatus_SDM");
 	}
+	public String getUnseenMessageHeaderURL_SDM() {
+		return property.getProperty("unseenMessageHeaderURL");
+	}
+	public String getUnseenMessageBodyURL_SDM() {
+		return property.getProperty("unseenMessageBodyURL");
+	}
+	public String getMessageStatusUpdate_SDM() {
+		return property.getProperty("messageStatusUpdateURL");
+	}
+	public String getMessageStatusToUpdate_SDM() {
+		return property.getProperty("messageStatusToUpdate");
+	}
+	public String getMessageHeaderURL_SDM() {
+		return property.getProperty("messageHeaderURL");
+	}
+	public String getInvalidPracticeMessageHeaderURL_SDM() {
+		return property.getProperty("invalidPracticeMessageHeaderURL");
+	}
+	public String getInvalidEmailMessageHeaderURL_SDM() {
+		return property.getProperty("invalidEmailMessageHeaderURL");
+	}
+	public String getInvalidUID_SDM() {
+		return property.getProperty("invalidUID");
+	}
+	public String getValidPracticeID_SDM() {
+		return property.getProperty("validPracticeID");
+	}
+	
 	
 	//Directory Search
 	public String getRestURL_SD() {

@@ -28,4 +28,13 @@ public class SendDirectMessage {
 	public String PNGAttachmentFileLocation = "";
 	public String TOCName="";
 	public String MessageStatus="";
+	public String unseenMessageHeader="";
+	public String unseenMessageBody="";
+	public String messageStatusUpdate="";
+	public String messageStatusToUpdate="";
+	public String messageHeaderURL="";
+	public String invalidPracticeMessageHeaderURL="";
+	public String invalidEmailMessageHeaderURL="";
+	public String invalidUID="";
+	public String validPracticeID="";
 }

@@ -1,6 +1,6 @@
 firstName,lastName,organizationName,nationalProviderId,specialtyType,specialtyClassification,specialtySpecialization,street,city,state,zipcode,directAddress,type
 Andrew,Cookson, , , , , , , ,VA,20194, ,PROVIDER
- , ,HariGatewayOrg, , , , , ,Herndon,VA,20190, ,ORGANIZATION
+ , , , , , , , , ,VA,20190, ,ORGANIZATION
 CHRIS,ABATELLI, , , , , , ,WYANDANCH,NY,11798, ,PROVIDER
  , , , , , , , , , ,20194, ,PROVIDER
  , , ,1245319599, , , , , , , , ,PROVIDER
