@@ -116,7 +116,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPdfCcdPI() throws Exception {
 		PatientData p = new PatientData();
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
-		testFormPdfCcd(home.clickOnHealthForms(), true);
+		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
 		JalapenoHomePage jhp = Utils.loginPI(driver, p.getEmail(), p.getPassword());
 		assertTrue(jhp.areMenuElementsPresent());
@@ -128,13 +128,13 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
-		testFormPdfCcd(home.clickOnHealthForms(), false);
+		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();
 		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
 	}
 
-	private void testFormPdfCcd(HealthFormListPage formsPage, boolean PI) throws Exception {
+	private void testFormPdfCcd(HealthFormListPage formsPage) throws Exception {
 		long timestamp = System.currentTimeMillis() / 1000L;
 		String xml;
 		// easy bruising is mapped to following term in Forms Configurator in
@@ -157,20 +157,20 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Test if the submission date is correct");
 		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);
-		formsPage.logout(PI);
+		formsPage.logout();
 	}
 
 	@Test(groups = {"Forms"})
 	public void testFormPracticePortalPI() throws Exception {
-		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver), true);
+		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPracticePortalPortal1() throws Exception {
-		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver), false);
+		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
-	private void testFormPracticePortal(HealthFormListPage formsPage, boolean PI) throws Exception {
+	private void testFormPracticePortal(HealthFormListPage formsPage) throws Exception {
 		log("step 1: Open form: " + SitegenConstants.PRACTICE_FORM);
 		FormBasicInfoPage demographPage = formsPage.openDiscreteForm(SitegenConstants.PRACTICE_FORM).initToFirstPage(FormBasicInfoPage.class);
 
@@ -186,7 +186,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		illsPage.submitForm();
 
 		log("Step 3: Logout from PI and login to Practice Portal");
-		formsPage.logout(PI);
+		formsPage.logout();
 		SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
 
 		log("step 3: Search for PatientForms With Status Open");
@@ -199,21 +199,21 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testPartiallyCompletedFormPI() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver), true);
+		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testPartiallyCompletedFormPortal1() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver), false);
+		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver));
 	}
 
-	private void testPartiallyCompletedForm(HealthFormListPage formsPage, boolean PI) throws Exception {
+	private void testPartiallyCompletedForm(HealthFormListPage formsPage) throws Exception {
 		log("step 1: Open form: " + SitegenConstants.PRACTICE_FORM);
 		FormBasicInfoPage firstPage = formsPage.openDiscreteForm(SitegenConstants.PRACTICE_FORM).initToFirstPage(FormBasicInfoPage.class);
 
 		log("Step 2: Fill out the form");
 		firstPage.clickSaveAndFinishAnotherTime();
-		formsPage.logout(PI);
+		formsPage.logout();
 
 		log("Step 3: Go to Practice Portal forms tab");
 		SearchPatientFormsPage pSearchPatientFormsPage = getPracticePortalSearchFormsPage();
@@ -255,18 +255,17 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPatientDashboardPI() throws Exception {
 		PatientData p = new PatientData();
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
-		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName(), true);
+		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPatientDashboardPortal1() throws Exception {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
-		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName(), false);
+		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
-	private void testFormPatientDashboard(HealthFormListPage formsPage, String email, String firstName, String lastName,
-			boolean PI) throws Exception {
+	private void testFormPatientDashboard(HealthFormListPage formsPage, String email, String firstName, String lastName) throws Exception {
 
 		log("step 1: Open form :" + SitegenConstants.PDF_CCD_FORM);
 		formsPage.openDiscreteForm(SitegenConstants.PDF_CCD_FORM).initToFirstPage(FormBasicInfoPage.class);
@@ -275,7 +274,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		fillOutputForm("Written by formPatientDashboardTest");
 
 		log("Step 3: Logout");
-		formsPage.logout(PI);
+		formsPage.logout();
 
 		log("Step 4: Log in to Practice Portal");
 		PracticeHomePage pHomePage = loginToPracticePortal();
