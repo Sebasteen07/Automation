@@ -116,4 +116,12 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		saveAccountChanges.click();
 	}
 
+	public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
+		log("Click on Activity");
+		activityTab.click();
+		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
+		
+	}
+
+
 }

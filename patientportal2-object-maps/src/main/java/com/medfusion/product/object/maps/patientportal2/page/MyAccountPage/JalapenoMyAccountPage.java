@@ -20,6 +20,12 @@ public abstract class JalapenoMyAccountPage extends JalapenoMenu {
 
 	@FindBy(how = How.LINK_TEXT, using = "Preferences")
 	protected WebElement preferencesTab;
+	
+	@FindBy(how = How.LINK_TEXT, using = "Account Activity")
+	protected WebElement activityTab;
+	
+	@FindBy(how = How.LINK_TEXT, using = "My devices")
+	protected WebElement devicesTab;
 
 	@FindBy(how = How.ID, using = "prevStep")
 	protected WebElement previousStep;

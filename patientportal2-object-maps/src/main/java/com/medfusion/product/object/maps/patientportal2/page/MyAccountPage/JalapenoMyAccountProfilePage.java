@@ -227,6 +227,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
 	}
+	
+	
+
 
 	@Override
 	public boolean areBasicPageElementsPresent() {

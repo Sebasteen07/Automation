@@ -25,6 +25,8 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Secur
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountActivityPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountDevicesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
@@ -93,11 +95,8 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.areBasicPageElementsPresent());
-
-		logStep("Click on View heatlh data in message");
-		JalapenoCcdViewerPage ccdViewerPage = messagesPage.findCcdMessage(driver);
 		
-		copySourceNavigateToACheckerAndValidate(ccdViewerPage);
+		copySourceNavigateToACheckerAndValidate(messagesPage);
 	}
 
 	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
@@ -154,7 +153,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("userMu3AcountPage"), testData.getPassword());
 
 		logStep("Click on Account");
 		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
@@ -167,10 +166,20 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		StringSelection accountSecurityTab = myAccountSecurityPage.getHtmlSource();
 		JalapenoMyAccountPreferencesPage myAccountPreferencesPage = myAccountSecurityPage.goToPrefererencesTab();
 		
-		logStep("Copy source of Account Preferences tab Page and validate");
-		AChecker achecker = copySourceNavigateToACheckerAndValidate(myAccountPreferencesPage);
+		logStep("Copy source of Account Preferences tab Page and go to Activity page");
+		StringSelection accountPreferencesTab = myAccountPreferencesPage.getHtmlSource();
+		JalapenoMyAccountActivityPage myAccountActivityPage = myAccountPreferencesPage.goToActivityTab(driver);
 		
-		logStep("Validate Account Security tab Page and Account Profile tab Page");
+		logStep("Copy source of Account Activity tab Page and go to Activity page");
+		StringSelection accountActivityTab = myAccountActivityPage.getHtmlSource();
+		JalapenoMyAccountDevicesPage myAccountDevicesPage = myAccountActivityPage.goToDevicesTab(driver);
+		
+		
+		AChecker achecker = copySourceNavigateToACheckerAndValidate(myAccountDevicesPage);
+		
+		logStep("Validate Account Preferences tab page, Security tab page and Account Profile tab page");
+		pastAndValidateSource(achecker, accountActivityTab);
+		pastAndValidateSource(achecker, accountPreferencesTab);
 		pastAndValidateSource(achecker, accountSecurityTab);
 		pastAndValidateSource(achecker, accountProfileTab);
 		
