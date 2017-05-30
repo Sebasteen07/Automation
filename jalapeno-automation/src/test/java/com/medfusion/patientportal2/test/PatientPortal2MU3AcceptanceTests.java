@@ -170,14 +170,14 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		StringSelection accountPreferencesTab = myAccountPreferencesPage.getHtmlSource();
 		JalapenoMyAccountActivityPage myAccountActivityPage = myAccountPreferencesPage.goToActivityTab(driver);
 		
-		logStep("Copy source of Account Activity tab Page and go to Activity page");
+		logStep("Copy source of Account Activity tab Page and go to My Devices page");
 		StringSelection accountActivityTab = myAccountActivityPage.getHtmlSource();
 		JalapenoMyAccountDevicesPage myAccountDevicesPage = myAccountActivityPage.goToDevicesTab(driver);
 		
 		
 		AChecker achecker = copySourceNavigateToACheckerAndValidate(myAccountDevicesPage);
 		
-		logStep("Validate Account Preferences tab page, Security tab page and Account Profile tab page");
+		logStep("Validate Account activity tab page, Account Preferences tab page, Security tab page and Account Profile tab page");
 		pastAndValidateSource(achecker, accountActivityTab);
 		pastAndValidateSource(achecker, accountPreferencesTab);
 		pastAndValidateSource(achecker, accountSecurityTab);
