@@ -24,6 +24,7 @@
 	    		<include name="testAppointmentRequestForExistingPatient"/>  	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>
+	    	 	<include name="testUnseenMessageList"/>	
       	</methods>
 	</classes>
 </test>

@@ -385,6 +385,16 @@ public class LoadPreTestData {
 		testData.ToEmalID = propertyData.getToSecureEmailID_SDM();
 		testData.TOCName = propertyData.getTOCName_SDM();
 		testData.MessageStatus = propertyData.getMessageStatus_SDM();
+		testData.unseenMessageHeader=propertyData.getUnseenMessageHeaderURL_SDM();
+		testData.unseenMessageBody=propertyData.getUnseenMessageBodyURL_SDM();
+		testData.messageStatusUpdate = propertyData.getMessageStatusUpdate_SDM();
+		testData.messageStatusToUpdate =propertyData.getMessageStatusToUpdate_SDM();
+		
+		testData.messageHeaderURL= propertyData.getMessageHeaderURL_SDM();
+		testData.invalidPracticeMessageHeaderURL=propertyData.getInvalidPracticeMessageHeaderURL_SDM();
+		testData.invalidEmailMessageHeaderURL=propertyData.getInvalidEmailMessageHeaderURL_SDM();
+		testData.invalidUID = propertyData.getInvalidUID_SDM();
+		testData.validPracticeID = propertyData.getValidPracticeID_SDM();
 		
 		return testData;
 	}

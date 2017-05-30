@@ -31,20 +31,16 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
-import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
+import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -57,7 +53,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
-import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
@@ -1017,5 +1012,134 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 13: Verify patient Demographics Details");
 		RestUtils.verifyPatientDetails(testData.getResponsePath(), patientIdString, patientData, null);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testUnseenMessageList() throws Exception {
+		log("Test Case: Get Unseen Messages" );
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		long epoch = System.currentTimeMillis();
+		String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new java.util.Date (epoch));
+		log("currentDate "+currentDate);
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	
+	 	log("Step 2 : Set up Oauth Token");
+	 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+	 	
+	 	log("Step 3 : Mark all UnseenMesaages as READ");
+	 	RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	 	RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
+	 	
+	 	log("Step 4 : Check for 200 response when no UnseenMessages");
+	 	RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	 	int NoOfUnreadMessage = RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
+	 	log("NoOfUnreadMessage : "+NoOfUnreadMessage);
+	 	Assert.assertEquals(NoOfUnreadMessage, 0);
+	 	
+	 	log("Step 5 : Post New Secure Message ");
+		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "xml");
+		
+		P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+		
+		P2PUnseenMessageListObject.verifyUnseenMessage(testData);
+	}
+	
+	
+	 @DataProvider(name = "p2pattachmentType")
+	 public Object[][] sendDirectAttachment() {
+		Object[][] obj = new Object[][] {{"none"},{"pdf"},{"xml"},};
+			return obj;
+	 }
+	 
+	@Test(enabled = true,dataProvider = "p2pattachmentType", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testUnseenMessageListAll(String attachment) throws Exception {
+		log("Test Case: Get Unseen Messages with attachment type " +attachment);
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	
+	 	log("Step 2 : Set up Oauth Token");
+	 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+	 	
+	 	log("Step 3 : Mark all UnseenMesaages as READ");
+	 	RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	 	RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
+	 	
+	 	log("Step 4 : Check for 200 response when no UnseenMessages");
+	 	RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	 	int NoOfUnreadMessage = RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
+	 	log("NoOfUnreadMessage : "+NoOfUnreadMessage);
+	 	Assert.assertEquals(NoOfUnreadMessage, 0);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	log("Step 5 : Post New Secure Message ");
+		
+	 	SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+	 	
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, attachment);
+		P2PUnseenMessageListObject.verifyUnseenMessage(testData);
+
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testUnseenMessageInvalidList() throws Exception {
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	String invalidPracticeId = testData.messageHeaderURL+testData.invalidPracticeMessageHeaderURL+"/directmessageheaders/"+testData.ToEmalID;
+	 	
+	 	log("Step 2 : Set up Oauth Token");
+	 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+	 	
+	 	log("Step 3 : Get Unseen Message Header and Verify For Invalid PracticeID");
+	 	int responseCode = RestUtils.setupHttpGetRequestInvalid(invalidPracticeId, testData.ResponsePath);
+	 	Assert.assertEquals(responseCode, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<h1>(.+?)</h1>",testData.invalidPracticeMessageHeaderURL);
+	 	
+	 	log("Step 4 : Get Unseen Message Header and Verify For Invalid Email ID");
+	 	String invalidEmailID = testData.messageHeaderURL+testData.validPracticeID+"/directmessageheaders/"+testData.invalidEmailMessageHeaderURL;
+	 	int responseCodeE = RestUtils.setupHttpGetRequestInvalid(invalidEmailID, testData.ResponsePath);
+	 	Assert.assertEquals(responseCodeE, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidEmailMessageHeaderURL);
+
+	 	log("Step 5 : Get Unseen Message Body and Verify For Invalid Message Uid");
+	 	String getMessageBody = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/"+testData.invalidUID;
+	 	log("getMessageBody :"+getMessageBody);
+	 	int responseCodeUid = RestUtils.setupHttpGetRequestInvalid(getMessageBody, testData.ResponsePath);
+	 	Assert.assertEquals(responseCodeUid, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+	 	
+	 	log("Step 6 : Get Unseen Message Body and Verify For Invalid Message Uid");
+	 	String getMessageBodyIE = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.invalidEmailMessageHeaderURL+"/message/1";
+	 	log("getMessageBodyInvalidEmail :"+getMessageBodyIE);
+	 	int responseCodeIEmail = RestUtils.setupHttpGetRequestInvalid(getMessageBodyIE, testData.ResponsePath);
+	 	Assert.assertEquals(responseCodeIEmail, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidEmailMessageHeaderURL);
+	 	
+	 	log("Step 7 : Get Unseen Message Status Update and Verify For Invalid Message Status");
+	 	String invalidMessageUpdateStatusURL = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/1/status/UNREAD";
+	 		
+	 	int invalidResponseStatus = RestUtils.setupHttpPostInvalidRequest(invalidMessageUpdateStatusURL,"", testData.ResponsePath);
+	 	Assert.assertEquals(invalidResponseStatus, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>","UNREAD");
+	 	
+	 	log("Step 8 : Get Unseen Message Status Update and Verify For Invalid Message Uid");
+	 	String invalidMessageUIDURL = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/"+testData.invalidUID+"/status/NEW";
+	 	int invalidResponseUID = RestUtils.setupHttpPostInvalidRequest(invalidMessageUIDURL, "", testData.ResponsePath);
+	 	Assert.assertEquals(invalidResponseUID, 400);
+	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+
 	}
 }
