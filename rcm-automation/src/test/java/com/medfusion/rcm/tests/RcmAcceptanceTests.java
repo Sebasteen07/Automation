@@ -111,7 +111,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
-		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
 		log("Expect an estatement message");
 		assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));
@@ -174,7 +174,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
-		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
 		log("Expect an estatement message");
 		assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));
@@ -309,7 +309,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			// paper patients don't receive a sm either
 			log("Click on messages solution");
 			JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-			assertTrue(jalapenoMessagesPage.assessMessagesElements());
+			assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
 			log("Expect an estatement message");
 			assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));

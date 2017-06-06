@@ -108,7 +108,7 @@ public class StatementEventUtils {
 			editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
 
 			driver.findElement(By.xpath(editPatientD)).click();
-			
+			Thread.sleep(3000);
 			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
 			String patientExternalID = driver.findElement(By.xpath(externalID)).getAttribute("value");
 			
@@ -131,7 +131,7 @@ public class StatementEventUtils {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
-		Assert.assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		Assert.assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 		
 		Log4jUtil.log("Expect an estatement message");
 		Assert.assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));
@@ -197,7 +197,8 @@ public class StatementEventUtils {
 	    jalapenoHomePage.clickOnMenuPayBills();
 	    Thread.sleep(2000);
 	   
-	    WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"statementPanel\"]/div/div/div[1]/table/tfoot/tr/td[2]"));
+	    //WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"statementPanel\"]/div/div/div[1]/table/tfoot/tr/td[2]"));
+	    WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"balanceDue\"]/span[1]/strong"));
 	    Log4jUtil.log("due Amount "+paymentDue.getText());
 	   
 	    //long transitTimeStamp2 = System.currentTimeMillis();

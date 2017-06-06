@@ -19,7 +19,14 @@
 	    		<include name="testAppointmentRequestForExistingPatient"/>
 	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
-	    		<include name="testStatementEventForNewSelfPatient"/>   
+	    		<include name="testStatementEventForNewSelfPatient"/>
+	    		<include name="testBulkSecureMessage"/>
+	    		<include name="testSendDirectMessageAll"/>
+	    		<include name="testDirectorySearch"/>
+	    		<include name="testOnDemandProvisionPIDC"/>
+				<include name="testPatientDemographicsUpdateWithSpecialCharacter"/>
+				<include name="testPatientRegistrationfromPractice"/>
+				<include name="testPIDCPatientDemographicsUpdate"/>	
       		</methods>
 	</classes>
 </test>

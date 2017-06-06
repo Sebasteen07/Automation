@@ -9,13 +9,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
-public class JalapenoMessagesPage extends BasePageObject {
+public class JalapenoMessagesPage extends MedfusionPage {
 
 	/*
 	 * @FindBy(how = How.ID, using = "askatitle_link") private WebElement askAQuestionButton;
@@ -52,6 +53,17 @@ public class JalapenoMessagesPage extends BasePageObject {
 	private WebElement statementLinkText;
 	
 	private static final int maxCount = 15;
+	
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
+		webElementsList.add(inboxFolder);
+		webElementsList.add(sentFolder);
+		webElementsList.add(archiveFolder);
+
+		return assessPageElements(webElementsList);
+	}
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -145,16 +157,6 @@ public class JalapenoMessagesPage extends BasePageObject {
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
 	}
 
-	public boolean assessMessagesElements() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(inboxFolder);
-		webElementsList.add(sentFolder);
-		webElementsList.add(archiveFolder);
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
 
 	public void archiveOpenMessage() {
 		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());

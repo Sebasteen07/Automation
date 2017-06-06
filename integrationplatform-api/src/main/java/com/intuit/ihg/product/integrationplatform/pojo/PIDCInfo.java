@@ -71,7 +71,7 @@ public class PIDCInfo {
 	private String oAuthAppToken_20 = "";
 	private String oAuthUsername_20 = "";
 	private String oAuthPassword_20 = "";
-
+	private String preferredLanguageType="";
 	
 	public String getRestUrl() {
 		return restUrl;
@@ -601,6 +601,14 @@ public class PIDCInfo {
 
 	public void setoAuthPassword_20(String oAuthPassword_20) {
 		this.oAuthPassword_20 = oAuthPassword_20;
+	}
+
+	public String getPreferredLanguageType() {
+		return preferredLanguageType;
+	}
+
+	public void setPreferredLanguageType(String preferredLanguageType) {
+		this.preferredLanguageType = preferredLanguageType;
 	}
 
 }

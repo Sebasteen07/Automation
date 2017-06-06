@@ -17,7 +17,9 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal1.page.AChecker;
 import com.medfusion.product.object.maps.patientportal1.page.AChecker.LevelOfWCAG;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
@@ -67,11 +69,11 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 	public void testLoginAndDashboardPages() throws Exception {
 		logStep("Load login page and copy source");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		StringSelection sourceLoginPage = new StringSelection(driver.getPageSource());
+		StringSelection sourceLoginPage = jalapenoLoginPage.getHtmlSource();
 		
 		logStep("Load patient dashboard page and validate it");
-		jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
-		AChecker achecker = copySourceNavigateToACheckerAndValidate();
+		JalapenoHomePage jalapenoHomepage = jalapenoLoginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		AChecker achecker = copySourceNavigateToACheckerAndValidate(jalapenoHomepage);
 		
 		logStep("Validate login page");
 		pastAndValidateSource(achecker, sourceLoginPage);
@@ -85,9 +87,9 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements());
+		assertTrue(messagesPage.areBasicPageElementsPresent());
 
-		copySourceNavigateToACheckerAndValidate();
+		copySourceNavigateToACheckerAndValidate(messagesPage);
 	}
 
 	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
@@ -102,12 +104,13 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Copy source of Patient Demographic Page and continue");
 		Thread.sleep(15000);
-		StringSelection sourceDemographicPage = new StringSelection(driver.getPageSource());
+		StringSelection sourceDemographicPage = patientDemographicPage.getHtmlSource();
+			
 		patientDemographicPage.fillInPatientData(patient);
-		patientDemographicPage.continueToSecurityPage();
+		SecurityDetailsPage securityDetailPage = patientDemographicPage.continueToSecurityPage();
 
 		logStep("Copy source of Patient Security Page and validate");
-		AChecker achecker = copySourceNavigateToACheckerAndValidate();
+		AChecker achecker = copySourceNavigateToACheckerAndValidate(securityDetailPage);
 
 		logStep("Validate Patient Demographic Page");
 		pastAndValidateSource(achecker, sourceDemographicPage);
@@ -127,21 +130,20 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Copy source of Patient Verification Page and continue");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
-		StringSelection sourceVerificationPage = new StringSelection(driver.getPageSource());
-		patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+		StringSelection sourceVerificationPage = patientVerificationPage.getHtmlSource();
+		SecurityDetailsPage securityDetailPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 				PortalConstants.DateOfBirthYear);
 
 		logStep("Copy source of Account Details Page and validate");
-		AChecker achecker = copySourceNavigateToACheckerAndValidate();
+		AChecker achecker = copySourceNavigateToACheckerAndValidate(securityDetailPage);
 
 		logStep("Validate Patient Verification Page");
 		pastAndValidateSource(achecker, sourceVerificationPage);
 	}
 
-	private AChecker copySourceNavigateToACheckerAndValidate() {
+	private AChecker copySourceNavigateToACheckerAndValidate(MedfusionPage page) {
 		logStep("Copy source");
-		StringSelection source = new StringSelection(driver.getPageSource());
-
+		StringSelection source = page.getHtmlSource();
 		logStep("Navigate to AChecker");
 		AChecker achecker = new AChecker(driver);
 		achecker.setupLevel(level);

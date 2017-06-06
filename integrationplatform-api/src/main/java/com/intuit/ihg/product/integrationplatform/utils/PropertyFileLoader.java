@@ -365,6 +365,9 @@ public class PropertyFileLoader {
 	public String getPracticeId_PIDC() {
 		return property.getProperty("practiceId_PIDC");
 	}
+	public String getPatientID() {
+		return property.getProperty("patientID");
+	}
 	
 	
 	public String getRestUrl1_20() {
@@ -388,8 +391,24 @@ public class PropertyFileLoader {
 	public String getStandard_Email() {
 		return property.getProperty("standard_Email");
 	}
-	
-	
+	public String getPracticeUserName() {
+		return property.getProperty("practiceUserName");		
+	}
+	public String getPracticePassword() {
+		return property.getProperty("practicePassword");		
+	}
+	public String getCity() {
+		return property.getProperty("city");		
+	}
+	public String getState() {
+		return property.getProperty("state");		
+	}
+	public String getLastName() {
+		return property.getProperty("lnameSC");		
+	}
+	public String getLanguageType() {
+		return property.getProperty("preferredLanguage");	
+	}
 	//PIDC END
 	
 	//Appointment Data Request from partner
@@ -588,5 +607,291 @@ public class PropertyFileLoader {
 		return property.getProperty("portalPassword_SE");
 	}
 	
+	//BULK
+
+	public String getOAuthPropertyAMDC() {
+		return property.getProperty("oAuthPropertyAMDC");
+	}
+
+	public String getOAuthKeyStoreAMDC() {
+		return property.getProperty("oAuthKeyStoreAMDC");
+	}
+
+	public String getSecureMessagePathAMDC() {
+		return property.getProperty("secureMessagePathAMDC");
+	}
+
+	public String getSecureMsgAskAStaff() {
+		return property.getProperty("secureMsgAskAStaff");
+	}
+
+	public String getBatch_SecureMessage() {
+		return property.getProperty("batch_secureMessage");
+	}
+
+	public String getUserName1AMDC() {
+		return property.getProperty("userName1AMDC");
+	}
+
+	public String getFrom1AMDC() {
+		return property.getProperty("from1AMDC");
+	}
+
+	public String getUserName2AMDC() {
+		return property.getProperty("userName2AMDC");
+	}
+
+	public String getUserName3AMDC() {
+		return property.getProperty("userName3AMDC");
+	}
+
+	public String getSender1AMDC() {
+		return property.getProperty("sender1AMDC");
+	}
+
+	public String getSender2AMDC() {
+		return property.getProperty("sender2AMDC");
+	}
+
+	public String getPatientName1AMDC() {
+		return property.getProperty("patientName1AMDC");
+	}
+
+	public String getPatientName2AMDC() {
+		return property.getProperty("patientName2AMDC");
+	}
+
+	public String getPatientName3AMDC() {
+		return property.getProperty("patientName3AMDC");
+	}
+	
+	public String getRestUrlBulk() {
+		return property.getProperty("RestUrlBulk");
+	}
+
+	public String getAttachmentLocation() {
+		return property.getProperty("AttachmentLocation");
+	}
+
+	public String getNumberOfAttachments() {
+		return property.getProperty("NumberOfAttachments");
+	}
+
+	public String getMaxPatients() {
+		return property.getProperty("MaxPatients");
+	}
+
+	public String getFileName() {
+		return property.getProperty("FileName");
+	}
+
+	public String getSubject() {
+		return property.getProperty("SubjectBulk");
+	}
+
+	public String getMessageBulk() {
+		return property.getProperty("MessageBulk");
+	}
+
+	public String getresendPrevoiusMessage() {
+		return property.getProperty("resendPrevoiusMessage");
+	}
+
+	public String getpreviousBulkMessageId() {
+		return property.getProperty("previousBulkMessageId");
+	}
+
+	public String getNumberOfParams() {
+		return property.getProperty("NumberOfParams");
+	}
+
+	public String getAddAttachment() {
+		return property.getProperty("AddAttachment");
+	}
+
+	public String getParamName1() {
+		return property.getProperty("ParamName1");
+	}
+
+	public String getParamValue1() {
+		return property.getProperty("ParamValue1");
+	}
+
+	public String getParamValue2() {
+
+		return property.getProperty("ParamValue2");
+	}
+
+	public String getParamName2() {
+		return property.getProperty("ParamName2");
+	}
+
+	public String getParamValue3() {
+
+		return property.getProperty("ParamValue3");
+	}
+
+	public String getParamName3() {
+		return property.getProperty("ParamName3");
+	}
+
+	public String getBulkEmailType() {
+		return property.getProperty("BulkEmailType");
+	}
+
+	public String getPatientExternalId() {
+		return property.getProperty("PatientExternalId");
+	}
+
+	public String getUserNameBulk1() {
+		return property.getProperty("UserNameBulk1");
+	}
+
+	public String getUserNameBulk2() {
+		return property.getProperty("UserNameBulk2");
+	}
+
+	public String getUserNameBulk3() {
+		return property.getProperty("UserNameBulk3");
+	}
+
+	public String getPasswordBulk1() {
+		return property.getProperty("PasswordBulk1");
+	}
+
+	public String getPasswordBulk2() {
+		return property.getProperty("PasswordBulk2");
+	}
+
+	public String getPasswordBulk3() {
+		return property.getProperty("PasswordBulk3");
+	}
+
+	public String getUserPatiendIDBulk1() {
+		return property.getProperty("PatientExternalId1");
+	}
+
+	public String getUserPatiendIDBulk2() {
+		return property.getProperty("PatientExternalId2");
+	}
+
+	public String getUserPatiendIDBulk3() {
+		return property.getProperty("PatientExternalId3");
+	}
+	
+	public String getUserEmailBulk1() {
+		return property.getProperty("PatientEmailId1");
+	}
+
+	public String getUserEmailBulk2() {
+		return property.getProperty("PatientEmailId2");
+	}
+
+	public String getUserEmailBulk3() {
+		return property.getProperty("PatientEmailId3");
+	}
+
+	public String getresendMessageToPatientUserName() {
+		return property.getProperty("resendMessageToPatientUserName");
+	}
+
+	public String getresendMessageToPatientPassword() {
+		return property.getProperty("resendMessageToPatientPassword");
+	}
+
+	public String getresendMessageToPatientID() {
+		return property.getProperty("resendMessageToPatientID");
+	}
+	public String getresendMessageToPatientEmail() {
+		return property.getProperty("resendMessageToPatientEmail");
+	}
+	
+	//SendDirectMessage
+	public String getRestURL_SDM() {
+		return property.getProperty("restURL_SDM");
+	}
+	public String getSecureEmailURL_SDM() {
+		return property.getProperty("secureEmailURL_SDM");
+	}
+	public String getSecureEmailUsername_SDM() {
+		return property.getProperty("secureEmailUsername_SDM");
+	}
+	public String getSecureEmailPassword_SDM() {
+		return property.getProperty("secureEmailPassword_SDM");
+	}
+	public String getFromSecureEmailID_SDM() {
+		return property.getProperty("fromSecureEmailID_SDM");
+	}
+	public String getToSecureEmailID_SDM() {
+		return property.getProperty("toSecureEmailID_SDM");
+	}
+	public String getApplicationName_SDM() {
+		return property.getProperty("applicationName_SDM");
+	}
+	public String getSubject_SDM() {
+		return property.getProperty("subject_SDM");
+	}
+	public String getMessageBody_SDM() {
+		return property.getProperty("messageBody_SDM");
+	}
+	public String getPatientId_SDM() {
+		return property.getProperty("patientId_SDM");
+	}
+	public String getAttachmentType_SDM() {
+		return property.getProperty("attachmentType_SDM");
+	}
+	public String getFileName_SDM() {
+		return property.getProperty("fileName_SDM");
+	}
+	public String getAttachmentLocationXML_SDM() {
+		return property.getProperty("attachmentLocationXML_SDM");
+	}
+	public String getAttachmentLocationPDF_SDM() {
+		return property.getProperty("attachmentLocationPDF_SDM");
+	}
+	public String getAttachmentLocationPNG_SDM() {
+		return property.getProperty("attachmentLocationPNG_SDM");
+	}
+	public String getOAuthAppToken_SDM() {
+		return property.getProperty("oAuthAppToken_SDM");
+	}
+	public String getOAuthUsername_SDM() {
+		return property.getProperty("oAuthUsername_SDM");
+	}
+	public String getOAuthPassword_SDM() {
+		return property.getProperty("oAuthPassword_SDM");
+	}
+	public String getTOCName_SDM() {
+		return property.getProperty("tocName_SDM");
+	}
+	public String getMessageStatus_SDM() {
+		return property.getProperty("messageStatus_SDM");
+	}
+	
+	//Directory Search
+	public String getRestURL_SD() {
+		return property.getProperty("restUrl_DS");
+	}
+	public String getDirectAddress_organization_DS() {
+		return property.getProperty("directAddress_organization_DS");
+	}
+	public String getDirectAddress_provider_DS() {
+		return property.getProperty("directAddress_provider_DS");
+	}
+	public String getOAuthAppToken_DS() {
+		return property.getProperty("oAuthAppToken_DS");
+	}
+	public String getOAuthUsername_DS() {
+		return property.getProperty("oAuthUsername_DS");
+	}
+	public String getOAuthPassword_DS() {
+		return property.getProperty("oAuthPassword_DS");
+	}
+	public String getSearchLength() {
+		return property.getProperty("searchLength");
+	}
+	public String getCSVFilePath_DS() {
+		return property.getProperty("csvFilePath_DS");
+	}
 	
 }

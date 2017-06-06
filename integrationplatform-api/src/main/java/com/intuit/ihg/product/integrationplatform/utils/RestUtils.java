@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,6 +45,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
@@ -66,6 +69,7 @@ public class RestUtils {
 	public static String SigCodeMeaning;
 	public static String gnMessageThreadID;
 	public static String paymentID;
+	public static String headerUrl;
 	public static int responseCode;
 	public static List<String> patientDatails = new ArrayList<String>();
 
@@ -347,6 +351,18 @@ public class RestUtils {
 		if (medfusionPatientID != null) {
 			Node idNode1 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID).item(0);
 			idNode1.setTextContent(medfusionPatientID);
+		}
+		
+		if (medfusionPatientID != null &&  doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0) !=null) {
+			Node idNode2 = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+			idNode2.setTextContent(medfusionPatientID);
+		}
+		else {
+			if(doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0) !=null)
+			{
+				Element mfID = (Element) doc.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+				mfID.getParentNode().removeChild(mfID);
+			}
 		}
 
 		return domToString(doc);
@@ -1591,6 +1607,7 @@ public class RestUtils {
 			if (patient.item(i).getTextContent().equalsIgnoreCase(patientID)) {
 				Element ele = (Element) patient.item(i).getParentNode().getParentNode();
 				Node node = null;
+				Log4jUtil.log("nodeName "+nodeName);
 				switch (nodeName) {
 					case 'R':
 						node = ele.getElementsByTagName(IntegrationConstants.RACE).item(0);
@@ -1607,6 +1624,9 @@ public class RestUtils {
 					case 'C':
 						node = ele.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
 						break;
+					case 'G':
+						node = ele.getElementsByTagName(IntegrationConstants.GENDER).item(0);
+						break;	
 					default:
 						break;
 				}
@@ -1639,13 +1659,22 @@ public class RestUtils {
 		httpGetReq.addHeader("Content-Type", "application/xml");
 		HttpResponse resp = client.execute(httpGetReq);
 		HttpEntity entity = resp.getEntity();
-		String sResp = EntityUtils.toString(entity);
-
-		Log4jUtil.log("Check for http 200 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+		String sResp ="";
+		if(entity!=null){
+		sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+		} else
+		{
+			Log4jUtil.log("Check for http 204 response");
+		}
+		
+		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
 		writeFile(responseFilePath, sResp);
-
+		if (resp.containsHeader("Next-URI")) {
+			Header[] h = resp.getHeaders("Next-URI");
+			headerUrl = h[0].getValue();
+		}
 	}
 
 	/**
@@ -1817,11 +1846,14 @@ public class RestUtils {
 						"Medfusion Patient Last Name has different than expected. Last Name is: " + nlastName.getTextContent());
 				try {
 					if (updateData.get(2) != null) {
-						Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
-						Log4jUtil
-								.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
-						BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10),
-								"Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
+						if(updateData.get(10)!=null) {
+							Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
+							Log4jUtil
+									.log("Searching: Patient Middle Name:" + updateData.get(10) + ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
+							BaseTestSoftAssert.verifyEquals(nMiddleName.getTextContent(), updateData.get(10),
+									"Medfusion Patient Middle Name has different than expected. Middle Name is: " + nMiddleName.getTextContent());
+							
+						}
 						Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
 						Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2) + ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
 						BaseTestSoftAssert.verifyEquals(nAddress1.getTextContent(), updateData.get(2),
@@ -1845,12 +1877,14 @@ public class RestUtils {
 						Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:" + nEthnicity.getTextContent().toString());
 						BaseTestSoftAssert.verifyEquals(nEthnicity.getTextContent(), updateData.get(8),
 								"Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
-						Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
-						Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9) + ", and Actual communication value is:"
-								+ nChooseCommunication.getTextContent().toString());
-						BaseTestSoftAssert.verifyEquals(nChooseCommunication.getTextContent(), updateData.get(9),
-								"Patient has different ChooseCommunication than expected. ChooseCommunication is: " + nChooseCommunication.getTextContent());
-
+						if(updateData.get(9)!=null) {
+							Node nChooseCommunication = nPatient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
+							Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9) + ", and Actual communication value is:"
+									+ nChooseCommunication.getTextContent().toString());
+							BaseTestSoftAssert.verifyEquals(nChooseCommunication.getTextContent(), updateData.get(9),
+									"Patient has different ChooseCommunication than expected. ChooseCommunication is: " + nChooseCommunication.getTextContent());
+						}
+						
 					}
 				} catch (Exception e) {
 					Log4jUtil.log("#####");
@@ -2146,6 +2180,162 @@ public class RestUtils {
 
 		return domToString(doc);
 	}
+	
+	public static String verifyDirectMessageResponse(String xmlFileName, String PartnerMessageId) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+			
+		Node MFnode = doc.getElementsByTagName("MFMessageId").item(0);
+		Element mfElem = (Element) MFnode;
+		Log4jUtil.log("Searching for MFMessageId :" +mfElem.getTextContent().toString());
+		
+		Node PartnerNode = doc.getElementsByTagName("PartnerMessageId").item(0);
+		Element partnerElem = (Element) PartnerNode;
+		Log4jUtil.log("Verifying PartnerMessageId actual "+partnerElem.getTextContent().toString()+" with Expected "+PartnerMessageId);
+		Assert.assertEquals(partnerElem.getTextContent().toString(), PartnerMessageId);
+		
+		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
+		Element statusElem = (Element) StatusNode;
+		Log4jUtil.log("Verifying Status actual "+statusElem.getTextContent().toString()+" with Expected 200");
+		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		
+		return mfElem.getTextContent().toString();
+	}
+	
+	public static void verifyDirectMessageGetStatus(String xmlFileName, String MFMessageId, String fromAddress, String toAddress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
+		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
+		Assert.assertTrue(
+				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed") || messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
+				"Get Request response is " + messageStatusNode.item(0).getTextContent());
 
+		NodeList fromAddressNode = doc.getElementsByTagName("fromAddress");
+		Log4jUtil.log("Verifying fromAddress actual "+fromAddressNode.item(0).getTextContent()+" with expected as "+fromAddress);
+		Assert.assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
+		
+		NodeList toAddressNode = doc.getElementsByTagName("toAddress");
+		Log4jUtil.log("Verifying toAddress actual  "+toAddressNode.item(0).getTextContent()+" with expected as "+toAddress);
+		Assert.assertEquals(toAddressNode.item(0).getTextContent(), toAddress);
+
+		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
+		Log4jUtil.log("Verifying toAddress actual "+StatusCode.item(0).getTextContent()+" with expected as 200");
+		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+	}
+	
+	public static boolean isSendDirectMessageProcessed(String xmlFileName ) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
+		Log4jUtil.log("Verifying messageStatus actual  "+messageStatusNode.item(0).getTextContent()+" with expected as confirmed");
+
+		Assert.assertTrue(
+				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed") || messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
+				"Get Request response is " + messageStatusNode.item(0).getTextContent());
+		
+		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
+		Log4jUtil.log("Verifying if mdnConfirmationDate is present "+mdnConfirmationDateNode.item(0).getTextContent());
+		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
+
+		return true;
+	}
+	
+	public static boolean validateDirectorySearchResponse(String xmlFileName,String firstName,String lastName,String organizationName,String nationalProvider,String specialityType,String classification,String specialization,String street,String city,String state,String zipCode,String directAddress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Document doc = buildUTFDOMXML(xmlFileName);
+		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
+		Log4jUtil.log("Verifying StatusCode actual  "+StatusCode.item(0).getTextContent()+" with expected as 200");
+		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+		
+		NodeList nodes = doc.getElementsByTagName("DirectoryInfo");
+		
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Element DirInfo = (Element) nodes.item(i);
+			
+			Element FirstNameElem = (Element) DirInfo.getElementsByTagName("FirstName").item(0);
+			if(firstName !=null) {
+				Log4jUtil.log("FirstName : "+FirstNameElem.getTextContent()+"  :  "+firstName.trim());
+				Assert.assertEquals(FirstNameElem.getTextContent().toLowerCase(), firstName.trim().toLowerCase());
+			}
+			
+			Element LastNameElem = (Element) DirInfo.getElementsByTagName("LastName").item(0);
+			if(lastName!=null) {
+				Log4jUtil.log("LastName : "+LastNameElem.getTextContent()+"  : "+lastName.trim());
+				Assert.assertEquals(LastNameElem.getTextContent().toLowerCase(), lastName.trim().toLowerCase());
+			}
+			
+			Element OrgElem = (Element) DirInfo.getElementsByTagName("OrganizationName").item(0);
+			if(organizationName!=null) {
+				Log4jUtil.log("OrganizationName : "+OrgElem.getTextContent()+"   :   "+organizationName.trim());
+				Assert.assertEquals(OrgElem.getTextContent().toLowerCase(), organizationName.trim().toLowerCase());
+			}
+			
+			Element NationalProviderIdElem = (Element) DirInfo.getElementsByTagName("NationalProviderId").item(0);
+			if( nationalProvider!=null) {
+				Log4jUtil.log("NationalProviderId : "+NationalProviderIdElem.getTextContent()+" : "+nationalProvider.trim());	
+				Assert.assertEquals(NationalProviderIdElem.getTextContent().toLowerCase(), nationalProvider.trim().toLowerCase());
+			}
+			
+			Element SpecialtyTypeElem = (Element) DirInfo.getElementsByTagName("SpecialtyType").item(0);
+			if( specialityType!=null ) {
+				Log4jUtil.log("SpecialtyType : "+SpecialtyTypeElem.getTextContent()+" specialityType "+specialityType.trim());
+				Assert.assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(), specialityType.trim().toLowerCase());
+			}
+			
+			Element SpecialtyClassificationElem = (Element) DirInfo.getElementsByTagName("SpecialtyClassification").item(0);
+			if( classification!=null ) {
+				Log4jUtil.log("SpecialtyClassification : "+SpecialtyClassificationElem.getTextContent()+"  : "+classification.trim());
+				Assert.assertEquals(SpecialtyClassificationElem.getTextContent().toLowerCase(), classification.trim().toLowerCase());
+			}
+			
+			Element SpecialtySpecializationElem = (Element) DirInfo.getElementsByTagName("SpecialtySpecialization").item(0);
+			if(specialization!=null ) {
+				Log4jUtil.log("SpecialtySpecialization : "+SpecialtySpecializationElem.getTextContent()+" : "+specialization.trim());
+				Assert.assertEquals(SpecialtySpecializationElem.getTextContent().toLowerCase(), specialization.trim().toLowerCase());
+			}
+			
+			Element StreetElem = (Element) DirInfo.getElementsByTagName("Street").item(0);
+			if(street!=null) {
+				Log4jUtil.log("Street : "+StreetElem.getTextContent()+"  :  "+street.trim());
+				BaseTestSoftAssert.assertTrue((StreetElem.getTextContent().toLowerCase().contains(street.trim().toLowerCase())));
+			}
+			
+			Element CityElem = (Element) DirInfo.getElementsByTagName("City").item(0);
+			if(city!=null) {
+				Log4jUtil.log("City : "+CityElem.getTextContent()+"  :  "+city.trim());	
+				Assert.assertEquals(CityElem.getTextContent().toLowerCase(), city.trim().toLowerCase());
+			}
+			
+			Element StateElem = (Element) DirInfo.getElementsByTagName("State").item(0);
+			if(state!=null) {
+				Log4jUtil.log("State : "+StateElem.getTextContent()+"  :  "+state.trim());	
+				Assert.assertEquals(StateElem.getTextContent().toLowerCase(), state.trim().toLowerCase());
+			}
+			
+			Element ZipCodeElem = (Element) DirInfo.getElementsByTagName("ZipCode").item(0);
+			if(zipCode!=null) {
+				Log4jUtil.log("ZipCode : "+ZipCodeElem.getTextContent()+"  :  "+zipCode.trim());
+				Assert.assertEquals(ZipCodeElem.getTextContent().toLowerCase(), zipCode.trim().toLowerCase());
+			}
+			
+			Element DirectAddressElem = (Element) DirInfo.getElementsByTagName("DirectAddress").item(0);
+			if(directAddress!=null) {
+			//
+			}
+		}
+		return true;
+	}
+	
+	private static Document buildUTFDOMXML(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+	    InputStream inputStream= new FileInputStream(xmlFileName);
+	    Reader reader = new InputStreamReader(inputStream,"UTF-8");
+	    InputSource is = new InputSource(reader);
+	    is.setEncoding("UTF-8");
+	        
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();	
+		Document doc = dBuilder.parse(is);
+		doc.getDocumentElement().normalize();
+		return doc;
+	}
 }
-

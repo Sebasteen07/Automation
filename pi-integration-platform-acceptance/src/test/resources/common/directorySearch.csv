@@ -1,0 +1,21 @@
+firstName,lastName,organizationName,nationalProviderId,specialtyType,specialtyClassification,specialtySpecialization,street,city,state,zipcode,directAddress,type
+Andrew,Cookson, , , , , , , ,VA,20194, ,PROVIDER
+ , ,HariGatewayOrg, , , , , ,Herndon,VA,20190, ,ORGANIZATION
+CHRIS,ABATELLI, , , , , , ,WYANDANCH,NY,11798, ,PROVIDER
+ , , , , , , , , , ,20194, ,PROVIDER
+ , , ,1245319599, , , , , , , , ,PROVIDER
+  , , , , , , , , , ,12345, ,ORGANIZATION
+ , ,Altruista Health, , , , , , , , , ,ORGANIZATION
+Kasia,O'Connell, , , , , , , , , , ,PROVIDER
+Kasia,O'Connell, , ,Agencies, , , ,Rockville,MD, , ,PROVIDER
+ , , , , , , ,5501 dillard dr, , , , ,ORGANIZATION
+ , , , , , , , , ,VA, , ,ORGANIZATION
+ , ,HariGatewayOrg, , , , ,234 Gateway Org,Herndon,VA,20190, ,ORGANIZATION
+Andrew, , , , , , , , , , , ,PROVIDER
+ ,Cookson, , , , , , , , , , ,PROVIDER
+ , ,AJC Test Org, , , , , , , , , ,PROVIDER
+ , , , , , , ,11502 Olde Tiverton Cir, , , , ,PROVIDER
+ , , , , , , , ,Reston, , , ,PROVIDER
+ , , , , , , , , ,VA, , ,PROVIDER
+Andrew, ,AJC Test Org, , , , ,11502 Olde Tiverton Cir,Reston,VA,20194, ,PROVIDER
+ , , , , , , ,11502 Olde Tiverton Cir,Reston,VA,20194, ,PROVIDER

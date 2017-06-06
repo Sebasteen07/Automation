@@ -29,7 +29,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "removeCardOkButton")
 	private WebElement removeCardOkButton;
 
-	@FindBy(how = How.ID, using = "pay_history")
+	@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'pay_history']")
 	private WebElement payHistoryButton;
 
 	@FindBy(how = How.ID, using = "accountNumber")
@@ -74,7 +74,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "visa")
 	private WebElement visaCard;
 	
-	@FindBy(how = How.ID, using = "statement_details")
+	@FindBy(how = How.ID, using = "viewStatementDetail")
 	private WebElement statementDetails;
 	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {

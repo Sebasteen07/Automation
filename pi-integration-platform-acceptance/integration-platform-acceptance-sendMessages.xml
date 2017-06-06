@@ -12,6 +12,7 @@
 		<methods>
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>
+	    		<include name="testBulkSecureMessage"/>
       	</methods>
 	</classes>
 </test>

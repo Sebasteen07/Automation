@@ -310,7 +310,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.assessMessagesElements());
+		assertTrue(messagesPage.areBasicPageElementsPresent());
 
 		logStep("Waiting for message from practice portal");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
@@ -350,7 +350,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoCcdPage.sendInformationToDirectEmail(DIRECT_EMAIL_ADDRESS));
 
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
-		assertTrue(jalapenoMessagesPage.assessMessagesElements());
+		assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
 		jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
 

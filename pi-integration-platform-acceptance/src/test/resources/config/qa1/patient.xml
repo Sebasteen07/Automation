@@ -30,6 +30,7 @@
       <PracticePatientId>ihgqa.demo.patient</PracticePatientId>   
       <PatientAccountNumber>PatientAccountNumber</PatientAccountNumber>
       <IntuitPatientId>20941</IntuitPatientId>
+	  <MedfusionPatientId>20941</MedfusionPatientId>
     </PatientIdentifier>
     <PracticeIdentifier>
       <PracticeId>PracticeId</PracticeId>

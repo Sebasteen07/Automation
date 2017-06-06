@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 
@@ -143,7 +144,9 @@ public class LoadPreTestData {
 		testData.setSecretAnswer(propertyData.getSecretAnswer());
 		testData.setPracticeURL(propertyData.getPracticeURL());
 		testData.setHomePhoneNo(propertyData.getHomePhoneNo());
-
+		testData.setCity(propertyData.getCity());
+		testData.setState(propertyData.getState());
+		testData.setLastName(propertyData.getLastName());
 		testData.setRelation(propertyData.getRelation());
 		testData.setMaritalStatus(propertyData.getMaritalStatus());
 		testData.setChooseCommunication(propertyData.getChooseCommunication());
@@ -182,6 +185,17 @@ public class LoadPreTestData {
 			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
 			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
 			testData.setoAuthPassword(propertyData.getOAuthPassword_20());
+			
+			testData.setFnameSC(propertyData.getFirstName_AD());
+			testData.setLnameSC(propertyData.getLastName_AD());
+			testData.setSecretQuestion(propertyData.getSecretQuestion());
+			testData.setSecretAnswer(propertyData.getSecretAnswer());
+			
+			testData.setPortalURL(propertyData.getUrl());
+			testData.setPracticeUserName(propertyData.getPracticeUserName());
+			testData.setPracticePassword(propertyData.getPracticePassword());
+			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
+			testData.setPreferredLanguageType(propertyData.getLanguageType());
 		}
 		
 		return testData;
@@ -221,7 +235,6 @@ public class LoadPreTestData {
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
-		
 		return testData;
 	}
 	
@@ -268,5 +281,130 @@ public class LoadPreTestData {
 		testData.emailSubject = propertyData.getStatementEmailSubject();
 		return testData;
 	}
+	
+	public BulkAdmin loadDataFromPropertyBulk(BulkAdmin testData) throws IOException, IllegalAccessException, IllegalArgumentException,
+	InvocationTargetException, NoSuchMethodException, SecurityException {
 		
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		//
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
+		testData.OAuthUsername = propertyData.getOAuthUsernameAMDC();
+		testData.OAuthPassword = propertyData.getOAuthPasswordAMDC();
+		
+		testData.UserName = propertyData.getUserNameAMDC();
+		testData.Password = propertyData.getPasswordAMDC();
+		testData.RestUrl = propertyData.getRestUrlBulk();
+		testData.From = propertyData.getFromAMDC();
+		
+		
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.ReadCommuniationURL = propertyData.getReadCommunicationUrlAMDC();
+		testData.SecureMessage_AskaStaffXML = propertyData.getSecureMsgAskAStaff();
+		testData.Batch_SecureMessage = propertyData.getBatch_SecureMessage();
+		testData.UserName1 = propertyData.getUserName1AMDC();
+		testData.From1 = propertyData.getFrom1AMDC();
+		testData.UserName2 = propertyData.getUserName2AMDC();
+		testData.IntegrationPracticeID = propertyData.getIntegrationPracticeID();
+		testData.PatientName1 = propertyData.getPatientName1AMDC();
+		testData.PatientName2 = propertyData.getPatientName2AMDC();
+		testData.PatientName3 = propertyData.getPatientName3AMDC();
+		
+		testData.GmailUserName = propertyData.getGmailUserNameAMDC();
+		testData.GmailPassword = propertyData.getGmailPasswordAMDC();
+		testData.Sender1 = propertyData.getSender1AMDC();
+		testData.Sender2 = propertyData.getSender2AMDC();
+		testData.Sender3 = propertyData.getSender2AMDC();
+
+		testData.AttachmentLocation = propertyData.getAttachmentLocation();
+		testData.NumberOfAttachments = propertyData.getNumberOfAttachments();
+		testData.MaxPatients = propertyData.getMaxPatients();
+		testData.previousBulkMessageId = propertyData.getpreviousBulkMessageId();
+		testData.resendPreviousMessage = propertyData.getresendPrevoiusMessage();
+		testData.ParamValue = propertyData.getParamValue1();
+		testData.ParamName = propertyData.getParamName1();
+		
+		
+		testData.NumberOfParams = propertyData.getNumberOfParams();
+		testData.ParamValue1 = propertyData.getParamValue1();
+		testData.ParamName1 = propertyData.getParamName1();
+		testData.ParamValue2 = propertyData.getParamValue2();
+		testData.ParamName2 = propertyData.getParamName2();
+		testData.ParamValue3 = propertyData.getParamValue3();
+		testData.ParamName3 = propertyData.getParamName3();
+		
+		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
+			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j).invoke(propertyData);
+			testData.PatientsPasswordArray[j - 1] = (String) propertyData.getClass().getMethod("getPasswordBulk" + j).invoke(propertyData);
+			testData.PatientsIDArray[j - 1] = (String) propertyData.getClass().getMethod("getUserPatiendIDBulk" + j).invoke(propertyData);
+			testData.PatientEmailArray[j - 1] = (String) propertyData.getClass().getMethod("getUserEmailBulk" + j).invoke(propertyData);
+		}
+		
+		for (int i = 1; i <= Integer.parseInt(testData.NumberOfParams); i++) {
+			testData.ParamNameArray[i - 1] = (String) propertyData.getClass().getMethod("getParamName" + i).invoke(propertyData);
+			testData.ParamValueArray[i - 1] = (String) propertyData.getClass().getMethod("getParamValue" + i).invoke(propertyData);
+		}
+		
+		testData.oUserName = propertyData.getresendMessageToPatientUserName();
+		testData.oPassword = propertyData.getresendMessageToPatientPassword();
+		testData.oPatientID = propertyData.getresendMessageToPatientID();
+		testData.oEmailID = propertyData.getresendMessageToPatientEmail();
+		testData.MessageBulk = propertyData.getMessageBulk();
+		
+		testData.Subject = propertyData.getSubject();
+		testData.FileName = propertyData.getFileName();
+		testData.BulkEmailType = propertyData.getBulkEmailType();
+		testData.AddAttachment = propertyData.getAddAttachment();
+		testData.PatientExternalId = propertyData.getPatientExternalId();
+		
+		return testData;
+		}
+	public SendDirectMessage loadSendDirectMessageDataFromProperty(SendDirectMessage testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.RestUrl = propertyData.getRestURL_SDM();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_SDM();
+		testData.OAuthUsername = propertyData.getOAuthUsername_SDM();
+		testData.OAuthPassword = propertyData.getOAuthPassword_SDM();
+		testData.Subject = propertyData.getSubject_SDM();
+		testData.SecureDirectMessageURL=propertyData.getSecureEmailURL_SDM();
+		testData.SecureDirectMessageUsername=propertyData.getSecureEmailUsername_SDM();
+		testData.SecureDirectMessagePassword=propertyData.getSecureEmailPassword_SDM();
+		testData.ApplicationName = propertyData.getApplicationName_SDM();
+		testData.MessageBody = propertyData.getMessageBody_SDM();
+		testData.FileName = propertyData.getFileName_SDM();
+		testData.PatientID = propertyData.getPatientId_SDM();
+		testData.XMLAttachmentFileLocation = propertyData.getAttachmentLocationXML_SDM();
+		testData.PDFAttachmentFileLocation=propertyData.getAttachmentLocationPDF_SDM();
+		testData.PNGAttachmentFileLocation = propertyData.getAttachmentLocationPNG_SDM();
+		testData.AttachmentType = propertyData.getAttachmentType_SDM();
+		testData.FromEmalID = propertyData.getFromSecureEmailID_SDM();
+		testData.ToEmalID = propertyData.getToSecureEmailID_SDM();
+		testData.TOCName = propertyData.getTOCName_SDM();
+		testData.MessageStatus = propertyData.getMessageStatus_SDM();
+		
+		return testData;
+	}
+
+	public DirectorySearch loadDirectorySearchDataFromProperty(DirectorySearch testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.RestUrl = propertyData.getRestURL_SD();
+		
+		testData.RestUrl = propertyData.getRestURL_SD();
+		testData.DirectAddressOrganization = propertyData.getDirectAddress_organization_DS();
+		testData.DirectAddressProvider = propertyData.getDirectAddress_provider_DS();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_DS();
+		testData.OAuthUsername = propertyData.getOAuthUsername_DS();
+		testData.OAuthPassword = propertyData.getOAuthPassword_DS();
+		testData.SearchLength = propertyData.getSearchLength();
+		testData.CSVFilePath = propertyData.getCSVFilePath_DS();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		
+		return testData;
+	}
 }

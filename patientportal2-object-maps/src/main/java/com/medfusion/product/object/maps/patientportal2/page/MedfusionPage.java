@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,6 +14,8 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -26,6 +29,9 @@ import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
  */
 public abstract class MedfusionPage extends BasePageObject {
 
+	@FindBy(how = How.ID, using = "ng-app")
+	private WebElement htmlTag;
+	
 	public MedfusionPage(WebDriver driver) {
 		this(driver, null);
 	}
@@ -215,7 +221,7 @@ public abstract class MedfusionPage extends BasePageObject {
 			while (attempt < 3) {
 				log("Searching for element: " + element.toString(), Level.DEBUG);
 				try {
-					new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+					new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
 					log(elementToString(element) + " : is displayed", Level.DEBUG);
 					attempt = 3;
 				} catch (StaleElementReferenceException ex) {
@@ -237,4 +243,10 @@ public abstract class MedfusionPage extends BasePageObject {
 	public boolean isTextVisible(String text) {
 		return driver.findElement(By.xpath("// * [contains(text(),'" + text + "')]")).isDisplayed();
 	}
+	
+	public StringSelection getHtmlSource() {
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(htmlTag));
+		return new StringSelection("<!DOCTYPE html>" + htmlTag.getAttribute("outerHTML"));
+	}
+
 }
