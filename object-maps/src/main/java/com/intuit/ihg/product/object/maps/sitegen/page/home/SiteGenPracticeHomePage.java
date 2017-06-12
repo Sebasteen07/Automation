@@ -61,6 +61,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	@FindBy(linkText = "Personnel (Non-Physicians)")
 	private WebElement lnkPersonnelNonPhysicians;
 
+	@FindBy(linkText = "Forms")
+	private WebElement formsLink;
+
 	@FindBy(xpath = ".//a[@href = '/configurator/forms/']")
 	private WebElement discreteFormsLink;
 
@@ -274,10 +277,14 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	public DiscreteFormsList clickLnkDiscreteForms() throws Exception {
 
 		log("Clicking on Discrete forms");
-		IHGUtil.waitForElement(driver, 50, discreteFormsLink);
+		IHGUtil.waitForElement(driver, 50, formsLink);
 		try {
+			formsLink.click();
+			IHGUtil.waitForElement(driver, 50, discreteFormsLink);
 			discreteFormsLink.click();
 		} catch (Exception e) {
+			formsLink.click();
+			IHGUtil.waitForElement(driver, 50, discreteFormsLink);
 			discreteFormsLink.click();
 		}
 		Thread.sleep(2000);
