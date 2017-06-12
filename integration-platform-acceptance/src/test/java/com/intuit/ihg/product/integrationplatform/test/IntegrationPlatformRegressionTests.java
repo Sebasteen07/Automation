@@ -444,7 +444,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 24: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
-
+		
+		pMessageCenterInboxPage.closeViewer();
+		
+		Thread.sleep(8000);
 		log("Step 25: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 
@@ -653,7 +656,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 				if (!updatedValue.equalsIgnoreCase("Choose One")) {
 					RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-
+					//Adding wait for response to reflect.
+					Thread.sleep(5000);
 					RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValues[k].charAt(0), testData.getUserName());
 				}
 

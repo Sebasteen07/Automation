@@ -223,13 +223,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Complete Appointment Request Step3 Page  ");
 		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
-
+		
 		log("Step 7: Complete Appointment Request Step4 Page  ");
 		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
 
 		log("Step 8: Logout of Patient Portal");
 		myPatientPage.logout(driver);
-
+		Thread.sleep(5000);
+		
 		log("Step 9: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
@@ -288,7 +289,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 18: Logout of Patient Portal");
 		myPatientPage.logout(driver);
-
+		Thread.sleep(5000);
 		// Practice portal validation
 		log("Step 19: Login to Practice Portal");
 
@@ -900,10 +901,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 18: Logout of Patient Portal");
 		myPatientPage.logout(driver);
-
+		Thread.sleep(5000);
 		// Practice portal validation
 		log("Step 19: Login to Practice Portal");
-
+		Thread.sleep(6000);
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
 
@@ -1056,7 +1057,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage pMessage = inboxPage.clickFirstMessageRow();
 
 		log("Step 7: Validate message subject and send date");
-		Thread.sleep(1000);
+		Thread.sleep(8000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
@@ -1158,7 +1159,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 5: Logout");
 			pMyPatientPage.clickLogout(driver);
-
+			
+			Thread.sleep(5000);
 			log("Step 6: Login to Practice Portal");
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 			PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUsername(), testData.getPracticePassword());
@@ -1383,7 +1385,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			completed = true;
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
-
+		Thread.sleep(5000);
 		log("Verify Payment status in Practice Portal");
 		log("Step 21: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
@@ -1473,7 +1475,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		verifyTrue(completed, "Message processing was not completed in time");
-
+		Thread.sleep(5000);
 		log("Verify Payment status in Practice Portal");
 		log("Step 12: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
@@ -1509,7 +1511,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNow payNowData = new PayNow();
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
-
+		
 		log("Step 1: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
@@ -1559,7 +1561,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		verifyTrue(completed, "Message processing was not completed in time");
-
+		Thread.sleep(5000);
 		log("Step 11: Login to Practice Portal to search record");
 		practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
@@ -1700,7 +1702,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Logout from Patient portal");
 		myAccountPage.logout(driver);
-
+		
+		Thread.sleep(5000);
 		log("Step 7: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
