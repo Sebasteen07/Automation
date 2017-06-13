@@ -62,7 +62,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "paymentPreference_Both")
 	private WebElement bothPaymentPreference;
 
-	@FindBy(how = How.ID, using = "updateStatementPrefButton")
+	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
 

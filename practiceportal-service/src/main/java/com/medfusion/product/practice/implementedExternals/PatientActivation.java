@@ -45,42 +45,58 @@ public class PatientActivation implements IPatientActivation {
 	@Override
 	public PatientInfo editPatientRSDKExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo)
 			throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
-		System.out.println("Starting flow to set patient RSDK MRN");
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-		System.out.println("Click on Patient Search Link");
-		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
-
-		System.out.println("Set Patient Search Fields");
-		pPatientSearchPage.searchForPatientInPatientSearch(patientInfo.firstName, patientInfo.lastName);
-
-		System.out.println("Open Patient Dashboard");
-		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(patientInfo.firstName, patientInfo.lastName);
-
-		// save email
-		System.out.println("@@@@@@@@@@@@@@@@@ " + patientInfo.email);
-
-		System.out.println("Click Edit ID");
-		List<WebElement> editButtons = driver.findElements(By.linkText("Edit"));
-		editButtons.get(3).click();
-
-		// read memberid and update MRN ( = external memberid)
-		System.out.println("Update ID");
-		String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
-		System.out.println("Found memberId: " + memberId);
-		patientInfo.memberId = memberId;
-		WebElement rsdkId = driver.findElement(By.name("patientid_78"));
-		rsdkId.sendKeys(patientInfo.firstName);
-		driver.findElement(By.name("submitted")).click();
-		if (pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated") != true)
-			throw new RuntimeException("ID Update failed!");
-
-		patientInfo.billingAccountNumber = -1;
-		patientInfo.practicePatientId = patientInfo.firstName;
-		return patientInfo;
+	    return editPatientSetExternalID( driver,  testData,  patientInfo,"78");
 	}
+	/**
+	 *  Sets the external id to any external system, the element name of the box filled is "patientid_%externalSystemId" 
+	 *  e.g. patientid_78 for rsdk, patientid_79 for elekta, etc...
+	 * @param driver
+	 * @param testData
+	 * @param patientInfo
+	 * @param elementName
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@Override
+	public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,String externalSystemId)
+            throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
+        System.out.println("Starting flow to set externalId for system: " + externalSystemId);        
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portalUrl"));
+        PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+        System.out.println("Click on Patient Search Link");
+        PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+        System.out.println("Set Patient Search Fields");
+        pPatientSearchPage.searchForPatientInPatientSearch(patientInfo.firstName, patientInfo.lastName);
+
+        System.out.println("Open Patient Dashboard");
+        PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(patientInfo.firstName, patientInfo.lastName);
+
+        // save email
+        System.out.println("@@@@@@@@@@@@@@@@@ " + patientInfo.email);
+
+        System.out.println("Click Edit ID");
+        List<WebElement> editButtons = driver.findElements(By.linkText("Edit"));
+        editButtons.get(3).click();
+
+        // read memberid and update MRN ( = external memberid)
+        System.out.println("Update ID");
+        String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
+        System.out.println("Found memberId: " + memberId);
+        patientInfo.memberId = memberId;
+        WebElement rsdkId = driver.findElement(By.name("patientid_" + externalSystemId));
+        rsdkId.sendKeys(patientInfo.firstName);
+        driver.findElement(By.name("submitted")).click();
+        if (pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated") != true)
+            throw new RuntimeException("ID Update failed!");
+
+        patientInfo.billingAccountNumber = -1;
+        patientInfo.practicePatientId = patientInfo.firstName;
+        return patientInfo;
+    }
 
 }
