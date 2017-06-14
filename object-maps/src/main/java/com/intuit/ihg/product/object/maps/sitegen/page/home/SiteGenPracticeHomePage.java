@@ -52,7 +52,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	@FindBy(linkText = "Integration Engine")
 	private WebElement lnkIntegrationEngine;
 
-	@FindBy(linkText = "Custom Forms")
+	@FindBy(linkText = "Configure Custom Forms")
 	private WebElement lnkCustomForms;
 
 	@FindBy(linkText = "Merchant Account")
@@ -72,6 +72,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Practice Information")
 	private WebElement practiceInfoLink;
+
+	@FindBy(linkText = "Return to Main")
+	private WebElement returnToMain;
 
 	/**
 	 * @author bkrishnankutty
@@ -205,11 +208,17 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	public CreateCustomForms clickCustomForms() throws Exception {
 
 		log("Clicking on Custom Forms");
-		IHGUtil.waitForElement(driver, 50, lnkCustomForms);
+		IHGUtil.waitForElement(driver, 50, formsLink);
 		try {
+			formsLink.click();
+			IHGUtil.waitForElement(driver, 50, lnkCustomForms);
 			lnkCustomForms.click();
+			returnToMain.click();
 		} catch (Exception e) {
+			formsLink.click();
+			IHGUtil.waitForElement(driver, 50, lnkCustomForms);
 			lnkCustomForms.click();
+			returnToMain.click();
 		}
 		Thread.sleep(2000);
 		for (String winHandle : driver.getWindowHandles()) {
