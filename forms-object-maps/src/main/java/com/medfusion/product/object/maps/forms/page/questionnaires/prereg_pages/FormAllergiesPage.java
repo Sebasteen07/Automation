@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -25,7 +26,13 @@ public class FormAllergiesPage extends PortalFormPage {
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
-
+	
+	@FindBy(id ="generalanesthetic_allergy_drug")
+	WebElement GeneralAnesthetic;
+	
+	@FindBy(id = "peanuts_allergy_food")
+	WebElement Peanuts;
+	
 	/**
 	 * @Description:Set No Drug Allergies
 	 * @throws Exception
@@ -47,7 +54,25 @@ public class FormAllergiesPage extends PortalFormPage {
 		noFoodAllergies.click();
 
 	}
+	public void setGeneralAnesthetic_20() throws Exception {
+		PortalUtil.PrintMethodName();
+		WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+		driver.switchTo().frame(W1);
+		GeneralAnesthetic.click();
+	}
+	public void setPeanuts_20() throws Exception {
+		PortalUtil.PrintMethodName();
+		Peanuts.click();
+	}
+	public FormVaccinePage SetAllergies() throws Exception
+	{
+		Thread.sleep(2000);
+		setGeneralAnesthetic_20();
+		setPeanuts_20();
+		saveAndContinuebtn.click();
+		return PageFactory.initElements(driver, FormVaccinePage.class);
 
+	}
 	/**
 	 * @Description:Set No Environment Allergies
 	 * @throws Exception

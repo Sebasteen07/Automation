@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -20,6 +21,12 @@ public class FormInsurancePage extends PortalFormPage {
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
+	@FindBy(xpath = "//label[@for='primary_insurance_company']/../input")
+	private WebElement NameofPrimaryInsurance;
+
+	@FindBy(xpath = "//label[@for='primary_policy_holder_firstname']/../input")
+	private WebElement Policyholderfirstname;
+	/**
 	/**
 	 * @Description:Set Self Pay
 	 * @throws Exception
@@ -28,6 +35,21 @@ public class FormInsurancePage extends PortalFormPage {
 	public void setSelfPay() throws Exception {
 		PortalUtil.PrintMethodName();
 		selfPay.click();
+	}
+	public void setNameofPolicyHolderFirstname (String PrimaryInsurance,String PatientName) throws InterruptedException
+	{
+		Thread.sleep(4000);
+		NameofPrimaryInsurance.clear();
+		NameofPrimaryInsurance.sendKeys(PrimaryInsurance);
+		Policyholderfirstname.clear();
+		Policyholderfirstname.sendKeys(PatientName);
+		saveAndContinuebtn.click();
+	}
+	public FormSecondaryInsurancePage fillfirstInsurance(String PrimaryInsurance, String PatientName) throws InterruptedException
+	{
+		setNameofPolicyHolderFirstname(PrimaryInsurance, PatientName);
+		
+		return PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
 	}
 
 	@Override

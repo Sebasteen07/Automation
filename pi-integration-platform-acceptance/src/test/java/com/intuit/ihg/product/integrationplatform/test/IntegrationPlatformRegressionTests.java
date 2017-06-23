@@ -27,6 +27,7 @@ import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
 import com.intuit.ihg.product.integrationplatform.utils.DirectorySearchUtils;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
+import com.intuit.ihg.product.integrationplatform.utils.FormsExportUtils;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
@@ -107,16 +108,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 
-		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
-
 		log("Step 6: Click on link View health data");
-		jalapenoCcdPage.clickBtnViewHealthData();
+		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		jalapenoCcdPage.verifyCCDViewerAndClose();
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
-		log("Logging out");
-		homePage.clickOnLogout();
+		log("Step 8: Logging out");
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+		homePage = messagesPage.backToHomePage(driver);
+		loginPage = homePage.clickOnLogout();
 	}
 	
 	
@@ -1014,7 +1016,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.verifyPatientDetails(testData.getResponsePath(), patientIdString, patientData, null);
 	}
 	
-	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnseenMessageList() throws Exception {
 		log("Test Case: Get Unseen Messages" );
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1141,5 +1143,21 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 	Assert.assertEquals(invalidResponseUID, 400);
 	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
 
+	}
+
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCCDE2EFormExportfromPractice() throws Exception 
+	{
+		log("Test Case: Fill CCD Form and Verify the Details in Export");
+		FormsExportUtils formUtilsObject = new FormsExportUtils();
+		formUtilsObject.ccdExchangeFormsImport(driver, 0);
+	}
+	
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCCDE2EFormExportfromPracticeRegression() throws Exception 
+	{
+		Log4jUtil.log("Test Case: Fill CCD Form and Verify the Details in Export Regression");
+		FormsExportUtils formUtilsObject = new FormsExportUtils();
+		formUtilsObject.ccdExchangeFormsImport(driver, 1);
 	}
 }
