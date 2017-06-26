@@ -1,14 +1,14 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,20 +16,26 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
+import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,6 +46,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
+import org.jdom.JDOMException;
 import org.testng.Assert;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -55,6 +62,7 @@ import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
+import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
@@ -2552,4 +2560,263 @@ public class RestUtils {
 
 	}
 	
+
+public static void verifyPatientCCDFormInfo(String responsepath,List<String> list) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsepath);
+		Log4jUtil.log("finding CCDFORM INFO");
+		boolean found = false;
+
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
+		Node node2 = nodes.item(0);
+
+
+		String Responsexml=node2.getTextContent();
+
+		Source xmlSource = new StreamSource(responsepath);
+		Source xsltSource = new StreamSource(new StringReader(Responsexml));
+
+
+		File resultFile = File.createTempFile("Streams", ".xml");
+		Result result = new StreamResult(resultFile);
+
+		Log4jUtil.log("Results will go to: "+ resultFile.getAbsolutePath());
+		TransformerFactory transFact = TransformerFactory.newInstance( );
+
+		Transformer trans = transFact.newTransformer(xsltSource);
+
+		trans.transform(xmlSource, result);
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = factory.newDocumentBuilder();
+		Document doc1 = docBuilder.parse(resultFile.getAbsolutePath());
+		Element ele1 = doc1.getDocumentElement();
+		Log4jUtil.log("---------------Verifying Basic Information-------------------------");
+		Node SEXName=doc1.getElementsByTagName(IntegrationConstants.ADMINISTRATIVEGENDERCODE).item(0) ;
+		Attr attr = (Attr)SEXName.getAttributes().getNamedItem(IntegrationConstants.ATRRIBUTE1);
+		Assert.assertTrue(attr.getValue().equals("MALE"), "Sex values different from Expected");
+		Log4jUtil.log("Verifying SExValue actual "+attr.getValue().toString().toLowerCase()+" with Expected "+list.get(21));
+		Log4jUtil.log("---------------Verifying Emergency Contacts Information---------------");
+		Node entityrel=doc1.getElementsByTagName(IntegrationConstants.ASSOCIATEDENTITY).item(0);
+		Element relation1=(Element) entityrel;
+		Element relationname=(Element) relation1.getElementsByTagName("originalText").item(0);
+		Assert.assertEquals(relationname.getTextContent(),list.get(2),"Relation Actual values are different from expected");
+		Log4jUtil.log("Verifying Relation actual "+relationname.getTextContent().toString()+" with Expected "+list.get(2));
+		Node entitynode = doc1.getElementsByTagName(IntegrationConstants.ASSOCIATEDPERSON).item(0);
+		Element name = (Element) entitynode;
+
+		Element relfirstname1=(Element) name.getElementsByTagName(IntegrationConstants.GIVENNAME).item(0);
+		Assert.assertEquals(relfirstname1.getTextContent(),list.get(0),"Relfirstname Actual values are different from expected");
+		Log4jUtil.log("Verifying RelFirstName actual "+relfirstname1.getTextContent().toString()+" with Expected "+list.get(0));
+		Element relLAstname1=(Element) name.getElementsByTagName(IntegrationConstants.FAMILY).item(0);
+		Assert.assertEquals(relLAstname1.getTextContent(),list.get(1),"RelLAstname Actual values are different from expected");
+		Log4jUtil.log("Verifying RelLastName actual "+relLAstname1.getTextContent().toString()+" with Expected "+list.get(1));
+		Node assignedentity=doc1.getElementsByTagName(IntegrationConstants.DOCUMENTATIONOF).item(0);
+		Assert.assertEquals(assignedentity.getTextContent(),list.get(17),"Providername's Actual values are different from expected");
+		Log4jUtil.log("Verifying Providers actual "+assignedentity.getTextContent().toString()+" with Expected "+list.get(17));
+		Node Insurancename1 = doc1.getElementsByTagName(IntegrationConstants.REPRESENTEDORGANIZATION).item(1);
+		Log4jUtil.log("---------------Verifying Primary and Secondary Insurance Information------------------------");
+		Assert.assertEquals(Insurancename1.getTextContent(),list.get(5),"PrimaryInsurance Actual values are different from expected");
+		Log4jUtil.log("Verifying PrimaryInsurance actual "+Insurancename1.getTextContent().toString()+" with Expected "+list.get(5));
+		Node Insurancename2 = doc1.getElementsByTagName(IntegrationConstants.REPRESENTEDORGANIZATION).item(2);
+		Assert.assertEquals(Insurancename2.getTextContent(),list.get(6),"SecondaryInsurance Actual values are different from expected");
+		Log4jUtil.log("Verifying SecondaryInsurance actual "+Insurancename2.getTextContent().toString()+" with Expected "+list.get(6));
+
+		Log4jUtil.log("------------------Verifying Vaccinations information---------------------------");
+		NodeList Tetanus1 = doc1.getElementsByTagName(IntegrationConstants.SUBSTANCEADMINISTRATION);
+
+		Element substancetext=(Element) Tetanus1.item(1);
+		Element substanceTetanus1=(Element) substancetext.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
+		Assert.assertEquals(substanceTetanus1.getTextContent(),list.get(7),"Tetanus Actual values are different from expected");
+		Log4jUtil.log("Verifying Tetanus actual "+substanceTetanus1.getTextContent().toString()+" with Expected "+list.get(7));
+
+
+		Element substancetextHPV=(Element) Tetanus1.item(2);
+		Element substancetextHPV1=(Element) substancetextHPV.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
+		Assert.assertEquals(substancetextHPV1.getTextContent(),list.get(8),"HPV's Actual values are different from expected");
+		Log4jUtil.log("Verifying HPV's actual "+substancetextHPV1.getTextContent().toString()+" with Expected "+list.get(8));
+
+
+		Element substancetextInfluenza=(Element) Tetanus1.item(3);
+		Element substancetextInfluenza1=(Element) substancetextInfluenza.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
+		Assert.assertEquals(substancetextInfluenza1.getTextContent(),list.get(9),"Influenza's Actual values are different from expected");
+		Log4jUtil.log("Verifying Influenza1 actual "+substancetextInfluenza1.getTextContent().toString()+" with Expected "+list.get(9));
+
+
+		Element substancetextPneumonia=(Element) Tetanus1.item(4);
+		Element substancetextPneumonia1=(Element) substancetextPneumonia.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
+		Assert.assertEquals(substancetextPneumonia1.getTextContent(),list.get(10),"Pneumonia's Actual values are different from expected");
+		Log4jUtil.log("Verifying Pneumonia1 actual "+substancetextPneumonia1.getTextContent().toString()+" with Expected "+list.get(10));
+
+		Log4jUtil.log("--------------------Verifying Surgeries & Hosptalization Information--------------------------");
+		Node SurgeryName=doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(6);
+		Element surgery=(Element) SurgeryName;
+		Element SurgeryName1=(Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
+		Assert.assertTrue(SurgeryName1.getTextContent().contains("CesareanType$$$Caesarean hysterectomy"),"SurgeryName Actual values are different from expected");
+		Log4jUtil.log("Verifying SurgeryName actual "+SurgeryName1.getTextContent().toString()+" with Expected "+list.get(11));
+
+
+		Element SurgeryNametime=(Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(1);
+		Assert.assertEquals(SurgeryNametime.getTextContent().toLowerCase(),list.get(12),"SurgeryNametime Actual values are different from expected");
+		Log4jUtil.log("Verifying Surgerytimeframe actual "+SurgeryNametime.getTextContent().toString().toLowerCase()+" with Expected "+list.get(12));
+
+		Node Hospitalization=doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(9);
+		Element Hospitalization1=(Element) Hospitalization;
+		Element Hospitalizationreason=(Element) Hospitalization1.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
+		Assert.assertTrue(Hospitalizationreason.getTextContent().contains("Pneumococcal arthritis"),"Hospitalizationreason Actual values are different from expected");
+		Log4jUtil.log("Verifying Hospitalizationreason actual "+Hospitalizationreason.getTextContent().toString()+" with Expected "+list.get(13));
+
+		Element Hospitalizationreasontime=(Element) Hospitalization1.getElementsByTagName(IntegrationConstants.CONTENT).item(1);
+		Assert.assertEquals(Hospitalizationreasontime.getTextContent().toLowerCase(),list.get(14),"Hospitalizationreasontime Actual values are different from expected");
+		Log4jUtil.log("Verifying Hospitalizationtimeframe actual "+Hospitalizationreasontime.getTextContent().toString().toLowerCase()+" with Expected "+list.get(14));
+
+		Log4jUtil.log("------------------Verifying PreviousTest Information-------------------------");
+		Element Testname=(Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(2);
+		Assert.assertEquals(Testname.getTextContent(),list.get(15),"Test Actual values are different from expected");
+		Log4jUtil.log("Verifying Test actual "+Testname.getTextContent().toString()+" with Expected "+list.get(15));
+
+		Element Testtime=(Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(3);
+		Assert.assertEquals(Testtime.getTextContent().toLowerCase(),list.get(16),"Testtime Actual values are different from expected");
+		Log4jUtil.log("Verifying Testtime actual "+Testtime.getTextContent().toString().toLowerCase()+" with Expected "+list.get(16));
+
+		Log4jUtil.log("----------------------Verifying Medication Information-----------------------------");
+		Node Dosage=doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(3);
+		Element Dosage1=(Element) Dosage;
+		Element Dosagename=(Element) Dosage1.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
+		Assert.assertTrue(Dosagename.getTextContent().contains("Crestor 20 mg Tab"),"Dosage Actual values are different from expected");
+		Log4jUtil.log("Verifying Dosage actual "+Dosagename.getTextContent().toString()+" with Expected "+list.get(18));
+
+		Log4jUtil.log("-----------------------Verifying Other Medical History Information--------------------");
+		Node OtherMedicalhistory=doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(11);
+		Element OtherMedicalhistory1=(Element) OtherMedicalhistory;
+		Element OtherMedicalhistoryname=(Element) OtherMedicalhistory1.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
+		Assert.assertEquals(OtherMedicalhistoryname.getTextContent(),list.get(19),"OtherMedicalhistory Actual values are different from expected");
+		Log4jUtil.log("Verifying OtherMedical history actual "+OtherMedicalhistoryname.getTextContent().toString()+" with Expected "+list.get(19));
+
+		Element FamilyRelation1=(Element) OtherMedicalhistory1.getElementsByTagName(IntegrationConstants.CONTENT).item(1);
+		Assert.assertEquals(FamilyRelation1.getTextContent(),list.get(20),"FamilyRelation Actual values are different from expected");
+		Log4jUtil.log("Verifying FamilyRelation history actual "+FamilyRelation1.getTextContent().toString()+" with Expected "+list.get(20));
+
+		}
+	}
+
+	public static void verifyCCDHeaderDetails(String responsepath,String FormValue) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsepath);
+		Log4jUtil.log("finding CCDFORM INFO");
+		boolean found = false;
+		String PDfURL1="";
+		Node CcdMessageHeaders=doc.getElementsByTagName(IntegrationConstants.CCDMESSAGEHEADERS).item(0);
+		Element ccdheaders=(Element) CcdMessageHeaders;
+		Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
+		Element Forms=(Element) Formname;
+		Node Value1=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+		String Formname1=Value1.getTextContent();
+		Node FormType=Forms.getElementsByTagName("KeyValuePair").item(1);
+		Assert.assertEquals(Formname1, FormValue, "Form Name is different from expected ");
+		Assert.assertTrue(FormType.getTextContent().contains(IntegrationConstants.FORMTYPE), "Form Type is different than expected");
+
+	}
+
+	public static String verifyCCDHeaderDetailsandGetURL(String responsepath, String externalID) throws ParserConfigurationException, SAXException, IOException{
+	  IHGUtil.PrintMethodName();
+	  Document doc = buildDOMXML(responsepath);
+	  Log4jUtil.log("finding CCDFORM INFO");
+	  boolean found = false;
+	  String PDfURL1="";
+	  NodeList CcdMessageHeaders=doc.getElementsByTagName("ns2:CcdExchange");
+	  for(int i=0; i<CcdMessageHeaders.getLength();i++)
+	  {
+		  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
+		  NodeList PAtientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
+		  for(int j=0; j<PAtientDemo.getLength();j++)
+		  {
+			  Element childs=(Element) PAtientDemo.item(j);
+			  
+		  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
+		  if(PatientIdentifier.item(j)!=null) {
+			  Element external=(Element) PatientIdentifier.item(j);
+		  	  Log4jUtil.log("Patient External ID is "+external.getTextContent());
+		  	  ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
+			  for(int n=0;n<names.size();n++)
+			  {
+				  if (names.get(n).contains(externalID))
+				  {
+					  //Log4jUtil.log("Elements are in the condition "+names.get(n));
+					  Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
+					  Element Forms=(Element) Formname;
+					  Node FormURL=Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
+					  Element URL=(Element) FormURL;
+					  Node Value1=URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+					  Log4jUtil.log("Form url is "+Value1.getTextContent());
+							  PDfURL1=Value1.getTextContent();
+							  break;
+				  }
+				}
+			}  
+		  }
+	  	}
+	  return PDfURL1;
+	  }
+
+	 public static void verifyPDFBatchDetails(String responsepath,String externalPatientID, String medfusionID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
+	   IHGUtil.PrintMethodName();
+	   Document doc = buildDOMXML(responsepath);
+	   Log4jUtil.log("Getting CCDPDFBatch URL INFO");
+	   boolean found = false;
+	   String PatientPDFUrl="";
+	   NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
+	   for(int i=0;i<nodes1.getLength();i++)
+	   {
+		   Element member=(Element) nodes1.item(i);
+		   NodeList MfmemberID = member.getElementsByTagName(IntegrationConstants.MEDFUSIONMEMBERID);
+		   for(int j=0;j<MfmemberID.getLength();j++)
+		   {
+			   Element MedfusionID=(Element) MfmemberID.item(j);
+			   if(MedfusionID.getTextContent().equals(medfusionID))
+			   {
+				   Assert.assertEquals(MedfusionID.getTextContent(), medfusionID,"Medfusion MemberID is  different from expected");
+				   Log4jUtil.log("Verifying MedfusionMemberID "+MedfusionID.getTextContent()+" with Expected"+medfusionID);
+				   Node ExternalID =member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
+				   Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,"External patient ID is different from expected");
+				   Log4jUtil.log("Verifying ExternalID "+ExternalID.getTextContent()+" with Expected"+externalPatientID);
+				   Node GetPDFUrl =member.getElementsByTagName(IntegrationConstants.PDFURLLINK).item(0);
+				   String PDFURL=GetPDFUrl.getTextContent();
+				   Log4jUtil.log("Get URL is"+PDFURL);
+				   PatientPDFUrl=PDFURL;
+			   }
+		   }
+	  }
+	}
+
+	public static Response setupHttpGetRequestExceptoAuthforPDF(String strUrl, String responseFilePath) throws IOException, URISyntaxException, TransformerException 
+	{
+		IHGUtil.PrintMethodName();
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+
+		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		InputStream is = resp.getEntity().getContent();
+		File downloadfile = new File(responseFilePath);  
+		byte[] byteArray = IOUtils.toByteArray(is);
+		FileOutputStream fos = new FileOutputStream(responseFilePath);
+		fos.write(byteArray);
+		fos.flush();
+		fos.close();
+		return Response.status(200).entity(responseFilePath).build();  
+	}
+
+	public static void comparePDFfiles(String file1, String file2) throws Exception {
+		String pdfFromPortal=ExternalFileReader.base64Encoder(file1,false);
+		String pdfFromGet=ExternalFileReader.base64Encoder(file2,false);
+		
+		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
+		Log4jUtil.log("Is Pdf Matched : "+pdfMatch);
+		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
+	}
+
 }

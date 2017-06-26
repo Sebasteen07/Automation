@@ -921,5 +921,251 @@ public class PropertyFileLoader {
 	public String getCSVFilePath_DS() {
 		return property.getProperty("csvFilePath_DS");
 	}
+	//PatientFormsExportInfo
+	public String geturl_FE(){
+		return property.getProperty("url_FE");
+	}
+	public String getpracticeNew_URL_FE(){
+		return property.getProperty("practiceNew_URL_FE");
+	}
+	public String getpatient_url_FE(){
+		return property.getProperty("patient_url_FE");
+	}
+	public String getpatientfilepath_FE(){
+		return property.getProperty("patientfilepath_FE");
+	}
+	public String getpatientFirstName_FE(){
+		return property.getProperty("patientFirstName_FE");
+	}
+	public String getpatientLastName_FE(){
+		return property.getProperty("patientLastName_FE");
+	}
+	public String getpatientEmailAddress1_FE(){
+		return property.getProperty("patientEmailAddress1_FE");
+	}
+	public String getpatientEmailCity_FE(){
+		return property.getProperty("patientEmailCity_FE");
+	}
+	public String getpatientphoneNumber_FE(){
+		return property.getProperty("patientphoneNumber_FE");
+	}
+	public String getpatientDOBDay1_FE(){
+		return property.getProperty("patientDOBDay1_FE");
+	}
+	public String getpatientDOBMonth_FE(){
+		return property.getProperty("patientDOBMonth_FE");
+	}
+	public String getpatientDOBYear_FE(){
+		return property.getProperty("patientDOBYear_FE");
+	}
+	public String getpatientDOBMonthText_FE(){
+		return property.getProperty("patientDOBMonthText_FE");
+	}
+	public String getpatientZipCode1_FE(){
+		return property.getProperty("getpatientZipCode1_FE");
+	}
+	public String getpatientSecretQuestion_FE(){
+		return property.getProperty("patientSecretQuestion_FE");
+	}
+	public String getpatientuserid_FE(){
+		return property.getProperty("patientuserid_FE");
+	}
+	public String getpatientPassword1_FE(){
+		return property.getProperty("patientPassword1_FE");
+	}
+	public String getpatientSecretAnswer_FE(){
+		return property.getProperty("patientSecretAnswer_FE");
+	}
+	public String getpatientAddress1_FE(){
+		return property.getProperty("patientAddress1_FE");
+	}
+	public String getpatientAddress2_FE(){
+		return property.getProperty("patientAddress2_FE");
+	}
+	public String getpatientCity_FE(){
+		return property.getProperty("patientCity_FE");
+	}
+	public String getpatientState_FE(){
+		return property.getProperty("patientState_FE");
+	}
+	public String getpatientHomePhoneNo_FE() {
+		return property.getProperty("patientHomePhoneNo_FE");
+	}
+		public String getpatientethnicity_FE() {
+			return property.getProperty("patientethnicity_FE");
+	}
+		public String getpatientMaritalStatus_FE() {
+			return property.getProperty("patientMaritalStatus_FE");
+		}
+		public String getpatientWhoIs_FE() {
+			return property.getProperty("patientWhoIs_FE");
+		}
+		public String getNameofPrimaryInsurance() {
+			return property.getProperty("NameofPrimaryInsurance");
+		}
+		public String getNameofsecondaryInsurance() {
+			
+			return property.getProperty("NameofsecondaryInsurance");
+		}
+       public String getrelFirstNAme() {
+			
+			return property.getProperty("relFirstNAme");
+		}
+       public String getrelLastNAme() {
+			
+			return property.getProperty("relLastNAme");
+		}
+       public String getrelation1() {
+			
+			return property.getProperty("relation1");
+		}
+       public String getphonenumber1() {
+			
+			return property.getProperty("phonenumber1");
+		}
+       public String getphonetype1() {
+			
+			return property.getProperty("phonetype1");
+		}
+       public String gettetanus1() {
+			
+			return property.getProperty("tetanus1");
+		}
+       public String getHPV1() {
+			
+			return property.getProperty("HPV1");
+		}
+       public String getInfluenza1() {
+			
+			return property.getProperty("Influenza1");
+		}
+       public String getPneumonia1() {
+			
+			return property.getProperty("Pneumonia1");
+		}
+       public String getSurgeryName() {
+			
+			return property.getProperty("SurgeryName");
+		}
+       public String getSurgeryTimeFrame() {
+			
+			return property.getProperty("SurgeryTimeFrame");
+		}
+       public String getHospitalizationReason() {
+			
+			return property.getProperty("HospitalizationReason");
+		}
+       public String getHospitalizationTimeFrame() {
+			
+			return property.getProperty("HospitalizationTimeFrame");
+		}
+       public String getTest() {
+			
+			return property.getProperty("Test");
+		}
+       public String getTestTimeFrame() {
+			
+			return property.getProperty("TestTimeFrame");
+		}
+       public String getNameofDoctorSpeciality() {
+			
+			return property.getProperty("NameofDoctorSpeciality");
+		}
+       public String getNameDosage() {
+			
+			return property.getProperty("NameDosage");
+		}
+       public String getFamilyMember() {
+			
+			return property.getProperty("FamilyMember");
+		}
+       public String getOtherMedicalhistory() {
+			
+			return property.getProperty("OtherMedicalhistory");
+		}
+	public String getsex() {
+		
+		return property.getProperty("sex");
+	}
+	public String state1()
+	{
+		return property.getProperty("state1");
+	}
+	public String gettimes() {
+		
+		return property.getProperty("times");
+	}
+    public String getexercise() {
+		
+		return property.getProperty("exercise");
+	}
+	public String getccd_url1_FE()
+	{
+		return property.getProperty("ccd_url1_FE");
+	}
+	public String getoAuthAppTokenCCD1_FE()
+	{
+		return property.getProperty("oAuthAppTokenCCD1_FE");
+	}
+	public String getoAuthUsernameCCD1_FE()
+	{
+		return property.getProperty("oAuthUsernameCCD1_FE");
+	}
+	public String getoAuthPasswordCCD1_FE()
+	{
+		return property.getProperty("oAuthPasswordCCD1_FE");
+	}
+	public String getoAuthKeyStore1_FE()
+	{
+		return property.getProperty("oAuthAppTokenCCD1_FE");
+	}
+	public String getoAuthProperty1_FE()
+	{
+		return property.getProperty("oAuthProperty1_FE");
+	}
+	public String getresponsePath_CCD1_FE()
+	{
+		return property.getProperty("responsePath_CCD1_FE");
+	}
+	public String getpracticeURL_FE() {
+		return property.getProperty("practiceURL_FE");
+	}
+	public String getpracticeUserName_FE() {
+		return property.getProperty("practiceUserName_FE");
+	
+	}
+	public String getpracticePassword_FE() {
+		return property.getProperty("practicePassword_FE");
+				}
+	public String getpatientLocation_FE() {
+		
+		return property.getProperty("patientLocation_FE");
+	}
+	public String getpatientProvider_FE() {
+		return  property.getProperty("patientProvider_FE");
+		
+	}
+	public String getresponsePDF_FE() {
+	   return property.getProperty("responsePDF_FE");
+	}
+	public String getccd_PDfUrl_FE() {
+		   return property.getProperty("ccd_PDfUrl_FE");
+		}
+	public String getresponsePDFBatch_FE()
+	{
+		return property.getProperty("responsePDFBatch_FE");
+	}
+	public String getUIPDFFile_FE()
+	{
+		return property.getProperty("uiPDFFile_FE");
+	}
+	public String getday() {
+		
+		return property.getProperty("day");
+	}
+	public String getDownloadFileLocation() {
+		
+		return property.getProperty("downloadFileLocation");
+	}
 	
 }

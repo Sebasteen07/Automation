@@ -1,9 +1,11 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -23,6 +25,16 @@ public class FormMedicationsPage extends PortalFormPage {
 
 	@FindBy(xpath = ".//*[@id='section5']/section/div[2]/a")
 	private WebElement btnSubmit;
+	
+
+	@FindBy(id = "medications_other_field_autocomplete")
+	private WebElement medications;
+	
+	@FindBy(id = "medications_other_field_frequency")
+	private WebElement taken;
+	
+	@FindBy(xpath = "//div[@id='autocomplete']/ul/li")
+	WebElement autoComplete;
 
 	/**
 	 * @Description:Set No Medications
@@ -35,6 +47,13 @@ public class FormMedicationsPage extends PortalFormPage {
 			noMedications.click();
 	}
 
+	public FormAllergiesPage setMedicationFormFields_20(String medicine, String input) throws Exception {
+		fillMedicationFormFields_new(medicine);
+		Settakeninterval(input);
+		saveAndContinuebtn.click();
+		return PageFactory.initElements(driver, FormAllergiesPage.class);
+
+	}
 	/**
 	 * @Description:Set Medication Form Fields
 	 * @return FormAllergiesPage
@@ -60,7 +79,21 @@ public class FormMedicationsPage extends PortalFormPage {
 		btnSubmit.click();
 		// return PageFactory.initElements(driver, MyPatientPage.class);
 	}
-
+	public void fillMedicationFormFields_new(String medicine) throws Exception {
+		Thread.sleep(2000);
+		medications.clear();
+		medications.sendKeys(medicine);
+		medications.sendKeys(Keys.TAB);
+		Thread.sleep(4000);
+		autoComplete.click();
+	}
+	public void Settakeninterval(String input) throws InterruptedException
+	{
+		Thread.sleep(1000);
+		taken.sendKeys(input);
+		Thread.sleep(1000);
+		
+	}
 
 	@Override
 	public boolean isPageLoaded() {
