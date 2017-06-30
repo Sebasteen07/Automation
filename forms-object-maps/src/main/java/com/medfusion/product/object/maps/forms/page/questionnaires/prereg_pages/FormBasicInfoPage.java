@@ -275,7 +275,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 		return clickSaveContinue(FormEmergencyContactPage.class);
 	}
 
-	public FormEmergencyContactPage setBasicInfoFromFields_20(String state1, String phonetype, String type) throws Exception {
+	public FormEmergencyContactPage setBasicInfoFromFields_20(String state1, String phoneType, String type) throws Exception {
 		WebElement w1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
 		driver.switchTo().frame(w1);
 		setStreetAddress_20();
@@ -283,7 +283,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 			setState_20(state1);
 			setZip_20();
 			setPrimaryPhoneNumber_20();
-			setPrimaryPhoneType_20(phonetype);
+			setPrimaryPhoneType_20(phoneType);
 			setSex_20(type);
 
 			return clickSaveContinue(FormEmergencyContactPage.class);

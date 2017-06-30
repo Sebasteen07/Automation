@@ -68,8 +68,8 @@ public class FormsExportUtils {
 		}
 		scanner.close();
 		List<String> list = new ArrayList<String>(formsMap.values());
-		testData.relFirstNAme=list.get(0);
-		testData.relLastNAme=list.get(1);
+		testData.relFirstName=list.get(0);
+		testData.relLastName=list.get(1);
 		testData.relation1=list.get(2);
 		testData.phonenumber1=list.get(3);
 		testData.phonetype1=list.get(4);
@@ -173,12 +173,12 @@ public class FormsExportUtils {
 			Log4jUtil.log("Step 15: Fill in Emergency Contact info ");
 			PortalUtil.setPortalFrame(driver);
 			FormEmergencyContactPage paFormEmergencyContactPage = PageFactory.initElements(driver, FormEmergencyContactPage.class);
-			paFormEmergencyContactPage.fillEmergencyContactFormFields_20(testData.relFirstNAme, testData.relLastNAme, testData.relation1, testData.phonenumber1, testData.phonetype1);
+			paFormEmergencyContactPage.fillEmergencyContactFormFields_20(testData.relFirstName, testData.relLastName, testData.relation1, testData.phonenumber1, testData.phonetype1);
 			WebElement Save =driver.findElement(By.xpath("//input[@type='submit' and @value='Save & Continue']"));
 
 			Log4jUtil.log("Step 16: Fill in Primary Insurance Details");
 			FormInsurancePage pFormInsurancePage=PageFactory.initElements(driver, FormInsurancePage.class);
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			pFormInsurancePage.fillfirstInsurance(testData.NameofPrimaryInsurance, firstName);
 
 			Log4jUtil.log("Step 17: Fill in Secondary Insurance Details");
@@ -187,7 +187,7 @@ public class FormsExportUtils {
 
 			Log4jUtil.log("Step 18: Set Providers Details");
 			FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);
-			pFormOtherProvidersPage.SetProvidername(testData.NameofDoctorSpeciality);
+			pFormOtherProvidersPage.setProvidername(testData.NameofDoctorSpeciality);
 			Save.click();
 
 			Log4jUtil.log("Step 19:Fill in CurrentSymptomspage Info ");
@@ -202,7 +202,7 @@ public class FormsExportUtils {
 			Log4jUtil.log("Step 21: Fill in No Allergies");
 			PortalUtil.setPortalFrame(driver);
 			FormAllergiesPage pFormAllergiesPage=PageFactory.initElements(driver, FormAllergiesPage.class);
-			pFormAllergiesPage.SetAllergies();
+			pFormAllergiesPage.setAllergies();
 
 			Log4jUtil.log("Step 22: Fill in Vaccines");
 			FormVaccinePage pFormVaccinePage =PageFactory.initElements(driver, FormVaccinePage.class);
@@ -210,7 +210,7 @@ public class FormsExportUtils {
 
 			Log4jUtil.log("Step 23: Fill in surgeries & Hospitalizations");
 			FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage=PageFactory.initElements(driver, FormSurgeriesHospitalizationsPage.class);
-			pFormSurgeriesHospitalizationsPage.fillSurgiesform(testData.SurgeryName,testData.SurgeryTimeFrame,testData.HospitalizationReason,testData.HospitalizationTimeFrame);
+			pFormSurgeriesHospitalizationsPage.fillSurgiesForm(testData.SurgeryName,testData.SurgeryTimeFrame,testData.HospitalizationReason,testData.HospitalizationTimeFrame);
 
 			Log4jUtil.log("Step 24:Fill in Test Details");
 			FormPreviousExamsPage pFormPreviousExamsPage=PageFactory.initElements(driver, FormPreviousExamsPage.class);
@@ -222,18 +222,19 @@ public class FormsExportUtils {
 
 			Log4jUtil.log("Step 26: Fill in Family History Details");
 			FormFamilyHistoryPage pFormFamilyHistoryPage=PageFactory.initElements(driver, FormFamilyHistoryPage.class);
-			pFormFamilyHistoryPage.SetFamilyHistory(testData.OtherMedicalhistory, testData.FamilyMember);
+			pFormFamilyHistoryPage.setFamilyHistory(testData.OtherMedicalhistory, testData.FamilyMember);
 
 			Log4jUtil.log("Step 27: Fill in Social History Details");
 			FormSocialHistoryPage pFormSocialHistoryPage=PageFactory.initElements(driver, FormSocialHistoryPage.class);
-			pFormSocialHistoryPage.fillexercisedetails(testData.exercise,testData.day);
+			pFormSocialHistoryPage.fillExerciseDetails(testData.exercise,testData.day);
 			Thread.sleep(5000);
 
 			if(i==1)
 			{
 				PortalUtil.setPortalFrame(driver);
 				Log4jUtil.log("Step for patient with External ID: Downloading PDf file from Application");
-				driver.findElement(By.xpath("//a[contains(text(),'View as PDF')]")).click();
+				Thread.sleep(3000);
+				healthListpage.getPDF();
 				if( driver instanceof FirefoxDriver) {
 					Robot rb = new Robot(); 
 					Thread.sleep(7000);
@@ -294,21 +295,19 @@ public class FormsExportUtils {
 				}
 
 			}
-			if(i==1)
-			{
-				Log4jUtil.log("Step 32 :Verify Patients CCD Data in ResponseXML");
-				RestUtils.verifyPatientCCDFormInfo(testData.responsePath_CCD1_FE, list);
-			}
-
+			
 			Thread.sleep(5000);
 			String GetPatientPDfURL= "";
 			if(i==2) {
+				Log4jUtil.log("Step 31 :Verify Patients CCD Data in ResponseXML");
+				RestUtils.verifyPatientCCDFormInfo(testData.responsePath_CCD1_FE, list);	
+				
 			    GetPatientPDfURL=RestUtils.verifyCCDHeaderDetailsandGetURL(testData.responsePath_CCD1_FE,externalPatientID);
 				Log4jUtil.log("Verify both the patient details in ccdExchangeBatch response ");
-				Log4jUtil.log("Step 31: Setup Oauth client");
+				Log4jUtil.log("Step 32: Setup Oauth client");
 				RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
 				
-				Log4jUtil.log("Step 32: Save PDF file returned as response from RESTAPI " + since + " using ccdExchange API");
+				Log4jUtil.log("Step 33: Save PDF file returned as response from RESTAPI " + since + " using ccdExchange API");
 				
 				RestUtils.setupHttpGetRequestExceptoAuthforPDF(GetPatientPDfURL + "?since=" + since + ",0", testData.responsePDF_FE);
 				Thread.sleep(4000);
@@ -327,7 +326,7 @@ public class FormsExportUtils {
 			if(i==2 && testType==1) {
 				getURL = testData.ccd_url1_FE + "Batch";
 				Thread.sleep(10000);
-				Log4jUtil.log("Step 33: Verify 204 response when no new forms is present");
+				Log4jUtil.log("Step 34: Verify 204 response when no new forms is present");
 				long timeStamp204 = System.currentTimeMillis();
 				Long sinceTime = timeStamp204 / 1000;
 				RestUtils.setupHttpGetRequestExceptOauth(getURL + "?since=" + sinceTime + ",0", testData.responsePath_CCD1_FE);
@@ -338,7 +337,7 @@ public class FormsExportUtils {
 			}
 
 			Thread.sleep(6000);
-			Log4jUtil.log("Logout from patient portal");
+			Log4jUtil.log("Step 34: Logout from patient portal");
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();

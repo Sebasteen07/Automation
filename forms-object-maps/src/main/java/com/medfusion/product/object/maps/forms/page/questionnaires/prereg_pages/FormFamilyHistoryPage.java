@@ -20,41 +20,41 @@ public class FormFamilyHistoryPage extends PortalFormPage {
 	WebElement noFamilyHistory;
 
 	@FindBy(id = "familymedicalhistory_other_field_autocomplete")
-	WebElement familymedical;
+	WebElement familyMedical;
 
 	@FindBy(id = "familymedicalhistory_other_field_familyMember")
-	WebElement familymember;
+	WebElement familyMember;
 	
 	@FindBy(xpath = "//div[@id='autocomplete']/ul/li")
 	WebElement autoComplete;
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+	private WebElement saveAndContinueButton;
 	/**
 	 * @Description: Set No Family History
 	 */
 	public void setNoFamilyHistory() throws Exception {
 		noFamilyHistory.click();
 	}
-	public void setrelation(String input)
+	public void setRelation(String input)
 	{
 
-		Select selector=new Select(familymember);
+		Select selector=new Select(familyMember);
 		selector.selectByVisibleText(input);
 	}
-	public FormSocialHistoryPage SetFamilyHistory(String input, String input1) throws Exception
+	public FormSocialHistoryPage setFamilyHistory(String familyDetail, String relation) throws Exception
 	{
-		fillfamilydetails(input);
-		setrelation(input1);
-		saveAndContinuebtn.click();
+		fillFamilyDetails(familyDetail);
+		setRelation(relation);
+		saveAndContinueButton.click();
 		return PageFactory.initElements(driver, FormSocialHistoryPage.class);
 	}
 	
-	public void fillfamilydetails(String input) throws InterruptedException
+	public void fillFamilyDetails(String input) throws InterruptedException
 	{
-		familymedical.clear();
-		familymedical.sendKeys(input);
-		familymedical.sendKeys(Keys.TAB);
+		familyMedical.clear();
+		familyMedical.sendKeys(input);
+		familyMedical.sendKeys(Keys.TAB);
 		Thread.sleep(2000);
 		autoComplete.click();
 	}

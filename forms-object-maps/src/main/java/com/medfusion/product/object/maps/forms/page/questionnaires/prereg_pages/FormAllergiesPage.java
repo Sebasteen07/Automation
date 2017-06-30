@@ -28,10 +28,10 @@ public class FormAllergiesPage extends PortalFormPage {
 	private WebElement saveAndContinuebtn;
 	
 	@FindBy(id ="generalanesthetic_allergy_drug")
-	WebElement GeneralAnesthetic;
+	WebElement generalAnesthetic;
 	
 	@FindBy(id = "peanuts_allergy_food")
-	WebElement Peanuts;
+	WebElement peanuts;
 	
 	/**
 	 * @Description:Set No Drug Allergies
@@ -58,13 +58,13 @@ public class FormAllergiesPage extends PortalFormPage {
 		PortalUtil.PrintMethodName();
 		WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
 		driver.switchTo().frame(W1);
-		GeneralAnesthetic.click();
+		generalAnesthetic.click();
 	}
 	public void setPeanuts_20() throws Exception {
 		PortalUtil.PrintMethodName();
-		Peanuts.click();
+		peanuts.click();
 	}
-	public FormVaccinePage SetAllergies() throws Exception
+	public FormVaccinePage setAllergies() throws Exception
 	{
 		Thread.sleep(2000);
 		setGeneralAnesthetic_20();

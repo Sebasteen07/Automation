@@ -1,11 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
-import java.util.ArrayList;
-
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
 public class PatientFormsExportInfo 
 {
-	    public String  UIPDFFile_FE = "";
+	    public String uiPDFFile_FE = "";
 		public String url_FE ="";
 		public String practiceNew_URL_FE = "";
 		public String patient_url_FE = "";
@@ -23,11 +19,8 @@ public class PatientFormsExportInfo
 		public String patientPassword_FE = "";
 		public String secretQuestion_FE = "";
 		public String secretAnswer_FE = "";
-		//public String practiceURL = "";
-		//public String PatientUserName = "";
-		//public String PatientPassword = "";
-		public String relFirstNAme ="";
-		public String relLastNAme ="";
+		public String relFirstName ="";
+		public String relLastName ="";
 		public String relation1= "";
 		public String phonenumber1= "";
 		public String phonetype1= "";
@@ -85,8 +78,6 @@ public class PatientFormsExportInfo
 		public String practicePassword_FE= "";
 		public String patientLocation_FE= "";
 		public String patientProvider_FE= "";
-		//public String sex ="";
-		//public String state1= "";
 		public String patientphoneNumber_FE= "";
 		public String responsePDF_FE= "";
 		public String ccd_PDfUrl_FE="";

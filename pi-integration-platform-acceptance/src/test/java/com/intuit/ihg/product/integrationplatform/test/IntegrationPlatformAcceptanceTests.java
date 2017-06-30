@@ -843,7 +843,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 10: Get Medfusion Member Id & External Id of the patient");
 		PatientDashboardPage patientDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
-		patientDashboard.editPatientLink();
+		patientDashboard.editPatientLink_20();
 
 		String memberId = patientDashboard.medfusionID();
 		log("MemberId is " + memberId);

@@ -22,10 +22,10 @@ public class FormInsurancePage extends PortalFormPage {
 	private WebElement saveAndContinuebtn;
 
 	@FindBy(xpath = "//label[@for='primary_insurance_company']/../input")
-	private WebElement NameofPrimaryInsurance;
+	private WebElement nameOfPrimaryInsurance;
 
 	@FindBy(xpath = "//label[@for='primary_policy_holder_firstname']/../input")
-	private WebElement Policyholderfirstname;
+	private WebElement policyHolderFirstName;
 	/**
 	/**
 	 * @Description:Set Self Pay
@@ -39,10 +39,10 @@ public class FormInsurancePage extends PortalFormPage {
 	public void setNameofPolicyHolderFirstname (String PrimaryInsurance,String PatientName) throws InterruptedException
 	{
 		Thread.sleep(4000);
-		NameofPrimaryInsurance.clear();
-		NameofPrimaryInsurance.sendKeys(PrimaryInsurance);
-		Policyholderfirstname.clear();
-		Policyholderfirstname.sendKeys(PatientName);
+		nameOfPrimaryInsurance.clear();
+		nameOfPrimaryInsurance.sendKeys(PrimaryInsurance);
+		policyHolderFirstName.clear();
+		policyHolderFirstName.sendKeys(PatientName);
 		saveAndContinuebtn.click();
 	}
 	public FormSecondaryInsurancePage fillfirstInsurance(String PrimaryInsurance, String PatientName) throws InterruptedException

@@ -31,24 +31,24 @@ public class FormSocialHistoryPage extends PortalFormPage {
 	private WebElement exerciseFrequency;
 	
 	@FindBy(xpath = "//div[@id='section15']/section/div[2]/a")
-	private WebElement submitform;
+	private WebElement submitSocialForm;
 
 	public void fillOutDefaultExerciseLength() {
 		Select exerciseFreqSelect = new Select(exerciseFrequency);
 		exerciseLength.sendKeys("20");
 		exerciseFreqSelect.selectByVisibleText("day");
 	}
-	public void fillOutDefaultExerciseLength_20(String exercisemin,String day) throws InterruptedException {
+	public void fillOutDefaultExerciseLength_20(String exerciseMin,String day) throws InterruptedException {
 		Select exerciseFreqSelect = new Select(exerciseFrequency);
-		exerciseLength.sendKeys(exercisemin);
+		exerciseLength.sendKeys(exerciseMin);
 		exerciseFreqSelect.selectByVisibleText(day);
-		 saveAndContinuebtn.click();
-		 submitform.click();
+		saveAndContinuebtn.click();
+		submitSocialForm.click();
 
 	}
-	public FormFamilyHistoryPage fillexercisedetails(String exercisemin,String day) throws InterruptedException
+	public FormFamilyHistoryPage fillExerciseDetails(String exerciseMin,String day) throws InterruptedException
 	{
-		fillOutDefaultExerciseLength_20(exercisemin, day);
+		fillOutDefaultExerciseLength_20(exerciseMin, day);
 		return PageFactory.initElements(driver, FormFamilyHistoryPage.class);
 		
 	}

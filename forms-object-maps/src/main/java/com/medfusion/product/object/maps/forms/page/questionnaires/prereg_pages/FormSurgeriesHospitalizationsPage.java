@@ -109,7 +109,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		Select selector = new Select(hospitalizationTimeFrame);
 		selector.selectByVisibleText(HospitalizationReasonframe);
 	}
-	public FormPreviousExamsPage fillSurgiesform(String SurgeryName, String SurgeryTimeFrame, String HospitalizationReason, String HospitalizationTimeFrame)throws Exception
+	public FormPreviousExamsPage fillSurgiesForm(String SurgeryName, String SurgeryTimeFrame, String HospitalizationReason, String HospitalizationTimeFrame)throws Exception
 	{
 		setSurgeryName_20(SurgeryName);
 		setSurgeryTimeFrame_20(SurgeryTimeFrame);

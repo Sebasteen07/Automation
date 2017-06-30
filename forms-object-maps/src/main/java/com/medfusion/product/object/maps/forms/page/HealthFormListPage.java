@@ -13,7 +13,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ibm.icu.util.Calendar;
@@ -50,13 +49,12 @@ public class HealthFormListPage extends BasePageObject {
 	private WebElement Continuebutton1;
 	
 	@FindBy(xpath="//li/a[text()='General Registration and Health History']")
-	public static WebElement HealthFormsRegistrationLink;
+	public static WebElement healthFormsRegistrationLink;
 	
 	@FindBy(linkText="View as PDF")
-	public static WebElement PDflinktext;
+	private static WebElement pdfLinkText;
 	
-	private static String PDfURLLink1;
-	 private static String FormValuenew;
+	private static String formValueNew;
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -83,17 +81,16 @@ public class HealthFormListPage extends BasePageObject {
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{
 		log("Clicking On General Registration and Health History ");
 		Thread.sleep(2000);
-		HealthFormsRegistrationLink.click();
-	    String FormValue=HealthFormsRegistrationLink.getText();
-	   FormValuenew=FormValue;
+		healthFormsRegistrationLink.click();
+		formValueNew=healthFormsRegistrationLink.getText();
 		Thread.sleep(2000);
 		driver.switchTo().frame(iframeforms);
 		Thread.sleep(1000);
 		Continuebutton1.click();
-		}
+	}
 	public String getFormName()
 	{
-		return FormValuenew;
+		return formValueNew;
 	}
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
@@ -151,6 +148,10 @@ public class HealthFormListPage extends BasePageObject {
 	public void goToHomePage() {
 		IHGUtil.setDefaultFrame(driver);
 		homeLink.click();
+	}
+	
+	public void getPDF() {
+		pdfLinkText.click();
 	}
 
 }

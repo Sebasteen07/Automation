@@ -448,8 +448,8 @@ public class LoadPreTestData {
 		testData.patientWhoIs_FE=propertyData.getpatientWhoIs_FE();
 		testData.NameofPrimaryInsurance=propertyData.getNameofPrimaryInsurance();
 		testData.NameofsecondaryInsurance=propertyData.getNameofsecondaryInsurance();
-		testData.relFirstNAme=propertyData.getrelFirstNAme();
-		testData.relLastNAme=propertyData.getrelLastNAme();
+		testData.relFirstName=propertyData.getrelFirstNAme();
+		testData.relLastName=propertyData.getrelLastNAme();
 		testData.relation1=propertyData.getrelation1();
 		testData.phonenumber1=propertyData.getphonenumber1();
 		testData.phonetype1=propertyData.getphonetype1();
@@ -485,7 +485,7 @@ public class LoadPreTestData {
 		testData.responsePDF_FE=propertyData.getresponsePDF_FE();
 		testData.ccd_PDfUrl_FE=propertyData.getccd_PDfUrl_FE();
 		testData.responsePDFBatch_FE=propertyData.getresponsePDFBatch_FE();
-		testData.UIPDFFile_FE=propertyData.getUIPDFFile_FE();
+		testData.uiPDFFile_FE=propertyData.getUIPDFFile_FE();
 		testData.downloadFileLocation=propertyData.getDownloadFileLocation();
 		return testData;
 		}

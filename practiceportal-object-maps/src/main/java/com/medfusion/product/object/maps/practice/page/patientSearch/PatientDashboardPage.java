@@ -150,7 +150,7 @@ public class PatientDashboardPage extends BasePageObject {
 		btnUpdateInfo.click();
 		IHGUtil.waitForElement(driver, 60, lblPatientID1);
 		Assert.assertTrue("patient ID is not set", lblPatientID1.getText().contains(emrID));
-	return emrID;
+		return emrID;
 	}
 
 	/**
@@ -172,6 +172,12 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, editPatientID);
 		editPatientID.click();
+	}
+	
+	public void editPatientLink_20() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, editPatientID);
+		ediPatientID1.click();
 	}
 
 	/*

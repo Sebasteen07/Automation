@@ -2595,8 +2595,8 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Log4jUtil.log("---------------Verifying Basic Information-------------------------");
 		Node SEXName=doc1.getElementsByTagName(IntegrationConstants.ADMINISTRATIVEGENDERCODE).item(0) ;
 		Attr attr = (Attr)SEXName.getAttributes().getNamedItem(IntegrationConstants.ATRRIBUTE1);
-		Assert.assertTrue(attr.getValue().equals("MALE"), "Sex values different from Expected");
-		Log4jUtil.log("Verifying SExValue actual "+attr.getValue().toString().toLowerCase()+" with Expected "+list.get(21));
+		Assert.assertTrue(attr.getValue().equals("MALE"), "Gender values different from Expected");
+		Log4jUtil.log("Verifying gender Value actual "+attr.getValue().toString().toLowerCase()+" with Expected "+list.get(21));
 		Log4jUtil.log("---------------Verifying Emergency Contacts Information---------------");
 		Node entityrel=doc1.getElementsByTagName(IntegrationConstants.ASSOCIATEDENTITY).item(0);
 		Element relation1=(Element) entityrel;
@@ -2653,7 +2653,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Node SurgeryName=doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(6);
 		Element surgery=(Element) SurgeryName;
 		Element SurgeryName1=(Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
-		Assert.assertTrue(SurgeryName1.getTextContent().contains("CesareanType$$$Caesarean hysterectomy"),"SurgeryName Actual values are different from expected");
+		Assert.assertTrue(SurgeryName1.getTextContent().contains(list.get(11)),"SurgeryName Actual values are different from expected");
 		Log4jUtil.log("Verifying SurgeryName actual "+SurgeryName1.getTextContent().toString()+" with Expected "+list.get(11));
 
 

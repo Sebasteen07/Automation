@@ -19,10 +19,10 @@ public class FormOtherProvidersPage extends PortalFormPage {
 	WebElement noOtherProviders;
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+	private WebElement saveAndContinueButton;
 
 	@FindBy(id= "doctors_seen")
-	private WebElement doctorsname;
+	private WebElement doctorsName;
 	/**
 	 * @Description:Set No Providers
 	 * @throws Exception
@@ -33,10 +33,10 @@ public class FormOtherProvidersPage extends PortalFormPage {
 		noOtherProviders.click();
 
 	}
-	public FormMedicationsPage  SetProvidername(String input) throws Exception
+	public FormMedicationsPage setProvidername(String input) throws Exception
 	{
-		doctorsname.clear();
-		doctorsname.sendKeys(input);
+		doctorsName.clear();
+		doctorsName.sendKeys(input);
 		
 		return PageFactory.initElements(driver, FormMedicationsPage.class);
 	}

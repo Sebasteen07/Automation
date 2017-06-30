@@ -18,13 +18,13 @@ public class FormSecondaryInsurancePage extends PortalFormPage {
 	private WebElement idonotSecondaryInsurance;
 	
 	@FindBy(id ="secondary_insurance_company")
-	private WebElement secondarycompany;
+	private WebElement secondaryCompany;
 	
 	@FindBy(id ="secondary_policy_holder_firstname")
-	private WebElement secondaryfirstname;
+	private WebElement secondaryFirstName;
 	
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+	private WebElement saveAndContinueButton;
 
 	/**
 	 * @Description:Set no secondary insurance
@@ -33,18 +33,18 @@ public class FormSecondaryInsurancePage extends PortalFormPage {
 	public void setNoSecondaryInsurance() throws Exception {
 		idonotSecondaryInsurance.click();
 	}
-	public void setSecondaryInsuranceNAme(String NameofSecondInsurance,String Patientname) throws InterruptedException
+	public void setSecondaryInsuranceName(String nameOfSecondInsurance,String patientName) throws InterruptedException
 	{
-		 Thread.sleep(1000);
-		 secondarycompany.clear();
-		secondarycompany.sendKeys(NameofSecondInsurance );
-		secondaryfirstname.clear();
-		secondaryfirstname.sendKeys(Patientname);
-		saveAndContinuebtn.click();
+		Thread.sleep(1000);
+		secondaryCompany.clear();
+		secondaryCompany.sendKeys(nameOfSecondInsurance);
+		secondaryFirstName.clear();
+		secondaryFirstName.sendKeys(patientName);
+		saveAndContinueButton.click();
 	}
-	public FormMedicationsPage fillSecondInsurance(String NameofSecondInsurance,String Patientname) throws InterruptedException
+	public FormMedicationsPage fillSecondInsurance(String nameofSecondInsurance,String Patientname) throws InterruptedException
 	{
-		setSecondaryInsuranceNAme(NameofSecondInsurance,Patientname);
+		setSecondaryInsuranceName(nameofSecondInsurance,Patientname);
 		
 		return PageFactory.initElements(driver, FormMedicationsPage.class);
 		
