@@ -20,12 +20,12 @@
 		<methods>
 				<include name="testCCDE2EFormExportfromPractice"/>
 				<include name="testAMDCSecureMessages"/>
-				<include name="testSendDirectMessageXML"/>
-				<include name="testDirectorySearchSingleValue"/>
+				<exclude name="testSendDirectMessageXML"/>
+				<exclude name="testDirectorySearchSingleValue"/>
 	    		<include name="testAppointmentRequestForExistingPatient"/>  	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>
-	    	 	<include name="testUnseenMessageList"/>
+	    	 	<exclude name="testUnseenMessageList"/>
       	</methods>
 	</classes>
 </test>
