@@ -261,6 +261,56 @@ public class PropertyFileLoader {
 		return property.getProperty("patientLastName_MU2");
 	}
 	
+	//Gaurdian New
+	public String getPatientUA_MU2() {
+		return property.getProperty("patientUA_MU2");
+	}
+	public String getGaurdian_UserName_MU2() {
+		return property.getProperty("gaurdian_UserName_MU2");
+	}
+	public String getGaurdian_Password_MU2() {
+		return property.getProperty("gaurdian_Password_MU2");
+	}
+	public String getPatient_ExternalPatientID_MU2() {
+		return property.getProperty("patientUA_ExternalPatientID_MU2");
+	}
+	public String getPatientIntuItID_Gaurdian(){
+		return property.getProperty("intuit_PATIENT_ID_MU2_Gaurdian");	
+	}
+	
+	//Gaurdian Existing
+	public String getPatientUA_MU2_Existing() {
+		return property.getProperty("patientUA_MU2_Existing");
+	}
+	public String getGaurdian_UserName_MU2_Existing() {
+		return property.getProperty("gaurdian_UserName_MU2_Existing");
+	}
+	public String getGaurdian_Password_MU2_Existing() {
+		return property.getProperty("gaurdian_Password_MU2_Existing");
+	}
+	public String getPatient_ExternalPatientID_MU2_Existing() {
+		return property.getProperty("patientUA_ExternalPatientID_MU2_Existing");
+	}
+	public String getPatientIntuItID_GaurdianExisting(){
+		return property.getProperty("intuit_PATIENT_ID_MU2_Gaurdian_Existing");	
+	}
+	
+	public String getSecureEmailTransmitActivity(){
+		return property.getProperty("secureEmailTransmitActivity");	
+	}
+	public String getStandardEmailTransmitActivity(){
+		return property.getProperty("standardEmailTransmitActivity");	
+	}
+	public String getPatientUA_MU2_LastName(){
+		return property.getProperty("patientUA_LastName");	
+	}
+	public String getPatientUA_MU2_LastName_Existing(){
+		return property.getProperty("patientUA_LastName_Existing");	
+	}
+	
+	public String getPdfFilePath() {
+		return property.getProperty("pdfFile");
+	}
 	
 	//PIDC
 	public String getUrl() {
