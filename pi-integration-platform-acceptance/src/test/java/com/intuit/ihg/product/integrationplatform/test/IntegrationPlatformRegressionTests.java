@@ -1164,7 +1164,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForGaurdian() throws Exception 
 	{
-		Log4jUtil.log("Test Case: To Verify CCD VDT Event from Patient to Gaurdian");
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
@@ -1187,7 +1187,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForExistingGaurdian() throws Exception 
 	{
-		Log4jUtil.log("Test Case: To Verify CCD VDT Event from Patient to Existing Gaurdian");
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
@@ -1212,9 +1212,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForNewGaurdian() throws Exception 
-	{
+	{	
 		Long timestamp = System.currentTimeMillis();
-		Log4jUtil.log("Test Case : To Verify CCD VDT Event in Gaurdian for a new patient created with PIDC ");
+		Log4jUtil.log("Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
