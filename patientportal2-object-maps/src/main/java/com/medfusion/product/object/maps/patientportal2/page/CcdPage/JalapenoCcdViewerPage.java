@@ -240,5 +240,12 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
-
+	
+	public void savePdf() {
+		savePdfButton.click();
+	}
+	
+	public void saveRawXML() {
+		saveRawButton.click();
+	}
 }

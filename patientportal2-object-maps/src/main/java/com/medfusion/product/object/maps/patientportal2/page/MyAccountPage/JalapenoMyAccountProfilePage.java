@@ -228,6 +228,12 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
 	}
 	
+	public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
+		log("Click on Activity");
+		activityTab.click();
+		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
+		
+	}
 	
 
 
@@ -237,7 +243,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(profileTab);
-		webElementsList.add(securityTab);
+		//webElementsList.add(securityTab);
 		webElementsList.add(preferencesTab);
 		webElementsList.add(address1Textbox);
 		webElementsList.add(cityTextbox);

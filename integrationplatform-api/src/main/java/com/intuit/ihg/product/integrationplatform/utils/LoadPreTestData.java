@@ -117,6 +117,24 @@ public class LoadPreTestData {
 		testData.Standard_Email = propertyData.getStandard_Email();
 		
 		testData.Standard_Email = propertyData.getStandard_Email();
+		
+		testData.patientUA_MU2=propertyData.getPatientUA_MU2();
+		testData.gaurdian_UserName_MU2=propertyData.getGaurdian_UserName_MU2();
+		testData.gaurdian_Password_MU2=propertyData.getGaurdian_Password_MU2();
+		testData.patientUA_ExternalPatientID_MU2=propertyData.getPatient_ExternalPatientID_MU2();
+		testData.intuit_PATIENT_ID_MU2_Gaurdian = propertyData.getPatientIntuItID_Gaurdian();
+		
+		testData.patientUA_MU2_Existing=propertyData.getPatientUA_MU2_Existing();
+		testData.gaurdian_UserName_MU2_Existing=propertyData.getGaurdian_UserName_MU2_Existing();
+		testData.gaurdian_Password_MU2_Existing=propertyData.getGaurdian_Password_MU2_Existing();
+		testData.patientUA_ExternalPatientID_MU2_Existing=propertyData.getPatient_ExternalPatientID_MU2_Existing();
+		testData.intuit_PATIENT_ID_MU2_Gaurdian_Existing = propertyData.getPatientIntuItID_GaurdianExisting();
+		testData.secureEmailTransmitActivity = propertyData.getSecureEmailTransmitActivity();
+		testData.standardEmailTransmitActivity = propertyData.getStandardEmailTransmitActivity();
+		testData.patientUA_MU2_LastName=propertyData.getPatientUA_MU2_LastName();
+		testData.patientUA_MU2_LastName_Existing=propertyData.getPatientUA_MU2_LastName_Existing();		
+		testData.pdfFilePath=propertyData.getPdfFilePath();
+		
 		return testData;
 	}
 	

@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,7 +47,7 @@ public class CCDPayload {
 			LastUpdated.appendChild(doc.createTextNode("2012-11-21T04:49:50.6773194-08:00"));
 			CcdMessageHeaders.appendChild(LastUpdated);
 			Element MessageId = doc.createElement("MessageId");
-			MessageId.appendChild(doc.createTextNode(testData.MessageId));
+			MessageId.appendChild(doc.createTextNode(getUUID()));
 			CcdMessageHeaders.appendChild(MessageId);
 			Element DataJob = doc.createElement("DataJob");
 			CcdMessageHeaders.appendChild(DataJob);
@@ -165,5 +166,8 @@ public class CCDPayload {
 		}
 		return output;
 	}
-
+	
+	public static String getUUID() {
+		return UUID.randomUUID().toString();
+	}
 }
