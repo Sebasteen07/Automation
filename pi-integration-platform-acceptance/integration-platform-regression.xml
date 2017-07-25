@@ -21,12 +21,14 @@
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    		<include name="testStatementEventForNewSelfPatient"/>
 	    		<include name="testBulkSecureMessage"/>
-	    		<include name="testSendDirectMessageAll"/>
-	    		<include name="testDirectorySearch"/>
+	    		<exclude name="testSendDirectMessageAll"/>
+	    		<exclude name="testDirectorySearch"/>
 	    		<include name="testOnDemandProvisionPIDC"/>
 				<include name="testPatientDemographicsUpdateWithSpecialCharacter"/>
 				<include name="testPatientRegistrationfromPractice"/>
-				<include name="testPIDCPatientDemographicsUpdate"/>	
+				<include name="testPIDCPatientDemographicsUpdate"/>
+				<exclude name="testUnseenMessageListAll"/>
+				<exclude name="testUnseenMessageInvalidList"/>
       		</methods>
 	</classes>
 </test>

@@ -397,9 +397,12 @@ public class SmIntegrationUtil extends IHGUtil {
 	 */
 
 	public String updateXML(String xmlInString, String tagName, String xmlValuestoChange, String value) throws Exception {
-
 		String requiredTag = "<" + tagName + ">" + xmlValuestoChange + "</" + tagName + ">";
 		String replacingTag = "<" + tagName + ">" + value + "</" + tagName + ">";
+		if(tagName.equals("ID")) {
+			requiredTag = "<" + tagName + " xmlns=\"\">" + xmlValuestoChange + "</" + tagName + ">";
+			replacingTag = "<" + tagName + " xmlns=\"\">" + value + "</" + tagName + ">";
+		}
 		if (xmlInString.contains(requiredTag)) {
 			xmlInString = xmlInString.replace(requiredTag, replacingTag);
 			System.out.println("XML Updated with " + tagName + " and value is:" + replacingTag);

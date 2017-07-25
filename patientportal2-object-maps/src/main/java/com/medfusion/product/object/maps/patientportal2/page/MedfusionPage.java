@@ -31,6 +31,9 @@ public abstract class MedfusionPage extends BasePageObject {
 
 	@FindBy(how = How.ID, using = "ng-app")
 	private WebElement htmlTag;
+	@FindBy(how = How.XPATH, using = "/html")
+	private WebElement ccdViewerHtmlTag;
+	
 	
 	public MedfusionPage(WebDriver driver) {
 		this(driver, null);
@@ -249,4 +252,9 @@ public abstract class MedfusionPage extends BasePageObject {
 		return new StringSelection("<!DOCTYPE html>" + htmlTag.getAttribute("outerHTML"));
 	}
 
+	public StringSelection getIframeSource() {
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(ccdViewerHtmlTag));
+		return new StringSelection("<!DOCTYPE html>" + ccdViewerHtmlTag.getAttribute("outerHTML"));
+	}
+	
 }

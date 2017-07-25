@@ -87,14 +87,22 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-		webElementsList.add(preferredLocation);
-		webElementsList.add(statementPreference);
+
 		webElementsList.add(patientMessagingOptOut);
 		webElementsList.add(apptRemindersOptOut);
 		webElementsList.add(previousStep);
 		webElementsList.add(saveAccountChanges);
-
+		
 		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
+	
+	public boolean checkStatementAndLocationElements() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		
+		webElementsList.add(preferredLocation);
+		webElementsList.add(statementPreference);
+		
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 	
 	
@@ -107,5 +115,13 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		setStatementLanguage(statementLanguageType);
 		saveAccountChanges.click();
 	}
+
+	public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
+		log("Click on Activity");
+		activityTab.click();
+		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
+		
+	}
+
 
 }

@@ -68,9 +68,9 @@ public class SendDirectMessagePayload {
 		Subject.appendChild(doc.createTextNode(testData.Subject));
 		Message.appendChild(Subject);
 		
-		String messageData = testData.MessageBody +timestamp;
+		testData.MessageBody= testData.MessageBody +timestamp;
 		Node MessageBody = doc.createElement("MessageBody");
-		MessageBody.appendChild(doc.createTextNode(messageData));
+		MessageBody.appendChild(doc.createTextNode(testData.MessageBody));
 		Message.appendChild(MessageBody);
 		
 		Node PatientDemographics = doc.createElement("PatientDemographics");

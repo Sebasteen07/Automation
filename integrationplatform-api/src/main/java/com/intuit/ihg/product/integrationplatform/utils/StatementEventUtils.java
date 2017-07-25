@@ -129,7 +129,8 @@ public class StatementEventUtils {
 		
 		Log4jUtil.log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
-		WebDriverWait wait = new WebDriverWait(driver, 30);
+		Thread.sleep(8000);
+		WebDriverWait wait = new WebDriverWait(driver, 80);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
 		Assert.assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 		

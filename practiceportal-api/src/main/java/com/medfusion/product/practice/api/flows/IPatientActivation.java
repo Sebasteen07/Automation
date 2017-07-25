@@ -14,4 +14,8 @@ public interface IPatientActivation {
 
 	public PatientInfo editPatientRSDKExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo)
 			throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException;
+
+    public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,
+            String externalSystemId)
+            throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException;
 }

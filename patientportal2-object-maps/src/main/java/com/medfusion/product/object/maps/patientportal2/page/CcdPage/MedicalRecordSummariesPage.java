@@ -71,6 +71,9 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "acknowledgement")
 	private WebElement acknowledgement;
 	
+	@FindBy(how = How.ID, using = "plusLinkButton")
+    private WebElement getStartedButton;
+	
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
 	}

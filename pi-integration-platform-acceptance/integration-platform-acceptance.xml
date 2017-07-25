@@ -11,7 +11,6 @@
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
 		<methods>
 	    		<include name="testEHDCsendCCD" />        		
-        		<include name="testAMDCSecureMessageWithReadCommnunication" />
         		<include name="testPIDCPatientRegistration" />        		
         		<include name="testE2EAppointmentRequest20" />
 				<include name="testE2E_OLBP20" />
@@ -19,11 +18,13 @@
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testSendDirectMessageXML"/>
-				<include name="testDirectorySearchSingleValue"/>
+				<include name="testAMDCSecureMessages"/>
+				<exclude name="testSendDirectMessageXML"/>
+				<exclude name="testDirectorySearchSingleValue"/>
 	    		<include name="testAppointmentRequestForExistingPatient"/>  	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>
+	    	 	<exclude name="testUnseenMessageList"/>	
       	</methods>
 	</classes>
 </test>

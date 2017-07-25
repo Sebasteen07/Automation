@@ -1,7 +1,9 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -392,37 +394,43 @@ public class RestUtils {
 	 */
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
+		try {
+			IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+			Log4jUtil.log("Post Request Url: " + strUrl);
+			HttpPost httpPostReq = new HttpPost(strUrl);
+			httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 
-		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
-		Log4jUtil.log("Post Request Url: " + strUrl);
-		HttpPost httpPostReq = new HttpPost(strUrl);
-		httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+			StringEntity se = new StringEntity(payload);
+			httpPostReq.setEntity(se);
+			httpPostReq.addHeader("Accept", "application/xml");
+			httpPostReq.addHeader("Content-Type", "application/xml");
+			httpPostReq.addHeader("Noun", "Encounter");
+			httpPostReq.addHeader("Verb", "Completed");
+			// httpPostReq.addHeader("ExternalSystemId", "79");
+			// GW CCD
+			// httpPostReq.addHeader("ExternalSystemId", "82");
+			Log4jUtil.log("Post Request Url4: ");
+			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
-		StringEntity se = new StringEntity(payload);
-		httpPostReq.setEntity(se);
-		httpPostReq.addHeader("Accept", "application/xml");
-		httpPostReq.addHeader("Content-Type", "application/xml");
-		httpPostReq.addHeader("Noun", "Encounter");
-		httpPostReq.addHeader("Verb", "Completed");
-		// httpPostReq.addHeader("ExternalSystemId", "79");
-		// GW CCD
-		// httpPostReq.addHeader("ExternalSystemId", "82");
-		Log4jUtil.log("Post Request Url4: ");
-		HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
+			String sResp = EntityUtils.toString(resp.getEntity());
 
-		String sResp = EntityUtils.toString(resp.getEntity());
+			Log4jUtil.log("Check for http 200/202 response");
+			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
+					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+			Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
+			writeFile(responseFilePath, sResp);
 
-		Log4jUtil.log("Check for http 200/202 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
-				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
-		Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
-		writeFile(responseFilePath, sResp);
+			if (resp.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
+				Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
+				return h[0].getValue();
+			}
 
-		if (resp.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
-			Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
-			return h[0].getValue();
 		}
-		return null;
+		catch (Exception E) {
+			Log4jUtil.log("Exception caught "+E);
+			E.getCause().printStackTrace();
+		}
+				return null;
 	}
 
 	/**
@@ -2338,4 +2346,210 @@ public class RestUtils {
 		doc.getDocumentElement().normalize();
 		return doc;
 	}
+	
+	public static int readUnseenMessages(String xmlFileName,String messageStatusUpdateURL) throws ParserConfigurationException, SAXException, IOException, TransformerException, InterruptedException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildUTFDOMXML(xmlFileName);
+		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
+		
+		Element statusElem = (Element) StatusNode;
+		Log4jUtil.log("Verifying Response Status actual "+statusElem.getTextContent().toString()+" with Expected 200");
+		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		
+		NodeList MessageHeader = doc.getElementsByTagName("DirectMessageHeader");
+		
+		Log4jUtil.log("MessageHeader: "+MessageHeader.getLength());
+		if(MessageHeader.getLength() > 0) {
+			Thread.sleep(3000);
+			for(int i=0;i<MessageHeader.getLength();i++) {
+				Element stpref = (Element) MessageHeader.item(i).getParentNode();
+				Element MessageUniqueid = (Element) stpref.getElementsByTagName("MessageUid").item(i);
+				Log4jUtil.log("MessageId: "+MessageUniqueid.getTextContent());
+				
+				String messageUpdateURL = messageStatusUpdateURL+"/"+MessageUniqueid.getTextContent()+"/status/READ";
+				Thread.sleep(2000);
+				setupHttpPostRequest(messageUpdateURL," " , xmlFileName);
+			}
+		}
+		
+		return MessageHeader.getLength();
+	}
+	
+	public static String verifyUnseenMessageListAndGetMessageUID(String xmlFileName,String subject) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildUTFDOMXML(xmlFileName);
+		String messageUid = null;
+		
+		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
+		Element statusElem = (Element) StatusNode;
+		Log4jUtil.log("Verifying Status actual "+statusElem.getTextContent().toString()+" with Expected 200");
+		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		
+		NodeList MessageHeader = doc.getElementsByTagName("DirectMessageHeader");
+		for(int i=0;i<MessageHeader.getLength();i++) {
+			Element stpref = (Element) MessageHeader.item(i).getParentNode();
+			Element MessageUniqueid = (Element) stpref.getElementsByTagName("MessageUid").item(i);
+			//Log4jUtil.log("MessageId: "+MessageUniqueid.getTextContent());
+			Element PublicSubject = (Element) stpref.getElementsByTagName("PublicSubject").item(i);
+			
+            if(subject.equalsIgnoreCase(PublicSubject.getTextContent())) {
+            	Log4jUtil.log("PublicSubject Message Found : "+PublicSubject.getTextContent());
+            	Log4jUtil.log("MessageId: "+MessageUniqueid.getTextContent());
+            	messageUid = MessageUniqueid.getTextContent();
+            }
+		}
+		return messageUid;
+	}
+	
+	public static void verifyUnseenMessageBody(String xmlFileName,String subject,String fileName,String to,String from,String messageBody,String attachFile) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildUTFDOMXML(xmlFileName);
+		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
+		Element statusElem = (Element) StatusNode;
+		Log4jUtil.log("Verifying Status actual "+statusElem.getTextContent().toString()+" with Expected 200");
+		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+				
+		Node ToNode = doc.getElementsByTagName("Recipients").item(0);
+		Log4jUtil.log("Verifying Recipient Address actual : "+ToNode.getChildNodes().item(1).getTextContent()+" with Expected "+to);
+		if (ToNode.getChildNodes().item(1).getTextContent().contains(to)) {
+			Assert.assertTrue(true, "Recipents Matched !!");
+		}
+		Node FromNode = doc.getElementsByTagName("FromAddress").item(0);
+		Log4jUtil.log("Verifying From Address actual : "+FromNode.getChildNodes().item(1).getTextContent()+" with Expected "+from);
+		if (FromNode.getChildNodes().item(1).getTextContent().contains(to)) {
+			Assert.assertTrue(true, "From Address Matched !!");
+		}
+		
+		Node PublicSubject = doc.getElementsByTagName("PublicSubject").item(0);
+		Element subjectElem = (Element) PublicSubject;
+		Log4jUtil.log("Verifying Subject actual "+subjectElem.getTextContent().toString()+" with Expected "+subject);
+		Assert.assertEquals(subjectElem.getTextContent().toString(), subject);
+		
+		Node BodyText = doc.getElementsByTagName("BodyText").item(0);
+		Element bodyElem = (Element) BodyText;
+		Log4jUtil.log("Verifying Body actual "+bodyElem.getTextContent().toString()+" with Expected "+messageBody);
+		Assert.assertEquals(bodyElem.getTextContent().toString(), messageBody);
+		
+		if(!fileName.contains("none")) {
+			Node Attachment = doc.getElementsByTagName("Attachment").item(0);
+			
+			Log4jUtil.log("Verifying Attachment actual "+Attachment.getChildNodes().item(0).getTextContent()+" with Expected "+fileName);
+			if (Attachment.getChildNodes().item(0).getTextContent().contains(fileName)) {
+				Assert.assertTrue(true, "Attachment Matched !!");
+			}
+			else {
+				Assert.assertTrue(false, "Attachment Not Found !!");
+			}
+			Log4jUtil.log("Verifying Attachment in response with Attachment in request body");
+			Boolean AttachmentMatch = matchBase64String(Attachment.getChildNodes().item(2).getTextContent(),attachFile);
+			Log4jUtil.log("Attachment Matched "+AttachmentMatch);
+			Assert.assertTrue(AttachmentMatch, "Attachment Content Matched !!");
+			
+			if (!Attachment.getChildNodes().item(2).getTextContent().isEmpty()) {
+				Log4jUtil.log("Attachment Body not Empty");
+				Assert.assertTrue(true, "Attachment Found!!");
+			}
+			
+		}
+	}
+	
+	public static int setupHttpGetRequestInvalid(String strUrl, String responseFilePath) throws IOException {
+		IHGUtil.PrintMethodName();
+		int responseCode=0;
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		try {
+
+			httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+			HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+			HttpEntity entity = resp.getEntity();
+			String sResp = null;
+			if (entity != null) {
+				sResp = EntityUtils.toString(entity);
+				Log4jUtil.log("Check for http response "+resp.getStatusLine().getStatusCode());
+				responseCode = resp.getStatusLine().getStatusCode();
+
+				writeFile(responseFilePath, sResp);
+
+			} else {
+				Log4jUtil.log("204 response found");
+
+			}
+			EntityUtils.consume(entity);
+		}
+		catch (Exception Error) {
+			Log4jUtil.log("Exception with Get Call "+Error);
+		}
+		finally {
+			httpGetReq.releaseConnection();
+		}
+		
+		
+		return responseCode;
+	}
+	
+	public static int setupHttpPostInvalidRequest(String strUrl, String payload, String responseFilePath) throws IOException {
+		IHGUtil.PrintMethodName();
+		int statusCode=0;
+		try {
+			IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+			Log4jUtil.log("Post Request Url: " + strUrl);
+			HttpPost httpPostReq = new HttpPost(strUrl);
+			httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+
+			StringEntity se = new StringEntity(payload);
+			httpPostReq.setEntity(se);
+			httpPostReq.addHeader("Accept", "application/xml");
+			httpPostReq.addHeader("Content-Type", "application/xml");
+			httpPostReq.addHeader("Noun", "Encounter");
+			httpPostReq.addHeader("Verb", "Completed");
+			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
+
+			String sResp = EntityUtils.toString(resp.getEntity());
+
+			Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
+			statusCode=resp.getStatusLine().getStatusCode();
+			writeFile(responseFilePath, sResp);
+
+		}
+		catch (Exception E) {
+			Log4jUtil.log("Exception caught "+E);
+			E.getCause().printStackTrace();
+		}
+		return statusCode;
+	}
+	
+	public static boolean matchBase64String( String target, String source ) {
+
+	    int target_len = target.length();
+	    int source_len = source.length();
+	    boolean found = false;
+	    
+	    for(int i = 0; ( i < source_len && !found ); ++i) {
+
+	    int j = 0;
+
+	        while( !found ) {
+
+	            if( j >= target_len ) {
+	                break;
+	            }
+
+	            else if( target.charAt( j ) != source.charAt( i + j ) ) {
+	                break;
+	            } else {
+	                ++j;
+	                if( j == target_len ) {
+	                    found = true;
+	                }
+	            }
+	        }
+
+	    }
+
+	    return found;
+
+	}
+	
 }

@@ -449,7 +449,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 
 		log("Step 4: Validate message subject");
 		Thread.sleep(9000);
-		assertTrue(pMessageCenterInboxPage.isSubjectLocated("New Health Information Import"));
+		assertTrue(pMessageCenterInboxPage.isSubjectLocated("You have a new health data summary"));
 
 		log("Non Consolidated CCD related events generation Started ======");
 

@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.smintegration.test;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
@@ -85,7 +86,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 3: Click on Appointment Button on My Patient Page");
 		myPatientPage.clickAppointmentRequestTab();
-
+		
 		log("step 4: Complete Appointment Request Step1 Page  ");
 		AppointmentRequestFirstPage apptRequest = new AppointmentRequestFirstPage(driver);
 		apptRequest.clickContinueBtn();
@@ -199,6 +200,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 						testData.getDBEnv(), testData.getDBUserName(), testData.getDBPassword());
 			}
 			String appointmentReq_xml = appointmentReq.get("ppia_request_xml");
+			
 			SmIntegrationUtil util = new SmIntegrationUtil(driver);
 
 			log("Step 13 : Write the DB xml to below path");
@@ -231,10 +233,11 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			String inputxml = util.fileToString(inputxmlFilePath);
 
 			log("Updating the xml with patient,practice and provider details");
-
+			
+			
 			log("Updating the xml with All Script ID");
 			String allScript_New_Value = IHGUtil.createRandomNumericString();
-
+			
 			log("ALLSCRIPT_ID*******" + allScript_New_Value);
 			String updatedReqXmlInString =
 					util.updateXML(inputxml, SmIntegrationConstants.TAG_ALLSCRIPT_ID, SmIntegrationConstants.ALLSCRIPT_OLD_VALUE, allScript_New_Value);
@@ -261,7 +264,7 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			log(" Updating the xml with 'Reply to Message ID");
 			updatedReqXmlInString =
 					util.updateXML(updatedReqXmlInString, SmIntegrationConstants.TAG_REPLY_TO_MESSAGE_ID, SmIntegrationConstants.REPLY_TO_MESSAGE_VALUE, ppia_id);
-
+			
 			int rndnumber = IHGUtil.createRandomNumber();
 			log("Random Number" + rndnumber);
 			String emailSubject = SmIntegrationConstants.SUBJECT_NEW_APPOINTMENT + " " + rndnumber;
@@ -275,7 +278,12 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 					util.updateXML(updatedReqXmlInString, SmIntegrationConstants.TAG_SUBJECT, SmIntegrationConstants.SUBJECT_OLD_APPOINTMENT, emailSubject);
 			updatedReqXmlInString =
 					util.updateXML(updatedReqXmlInString, SmIntegrationConstants.TAG_EMAILCONTENT, SmIntegrationConstants.APPOINT_EMAIL_OLD_CONTENT, emailContent);
-
+			
+			log("updatedReqXmlInString >>>>>>>>>>>>>>>>>>>>>>>>> Before "+updatedReqXmlInString);
+			String new_ID= UUID.randomUUID().toString();
+			String old_ID = "0906b2b2-e690-459f-82f0-20110426T11:04PM";
+			updatedReqXmlInString = util.updateXML(updatedReqXmlInString, "ID", old_ID, new_ID);
+			
 			log("Updated XML***************" + updatedReqXmlInString);
 
 			log("Posting the request xml and getting the reponse");
@@ -325,10 +333,10 @@ public class SmIntegrationAcceptanceTests extends BaseTestNGWebDriver {
 			PortalLoginPage login = new PortalLoginPage(driver2, testData.getUrl());
 			// MyPatientPage home = login.login(testData.getUserName(), testData.getPassword());
 			MyPatientPage home = login.login(userName, password);
-
+			Thread.sleep(8000);
 			log("step 19: Go to Inbox");
 			MessageCenterInboxPage inboxPage = home.clickViewAllMessagesInMessageCenter();
-			Thread.sleep(3000);
+			Thread.sleep(8000);
 
 			log("step 20: Find message in Inbox");
 			MessagePage message = inboxPage.openMessageInInbox(emailSubject_Db_Response);

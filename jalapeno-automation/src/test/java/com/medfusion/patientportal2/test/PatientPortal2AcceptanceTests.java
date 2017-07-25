@@ -340,7 +340,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
-		assertTrue(jalapenoCcdPage.assessCcdElements());
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		if ((IHGUtil.getEnvironmentType().toString().equals("DEV3")) || (IHGUtil.getEnvironmentType().toString().equals("QA1"))) {
 			log("Skipping method checkPdfToDownload and checkRawToDownload because of known issue on DEV3&&QA1 javax.net.ssl.SSLHandshakeException");
 		} else {
@@ -372,7 +372,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
-		assertTrue(jalapenoCcdPage.assessCcdElements());
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		
 		assertTrue(jalapenoCcdPage.sendInformationToUnsecureEmail(email));
 		

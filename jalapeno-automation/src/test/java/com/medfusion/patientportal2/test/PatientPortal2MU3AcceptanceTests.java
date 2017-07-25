@@ -18,11 +18,18 @@ import com.medfusion.product.object.maps.patientportal1.page.AChecker;
 import com.medfusion.product.object.maps.patientportal1.page.AChecker.LevelOfWCAG;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountActivityPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountDevicesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
@@ -88,7 +95,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.areBasicPageElementsPresent());
-
+		
 		copySourceNavigateToACheckerAndValidate(messagesPage);
 	}
 
@@ -141,12 +148,93 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		pastAndValidateSource(achecker, sourceVerificationPage);
 	}
 
+	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientAccountPages() throws Exception {	
+		
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("userMu3AcountPage"), testData.getPassword());
+
+		logStep("Click on Account");
+		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
+		
+		logStep("Copy source of Account Profile tab Page and go to Security tab");
+		StringSelection accountProfileTab = myAccountPage.getHtmlSource();
+		JalapenoMyAccountSecurityPage myAccountSecurityPage = myAccountPage.goToSecurityTab(driver);
+		
+		logStep("Copy source of Account Security tab Page and go to Preferences tab");
+		StringSelection accountSecurityTab = myAccountSecurityPage.getHtmlSource();
+		JalapenoMyAccountPreferencesPage myAccountPreferencesPage = myAccountSecurityPage.goToPrefererencesTab();
+		
+		logStep("Copy source of Account Preferences tab Page and go to Activity page");
+		StringSelection accountPreferencesTab = myAccountPreferencesPage.getHtmlSource();
+		JalapenoMyAccountActivityPage myAccountActivityPage = myAccountPreferencesPage.goToActivityTab(driver);
+		
+		logStep("Copy source of Account Activity tab Page and go to My Devices page");
+		StringSelection accountActivityTab = myAccountActivityPage.getHtmlSource();
+		JalapenoMyAccountDevicesPage myAccountDevicesPage = myAccountActivityPage.goToDevicesTab(driver);
+		
+		
+		AChecker achecker = copySourceNavigateToACheckerAndValidate(myAccountDevicesPage);
+		
+		logStep("Validate Account activity tab page, Account Preferences tab page, Security tab page and Account Profile tab page");
+		pastAndValidateSource(achecker, accountActivityTab);
+		pastAndValidateSource(achecker, accountPreferencesTab);
+		pastAndValidateSource(achecker, accountSecurityTab);
+		pastAndValidateSource(achecker, accountProfileTab);
+		
+		
+	}
+	
+	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthRecordPage() throws Exception {	
+		
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+		
+		logStep("Click on Health record menu");
+		MedicalRecordSummariesPage healthRecordPage = homePage.goToHealthRecordsPage();
+		assertTrue(healthRecordPage.areBasicPageElementsPresent());
+			
+		logStep("Copy source of Health Record Page and validate");
+		copySourceNavigateToACheckerAndValidate(healthRecordPage);
+		
+	}
+	
+	
+	@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCcdViewerPage() throws Exception {
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
+
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+
+		logStep("Click on View health data");
+		JalapenoCcdViewerPage ccdViewerPage = messagesPage.findCcdMessage(driver);
+		
+		StringSelection source = ccdViewerPage.getIframeSource();
+		
+		AChecker achecker = openAchecker();
+		pastAndValidateSource(achecker, source);
+	}
+	
+	private AChecker openAchecker() {
+		logStep("Navigate to AChecker and set level");
+		AChecker achecker = new AChecker(driver);
+		achecker.setupLevel(level);
+		
+		return achecker;
+	}
+	
 	private AChecker copySourceNavigateToACheckerAndValidate(MedfusionPage page) {
 		logStep("Copy source");
 		StringSelection source = page.getHtmlSource();
 		logStep("Navigate to AChecker");
-		AChecker achecker = new AChecker(driver);
-		achecker.setupLevel(level);
+		AChecker achecker = openAchecker();
 
 		logStep("Validate");
 		pastAndValidateSource(achecker, source);
