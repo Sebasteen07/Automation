@@ -249,7 +249,16 @@ public class MU2Utils {
 		Date date = new Date(EventRecordedTimestamp);
 		DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 		//replacing "America/New_York" with local zone id.
-		TimeZone estTime = TimeZone.getTimeZone(TimeZone.getDefault().toZoneId());
+		Log4jUtil.log("TimeZone ID  >> "+TimeZone.getDefault().getID());
+		String zone="America/New_York";
+		if(TimeZone.getDefault().getID().contains("GMT")) {
+			zone="America/New_York";
+		}
+		else {
+			zone = TimeZone.getDefault().getID();
+		}
+		Log4jUtil.log("zone set to : "+zone);
+		TimeZone estTime = TimeZone.getTimeZone(zone);
 		gmtFormat.setTimeZone(estTime);
 		String data[] = gmtFormat.format(date).split(" ");
 		String joinedDate = new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
@@ -265,6 +274,7 @@ public class MU2Utils {
 		}
 		return PatternMatch;
 	}
+	
 	
 	public String readFromFile(String filePath) throws IOException {
 		String textFileString = null;
