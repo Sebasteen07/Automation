@@ -431,7 +431,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L - 60 * 24;
 		Log4jUtil.log("Getting patients since timestamp: " + since);
-		
+		Thread.sleep(6000);
 		homePage.clickOnLogout();
 	
 		log("Step 2: Setup Oauth client");
@@ -1161,8 +1161,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		formUtilsObject.ccdExchangeFormsImport(driver, 1);
 	}
 	
-	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForGaurdian() throws Exception 
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForGuardian() throws Exception 
 	{
 		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -1181,11 +1181,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		testData.CCDMessageID1=ccdDetail.get(0);
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false,true);
 	}
 	
-	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForExistingGaurdian() throws Exception 
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForExistingGuardian() throws Exception 
 	{
 		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -1207,11 +1207,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID1=ccdDetail.get(0);
 		
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver,true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,true,true);
 	}
 	
 	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForNewGaurdian() throws Exception 
+	public void testPatientMUEventForNewGuardian() throws Exception 
 	{	
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log("Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
@@ -1265,14 +1265,160 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	    String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
 		log("patientID : "+patientID);
 		
-		log("Step 8: Set values related to new gaurdian");
-		testData.intuit_PATIENT_ID_MU2_Gaurdian = patientID;
+		log("Step 8: Set values related to new guardian");
+		testData.intuit_PATIENT_ID_MU2_Guardian = patientID;
 		testData.patientUA_ExternalPatientID_MU2=patientDetail.get(0);
-		testData.gaurdian_Password_MU2=testData.PatientPassword;
-		testData.gaurdian_UserName_MU2=patientDetail.get(4);
+		testData.guardian_Password_MU2=testData.PatientPassword;
+		testData.guardian_UserName_MU2=patientDetail.get(4);
 		testData.PatientFirstName_MU2=patientDetail.get(0);
 		testData.patientUA_MU2_LastName=patientDetail.get(1);
 		
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver,false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,false,true);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForGuardianFromHealthRecord() throws Exception 
+	{
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Send CCD to Patient");	
+		iEHDCSendCCD sendCCDObj = new SendCCD();
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false,false);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForExistingGuardianFromHealthRecord() throws Exception 
+	{
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Post CCD to Patient");
+		
+		iEHDCSendCCD sendCCDObj = new SendCCD();		
+		log("Send CCD to Patient");
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2_Existing, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+		//
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,true,false);
+	}
+	
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForNewGuardianFromHealthRecord() throws Exception 
+	{	
+		Long timestamp = System.currentTimeMillis();
+		Log4jUtil.log("Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Invite Patient via PIDC ");
+		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
+		ArrayList<String> patientDetail = sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID,testData.PATIENT_EXTERNAL_ID,"01/01/2010","27560");
+		
+		log("Follwing are patient details");
+		int i=0;
+		String[] patientObject={"FirstName/PatientId","LastName","Zip","DateOfBirth","Email","Response"};
+		for (String values : patientDetail) {
+			log(patientObject[i]+" = " + values);
+			i++;
+		}
+		log("checking email for activation UrL link");
+		Thread.sleep(5000);
+		log("Step 3: Check and extract Invite link in patient Email");
+		Mailinator mail = new Mailinator();
+		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), "You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated", PortalConstants.NewPatientActivationMessageLinkText, 20);
+		assertTrue(activationUrl!=null, "Error: Activation link not found.");
+		
+		log("Step 4: Register under age patient");
+		PatientRegistrationUtils.underAgeRegisterPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
+		
+		Thread.sleep(12000);
+		log("Step 2:  Send CCD to Patient");
+		iEHDCSendCCD sendCCDObj = new SendCCD();
+		
+		log("Step 5: Post CCD to Patient");
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		log("Send 2nd CCD to Patient");
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		
+		log("Send 3rd CCD to Patient");
+		ArrayList<String> ccdDetail3 =sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH2,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail3.get(0));
+		Thread.sleep(8000);
+		
+		log("Send 4th CCD to Patient");
+		ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH3,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail4.get(0));
+		
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		log("Step 6: Set Up oauth");
+		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
+		
+		log("Step 7: Get PIDC to extract patient medfusion ID");
+		Long since = timestamp / 1000L - 60 * 24;
+		log("Getting patients since timestamp: " + since);
+		log("PUSH_RESPONSEPATH: " + testData.PUSH_RESPONSEPATH);
+		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.PUSH_RESPONSEPATH);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+	    String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
+		log("patientID : "+patientID);
+		
+		log("Step 8: Set values related to new guardian");
+		testData.intuit_PATIENT_ID_MU2_Guardian = patientID;
+		testData.patientUA_ExternalPatientID_MU2=patientDetail.get(0);
+		testData.guardian_Password_MU2=testData.PatientPassword;
+		testData.guardian_UserName_MU2=patientDetail.get(4);
+		testData.PatientFirstName_MU2=patientDetail.get(0);
+		testData.patientUA_MU2_LastName=patientDetail.get(1);
+		
+		Thread.sleep(8000);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,false,false);
 	}
 }
