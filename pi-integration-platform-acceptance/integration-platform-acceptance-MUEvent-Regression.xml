@@ -10,6 +10,12 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
+				<include name="testMUEventForExistingGuardianFromHealthRecord"/>
+	    		<include name="testMUEventForGuardianFromHealthRecord"/>
+	    		<include name="testMUEventForNewGuardianFromHealthRecord"/>
+	    		<include name="testPatientMUEventForGuardian"/>
+	    		<include name="testPatientMUEventForExistingGuardian"/>
+	    		<include name="testPatientMUEventForNewGuardian"/>
 	    		<include name="testMU2GetEventForExistingPatient"/>
 	    		<include name="testMU2GetEventForNewPatient"/>
 	    </methods>

@@ -44,7 +44,7 @@ public class PatientRegistrationUtils {
 		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("Logging out");
-		Thread.sleep(2000);
+		Thread.sleep(9000);
 		jalapenoHomePage.clickOnLogout();
 	}
 	
@@ -64,7 +64,7 @@ public class PatientRegistrationUtils {
 		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("Logging out");
-		Thread.sleep(6000);
+		Thread.sleep(9000);
 		jalapenoHomePage.clickOnLogout();
 	}
 	

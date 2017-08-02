@@ -261,38 +261,38 @@ public class PropertyFileLoader {
 		return property.getProperty("patientLastName_MU2");
 	}
 	
-	//Gaurdian New
+	//Guardian New
 	public String getPatientUA_MU2() {
 		return property.getProperty("patientUA_MU2");
 	}
-	public String getGaurdian_UserName_MU2() {
-		return property.getProperty("gaurdian_UserName_MU2");
+	public String getGuardian_UserName_MU2() {
+		return property.getProperty("guardian_UserName_MU2");
 	}
-	public String getGaurdian_Password_MU2() {
-		return property.getProperty("gaurdian_Password_MU2");
+	public String getGuardian_Password_MU2() {
+		return property.getProperty("guardian_Password_MU2");
 	}
 	public String getPatient_ExternalPatientID_MU2() {
 		return property.getProperty("patientUA_ExternalPatientID_MU2");
 	}
-	public String getPatientIntuItID_Gaurdian(){
-		return property.getProperty("intuit_PATIENT_ID_MU2_Gaurdian");	
+	public String getPatientIntuItID_Guardian(){
+		return property.getProperty("intuit_PATIENT_ID_MU2_Guardian");	
 	}
 	
-	//Gaurdian Existing
+	//Guardian Existing
 	public String getPatientUA_MU2_Existing() {
 		return property.getProperty("patientUA_MU2_Existing");
 	}
-	public String getGaurdian_UserName_MU2_Existing() {
-		return property.getProperty("gaurdian_UserName_MU2_Existing");
+	public String getGuardian_UserName_MU2_Existing() {
+		return property.getProperty("guardian_UserName_MU2_Existing");
 	}
-	public String getGaurdian_Password_MU2_Existing() {
-		return property.getProperty("gaurdian_Password_MU2_Existing");
+	public String getGuardian_Password_MU2_Existing() {
+		return property.getProperty("guardian_Password_MU2_Existing");
 	}
 	public String getPatient_ExternalPatientID_MU2_Existing() {
 		return property.getProperty("patientUA_ExternalPatientID_MU2_Existing");
 	}
-	public String getPatientIntuItID_GaurdianExisting(){
-		return property.getProperty("intuit_PATIENT_ID_MU2_Gaurdian_Existing");	
+	public String getPatientIntuItID_GuardianExisting(){
+		return property.getProperty("intuit_PATIENT_ID_MU2_Guardian_Existing");	
 	}
 	
 	public String getSecureEmailTransmitActivity(){
