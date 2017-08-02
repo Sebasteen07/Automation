@@ -580,7 +580,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Getting patients since timestamp: " + since);
 		
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		
+		Thread.sleep(6000);
 		homePage.clickOnLogout();
 		
 		log("Step 2: Setup Oauth client");

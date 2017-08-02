@@ -77,9 +77,10 @@ public class AppointmentDataUtils {
 		homePage.clickOnLogout();
 	}
 	
-	public void pastAppointment(JalapenoAppointmentsPage JAPage,AppointmentDataPayload apObj ,AppointmentData testData ) {
+	public void pastAppointment(JalapenoAppointmentsPage JAPage,AppointmentDataPayload apObj ,AppointmentData testData ) throws InterruptedException {
 		Log4jUtil.log("Match Past Appointment Details");
 		JAPage.goToPastAppointments();
+		Thread.sleep(7000);
 		List<WebElement> appointMentListPast = JAPage.getAppointments();
 		Log4jUtil.log("Past list size = "+appointMentListPast.size());
 		for(int i=0;i<appointMentListPast.size();i++) {

@@ -198,9 +198,11 @@ public class MU2Utils {
 								Log4jUtil.log("transmitTimestamp "+transmitTimestamp+" compare with recordedTimeStamp "+recordedTimeStamp);
 							}
 							if (transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+								messageTimeStampList.add(recordedTimeStamp.toString());
 								Log4jUtil.log("Direct Email");
 							}
 							if (transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+								messageTimeStampList.add(recordedTimeStamp.toString());
 								Log4jUtil.log("Standard Protocol");
 							}
 
@@ -249,7 +251,7 @@ public class MU2Utils {
 		Date date = new Date(EventRecordedTimestamp);
 		DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 		//replacing "America/New_York" with local zone id.
-		Log4jUtil.log("TimeZone ID  >> "+TimeZone.getDefault().getID());
+		//Log4jUtil.log("TimeZone ID  >> "+TimeZone.getDefault().getID());
 		String zone="America/New_York";
 		if(TimeZone.getDefault().getID().contains("GMT")) {
 			zone="America/New_York";
@@ -257,7 +259,7 @@ public class MU2Utils {
 		else {
 			zone = TimeZone.getDefault().getID();
 		}
-		Log4jUtil.log("zone set to : "+zone);
+		//Log4jUtil.log("zone set to : "+zone);
 		TimeZone estTime = TimeZone.getTimeZone(zone);
 		gmtFormat.setTimeZone(estTime);
 		String data[] = gmtFormat.format(date).split(" ");
@@ -310,13 +312,6 @@ public class MU2Utils {
 		return medfusionID;
 	}
 	
-	/**
-	 * @param testData - Type of MU2GetEventData
-	 * @param driver - instance of a WebDriver
-	 * @param existingGuardian - Boolean Value to check if Guardian has a existing account or created during patient Registration
-	 * @param isCCDViewer -Boolean value to know where to generate Event from.
-	 * @throws Exception
-	 */
 	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		Long transmitTimestamp = null;
@@ -392,7 +387,7 @@ public class MU2Utils {
 		}
 		if(isCCDViewer == false) {
 			ccdMessageList.add(testData.CCDMessageID2);
-			Log4jUtil.log("MU2GetEvent Step 2: Go to Health Record Summaries");
+			Log4jUtil.log("mu2GetEventGuardian Step 2: Go to Health Record Summaries");
 			MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
 			Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 			
@@ -401,24 +396,24 @@ public class MU2Utils {
 			JavascriptExecutor jse = (JavascriptExecutor)driver;
 			jse.executeScript("window.scrollBy(0,400)", "");
 			
-			Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");
+			Log4jUtil.log("mu2GetEventGuardian Step 3: Select first and second CCD from the list");
 			MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 			MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
-			Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol "+ testData.TRANSMIT_EMAIL +" and Standard Email "+testData.Standard_Email);
+			Log4jUtil.log("mu2GetEventGuardian Step 4: Transmit Email Direct Protocol "+ testData.TRANSMIT_EMAIL +" and Standard Email "+testData.Standard_Email);
 			MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 			Thread.sleep(5000);
 			transmitTimestamp = System.currentTimeMillis();
-			Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
+			Log4jUtil.log("mu2GetEventGuardian Step 5: TransmitTimestamp :"+transmitTimestamp);
 			MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 			
-			Thread.sleep(5000);
+			Thread.sleep(7000);
 			
 			Log4jUtil.log("Page refreshing...");
 			
-			jse.executeScript("window.scrollBy(0,200)", "");
+			jse.executeScript("window.scrollBy(0,300)", "");
 			
 			//code to Download CCD on fire fox 
-			Log4jUtil.log("Step 6: Download CCD");
+			Log4jUtil.log("mu2GetEventGuardian Step 6: Download CCD");
 			
 			MedicalRecordSummariesPageObject.selectDownload();
 			Thread.sleep(8000);
@@ -432,12 +427,15 @@ public class MU2Utils {
 		Log4jUtil.log("mu2GetEventGuardian Step 10: Move to Account Activity page ");
 		
 		JalapenoAccountPage accountPage= homePage.clickOnAccount();
+		Thread.sleep(15000);
 		JalapenoMyAccountProfilePage accountProfilePage= accountPage.clickOnEdiDependentAccount();
-		Thread.sleep(7000);
+		Thread.sleep(9000);
 		accountProfilePage.goToActivityTab(driver);
-		Thread.sleep(7000);
+		Thread.sleep(25000);
 					
-		Log4jUtil.log("portalTime transmit "+portalTime.get(0));
+		Log4jUtil.log("portalTime Direct transmit "+generateDate(messageTimeStampList.get(0)));
+		Log4jUtil.log("portalTime Standard transmit "+generateDate(messageTimeStampList.get(1)));
+		//generateDate(messageTimeStampList.get(0));
 		Log4jUtil.log("portalTime view "+portalTime.get(1));
 		Log4jUtil.log("portalTime download "+portalTime.get(2));
 		
@@ -461,7 +459,7 @@ public class MU2Utils {
 
 		Log4jUtil.log("mu2GetEventGuardian Step 13: Validate 'Secure Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListSecure = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
-				new ArrayList<String>(Arrays.asList(testData.secureEmailTransmitActivity+" "+testData.TRANSMIT_EMAIL+".", portalTime.get(0))));
+				new ArrayList<String>(Arrays.asList(testData.secureEmailTransmitActivity+" "+testData.TRANSMIT_EMAIL+".", generateDate(messageTimeStampList.get(0)))));
 		if (!transmitListSecure.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) transmitListSecure.get(1)).booleanValue());
 		} else {
@@ -470,7 +468,7 @@ public class MU2Utils {
 		
 		Log4jUtil.log("mu2GetEventGuardian Step 14: Validate 'Standard Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListStandard = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
-				new ArrayList<String>(Arrays.asList(testData.standardEmailTransmitActivity+" "+testData.Standard_Email+".", portalTime.get(0))));
+				new ArrayList<String>(Arrays.asList(testData.standardEmailTransmitActivity+" "+testData.Standard_Email+".", generateDate(messageTimeStampList.get(1)))));
 		if (!transmitListStandard.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) transmitListStandard.get(1)).booleanValue());
 		} else {
