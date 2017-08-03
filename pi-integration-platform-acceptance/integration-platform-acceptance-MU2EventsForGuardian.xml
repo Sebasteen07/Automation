@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Integration-Platform-Acceptance-MU2EventsForGuardian" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "Integration-Platform-Acceptance-MU2EventsForGuardian" >
+	<classes>
+		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+		<methods>
+				<include name="testMUEventForExistingGuardianFromHealthRecord"/>
+	    		<include name="testMUEventForGuardianFromHealthRecord"/>
+	    		<include name="testMUEventForNewGuardianFromHealthRecord"/>
+	    		<include name="testPatientMUEventForGuardian"/>
+	    		<include name="testPatientMUEventForExistingGuardian"/>
+	    		<include name="testPatientMUEventForNewGuardian"/>
+	    </methods>
+	</classes>
+</test>
+</suite>

@@ -198,9 +198,11 @@ public class MU2Utils {
 								Log4jUtil.log("transmitTimestamp "+transmitTimestamp+" compare with recordedTimeStamp "+recordedTimeStamp);
 							}
 							if (transmitTimestamp > recordedTimeStamp && action.contains("Transmit")) {
+								messageTimeStampList.add(recordedTimeStamp.toString());
 								Log4jUtil.log("Direct Email");
 							}
 							if (transmitTimestamp < recordedTimeStamp && action.contains("Transmit")) {
+								messageTimeStampList.add(recordedTimeStamp.toString());
 								Log4jUtil.log("Standard Protocol");
 							}
 
@@ -249,7 +251,7 @@ public class MU2Utils {
 		Date date = new Date(EventRecordedTimestamp);
 		DateFormat gmtFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 		//replacing "America/New_York" with local zone id.
-		Log4jUtil.log("TimeZone ID  >> "+TimeZone.getDefault().getID());
+		//Log4jUtil.log("TimeZone ID  >> "+TimeZone.getDefault().getID());
 		String zone="America/New_York";
 		if(TimeZone.getDefault().getID().contains("GMT")) {
 			zone="America/New_York";
@@ -257,7 +259,7 @@ public class MU2Utils {
 		else {
 			zone = TimeZone.getDefault().getID();
 		}
-		Log4jUtil.log("zone set to : "+zone);
+		//Log4jUtil.log("zone set to : "+zone);
 		TimeZone estTime = TimeZone.getTimeZone(zone);
 		gmtFormat.setTimeZone(estTime);
 		String data[] = gmtFormat.format(date).split(" ");
@@ -310,93 +312,134 @@ public class MU2Utils {
 		return medfusionID;
 	}
 	
-	public void mu2GetEventGaurdian(MU2GetEventData testData,WebDriver driver,Boolean existingGaurdian) throws Exception {
+	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer) throws Exception {
 		Long timestamp = System.currentTimeMillis();
+		Long transmitTimestamp = null;
 		String currentDate = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm a").format(new java.util.Date (timestamp));
 		Log4jUtil.log(currentDate);
 		String username = "";
-		if(existingGaurdian) {
-			testData.INTUIT_PATIENT_ID = testData.intuit_PATIENT_ID_MU2_Gaurdian_Existing;
+		if(existingGuardian) {
+			testData.INTUIT_PATIENT_ID = testData.intuit_PATIENT_ID_MU2_Guardian_Existing;
 			testData.PatientExternalId_MU2=testData.patientUA_ExternalPatientID_MU2_Existing;
 			testData.PatientFirstName_MU2=testData.patientUA_ExternalPatientID_MU2_Existing;
 			testData.PatientLastName_MU2=testData.patientUA_MU2_LastName_Existing;
-			testData.PatientPassword=testData.gaurdian_Password_MU2_Existing;
-			username = testData.gaurdian_UserName_MU2_Existing;
+			testData.PatientPassword=testData.guardian_Password_MU2_Existing;
+			username = testData.guardian_UserName_MU2_Existing;
 		}
 		else {
-			testData.INTUIT_PATIENT_ID = testData.intuit_PATIENT_ID_MU2_Gaurdian;
+			testData.INTUIT_PATIENT_ID = testData.intuit_PATIENT_ID_MU2_Guardian;
 			testData.PatientExternalId_MU2=testData.patientUA_ExternalPatientID_MU2;
 			testData.PatientFirstName_MU2=testData.patientUA_ExternalPatientID_MU2;
 			testData.PatientLastName_MU2=testData.patientUA_MU2_LastName;
-			testData.PatientPassword=testData.gaurdian_Password_MU2;
-			username = testData.gaurdian_UserName_MU2;
+			testData.PatientPassword=testData.guardian_Password_MU2;
+			username = testData.guardian_UserName_MU2;
 		}
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 1: Login to Patient Portal");
+		Log4jUtil.log("mu2GetEventGuardian Step 1: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.PORTAL_URL);
 		JalapenoHomePage homePage = loginPage.login(username, testData.PatientPassword);
 		ccdMessageList.add(testData.CCDMessageID1);
 		Log4jUtil.log("Detecting if Home Page is opened");
 		Assert.assertTrue(homePage.isHomeButtonPresent(driver));
-		
-		if(existingGaurdian) {
+		if(existingGuardian) {
 			homePage.faChangePatient();
 			Assert.assertTrue(homePage.assessFamilyAccountElements(true));
 		}
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 2: Click on messages solution");
-		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		Assert.assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-
-		Log4jUtil.log("mu2GetEventGaurdian Step 3: Validate message subject and send date");
-		Thread.sleep(1000);
-		Log4jUtil.log("Message Date" + IHGUtil.getEstTiming());
-		Assert.assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
-		Log4jUtil.log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
-
-		Log4jUtil.log("mu2GetEventGaurdian Step 4: Click on link View health data");
-		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
-		
-		Log4jUtil.log("mu2GetEventGaurdian Step 5: Verify if CCD Viewer is loaded and click Close Viewer");
-		Assert.assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
-		
-		Log4jUtil.log("mu2GetEventGaurdian Step 6: SecureEmail event Generated");
-		Boolean isSecureMessageTransmit = jalapenoCcdPage.sendInformationToDirectEmail(testData.TRANSMIT_EMAIL);
-		Assert.assertTrue(isSecureMessageTransmit);
-		Log4jUtil.log("isSecureMessageTransmit :"+isSecureMessageTransmit);
-		Long transmitTimestamp = System.currentTimeMillis();
-		Log4jUtil.log("transmitTimestamp "+transmitTimestamp);
-		Thread.sleep(800);
-		Log4jUtil.log("mu2GetEventGaurdian Step 7: UnsecureEmail event Generated");
-		jalapenoCcdPage.sendInformationToUnsecureEmail(testData.Standard_Email);
-		
-		Log4jUtil.log("mu2GetEventGaurdian Step 8: Save pdf event ");
-		jalapenoCcdPage.savePdf();
-		Thread.sleep(4000);
-		performRobotTask(driver,false);
-		Log4jUtil.log("mu2GetEventGaurdian Step 9: Save raw xml event ");
-		jalapenoCcdPage.saveRawXML();
-		Thread.sleep(4000);
-		performRobotTask(driver,true);
-		messagesPage = jalapenoCcdPage.closeCcd(driver);
-		Assert.assertTrue(messagesPage.areBasicPageElementsPresent());
-		homePage = messagesPage.backToHomePage(driver);
+		if(isCCDViewer==true) {
+			Log4jUtil.log("mu2GetEventGuardian Step 2: Click on messages solution");
+			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+			Assert.assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+	
+			Log4jUtil.log("mu2GetEventGuardian Step 3: Validate message subject and send date");
+			Thread.sleep(1000);
+			Log4jUtil.log("Message Date" + IHGUtil.getEstTiming());
+			Assert.assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
+			Log4jUtil.log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
+	
+			Log4jUtil.log("mu2GetEventGuardian Step 4: Click on link View health data");
+			JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
+			
+			Log4jUtil.log("mu2GetEventGuardian Step 5: Verify if CCD Viewer is loaded and click Close Viewer");
+			Assert.assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+			
+			Log4jUtil.log("mu2GetEventGuardian Step 6: SecureEmail event Generated "+testData.TRANSMIT_EMAIL);
+			Boolean isSecureMessageTransmit = jalapenoCcdPage.sendInformationToDirectEmail(testData.TRANSMIT_EMAIL);
+			Assert.assertTrue(isSecureMessageTransmit);
+			Log4jUtil.log("isSecureMessageTransmit :"+isSecureMessageTransmit);
+			transmitTimestamp = System.currentTimeMillis();
+			Log4jUtil.log("transmitTimestamp "+transmitTimestamp);
+			Thread.sleep(800);
+			Log4jUtil.log("mu2GetEventGuardian Step 7: UnsecureEmail event Generated "+testData.Standard_Email);
+			jalapenoCcdPage.sendInformationToUnsecureEmail(testData.Standard_Email);
+			
+			Log4jUtil.log("mu2GetEventGuardian Step 8: Save pdf event ");
+			jalapenoCcdPage.savePdf();
+			Thread.sleep(4000);
+			performRobotTask(driver,false);
+			Log4jUtil.log("mu2GetEventGuardian Step 9: Save raw xml event ");
+			jalapenoCcdPage.saveRawXML();
+			Thread.sleep(4000);
+			performRobotTask(driver,true);
+			messagesPage = jalapenoCcdPage.closeCcd(driver);
+			Assert.assertTrue(messagesPage.areBasicPageElementsPresent());
+			homePage = messagesPage.backToHomePage(driver);
+		}
+		if(isCCDViewer == false) {
+			ccdMessageList.add(testData.CCDMessageID2);
+			Log4jUtil.log("mu2GetEventGuardian Step 2: Go to Health Record Summaries");
+			MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+			Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
+			
+			MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
+			
+			JavascriptExecutor jse = (JavascriptExecutor)driver;
+			jse.executeScript("window.scrollBy(0,400)", "");
+			
+			Log4jUtil.log("mu2GetEventGuardian Step 3: Select first and second CCD from the list");
+			MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
+			MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
+			Log4jUtil.log("mu2GetEventGuardian Step 4: Transmit Email Direct Protocol "+ testData.TRANSMIT_EMAIL +" and Standard Email "+testData.Standard_Email);
+			MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
+			Thread.sleep(5000);
+			transmitTimestamp = System.currentTimeMillis();
+			Log4jUtil.log("mu2GetEventGuardian Step 5: TransmitTimestamp :"+transmitTimestamp);
+			MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
+			
+			Thread.sleep(7000);
+			
+			Log4jUtil.log("Page refreshing...");
+			
+			jse.executeScript("window.scrollBy(0,300)", "");
+			
+			//code to Download CCD on fire fox 
+			Log4jUtil.log("mu2GetEventGuardian Step 6: Download CCD");
+			
+			MedicalRecordSummariesPageObject.selectDownload();
+			Thread.sleep(8000);
+			performRobotTask(driver,true);
+			Log4jUtil.log("====== Consolidated CCD - VDT events generated successfully ======");
+			Thread.sleep(5000);
+		}
 		
 		getMUEventAndVerify(testData, timestamp,transmitTimestamp);
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 10: Move to Account Activity page ");
+		Log4jUtil.log("mu2GetEventGuardian Step 10: Move to Account Activity page ");
 		
 		JalapenoAccountPage accountPage= homePage.clickOnAccount();
+		Thread.sleep(15000);
 		JalapenoMyAccountProfilePage accountProfilePage= accountPage.clickOnEdiDependentAccount();
-		Thread.sleep(4000);
+		Thread.sleep(9000);
 		accountProfilePage.goToActivityTab(driver);
-		Thread.sleep(7000);
+		Thread.sleep(25000);
 					
-		Log4jUtil.log("portalTime transmit "+portalTime.get(0));
+		Log4jUtil.log("portalTime Direct transmit "+generateDate(messageTimeStampList.get(0)));
+		Log4jUtil.log("portalTime Standard transmit "+generateDate(messageTimeStampList.get(1)));
+		//generateDate(messageTimeStampList.get(0));
 		Log4jUtil.log("portalTime view "+portalTime.get(1));
 		Log4jUtil.log("portalTime download "+portalTime.get(2));
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 11: Validate 'View' Event in Account Activty Page list ");
+		Log4jUtil.log("mu2GetEventGuardian Step 11: Validate 'View' Event in Account Activty Page list ");
 		List<Object> viewList = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED, portalTime.get(1))));
 		if (!viewList.isEmpty()) {
@@ -405,7 +448,7 @@ public class MU2Utils {
 		} else {
 			BaseTestSoftAssert.assertTrue(false, "Health Information Viewed event not present");
 		}
-		Log4jUtil.log("mu2GetEventGaurdian Step 12: Validate 'Download' Event in Account Activty list");
+		Log4jUtil.log("mu2GetEventGuardian Step 12: Validate 'Download' Event in Account Activty list");
 		List<Object> downloadList = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_DOWNLOADED, portalTime.get(2))));
 		if (!downloadList.isEmpty()) {
@@ -414,18 +457,18 @@ public class MU2Utils {
 			BaseTestSoftAssert.assertTrue(false, "Health Information Downloaded event not present");
 		}
 
-		Log4jUtil.log("mu2GetEventGaurdian Step 13: Validate 'Secure Email Transmit' Event in Account Activty Page list ");
+		Log4jUtil.log("mu2GetEventGuardian Step 13: Validate 'Secure Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListSecure = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
-				new ArrayList<String>(Arrays.asList(testData.secureEmailTransmitActivity+" "+testData.TRANSMIT_EMAIL+".", portalTime.get(0))));
+				new ArrayList<String>(Arrays.asList(testData.secureEmailTransmitActivity+" "+testData.TRANSMIT_EMAIL+".", generateDate(messageTimeStampList.get(0)))));
 		if (!transmitListSecure.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) transmitListSecure.get(1)).booleanValue());
 		} else {
 			BaseTestSoftAssert.assertTrue(false, "Health Information Transmitted event not present");
 		}
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 14: Validate 'Standard Email Transmit' Event in Account Activty Page list ");
+		Log4jUtil.log("mu2GetEventGuardian Step 14: Validate 'Standard Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListStandard = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
-				new ArrayList<String>(Arrays.asList(testData.standardEmailTransmitActivity+" "+testData.Standard_Email+".", portalTime.get(0))));
+				new ArrayList<String>(Arrays.asList(testData.standardEmailTransmitActivity+" "+testData.Standard_Email+".", generateDate(messageTimeStampList.get(1)))));
 		if (!transmitListStandard.isEmpty()) {
 			BaseTestSoftAssert.assertTrue(((Boolean) transmitListStandard.get(1)).booleanValue());
 		} else {
@@ -433,7 +476,7 @@ public class MU2Utils {
 		}
 
 		
-		Log4jUtil.log("mu2GetEventGaurdian Step 15: Logging out");
+		Log4jUtil.log("mu2GetEventGuardian Step 15: Logging out");
 		loginPage = homePage.clickOnLogout();
 		
 	}

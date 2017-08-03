@@ -119,16 +119,16 @@ public class LoadPreTestData {
 		testData.Standard_Email = propertyData.getStandard_Email();
 		
 		testData.patientUA_MU2=propertyData.getPatientUA_MU2();
-		testData.gaurdian_UserName_MU2=propertyData.getGaurdian_UserName_MU2();
-		testData.gaurdian_Password_MU2=propertyData.getGaurdian_Password_MU2();
+		testData.guardian_UserName_MU2=propertyData.getGuardian_UserName_MU2();
+		testData.guardian_Password_MU2=propertyData.getGuardian_Password_MU2();
 		testData.patientUA_ExternalPatientID_MU2=propertyData.getPatient_ExternalPatientID_MU2();
-		testData.intuit_PATIENT_ID_MU2_Gaurdian = propertyData.getPatientIntuItID_Gaurdian();
+		testData.intuit_PATIENT_ID_MU2_Guardian = propertyData.getPatientIntuItID_Guardian();
 		
 		testData.patientUA_MU2_Existing=propertyData.getPatientUA_MU2_Existing();
-		testData.gaurdian_UserName_MU2_Existing=propertyData.getGaurdian_UserName_MU2_Existing();
-		testData.gaurdian_Password_MU2_Existing=propertyData.getGaurdian_Password_MU2_Existing();
+		testData.guardian_UserName_MU2_Existing=propertyData.getGuardian_UserName_MU2_Existing();
+		testData.guardian_Password_MU2_Existing=propertyData.getGuardian_Password_MU2_Existing();
 		testData.patientUA_ExternalPatientID_MU2_Existing=propertyData.getPatient_ExternalPatientID_MU2_Existing();
-		testData.intuit_PATIENT_ID_MU2_Gaurdian_Existing = propertyData.getPatientIntuItID_GaurdianExisting();
+		testData.intuit_PATIENT_ID_MU2_Guardian_Existing = propertyData.getPatientIntuItID_GuardianExisting();
 		testData.secureEmailTransmitActivity = propertyData.getSecureEmailTransmitActivity();
 		testData.standardEmailTransmitActivity = propertyData.getStandardEmailTransmitActivity();
 		testData.patientUA_MU2_LastName=propertyData.getPatientUA_MU2_LastName();
