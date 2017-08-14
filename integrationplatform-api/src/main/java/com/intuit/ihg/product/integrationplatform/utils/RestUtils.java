@@ -40,6 +40,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -2386,7 +2387,7 @@ public class RestUtils {
 	public static String verifyUnseenMessageListAndGetMessageUID(String xmlFileName,String subject) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildUTFDOMXML(xmlFileName);
-		String messageUid = null;
+		String messageUid = "";
 		
 		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
 		Element statusElem = (Element) StatusNode;
@@ -2817,6 +2818,34 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
 		Log4jUtil.log("Is Pdf Matched : "+pdfMatch);
 		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
+	}
+	
+	public static int setupHttpDeleteRequestExceptOauth(String strUrl,String responseFilePath) throws org.apache.http.ParseException, IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		
+		HttpDelete httpDelReq = new HttpDelete(strUrl);
+		httpDelReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		httpDelReq.setURI(new URI(strUrl));
+		httpDelReq.addHeader("Authentication-Type", "2wayssl");
+		httpDelReq.addHeader("Content-Type", "application/xml");
+		
+		HttpResponse resp = client.execute(httpDelReq);
+		HttpEntity entity = resp.getEntity();
+		String sResp ="";
+		if(entity!=null){
+		sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http response");
+		} else
+		{
+			Log4jUtil.log("http 204 response is empty");
+		}
+		
+		//Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+		//		"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+		writeFile(responseFilePath, sResp);
+		return resp.getStatusLine().getStatusCode();
 	}
 
 }

@@ -24,12 +24,13 @@
 				<include name="testPatientMUEventForExistingGuardian"/>
 				<include name="testCCDE2EFormExportfromPractice"/>
 				<include name="testAMDCSecureMessages"/>
-				<exclude name="testSendDirectMessageXML"/>
-				<exclude name="testDirectorySearchSingleValue"/>
+				<include name="testSendDirectMessageXML"/>
+				<include name="testDirectorySearchSingleValue"/>
 	    		<include name="testAppointmentRequestForExistingPatient"/>  	    	
 	    	 	<include name="testStatementEventForExistingPatient"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>
-	    	 	<exclude name="testUnseenMessageList"/>	
+	    	 	<include name="testUnseenMessageList"/>
+	    	 	<include name="testDeleteP2PMessage"/>
       	</methods>
 	</classes>
 </test>

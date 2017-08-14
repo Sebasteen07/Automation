@@ -1094,7 +1094,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testUnseenMessageInvalidList() throws Exception {
+	public void testErrorCasesUnseenMessageList() throws Exception {
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1142,7 +1142,167 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 	int invalidResponseUID = RestUtils.setupHttpPostInvalidRequest(invalidMessageUIDURL, "", testData.ResponsePath);
 	 	Assert.assertEquals(invalidResponseUID, 400);
 	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testErrorCasesDeleteMessage() throws Exception {
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+		log("Step 2 : Call Delete Message API with Invalid Message Uid");
+	 	String invalidMessageUIDURLDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/"+testData.invalidUID+"/delete";
+	 	log(invalidMessageUIDURLDelete);
+	 	int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete , testData.ResponsePath);
+		log("responseCode for InvalidMsg Delete API is "+responseCodeInvalidMsgDelete);
+		Assert.assertEquals(responseCodeInvalidMsgDelete, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+		
+	 	log("Step 3 : Call Delete Message API with Invalid Email Address");
+	 	String invalidEmailIDDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.invalidEmailMessageHeaderURL+"/message/1/delete";
+	 	int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete , testData.ResponsePath);
+		log("responseCode for InvalidEmailDelete is "+responseCodeInvalidEmailDelete);
+		Assert.assertEquals(responseCodeInvalidEmailDelete, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidEmailMessageHeaderURL);
 
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeleteP2PMessageInMailBox() throws Exception {
+		log("Test Case: To search for Deleted message in P2P MailBox" );		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+	 	log("Step 2 : Post New Secure Message ");
+		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		
+		log("Step 3 : Check for new Unseen Message ");	
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 4 : Verify UnseenMessage and get its UID ");
+		String msgUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody = testData.unseenMessageBody;
+		getMessageBody = getMessageBody+"/"+msgUid;
+		log("msgUid is "+msgUid);
+		
+		log("Step 5 : Login to P2P MailBox and Delete the message");
+		SendDirectMessageUtilsObj.deleteMessage(driver,testData.Subject,testData.SecureDirectMessageUsername,testData.SecureDirectMessagePassword,testData.SecureDirectMessageURL);
+		
+		log("Step 6 : execute Delete API and Verify the response");
+		String messageDeleteURL = testData.messageStatusUpdate +"/"+msgUid+"/delete";
+		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath);
+		log("responseCode is "+responseCode+" message not found !!!");
+		Assert.assertEquals(responseCode, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",msgUid);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeleteP2PMessage() throws Exception {
+		log("Test Case: Delete P2P messages" );
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		long epoch = System.currentTimeMillis();
+		String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new java.util.Date (epoch));
+		log("currentDate "+currentDate);
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+	 	log("Step 2 : Post New Read Secure Message ");
+		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		String subject1 = testData.Subject;
+		log("subject1 "+subject1);
+		
+		log("Step 3 : Check for new Unseen Message ");
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 4 : Verify UnseenMessage and get its UID ");
+		String msgUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody = testData.unseenMessageBody;
+		getMessageBody = getMessageBody+"/"+msgUid;
+		log("msgUid is "+msgUid);
+		
+		log("Step 5 : Post New Unread Secure Message ");
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		String subject2 = testData.Subject;
+		log("subject2 "+subject2);
+		log("Step 6 : Check for new Unseen Message 2 ");
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	
+		log("Step 7 : Verify UnseenMessage and get its UID ");
+		String msgUid1=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody1 = testData.unseenMessageBody;
+		getMessageBody1 = getMessageBody1+"/"+msgUid1;
+		log("msgUid1 is "+msgUid1);
+		Assert.assertTrue(!msgUid1.isEmpty(), "Message UUID not found ");
+		String messageUpdateURL1 = testData.messageStatusUpdate +"/"+msgUid+"/status/"+testData.messageStatusToUpdate;
+		log("Step 8 : read messageURL 1 : "+messageUpdateURL1);
+		
+		String messageUpdateURL2 = testData.messageStatusUpdate +"/"+msgUid1+"/delete";
+		log("Step 9 : unread messageURL 2 : "+messageUpdateURL2);
+		
+		log("Step 10 : Post  message to Update message Status to READ");
+		RestUtils.setupHttpPostRequest(messageUpdateURL1," " , testData.ResponsePath);
+		
+		log("Step 11: Post Read message to delete with message Status as DELETE");
+		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
+		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1 , testData.ResponsePath);
+		log("responseCode1 is "+responseCode1);
+		Assert.assertEquals(responseCode1,200);
+		
+		log("Step 12: Post Unread message to delete with message Status as DELETE");
+		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2 , testData.ResponsePath);
+		log("responseCode2 is "+responseCode2);
+		Assert.assertEquals(responseCode2,200);
+		
+		log("Step 13: Verify deletion of read message in get getMessageBody API "+messageUpdateURL1);
+		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath);
+		log("responseCodeE is "+responseCodeE);
+		String ErrorMsg1="Error GetMessage No Message for Message Uid = "+msgUid+".";
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",ErrorMsg1);
+		
+		log("Step 14: Verify deletion of unread message message in getMessageBody API  "+messageUpdateURL2);
+		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath);
+		log("responseCodeE1 is "+responseCodeE1);
+		String ErrorMsg2="Error GetMessage No Message for Message Uid = "+msgUid1+".";
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",ErrorMsg2);
+		
+		log("Step 15 : Check for new Unseen Message ");	
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 16 : Verify deleted read message in messageHeaders API");
+		String msgReadUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,subject1);
+		log("Is Read Message UUID Empty :"+msgReadUid.isEmpty());
+		Assert.assertTrue(msgReadUid.isEmpty());
+		
+		log("Step 17 : Verify deleted unread message in messageHeaders API");
+		String msgUnreadUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,subject2);
+		log("Is Unread Message UUID Empty :"+msgUnreadUid.isEmpty());
+		Assert.assertTrue(msgUnreadUid.isEmpty());
+		
+		log("Step 18 : Call Delete Message API from Sender Email Address");
+	 	String senderEmail = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.FromEmalID+"/message/"+msgUid+"/delete";
+	 	log(senderEmail);
+	 	int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail , testData.ResponsePath);
+		log("responseCode for InvalidEmailDelete is "+senderEmailID);
+		Assert.assertEquals(senderEmailID, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",subject1);
 	}
 
 	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
