@@ -32,6 +32,8 @@
 				<include name="testPIDCPatientDemographicsUpdate"/>
 				<exclude name="testUnseenMessageListAll"/>
 				<exclude name="testUnseenMessageInvalidList"/>
+				<include name="testDeleteP2PMessage"/>
+				<include name="testDeleteP2PMessageInMailBox"/>
       		</methods>
 	</classes>
 </test>

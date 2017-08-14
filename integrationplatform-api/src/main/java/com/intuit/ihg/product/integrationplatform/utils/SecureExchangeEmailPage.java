@@ -1,6 +1,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,6 +37,9 @@ public class SecureExchangeEmailPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div")
 	public WebElement subjectBody;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[3]/div/div[1]/span/span[4]/span[1]/span[2]")
+	public WebElement deleteMessage;
 	
 	public SecureExchangeEmailPage(WebDriver driver) {
 		this.driver = driver;
@@ -94,6 +98,34 @@ public class SecureExchangeEmailPage {
 		driver.switchTo().defaultContent(); 
 		userName.click();
 		signOut.click();
+		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
+	}
+	
+	public SecureExchangeEmailPage serchForDeleteMessage(String subject) throws InterruptedException {
+		Log4jUtil.log("Switching frame");
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("webMailFrame");
+		Log4jUtil.log("Searching for Email with subject "+subject);
+		Thread.sleep(8000);
+		try{
+			WebElement secureSendEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
+			Log4jUtil.log("Verify Subject if matched actual "+secureSendEmail.getText()+" expected "+subject);
+			Assert.assertEquals(secureSendEmail.getText(),subject);
+			secureSendEmail.click();
+			JavascriptExecutor jse = (JavascriptExecutor)driver;
+			jse.executeScript("window.scrollBy(0,400)", "");	
+			Thread.sleep(5000);
+			deleteMessage.click();
+			WebElement deleteConf = driver.findElement(By.xpath("//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div/div"));
+			
+			String[] deletedMessage = deleteConf.getText().split("\\.");
+			Log4jUtil.log("Delete Message "+deletedMessage[0]);
+			Assert.assertEquals(deletedMessage[0],"No message selected");
+		}
+		catch(Exception E) {
+			Log4jUtil.log("Exception caught "+E);
+			Assert.assertTrue(false);
+		}
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}
 }
