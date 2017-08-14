@@ -1,10 +1,15 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 public class SecureExchangeLoginPage {
 	protected WebDriver driver;
@@ -17,15 +22,19 @@ public class SecureExchangeLoginPage {
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Sign In')]")
 	public WebElement buttonSignIn;
 	
-	public SecureExchangeLoginPage(WebDriver driver,String url) throws InterruptedException {
+	public SecureExchangeLoginPage(WebDriver driver,String url) {
 		this.driver = driver;
 		driver.get(url);
 		driver.manage().window().maximize();
-		Thread.sleep(9000);
+		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
 		PageFactory.initElements(driver, this);
 	}
 
 	public SecureExchangeEmailPage SecureLogin(String username, String password) {
+		WebDriverWait wait = new WebDriverWait(driver, 8000);
+		wait.until(ExpectedConditions.visibilityOf(inputUserName));
+		wait.until(ExpectedConditions.visibilityOf(inputPassword));
+		
 		inputUserName.sendKeys(username);
 		inputPassword.sendKeys(password);
 		buttonSignIn.click();

@@ -16,7 +16,6 @@ public class SendDirectMessageUtils {
 		Log4jUtil.log("Step 7: Login to Secure Exchange Services");
 		SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,testData.SecureDirectMessageURL);
 		SecureExchangeEmailPage SecureEmailPageObject = SecureLoginPageObject.SecureLogin(testData.SecureDirectMessageUsername, testData.SecureDirectMessagePassword);
-		Thread.sleep(8000);
 		
 		Log4jUtil.log("Step 8: Check if Secure Email is recieved");
 		SecureEmailPageObject.verifySecureEmail(testData.Subject,testData.AttachmentType,testData.FileName,testData.ToEmalID,testData.FromEmalID,testData.TOCName);	
@@ -79,7 +78,7 @@ public class SendDirectMessageUtils {
 		Log4jUtil.log("deleteMessage Step 1: Login to Secure Exchange Services");
 		SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,url);
 		SecureExchangeEmailPage SecureEmailPageObject = SecureLoginPageObject.SecureLogin(username, password);
-		Thread.sleep(8000);
+
 		Log4jUtil.log("deleteMessage Step 2: Search for deleted message if present");
 		SecureEmailPageObject.serchForDeleteMessage(subject);
 		
