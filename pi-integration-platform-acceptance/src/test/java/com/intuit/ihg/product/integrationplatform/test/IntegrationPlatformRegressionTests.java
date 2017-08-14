@@ -1094,7 +1094,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testUnseenMessageInvalidList() throws Exception {
+	public void testErrorCasesUnseenMessageList() throws Exception {
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1142,8 +1142,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 	int invalidResponseUID = RestUtils.setupHttpPostInvalidRequest(invalidMessageUIDURL, "", testData.ResponsePath);
 	 	Assert.assertEquals(invalidResponseUID, 400);
 	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testErrorCasesDeleteMessage() throws Exception {
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
 	 	
-	 	log("Step 9 : Call Delete Message API with Invalid Message Uid");
+		log("Step 2 : Call Delete Message API with Invalid Message Uid");
 	 	String invalidMessageUIDURLDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/"+testData.invalidUID+"/delete";
 	 	log(invalidMessageUIDURLDelete);
 	 	int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete , testData.ResponsePath);
@@ -1151,7 +1161,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(responseCodeInvalidMsgDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
 		
-	 	log("Step 10 : Call Delete Message API with Invalid Email Address");
+	 	log("Step 3 : Call Delete Message API with Invalid Email Address");
 	 	String invalidEmailIDDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.invalidEmailMessageHeaderURL+"/message/1/delete";
 	 	int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete , testData.ResponsePath);
 		log("responseCode for InvalidEmailDelete is "+responseCodeInvalidEmailDelete);
@@ -1213,7 +1223,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
 	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
 	 	
-	 	log("Step 2 : Post New First Secure Message ");
+	 	log("Step 2 : Post New Read Secure Message ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
 		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
 		String subject1 = testData.Subject;
@@ -1228,7 +1238,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		getMessageBody = getMessageBody+"/"+msgUid;
 		log("msgUid is "+msgUid);
 		
-		log("Step 5 : Post New Second Secure Message ");
+		log("Step 5 : Post New Unread Secure Message ");
 		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
 		String subject2 = testData.Subject;
 		log("subject2 "+subject2);
@@ -1242,32 +1252,32 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("msgUid1 is "+msgUid1);
 		Assert.assertTrue(!msgUid1.isEmpty(), "Message UUID not found ");
 		String messageUpdateURL1 = testData.messageStatusUpdate +"/"+msgUid+"/status/"+testData.messageStatusToUpdate;
-		log("Step 8 : messageURL 1 : "+messageUpdateURL1);
+		log("Step 8 : read messageURL 1 : "+messageUpdateURL1);
 		
 		String messageUpdateURL2 = testData.messageStatusUpdate +"/"+msgUid1+"/delete";
-		log("Step 9 : messageURL 2 : "+messageUpdateURL2);
+		log("Step 9 : unread messageURL 2 : "+messageUpdateURL2);
 		
 		log("Step 10 : Post  message to Update message Status to READ");
 		RestUtils.setupHttpPostRequest(messageUpdateURL1," " , testData.ResponsePath);
 		
-		log("Step 11: Post First message to delete with message Status as DELETE");
+		log("Step 11: Post Read message to delete with message Status as DELETE");
 		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
 		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1 , testData.ResponsePath);
 		log("responseCode1 is "+responseCode1);
 		Assert.assertEquals(responseCode1,200);
 		
-		log("Step 12: Post Second message to delete with message Status as DELETE");
+		log("Step 12: Post Unread message to delete with message Status as DELETE");
 		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2 , testData.ResponsePath);
 		log("responseCode2 is "+responseCode2);
 		Assert.assertEquals(responseCode2,200);
 		
-		log("Step 13: Verify in get getMessageBody API "+messageUpdateURL1);
+		log("Step 13: Verify deletion of read message in get getMessageBody API "+messageUpdateURL1);
 		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath);
 		log("responseCodeE is "+responseCodeE);
 		String ErrorMsg1="Error GetMessage No Message for Message Uid = "+msgUid+".";
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",ErrorMsg1);
 		
-		log("Step 14: Verift delete messag in getMessageBody API  "+messageUpdateURL2);
+		log("Step 14: Verify deletion of unread message message in getMessageBody API  "+messageUpdateURL2);
 		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath);
 		log("responseCodeE1 is "+responseCodeE1);
 		String ErrorMsg2="Error GetMessage No Message for Message Uid = "+msgUid1+".";

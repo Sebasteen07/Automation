@@ -12,9 +12,10 @@
 		<methods>
 				<include name="testDeleteP2PMessageInMailBox"/>
 				<include name="testDeleteP2PMessage"/>
+				<include name="testErrorCasesDeleteMessage"/>
+				<include name="testErrorCasesUnseenMessageList"/>
 				<include name="testUnseenMessageList"/>
 	    		<exclude name="testUnseenMessageListAll"/>
-	    		<include name="testUnseenMessageInvalidList"/>
 				<exclude name="testDirectorySearch"/>
 	    		<exclude name="testSendDirectMessageAll"/>
       	</methods>
