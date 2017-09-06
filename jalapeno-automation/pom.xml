@@ -86,8 +86,8 @@
 							<systemPropertyVariables>
 								<testRoot>${basedir}</testRoot>
 								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-								<testResultScreenshots>${test.result.screenshots}</testResultScreenshots>
-                                <testResultVideos>${test.result.videos}</testResultVideos>
+								<testResultScreenshots>true</testResultScreenshots>
+                                <testResultVideos>true</testResultVideos>
 							</systemPropertyVariables>
 							<properties>
 								<usedefaultlisteners>false</usedefaultlisteners>

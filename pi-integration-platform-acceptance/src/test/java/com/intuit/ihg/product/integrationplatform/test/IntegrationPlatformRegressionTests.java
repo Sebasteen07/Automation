@@ -431,7 +431,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L - 60 * 24;
 		Log4jUtil.log("Getting patients since timestamp: " + since);
-		
+		Thread.sleep(6000);
 		homePage.clickOnLogout();
 	
 		log("Step 2: Setup Oauth client");
@@ -580,7 +580,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Getting patients since timestamp: " + since);
 		
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		
+		Thread.sleep(6000);
 		homePage.clickOnLogout();
 		
 		log("Step 2: Setup Oauth client");
@@ -1094,7 +1094,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testUnseenMessageInvalidList() throws Exception {
+	public void testErrorCasesUnseenMessageList() throws Exception {
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1142,7 +1142,167 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 	int invalidResponseUID = RestUtils.setupHttpPostInvalidRequest(invalidMessageUIDURL, "", testData.ResponsePath);
 	 	Assert.assertEquals(invalidResponseUID, 400);
 	 	P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testErrorCasesDeleteMessage() throws Exception {
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+		log("Step 2 : Call Delete Message API with Invalid Message Uid");
+	 	String invalidMessageUIDURLDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.ToEmalID+"/message/"+testData.invalidUID+"/delete";
+	 	log(invalidMessageUIDURLDelete);
+	 	int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete , testData.ResponsePath);
+		log("responseCode for InvalidMsg Delete API is "+responseCodeInvalidMsgDelete);
+		Assert.assertEquals(responseCodeInvalidMsgDelete, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidUID);
+		
+	 	log("Step 3 : Call Delete Message API with Invalid Email Address");
+	 	String invalidEmailIDDelete = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.invalidEmailMessageHeaderURL+"/message/1/delete";
+	 	int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete , testData.ResponsePath);
+		log("responseCode for InvalidEmailDelete is "+responseCodeInvalidEmailDelete);
+		Assert.assertEquals(responseCodeInvalidEmailDelete, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",testData.invalidEmailMessageHeaderURL);
 
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeleteP2PMessageInMailBox() throws Exception {
+		log("Test Case: To search for Deleted message in P2P MailBox" );		
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+	 	log("Step 2 : Post New Secure Message ");
+		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		
+		log("Step 3 : Check for new Unseen Message ");	
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 4 : Verify UnseenMessage and get its UID ");
+		String msgUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody = testData.unseenMessageBody;
+		getMessageBody = getMessageBody+"/"+msgUid;
+		log("msgUid is "+msgUid);
+		
+		log("Step 5 : Login to P2P MailBox and Delete the message");
+		SendDirectMessageUtilsObj.deleteMessage(driver,testData.Subject,testData.SecureDirectMessageUsername,testData.SecureDirectMessagePassword,testData.SecureDirectMessageURL);
+		
+		log("Step 6 : execute Delete API and Verify the response");
+		String messageDeleteURL = testData.messageStatusUpdate +"/"+msgUid+"/delete";
+		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath);
+		log("responseCode is "+responseCode+" message not found !!!");
+		Assert.assertEquals(responseCode, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",msgUid);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeleteP2PMessage() throws Exception {
+		log("Test Case: Delete P2P messages" );
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		long epoch = System.currentTimeMillis();
+		String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new java.util.Date (epoch));
+		log("currentDate "+currentDate);
+		
+		log("Step 1 : Set Test Data for UnseenMessageList");
+		SendDirectMessage testData = new SendDirectMessage();
+	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
+	 	P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
+	 	
+	 	log("Step 2 : Post New Read Secure Message ");
+		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		String subject1 = testData.Subject;
+		log("subject1 "+subject1);
+		
+		log("Step 3 : Check for new Unseen Message ");
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 4 : Verify UnseenMessage and get its UID ");
+		String msgUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody = testData.unseenMessageBody;
+		getMessageBody = getMessageBody+"/"+msgUid;
+		log("msgUid is "+msgUid);
+		
+		log("Step 5 : Post New Unread Secure Message ");
+		SendDirectMessageUtilsObj.postSecureMessage(driver,testData, "none");
+		String subject2 = testData.Subject;
+		log("subject2 "+subject2);
+		log("Step 6 : Check for new Unseen Message 2 ");
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+	
+		log("Step 7 : Verify UnseenMessage and get its UID ");
+		String msgUid1=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
+		String getMessageBody1 = testData.unseenMessageBody;
+		getMessageBody1 = getMessageBody1+"/"+msgUid1;
+		log("msgUid1 is "+msgUid1);
+		Assert.assertTrue(!msgUid1.isEmpty(), "Message UUID not found ");
+		String messageUpdateURL1 = testData.messageStatusUpdate +"/"+msgUid+"/status/"+testData.messageStatusToUpdate;
+		log("Step 8 : read messageURL 1 : "+messageUpdateURL1);
+		
+		String messageUpdateURL2 = testData.messageStatusUpdate +"/"+msgUid1+"/delete";
+		log("Step 9 : unread messageURL 2 : "+messageUpdateURL2);
+		
+		log("Step 10 : Post  message to Update message Status to READ");
+		RestUtils.setupHttpPostRequest(messageUpdateURL1," " , testData.ResponsePath);
+		
+		log("Step 11: Post Read message to delete with message Status as DELETE");
+		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
+		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1 , testData.ResponsePath);
+		log("responseCode1 is "+responseCode1);
+		Assert.assertEquals(responseCode1,200);
+		
+		log("Step 12: Post Unread message to delete with message Status as DELETE");
+		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2 , testData.ResponsePath);
+		log("responseCode2 is "+responseCode2);
+		Assert.assertEquals(responseCode2,200);
+		
+		log("Step 13: Verify deletion of read message in get getMessageBody API "+messageUpdateURL1);
+		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath);
+		log("responseCodeE is "+responseCodeE);
+		String ErrorMsg1="Error GetMessage No Message for Message Uid = "+msgUid+".";
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",ErrorMsg1);
+		
+		log("Step 14: Verify deletion of unread message message in getMessageBody API  "+messageUpdateURL2);
+		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath);
+		log("responseCodeE1 is "+responseCodeE1);
+		String ErrorMsg2="Error GetMessage No Message for Message Uid = "+msgUid1+".";
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",ErrorMsg2);
+		
+		log("Step 15 : Check for new Unseen Message ");	
+		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
+		
+		log("Step 16 : Verify deleted read message in messageHeaders API");
+		String msgReadUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,subject1);
+		log("Is Read Message UUID Empty :"+msgReadUid.isEmpty());
+		Assert.assertTrue(msgReadUid.isEmpty());
+		
+		log("Step 17 : Verify deleted unread message in messageHeaders API");
+		String msgUnreadUid=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,subject2);
+		log("Is Unread Message UUID Empty :"+msgUnreadUid.isEmpty());
+		Assert.assertTrue(msgUnreadUid.isEmpty());
+		
+		log("Step 18 : Call Delete Message API from Sender Email Address");
+	 	String senderEmail = testData.messageHeaderURL+testData.validPracticeID+"/directmessage/"+testData.FromEmalID+"/message/"+msgUid+"/delete";
+	 	log(senderEmail);
+	 	int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail , testData.ResponsePath);
+		log("responseCode for InvalidEmailDelete is "+senderEmailID);
+		Assert.assertEquals(senderEmailID, 400);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath,"<ErrorResponse>(.+?)</ErrorResponse>",subject1);
 	}
 
 	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -1161,8 +1321,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		formUtilsObject.ccdExchangeFormsImport(driver, 1);
 	}
 	
-	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForGaurdian() throws Exception 
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForGuardian() throws Exception 
 	{
 		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -1181,11 +1341,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		testData.CCDMessageID1=ccdDetail.get(0);
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false,true);
 	}
 	
-	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForExistingGaurdian() throws Exception 
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForExistingGuardian() throws Exception 
 	{
 		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -1207,11 +1367,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID1=ccdDetail.get(0);
 		
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver,true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,true,true);
 	}
 	
 	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForNewGaurdian() throws Exception 
+	public void testPatientMUEventForNewGuardian() throws Exception 
 	{	
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log("Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
@@ -1265,14 +1425,160 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	    String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
 		log("patientID : "+patientID);
 		
-		log("Step 8: Set values related to new gaurdian");
-		testData.intuit_PATIENT_ID_MU2_Gaurdian = patientID;
+		log("Step 8: Set values related to new guardian");
+		testData.intuit_PATIENT_ID_MU2_Guardian = patientID;
 		testData.patientUA_ExternalPatientID_MU2=patientDetail.get(0);
-		testData.gaurdian_Password_MU2=testData.PatientPassword;
-		testData.gaurdian_UserName_MU2=patientDetail.get(4);
+		testData.guardian_Password_MU2=testData.PatientPassword;
+		testData.guardian_UserName_MU2=patientDetail.get(4);
 		testData.PatientFirstName_MU2=patientDetail.get(0);
 		testData.patientUA_MU2_LastName=patientDetail.get(1);
 		
-		MU2UtilsObj.mu2GetEventGaurdian(testData, driver,false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,false,true);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForGuardianFromHealthRecord() throws Exception 
+	{
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Send CCD to Patient");	
+		iEHDCSendCCD sendCCDObj = new SendCCD();
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false,false);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForExistingGuardianFromHealthRecord() throws Exception 
+	{
+		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Post CCD to Patient");
+		
+		iEHDCSendCCD sendCCDObj = new SendCCD();		
+		log("Send CCD to Patient");
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2_Existing, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+		//
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,true,false);
+	}
+	
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForNewGuardianFromHealthRecord() throws Exception 
+	{	
+		Long timestamp = System.currentTimeMillis();
+		Log4jUtil.log("Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using Health Record Page.");
+		log("Test case Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read Test Data and set Values ");
+		MU2GetEventData testData = new MU2GetEventData();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
+		
+		EHDC EHDCObj = new EHDC();		
+		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
+		log("Step 2: Invite Patient via PIDC ");
+		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
+		ArrayList<String> patientDetail = sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID,testData.PATIENT_EXTERNAL_ID,"01/01/2010","27560");
+		
+		log("Follwing are patient details");
+		int i=0;
+		String[] patientObject={"FirstName/PatientId","LastName","Zip","DateOfBirth","Email","Response"};
+		for (String values : patientDetail) {
+			log(patientObject[i]+" = " + values);
+			i++;
+		}
+		log("checking email for activation UrL link");
+		Thread.sleep(5000);
+		log("Step 3: Check and extract Invite link in patient Email");
+		Mailinator mail = new Mailinator();
+		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), "You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated", PortalConstants.NewPatientActivationMessageLinkText, 20);
+		assertTrue(activationUrl!=null, "Error: Activation link not found.");
+		
+		log("Step 4: Register under age patient");
+		PatientRegistrationUtils.underAgeRegisterPatient(activationUrl, patientDetail.get(4), testData.PatientPassword, testData.SecretQuestion, testData.SecretAnswer, testData.HomePhoneNo, driver, patientDetail.get(2), patientDetail.get(3));
+		
+		Thread.sleep(12000);
+		log("Step 2:  Send CCD to Patient");
+		iEHDCSendCCD sendCCDObj = new SendCCD();
+		
+		log("Step 5: Post CCD to Patient");
+		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail.get(0));
+		Thread.sleep(8000);
+		log("Send 2nd CCD to Patient");
+		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail1.get(0));
+		Thread.sleep(8000);
+		
+		log("Send 3rd CCD to Patient");
+		ArrayList<String> ccdDetail3 =sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH2,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail3.get(0));
+		Thread.sleep(8000);
+		
+		log("Send 4th CCD to Patient");
+		ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0),  testData.CCDPATH3,testData.PATIENT_EXTERNAL_ID);
+		log(ccdDetail4.get(0));
+		
+		testData.CCDMessageID1=ccdDetail.get(0);
+		testData.CCDMessageID2=ccdDetail1.get(0);
+		
+		log("Step 6: Set Up oauth");
+		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
+		
+		log("Step 7: Get PIDC to extract patient medfusion ID");
+		Long since = timestamp / 1000L - 60 * 24;
+		log("Getting patients since timestamp: " + since);
+		log("PUSH_RESPONSEPATH: " + testData.PUSH_RESPONSEPATH);
+		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0", testData.PUSH_RESPONSEPATH);
+		
+		MU2Utils MU2UtilsObj = new MU2Utils();
+	    String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH,patientDetail.get(0));
+		log("patientID : "+patientID);
+		
+		log("Step 8: Set values related to new guardian");
+		testData.intuit_PATIENT_ID_MU2_Guardian = patientID;
+		testData.patientUA_ExternalPatientID_MU2=patientDetail.get(0);
+		testData.guardian_Password_MU2=testData.PatientPassword;
+		testData.guardian_UserName_MU2=patientDetail.get(4);
+		testData.PatientFirstName_MU2=patientDetail.get(0);
+		testData.patientUA_MU2_LastName=patientDetail.get(1);
+		
+		Thread.sleep(8000);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver,false,false);
 	}
 }

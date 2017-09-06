@@ -10,7 +10,8 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testPatientMUEventForNewGaurdian" />
+				<include name="testMUEventForNewGuardianFromHealthRecord" />
+				<include name="testPatientMUEventForNewGuardian" />
 				<include name="testCCDE2EFormExportfromPracticeRegression" />
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>
@@ -30,7 +31,10 @@
 				<include name="testPatientRegistrationfromPractice"/>
 				<include name="testPIDCPatientDemographicsUpdate"/>
 				<exclude name="testUnseenMessageListAll"/>
-				<exclude name="testUnseenMessageInvalidList"/>
+				<include name="testErrorCasesUnseenMessageList"/>
+				<include name="testErrorCasesDeleteMessage"/>
+				<include name="testDeleteP2PMessage"/>
+				<include name="testDeleteP2PMessageInMailBox"/>
       		</methods>
 	</classes>
 </test>
