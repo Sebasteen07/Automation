@@ -2,7 +2,7 @@ package com.medfusion.dre.util;
 
 import java.io.FileInputStream;
 import java.util.Map;
-import java.util.Properties;
+import com.medfusion.common.utils.IHGUtil;
 
 public class Data {
 
@@ -10,9 +10,7 @@ public class Data {
 
 	public static void getData(String retrieverName) {
 		try {			
-            Properties testConfig = new Properties();
-            testConfig.load(new FileInputStream("testConfig.properties"));
-            String env = testConfig.getProperty("test.environment");
+            String env = IHGUtil.getEnvironmentType().toString();
 			
 			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data-" + env + "/" + retrieverName + ".properties");
 			retrieverProperties.load(inputStream);

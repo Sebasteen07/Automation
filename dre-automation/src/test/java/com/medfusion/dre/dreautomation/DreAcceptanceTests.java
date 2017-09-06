@@ -8,37 +8,12 @@ import org.apache.http.client.methods.HttpPut;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.medfusion.dre.objects.AdminUILoginPage;
 import com.medfusion.dre.objects.Retriever;
 import com.medfusion.factory.RetrieversFactory;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import com.medfusion.dre.util.*;
 
 public class DreAcceptanceTests extends HTTPCalls {
-	private FirefoxDriver driver;
-	
-	@Test(enabled = true)
-	public void testRunningProdRetriever() throws InterruptedException {
-//		log("Step 1: Get connectionIds that failed for a portalId");
-//		
-//		
-//		log("Step 2: Kick off retrievals for those connectionIds");
-//		String connectionId = newConnection.substring(newConnection.lastIndexOf("id\":") + 4);
-//		HttpPut httpPut = buildHttpPut(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}","") + "?refresh=true&hardRefresh=false", "{}");
-//		executeRequestGetContent(httpPut);
-		
-		log("Step 3: Verify retrieval or retrievals were successful");
-		AdminUILoginPage signIn = new AdminUILoginPage(driver, "https://p10prdsplunk01.svcs.medfusion.net/");
-		signIn.login("MBush", "Everett0");
-		driver.wait(1000);
-		
-//		HttpGet httpGet = buildHttpGet(claireRestUrl + retriever.Useruuid + "/connections/" + connectionId.replace("}", ""));
-//		String status = retriever.verifyJobStatus(httpGet);
-//		Assert.assertEquals(status, "SUCCESS", "Job hasn't finished processing or has failed within the first 7 minutes");
-	}
-	
-	// -------------------------------------------------------------------------------
-	
+    public static String retrieverName = null;
 
 	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingEpicPortal() throws InterruptedException {
