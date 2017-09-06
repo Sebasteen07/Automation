@@ -275,9 +275,11 @@ public class FormBasicInfoPage extends PortalFormPage {
 		return clickSaveContinue(FormEmergencyContactPage.class);
 	}
 
-	public FormEmergencyContactPage setBasicInfoFromFields_20(String state1, String phoneType, String type) throws Exception {
-		WebElement w1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
-		driver.switchTo().frame(w1);
+	public FormEmergencyContactPage setBasicInfoFromFields_20(String state1, String phoneType, String type, Boolean formTypePrecheck) throws Exception {
+		if(!formTypePrecheck) {
+			WebElement w1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+			driver.switchTo().frame(w1);
+		}
 		setStreetAddress_20();
 			setCity_20();
 			setState_20(state1);

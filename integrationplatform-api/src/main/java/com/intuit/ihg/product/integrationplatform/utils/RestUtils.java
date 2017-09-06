@@ -2847,5 +2847,27 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		writeFile(responseFilePath, sResp);
 		return resp.getStatusLine().getStatusCode();
 	}
+	
+	public static void isPreCheckPatientAppeared(String responsePath, String externalPatientID, String firstname)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICE_ID);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getTextContent().equals(externalPatientID)) {
+				Log4jUtil
+						.log("Searching: External Patient ID:" + externalPatientID + ", and Actual External Patient ID is:" + nodes.item(i).getTextContent().toString());
+				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
+				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
+				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
+				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"), "CCD DATA was not Found");
+				break;
+			}
+			if (i == nodes.getLength() - 1) {
+				Assert.fail("Patient was not found");
+			}
+		}
+	}
 
 }

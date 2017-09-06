@@ -40,6 +40,7 @@ public class FormSocialHistoryPage extends PortalFormPage {
 	}
 	public void fillOutDefaultExerciseLength_20(String exerciseMin,String day) throws InterruptedException {
 		Select exerciseFreqSelect = new Select(exerciseFrequency);
+		exerciseLength.clear();
 		exerciseLength.sendKeys(exerciseMin);
 		exerciseFreqSelect.selectByVisibleText(day);
 		saveAndContinuebtn.click();

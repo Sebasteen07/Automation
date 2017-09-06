@@ -505,6 +505,8 @@ public class LoadPreTestData {
 		testData.responsePDFBatch_FE=propertyData.getresponsePDFBatch_FE();
 		testData.uiPDFFile_FE=propertyData.getUIPDFFile_FE();
 		testData.downloadFileLocation=propertyData.getDownloadFileLocation();
+		testData.preCheckURL=propertyData.getPreCheckURL();
+		testData.preCheckPatientExternalID=propertyData.getPreCheckPatientExternalID();
 		return testData;
 		}
 }

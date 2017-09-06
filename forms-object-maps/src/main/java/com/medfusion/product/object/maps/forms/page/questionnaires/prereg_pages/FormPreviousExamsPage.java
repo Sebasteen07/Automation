@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
@@ -40,7 +41,7 @@ public class FormPreviousExamsPage extends PortalFormPage {
 		examortestName.clear();
 		examortestName.sendKeys(type);
 		examortestName.sendKeys(Keys.TAB);
-		Thread.sleep(10000);
+		IHGUtil.waitForElement(driver, 100, autoComplete);
 		autoComplete.click();
 	}
 	public void setTest_20(String type) throws Exception {

@@ -49,7 +49,8 @@ public class FormMedicationsPage extends PortalFormPage {
 
 	public FormAllergiesPage setMedicationFormFields_20(String medicine, String input) throws Exception {
 		fillMedicationFormFields_new(medicine);
-		Settakeninterval(input);
+		setTakenInterval(input);
+		IHGUtil.waitForElement(driver, 30, saveAndContinuebtn);
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormAllergiesPage.class);
 
@@ -80,19 +81,18 @@ public class FormMedicationsPage extends PortalFormPage {
 		// return PageFactory.initElements(driver, MyPatientPage.class);
 	}
 	public void fillMedicationFormFields_new(String medicine) throws Exception {
-		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 10, medications);
 		medications.clear();
 		medications.sendKeys(medicine);
 		medications.sendKeys(Keys.TAB);
-		Thread.sleep(4000);
+		IHGUtil.waitForElement(driver, 40, autoComplete);
 		autoComplete.click();
 	}
-	public void Settakeninterval(String input) throws InterruptedException
+	public void setTakenInterval(String input) throws InterruptedException
 	{
-		Thread.sleep(1000);
+		IHGUtil.waitForElement(driver, 20, taken);
+		taken.clear();
 		taken.sendKeys(input);
-		Thread.sleep(1000);
-		
 	}
 
 	@Override

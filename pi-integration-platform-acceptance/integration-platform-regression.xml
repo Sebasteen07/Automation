@@ -10,18 +10,13 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testMUEventForNewGuardianFromHealthRecord" />
-				<include name="testPatientMUEventForNewGuardian" />
 				<include name="testCCDE2EFormExportfromPracticeRegression" />
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>
-	    		<include name="testMU2GetEventForExistingPatient"/>
 	    		<include name="testMU2GetEventForNewPatient"/>
 	    		<include name="testPIDCPatientRegistrationV1"/>
 	    		<include name="testPIDCPatientRegistrationV2"/>    	
-	    		<include name="testAppointmentRequestForExistingPatient"/>
 	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
-	    	 	<include name="testStatementEventForExistingPatient"/>
 	    		<include name="testStatementEventForNewSelfPatient"/>
 	    		<include name="testBulkSecureMessage"/>
 	    		<exclude name="testSendDirectMessageAll"/>

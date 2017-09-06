@@ -307,7 +307,11 @@ public class MU2Utils {
 		if (batchSizeInt == 1) {
 			medfusionID = ExtractString("<MedfusionPatientId>(.*?)</MedfusionPatientId>", getResponse);
 		} else {
-			medfusionID = ExtractString("<MedfusionPatientId>(.*?)</MedfusionPatientId>", patientArray[patientArray.length - 2]);
+			for(int i=0;i<patientArray.length;i++) {			
+				if(patientArray[i].contains(patientDetail)) {
+					medfusionID = ExtractString("<MedfusionPatientId>(.*?)</MedfusionPatientId>", patientArray[i]);
+				}
+			}
 		}
 		return medfusionID;
 	}

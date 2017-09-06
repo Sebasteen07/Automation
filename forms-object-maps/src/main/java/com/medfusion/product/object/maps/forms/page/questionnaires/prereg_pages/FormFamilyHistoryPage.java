@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
 public class FormFamilyHistoryPage extends PortalFormPage {
@@ -55,7 +56,7 @@ public class FormFamilyHistoryPage extends PortalFormPage {
 		familyMedical.clear();
 		familyMedical.sendKeys(input);
 		familyMedical.sendKeys(Keys.TAB);
-		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 20, autoComplete);
 		autoComplete.click();
 	}
 	@Override

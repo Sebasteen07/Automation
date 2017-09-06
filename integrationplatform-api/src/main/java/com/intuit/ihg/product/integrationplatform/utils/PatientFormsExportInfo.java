@@ -84,4 +84,6 @@ public class PatientFormsExportInfo
 		public String responsePDFBatch_FE= "";
 		public String day="";
 		public String downloadFileLocation="";
+		public String preCheckURL="";
+		public String preCheckPatientExternalID="";
 }
