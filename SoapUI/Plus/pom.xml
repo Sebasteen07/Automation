@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.intuit.ihg</groupId>
-	<artifactId>Claire_Tests</artifactId>
+	<artifactId>Claire-Rest-Tests</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Claire</name>
+	<name>Claire-Rest-Tests</name>
 	<url>http://maven.apache.org</url>
 	<pluginRepositories>
 		<pluginRepository>
@@ -16,9 +16,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.smartbear</groupId>
-				<artifactId>ready-api-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<groupId>com.github.redfish4ktc.soapui</groupId>
+				<artifactId>maven-soapui-extension-plugin</artifactId>
+				<version>4.6.4.2</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.poi</groupId>
@@ -33,7 +33,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<projectFile>PrecheckRestTests.xml</projectFile>
+							<projectFile>Claire-Rest-project.xml</projectFile>
 							<junitReport>true</junitReport>
 							<outputFolder>./report</outputFolder>
 							<exportwAll>true</exportwAll>
@@ -59,20 +59,7 @@
 						</fileset>
 					</filesets>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-						<version>3.5</version>
-							<configuration>
-					<locales>en,fr</locales>
-				</configuration>
-			</plugin>
-			 <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-            <version>2.19.1</version>
-         </plugin>
+			</plugin>			
 		</plugins>
 	</build>	
 </project>
