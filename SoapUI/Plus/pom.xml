@@ -33,7 +33,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<projectFile>Claire-Rest-project.xml</projectFile>
+							<projectFile>Project-Plus-soapui-project2.24.xml</projectFile>
 							<junitReport>true</junitReport>
 							<outputFolder>./report</outputFolder>
 							<exportwAll>true</exportwAll>
