@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -28,13 +29,29 @@ public class FormSocialHistoryPage extends PortalFormPage {
 
 	@FindBy(id = "exercise_healthhabits_type")
 	private WebElement exerciseFrequency;
+	
+	@FindBy(xpath = "//div[@id='section15']/section/div[2]/a")
+	private WebElement submitSocialForm;
 
 	public void fillOutDefaultExerciseLength() {
 		Select exerciseFreqSelect = new Select(exerciseFrequency);
 		exerciseLength.sendKeys("20");
 		exerciseFreqSelect.selectByVisibleText("day");
 	}
+	public void fillOutDefaultExerciseLength_20(String exerciseMin,String day) throws InterruptedException {
+		Select exerciseFreqSelect = new Select(exerciseFrequency);
+		exerciseLength.sendKeys(exerciseMin);
+		exerciseFreqSelect.selectByVisibleText(day);
+		saveAndContinuebtn.click();
+		submitSocialForm.click();
 
+	}
+	public FormFamilyHistoryPage fillExerciseDetails(String exerciseMin,String day) throws InterruptedException
+	{
+		fillOutDefaultExerciseLength_20(exerciseMin, day);
+		return PageFactory.initElements(driver, FormFamilyHistoryPage.class);
+		
+	}
 	@Override
 	public boolean isPageLoaded() {
 		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Social History"))).isDisplayed();

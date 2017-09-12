@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -18,8 +19,10 @@ public class FormOtherProvidersPage extends PortalFormPage {
 	WebElement noOtherProviders;
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
-	private WebElement saveAndContinuebtn;
+	private WebElement saveAndContinueButton;
 
+	@FindBy(id= "doctors_seen")
+	private WebElement doctorsName;
 	/**
 	 * @Description:Set No Providers
 	 * @throws Exception
@@ -29,6 +32,13 @@ public class FormOtherProvidersPage extends PortalFormPage {
 		PortalUtil.setquestionnarieFrame(driver);
 		noOtherProviders.click();
 
+	}
+	public FormMedicationsPage setProvidername(String input) throws Exception
+	{
+		doctorsName.clear();
+		doctorsName.sendKeys(input);
+		
+		return PageFactory.initElements(driver, FormMedicationsPage.class);
 	}
 
 	@Override

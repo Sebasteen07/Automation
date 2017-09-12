@@ -17,7 +17,7 @@ public class LoadPreTestData {
 		testData.Password = propertyData.getPasswordCCD();
 		testData.RestUrl = propertyData.getRestUrlCCD();
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
-		testData.ccdXMLPath = propertyData.getCCDXMLPath();
+		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
 		
 		testData.OAuthProperty = propertyData.getOAuthProperty();
@@ -117,6 +117,24 @@ public class LoadPreTestData {
 		testData.Standard_Email = propertyData.getStandard_Email();
 		
 		testData.Standard_Email = propertyData.getStandard_Email();
+		
+		testData.patientUA_MU2=propertyData.getPatientUA_MU2();
+		testData.guardian_UserName_MU2=propertyData.getGuardian_UserName_MU2();
+		testData.guardian_Password_MU2=propertyData.getGuardian_Password_MU2();
+		testData.patientUA_ExternalPatientID_MU2=propertyData.getPatient_ExternalPatientID_MU2();
+		testData.intuit_PATIENT_ID_MU2_Guardian = propertyData.getPatientIntuItID_Guardian();
+		
+		testData.patientUA_MU2_Existing=propertyData.getPatientUA_MU2_Existing();
+		testData.guardian_UserName_MU2_Existing=propertyData.getGuardian_UserName_MU2_Existing();
+		testData.guardian_Password_MU2_Existing=propertyData.getGuardian_Password_MU2_Existing();
+		testData.patientUA_ExternalPatientID_MU2_Existing=propertyData.getPatient_ExternalPatientID_MU2_Existing();
+		testData.intuit_PATIENT_ID_MU2_Guardian_Existing = propertyData.getPatientIntuItID_GuardianExisting();
+		testData.secureEmailTransmitActivity = propertyData.getSecureEmailTransmitActivity();
+		testData.standardEmailTransmitActivity = propertyData.getStandardEmailTransmitActivity();
+		testData.patientUA_MU2_LastName=propertyData.getPatientUA_MU2_LastName();
+		testData.patientUA_MU2_LastName_Existing=propertyData.getPatientUA_MU2_LastName_Existing();		
+		testData.pdfFilePath=propertyData.getPdfFilePath();
+		
 		return testData;
 	}
 	
@@ -417,4 +435,76 @@ public class LoadPreTestData {
 		
 		return testData;
 	}
+	public PatientFormsExportInfo loadFormsExportInfofromProperty(PatientFormsExportInfo testData) throws IOException
+	{
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.url_FE=propertyData.geturl_FE();
+		testData.patientfilepath_FE=propertyData.getpatientfilepath_FE();
+		testData.practiceNew_URL_FE=propertyData.getpracticeNew_URL_FE();
+		testData.patient_url_FE=propertyData.getpatient_url_FE();
+		testData.patientFirstName_FE=propertyData.getpatientFirstName_FE();
+		testData.patientLastName_FE=propertyData.getpatientLastName_FE();
+		testData.patientEmailAddress1_FE=propertyData.getpatientEmailAddress1_FE();
+		testData.patientEmailCity_FE=propertyData.getpatientEmailCity_FE();
+		testData.patientphoneNumber_FE=propertyData.getpatientphoneNumber_FE();
+		testData.patientDOBDay1_FE=propertyData.getpatientDOBDay1_FE();
+		testData.patientDOBMonth_FE=propertyData.getpatientDOBMonth_FE();
+		testData.patientDOBMonthtext_FE=propertyData.getpatientDOBMonthText_FE();
+		testData.patientDOBYear_FE=propertyData.getpatientDOBYear_FE();
+		testData.patientAddress1_FE=propertyData.getpatientAddress1_FE();
+		testData.patientAddress2_FE=propertyData.getpatientAddress2_FE();
+		testData.patientCity_FE=propertyData.getpatientCity_FE();
+		testData.patientState_FE=propertyData.getpatientState_FE();
+		testData.patientZipCode1_FE=propertyData.getpatientZipCode1_FE();
+		testData.patientuserid_FE=propertyData.getpatientuserid_FE();
+		testData.patientPassword1_FE=propertyData.getpatientPassword1_FE();
+		testData.patientSecretQuestion_FE=propertyData.getpatientSecretQuestion_FE();
+		testData.patientSecretAnswer_FE=propertyData.getpatientSecretAnswer_FE();
+		testData.patientHomePhoneNo_FE=propertyData.getpatientHomePhoneNo_FE();
+		testData.patientethnicity_FE=propertyData.getpatientethnicity_FE();
+		testData.patientMaritalStatus_FE=propertyData.getpatientMaritalStatus_FE();
+		testData.patientWhoIs_FE=propertyData.getpatientWhoIs_FE();
+		testData.NameofPrimaryInsurance=propertyData.getNameofPrimaryInsurance();
+		testData.NameofsecondaryInsurance=propertyData.getNameofsecondaryInsurance();
+		testData.relFirstName=propertyData.getrelFirstNAme();
+		testData.relLastName=propertyData.getrelLastNAme();
+		testData.relation1=propertyData.getrelation1();
+		testData.phonenumber1=propertyData.getphonenumber1();
+		testData.phonetype1=propertyData.getphonetype1();
+		testData.tetanus1=propertyData.gettetanus1();
+		testData.HPV1=propertyData.getHPV1();
+		testData.Influenza1=propertyData.getInfluenza1();
+		testData.Pneumonia1=propertyData.getPneumonia1();
+		testData.SurgeryName=propertyData.getSurgeryName();
+		testData.SurgeryTimeFrame=propertyData.getSurgeryTimeFrame();
+		testData.HospitalizationReason=propertyData.getHospitalizationReason();
+		testData.HospitalizationTimeFrame=propertyData.getHospitalizationTimeFrame();
+		testData.Test=propertyData.getTest();
+		testData.TestTimeFrame=propertyData.getTestTimeFrame();
+		testData.NameofDoctorSpeciality=propertyData.getNameofDoctorSpeciality();
+		testData.NameDosage=propertyData.getNameDosage();
+		testData.FamilyMember=propertyData.getFamilyMember();
+		testData.OtherMedicalhistory=propertyData.getOtherMedicalhistory();
+		testData.times=propertyData.gettimes();
+		testData.exercise=propertyData.getexercise();
+		testData.day=propertyData.getday();
+		testData.ccd_url1_FE=propertyData.getccd_url1_FE();
+		testData.oAuthAppTokenCCD1_FE=propertyData.getoAuthAppTokenCCD1_FE();
+		testData.oAuthUsernameCCD1_FE=propertyData.getoAuthUsernameCCD1_FE();
+		testData.oAuthPasswordCCD1_FE=propertyData.getoAuthPasswordCCD1_FE();
+		testData.oAuthKeyStore1_FE=propertyData.getoAuthKeyStore1_FE();
+		testData.oAuthProperty1_FE=propertyData.getoAuthProperty1_FE();
+		testData.responsePath_CCD1_FE=propertyData.getresponsePath_CCD1_FE();
+		testData.practiceURL_FE=propertyData.getpracticeURL_FE();
+		testData.practiceUserName_FE=propertyData.getpracticeUserName_FE();
+		testData.practicePassword_FE=propertyData.getpracticePassword_FE();
+		testData.patientLocation_FE=propertyData.getpatientLocation_FE();
+		testData.patientProvider_FE=propertyData.getpatientProvider_FE();
+		testData.responsePDF_FE=propertyData.getresponsePDF_FE();
+		testData.ccd_PDfUrl_FE=propertyData.getccd_PDfUrl_FE();
+		testData.responsePDFBatch_FE=propertyData.getresponsePDFBatch_FE();
+		testData.uiPDFFile_FE=propertyData.getUIPDFFile_FE();
+		testData.downloadFileLocation=propertyData.getDownloadFileLocation();
+		return testData;
+		}
 }

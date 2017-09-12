@@ -146,5 +146,36 @@ public class IntegrationConstants {
 	public static final String PREFERENCE = "Preference";
 	public static final String PREF_NAME = "Name";
 	public static final String PREF_VALUE = "Value";
+
+
+//CCD Information Constant
+		public static final String ASSOCIATEDPERSON="associatedPerson";
+		public static final String ASSIGNEDPERSON ="assignedPerson";
+		public static final String ASSIGNEDENTITY ="assignedEntity";
+		public static final String ASSOCIATEDENTITY="associatedEntity";
+		public static final String GIVENNAME ="given";
+		public static final String FAMILY= "family";
+		public static final String DOCUMENTATIONOF = "documentationOf";
+		public static final String REPRESENTEDORGANIZATION= "representedOrganization";
+		public static final String SUBSTANCEADMINISTRATION ="substanceAdministration";
+		public static final String ENTRYRELATIONSHIP="entryRelationship";
+		public static final String COMPONENT= "component";
+		public static final String CONTENT="content";
+		public static final String ADMINISTRATIVEGENDERCODE="administrativeGenderCode";
+		public static final String ATRRIBUTE1="displayName";
+		
+		//CCD PDFBatch Constants
+		public static final String PATIENTFORM="PatientForm";
+		public static final String MEDFUSIONMEMBERID ="MedfusionMemberId";
+		public static final String PRACTICEPATIENTID="PracticePatientId";
+		public static final String PDFURLLINK="PdfUrlLink";
+		
+		//CCD HeaderDetails Constants
+		public static final String CCDMESSAGEHEADERS="CcdMessageHeaders";
+		public static final String ROUTINGMAP="RoutingMap";
+		public static final String VALUE ="Value";
+		public static final String KEYVALUEPAIR ="KeyValuePair";
+		public static final String FORMTYPE="pre-reg";
+		
 }
 

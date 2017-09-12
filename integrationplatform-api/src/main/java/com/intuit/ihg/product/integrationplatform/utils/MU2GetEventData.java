@@ -46,4 +46,23 @@ public class MU2GetEventData {
         public String PatientLastName_MU2="";
 
         public String Standard_Email="";
+        
+        public String patientUA_MU2="";
+        public String guardian_UserName_MU2="";
+        public String guardian_Password_MU2="";
+        public String patientUA_ExternalPatientID_MU2="";
+        public String intuit_PATIENT_ID_MU2_Guardian="";
+        
+        public String patientUA_MU2_Existing="";
+        public String guardian_UserName_MU2_Existing="";
+        public String guardian_Password_MU2_Existing="";
+        public String patientUA_ExternalPatientID_MU2_Existing="";
+        public String intuit_PATIENT_ID_MU2_Guardian_Existing="";
+        
+        public String pdfFilePath="";
+		public String secureEmailTransmitActivity="";
+		public String standardEmailTransmitActivity="";
+		public String patientUA_MU2_LastName="";
+		public String patientUA_MU2_LastName_Existing="";
+        
 }

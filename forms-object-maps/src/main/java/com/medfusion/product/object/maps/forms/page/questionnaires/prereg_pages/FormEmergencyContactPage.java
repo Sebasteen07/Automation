@@ -49,7 +49,15 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		firstName.clear();
 		firstName.sendKeys(input);
 	}
-
+	public void setFirstName_20(String input) throws Exception {
+		PortalUtil.PrintMethodName();
+		Thread.sleep(5000);
+		WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+		driver.switchTo().frame(W1);
+		firstName.clear();
+		firstName.sendKeys(input);
+		
+	}
 	/**
 	 * @Description:Set Last Name
 	 * @param input
@@ -61,7 +69,12 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		lastName.clear();
 		lastName.sendKeys(input);
 	}
-
+	public void setLastName_20(String input) throws Exception {
+		PortalUtil.PrintMethodName();
+		lastName.clear();
+		lastName.sendKeys(input);
+		
+	}
 	/**
 	 * @Description:Set Relation
 	 * @param type
@@ -72,6 +85,12 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(type);
+	}
+	public void setRelation_20(String relation1) throws Exception {
+		PortalUtil.PrintMethodName();
+		Select selector = new Select(relation);
+		selector.selectByVisibleText(relation1);
+		
 	}
 
 	/**
@@ -88,7 +107,15 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(phoneType);
 	}
-
+	public void setPrimaryPhone_20(String input, String phoneType) throws Exception {
+		PortalUtil.PrintMethodName();
+		Thread.sleep(1000);
+		primaryPhone.clear();
+		primaryPhone.sendKeys(input);
+		Select selector = new Select(primaryPhoneType);
+		selector.selectByVisibleText(phoneType);
+		
+	}
 	/**
 	 * @Description:Set Email
 	 * @param input
@@ -119,7 +146,20 @@ public class FormEmergencyContactPage extends PortalFormPage {
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
 	}
+public FormCurrentSymptomsPage fillEmergencyContactFormFields_20(String relFirstNAme,String relLastName,String relation1, String number ,String phonetype1 ) throws Exception {
+		
+		setFirstName_20(relFirstNAme);
 
+		setLastName_20(relLastName);
+
+		setRelation_20(relation1);
+
+		setPrimaryPhone_20(number,phonetype1);
+
+		clickSaveContinue();
+
+		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
+	}
 	@Override
 	public boolean isPageLoaded() {
 		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Emergency Contact Information"))).isDisplayed();

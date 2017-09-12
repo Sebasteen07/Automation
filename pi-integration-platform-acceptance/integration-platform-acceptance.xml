@@ -13,11 +13,16 @@
 	    		<include name="testEHDCsendCCD" />        		
         		<include name="testPIDCPatientRegistration" />        		
         		<include name="testE2EAppointmentRequest20" />
-				<include name="testE2E_OLBP20" />
+				<exclude name="testE2E_OLBP20" />
 				<include name="testStatementPreference" />
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
+				<include name="testMUEventForExistingGuardianFromHealthRecord"/>
+				<include name="testMUEventForGuardianFromHealthRecord"/>
+				<include name="testPatientMUEventForGuardian"/>
+				<include name="testPatientMUEventForExistingGuardian"/>
+				<include name="testCCDE2EFormExportfromPractice"/>
 				<include name="testAMDCSecureMessages"/>
 				<exclude name="testSendDirectMessageXML"/>
 				<exclude name="testDirectorySearchSingleValue"/>

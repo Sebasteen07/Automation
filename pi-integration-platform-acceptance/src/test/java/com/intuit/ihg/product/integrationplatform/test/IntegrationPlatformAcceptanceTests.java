@@ -337,16 +337,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 
-		JalapenoCcdViewerPage jalapenoCcdPage = new JalapenoCcdViewerPage(driver);
-
 		log("Step 6: Click on link View health data");
-		jalapenoCcdPage.clickBtnViewHealthData();
+		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		jalapenoCcdPage.verifyCCDViewerAndClose();
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
-		log("Logging out");
-		homePage.clickOnLogout();
+		log("Step 8: Logging out");
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+		homePage = messagesPage.backToHomePage(driver);
+		loginPage = homePage.clickOnLogout();
 		/*
 		 * log("Step 10: Go to patient page"); pMyPatientPage = pMessage.clickMyPatientPage();
 		 * 
@@ -842,7 +843,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 10: Get Medfusion Member Id & External Id of the patient");
 		PatientDashboardPage patientDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
-		patientDashboard.editPatientLink();
+		patientDashboard.editPatientLink_20();
 
 		String memberId = patientDashboard.medfusionID();
 		log("MemberId is " + memberId);

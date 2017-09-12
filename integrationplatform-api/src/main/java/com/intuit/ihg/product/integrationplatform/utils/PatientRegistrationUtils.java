@@ -20,6 +20,7 @@ import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -43,10 +44,30 @@ public class PatientRegistrationUtils {
 		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("Logging out");
-		Thread.sleep(2000);
+		Thread.sleep(9000);
 		jalapenoHomePage.clickOnLogout();
 	}
+	
+	public static void underAgeRegisterPatient(String activationUrl,String EmailID,String PatientPassword,String SecretQuestion,String SecretAnswer,String RegisterTelephone,WebDriver driver,String zip,String birthdate) throws InterruptedException {
+		String[] Date = birthdate.split("/");
+		Log4jUtil.log("Retrieved activation link is " + activationUrl);
+		Log4jUtil.log("Step 5: Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientActivationPage = new PatientVerificationPage(driver, activationUrl);
+		AuthUserLinkAccountPage accountDetailsPage = patientActivationPage.fillDependentInfoAndContinue(zip, Date[0], Date[1], Date[2]);
+		Log4jUtil.log("Step 6: Finishing of patient activation: step 2 - filling patient data");
+		SecurityDetailsPage accountDetailsPage1 = accountDetailsPage.continueToCreateGuardianOnly("Guardian", "TestPatient01", "Parent");
+				
+		JalapenoHomePage jalapenoHomePage =
+				accountDetailsPage1.fillAccountDetailsAndContinue(EmailID, PatientPassword, SecretQuestion, SecretAnswer,RegisterTelephone);
+		Log4jUtil.log("Step 7: Detecting if Home Page is opened");
+		Thread.sleep(7000);
+		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 		
+		Log4jUtil.log("Logging out");
+		Thread.sleep(9000);
+		jalapenoHomePage.clickOnLogout();
+	}
+	
 	public static void csvFileReader(PIDCInfo testData,String csvFilePath) throws IOException {
 		
 		String[][] patientValues = new String[800][800];

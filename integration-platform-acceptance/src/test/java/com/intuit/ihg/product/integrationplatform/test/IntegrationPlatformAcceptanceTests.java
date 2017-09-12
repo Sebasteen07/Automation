@@ -1163,6 +1163,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			Thread.sleep(5000);
 			log("Step 6: Login to Practice Portal");
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+			Thread.sleep(5000);
 			PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUsername(), testData.getPracticePassword());
 
 			log("Step 7: Click on Patient Search Link");

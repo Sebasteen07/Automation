@@ -72,6 +72,15 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[contains(.,'Post age-out invitation has been sent successfully')]")
 	private WebElement postAgeOutInvitationInfoMessage;
+	
+	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td/a")
+	private WebElement ediPatientID1;
+	
+	@FindBy(xpath= "//td/b[text()='Patient Id for Centricity PM']/../../td[2]/input")
+	private WebElement txtexternalIDPM;
+	
+	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td[2]")
+	private WebElement lblPatientID1;
 
 	private WebElement feedback;
 
@@ -128,6 +137,21 @@ public class PatientDashboardPage extends BasePageObject {
 		Assert.assertTrue("patient ID is not set", lblPatientID.getText().contains(emrID));
 		return emrID;
 	}
+	public String setExternalPatientID_20()
+	{
+		IHGUtil.PrintMethodName();
+		ediPatientID1.click();
+		medfusionID();
+		String emrID = IHGUtil.createRandomNumericString();
+		txtexternalID.clear();
+		txtexternalID.sendKeys(emrID);
+		txtexternalIDPM.clear();
+		txtexternalIDPM.sendKeys(emrID);
+		btnUpdateInfo.click();
+		IHGUtil.waitForElement(driver, 60, lblPatientID1);
+		Assert.assertTrue("patient ID is not set", lblPatientID1.getText().contains(emrID));
+		return emrID;
+	}
 
 	/**
 	 * 
@@ -148,6 +172,12 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, editPatientID);
 		editPatientID.click();
+	}
+	
+	public void editPatientLink_20() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, editPatientID);
+		ediPatientID1.click();
 	}
 
 	/*

@@ -22,6 +22,9 @@ public class JalapenoAccountPage extends BasePageObject {
 	// won't work if linked accounts are disabled
 	@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
 	private WebElement editMyAccountButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/ul/li/div/div[3]/button")
+	private WebElement editDependentAccountButton;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='ladda-button ng-binding primary inviteBtn']")
 	private WebElement inviteNewButton;
@@ -52,6 +55,14 @@ public class JalapenoAccountPage extends BasePageObject {
 
 		log("Trying to click on Edit button for My Account");
 		editMyAccountButton.click();
+
+		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
+	}
+	
+	public JalapenoMyAccountProfilePage clickOnEdiDependentAccount() {
+
+		log("Trying to click on Dependent Edit button for Account");
+		editDependentAccountButton.click();
 
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}

@@ -32,6 +32,9 @@ public class HealthFormListPage extends BasePageObject {
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
+	
+	@FindBy(xpath ="//iframe[@title='Forms']")
+	private WebElement iframeforms;
 
 	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']")
 	private WebElement logout;
@@ -41,6 +44,17 @@ public class HealthFormListPage extends BasePageObject {
 
 	@FindBy(xpath = "//span[./text()='Home'] | //*[./text()='my patient page'] | //*[./text()='My Patient Page']")
 	private WebElement homeLink;
+	
+	@FindBy(xpath= "//a[text()='Continue']")
+	private WebElement Continuebutton1;
+	
+	@FindBy(xpath="//li/a[text()='General Registration and Health History']")
+	public static WebElement healthFormsRegistrationLink;
+	
+	@FindBy(linkText="View as PDF")
+	private static WebElement pdfLinkText;
+	
+	private static String formValueNew;
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -64,7 +78,20 @@ public class HealthFormListPage extends BasePageObject {
 		healthFormsLink.click();
 		IHGUtil.setFrame(driver, "iframe");
 	}
-
+	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{
+		log("Clicking On General Registration and Health History ");
+		Thread.sleep(2000);
+		healthFormsRegistrationLink.click();
+		formValueNew=healthFormsRegistrationLink.getText();
+		Thread.sleep(2000);
+		driver.switchTo().frame(iframeforms);
+		Thread.sleep(1000);
+		Continuebutton1.click();
+	}
+	public String getFormName()
+	{
+		return formValueNew;
+	}
 	public String getPDFDownloadLink(String formName) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
 		return wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//li[./a[starts-with(./text(), '" + formName + "')]]//a)[2]"))).getAttribute("href");
@@ -121,6 +148,10 @@ public class HealthFormListPage extends BasePageObject {
 	public void goToHomePage() {
 		IHGUtil.setDefaultFrame(driver);
 		homeLink.click();
+	}
+	
+	public void getPDF() {
+		pdfLinkText.click();
 	}
 
 }
