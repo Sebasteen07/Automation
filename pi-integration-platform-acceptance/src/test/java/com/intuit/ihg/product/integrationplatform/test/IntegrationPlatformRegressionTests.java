@@ -1323,7 +1323,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		formUtilsObject.ccdExchangeFormsImport(driver, 1);
 	}
 	
-	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreCheckForms() throws Exception
 	{
 		Log4jUtil.log("Test Case: Fill Pre check CCD Form and Verify the Details in Export ");
