@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -33,6 +34,7 @@ import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
+import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
@@ -1319,6 +1321,70 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Test Case: Fill CCD Form and Verify the Details in Export Regression");
 		FormsExportUtils formUtilsObject = new FormsExportUtils();
 		formUtilsObject.ccdExchangeFormsImport(driver, 1);
+	}
+	
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreCheckForms() throws Exception
+	{
+		Log4jUtil.log("Test Case: Fill Pre check CCD Form and Verify the Details in Export ");
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		FormsExportUtils formUtilsObject = new FormsExportUtils();
+		Log4jUtil.log("Step 1: Load forms data from external files");
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.patientfilepath_FE;
+		formUtilsObject.setFormsTestData(workingDir,testData);
+		String randomString = IHGUtil.createRandomNumericString();
+		Long timestamp = System.currentTimeMillis();
+
+		Log4jUtil.log("Step 2: Fill in Pre check form 14 pages");
+		String firstName=testData.patientFirstName_FE+randomString;
+		log("firstName "+firstName);
+		driver.get(testData.preCheckURL);
+		driver.manage().window().maximize();
+		
+		Thread.sleep(6000);
+		//Temp code until we have page objects
+		WebElement pageNumber =  driver.findElement(By.xpath("//*[@id=\"page-header-current\"]"));
+		log("we are at page number "+pageNumber.getText());
+		int size =1;
+		if(pageNumber.getText().equalsIgnoreCase("")) {
+			driver.findElement(By.id("continueWelcomePageButton")).click();;
+		}
+		else {
+			size = Integer.parseInt(pageNumber.getText());
+		}
+		if(!pageNumber.getText().equalsIgnoreCase("1")) {
+			WebElement prevPage =  driver.findElement(By.xpath("//*[@id=\"prevPageButton\"]"));
+			for(int i=size;i>1;i--) {
+				prevPage.click();	
+			}
+		}
+		formUtilsObject.fillForm(driver, testData, firstName,true);
+		
+		Thread.sleep(8000);
+		Long since = timestamp / 1000L - 60 * 24;
+		Log4jUtil.log("Step 3: Set up Oauth");
+		RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
+		String getURL = testData.ccd_url1_FE + "Batch";
+		Log4jUtil.log("CCD _URL is "+ testData.ccd_url1_FE);
+		RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
+		Thread.sleep(2000);
+		long timeStamp204 = System.currentTimeMillis();
+	    Long since1= timeStamp204 / 1000 - 60 * 24;
+		
+	    Log4jUtil.log("Step 4: Verify patient Details in get ccdExchangeBatch API");
+		RestUtils.verifyPatientCCDFormInfo(testData.responsePath_CCD1_FE, formUtilsObject.list);
+		RestUtils.isPreCheckPatientAppeared(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID, firstName);
+		getURL = testData.ccd_PDfUrl_FE + "Batch";
+		log("Verify --- PDF "+getURL);
+		Log4jUtil.log("Step 5: Verify patient Details in get ccdExchangePdfBatch API");
+		RestUtils.setupHttpGetRequest(getURL+ "?since=" + since1 + ",0", testData.responsePath_CCD1_FE);
+		String PreCheckPdfLink = RestUtils.verifyPreCheckPDFBatchDetails(testData.responsePath_CCD1_FE,testData.preCheckPatientExternalID);
+		Log4jUtil.log("Step 6: Download pre check form pdf");
+		log("Download pdf link "+PreCheckPdfLink);
+		//RestUtils.setupHttpGetRequestExceptoAuthforPDF(PreCheckPdfLink, testData.responsePDF_FE);
 	}
 	
 	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

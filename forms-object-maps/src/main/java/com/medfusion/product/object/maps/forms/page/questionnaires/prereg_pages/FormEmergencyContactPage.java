@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
@@ -49,11 +50,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		firstName.clear();
 		firstName.sendKeys(input);
 	}
-	public void setFirstName_20(String input) throws Exception {
+	public void setFirstName_20(String input,Boolean isFormTypePreCheck) throws Exception {
 		PortalUtil.PrintMethodName();
-		Thread.sleep(5000);
-		WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
-		driver.switchTo().frame(W1);
+		if(!isFormTypePreCheck) {
+			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+			driver.switchTo().frame(W1);
+		}
+		IHGUtil.waitForElement(driver, 50, firstName);
 		firstName.clear();
 		firstName.sendKeys(input);
 		
@@ -109,7 +112,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	}
 	public void setPrimaryPhone_20(String input, String phoneType) throws Exception {
 		PortalUtil.PrintMethodName();
-		Thread.sleep(1000);
+		IHGUtil.waitForElement(driver, 10, primaryPhone);
 		primaryPhone.clear();
 		primaryPhone.sendKeys(input);
 		Select selector = new Select(primaryPhoneType);
@@ -146,9 +149,9 @@ public class FormEmergencyContactPage extends PortalFormPage {
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
 	}
-public FormCurrentSymptomsPage fillEmergencyContactFormFields_20(String relFirstNAme,String relLastName,String relation1, String number ,String phonetype1 ) throws Exception {
+public FormCurrentSymptomsPage fillEmergencyContactFormFields_20(String relFirstNAme,String relLastName,String relation1, String number ,String phonetype1,Boolean isFormTypePreCheck) throws Exception {
 		
-		setFirstName_20(relFirstNAme);
+		setFirstName_20(relFirstNAme,isFormTypePreCheck);
 
 		setLastName_20(relLastName);
 

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
@@ -49,7 +50,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 	}
 	public void setSurgeryName_20(String SurgeryName) throws Exception {
 		PortalUtil.PrintMethodName();
-		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 20, surgeryName);
 		surgeryName.clear();
 		surgeryName.sendKeys(SurgeryName);
 		surgeryName.sendKeys(Keys.ARROW_UP);
@@ -68,7 +69,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 	}
 	public void setSurgeryTimeFrame_20(String SurgeryNameFrame) throws Exception {
 		PortalUtil.PrintMethodName();
-		Thread.sleep(1000);
+		IHGUtil.waitForElement(driver, 30, surgeryTimeFrame);
 		Select selector = new Select(surgeryTimeFrame);
 		selector.selectByVisibleText(SurgeryNameFrame);
 	}
@@ -105,7 +106,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 	}
 	public void setHospitalizationTimeFrame_20(String HospitalizationReasonframe) throws Exception {
 		PortalUtil.PrintMethodName();
-		Thread.sleep(1000);
+		IHGUtil.waitForElement(driver, 10, hospitalizationTimeFrame);
 		Select selector = new Select(hospitalizationTimeFrame);
 		selector.selectByVisibleText(HospitalizationReasonframe);
 	}

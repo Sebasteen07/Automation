@@ -2847,5 +2847,49 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		writeFile(responseFilePath, sResp);
 		return resp.getStatusLine().getStatusCode();
 	}
+	
+	public static void isPreCheckPatientAppeared(String responsePath, String externalPatientID, String firstname)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
 
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICE_ID);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getTextContent().equals(externalPatientID)) {
+				Log4jUtil
+						.log("Searching: External Patient ID:" + externalPatientID + ", and Actual External Patient ID is:" + nodes.item(i).getTextContent().toString());
+				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
+				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
+				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
+				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"), "CCD DATA was not Found");
+				break;
+			}
+			if (i == nodes.getLength() - 1) {
+				Assert.fail("Patient was not found");
+			}
+		}
+	}
+	
+	public static String verifyPreCheckPDFBatchDetails(String responsepath,String externalPatientID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
+	   IHGUtil.PrintMethodName();
+	   Document doc = buildDOMXML(responsepath);
+	   boolean found = false;
+	   String PatientPDFUrl="";
+	   NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
+	   for(int i=0;i<nodes1.getLength();i++)
+	   {
+		   Element member=(Element) nodes1.item(i); 
+		   Node lastUpdated =member.getElementsByTagName(IntegrationConstants.LASTUPDATED).item(0);		   
+		   if((i+1)==nodes1.getLength()) {
+			   Node ExternalID =member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
+			   Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,"External patient ID is different from expected");
+			   Log4jUtil.log("Verifying ExternalID "+ExternalID.getTextContent()+" with Expected"+externalPatientID);
+			   Node GetPDFUrl =member.getElementsByTagName(IntegrationConstants.PDFURLLINK).item(0);
+			   String PDFURL=GetPDFUrl.getTextContent();
+			   Log4jUtil.log("Get URL is "+PDFURL);
+			   PatientPDFUrl=PDFURL;
+		   }
+	  }
+	   return PatientPDFUrl;
+	}
 }

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
@@ -54,20 +55,28 @@ public class FormAllergiesPage extends PortalFormPage {
 		noFoodAllergies.click();
 
 	}
-	public void setGeneralAnesthetic_20() throws Exception {
+	public void setGeneralAnesthetic_20(Boolean isFormTypePreCheck) throws Exception {
 		PortalUtil.PrintMethodName();
-		WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
-		driver.switchTo().frame(W1);
-		generalAnesthetic.click();
+		
+		if(!isFormTypePreCheck) {
+			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+			driver.switchTo().frame(W1);
+		}
+		if(!generalAnesthetic.isSelected()) {
+			IHGUtil.waitForElement(driver, 60, generalAnesthetic);
+			generalAnesthetic.click();
+		}
+		
 	}
 	public void setPeanuts_20() throws Exception {
 		PortalUtil.PrintMethodName();
-		peanuts.click();
+		if(!peanuts.isSelected()) {
+			peanuts.click();
+		}
 	}
-	public FormVaccinePage setAllergies() throws Exception
+	public FormVaccinePage setAllergies(Boolean isFormTypePreCheck) throws Exception
 	{
-		Thread.sleep(2000);
-		setGeneralAnesthetic_20();
+		setGeneralAnesthetic_20(isFormTypePreCheck);
 		setPeanuts_20();
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormVaccinePage.class);
