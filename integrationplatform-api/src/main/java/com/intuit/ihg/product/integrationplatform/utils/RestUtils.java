@@ -2869,5 +2869,27 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 			}
 		}
 	}
-
+	
+	public static String verifyPreCheckPDFBatchDetails(String responsepath,String externalPatientID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
+	   IHGUtil.PrintMethodName();
+	   Document doc = buildDOMXML(responsepath);
+	   boolean found = false;
+	   String PatientPDFUrl="";
+	   NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
+	   for(int i=0;i<nodes1.getLength();i++)
+	   {
+		   Element member=(Element) nodes1.item(i); 
+		   Node lastUpdated =member.getElementsByTagName(IntegrationConstants.LASTUPDATED).item(0);		   
+		   if((i+1)==nodes1.getLength()) {
+			   Node ExternalID =member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
+			   Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,"External patient ID is different from expected");
+			   Log4jUtil.log("Verifying ExternalID "+ExternalID.getTextContent()+" with Expected"+externalPatientID);
+			   Node GetPDFUrl =member.getElementsByTagName(IntegrationConstants.PDFURLLINK).item(0);
+			   String PDFURL=GetPDFUrl.getTextContent();
+			   Log4jUtil.log("Get URL is "+PDFURL);
+			   PatientPDFUrl=PDFURL;
+		   }
+	  }
+	   return PatientPDFUrl;
+	}
 }
