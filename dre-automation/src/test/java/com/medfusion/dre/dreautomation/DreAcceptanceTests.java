@@ -1,5 +1,6 @@
 package com.medfusion.dre.dreautomation;
 
+
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -12,7 +13,7 @@ import com.medfusion.factory.RetrieversFactory;
 import com.medfusion.dre.util.*;
 
 public class DreAcceptanceTests extends HTTPCalls {
-	public static String retrieverName = null;
+    public static String retrieverName = null;
 
 	@Test(enabled = true, groups = {"Retrievers"})
 	public void testRetrievingEpicPortal() throws InterruptedException {
