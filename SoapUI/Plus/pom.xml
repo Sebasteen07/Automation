@@ -48,7 +48,7 @@
 							<outputFolder>./report</outputFolder>
 							<exportwAll>true</exportwAll>
 							<printReport>true</printReport>
-							<environment>dev3</environment>
+							<environment>${environment}</environment>
 							<testSuite>${test_suite_name}</testSuite>
 						</configuration>
 					</execution>
