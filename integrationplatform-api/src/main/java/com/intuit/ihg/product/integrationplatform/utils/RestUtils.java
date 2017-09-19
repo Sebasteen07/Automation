@@ -2706,61 +2706,74 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	{
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
-		Log4jUtil.log("finding CCDFORM INFO");
 		boolean found = false;
-		String PDfURL1="";
 		Node CcdMessageHeaders=doc.getElementsByTagName(IntegrationConstants.CCDMESSAGEHEADERS).item(0);
 		Element ccdheaders=(Element) CcdMessageHeaders;
 		Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
 		Element Forms=(Element) Formname;
-		Node Value1=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(0);
-		String Formname1=Value1.getTextContent();
-		Node FormType=Forms.getElementsByTagName("KeyValuePair").item(1);
-		Assert.assertEquals(Formname1, FormValue, "Form Name is different from expected ");
-		Assert.assertTrue(FormType.getTextContent().contains(IntegrationConstants.FORMTYPE), "Form Type is different than expected");
-
+		NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
+		for(int i=0;i<KeyValuePairList.getLength();i++) {
+			Node FormTypeValue=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(i);
+			Node FormTypeKey=Forms.getElementsByTagName("Key").item(i);
+			if(FormTypeValue.getTextContent().contains(FormValue)) {
+				Assert.assertEquals(FormTypeValue.getTextContent(), FormValue, "Form Name is different from expected ");
+			}
+			if(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE)) {
+				Assert.assertTrue(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE), "Form Type is different than expected");
+				break;
+			}
+		}
 	}
 
 	public static String verifyCCDHeaderDetailsandGetURL(String responsepath, String externalID) throws ParserConfigurationException, SAXException, IOException{
-	  IHGUtil.PrintMethodName();
-	  Document doc = buildDOMXML(responsepath);
-	  Log4jUtil.log("finding CCDFORM INFO");
-	  boolean found = false;
-	  String PDfURL1="";
-	  NodeList CcdMessageHeaders=doc.getElementsByTagName("ns2:CcdExchange");
-	  for(int i=0; i<CcdMessageHeaders.getLength();i++)
-	  {
-		  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
-		  NodeList PAtientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
-		  for(int j=0; j<PAtientDemo.getLength();j++)
+		  IHGUtil.PrintMethodName();
+		  Document doc = buildDOMXML(responsepath);
+		  Log4jUtil.log("finding CCDFORM INFO");
+		  boolean found = false;
+		  String PDfURL1="";
+		  NodeList CcdMessageHeaders=doc.getElementsByTagName("ns2:CcdExchange");
+		  for(int i=0; i<CcdMessageHeaders.getLength();i++)
 		  {
-			  Element childs=(Element) PAtientDemo.item(j);
-			  
-		  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
-		  if(PatientIdentifier.item(j)!=null) {
-			  Element external=(Element) PatientIdentifier.item(j);
-		  	  Log4jUtil.log("Patient External ID is "+external.getTextContent());
-		  	  ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
-			  for(int n=0;n<names.size();n++)
+			  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
+			  NodeList PAtientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
+			  for(int j=0; j<PAtientDemo.getLength();j++)
 			  {
-				  if (names.get(n).contains(externalID))
+				  Element childs=(Element) PAtientDemo.item(j);
+				  
+			  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
+			  if(PatientIdentifier.item(j)!=null) {
+				  Element external=(Element) PatientIdentifier.item(j);
+			  	  Log4jUtil.log("Patient External ID is "+external.getTextContent());
+			  	  ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
+				  for(int n=0;n<names.size();n++)
 				  {
-					  //Log4jUtil.log("Elements are in the condition "+names.get(n));
-					  Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
-					  Element Forms=(Element) Formname;
-					  Node FormURL=Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
-					  Element URL=(Element) FormURL;
-					  Node Value1=URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
-					  Log4jUtil.log("Form url is "+Value1.getTextContent());
-							  PDfURL1=Value1.getTextContent();
-							  break;
-				  }
-				}
-			}  
-		  }
-	  	}
-	  return PDfURL1;
-	  }
+					  if (names.get(n).contains(externalID))
+					  {
+						  //Log4jUtil.log("Elements are in the condition "+names.get(n));
+						  Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
+						  Element Forms=(Element) Formname;
+						  Node FormURL=Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
+						  Element URL=(Element) FormURL;
+						  Node Value1=URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+						  
+						  NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
+							for(int m=0;i<KeyValuePairList.getLength();m++) {
+								Node FormTypeValue=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(m);
+								Node FormTypeKey=Forms.getElementsByTagName("Key").item(m);
+								if(FormTypeKey.getTextContent().contains("FormsPdfLink")) {
+									Log4jUtil.log("value of pdf link "+FormTypeValue.getTextContent());
+									PDfURL1=FormTypeValue.getTextContent();
+									break;
+								}
+							}
+							break;
+					  }
+					}
+				}  
+			  }
+		  	}
+		  return PDfURL1;
+	 }
 
 	 public static void verifyPDFBatchDetails(String responsepath,String externalPatientID, String medfusionID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
 	   IHGUtil.PrintMethodName();
