@@ -104,7 +104,9 @@ public class IntegrationConstants {
 	public static final String ETHINICITY = "Ethnicity";
 	public static final String MARRITALSTATUS = "MaritalStatus";
 	public static final String CHOOSECOMMUNICATION = "PreferredCommunication";
-
+	public static final String GENDERIDENTITY = "GenderIdentity";
+	public static final String SEXUALORIENTATION = "SexualOrientation";
+	
 	public static final String PATIENTRELATIONTOSUBSCRIBER = "PatientRelationToSubscriber";
 
 	public static final String PRIMARYINSURANCE = "PrimaryInsurance";
@@ -177,6 +179,6 @@ public class IntegrationConstants {
 		public static final String VALUE ="Value";
 		public static final String KEYVALUEPAIR ="KeyValuePair";
 		public static final String FORMTYPE="pre-reg";
-		
+		public static final String NEXTURI="Next-URI";
 }
 

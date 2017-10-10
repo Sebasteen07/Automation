@@ -63,7 +63,6 @@ import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
@@ -1643,7 +1642,13 @@ public class RestUtils {
 						break;
 					case 'G':
 						node = ele.getElementsByTagName(IntegrationConstants.GENDER).item(0);
-						break;	
+						break;
+					case 'I':
+						node = ele.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0).getChildNodes().item(1);
+						break;
+					case 'S':
+						node = ele.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0).getChildNodes().item(1);
+						break;
 					default:
 						break;
 				}
@@ -1652,8 +1657,8 @@ public class RestUtils {
 					found = true;
 					break;
 				}
-				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent());
-				BaseTestSoftAssert.verifyTrue(node.getTextContent().equalsIgnoreCase(value), "Value mismatched");
+				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent() + ".");
+				BaseTestSoftAssert.verifyTrue(node.getTextContent().trim().equalsIgnoreCase(value), "Value mismatched");
 
 				found = true;
 				break;
@@ -2904,5 +2909,31 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		   }
 	  }
 	   return PatientPDFUrl;
+	}
+	
+	public static String setupHttpGetRequestWithEmptyResponse(String strUrl, String responseFilePath) throws IOException {
+		IHGUtil.PrintMethodName();
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+		
+		HttpEntity entity = resp.getEntity();
+		String sResp = null;
+		if (entity != null) {
+			sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+			writeFile(responseFilePath, sResp);
+			if (resp.containsHeader(IntegrationConstants.NEXTURI)) {
+				Header[] h = resp.getHeaders(IntegrationConstants.NEXTURI);
+				return h[0].getValue();
+			}
+		} else {
+			Log4jUtil.log("204 response found");
+		}
+		return Integer.toString(resp.getStatusLine().getStatusCode());
 	}
 }
