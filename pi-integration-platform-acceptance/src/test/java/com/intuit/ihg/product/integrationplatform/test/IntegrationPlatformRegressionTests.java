@@ -748,7 +748,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	 
 	 @DataProvider(name = "channelVersion")
 	 public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] {{"v1"},{"v2"}};
+		Object[][] obj = new Object[][] { {"v1"}, {"v2"}};
 			return obj;
 	 }
 	 
@@ -822,6 +822,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: PIDC Patient Update for Race, Ethnicity, Gender and Language all the values for Version "+version);
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Set Test Data for Demographics update");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
 		Long timestamp = System.currentTimeMillis();
@@ -834,8 +835,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Click on myaccountLink on MyPatientPage");
 		JalapenoAccountPage accountPageObject = homePage.clickOnAccount();
 		JalapenoMyAccountProfilePage accountProfilePageObject = accountPageObject.clickOnEditMyAccount();
-		
-		String dropValues[] = {"Race", "Ethnicity"};
+		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(), testData.getoAuthPassword());
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.getCsvFilePath();
+		Log4jUtil.log("Loading CSVfile : "+workingDir);
+		PatientRegistrationUtils.csvFileReader(testData,workingDir);
+
+		String dropValues[] = {"Race", "Ethnicity", "GenderIdentity", "SexualOrientation"};
 		for (int k = 0; k < dropValues.length; k++) {
 			log("Updating Values of '" + dropValues[k] + "' field");
 			int count = accountProfilePageObject.countDropDownValue(dropValues[k].charAt(0));
@@ -848,20 +855,46 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase(IntegrationConstants.ETHINICITY)) {
 					updatedValue = "Unreported";
 				}
-				
-				log("Updated Value :" + updatedValue);
 				Thread.sleep(40000);
 				Long since = timestamp / 1000L - 60 * 24;
+				char dropValue = dropValues[k].charAt(0);
+				if(dropValue=='G') {
+					dropValue ='I';
+				}
+				log("dropValue "+ dropValue);
 				if (!updatedValue.equalsIgnoreCase("Choose One")) {
+					
+					if (dropValues[k].equalsIgnoreCase(IntegrationConstants.GENDERIDENTITY)) {
+						updatedValue = testData.patientDetailList.get(i).getGenderIdentity();
+					}
+					if (dropValues[k].equalsIgnoreCase(IntegrationConstants.SEXUALORIENTATION)) {
+						updatedValue = testData.patientDetailList.get(i).getSexualOrientation();
+					}
+					log("Updated Value :" + updatedValue);
 					log("Do a GET on PIDC Url to fetch updated patient for "+version);
-					RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-					Thread.sleep(800);
-					RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValues[k].charAt(0), testData.getPracticeId_PIDC_20());
+					String responseCodeV =RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+					if(!responseCodeV.equalsIgnoreCase("204") ) {
+						Thread.sleep(800);
+						RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValue, testData.getPracticeId_PIDC_20());
+					}
 				}
 			}
 		}
-		String[] gender = null;
-		gender= new String[]{"Male","Decline to answer","Female"};
+
+		String updatedGIValue = accountProfilePageObject.updateDropDownValue(0, 'G');
+		String updatedSOValue = accountProfilePageObject.updateDropDownValue(0, 'S');
+		log("Gender Identity is " + updatedGIValue + " and Sexual Orientation is " + updatedSOValue + " for version" + version);
+		timestamp = System.currentTimeMillis();
+		int genderLength = 3;
+		String[] gender = new String[genderLength];
+		String gVal = null;
+		for (int g = 1; g <= genderLength; g++) {
+			gVal = testData.patientDetailList.get(g).getGender();
+			if (gVal.equalsIgnoreCase("UNKNOWN")) {
+				gVal = "Decline to answer";
+			}
+			gender[(g - 1)] = gVal;
+		}
 		Thread.sleep(300);
 		for(int m=0;m<gender.length;m++) {
 			log("gender to update  : "+gender[m]);
@@ -870,32 +903,45 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			jse.executeScript("window.scrollBy(0,350)", "");
 			Thread.sleep(5000);
 			String updatedValue = accountProfilePageObject.updateGenderValue(m, gender[m].charAt(0));
+			if (updatedValue.equalsIgnoreCase("Decline to answer")) {
+				updatedValue = "UNKNOWN";
+			}
 			log("Updated Value :" + updatedValue);
 			Thread.sleep(40000);
 			Long since = timestamp / 1000L - 60 * 24;
 			log("Do a GET on PIDC Url to fetch updated patient for "+version);
-			RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 			Thread.sleep(800);
-			if(!gender[m].equalsIgnoreCase("Decline to answer") && version.equalsIgnoreCase("v2")) {
-				 RestUtils.validateNode(testData.getResponsePath(), updatedValue, 'G', testData.getPracticeId_PIDC_20());
+			if(!responseCode.equalsIgnoreCase("204")) {
+				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN") {
+					// --
+				} else {
+					RestUtils.validateNode(testData.getResponsePath(), updatedValue, 'G', testData.getPracticeId_PIDC_20());
+				}
+			} else {
+				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN") {
+					log("Empty response for UNKNOWN value update with v1 api call");
+				}
 			}
 		}
-		Thread.sleep(8000);
 		
+		Thread.sleep(8000);
 		log("Step 4: Click on Preferences Tab");
 		JalapenoMyAccountPreferencesPage myPreferencePage = accountProfilePageObject.goToPreferencesTab(driver);
 		String[] languageType = testData.getPreferredLanguageType().split(",");
 		Long since1 = timestamp / 1000L - 60 * 24;
-		for(int v=0;v<languageType.length;v++) {
-			myPreferencePage.setStatementLanguage(driver,languageType[v]);	
-			if (languageType[v].equalsIgnoreCase("Declined to Answer") ) {
+		for (int v = 0; v < languageType.length; v++) {
+			myPreferencePage.setStatementLanguage(driver, languageType[v]);
+			if (languageType[v].equalsIgnoreCase("Declined to Answer")) {
 				languageType[v] = "Other";
 			}
 			Thread.sleep(40000);
-			log("Do a GET on PIDC Url to fetch updated patient for "+version);
-			RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since1 + ",0", testData.getResponsePath());
-			Thread.sleep(800);
-			RestUtils.validateNode(testData.getResponsePath(), languageType[v], 'L', testData.getPracticeId_PIDC_20());
+			log("Do a GET on PIDC Url to fetch updated patient for " + version);
+			String languageResponse = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since1 + ",0", testData.getResponsePath());
+			if (!languageResponse.equalsIgnoreCase("204")) {
+				Thread.sleep(800);
+				RestUtils.validateNode(testData.getResponsePath(), languageType[v], 'L', testData.getPracticeId_PIDC_20());
+			}
 		}
 	 }
 	 
