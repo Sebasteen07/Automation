@@ -3,9 +3,10 @@
 #include <FileConstants.au3>
 #include <MsgBoxConstants.au3>
 #include <_sql.au3>
-#include <C:\XASYST\AUTOIT\AutoIT\CommonSteps.au3>
+#include "..\commonsteps\CommonSteps.au3"
 
-$logPath = @ScriptDir & "\ProcessLog.txt"
+$currentDir = @ScriptDir
+$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog.txt"
 
 ;Opening Log file
 		Local $hFileOpen = FileOpen($logPath, $FO_OVERWRITE)
@@ -614,7 +615,8 @@ $arrEvent = Call("openEventFile")
 			Call("verifyOrderInUI",$orderNum,$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15])
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 16-- VERIFY ORDER DETAILS IN SES INBOX" & @CRLF)
-			$PID = Run(@ComSpec & ' /c java -jar "C:/XASYST/AUTOIT/AutoIT/sesInbox.jar" ' & $orderSubject & ' ' & $fullSubject & ' ' & $orderAttachmentName & ' ' & $redPvdrEmail & ' ' & $authPvdrEmail & ' ' & $orderBody &'',"","",$STDOUT_CHILD)
+			$SESjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\sesInbox.jar"
+			$PID = Run(@ComSpec & ' /c java -jar ' & $SESjar & ' ' & $orderSubject & ' ' & $fullSubject & ' ' & $orderAttachmentName & ' ' & $redPvdrEmail & ' ' & $authPvdrEmail & ' ' & $orderBody &'',"","",$STDOUT_CHILD)
 			ConsoleWrite("$PID :" & $PID & @CRLF)
 			ProcessWaitClose($PID)
 			$output =StdoutRead($PID)
@@ -644,8 +646,8 @@ $arrEvent = Call("openEventFile")
 				$messageBody = $messageBody & $temp[$i]
 			Next
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
-
-			$PID = Run(@ComSpec & ' /c java -jar "C:/XASYST/AUTOIT/AutoIT/TOCLetterToPatient.jar" ' & $messageSubject & ' ' & $messageBody & ' ' & $messageSentDate &'' ,"","",$STDOUT_CHILD)
+			$TOCjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\TOCLetterToPatient.jar"
+			$PID = Run(@ComSpec & ' /c java -jar ' & $TOCjar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $messageSentDate &'' ,"","",$STDOUT_CHILD)
 			ConsoleWrite("$PID :" & $PID & @CRLF)
 			ProcessWaitClose($PID)
 			$output =StdoutRead($PID)

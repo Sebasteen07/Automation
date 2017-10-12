@@ -1,0 +1,23 @@
+#SES Login Page
+SES Login:-UserName
+SES Password:-Password
+SES Sign In button:-//*[@id="sesMainContentWrapper"]/div[1]/div[1]/div/form/div[4]/button
+SES Select email dropdown:-selectedEmailDropDown
+SES Message List Subject:-//*[contains(text(),'mailSubject')]
+SES From Provider:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[1]/span
+SES To Provider:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[3]/span
+SES Message Body:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[6]/div[3]/div
+SES Attachment Name:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[5]/ul/li/span[2]
+
+#Patient Portal Login Page
+Patient Portal Login:-userid
+Patient Portal Password:-password
+Patient Portal SignIn:-signin_btn
+
+#Patient Portal Home Page
+Portal Messaging feature:-feature_messaging
+
+#Patient Portal Message Page
+Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
+Portal Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
+Portal Message Time:-//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]

@@ -1,0 +1,25 @@
+CPS URL:-http://172.18.81.237:9080/centricityps122demo/cps/
+CPS Login UserName:-mmanohar
+CPS Login Password:-Medfusion123
+SQL Server IP:-172.18.81.237
+Centricity DB:-centricityps122demo
+Central DB:-prod_cdb
+SQL UserName:-sa
+SQL Password:-*08oate
+Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
+Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
+Patient Count:-1
+Patient Portal url:-https://www.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=14225&muuid=15772
+Patient Portal Login:-SR_1505995649240
+Patient First Name (For Patient Chart):-SR_1505995649240
+Patient Last Name (For Patient Chart):-1505995649240
+New Document (Email Message):-* E-mail Message
+New Document (Asthma Visit):-Asthma Visit
+Order Category:-Neurology
+Authorizing Provider for TOC Flow (Lastname,Firstname):-Jain, Swati
+Referring provider for TOC flow (Lastname,Firstname):-Azhar MD, Elle
+SES Inbox URL:-https://service2.directaddress.net
+SES UserName:-pmemrqa
+SES Password:-Password123@!
+Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
+Letter to Patient Subject (TOC):-Referral Initiated
