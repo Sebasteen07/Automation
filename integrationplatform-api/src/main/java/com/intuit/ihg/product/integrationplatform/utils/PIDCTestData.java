@@ -240,4 +240,12 @@ public class PIDCTestData {
 	public String getAddress2SC() {
 		return PidcObj.Address1SC;
 	}
+	
+	public String getGenderIdentityValues() {
+		return PidcObj.GI;
+	}
+	
+	public String getSexualOrientationValues() {
+		return PidcObj.SO;
+	}
 }
