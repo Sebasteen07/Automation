@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -618,29 +619,43 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 
 	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPIDCPatientDemographicsUpdate() throws Exception {
-		log("Test Case: PIDC Patient Update for Race, Ethnicity, Preferred Communication,Marital Status and Language all the values");
+	
+	@DataProvider(name = "channelVersion")
+	 public Object[][] channelVersionPIDC() {
+		Object[][] obj = new Object[][] { {"v1"}, {"v2"}};
+			return obj;
+	}
+	
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPIDCPatientDemographicsUpdate(String version) throws Exception {
+		log("Test Case: PIDC Patient Update for Gender Identity, Sexual Orientation, Race, Ethnicity, Preferred Communication,Marital Status and Language all the values");
 		PIDCTestData testData = loadDataFromExcel();
-
+		String restURL= testData.getRestUrl();
+		if(version.equalsIgnoreCase("v2")) {
+			restURL = restURL.replaceAll("v1", "v2");
+		}
+		String[] GI=testData.getGenderIdentityValues().split(",");
+		String[] SO=testData.getSexualOrientationValues().split(",");
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
-
+		
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
 		log("Step 3: Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
-
-		String dropValues[] = {"Race", "Ethnicity", "Marital_Status", "Communication_Method", "Language"};
+		String dropValues[] = {"GenderIdentity", "SexualOrientation", "Race", "Ethnicity", "Marital_Status", "Communication_Method", "Language"};
 		for (int k = 0; k < dropValues.length; k++) {
 			log("Updating Values of '" + dropValues[k] + "' field");
 			int count = pMyAccountPage.countDropDownValue(dropValues[k].charAt(0));
 
 			log("Total number of values in '" + dropValues[k] + "' field drop-down:" + count);
-
+			char dropValueName = dropValues[k].charAt(0);
+			
 			for (int i = 0; i < count; i++) {
 				String updatedValue = pMyAccountPage.updateDropDownValue(i, dropValues[k].charAt(0));
+				Thread.sleep(50000);
 				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase("Race")) {
 					updatedValue = "Unreported or refused to report";
 				}
@@ -651,16 +666,21 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					updatedValue = "Other";
 				}
 				log("Updated Value :" + updatedValue);
-				Thread.sleep(30000);
+				
 				Long since = timestamp / 1000L - 60 * 24;
-
 				if (!updatedValue.equalsIgnoreCase("Choose One")) {
-					RestUtils.setupHttpGetRequestExceptOauth(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+					RestUtils.setupHttpGetRequest(restURL + "?since=" + since + ",0", testData.getResponsePath());
 					//Adding wait for response to reflect.
 					Thread.sleep(5000);
-					RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValues[k].charAt(0), testData.getUserName());
+					if(dropValueName=='G' || dropValueName=='I') {
+						dropValueName='I';
+						updatedValue = GI[i-1];
+					}
+					if(dropValueName=='S') {
+						updatedValue = SO[i-1];
+					}
+					RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValueName, testData.getUserName());
 				}
-
 			}
 			pMyPatientPage.clickMyAccountLink();
 		}
