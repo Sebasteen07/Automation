@@ -179,6 +179,6 @@ public class IntegrationConstants {
 		public static final String VALUE ="Value";
 		public static final String KEYVALUEPAIR ="KeyValuePair";
 		public static final String FORMTYPE="pre-reg";
-		public static final String NEXTURI="Next-URI";
+		public static final String NEXTURI="next-uri";
 }
 

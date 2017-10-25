@@ -2931,12 +2931,12 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
 			writeFile(responseFilePath, sResp);
-			if (resp.containsHeader(IntegrationConstants.NEXTURI)) {
-				Header[] h = resp.getHeaders(IntegrationConstants.NEXTURI);
-				return h[0].getValue();
-			}
 		} else {
 			Log4jUtil.log("204 response found");
+		}
+		if (resp.containsHeader(IntegrationConstants.NEXTURI)) {
+			Header[] h = resp.getHeaders(IntegrationConstants.NEXTURI);
+			return h[0].getValue();
 		}
 		return Integer.toString(resp.getStatusLine().getStatusCode());
 	}
