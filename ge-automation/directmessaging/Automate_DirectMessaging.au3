@@ -23,16 +23,31 @@ $arrEvent = Call("openEventFile")
 		FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR DIRECT MESSAGING FLOW" & @CRLF)
 			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 
-			If (_SQL_Execute(-1,$arrQuery[14]) Or _SQL_Execute(-1,$arrQuery[15]) Or _SQL_Execute(-1,$arrQuery[16])) = $SQL_ERROR then
-				;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
-				ConsoleWrite("ERROR Executing Query...." & @CRLF)
-				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Executing Query...." & @CRLF)
-			Exit
+			Local $aData,$iRows,$iColumns
+			$iRval = _SQL_GetTable2D(-1,$arrQuery[26] & ";",$aData,$iRows,$iColumns)
+			If $iRval = $SQL_OK then
+				If(($aData[1][0] = 0) And ($aData[2][0] == "Both") And ($aData[3][0] = 1)) Then
+					ConsoleWrite("Service settings already enabled" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings already enabled" & @CRLF)
 
+				Else
+					If (_SQL_Execute(-1,$arrQuery[14]) Or _SQL_Execute(-1,$arrQuery[15]) Or _SQL_Execute(-1,$arrQuery[16])) = $SQL_ERROR then
+						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
+						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
+						Exit
+
+					Else
+						ConsoleWrite("Service settings updated...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings updated...." & @CRLF)
+					EndIf
+				EndIf
 			Else
-				ConsoleWrite("Service settings updated...." & @CRLF)
-				FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings updated...." & @CRLF)
+				ConsoleWrite("ERROR Checking Service Settings...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Service Settings...." & @CRLF)
+				Exit
 			EndIf
+
 			_SQL_Close()
 
 
@@ -52,8 +67,28 @@ $arrEvent = Call("openEventFile")
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- CREATE A REFERRAL ORDER FOR THE PATIENT" & @CRLF)
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
-			Call("createNewDocument",$arrConfig[16],$arrConfig[14],$arrConfig[15])
-			Call("createOrder",$arrConfig[18],$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15],$arrConfig[24])
+			$counter = 0
+			Do
+				Call("createNewDocument",$arrConfig[16],$arrConfig[14],$arrConfig[15])
+				If (Mod($counter,2) = 0) Then
+					Call("createOrder",$arrConfig[30],$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15],$arrConfig[24])
+
+				Else
+					Call("createOrder",$arrConfig[18],$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15],$arrConfig[24])
+				EndIf
+
+				If($arrConfig[26]=="Yes") Then
+					$counter +=1
+					If($counter = $arrConfig[27]) Then
+						Exit
+					EndIf
+
+				Else
+					$counter = $arrConfig[27]
+				EndIf
+			Sleep(1000)
+			Until $counter = $arrConfig[27]
+
 			Sleep(5000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- VERIFY EVENT 4 FOR ORDER CREATION" & @CRLF)
