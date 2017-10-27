@@ -2,7 +2,7 @@ update servicesettings set settingvalue = '1' where settingtype in ('POLL_INTENG
 select ValueString, ValueDateTime from cusMedfusionMemberMap mm inner join cusMedfusionMember m on m.memberid = mm.memberid inner join PatientProfile p on p.PatientProfileId = CAST(m.PatientProfileId as Integer) where mm.fieldid in (2,4,6,8) and p.PatientId = 
 order by fieldid asc
 select MemberId from cusMedfusionMemberMap where FieldId = '2' and ValueString =
-select PatientProfileId, staff  from cusMedfusionMember where MemberId = 
+select PatientProfileId, staff, MemberId from cusMedfusionMember where MemberId = 
 select PatientId, PId, First, Last, EMailAddress, Birthdate, PatientProfileId from PatientProfile where PatientProfileId = 
 select registrationType, status, pregId from cusMedfusionPatientRegistration where patientProfileId = 
 order by pregId asc
@@ -22,3 +22,12 @@ select patientprofileid, status, CommOutgoingId from cusMedfusionOutgoingTOCPati
 select PatientProfileId, CommServiceType, SubjectText,CreatedByUser, CommSentStatus, MedfusionCommId, DocumentId, CommSentDate from cusMedfusionCommOutgoing where CommOutgoingId = 
 select LOGINNAME, PVID from USR where LASTNAME = LNAME and FIRSTNAME = FNAME
 update practicesolutions set enabled = 1 where solutionsid in (2,3)
+select enabled from practicesolutions where solutionsid in (2,3)
+select settingvalue from servicesettings where settingtype in ('ORDER_STATUS','CUSTOM_TOC','RUN_BULK') order by settingtype asc
+select settingvalue from servicesettings where settingtype in ('POLL_INTENGINE','SEND_LOCKS','PROCESS_PAT_REG') and grouptype = 'PRACTICE_CONFIG'
+select SDID, SUMMARY, DOCTYPE, DB_CREATE_DATE, XID from DOCUMENT where PID = 
+order by DB_CREATE_DATE desc
+select cvsInfoId, medfusionPatientId, gePatientId, status from cusMedfusionCVSInfo where did = 
+select outboundCcdId, medfusionPatientId, gePatientId, state, status, ccdType from cusMedfusionOutboundCcd where referenceId = 
+order by outboundCcdId desc
+select cvsInfoId, medfusionPatientId, gePatientId, status, xid from cusMedfusionCVSExtInfo where did = 

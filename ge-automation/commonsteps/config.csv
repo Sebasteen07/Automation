@@ -6,16 +6,23 @@ Centricity DB:-centricityps122demo
 Central DB:-prod_cdb
 SQL UserName:-sa
 SQL Password:-*08oate
+Flag (Preconditions Check / Data Generation / Acceptance):-Preconditions Check
+--------------Patient Registration:--------------
 Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
 Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
 Patient Count:-1
+-------------Patient Portal Details:--------------
 Patient Portal url:-https://www.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=14225&muuid=15772
-Patient Portal Login:-SR_1505995649240
-Patient First Name (For Patient Chart):-SR_1505995649240
-Patient Last Name (For Patient Chart):-1505995649240
+Patient Portal Login:-SR_1507883561241
+Patient Portal Password:-Admin123#
+CCD Transmit Email:-tattempt@gmail.com
+--------------Patient Chart:--------------
+Patient First Name (For Patient Chart):-SR_1507883561241
+Patient Last Name (For Patient Chart):-1507883561241
 New Document (Email Message):-* E-mail Message
 New Document (Asthma Visit):-Asthma Visit
-Order Category:-Neurology
+--------------Direct Messaging:--------------
+Order Category1:-Neurology
 Authorizing Provider for TOC Flow (Lastname,Firstname):-Jain, Swati
 Referring provider for TOC flow (Lastname,Firstname):-Azhar MD, Elle
 SES Inbox URL:-https://service2.directaddress.net
@@ -23,3 +30,8 @@ SES UserName:-pmemrqa
 SES Password:-Password123@!
 Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
 Letter to Patient Subject (TOC):-Referral Initiated
+--------------Data Generation:--------------
+Number of order creation:-2
+Number of TOC Creation:-2
+Order Category2:-Gastroenterology
+Number of visits to be created:-2

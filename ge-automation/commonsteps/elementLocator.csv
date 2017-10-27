@@ -13,6 +13,36 @@ SES Attachment Name:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[5]/ul/li/
 Patient Portal Login:-userid
 Patient Portal Password:-password
 Patient Portal SignIn:-signin_btn
+Patient Portal CreateNewPatient Button:-create_btn
+
+#Patient Portal Create New Patient Page
+New Account First Name:-firstName
+New Account Last Name:-lastName
+New Account Email:-email
+New Account BirthMonth:-birthDate_month
+New Account BirthDay:-birthDate_day
+New Account BirthYear:-birthDate_year
+New Account GenderMale:-gender_male
+New Account Address1:-address1
+New Account Address2:-address2
+New Account City:-city
+New Account State:-state
+New Account ZipCode:-postalCode
+New Account ContinueButton:-nextStep
+
+#Patient Portal New Patient Security Details Page
+Security Details UserName:-userid
+Security Details Password:-password
+Security Details Secret Question:-secretQuestion
+Security Details Secret Answer:-secretAnswer
+Security Details Phone1:-phone1
+Security Details Phone2:-phone2
+Security Details Phone3:-phone3
+Security Details Preferred Location Dropdown:-preferredLocationId
+
+#Patient Portal New Patient Security Details Statement Preference
+Security Details Statement Preference Electronic:-paymentPreference_Electronic
+Security Details Statement Preference Update Button:-updateMissingInfoButton
 
 #Patient Portal Home Page
 Portal Messaging feature:-feature_messaging
@@ -21,3 +51,14 @@ Portal Messaging feature:-feature_messaging
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
 Portal Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
 Portal Message Time:-//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]
+CCD Link:-View health data
+
+#CCD Viewer
+CCD Viewer Download PDF:-savePdf
+CCD Viewer Send CCD to non-secure email:-non_secured_share
+CCD Viewer Email Address:-emailAddr
+CCD Viewer Confirm Email Address:-emailAddrConfirm
+CCD Viewer Send Button:-unsecureSubmitButton
+CCD Viewer Confirmation Message for sending Email:-//*[@id="email_share"]/form/div[3]/span
+CCD Viewer Close Email Box:-//*[@id="email_share"]/h3/a
+Close CCD Viewer:-closeCcd

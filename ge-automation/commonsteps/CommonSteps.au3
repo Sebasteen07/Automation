@@ -25,6 +25,7 @@ $path="..\commonsteps\config.csv"
 $logPath = "..\commonsteps\ProcessLog.txt"
 $queryPath = "..\commonsteps\queries.csv"
 $eventsPath = "..\commonsteps\events.csv"
+$doctypePath = "..\commonsteps\doctype.csv"
 
 ;-----Function to read from config file & set config variables
 ;-----Returns array of config variables
@@ -98,7 +99,7 @@ Func setConfig()
 					Case "new document (asthma visit)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
-					Case "order category"
+					Case "order category1"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
 					Case "authorizing provider for toc flow (lastname,firstname)"
@@ -121,6 +122,22 @@ Func setConfig()
 
 					Case "letter to patient subject (toc)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of order creation"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of toc creation"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "order category2"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of visits to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "flag (preconditions check / data generation / acceptance)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
 				EndSwitch
 			Next
 		;_ArrayDisplay($arrConfig, "1D - Single")
@@ -219,6 +236,48 @@ Func openEventFile()
 		Return($arrEvent)
 	EndIf
 EndFunc
+
+
+
+;-----Function to read from doctype file
+;-----Returns array of doctypeids
+Func openDoctypeFile()
+	Local $arrDoctypeRead
+	Local $arrDoctype[1] = ["Doctype Ids Array"]
+
+	If Not _FileReadToArray($doctypePath,$arrDoctypeRead,4,":-") Then
+		ConsoleWrite("Unable to read doctype file"&@CRLF)
+		Exit
+
+	Else
+		_FileReadToArray($doctypePath,$arrDoctypeRead,4,":-")
+
+		Local $iRows = UBound($arrDoctypeRead, $UBOUND_ROWS) ; Number of config rows.
+		Local $iCols = UBound($arrDoctypeRead, $UBOUND_COLUMNS) ; Number of config cols.
+		;ConsoleWrite("Configuration variables set"&@CRLF)
+
+			For $row = 0 To $iRows - 1
+
+				Switch StringLower($arrDoctypeRead[$row][0])
+					Case "office visit"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "clinical visit summary"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "lab report"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "imaging report"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+				EndSwitch
+			Next
+		;_ArrayDisplay($arrEvent, "1D - Single")
+		Return($arrDoctype)
+	EndIf
+EndFunc
+
 
 
 ;-----Function to start the CPS Client
@@ -553,7 +612,7 @@ Func createNewDocument($DocType,$Fname,$Lname)
 
 ;After New Document Click
 		$selectDoc = WinWaitActive("Update Chart")
-		ConsoleWrite("Activating New document Selelction Window" &@CRLF)
+		ConsoleWrite("Activating New document Selection Window" &@CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating New Document Selection Window" &@CRLF)
 		ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
 
@@ -700,12 +759,13 @@ Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
 			If(WinActive("Find Service Provider")) Then
 				ControlFocus("Find Service Provider","","[CLASS:Edit; INSTANCE:1]")
 				ControlSetText("Find Service Provider","","[CLASS:Edit; INSTANCE:1]",$LnameRefPvdr[1])
+				Sleep(2000)
 				ControlFocus("Find Service Provider","","[CLASS:Button; INSTANCE:1]")
 				ControlClick("Find Service Provider","","[CLASS:Button; INSTANCE:1]")
 				Sleep(3000)
 				ControlFocus("Find Service Provider","","[CLASS:Button; INSTANCE:7]")
 				ControlClick("Find Service Provider","","[CLASS:Button; INSTANCE:7]")
-				Sleep(3000)
+				Sleep(2000)
 
 			Else
 				ConsoleWrite("ERROR Opening Find Service Provider Window...." & @CRLF)
@@ -952,4 +1012,484 @@ Func connectDatabase($SQLServerIP, $DBName, $user, $password)
 		ConsoleWrite($DBName & " Database connected" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- " & $DBName &" Database Connected" & @CRLF)
 	EndIf
+EndFunc
+
+
+
+;-----Function to open Patient Registration
+Func openPatientRegistration()
+	ConsoleWrite("METHOD: openPatientRegistration() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate($title)
+	ConsoleWrite("Activate GE CPS window" &@CRLF )
+
+	Local $oIEEmbed =_IEAttach("Centricity Practice Solution","embedded",1)
+	Sleep(1000)
+	ConsoleWrite("Activating GE CPS App" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating GE CPS App" &@CRLF)
+	WinWaitActive($title)
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If ( IsObj($oIEEmbed) ) Then
+			ConsoleWrite("Attached successfully to IE instance running under GE app" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attached successfully to IE instance running under GE app" & @CRLF)
+
+			;ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') : $oIEEmbed = ' & $oIEEmbed & @CRLF & '>Error code: ' & @error & '    Extended code: 0x' & Hex(@extended) & @CRLF) ;### Debug Console
+			ConsoleWrite("Embedded IE Url " &  _IEPropertyGet($oIEEmbed, "locationurl") &@CRLF )
+			sleep(1000)
+
+			Local $oDoc = _IEBodyReadHTML($oIEEmbed)
+			Local $oLinkCollection = _IELinkGetCollection($oIEEmbed)
+
+			ConsoleWrite("Finding links collection" & @CRLF)
+			If ( IsObj($oLinkCollection) ) Then
+				;ConsoleWrite( @CRLF & "Links Collection --> "  &  IsObj($oLinkCollection) & " -------- " & @CRLF )
+				;ConsoleWrite( @CRLF & "Button Count --> "  &  $oBtnCollection.count() & " -------- " & @CRLF )
+				$lCount = 0
+					For $oLink in $oLinkCollection
+					;ConsoleWrite(  "Link " & $lCount & " --> "  & $oLink & " -------- " & @CRLF )
+					$lCount = $lCount + 1
+					Next
+				;_ArrayDisplay($oLinkCollection)
+				ConsoleWrite("For loop finished for Link Collection" & @CRLF )
+				ConsoleWrite("Links found - " & $lCount & @CRLF)
+			EndIf
+
+			ConsoleWrite("Clicking REGISTRATION link of GE CPS App...." & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicking REGISTRATION link of GE CPS App" & @CRLF)
+			Sleep(5000)
+			_IELinkClickByIndex($oIEEmbed,2)
+
+			WinWaitActive("Find Patient")
+
+			ConsoleWrite("Click on NEW button of FIND PATIENT screen"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Click on NEW button of FIND PATIENT screen"& @CRLF)
+			   If WinActive ("Find Patient") Then
+				  Sleep (5000)
+				  ControlClick("Find Patient", "", "Button4")
+				  Sleep (3000)
+				  Send ("{Enter}")
+				  Sleep (20000)
+
+				  Local $aListReg = WinList()
+				  ;_ArrayDisplay($aListReg)
+				  ; Loop through the array displaying only visable windows with a title.
+
+				  Local $iRows = UBound($aListReg, $UBOUND_ROWS)
+				  ConsoleWrite("Active window(s) " & $iRows & @CRLF)
+				  ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+
+				Else
+				  ConsoleWrite("No active Find Patient screen found"&@CRLF)
+				  FileWriteLine($hFileOpen, _NowCalc() & "  -- No active Find Patient screen found" & @CRLF)
+			   EndIf
+	Else
+		ConsoleWrite("ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: openPatientRegistration() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to open Patient Registration
+;-----Input parameters - Patient Count, Timestamp to append, Patient First name, PAtient Email
+Func registerPatient($PtCount,$iDateCalc,$pFirstName,$pEmailId)
+	ConsoleWrite("METHOD: registerPatient() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Patient Registration")
+	Local $oIEEmbedReg = _IEAttach("[REGEXPTITLE:Patient; INSTANCE:1]","embedded",1)
+	ConsoleWrite("Registration window IE Instance - " &$oIEEmbedReg &@CRLF )
+
+		If ( IsObj($oIEEmbedReg) ) Then
+			ConsoleWrite("IE instance of Registration Screen connected"&@CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- IE instance of Registration Screen connected"&@CRLF)
+			ConsoleWrite("Embedded Registration Screen IE Url " &  _IEPropertyGet($oIEEmbedReg, "locationurl") &@CRLF )
+
+			Local $oDocReg = _IEBodyReadHTML($oIEEmbedReg)
+			;MsgBox($MB_SYSTEMMODAL, "Document HTML", $oDocReg)
+			;ConsoleWrite( @CRLF & "Registration Form HTML --> "  & $oDocReg & " -------- " & @CRLF )
+
+			Local $btnRegWithMF = _IEGetObjById($oIEEmbedReg,"cmdMedFusion");
+
+			If ( IsObj($btnRegWithMF) ) Then
+				ConsoleWrite("Register With Medfusion button found" & @CRLF)
+
+				$regWindow = "[CLASS:AfxFrameOrView110]"
+
+
+
+
+						   Local $regWinHandle = WinActivate ( $regWindow )
+
+						   If WinActivate ( $regWindow ) Then
+
+							  ConsoleWrite("Active registration window - " & $regWinHandle & @CRLF)
+							  FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- ENTER PATIENT DETAILS" & @CRLF)
+							  FileWriteLine($hFileOpen, _NowCalc() & "  -- Active registration window - " & $regWinHandle & @CRLF)
+
+							  ;Local $pCount = $j & $j & $j
+							  ;ConsoleWrite("Patient - " & $pCount & @CRLF)
+							  ;Local $hControl = ControlGetHandle($regWindow, "", "m_First")
+							  ;ConsoleWrite("First Name Found " & IsObj($hControl) &@CRLF )
+							  Local $Fname = $pFirstName &"_"&$iDateCalc
+							  ControlFocus($regWinHandle,"","[Name:m_First]")
+							  ControlSetText($regWinHandle, "", "[NAME:m_First]", $Fname)
+							  sleep(1000)
+							  ;ControlSend($regWinHandle, "", "[Name:m_Last]", $lastName & $pCount )
+							  Local $Lname = $iDateCalc
+							  ControlSetText($regWinHandle, "", "[Name:m_Last]", $Lname)
+							  sleep(1000)
+							  Local $BDate = "01/01/1987"
+							  ControlSetText($regWinHandle, "", "[Name:m_DateBox]", $BDate )
+							  Sleep(1000)
+							  ControlFocus($regWinHandle,"","[Name:m_PatientSameAsGuarantor]")
+							  Send("{Space}")
+							  Sleep(1000)
+							  ControlFocus($regWinHandle,"","[Name:m_Sex]")
+							  Send("{Down}")
+							  sleep(1000)
+							  ControlSetText($regWindow, "", "[Name:m_txtAddress1]", "Address_" &$iDateCalc )
+							  sleep(1000)
+
+							  ;Start Find ZIP CODE
+
+								 ControlFocus($regWinHandle,"","[Name:m_btnLookup]")
+								 ControlClick($regWinHandle,"","[Name:m_btnLookup]")
+								 sleep(3000)
+								 ;Local $activeWindows = WinList("Find Zip Code")
+								 ;_ArrayDisplay($activeWindows)
+
+								 ConsoleWrite("Clicked on Find Zip Code Button& wait till 20 sec"&@CRLF)
+								 FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Find Zip Code Button& wait till 20 sec"&@CRLF)
+								 $findzipWinHandle = WinWaitActive("Find Zip Code","",20)
+
+								 ConsoleWrite("Active window Find Zip Code - " & $findzipWinHandle &@CRLF )
+								Local $zipCode = "00220"
+								 If ( $findzipWinHandle ) Then
+									;Local $findzipWinHandle = WinActivate ( "Find Zip Code" )
+
+									;ConsoleWrite("Active window Find Zip Code - " & $findzipWinHandle &@CRLF )
+									ControlFocus($findzipWinHandle,"","[CLASS:Edit;INSTANCE:1]")
+									ControlSetText($findzipWinHandle,"","[CLASS:Edit;INSTANCE:1]",$zipCode)
+									sleep(5000)
+									ControlFocus($findzipWinHandle,"","[CLASS:Edit;INSTANCE:2]")
+									ControlSetText($findzipWinHandle,"","[CLASS:Edit;INSTANCE:2]","New York")
+									sleep(5000)
+									ControlFocus($findzipWinHandle,"","[CLASS:Button;INSTANCE:1]")
+									ControlClick($findzipWinHandle,"","[CLASS:Button;INSTANCE:1]")
+									sleep(10000)
+									ControlFocus($findzipWinHandle,"","[CLASS:Button;INSTANCE:32]")
+									ControlClick($findzipWinHandle,"","[CLASS:Button;INSTANCE:32 ]")
+									sleep(5000)
+								 Else
+									ConsoleWrite("Inactive window Find Zip Code"&@CRLF)
+									FileWriteLine($hFileOpen, _NowCalc() & "  -- Inactive window Find Zip Code"&@CRLF)
+								 EndIf
+							  ;End Find ZIP CODE
+
+
+							  ControlFocus($regWinHandle, "", "[Name:m_PatientId]")
+
+							  sleep(2000)
+							  $PatientID = $iDateCalc
+							  ControlClick($regWinHandle, "", "[Name:m_PatientId]")
+							  ControlSetText($regWinHandle, "", "[Name:m_PatientId]", $iDateCalc )
+							  ;Exit
+							  sleep(1000)
+							  ControlSetText($regWinHandle, "", "[Name:m_Email]", $pEmailId)
+							  sleep(1000)
+							 ; ControlSetText($regWinHandle, "", "[Name:m_Preferred]", "" )
+							 ; sleep(1000)
+
+							  ControlFocus($regWinHandle,"","[Name:m_BtnApply]")
+							  sleep(3000)
+							  ControlClick($regWinHandle,"","[Name:m_BtnApply]")
+							  Send("{Enter}")
+							  ConsoleWrite("Clicked on SAVE button on Registration screen" & @CRLF )
+							  FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- SAVE PATIENT DETAILS" & @CRLF)
+							  FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on SAVE button on Registration screen" & @CRLF )
+							  sleep(10000)
+						   Else
+							  ConsoleWrite("Inactive registration windows" & @CRLF)
+							  FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on SAVE button on Registration screen" & @CRLF )
+						   EndIf
+						   ; Send a string of text to the edit control of Notepad. The handle returned by WinWait is used for the "title" parameter of ControlSend.
+
+						   _IEAction($btnRegWithMF,"click")
+						   ConsoleWrite("Clicked on Register with MF" &@CRLF)
+						   FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- REGISTER WITH MEDFUSION" & @CRLF)
+						   FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Register with MF" &@CRLF)
+						   Sleep(10000)
+						   WinActivate ( $regWindow )
+						   ConsoleWrite("Activating Registration Window again "&@CRLF)
+						   FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Registration Window again "&@CRLF)
+						   If ( WinActivate($regWindow) ) Then
+							  $hndSaveExit = ControlGetHandle($regWinHandle,"","[Name:m_OK]")
+							  ConsoleWrite("Save & Exit handle " & $hndSaveExit &@CRLF )
+							  ControlFocus($regWinHandle,"","[Name:m_OK]")
+							  ControlClick($regWinHandle,"","[Name:m_OK]")
+							  Send("{Enter}")
+							  ConsoleWrite("Clicked on Save & Exit button" & @CRLF)
+							  FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- EXIT TO CPS HOME SCREEN" & @CRLF)
+							  FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Save & Exit button" & @CRLF)
+							  ConsoleWrite("Patient registration part completed ... waiting for email now " & $pEmailId & "  iDate  " & $iDateCalc & " " & @CRLF)
+							  ConsoleWrite("Patient firstname" & $pFirstName &"_"&$iDateCalc & @CRLF)
+							EndIf
+							  Sleep(10000)
+							   Local Const $sFilePath =@WorkingDir & "\Email.txt"
+							  ConsoleWrite("Working directory path " & $sFilePath & @CRLF)
+							  Local $hEmailFileOpen = FileOpen($sFilePath, $FO_OVERWRITE)
+								If $hEmailFileOpen = -1 Then
+									MsgBox($MB_SYSTEMMODAL, "", "An error occurred whilst writing the temporary file.")
+								Return False
+								EndIf
+
+								FileWrite($hEmailFileOpen, $pEmailId & @CRLF)
+								FileClose($hEmailFileOpen)
+								;MsgBox($MB_SYSTEMMODAL, "", "Contents of the file:" & @CRLF & FileRead($sFilePath))
+							 Else
+						ConsoleWrite("Register With Medfusion button not found" & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Register With Medfusion button not found" & @CRLF)
+					 EndIf
+
+ Else
+					 ConsoleWrite("IE instance of Registration Screen not connected"&@CRLF)
+					 FileWriteLine($hFileOpen, _NowCalc() & "  -- IE instance of Registration Screen not connected"&@CRLF)
+				  EndIf
+;~ 	If(WinActive("Patient Registration")) Then
+;~ 		ConsoleWrite("Active registration window - " & @CRLF)
+;~ 		FileWriteLine($hFileOpen, @CRLF & " STEP 3." &$PtCount &" -- ENTER PATIENT DETAILS FOR PATIENT " & $PtCount & @CRLF)
+;~ 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Active registration window - " & @CRLF)
+
+;~ 		$Fname = $pFirstName &"_"&$iDateCalc
+;~ 		ControlFocus("Patient Registration","","[Name:m_First]")
+;~ 		ControlSetText("Patient Registration", "", "[NAME:m_First]", $Fname)
+;~ 		Sleep(1000)
+
+;~ 		$Lname = $iDateCalc
+;~ 		ControlSetText("Patient Registration", "", "[Name:m_Last]", $Lname)
+;~ 		Sleep(1000)
+
+;~ 		$BDate = "01/01/1987"
+;~ 		ControlSetText("Patient Registration", "", "[Name:m_DateBox]", $BDate )
+;~ 		Sleep(1000)
+
+;~ 		ControlFocus("Patient Registration","","[Name:m_PatientSameAsGuarantor]")
+;~ 		Send("{Space}")
+;~ 		Sleep(1000)
+
+;~ 		ControlFocus("Patient Registration","","[Name:m_Sex]")
+;~ 		Send("{Down}")
+;~ 		Sleep(1000)
+
+;~ 		ControlSetText("Patient Registration", "", "[Name:m_txtAddress1]", "Address_" &$iDateCalc )
+;~ 		Sleep(1000)
+
+;~ 		;Start Find ZIP CODE
+;~ 		ControlFocus("Patient Registration","","[Name:m_btnLookup]")
+;~ 		ControlClick("Patient Registration","","[Name:m_btnLookup]")
+;~ 		Sleep(3000)
+
+;~ 		ConsoleWrite("Clicked on Find Zip Code Button& wait till 20 sec"&@CRLF)
+;~ 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Find Zip Code Button& wait till 20 sec"&@CRLF)
+;~ 			$findzipWinHandle = WinWaitActive("Find Zip Code","",20)
+;~ 			ConsoleWrite("Active window is - " & WinGetTitle("[ACTIVE]") &@CRLF )
+
+;~ 			$zipCode = "00220"
+;~ 			If($findzipWinHandle) Then
+;~ 				;Local $findzipWinHandle = WinActivate ( "Find Zip Code" )
+;~ 				;ConsoleWrite("Active window Find Zip Code - " & $findzipWinHandle &@CRLF )
+;~ 				ControlFocus($findzipWinHandle,"","[CLASS:Edit;INSTANCE:1]")
+;~ 				ControlSetText($findzipWinHandle,"","[CLASS:Edit;INSTANCE:1]",$zipCode)
+;~ 				Sleep(5000)
+
+;~ 				ControlFocus($findzipWinHandle,"","[CLASS:Edit;INSTANCE:2]")
+;~ 				ControlSetText($findzipWinHandle,"","[CLASS:Edit;INSTANCE:2]","New York")
+;~ 				Sleep(5000)
+
+;~ 				ControlFocus($findzipWinHandle,"","[CLASS:Button;INSTANCE:1]")
+;~ 				ControlClick($findzipWinHandle,"","[CLASS:Button;INSTANCE:1]")
+;~ 				Sleep(10000)
+
+;~ 				ControlFocus($findzipWinHandle,"","[CLASS:Button;INSTANCE:32]")
+;~ 				ControlClick($findzipWinHandle,"","[CLASS:Button;INSTANCE:32 ]")
+;~ 				Sleep(5000)
+
+;~ 			Else
+;~ 				ConsoleWrite("Inactive window Find Zip Code"&@CRLF)
+;~ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Inactive window Find Zip Code"&@CRLF)
+;~ 			EndIf
+;~ 		;End Find ZIP CODE
+
+;~ 		ControlFocus("Patient Registration", "", "[Name:m_PatientId]")
+;~ 		Sleep(2000)
+;~ 		$PatientID = $iDateCalc
+;~ 		ControlClick("Patient Registration", "", "[Name:m_PatientId]")
+;~ 		ControlSetText("Patient Registration", "", "[Name:m_PatientId]", $iDateCalc )
+;~ 		;Exit
+;~ 		Sleep(1000)
+
+;~ 		ControlSetText("Patient Registration", "", "[Name:m_Email]", $pEmailId)
+;~ 		Sleep(1000)
+
+;~ 		ControlFocus("Patient Registration","","[Name:m_BtnApply]")
+;~ 		Sleep(3000)
+;~ 		ControlClick("Patient Registration","","[Name:m_BtnApply]")
+;~ 		Send("{Enter}")
+
+
+;~ 		FileWriteLine($hFileOpen, @CRLF & " STEP 4." &$PtCount &" -- SAVE PATIENT DETAILS FOR PATIENT " & $PtCount & @CRLF)
+;~ 		ConsoleWrite("Clicked on SAVE button on Registration screen" & @CRLF )
+;~ 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on SAVE button on Registration screen" & @CRLF )
+;~ 		Sleep(10000)
+
+
+
+
+
+;~ 		Else
+;~ 			ConsoleWrite("Inactive registration windows" & @CRLF)
+;~ 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on SAVE button on Registration screen" & @CRLF )
+;~ 		EndIf
+
+;~ 		_IEAction($btnRegWithMF,"click")
+;~ 						   ConsoleWrite("Clicked on Register with MF" &@CRLF)
+;~ 						   FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- REGISTER WITH MEDFUSION" & @CRLF)
+;~ 						   FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Register with MF" &@CRLF)
+;~ 						   Sleep(10000)
+;~ 						   WinActivate ( $regWindow )
+;~ 						   ConsoleWrite("Activating Registration Window again "&@CRLF)
+;~ 						   FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Registration Window again "&@CRLF)
+;~ 						   If ( WinActivate($regWindow) ) Then
+;~ 							  $hndSaveExit = ControlGetHandle("Patient Registration","","[Name:m_OK]")
+;~ 							  ConsoleWrite("Save & Exit handle " & $hndSaveExit &@CRLF )
+;~ 							  ControlFocus("Patient Registration","","[Name:m_OK]")
+;~ 							  ControlClick("Patient Registration","","[Name:m_OK]")
+;~ 							  Send("{Enter}")
+;~ 							  ConsoleWrite("Clicked on Save & Exit button" & @CRLF)
+;~ 							  FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- EXIT TO CPS HOME SCREEN" & @CRLF)
+;~ 							  FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Save & Exit button" & @CRLF)
+;~ 							  ConsoleWrite("Patient registration part completed ... waiting for email now " & $pEmailId & "  iDate  " & $iDateCalc & " " & @CRLF)
+;~ 							  ConsoleWrite("Patient firstname" & $pFirstName &"_"&$iDateCalc & @CRLF)
+;~ 							EndIf
+;~ 							  Sleep(10000);
+;~ 							   Local Const $sFilePath =@WorkingDir & "\Email.txt"
+;~ 							  ConsoleWrite("Working directory path " & $sFilePath & @CRLF)
+;~ 							  Local $hEmailFileOpen = FileOpen($sFilePath, $FO_OVERWRITE)
+;~ 								If $hEmailFileOpen = -1 Then
+;~ 									MsgBox($MB_SYSTEMMODAL, "", "An error occurred whilst writing the temporary file.")
+;~ 								Return False
+;~ 								EndIf
+
+;~ 								FileWrite($hEmailFileOpen, $pEmailId & @CRLF)
+;~ 								FileClose($hEmailFileOpen)
+
+;~ 	Else
+;~ 		ConsoleWrite("ERROR Attaching Patient Registration Screen...." & @CRLF)
+;~ 		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching Patient Registration Screen...." & @CRLF)
+;~ 		Exit
+;~ 	EndIf
+	ConsoleWrite("METHOD: registerPatient() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to create Office Visist (Asthma Visit)
+;-----Input parameter - First Name & Last Name of PAtient
+Func createAsthmaVisit($Fname,$Lname)
+	ConsoleWrite("METHOD: createAsthmaVisit() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	$newDocument = "Update - " & $Fname & " " & $Lname
+	WinActivate($newDocument)
+	ConsoleWrite("Activating Update Chart Window" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Update Chart Window" &@CRLF)
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If(WinActive($newDocument)) Then
+		ConsoleWrite("Filling up Asthma Visit details" &@CRLF)
+		WinSetState($newDocument,"",@SW_MAXIMIZE)
+		MouseClick("left",569,128)
+		Send("{TAB}")
+		Send("{DOWN}")
+		Send("{TAB}")
+		Send("{DOWN}")
+		Send("{TAB}")
+		Send("{DOWN}")
+		Send("{TAB}")
+		Send("{DOWN}")
+		Send("{TAB 3}")
+		Send("This is automated message")
+
+		ConsoleWrite("Complete the Office Visit" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Complete the Office Visit" & @CRLF)
+		MouseClick("left",1290,35)
+		WinWaitActive("End Update")
+		ControlFocus("End Update","","[CLASS:Button; INSTANCE:15]")
+		ControlClick("End Update","","[CLASS:Button; INSTANCE:15]")
+
+		ConsoleWrite("Office Visit creation completed" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit creation completed" & @CRLF)
+
+	Else
+		ConsoleWrite("ERROR Opening Update Chart Window...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Update Chart Window...." & @CRLF)
+	EndIf
+	ConsoleWrite("METHOD: createAsthmaVisit() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to create Office Visist (Asthma Visit)
+;-----Input parameter -
+Func createCVS($Fname,$Lname)
+	ConsoleWrite("METHOD: createCVS() started" & @CRLF)
+
+	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
+	Sleep(1000)
+	MouseMove($aCoord[0]+10,$aCoord[1]+5)
+	MouseMove($aCoord[0]+10,$aCoord[1]+35)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+	Sleep(1000)
+
+	Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
+	If Not @error Then
+		ConsoleWrite("Clicking Again"&@CRLF)
+		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+	EndIf
+
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	Sleep(1000)
+
+	$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+	If(StringInStr($str,"Office Visit at")>0) Then
+		;click office visit in documnet list
+		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","right",1,240,28)
+		Sleep(1000)
+		Send("{V}")
+
+		WinWaitActive("Clinical Visit Summary")
+		WinSetState("Clinical Visit Summary","",@SW_MAXIMIZE)
+		MouseClick("left",880,700)
+		Sleep(1000)
+		;click office visit in documnet list
+		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","left",2,240,28)
+		;click CVS in documnet list
+		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","left",1,240,48)
+		Sleep(1000)
+
+		$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+		If(StringInStr($str,"Clinical Visit Summary at")>0) Then
+			ConsoleWrite("CVS Created")
+		EndIf
+
+	EndIf
+	ConsoleWrite("METHOD: createCVS() ended" & @CRLF)
 EndFunc
