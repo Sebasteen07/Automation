@@ -6,6 +6,7 @@ Centricity DB:-centricityps122demo
 Central DB:-prod_cdb
 SQL UserName:-sa
 SQL Password:-*08oate
+Flag (Preconditions Check / Data Generation / Acceptance):-Preconditions Check
 --------------Patient Registration:--------------
 Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
 Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
@@ -30,10 +31,7 @@ SES Password:-Password123@!
 Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
 Letter to Patient Subject (TOC):-Referral Initiated
 --------------Data Generation:--------------
-Order Creation(Data Generation Flag):-Yes
 Number of order creation:-2
-TOC Creation(Data Generation Flag):-Yes
 Number of TOC Creation:-2
 Order Category2:-Gastroenterology
-Office Visit Creation (Data Generation Flag):-No
 Number of visits to be created:-2

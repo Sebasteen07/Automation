@@ -34,7 +34,9 @@ $arrDoctype = Call("openDoctypeFile")
 				If _SQL_Execute(-1,$arrQuery[24]) = $SQL_ERROR then
 					;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 					ConsoleWrite("ERROR Updating service settings...." & @CRLF)
+					ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 					Exit
 
 				Else
@@ -49,13 +51,19 @@ $arrDoctype = Call("openDoctypeFile")
 
 		Else
 			ConsoleWrite("ERROR Checking Service Settings...." & @CRLF)
+			ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Service Settings...." & @CRLF)
-
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 			Exit
 		EndIf
 
 		_SQL_Close()
+If($arrConfig[9] == "Preconditions Check") Then
+	ConsoleWrite("Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
+	Exit
 
+Else
 	;Open CPS -Patient Chart
 	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- LOGIN TO CPS" & @CRLF)
 	ConsoleWrite("Start the CPS client" &@CRLF )
@@ -66,7 +74,7 @@ $arrDoctype = Call("openDoctypeFile")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[14],$arrConfig[15])
+		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -74,20 +82,22 @@ $arrDoctype = Call("openDoctypeFile")
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				Call("createNewDocument",$arrConfig[17],$arrConfig[14],$arrConfig[15])
-				Call("createAsthmaVisit",$arrConfig[14],$arrConfig[15])
+				Call("createNewDocument",$arrConfig[18],$arrConfig[15],$arrConfig[16])
+				Call("createAsthmaVisit",$arrConfig[15],$arrConfig[16])
 
-				If($arrConfig[31]=="Yes") Then
+				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[32]) Then
+					If($counter = $arrConfig[30]) Then
+						ConsoleWrite("Exiting after data generation for Office Visit Flow...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Office Visit Flow...." & @CRLF)
 						Exit
 					EndIf
 
 				Else
-					$counter = $arrConfig[32]
+					$counter = $arrConfig[30]
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[32]
+			Until $counter = $arrConfig[30]
 
 			ConsoleWrite("Office Visit created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit created successfully...." & @CRLF)
@@ -97,7 +107,7 @@ $arrDoctype = Call("openDoctypeFile")
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[14] & "' and Last = '" & $arrConfig[15] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
 			ConsoleWrite($newQuery &  @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
@@ -131,13 +141,13 @@ $arrDoctype = Call("openDoctypeFile")
 				ConsoleWrite("Verifying document summary in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying document summary in Document table" & @CRLF)
 
-				ConsoleWrite("Expected Result: " & $arrConfig[17] &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare($arrConfig[17], $aData[1][1]) = 0) Then
+				ConsoleWrite("Expected Result: " & $arrConfig[18] &" and Actual Result: " & $aData[1][1] & " -- ")
+				If (StringCompare($arrConfig[18], $aData[1][1]) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[17] &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[18] &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[17] &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[18] &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
@@ -387,7 +397,7 @@ $arrDoctype = Call("openDoctypeFile")
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- CREATE CLINICAL VISIT SUMMARY FOR OFFICE VISIT" & @CRLF)
 				WinActivate("Chart - NOT FOR PATIENT USE")
-				Call("createCVS",$arrConfig[14],$arrConfig[15])
+				Call("createCVS",$arrConfig[15],$arrConfig[16])
 ;-----------------------------------------------------------------------------
 			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY CVS DETAILS IN DOCUMENT TABLE" & @CRLF)
 
@@ -663,256 +673,4 @@ $arrDoctype = Call("openDoctypeFile")
 		ConsoleWrite("ERROR Attaching GE CPS App...." & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching GE CPS App...." & @CRLF)
 	EndIf
-
-;~ 	ConsoleWrite(@CRLF & "Reading configuration varaibles"&@CRLF)
-;~ 	Local $arrConfig
-
-;~ 	If Not _FileReadToArray($Path, $arrConfig, 0) Then
-;~ 		ConsoleWrite("Exiting CCD-CVS Flow"&@CRLF)
-;~ 		Exit
-
-;~ 	Else
-;~ 		_FileReadToArray($path,$arrConfig,Default)
-
-;~ 		Local $iRows = UBound($arrConfig, $UBOUND_ROWS) ; Number of config rows.
-;~ 		Local $iCols = UBound($arrConfig, $UBOUND_COLUMNS) ; Number of config cols.
-
-;~ 		$Cpsurl = $arrConfig[1]
-;~ 		$Username = $arrConfig[2]
-;~ 		$Password = $arrConfig[3]
-;~ 		$PatientName = $arrConfig[4]
-;~ 		$PatientEmail = $arrConfig[5]
-;~ 		$PatientCount = $arrConfig[6]
-;~ 		$PatientPortal = $arrConfig[7]
-;~ 		$PatientFirstName =$arrConfig[8]
-;~ 		$PatientLastName= $arrConfig[9]
-
-;~ 		ConsoleWrite("CPS URL: " & $Cpsurl & @CRLF)
-;~ 		ConsoleWrite("CPS UserName: " & $Username & @CRLF)
-;~ 		ConsoleWrite("CPS Password: " & $Password & @CRLF)
-;~ 		ConsoleWrite("Patient First Name append to: " & $PatientName & @CRLF)
-;~ 		ConsoleWrite("Patient Email: " & $PatientEmail & @CRLF)
-;~ 		ConsoleWrite("Patient Count: " & $PatientCount & @CRLF)
-;~ 		ConsoleWrite("Patient Portal: " & $PatientPortal & @CRLF)
-;~ 		ConsoleWrite("Patient First name: " & $PatientFirstName & @CRLF)
-;~ 		ConsoleWrite("Patient Last Name: " & $PatientLastName & @CRLF)
-
-;~ 		ConsoleWrite("Configuration variables set"&@CRLF)
-;~ 	EndIf
-;~ ;Opening Log file
-;~ 	Local $hFileOpen = FileOpen($logPath, $FO_OVERWRITE)
-;~     If $hFileOpen = -1 Then
-;~         MsgBox($MB_SYSTEMMODAL, "", "An error occurred while writing process log file.")
-;~         Exit
-;~     EndIf
-
-;~ ; Killing all earlier IE sessions
-;~ 	RunWait('taskkill /F /IM "iexplore.exe"')
-;~ 	RunWait('taskkill /F /IM "AutoIt32.exe"')
-
-;~ ;Initiate GE CPS Application
-;~ 	_IECreate ($Cpsurl)
-;~ 	WinWait ($title)
-;~ 	WinActivate($title)
-;~ 	WinWaitActive ($title)
-
-;~ 	Sleep (3000)
-
-;~ 	FileWriteLine($hFileOpen, @CRLF&@CRLF&@CRLF  &"STEP 1 -- LOGIN PROCESS" & @CRLF)
-;~ 	; Sending user name and password
-;~ 	ControlSend($title, "", $edtId, $Username) ; UserName read from config file
-;~ 	ControlSend($title, "", $edtPw, $Password) ; Password read from config file
-;~ 	ConsoleWrite("Sent Login credentials to GE CPS" &@CRLF )
-;~ 	FileWriteLine($hFileOpen, _NowCalc()  &" *** Sent Login credentials to GE CPS ***" &@CRLF)
-;~ 	Sleep (5000)
-
-;~ 	; Clicking on Login button
-;~ 	ControlClick($title, "", $btnLogin)
-;~ 	ConsoleWrite("Clicked on Login button" &@CRLF )
-;~ 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Login button" &@CRLF )
-;~ 	Sleep (5000)
-
-;~ 	ControlClick($title, "", "[CLASS:Button; INSTANCE:3]")
-;~ 	ConsoleWrite("Clicked on Loggedin warning message Yes" & @CRLF)
-;~ 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicked on Loggedin warning message Yes" & @CRLF)
-;~ 	Sleep (5000)
-
-;~ 	;ConsoleWrite("Embedded IE Url " &  _IEPropertyGet($oIEEmbed, "locationurl") &@CRLF )
-;~ 	ConsoleWrite("GE CPS is Running" &@CRLF )
-;~ 	FileWriteLine($hFileOpen, _NowCalc() & "  -- GE CPS is Running" &@CRLF )
-;~ 	Sleep(8000)
-
-;~ 	Local $aList = WinList($title)
-;~ 	;_ArrayDisplay($aList)
-;~ 	; Loop through the array displaying only visable windows with a title.
-
-;~ 	   ; Loop through the array displaying only visable windows with a title.
-
-;~    Local $iRows = UBound($aList, $UBOUND_ROWS)
-;~    ConsoleWrite("Active window(s) " & $iRows & @CRLF)
-;~    FileWriteLine($hFileOpen, _NowCalc() & "  -- Active window(s) " & $iRows & @CRLF)
-
-;~    For $i = 1 To $aList[0][0]
-;~         If $aList[$i][0] <> "" And BitAND(WinGetState($aList[$i][1]), 2) Then
-;~             ;MsgBox($MB_SYSTEMMODAL, "", "Title: " & $aList[$i][0] & @CRLF & "Handle: " & $aList[$i][1])
-;~ 			ConsoleWrite("GE CPS active window title - "& $i & " - " & $aList[$i][0] &  " Handle: " & $aList[$i][1]&@CRLF )
-;~         EndIf
-;~    Next
-
-;~    $iRows = $aList[0][0]
-;~    ConsoleWrite("Active windows - " & $iRows & @CRLF)
-
-;~    Sleep(5000)
-;~    ;_ArrayDisplay($aList)
-;~    sleep(5000)
-
-;~    ;GE CPS loggedin user warning
-;~    ControlClick($title, "", $btnMsgYes)
-;~    ConsoleWrite("YES click sent to Message Box" & @CRLF)
-;~    FileWriteLine($hFileOpen, _NowCalc() & "  -- YES click sent to Message Box" & @CRLF)
-;~    Sleep(5000)
-
-;~    ControlClick($title, "", $btnButton1)
-;~    ConsoleWrite("First OK click sent to Message Box" & @CRLF)
-;~    FileWriteLine($hFileOpen, _NowCalc() & "  -- First OK click sent to Message Box" & @CRLF)
-;~    Sleep(5000)
-
-
-;~    $iRows = $aList[0][0]
-;~    While $iRows > 1
-;~ 	  ;ControlClick($title, "", $btnMsgOk)
-;~ 	  ;ControlSend($title,"",$btnMsgOk,"{Enter}")
-;~ 	  ConsoleWrite("WHILE START Active windows - " & $iRows & @CRLF)
-
-;~ 	  Send("{Enter}")
-;~ 	  $aList = WinList($title)
-;~ 	  ;$iRows = UBound($aList, $UBOUND_ROWS)
-;~ 	  ConsoleWrite("OK click sent to Message Box - Active window " & $iRows & @CRLF)
-;~ 	  FileWriteLine($hFileOpen, _NowCalc() & "  --  OK click sent to Message Box - Active window " & $iRows & @CRLF)
-;~ 	  Sleep(10000)
-
-;~ 	  ;Check wheather message boxes are coming from GE CPS
-;~ 	  $aList = WinList($title)
-;~ 	  $iRows = $aList[0][0]
-
-;~ 	  ;Sleep(5000)
-
-;~ 	  If ( $iRows = 0 ) Then
-;~ 		 ExitLoop
-;~ 	  EndIf
-
-;~ 	  ConsoleWrite("WHILE END Active windows - " & $iRows & @CRLF)
-;~    WEnd
-
-
-;~    $oWndCPS = WinActive($title)
-;~    ConsoleWrite("GE CPS active window title - " & $oWndCPS &@CRLF )
-;~    ;_ArrayDisplay($aList)
-
-;~    RunWait('taskkill /F /IM "iexplore.exe"')
-;~    ConsoleWrite("IE Process Kill which initiated GE CPS" &@CRLF )
-;~    FileWriteLine($hFileOpen, _NowCalc() & "  -- IE Process Kill which initiated GE CPS" &@CRLF )
-
-;~    Sleep(10000)
-
-;~ 	;;;Start : Attaching to IE instance when it runs as a embedded control in Windows Forms Application ;;;
-;~ 	If Not(ProcessExists("iexplorer.exe")) Then
-;~ 		FileWriteLine($hFileOpen, @CRLF & "STEP 2 -- REGISTRATION PROCESS" & @CRLF)
-;~ 		Local $oIEEmbed =_IEAttach("Centricity Practice Solution","embedded",1)
-
-;~ 		sleep(1000)
-;~ 		ConsoleWrite("Activating GE CPS App" &@CRLF)
-;~ 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating GE CPS App" &@CRLF)
-;~ 		WinActivate("Centricity Practice Solution")
-;~ 	    sleep(10000)
-
-;~ 		if ( IsObj($oIEEmbed) ) Then
-;~ 			ConsoleWrite("Attached successfully to IE instance running under GE app" & @CRLF)
-;~ 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attached successfully to IE instance running under GE app" & @CRLF)
-
-;~ 			ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') : $oIEEmbed = ' & $oIEEmbed & @CRLF & '>Error code: ' & @error & '    Extended code: 0x' & Hex(@extended) & @CRLF) ;### Debug Console
-;~ 			ConsoleWrite("Embedded IE Url " &  _IEPropertyGet($oIEEmbed, "locationurl") &@CRLF )
-;~ 			sleep(1000)
-
-;~ 			Local $oDoc = _IEBodyReadHTML($oIEEmbed)
-;~ 			Local $oLinkCollection = _IELinkGetCollection($oIEEmbed)
-
-;~ 			ConsoleWrite("Finding links collection" & @CRLF)
-;~ 			If ( IsObj($oLinkCollection) ) Then
-;~ 				;ConsoleWrite( @CRLF & "Links Collection --> "  &  IsObj($oLinkCollection) & " -------- " & @CRLF )
-;~ 				;ConsoleWrite( @CRLF & "Button Count --> "  &  $oBtnCollection.count() & " -------- " & @CRLF )
-;~ 				$lCount = 0
-;~ 					For $oLink in $oLinkCollection
-;~ 					;ConsoleWrite(  "Link " & $lCount & " --> "  & $oLink & " -------- " & @CRLF )
-;~ 					$lCount = $lCount + 1
-;~ 					Next
-;~ 				;_ArrayDisplay($oLinkCollection)
-;~ 				ConsoleWrite("For loop finished for Link Collection" & @CRLF )
-;~ 				ConsoleWrite("Links found - " & $lCount & @CRLF)
-;~ 			EndIf
-
-;~ 			ConsoleWrite("Clicking CHART link of GE CPS App...." & @CRLF)
-;~ 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicking CHART link of GE CPS App" & @CRLF)
-;~ 			Sleep(5000)
-;~ 			_IELinkClickByIndex($oIEEmbed,0)
-
-;~ 			Local $chartWnd = WinWaitActive("Chart Desktop")
-;~ 			ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
-;~ 			WinSetState($chartWnd,"",@SW_MAXIMIZE)
-
-;~ 			If($chartWnd) Then
-;~ 				ConsoleWrite("Click on FIND PATIENT"& @CRLF)
-;~ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Click on FIND PATIENT"& @CRLF)
-;~ 				MouseClick("left",33,68)
-;~ 				$findPatientWnd = WinWaitActive("Find Patient")
-
-;~ 				If ($findPatientWnd) Then
-;~ 					ControlFocus($findPatientWnd,"","[CLASS:Edit; INSTANCE:6]")
-;~ 					ControlSetText($findPatientWnd,"","[CLASS:Edit; INSTANCE:6]",$PatientLastName &", " & $PatientFirstName)
-;~ 					ConsoleWrite("PatientName" & @CRLF)
-;~ 					Sleep(15000)
-;~ 					ControlFocus($findPatientWnd,"","[CLASS:Button; INSTANCE:6]")
-;~ 					ControlClick($findPatientWnd,"","[CLASS:Button; INSTANCE:6]")
-;~ 					ConsoleWrite("Search Clicked" &@CRLF)
-;~ 					Sleep(10000)
-;~ 					ControlFocus($findPatientWnd,"","[CLASS:Button; INSTANCE:1]")
-;~ 					ControlClick($findPatientWnd,"","[CLASS:Button; INSTANCE:1]")
-;~ 					ConsoleWrite("OK LCicked" & @CRLF)
-;~ 					Sleep(8000)
-
-;~ 						$patientChartWnd = WinWaitActive("Chart - NOT FOR PATIENT USE")
-;~ 						If ($patientChartWnd) Then
-;~ 							;ControlClick($patientChartWnd,"","!D")
-;~ 							;Send("!D")
-;~ 							ConsoleWrite("Check new document" & @CRLF)
-
-
-
-
-
-
-
-
-
-;~ 						Else
-;~ 							ConsoleWrite("ERROR Opening Patient Chart...." & @CRLF)
-;~ 							FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Patient Chart...." & @CRLF)
-;~ 						EndIf
-
-;~ 				Else
-;~ 					ConsoleWrite("ERROR Inactive Find Patient Window...." & @CRLF)
-;~ 					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Inactive Find Patient Window...." & @CRLF)
-;~ 				EndIf
-
-;~ 			Else
-;~ 				ConsoleWrite("ERROR Opening Chart Link...." & @CRLF)
-;~ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Chart Link...." & @CRLF)
-;~ 			EndIf
-
-;~ 		Else
-;~ 			ConsoleWrite("ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
-;~ 			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
-;~ 		EndIf
-;~ 	EndIf
-;~    ;;;End : Attaching to IE instance when it runs as a embedded control in Windows Forms Application ;;;
-
+EndIf

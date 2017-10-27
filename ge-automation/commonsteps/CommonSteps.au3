@@ -123,13 +123,7 @@ Func setConfig()
 					Case "letter to patient subject (toc)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
-					Case "order creation(data generation flag)"
-						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
-
 					Case "number of order creation"
-						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
-
-					Case "toc creation(data generation flag)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
 					Case "number of toc creation"
@@ -138,11 +132,12 @@ Func setConfig()
 					Case "order category2"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
-					Case "office visit creation (data generation flag)"
-						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
-
 					Case "number of visits to be created"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "flag (preconditions check / data generation / acceptance)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
 				EndSwitch
 			Next
 		;_ArrayDisplay($arrConfig, "1D - Single")
