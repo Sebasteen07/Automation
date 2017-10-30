@@ -1423,6 +1423,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	    Log4jUtil.log("Step 4: Verify patient Details in get ccdExchangeBatch API");
 		RestUtils.verifyPatientCCDFormInfo(testData.responsePath_CCD1_FE, formUtilsObject.list);
 		RestUtils.isPreCheckPatientAppeared(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID, firstName);
+		String ccdExchangeBatchPdfLink=RestUtils.verifyCCDHeaderDetailsandGetURL(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
 		getURL = testData.ccd_PDfUrl_FE + "Batch";
 		log("Verify --- PDF "+getURL);
 		Log4jUtil.log("Step 5: Verify patient Details in get ccdExchangePdfBatch API");
@@ -1430,7 +1431,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String PreCheckPdfLink = RestUtils.verifyPreCheckPDFBatchDetails(testData.responsePath_CCD1_FE,testData.preCheckPatientExternalID);
 		Log4jUtil.log("Step 6: Download pre check form pdf");
 		log("Download pdf link "+PreCheckPdfLink);
-		//RestUtils.setupHttpGetRequestExceptoAuthforPDF(PreCheckPdfLink, testData.responsePDF_FE);
+		log("Asserting FormsPdfLink for Precheck from ccdExchangeBatch and ccdExchangePdfBatch");
+		Assert.assertEquals(ccdExchangeBatchPdfLink, PreCheckPdfLink);
+		log("Do a ccdExchangePdf call with the link found in FormsPdfLink");
+		RestUtils.setupHttpGetRequestExceptoAuthforPDF(PreCheckPdfLink, testData.responsePDF_FE);
 	}
 	
 	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

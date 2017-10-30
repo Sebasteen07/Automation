@@ -2883,8 +2883,12 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
 				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
 				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
-				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"), "CCD DATA was not Found");
-				break;
+				Boolean patientFound=node.item(i).getTextContent().contains("<given>" + firstname + "</given>");
+				Log4jUtil.log("Is Patient appeared = "+patientFound);
+				if(patientFound==true) {
+					Assert.assertTrue(patientFound,"Updated patient name appeared");
+					break; 
+				}
 			}
 			if (i == nodes.getLength() - 1) {
 				Assert.fail("Patient was not found");
