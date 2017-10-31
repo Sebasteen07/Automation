@@ -1451,10 +1451,11 @@ EndFunc
 ;-----Input parameter -
 Func createCVS($Fname,$Lname)
 	ConsoleWrite("METHOD: createCVS() started" & @CRLF)
-
+	;WinActivate("Chart - NOT FOR PATIENT USE")
 	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
 	Sleep(1000)
 	MouseMove($aCoord[0]+10,$aCoord[1]+5)
+	;Chart Summary in left menu
 	MouseMove($aCoord[0]+10,$aCoord[1]+35)
 	MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
 	Sleep(1000)
@@ -1465,31 +1466,44 @@ Func createCVS($Fname,$Lname)
 		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
 	EndIf
 
+	;Documents in left menu
 	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
 	Sleep(1000)
 
-	$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+	;Click first document in list
+	MouseClick("left",617,319)
+	$str = WinGetText("Chart - NOT FOR PATIENT USE")
+	;$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+	;ConsoleWrite($str & @CRLF)
 	If(StringInStr($str,"Office Visit at")>0) Then
-		;click office visit in documnet list
-		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","right",1,240,28)
+		;right click office visit in documnet list to create CVS
+		;ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","right",1,240,28)
+		MouseClick("right",617,319)
 		Sleep(1000)
 		Send("{V}")
 
 		WinWaitActive("Clinical Visit Summary")
 		WinSetState("Clinical Visit Summary","",@SW_MAXIMIZE)
-		MouseClick("left",880,700)
+		MouseClick("left",880,720)
 		Sleep(1000)
-		;click office visit in documnet list
-		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","left",2,240,28)
+		; double click office visit in documnet list
+		MouseClick("left",617,319,2)
+		Sleep(1000)
+		;ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","left",2,240,28)
 		;click CVS in documnet list
-		ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","left",1,240,48)
+		MouseClick("left",617,338)
+		;ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1","left",1,240,48)
 		Sleep(1000)
-
-		$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+		$str = WinGetText("Chart - NOT FOR PATIENT USE")
+		;$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
 		If(StringInStr($str,"Clinical Visit Summary at")>0) Then
-			ConsoleWrite("CVS Created")
-		EndIf
+			ConsoleWrite("CVS Created" & @CRLF)
 
+		Else
+			ConsoleWrite("CVS Creation failed" & @CRLF)
+		EndIf
+	Else
+		ConsoleWrite("Unable to fetch Offcie Visit" & @CRLF)
 	EndIf
 	ConsoleWrite("METHOD: createCVS() ended" & @CRLF)
 EndFunc

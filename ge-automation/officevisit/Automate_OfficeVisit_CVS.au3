@@ -116,6 +116,13 @@ Else
 
 				ConsoleWrite("Patient Profile Id is " & $PatientProfileId & @CRLF	& "PID is " & $PID & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Patient Profile Id is " & $PatientProfileId & @CRLF & _NowCalc() &"  -- PID is " & $PID & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 		;Get MedfusionMemberId
@@ -127,6 +134,13 @@ Else
 
 				ConsoleWrite("Medfusion Member Id is " & $MedfusionMemberId & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Medfusion Member Id is " & $MedfusionMemberId & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- VERIFY OFFICE VISIT DETAILS IN DOCUMENT TABLE" & @CRLF)
@@ -166,10 +180,14 @@ Else
 				EndIf
 
 				$CreationDate = $aData[1][3]
+				ConsoleWrite("Office Visit Creation Date is " & $CreationDate & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit Creation Date is " & $CreationDate & @CRLF)
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -230,6 +248,8 @@ Else
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -318,16 +338,18 @@ Else
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
-			_SQL_Close()
+			;_SQL_Close()
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- VERIFY OFFICE VISIT IN PATIENT PORTAL" & @CRLF)
 			$officeVisitJar = StringReplace($currentDir, "officevisit", "jarfiles")  & "\chkOfficeVisit.jar"
-			$PID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' OfficeVisit ' & $CreationDate &'',"","",$STDOUT_CHILD)
-			ConsoleWrite("$PID :" & $PID & @CRLF)
-			ProcessWaitClose($PID)
-			$output =StdoutRead($PID)
+			$ProcessID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' OfficeVisit ' & $CreationDate &'',"","",$STDOUT_CHILD)
+			ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
+			ProcessWaitClose($ProcessID)
+			$output =StdoutRead($ProcessID)
 
 				If(StringInStr($output,"PASSED")) Then
 					ConsoleWrite("Office Visit verified in Patient Portal and VDT events generated" & @CRLF)
@@ -340,13 +362,12 @@ Else
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY VDT EVENTS FOR OFFICE VISIT" & @CRLF)
 				ConsoleWrite("Wait for events to arrive from Medfusion" & @CRLF)
-				FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for events to arrive from Medfusion -- FAILED" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for events to arrive from Medfusions" & @CRLF)
 				Sleep(600000)
-				ConsoleWrite("Wait for 10"  & @CRLF)
 
-				Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+				;Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 
-				Local $aData,$iRows,$iColumns
+				;Local $aData,$iRows,$iColumns
 				$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 				If $iRval = $SQL_OK then
@@ -392,6 +413,8 @@ Else
 				Else
 					ConsoleWrite("ERROR Querying Database...." & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+					ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 					Exit
 				EndIf
 
@@ -437,24 +460,28 @@ Else
 				EndIf
 
 				$cvsCreationDate = $aData[1][3]
+				ConsoleWrite("CVS Creation Date is " & $cvsCreationDate & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- CVS Creation Date is " & $cvsCreationDate & @CRLF)
 
 				;XID - reference of Office Visit
 				ConsoleWrite("Verifying XID in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying XID in Document table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- ")
-				If (StringCompare($visitDocumentId, $aData[1][4]) = 0) Then
+				$xidInDocument = Int($aData[1][4])-1
+				ConsoleWrite("Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInDocument & " -- ")
+				If (StringCompare($visitDocumentId, $xidInDocument) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInDocument & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInDocument & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -462,7 +489,7 @@ Else
 			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY CVS DETAILS IN CUSMEDFUSIONCVSEXTINFO TABLE" & @CRLF)
-			$iRval = _SQL_GetTable2D(-1,$arrQuery[30] & $cvsDocumentId & ";",$aData,$iRows,$iColumns)
+			$iRval = _SQL_GetTable2D(-1,$arrQuery[33] & $cvsDocumentId & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
 				$CVSExtInfoId = $aData[1][0]
@@ -515,20 +542,22 @@ Else
 				;XID - reference of Office Visit
 				ConsoleWrite("Verifying XID in cusMedfusionCVSExtInfo table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying XID in cusMedfusionCVSExtInfo table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- ")
-				If (StringCompare($visitDocumentId, $aData[1][4]) = 0) Then
+				$xidInCVSExtInfo = Int($aData[1][4]) -  1
+				ConsoleWrite("Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInCVSExtInfo & " -- ")
+				If (StringCompare($visitDocumentId, $xidInCVSExtInfo) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInCVSExtInfo & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $aData[1][4] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $visitDocumentId &" and Actual Result: " & $xidInCVSExtInfo & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -617,6 +646,8 @@ Else
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -640,16 +671,18 @@ Else
 				Else
 					ConsoleWrite("ERROR Querying Database...." & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+					ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 					Exit
 				EndIf
 			_SQL_Close()
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 16 -- VERIFY CVS IN PATIENT PORTAL" & @CRLF)
-			$officeVisitJar = StringReplace($currentDir, "officevisit", "jarfiles")  & "\chkCVS.jar"
-			$PID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' CVS ' & $cvsCreationDate &'',"","",$STDOUT_CHILD)
-			ConsoleWrite("$PID :" & $PID & @CRLF)
-			ProcessWaitClose($PID)
-			$output =StdoutRead($PID)
+			$officeVisitJar = StringReplace($currentDir, "officevisit", "jarfiles")  & "\chkOfficeVisit.jar"
+			$ProcessID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' CVS ' & $cvsCreationDate &'',"","",$STDOUT_CHILD)
+			ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
+			ProcessWaitClose($ProcessID)
+			$output =StdoutRead($ProcessID)
 
 				If(StringInStr($output,"PASSED")) Then
 					ConsoleWrite("CVS verified in Patient Portal" & @CRLF)
