@@ -169,6 +169,7 @@ public class IntegrationConstants {
 		public static final String MEDFUSIONMEMBERID ="MedfusionMemberId";
 		public static final String PRACTICEPATIENTID="PracticePatientId";
 		public static final String PDFURLLINK="PdfUrlLink";
+		public static final String LASTUPDATED="LastUpdated";
 		
 		//CCD HeaderDetails Constants
 		public static final String CCDMESSAGEHEADERS="CcdMessageHeaders";

@@ -10,7 +10,7 @@ public class Data {
 
 	public static void getData(String retrieverName) {
 		try {			
-			String env = IHGUtil.getEnvironmentType().toString();
+            String env = IHGUtil.getEnvironmentType().toString();
 			
 			FileInputStream inputStream = new FileInputStream("src/test/resources/test-data-" + env + "/" + retrieverName + ".properties");
 			retrieverProperties.load(inputStream);

@@ -3,6 +3,7 @@ package com.intuit.ihg.product.integrationplatform.utils;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,7 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSear
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class FormsExportUtils {
+	public List<String> list;
 	public void ccdExchangeFormsImport(WebDriver driver, int testType) throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
@@ -113,10 +115,11 @@ public class FormsExportUtils {
 			patientDemographicPage.fillInPatientData(firstName,lastName,email,testData.patientDOBMonthtext_FE,testData.patientDOBDay1_FE,testData.patientDOBYear_FE,Gender.FEMALE,Zipcode ,testData.patientAddress1_FE, testData.patientAddress2_FE, testData.patientCity_FE, testData.patientState_FE);
 			SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(username,testData.patientPassword1_FE,testData.patientSecretQuestion_FE,testData.patientSecretAnswer_FE,testData.patientHomePhoneNo_FE,3);
+			Thread.sleep(10000);
 			JalapenoMenu jalapenoMenuPage=new JalapenoHomePage (driver);
 
 			Log4jUtil.log("Step 3: Logout");
-			Thread.sleep(5000);
+			Thread.sleep(12000);
 			jalapenoMenuPage.clickOnLogout();
 
 			if(i==1)
@@ -163,77 +166,15 @@ public class FormsExportUtils {
 			String FormName = healthListpage.getFormName();
 			Log4jUtil.log("Form name is "+FormName);
 			
-			Thread.sleep(1000);
-			FormBasicInfoPage pFormBasicInfoPage=PageFactory.initElements(driver, FormBasicInfoPage.class);
+			fillForm(driver, testData, firstName, false);
 			
-			Log4jUtil.log("Step 14 : Fill in Basic Info of Patient");
-			PortalUtil.setPortalFrame(driver);
-			pFormBasicInfoPage.setBasicInfoFromFields_20(testData.state1,testData.phonetype1,testData.sex);
-
-			Log4jUtil.log("Step 15: Fill in Emergency Contact info ");
-			PortalUtil.setPortalFrame(driver);
-			FormEmergencyContactPage paFormEmergencyContactPage = PageFactory.initElements(driver, FormEmergencyContactPage.class);
-			paFormEmergencyContactPage.fillEmergencyContactFormFields_20(testData.relFirstName, testData.relLastName, testData.relation1, testData.phonenumber1, testData.phonetype1);
-			WebElement Save =driver.findElement(By.xpath("//input[@type='submit' and @value='Save & Continue']"));
-
-			Log4jUtil.log("Step 16: Fill in Primary Insurance Details");
-			FormInsurancePage pFormInsurancePage=PageFactory.initElements(driver, FormInsurancePage.class);
-			Thread.sleep(2000);
-			pFormInsurancePage.fillfirstInsurance(testData.NameofPrimaryInsurance, firstName);
-
-			Log4jUtil.log("Step 17: Fill in Secondary Insurance Details");
-			FormSecondaryInsurancePage pFormSecondaryInsurancePage= PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
-			pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance,firstName);
-
-			Log4jUtil.log("Step 18: Set Providers Details");
-			FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);
-			pFormOtherProvidersPage.setProvidername(testData.NameofDoctorSpeciality);
-			Save.click();
-
-			Log4jUtil.log("Step 19:Fill in CurrentSymptomspage Info ");
-			FormCurrentSymptomsPage pFormCurrentSymptomsPage=PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
-			pFormCurrentSymptomsPage.setBasicSymptoms();
-			Save.click();
-
-			Log4jUtil.log("Step 20: Fill in Medications Info");
-			FormMedicationsPage pFormMedicationsPage=PageFactory.initElements(driver, FormMedicationsPage.class);
-			pFormMedicationsPage.setMedicationFormFields_20(testData.NameDosage,testData.times);
-
-			Log4jUtil.log("Step 21: Fill in No Allergies");
-			PortalUtil.setPortalFrame(driver);
-			FormAllergiesPage pFormAllergiesPage=PageFactory.initElements(driver, FormAllergiesPage.class);
-			pFormAllergiesPage.setAllergies();
-
-			Log4jUtil.log("Step 22: Fill in Vaccines");
-			FormVaccinePage pFormVaccinePage =PageFactory.initElements(driver, FormVaccinePage.class);
-			pFormVaccinePage.SetVaccines(testData.tetanus1,testData.HPV1,testData.Influenza1,testData.Pneumonia1);
-
-			Log4jUtil.log("Step 23: Fill in surgeries & Hospitalizations");
-			FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage=PageFactory.initElements(driver, FormSurgeriesHospitalizationsPage.class);
-			pFormSurgeriesHospitalizationsPage.fillSurgiesForm(testData.SurgeryName,testData.SurgeryTimeFrame,testData.HospitalizationReason,testData.HospitalizationTimeFrame);
-
-			Log4jUtil.log("Step 24:Fill in Test Details");
-			FormPreviousExamsPage pFormPreviousExamsPage=PageFactory.initElements(driver, FormPreviousExamsPage.class);
-			pFormPreviousExamsPage.fillTestDetails(testData.Test,testData.TestTimeFrame);
-
-			Log4jUtil.log("Step 25: Fill in Past Medical History");
-			FormPastMedicalHistoryPage pFormPastMedicalHistoryPage=PageFactory.initElements(driver, FormPastMedicalHistoryPage.class);
-			pFormPastMedicalHistoryPage.checkMononucleosis_20();
-
-			Log4jUtil.log("Step 26: Fill in Family History Details");
-			FormFamilyHistoryPage pFormFamilyHistoryPage=PageFactory.initElements(driver, FormFamilyHistoryPage.class);
-			pFormFamilyHistoryPage.setFamilyHistory(testData.OtherMedicalhistory, testData.FamilyMember);
-
-			Log4jUtil.log("Step 27: Fill in Social History Details");
-			FormSocialHistoryPage pFormSocialHistoryPage=PageFactory.initElements(driver, FormSocialHistoryPage.class);
-			pFormSocialHistoryPage.fillExerciseDetails(testData.exercise,testData.day);
-			Thread.sleep(5000);
+			Thread.sleep(8000);
 
 			if(i==1)
 			{
 				PortalUtil.setPortalFrame(driver);
 				Log4jUtil.log("Step for patient with External ID: Downloading PDf file from Application");
-				Thread.sleep(3000);
+				Thread.sleep(4000);
 				healthListpage.getPDF();
 				if( driver instanceof FirefoxDriver) {
 					Robot rb = new Robot(); 
@@ -342,5 +283,124 @@ public class FormsExportUtils {
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
 		}
+	}
+	
+	public void fillForm(WebDriver driver,PatientFormsExportInfo testData,String firstName,Boolean isFormTypePreCheck) throws Exception {
+		Thread.sleep(1000);
+		FormBasicInfoPage pFormBasicInfoPage=PageFactory.initElements(driver, FormBasicInfoPage.class);
+		
+		Log4jUtil.log("Step 14 : Fill in Basic Info of Patient");
+		if(!isFormTypePreCheck) {
+			PortalUtil.setPortalFrame(driver);
+		}
+		pFormBasicInfoPage.setBasicInfoFromFields_20(testData.state1,testData.phonetype1,testData.sex,isFormTypePreCheck);
+
+		Log4jUtil.log("Step 15: Fill in Emergency Contact info ");
+		if(!isFormTypePreCheck) {
+			PortalUtil.setPortalFrame(driver);
+		}
+		FormEmergencyContactPage paFormEmergencyContactPage = PageFactory.initElements(driver, FormEmergencyContactPage.class);
+		paFormEmergencyContactPage.fillEmergencyContactFormFields_20(testData.relFirstName, testData.relLastName, testData.relation1, testData.phonenumber1, testData.phonetype1,isFormTypePreCheck);
+		WebElement Save =driver.findElement(By.xpath("//input[@type='submit' and @value='Save & Continue']"));
+
+		Log4jUtil.log("Step 16: Fill in Primary Insurance Details");
+		FormInsurancePage pFormInsurancePage=PageFactory.initElements(driver, FormInsurancePage.class);
+		Thread.sleep(2000);
+		pFormInsurancePage.fillfirstInsurance(testData.NameofPrimaryInsurance, firstName);
+
+		Log4jUtil.log("Step 17: Fill in Secondary Insurance Details");
+		FormSecondaryInsurancePage pFormSecondaryInsurancePage= PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
+		pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance,firstName);
+
+		Log4jUtil.log("Step 18: Set Providers Details");
+		FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);
+		pFormOtherProvidersPage.setProvidername(testData.NameofDoctorSpeciality);
+		Save.click();
+
+		Log4jUtil.log("Step 19:Fill in CurrentSymptomspage Info ");
+		FormCurrentSymptomsPage pFormCurrentSymptomsPage=PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
+		pFormCurrentSymptomsPage.setBasicSymptoms();
+		Thread.sleep(5000);
+		Save.click();
+
+		Log4jUtil.log("Step 20: Fill in Medications Info");
+		FormMedicationsPage pFormMedicationsPage=PageFactory.initElements(driver, FormMedicationsPage.class);
+		Thread.sleep(5000);
+		pFormMedicationsPage.setMedicationFormFields_20(testData.NameDosage,testData.times);
+		Thread.sleep(3000);
+		Log4jUtil.log("Step 21: Fill in No Allergies");
+		if(!isFormTypePreCheck) {
+			PortalUtil.setPortalFrame(driver);
+		}
+		FormAllergiesPage pFormAllergiesPage=PageFactory.initElements(driver, FormAllergiesPage.class);
+		pFormAllergiesPage.setAllergies(isFormTypePreCheck);
+
+		Log4jUtil.log("Step 22: Fill in Vaccines");
+		FormVaccinePage pFormVaccinePage =PageFactory.initElements(driver, FormVaccinePage.class);
+		pFormVaccinePage.SetVaccines(testData.tetanus1,testData.HPV1,testData.Influenza1,testData.Pneumonia1);
+
+		Log4jUtil.log("Step 23: Fill in surgeries & Hospitalizations");
+		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage=PageFactory.initElements(driver, FormSurgeriesHospitalizationsPage.class);
+		pFormSurgeriesHospitalizationsPage.fillSurgiesForm(testData.SurgeryName,testData.SurgeryTimeFrame,testData.HospitalizationReason,testData.HospitalizationTimeFrame);
+
+		Log4jUtil.log("Step 24:Fill in Test Details");
+		FormPreviousExamsPage pFormPreviousExamsPage=PageFactory.initElements(driver, FormPreviousExamsPage.class);
+		pFormPreviousExamsPage.fillTestDetails(testData.Test,testData.TestTimeFrame);
+		Thread.sleep(6000);
+		Log4jUtil.log("Step 25: Fill in Past Medical History");
+		FormPastMedicalHistoryPage pFormPastMedicalHistoryPage=PageFactory.initElements(driver, FormPastMedicalHistoryPage.class);
+		pFormPastMedicalHistoryPage.checkMononucleosis_20();
+		Thread.sleep(4000);
+		Log4jUtil.log("Step 26: Fill in Family History Details");
+		FormFamilyHistoryPage pFormFamilyHistoryPage=PageFactory.initElements(driver, FormFamilyHistoryPage.class);
+		pFormFamilyHistoryPage.setFamilyHistory(testData.OtherMedicalhistory, testData.FamilyMember);
+
+		Log4jUtil.log("Step 27: Fill in Social History Details");
+		FormSocialHistoryPage pFormSocialHistoryPage=PageFactory.initElements(driver, FormSocialHistoryPage.class);
+		pFormSocialHistoryPage.fillExerciseDetails(testData.exercise,testData.day);
+
+	}
+	
+	public void setFormsTestData(String workingDir,PatientFormsExportInfo testData) throws FileNotFoundException {
+		Scanner scanner = new Scanner(new FileReader(workingDir));
+		Map<String, String> formsMap = new LinkedHashMap<String, String>();
+		String line;
+		while (scanner.hasNext()) {
+			line = scanner.nextLine();
+			if (!line.startsWith(" ") && !line.isEmpty())
+			{
+				String[] columns = line.split("=");
+				formsMap.put(columns[0], columns[1]);
+			}
+		}
+		scanner.close();
+		list = new ArrayList<String>(formsMap.values());
+		testData.relFirstName=list.get(0);
+		testData.relLastName=list.get(1);
+		testData.relation1=list.get(2);
+		testData.phonenumber1=list.get(3);
+		testData.phonetype1=list.get(4);
+		testData.NameofPrimaryInsurance=list.get(5);
+		testData.NameofsecondaryInsurance=list.get(6);
+		testData.tetanus1=list.get(7);
+		testData.HPV1=list.get(8);
+		testData.Influenza1=list.get(9);
+		testData.Pneumonia1=list.get(10);
+		testData.SurgeryName=list.get(11);
+		testData.SurgeryTimeFrame=list.get(12);
+		testData.HospitalizationReason=list.get(13);
+		testData.HospitalizationTimeFrame=list.get(14);
+		testData.Test=list.get(15);
+		testData.TestTimeFrame=list.get(16);
+		testData.NameofDoctorSpeciality=list.get(17);
+		testData.NameDosage=list.get(18);
+		testData.OtherMedicalhistory=list.get(19);
+		testData.FamilyMember=list.get(20);
+		testData.sex=list.get(21);
+		testData.state1=list.get(22);
+		testData.times=list.get(23);
+		testData.exercise=list.get(24);
+		testData.day=list.get(25);
+
 	}
 }

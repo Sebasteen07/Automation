@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
 public class FormSecondaryInsurancePage extends PortalFormPage {
@@ -35,7 +36,7 @@ public class FormSecondaryInsurancePage extends PortalFormPage {
 	}
 	public void setSecondaryInsuranceName(String nameOfSecondInsurance,String patientName) throws InterruptedException
 	{
-		Thread.sleep(1000);
+		IHGUtil.waitForElement(driver, 20, secondaryCompany);
 		secondaryCompany.clear();
 		secondaryCompany.sendKeys(nameOfSecondInsurance);
 		secondaryFirstName.clear();

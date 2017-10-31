@@ -51,8 +51,8 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 	public void checkMononucleosis_20() throws Exception {
 		if (monoCheckbox.isSelected() == false) {
 			monoCheckbox.click();
-			saveAndContinuebtn.click();
 		}
+		saveAndContinuebtn.click();
 	}
 
 	/**

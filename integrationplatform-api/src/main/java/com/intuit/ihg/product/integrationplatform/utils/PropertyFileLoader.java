@@ -1217,5 +1217,13 @@ public class PropertyFileLoader {
 		
 		return property.getProperty("downloadFileLocation");
 	}
+	public String getPreCheckURL() {
+		
+		return property.getProperty("preCheckURL_FE");
+	}
+	public String getPreCheckPatientExternalID() {
+		
+		return property.getProperty("preCheckPatientExternalID_FE");
+	}
 	
 }

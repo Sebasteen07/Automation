@@ -80,12 +80,12 @@ public class HealthFormListPage extends BasePageObject {
 	}
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{
 		log("Clicking On General Registration and Health History ");
-		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
 		healthFormsRegistrationLink.click();
 		formValueNew=healthFormsRegistrationLink.getText();
-		Thread.sleep(2000);
+		WebDriverWait wait = new WebDriverWait(driver,50);
 		driver.switchTo().frame(iframeforms);
-		Thread.sleep(1000);
+		wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
 		Continuebutton1.click();
 	}
 	public String getFormName()
@@ -151,6 +151,7 @@ public class HealthFormListPage extends BasePageObject {
 	}
 	
 	public void getPDF() {
+		IHGUtil.waitForElement(driver, 90, pdfLinkText);
 		pdfLinkText.click();
 	}
 

@@ -40,6 +40,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -2386,7 +2387,7 @@ public class RestUtils {
 	public static String verifyUnseenMessageListAndGetMessageUID(String xmlFileName,String subject) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildUTFDOMXML(xmlFileName);
-		String messageUid = null;
+		String messageUid = "";
 		
 		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
 		Element statusElem = (Element) StatusNode;
@@ -2818,5 +2819,77 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Log4jUtil.log("Is Pdf Matched : "+pdfMatch);
 		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
 	}
+	
+	public static int setupHttpDeleteRequestExceptOauth(String strUrl,String responseFilePath) throws org.apache.http.ParseException, IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		
+		HttpDelete httpDelReq = new HttpDelete(strUrl);
+		httpDelReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		httpDelReq.setURI(new URI(strUrl));
+		httpDelReq.addHeader("Authentication-Type", "2wayssl");
+		httpDelReq.addHeader("Content-Type", "application/xml");
+		
+		HttpResponse resp = client.execute(httpDelReq);
+		HttpEntity entity = resp.getEntity();
+		String sResp ="";
+		if(entity!=null){
+		sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http response");
+		} else
+		{
+			Log4jUtil.log("http 204 response is empty");
+		}
+		
+		//Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+		//		"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+		writeFile(responseFilePath, sResp);
+		return resp.getStatusLine().getStatusCode();
+	}
+	
+	public static void isPreCheckPatientAppeared(String responsePath, String externalPatientID, String firstname)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsePath);
 
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICE_ID);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getTextContent().equals(externalPatientID)) {
+				Log4jUtil
+						.log("Searching: External Patient ID:" + externalPatientID + ", and Actual External Patient ID is:" + nodes.item(i).getTextContent().toString());
+				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
+				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
+				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
+				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"), "CCD DATA was not Found");
+				break;
+			}
+			if (i == nodes.getLength() - 1) {
+				Assert.fail("Patient was not found");
+			}
+		}
+	}
+	
+	public static String verifyPreCheckPDFBatchDetails(String responsepath,String externalPatientID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
+	   IHGUtil.PrintMethodName();
+	   Document doc = buildDOMXML(responsepath);
+	   boolean found = false;
+	   String PatientPDFUrl="";
+	   NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
+	   for(int i=0;i<nodes1.getLength();i++)
+	   {
+		   Element member=(Element) nodes1.item(i); 
+		   Node lastUpdated =member.getElementsByTagName(IntegrationConstants.LASTUPDATED).item(0);		   
+		   if((i+1)==nodes1.getLength()) {
+			   Node ExternalID =member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
+			   Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,"External patient ID is different from expected");
+			   Log4jUtil.log("Verifying ExternalID "+ExternalID.getTextContent()+" with Expected"+externalPatientID);
+			   Node GetPDFUrl =member.getElementsByTagName(IntegrationConstants.PDFURLLINK).item(0);
+			   String PDFURL=GetPDFUrl.getTextContent();
+			   Log4jUtil.log("Get URL is "+PDFURL);
+			   PatientPDFUrl=PDFURL;
+		   }
+	  }
+	   return PatientPDFUrl;
+	}
 }
