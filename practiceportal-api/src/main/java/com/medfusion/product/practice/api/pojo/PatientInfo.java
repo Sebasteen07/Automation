@@ -1,8 +1,10 @@
 package com.medfusion.product.practice.api.pojo;
 
+/**
+ * all members are public instead of boilerplate setters+getters. NEVER USE FOR SENSITIVE DATA
+ */
 public class PatientInfo {
-
-	// all are public instead of boilerplate setters+getters. NEVER USE FOR SENSITIVE DATA
+	
 	public String memberId;
 	public String practicePatientId;
 	public int billingAccountNumber;
