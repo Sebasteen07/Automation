@@ -225,14 +225,13 @@ public class CreateAccountPage extends BasePageObject {
 		/*
 		 * Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default chooseProvider();
 		 */
-
-		IHGUtil iHGUtil = new IHGUtil(driver);
-		if (iHGUtil.exists(chkAgreePatientPrivacyInfo, 1)) {
-			chkAgreePatientPrivacyInfo.click();
+		if (chkAgreePatientPrivacyInfo.isDisplayed()) {
+		    log("Found it");
+		    javascriptClick(chkAgreePatientPrivacyInfo);
 		}
 
-		chkAgreeIntuitTAndC.click();
-		btnSubmit.click();
+		javascriptClick(chkAgreeIntuitTAndC);
+		javascriptClick(btnSubmit);
 
 		log("Clicked submit, returning");
 		return PageFactory.initElements(driver, MyPatientPage.class);
