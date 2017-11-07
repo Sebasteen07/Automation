@@ -54,6 +54,8 @@ public class JalapenoAccountPage extends BasePageObject {
 	public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 
 		log("Trying to click on Edit button for My Account");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 		editMyAccountButton.click();
 
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
