@@ -248,7 +248,7 @@ public abstract class MedfusionPage extends BasePageObject {
 	}
 	
 	public StringSelection getHtmlSource() {
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(htmlTag));
+		new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(htmlTag));
 		return new StringSelection("<!DOCTYPE html>" + htmlTag.getAttribute("outerHTML"));
 	}
 

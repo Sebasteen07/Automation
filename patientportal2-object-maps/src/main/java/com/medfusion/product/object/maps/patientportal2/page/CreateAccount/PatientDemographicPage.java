@@ -51,9 +51,12 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement inputCity;
 
-	@FindBy(how = How.ID, using = "state")
+	@FindBy(how = How.XPATH, using = "//*[@id='state']")
 	private WebElement inputState;
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='ui-select-choices-row-0-0']/span/div")
+	private WebElement setState;
+	
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
 	private WebElement inputZipCode;
 
@@ -149,7 +152,10 @@ public class PatientDemographicPage extends MedfusionPage {
 		updateWebElement(inputAddress1, address1);
 		updateWebElement(inputAddress2, address2);
 		updateWebElement(inputCity, city);
-		updateWebElement(inputState, state);
+			
+		inputState.click();
+		setState.click();
+		
 		updateWebElement(inputZipCode, zipCode);
 	}
 	

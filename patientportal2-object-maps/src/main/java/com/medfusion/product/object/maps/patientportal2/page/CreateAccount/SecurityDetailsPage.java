@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -44,8 +44,11 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement selectPhoneType;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='preferredLocationId']")
+	@FindBy(how = How.XPATH, using = "/*[@id='preferredLocationId_field']/mf-locations/div/div[1]/span/span[1]")
 	private WebElement primaryLocationElement;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='ui-select-choices-row-1-0']/span/div")
+	private WebElement setLocation;
 
 	@FindBy(how = How.ID, using = "prevStep")
 	private WebElement buttonPreviousStep;
@@ -123,8 +126,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 		inputPhone3.sendKeys(phoneNumber.substring(6, 10));
 
 		if (IHGUtil.exists(driver, 1, primaryLocationElement)) {
-			Select primaryLocationSelect = new Select(primaryLocationElement);
-			primaryLocationSelect.selectByIndex(1);
+			primaryLocationElement.click();
+			setLocation.click();
 		}
 	}
 
@@ -142,6 +145,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				bothPaymentPreference.click();
 			}
 			okButton.click();
+			
 			/*
 			 * try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
 			 */
