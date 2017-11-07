@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page;
 import java.util.ArrayList;
 
 import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -129,8 +130,10 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	public JalapenoAccountPage clickOnAccount() {
 		log("Clicking on Account button - regular resolution");
+		
 		try {
-			accountButton.click();
+			JavascriptExecutor ex = (JavascriptExecutor)driver;
+			ex.executeScript("arguments[0].click();", accountButton);
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
