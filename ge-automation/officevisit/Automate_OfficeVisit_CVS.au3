@@ -82,22 +82,23 @@ Else
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
+				ConsoleWrite("Creating Office Visit #" &$counter+1 & @CRLF)
 				Call("createNewDocument",$arrConfig[18],$arrConfig[15],$arrConfig[16])
 				Call("createAsthmaVisit",$arrConfig[15],$arrConfig[16])
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[30]) Then
+					Sleep(60000)
+					If($counter = $arrConfig[33]) Then
 						ConsoleWrite("Exiting after data generation for Office Visit Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Office Visit Flow...." & @CRLF)
 						Exit
 					EndIf
 
 				Else
-					$counter = $arrConfig[30]
+					$counter = $arrConfig[33]
 				EndIf
-			Sleep(1000)
-			Until $counter = $arrConfig[30]
+			Until $counter = $arrConfig[33]
 
 			ConsoleWrite("Office Visit created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit created successfully...." & @CRLF)
@@ -362,7 +363,7 @@ Else
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY VDT EVENTS FOR OFFICE VISIT" & @CRLF)
 				ConsoleWrite("Wait for events to arrive from Medfusion" & @CRLF)
-				FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for events to arrive from Medfusions" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for events to arrive from Medfusion" & @CRLF)
 				Sleep(600000)
 
 				;Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
@@ -420,7 +421,15 @@ Else
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- CREATE CLINICAL VISIT SUMMARY FOR OFFICE VISIT" & @CRLF)
 				WinActivate("Chart - NOT FOR PATIENT USE")
-				Call("createCVS",$arrConfig[15],$arrConfig[16])
+				$result = Call("createCVS")
+				If($result == "PASSED") Then
+					ConsoleWrite("CVS successfully created for patient" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- CVS successfully created for patient -- PASSED" & @CRLF)
+				Else
+					ConsoleWrite("CVS creation failed" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- CVS creation failed -- FAILED" & @CRLF)
+					Exit
+				EndIf
 ;-----------------------------------------------------------------------------
 			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY CVS DETAILS IN DOCUMENT TABLE" & @CRLF)
 
