@@ -59,15 +59,18 @@ public class HealthFormListPage extends BasePageObject {
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
+		log("derp1");
 		if (!IHGUtil.exists(driver, newFormIframe)) {
+		    log("derp2");
 			driver.switchTo().defaultContent();
 		}
+		log("derp3");
 		driver.switchTo().frame(newFormIframe);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
 	public OldCustomFormPages openOldCustomForm(String formName) throws InterruptedException {
-		driver.findElement(By.linkText(formName)).click();
+		javascriptClick(driver.findElement(By.linkText(formName)));
 		Thread.sleep(3000);
 		return PageFactory.initElements(driver, OldCustomFormPages.class);
 	}

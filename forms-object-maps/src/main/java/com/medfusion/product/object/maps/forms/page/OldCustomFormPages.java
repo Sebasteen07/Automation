@@ -219,7 +219,7 @@ public class OldCustomFormPages extends BasePageObject {
 
 	public void clickNext() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, btnNext);
-		btnNext.click();
+		javascriptClick(btnNext);
 		Thread.sleep(1000);
 	}
 
