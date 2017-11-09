@@ -226,7 +226,6 @@ public class CreateAccountPage extends BasePageObject {
 		 * Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default chooseProvider();
 		 */
 		if (chkAgreePatientPrivacyInfo.isDisplayed()) {
-		    log("Found it");
 		    javascriptClick(chkAgreePatientPrivacyInfo);
 		}
 
