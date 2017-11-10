@@ -31,7 +31,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	@FindBy(id = "prevPageButton")
 	private WebElement previousPageButton;
 
-	@FindBy(className = "save")
+	@FindBy(xpath = "//a[@class='save']")
 	private WebElement saveAndFinishLink;
 
 	@FindBy(id = "errorDialog")
@@ -71,7 +71,7 @@ public abstract class PortalFormPage extends BasePageObject {
 		} catch (org.openqa.selenium.WebDriverException e) {
 			wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		}
-		continueButton.click();
+		javascriptClick(continueButton);
 		TimeUnit.SECONDS.sleep(3);
 		if (nextPageClass == null)
 			return null;
@@ -131,7 +131,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	}
 
 	public <T extends PortalFormPage> T goBack(Class<T> previousPageClass) {
-		previousPageButton.click();
+	    javascriptClick(previousPageButton);
 		return PageFactory.initElements(driver, previousPageClass);
 	}
 
@@ -160,7 +160,7 @@ public abstract class PortalFormPage extends BasePageObject {
 
 	public void clickSaveAndFinishAnotherTime() throws InterruptedException {
 		scrollAndWait(0, 0, 500);
-		saveAndFinishLink.click();
+		javascriptClick(saveAndFinishLink);
 		try {
 			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
@@ -209,7 +209,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	public void goToFirstPage() {
 		scrollToFooter();
 		while (previousPageButton.isDisplayed()) {
-			previousPageButton.click();
+		    javascriptClick(previousPageButton);
 			scrollToFooter(3);
 		}
 	}

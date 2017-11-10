@@ -134,14 +134,14 @@ public class OldCustomFormPages extends BasePageObject {
 			selectstate4.selectByVisibleText("US mail");
 		}
 		Thread.sleep(1000);
-		blindPartial.click();
+		javascriptClick(blindPartial);
 
 		// workaround for StaleElementReferenceException
 		for (int i = 0; i < 3; i++) {
 			try {
-				driver.findElement(By.xpath("//input[@value='blue']")).click();
-				driver.findElement(By.xpath("//input[@value='green']")).click();
-				driver.findElement(By.xpath("//input[@value='yes']")).click();
+				javascriptClick(driver.findElement(By.xpath("//input[@value='blue']")));
+				javascriptClick(driver.findElement(By.xpath("//input[@value='green']")));
+				javascriptClick(driver.findElement(By.xpath("//input[@value='yes']")));
 				break;
 			} catch (StaleElementReferenceException ex) {
 				Log4jUtil.log((i + 1) + ". attempt to click on checkboxes");

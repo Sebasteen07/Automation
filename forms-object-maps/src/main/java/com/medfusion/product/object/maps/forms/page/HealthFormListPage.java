@@ -58,7 +58,8 @@ public class HealthFormListPage extends BasePageObject {
 
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
+		javascriptClick(wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))));
+		Thread.sleep(3000);
 		if (!IHGUtil.exists(driver, newFormIframe)) {
 			driver.switchTo().defaultContent();
 		}
@@ -75,7 +76,7 @@ public class HealthFormListPage extends BasePageObject {
 	public void clickOnHealthForms() {
 		log("Clicking on Health Forms button");
 		IHGUtil.setDefaultFrame(driver);
-		healthFormsLink.click();
+		javascriptClick(healthFormsLink);
 		IHGUtil.setFrame(driver, "iframe");
 	}
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{

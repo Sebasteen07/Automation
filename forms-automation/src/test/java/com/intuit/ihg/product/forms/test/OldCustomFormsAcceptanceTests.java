@@ -232,7 +232,8 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		oldCustomForm.fillInsuranceHealthForm();
 		assertFalse(driver.getPageSource().contains("Female question"));
 		oldCustomForm.submitInsuranceHealthForm();
-		pHealthForm.clickOnHealthForms();
+		//TODO Somehow, this doesn't work here... but since it's a bug, comment it out for testing but leave as is for fix	
+        pHealthForm.clickOnHealthForms();
 		Utils.checkIfPDFCanBeDownloaded("Ivan Insurance Health Form ( Testing)", driver);
 		Utils.verifyFormsDatePatientPortal(pHealthForm, "Ivan Insurance Health Form ( Testing)", driver);
 

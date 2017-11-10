@@ -67,7 +67,7 @@ public class CurrentSymptomsPage extends ConfiguratorFormPage {
 		chckBlood.click();
 
 		log("Check Eyes, Ears,Nose and Throat");
-		chckEyesEarsNoseThroat.click();
+		javascriptClick(chckEyesEarsNoseThroat);
 	}
 
 	/**
