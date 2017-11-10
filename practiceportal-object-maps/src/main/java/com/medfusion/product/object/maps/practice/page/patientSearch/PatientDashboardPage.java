@@ -67,10 +67,10 @@ public class PatientDashboardPage extends BasePageObject {
 	@FindBy(linkText = "Send post age-out invite")
 	private WebElement postAgeOutInviteButton;
 
-	@FindBy(xpath = "//input[@value='Send post age-out invite']")
+	@FindBy(xpath = "//input[@type='submit']")
 	private WebElement sendPostAgeOutInviteButton;
 
-	@FindBy(xpath = "//*[contains(.,'Post age-out invitation has been sent successfully')]")
+	@FindBy(xpath = "//*[contains(text(),'Post age-out invitation has been sent successfully')]")
 	private WebElement postAgeOutInvitationInfoMessage;
 	
 	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td/a")
@@ -240,13 +240,11 @@ public class PatientDashboardPage extends BasePageObject {
 
 	public void sendPostAgeOutInvitation() {
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(postAgeOutInviteButton));
-		postAgeOutInviteButton.click();
-
+		javascriptClick(postAgeOutInviteButton);
 		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(sendPostAgeOutInviteButton));
-		sendPostAgeOutInviteButton.click();
-
-		log("Check if info message is present");
-		assertTrue(IHGUtil.exists(driver, 30, postAgeOutInvitationInfoMessage));
+		javascriptClick(sendPostAgeOutInviteButton);
+		log("Check if info message is present");		
+		assertTrue(new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(postAgeOutInvitationInfoMessage)).isDisplayed());
 	}
 
 	public boolean verifySubmittedForm(String formName) {

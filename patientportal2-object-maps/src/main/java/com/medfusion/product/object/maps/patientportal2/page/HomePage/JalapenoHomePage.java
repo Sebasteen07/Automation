@@ -130,7 +130,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public HealthFormListPage clickOnHealthForms() throws Exception {
 		log("Clicking on Health Forms button");
-		forms.click();
+		javascriptClick(forms);
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 

@@ -37,7 +37,7 @@ public class HomePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		if (!createNewAppointmentButton.isDisplayed())
 			rightNavMenu.click();
-		createNewAppointmentButton.click();
+		javascriptClick(createNewAppointmentButton);
 
 		return PageFactory.initElements(driver, AppointmentDetailsPage.class);
 	}

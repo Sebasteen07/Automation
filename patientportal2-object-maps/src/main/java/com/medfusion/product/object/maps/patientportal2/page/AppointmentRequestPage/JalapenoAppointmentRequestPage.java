@@ -70,7 +70,12 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 	public boolean fillAndSendTheAppointmentRequest(WebDriver driver) {
 		IHGUtil.setFrame(driver, "iframebody");
 		log("Filling the appointment form");
-
+		//unfortunately the most stable way to wait for styles and full display of the appointment iframe is to wait out the first two seconds...
+		try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
 		Select dropdown = new Select(prefTimeFrame);
 		dropdown.selectByVisibleText("First Available");
 

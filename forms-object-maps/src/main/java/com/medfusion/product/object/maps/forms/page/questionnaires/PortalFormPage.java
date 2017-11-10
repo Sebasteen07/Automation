@@ -87,7 +87,7 @@ public abstract class PortalFormPage extends BasePageObject {
 		for (attempt = 1; attempt <= maxRetry; attempt++) {
 			try {
 				wait.until(ExpectedConditions.elementToBeClickable(continueButton));
-				continueButton.click();
+				javascriptClick(continueButton);
 				break;
 			} catch (org.openqa.selenium.WebDriverException e) {
 				log("Exception was thrown, retry: " + attempt + "/" + maxRetry);
