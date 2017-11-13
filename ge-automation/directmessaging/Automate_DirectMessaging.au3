@@ -24,6 +24,8 @@ $arrEvent = Call("openEventFile")
 			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 
 			Local $aData,$iRows,$iColumns
+			ConsoleWrite("Executing Query: " & $arrQuery[26] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[26] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[26] & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				If(($aData[1][0] = 0) And ($aData[2][0] == "Both") And ($aData[3][0] = 1)) Then
@@ -31,6 +33,8 @@ $arrEvent = Call("openEventFile")
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings already enabled" & @CRLF)
 
 				Else
+					ConsoleWrite("Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
 					If (_SQL_Execute(-1,$arrQuery[14]) Or _SQL_Execute(-1,$arrQuery[15]) Or _SQL_Execute(-1,$arrQuery[16])) = $SQL_ERROR then
 						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
@@ -112,7 +116,8 @@ Else
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
 			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
-			ConsoleWrite($newQuery &  @CRLF)
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$PatientProfileId=$aData[1][6]
@@ -133,7 +138,8 @@ Else
 			$temp = StringSplit($arrConfig[20], ', ', 1)
 			$newQuery = StringReplace($arrQuery[23],"LNAME","'" & $temp[1] & "'")
 			$newQuery = StringReplace($newQuery,"FNAME","'" & $temp[2] & "'")
-		ConsoleWrite($newQuery & @CRLF)
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$authpvdrLogin = $aData[1][0]
@@ -152,6 +158,8 @@ Else
 
 		;Get pvid of order creating provider
 			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $arrConfig[2] & "'")
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -169,6 +177,8 @@ Else
 			EndIf
 
 		;MUActivityLog- Event 4
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -212,6 +222,8 @@ Else
 			FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- VERIFY ORDER DETAILS IN DATABASE" & @CRLF)
 
 		;cusMedfusionOutgoingToc
+			ConsoleWrite("Executing Query: " & $arrQuery[17] & $PatientProfileId & $arrQuery[18] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[17] & $PatientProfileId & $arrQuery[18] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[17] & $PatientProfileId & $arrQuery[18] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -234,6 +246,8 @@ Else
 			Sleep(210000)
 		;cusMedfusionOutgoingTOCstatus
 			FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY ORDER DETAILS IN CUSMEDFUSIONOUTGOINGTOCSTATUS TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[19] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[19] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[19] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;TOC Status returned from SES
@@ -271,6 +285,8 @@ Else
 
 		;cusMedfusionOutgoingTocProvider
 			FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY ORDER DETAILS IN CUSMEDFUSIONOUTGOINGTOCPROVIDER TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[20] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[20] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[20] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;Status in provider table
@@ -361,6 +377,8 @@ Else
 		Sleep(60000)
 		;cusMedfusionOutgoingTOCPAtient
 			FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- VERIFY PATIENT LETTER DETAILS IN CUSMEDFUSIONOUTGOINGTOCPATIENT TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[21] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[21] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[21] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 
@@ -406,6 +424,8 @@ Else
 		Sleep(60000)
 		;cusMedfusionCommOutgoing
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY PATIENT LETTER DETAILS IN CUSMEDFUSIONCOMMOUTGOING TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[22] & $commOutgoingId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[22] & $commOutgoingId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[22] & $commOutgoingId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				;PateintProfileId
@@ -518,6 +538,8 @@ Else
 
 		;cusMedfusionMUEvents - Event 514
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY EVENT 514 DETAILS IN CUSMEDFUSIONMUEVENTS TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " &$arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -615,6 +637,8 @@ Else
 
 		;MUActivityLog - Event 514
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13-- VERIFY EVENT 514 DETAILS IN MUACTIVITYLOG TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then

@@ -28,9 +28,13 @@ $arrDoctype = Call("openDoctypeFile")
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR OFFICE VISIT FLOW" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 		Local $aData,$iRows,$iColumns
+		ConsoleWrite("Executing Query: " & $arrQuery[25] & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[25] & @CRLF)
 		$iRval = _SQL_GetTable2D(-1,$arrQuery[25] & ";",$aData,$iRows,$iColumns)
 		If $iRval = $SQL_OK then
 			If(($aData[1][0] = 0) Or ($aData[2][0] = 0)) Then
+				ConsoleWrite("Executing Query: " & $arrQuery[24] & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[24] & @CRLF)
 				If _SQL_Execute(-1,$arrQuery[24]) = $SQL_ERROR then
 					;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 					ConsoleWrite("ERROR Updating service settings...." & @CRLF)
@@ -109,7 +113,8 @@ Else
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
 			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
-			ConsoleWrite($newQuery &  @CRLF)
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$PatientProfileId=$aData[1][6]
@@ -128,7 +133,8 @@ Else
 
 		;Get MedfusionMemberId
 			$newQuery = StringReplace($arrQuery[5],"MemberId =","PatientProfileId = " & $PatientProfileId)
-			ConsoleWrite($newQuery & @CRLF)
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK Then
 				$MedfusionMemberId = $aData[1][2]
@@ -145,6 +151,8 @@ Else
 			EndIf
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- VERIFY OFFICE VISIT DETAILS IN DOCUMENT TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[28] & $PID & $arrQuery[29] & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$visitDocumentId = Int($aData[1][0]) - 1
@@ -196,6 +204,8 @@ Else
 			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONCVSINFO TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[30] & $visitDocumentId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[30] & $visitDocumentId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[30] & $visitDocumentId & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -258,6 +268,8 @@ Else
 			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[31] & $CVSInfoId & $arrQuery[32] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[31] & $CVSInfoId & $arrQuery[32] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[31] & $CVSInfoId & $arrQuery[32] &";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -369,6 +381,8 @@ Else
 				;Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 
 				;Local $aData,$iRows,$iColumns
+				ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 				$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 				If $iRval = $SQL_OK then
@@ -432,7 +446,8 @@ Else
 				EndIf
 ;-----------------------------------------------------------------------------
 			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY CVS DETAILS IN DOCUMENT TABLE" & @CRLF)
-
+			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[28] & $PID & $arrQuery[29] & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$cvsDocumentId = Int($aData[1][0]) - 1
@@ -498,6 +513,8 @@ Else
 			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY CVS DETAILS IN CUSMEDFUSIONCVSEXTINFO TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[33] & $cvsDocumentId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[33] & $cvsDocumentId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[33] & $cvsDocumentId & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -574,6 +591,8 @@ Else
 			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 14 -- VERIFY CVS DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -661,6 +680,8 @@ Else
 			EndIf
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 15 -- VERIFY EVENT FOR CVS CREATION IN MUACTIVITYLOG TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 				If $iRval = $SQL_OK then

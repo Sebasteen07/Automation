@@ -1591,7 +1591,7 @@ EndFunc
 ;-----Function to verify read receipt
 Func verifyReadReceipt()
 	ConsoleWrite("METHOD: verifyReadReceipt() started" & @CRLF)
-	;WinActivate("Chart - NOT FOR PATIENT USE")
+	WinActivate("Chart - NOT FOR PATIENT USE")
 	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
 	Sleep(1000)
 	MouseMove($aCoord[0]+10,$aCoord[1]+5)

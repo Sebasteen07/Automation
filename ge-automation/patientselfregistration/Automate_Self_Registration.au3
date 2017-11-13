@@ -24,9 +24,13 @@ $arrEvent = Call("openEventFile")
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR PATIENT SELF REGISTRATION FLOW" & @CRLF)
 			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 			Local $aData,$iRows,$iColumns
+			ConsoleWrite("Executing Query: " & $arrQuery[27] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[27] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[27] & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				If(($aData[1][0] = 0) Or ($aData[2][0] = 0) Or ($aData[3][0] = 0)) Then
+					ConsoleWrite("Executing Query: " & $arrQuery[1] & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[1] & @CRLF)
 					If _SQL_Execute(-1,$arrQuery[1]) = $SQL_ERROR then
 						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
@@ -151,6 +155,8 @@ Else
 			Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 
 		    Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
+			ConsoleWrite("Executing Query: " & $arrQuery[4] & "'" & $arrPtDetails[1] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[4] & "'" & $arrPtDetails[1] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[4] & "'" & $arrPtDetails[1] & "';",$aData,$iRows,$iColumns)
 			$MedfusionMemberId=$aData[1][0]
 
@@ -158,6 +164,8 @@ Else
 			$newQuery = StringReplace($newQuery, "= '2' and ValueString =", "in (2,4,6,8) and MemberId = " &$MedfusionMemberId)
 			;ConsoleWrite($newQuery & @CRLF)
 
+			ConsoleWrite("Executing Query: " & $newQuery & $arrQuery[3] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & $arrQuery[3] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & $arrQuery[3] &  ";",$aData,$iRows,$iColumns)
 			;If $iRval = $SQL_OK then _arrayDisplay($aData,"2D  (" & $iRows & " Rows) (" & $iColumns & " Columns)" )
 
@@ -351,6 +359,8 @@ Else
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying in cusMedfusionMember table" & @CRLF)
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
+			ConsoleWrite("Executing Query: " & $arrQuery[5] & "'" & $MedfusionMemberId & "'"  & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[5] & "'" & $MedfusionMemberId & "'" & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[5] & "'" & $MedfusionMemberId & "';",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -396,6 +406,8 @@ Else
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying in PatientProfile table" & @CRLF)
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
+			ConsoleWrite("Executing Query: " & $arrQuery[6] & "'" & $PatientProfileId & "'"  & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[6] & "'" & $PatientProfileId & "'" & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[6] & "'" & $PatientProfileId & "';",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -470,7 +482,8 @@ Else
 		ConsoleWrite("Verifying in cusMedfusionPatientRegistration table" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying in cusMedfusionPatientRegistration table" & @CRLF)
 
-			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
+			ConsoleWrite("Executing Query: " & $arrQuery[7] & "'" & $PatientProfileId & "'"  & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[7] & "'" & $PatientProfileId & "'" & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[7] & "'" & $PatientProfileId & "';",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -490,19 +503,6 @@ Else
 					Exit
 				EndIf
 
-;~ 			;Verify status
-;~ 				ConsoleWrite("Verifying status in cusMedfusionPatientRegistration table" & @CRLF)
-;~ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying status in cusMedfusionPatientRegistration table" & @CRLF)
-;~ 				ConsoleWrite("Expected Result: " & "Processed" &" and Actual Result: " & $aData[1][1] & " -- ")
-;~ 				If (StringCompare("Processed", $aData[1][1]) = 0) Then
-;~ 					ConsoleWrite("PASSED" & @CRLF)
-;~ 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Processed" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-;~ 				Else
-;~ 					ConsoleWrite("FAILED" & @CRLF)
-;~ 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Processed" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-;~ 					Exit
-;~ 				EndIf
-
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
@@ -516,10 +516,11 @@ Else
 		FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY EVENTID & EVENT TYPE IN CUSMEDFUSIONMUEVENTS TABLE" & @CRLF)
 		ConsoleWrite("Verifying in cusMedfusionMUEvents table" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying in cusMedfusionMUEvents table" & @CRLF)
-ConsoleWrite("Check1"&@CRLF)
-			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
+
+			ConsoleWrite("Executing Query: " & $arrQuery[9] & "'" & $PatientProfileId & "'"  & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[9] & "'" & $PatientProfileId & "'" & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[9] & "'" & $PatientProfileId & "';",$aData,$iRows,$iColumns)
-ConsoleWrite("Check2"&@CRLF)
+
 			If $iRval = $SQL_OK then
 
 			;Verify EventId
@@ -564,8 +565,8 @@ ConsoleWrite("Check2"&@CRLF)
 		ConsoleWrite("Verifying in MUActivityLog table" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying in MUActivityLog table" & @CRLF)
 
-			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
-			ConsoleWrite($arrQuery[11] & "'" & $PID & "';"&@CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & "'" & $PID & "'"  & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & "'" & $PID & "'" & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & "'" & $PID & "';",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
