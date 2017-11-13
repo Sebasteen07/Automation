@@ -59,6 +59,7 @@ public class BulkAdmin {
 	public String oPassword = "";
 	public String oPatientID = "";
 	public String oEmailID = "";
+	public String categoryType="";
 
 
 }

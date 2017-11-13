@@ -159,6 +159,10 @@ public class BulkMessagePayload {
 					Element Body = doc.createElement("Body");
 					Attachment.appendChild(Body);
 					Body.appendChild(doc.createTextNode(pdf));
+					
+					Element Category = doc.createElement("Category");
+					Category.appendChild(doc.createTextNode(testData.categoryType));
+					Attachment.appendChild(Category);
 				}
 				// End of Attachment
 			}

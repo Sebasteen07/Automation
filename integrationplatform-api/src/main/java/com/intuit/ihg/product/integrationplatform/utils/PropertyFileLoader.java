@@ -1225,5 +1225,22 @@ public class PropertyFileLoader {
 		
 		return property.getProperty("preCheckPatientExternalID_FE");
 	}
-	
+	public String getAllowAttachment() {
+		return property.getProperty("allowAttachment");
+	}
+	public String getCategoryType() {
+		return property.getProperty("categoryType");
+	}
+	public String getFileNameAMDC() {
+		return property.getProperty("fileNameAMDC");
+	}
+	public String getMimeType() {
+		return property.getProperty("mineType");
+	}
+	public String getAttachmentBody() {
+		return property.getProperty("attacmentBody");
+	}
+	public String getPortalCategoryType() {
+		return property.getProperty("portalCategoryType");
+	}
 }
