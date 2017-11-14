@@ -22,7 +22,7 @@ $btnMsgYes = "Button3"
 $btnMsgOk = "Button4"
 
 $path="..\commonsteps\config.csv"
-$logPath = "..\commonsteps\ProcessLog.txt"
+$logPath = ""
 $queryPath = "..\commonsteps\queries.csv"
 $eventsPath = "..\commonsteps\events.csv"
 $doctypePath = "..\commonsteps\doctype.csv"
@@ -141,7 +141,7 @@ Func setConfig()
 					Case "number of selfregistered patients to be created"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
-					Case "number of email messages to be created"
+					Case "number of messages to be created"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
 					Case "email message subject"
@@ -159,8 +159,6 @@ Func setConfig()
 	EndIf
 EndFunc
 
-
-
 ;-----Function to open the log file in append mode
 ;-----Returns handle of log file
 Func openLogFile()
@@ -170,6 +168,24 @@ Func openLogFile()
 			Exit
 		EndIf
 		Return($hFileOpen)
+EndFunc
+
+
+
+;-----Sets path for log file
+;-----Input Parameter -
+Func setLogPath($mypath)
+	Assign($logPath,$mypath,$ASSIGN_FORCEGLOBAL)
+EndFunc
+
+
+
+;-----Get current timestamp
+Func getTimestamp()
+	$EPOCH = "1970/01/01 00:00:00"
+	$NOW = _NowCalc()
+	$timestamp = _DateDiff("s", $EPOCH, $NOW)
+	Return($timestamp)
 EndFunc
 
 
@@ -526,7 +542,7 @@ Func openMFDashboard()
 		MouseClick("left",689,85)
 		MouseWheel($MOUSE_WHEEL_DOWN,10)
 		Sleep(1000)
-		MouseClick("left",327,530,2)
+		MouseClick("left",345,545,2)
 		WinWaitActive("Medfusion Dashboard")
 		Local $sText1 = WinGetTitle("[ACTIVE]")
 		ConsoleWrite("Active Window is " & $sText1 & @CRLF)

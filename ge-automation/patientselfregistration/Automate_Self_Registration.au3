@@ -5,16 +5,12 @@
 #include <_sql.au3>
 #include "..\commonsteps\CommonSteps.au3"
 
+$time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\ProcessLog.txt"
+$logPath = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\ProcessLog_SelfRegistration_" & $time & ".txt"
+Call("setLogPath",$logpath)
+$hFileOpen = Call("openLogFile")
 $patientDetails = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\patientdetails.txt"
-
-;Opening Log file
-		Local $hFileOpen = FileOpen($logPath, $FO_OVERWRITE)
-		If $hFileOpen = -1 Then
-			MsgBox($MB_SYSTEMMODAL, "", "An error occurred while writing process log file.")
-			Exit
-		EndIf
 
 $arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")

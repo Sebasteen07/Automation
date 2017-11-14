@@ -5,15 +5,11 @@
 #include <_sql.au3>
 #include "..\commonsteps\CommonSteps.au3"
 
+$time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog.txt"
-
-;Opening Log file
-		Local $hFileOpen = FileOpen($logPath, $FO_OVERWRITE)
-		If $hFileOpen = -1 Then
-			MsgBox($MB_SYSTEMMODAL, "", "An error occurred while writing process log file.")
-			Exit
-		EndIf
+$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog_DirectMessaging_" & $time & ".txt"
+Call("setLogPath",$logpath)
+$hFileOpen = Call("openLogFile")
 
 $arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
