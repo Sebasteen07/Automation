@@ -27,6 +27,7 @@ New Account Address1:-address1
 New Account Address2:-address2
 New Account City:-city
 New Account State:-state
+New Account State Dropdown:-ui-select-choices-row-0-0
 New Account ZipCode:-postalCode
 New Account ContinueButton:-nextStep
 
@@ -38,7 +39,8 @@ Security Details Secret Answer:-secretAnswer
 Security Details Phone1:-phone1
 Security Details Phone2:-phone2
 Security Details Phone3:-phone3
-Security Details Preferred Location Dropdown:-preferredLocationId
+Security Details Preferred Location:-preferredLocationId
+Security Details Preferred Location Dropdown:-ui-select-choices-row-1-0
 
 #Patient Portal New Patient Security Details Statement Preference
 Security Details Statement Preference Electronic:-paymentPreference_Electronic
@@ -50,8 +52,13 @@ Portal Messaging feature:-feature_messaging
 #Patient Portal Message Page
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
 Portal Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
+Portal Email Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]
 Portal Message Time:-//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]
 CCD Link:-View health data
+Portal Message Reply Button:-replyButton
+Portal Message Reply Body:-replyBody
+Portal Message Send Button:-//button[contains(text(),'Send')]
+Portal Message Send Confirmation:-//*[contains(text(),'Your reply was successfully sent')]
 
 #CCD Viewer
 CCD Viewer Download PDF:-savePdf

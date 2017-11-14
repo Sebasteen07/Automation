@@ -19,7 +19,7 @@ order by outgoingtocid desc
 select status, mdnConfirmationDate from cusMedfusionOutgoingTOCStatus where outgoingtocid = 
 select IntServProv,internalTOCaddress,ExtServProv,externalTOCaddress,status,Subject,lettertext,AttachmentName from cusMedfusionOutgoingTOCProvider where outgoingtocid = 
 select patientprofileid, status, CommOutgoingId from cusMedfusionOutgoingTOCPatient where outgoingtocid = 
-select PatientProfileId, CommServiceType, SubjectText,CreatedByUser, CommSentStatus, MedfusionCommId, DocumentId, CommSentDate from cusMedfusionCommOutgoing where CommOutgoingId = 
+select PatientProfileId, CommServiceType, SubjectText,CreatedByUser, CommSentStatus, MedfusionCommId, DocumentId, CommSentDate, CommOutgoingId from cusMedfusionCommOutgoing where CommOutgoingId = 
 select LOGINNAME, PVID from USR where LASTNAME = LNAME and FIRSTNAME = FNAME
 update practicesolutions set enabled = 1 where solutionsid in (2,3)
 select enabled from practicesolutions where solutionsid in (2,3)
@@ -31,3 +31,9 @@ select cvsInfoId, medfusionPatientId, gePatientId, status from cusMedfusionCVSIn
 select outboundCcdId, medfusionPatientId, gePatientId, state, status, ccdType from cusMedfusionOutboundCcd where referenceId = 
 order by outboundCcdId desc
 select cvsInfoId, medfusionPatientId, gePatientId, status, xid from cusMedfusionCVSExtInfo where did = 
+select CommServiceType, EMRDocumentType, ResponseToDocumentId, SubjectText from cusMedfusionCommIncoming where PatientProfileId = 
+order by CommIncomingId desc
+select settingvalue,settingtype from servicesettings where settingtype in ('RUN_SECURE_COMM','NOTIFY_READ','NO_REPLY') order by settingtype asc
+update servicesettings set settingvalue = '1' where settingtype = 'RUN_SECURE_COMM'
+update servicesettings set settingvalue = '0' where settingtype = 'NO_REPLY'
+update servicesettings set settingvalue = '1' where settingtype = 'NOTIFY_READ'
