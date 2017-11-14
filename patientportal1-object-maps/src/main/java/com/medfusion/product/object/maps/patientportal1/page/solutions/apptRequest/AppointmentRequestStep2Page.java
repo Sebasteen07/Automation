@@ -81,8 +81,9 @@ public class AppointmentRequestStep2Page extends BasePageObject {
 			homePhone.clear(); // May be filled in if user set default.
 			homePhone.sendKeys(sHomePhone);
 		}
-
-		btnContinue.click();
+		//
+		
+		javascriptClick(btnContinue);
 		return PageFactory.initElements(driver, AppointmentRequestStep3Page.class);
 	}
 

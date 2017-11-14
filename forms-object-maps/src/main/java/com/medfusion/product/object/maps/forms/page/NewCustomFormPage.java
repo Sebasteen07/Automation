@@ -67,12 +67,12 @@ public class NewCustomFormPage extends PortalFormPage {
 	 */
 	public void selectAnswer(WebElement questionOfSelectType, int answerIndex) throws InterruptedException {
 		scrollAndWait(0, 0, 500);
-		questionOfSelectType.findElement(By.xpath("((./label)[" + answerIndex + "])/input")).click();
+		javascriptClick(questionOfSelectType.findElement(By.xpath("((./label)[" + answerIndex + "])/input")));
 	}
 
 	public void selectAnswers(WebElement questionOfSelectType, List<Integer> answersIndexes) {
 		for (Integer index : answersIndexes) {
-			questionOfSelectType.findElement(By.xpath("((./label)[" + index + "])/input")).click();
+		    javascriptClick(questionOfSelectType.findElement(By.xpath("((./label)[" + index + "])/input")));
 		}
 	}
 
@@ -102,9 +102,9 @@ public class NewCustomFormPage extends PortalFormPage {
 				.findElements(By.xpath(QuestionsService.QUESTIONS_BASE_XPATH + FUP_QUESTIONS_FILTER + "/label/input"))) {
 			scrollAndWait(0, 0, 500);
 			if ("checkbox".equals(fupsel.getAttribute("type")) && fupsel.isSelected()) {
-				fupsel.click();
+				javascriptClick(fupsel);
 			} else if ("radio".equals(fupsel.getAttribute("type")) && !fupsel.isSelected()) {
-				fupsel.click();
+			    javascriptClick(fupsel);
 			}
 		}
 		for (WebElement fuptxt : driver.findElements(
@@ -116,9 +116,9 @@ public class NewCustomFormPage extends PortalFormPage {
 				.findElements(By.xpath(QuestionsService.QUESTIONS_BASE_XPATH + TOPLVL_QUESTIONS_FILTER + "/label/input"))) {
 			scrollAndWait(0, 0, 500);
 			if ("checkbox".equals(sel.getAttribute("type")) && sel.isSelected()) {
-				sel.click();
+			    javascriptClick(sel);
 			} else if ("radio".equals(sel.getAttribute("type")) && !sel.isSelected()) {
-				sel.click();
+			    javascriptClick(sel);
 			}
 		}
 		for (WebElement txt : driver.findElements(

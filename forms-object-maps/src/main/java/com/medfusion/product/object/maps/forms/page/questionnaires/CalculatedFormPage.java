@@ -48,32 +48,31 @@ public class CalculatedFormPage extends PortalFormPage {
 	public void fillFormLeftmostAnswer() throws Exception {
 		log("Filling the form with the lefttmost answers.");
 		for (WebElement radioButton : leftmostRadioTableList) {
-			radioButton.click();
+			javascriptClick(radioButton);
 		}
 
 		IHGUtil iHGUtil = new IHGUtil(driver);
 		if (iHGUtil.exists(leftmostRadioInFieldset)) {
-			leftmostRadioInFieldset.click();
+		    javascriptClick(leftmostRadioInFieldset);
 		}
 	}
 
 	public void fillFormRightmostAnswer() {
 		log("Filling the form with the rightmost answers.");
 		for (WebElement radioButton : rightmostRadioTableList) {
-			radioButton.sendKeys(" "); // radioButton.click(); doesn't work with
-			// ADHD Forms
+		    javascriptClick(radioButton);
 		}
 
 		IHGUtil iHGUtil = new IHGUtil(driver);
 		if (iHGUtil.exists(rightmostRadioInFieldset)) {
-			rightmostRadioInFieldset.click();
+		    javascriptClick(rightmostRadioInFieldset);
 		}
 	}
 
 	public void fillFormExcludingLastQuestion() {
 		log("Filling the form with the rightmost answers except for the last compulsory answer.");
 		for (int i = 0; i <= rightmostRadioTableList.size() - 2; i++) {
-			rightmostRadioTableList.get(i).click();
+		    javascriptClick(rightmostRadioTableList.get(i));
 		}
 
 	}

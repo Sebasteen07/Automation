@@ -30,7 +30,7 @@ import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPa
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 public class JalapenoHomePage extends JalapenoMenu {
 
-	@FindBy(how = How.XPATH, using = "//*[@id='home')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='home']")
 	private WebElement home;
 
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -130,7 +130,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public HealthFormListPage clickOnHealthForms() throws Exception {
 		log("Clicking on Health Forms button");
-		forms.click();
+		javascriptClick(forms);
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 

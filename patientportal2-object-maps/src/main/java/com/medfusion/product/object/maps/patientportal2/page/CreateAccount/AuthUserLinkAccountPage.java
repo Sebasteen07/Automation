@@ -41,8 +41,11 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[2]")
 	private WebElement relationshipSecondSelect;
 
-	@FindBy(how = How.ID, using = "next")
+	@FindBy(how = How.ID, using = "nextStep")
 	private WebElement continueButton;
+	
+	@FindBy(how = How.ID, using = "next")
+    private WebElement continueButton2;
 
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement enterPortalButton;
@@ -95,13 +98,16 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		IHGUtil.PrintMethodName();
 
 		firstNameInput.sendKeys(name);
-		lastNameInput.sendKeys(lastname);
+		lastNameInput.sendKeys(lastname);	
 		log("Guardian name: " + name + " " + lastname);
 
 		Select relationshipPatient = new Select(this.relationshipSecondSelect);
 		relationshipPatient.selectByVisibleText(relationship);
-
-		continueButton.click();
+		
+		//workaround for validation, triggers after focus leaves element
+		firstNameInput.sendKeys("");
+		
+		javascriptClick(continueButton2);
 
 		return PageFactory.initElements(driver, SecurityDetailsPage.class);
 	}

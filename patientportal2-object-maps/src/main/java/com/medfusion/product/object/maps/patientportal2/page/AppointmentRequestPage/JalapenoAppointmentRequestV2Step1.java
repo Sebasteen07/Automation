@@ -75,7 +75,7 @@ public class JalapenoAppointmentRequestV2Step1 extends BasePageObject {
 
 	public JalapenoAppointmentRequestV2Step2 continueToStep2(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		continueButton.click();
+		javascriptClick(continueButton);
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step2.class);
 	}
 

@@ -505,7 +505,7 @@ public class MyAccountPage extends BasePageObject {
 	}
 
 	public void submit() {
-		btnSubmit.click();
+		javascriptClick(btnSubmit);
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 

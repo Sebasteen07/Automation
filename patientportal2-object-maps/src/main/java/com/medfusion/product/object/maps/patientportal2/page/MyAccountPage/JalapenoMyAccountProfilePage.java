@@ -134,7 +134,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 			log("Checking gender value: " + genderValue);
 			new Select(genderQuestion).selectByVisibleText(genderValue);
 			log("Value " + genderValue + " is verified.");
-			saveMyChanges.click();
+			javascriptClick(saveMyChanges);
 			IHGUtil.waitForElement(driver, 30, genderQuestion);
 			} catch (NoSuchElementException e) {
 				log("Gender value: " + genderValue + "is missing.");
