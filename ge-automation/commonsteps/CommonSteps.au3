@@ -157,7 +157,7 @@ Func setConfig()
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
-		;_ArrayDisplay($arrConfig, "1D - Single")
+
 		Return($arrConfig)
 	EndIf
 EndFunc

@@ -37,7 +37,6 @@ $arrDoctype = Call("openDoctypeFile")
 					ConsoleWrite("Executing Query: " & $arrQuery[41] & @CRLF & $arrQuery[42] & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[41] & @CRLF & $arrQuery[42] & @CRLF )
 					If (_SQL_Execute(-1,$arrQuery[41]) Or _SQL_Execute(-1,$arrQuery[42])) = $SQL_ERROR then
-						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
@@ -73,7 +72,14 @@ Else
  	$createAppointmentJar = StringReplace($currentDir, "appointments", "jarfiles")  & "\createAppointments.jar"
 	$counter = 0
 	Do
-		ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
+		If($arrConfig[9]=="Data Generation") Then
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments" & @CRLF)
+		Else
+			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
+		EndIf
+
 		$ProcessID = Run(@ComSpec & ' /c java -jar ' & $createAppointmentJar &'',"","",$STDOUT_CHILD)
 		ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
 		ProcessWaitClose($ProcessID)
@@ -292,7 +298,21 @@ Else
 		_SQL_Close()
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- CREATE APPOINTMENT FROM PATIENT PORTAL" & @CRLF)
-		ShellExecuteWait($createAppointmentJar)
+		ConsoleWrite("Creating New Appointment to view as Alert" & @CRLF)
+		$ProcessID = Run(@ComSpec & ' /c java -jar ' & $createAppointmentJar &'',"","",$STDOUT_CHILD)
+		ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
+		ProcessWaitClose($ProcessID)
+		$output =StdoutRead($ProcessID)
+
+			If(StringInStr($output,"PASSED")) Then
+				ConsoleWrite("Appointment created successfully" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Appointment created successfully" & @CRLF)
+			Else
+				ConsoleWrite("Error in Appointment creation from Patient Portal" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Error in Appointment creation from Patient Portal -- FAILED" & @CRLF)
+				Exit
+			EndIf
+
 		ConsoleWrite("Wait for appointment to arrive" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for appointment to arrive"& @CRLF)
 		Sleep(240000)
