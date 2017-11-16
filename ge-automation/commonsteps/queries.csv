@@ -37,3 +37,6 @@ select settingvalue,settingtype from servicesettings where settingtype in ('RUN_
 update servicesettings set settingvalue = '1' where settingtype = 'RUN_SECURE_COMM'
 update servicesettings set settingvalue = '0' where settingtype = 'NO_REPLY'
 update servicesettings set settingvalue = '1' where settingtype = 'NOTIFY_READ'
+select settingvalue, settingtype from servicesettings where settingtype in ('RUN_APPT','VIEW_APPOINTMENT') order by settingtype asc
+update servicesettings set settingvalue = '1' where settingtype = 'RUN_APPT'
+update servicesettings set settingvalue = '1' where settingtype = 'VIEW_APPOINTMENT'
