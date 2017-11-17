@@ -542,8 +542,8 @@ Else
 			_SQL_Close()
 
 			Sleep(240000)
-			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY READ RECEIPT IN PATIENT CHART" & @CRLF)
-			$result = Call("verifyReadReceipt")
+			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY READ RECEIPT IN PATIENT CHART" & @CRLF)
+			$result = Call("verifyDocumentInPatientChart","Read Receipt")
 			If($result == "PASSED") Then
 				ConsoleWrite("Read Receipt verified in Patient Chart" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Read Receipt verified in Patient Chart -- PASSED" & @CRLF)

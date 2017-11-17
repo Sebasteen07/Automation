@@ -48,6 +48,8 @@ Security Details Statement Preference Update Button:-updateMissingInfoButton
 
 #Patient Portal Home Page
 Portal Messaging feature:-feature_messaging
+Portal Appointments feature:-feature_appointment_request
+Portal Appointment Send Confirmation:-//*[contains(text(),'Thank you')]
 
 #Patient Portal Message Page
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
@@ -59,6 +61,15 @@ Portal Message Reply Button:-replyButton
 Portal Message Reply Body:-replyBody
 Portal Message Send Button:-//button[contains(text(),'Send')]
 Portal Message Send Confirmation:-//*[contains(text(),'Your reply was successfully sent')]
+
+#Appointments Select Provider/ Location Page
+Appointments Provider Show All Button:-showall
+Appointments Select First Provider:-//*[@id="locationProviderResultList"]/ol/li/ul/li/label/span[1]
+Appointments Provider Page Continue button:-continue_button
+
+#Appointments Details Page
+Appointment Reason:-apptreason
+Request Appointment Button:-continue_button
 
 #CCD Viewer
 CCD Viewer Download PDF:-savePdf

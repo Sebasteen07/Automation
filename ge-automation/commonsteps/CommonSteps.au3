@@ -152,9 +152,12 @@ Func setConfig()
 
 					Case "reply to email message"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of appointments to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
-		;_ArrayDisplay($arrConfig, "1D - Single")
+
 		Return($arrConfig)
 	EndIf
 EndFunc
@@ -1604,9 +1607,10 @@ EndFunc
 
 
 
-;-----Function to verify read receipt
-Func verifyReadReceipt()
-	ConsoleWrite("METHOD: verifyReadReceipt() started" & @CRLF)
+;-----Function to verify document in PAtient Chart
+;-----Input Parmeter - Title of document  to be verified
+Func verifyDocumentInPatientChart($docTitle)
+	ConsoleWrite("METHOD: verifyDocumentInPatientChart() started" & @CRLF)
 	WinActivate("Chart - NOT FOR PATIENT USE")
 	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
 	Sleep(1000)
@@ -1631,12 +1635,12 @@ Func verifyReadReceipt()
 	$str = WinGetText("Chart - NOT FOR PATIENT USE")
 	;$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
 	;ConsoleWrite($str & @CRLF)
-	If(StringInStr($str,"Read Receipt at")>0) Then
-		ConsoleWrite("Read Receipt arrived" & @CRLF)
+	If(StringInStr($str,$docTitle)>0) Then
+		ConsoleWrite("Document " & $docTitle & " arrived" & @CRLF)
 		Return("PASSED")
 	Else
-		ConsoleWrite("Read Receipt did not arrive..." & @CRLF)
+		ConsoleWrite("Document " & $docTitle & " did not arrive..." & @CRLF)
 		Return("FAILED")
 	EndIf
-	ConsoleWrite("METHOD: verifyReadReceipt() ended" & @CRLF)
+	ConsoleWrite("METHOD: verifyDocumentInPatientChart() ended" & @CRLF)
 EndFunc
