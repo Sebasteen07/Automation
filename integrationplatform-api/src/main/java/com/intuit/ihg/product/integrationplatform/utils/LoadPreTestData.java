@@ -382,6 +382,13 @@ public class LoadPreTestData {
 		testData.AddAttachment = propertyData.getAddAttachment();
 		testData.PatientExternalId = propertyData.getPatientExternalId();
 		
+		testData.categoryType = propertyData.getCategoryType();
+		testData.fileName = propertyData.getFileNameAMDC();
+		testData.mimeType = propertyData.getMimeType();
+		testData.attachmentBody = propertyData.getAttachmentBody();
+		testData.downloadLocation = propertyData.getDownloadFileLocation();
+		testData.portalCategoryType = propertyData.getPortalCategoryType();
+		
 		return testData;
 		}
 	public SendDirectMessage loadSendDirectMessageDataFromProperty(SendDirectMessage testData) throws IOException {
