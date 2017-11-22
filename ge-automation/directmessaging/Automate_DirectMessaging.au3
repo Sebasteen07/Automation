@@ -5,15 +5,11 @@
 #include <_sql.au3>
 #include "..\commonsteps\CommonSteps.au3"
 
+$time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog.txt"
-
-;Opening Log file
-		Local $hFileOpen = FileOpen($logPath, $FO_OVERWRITE)
-		If $hFileOpen = -1 Then
-			MsgBox($MB_SYSTEMMODAL, "", "An error occurred while writing process log file.")
-			Exit
-		EndIf
+$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog_DirectMessaging_" & $time & ".txt"
+Call("setLogPath",$logpath)
+$hFileOpen = Call("openLogFile")
 
 $arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
@@ -24,6 +20,8 @@ $arrEvent = Call("openEventFile")
 			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 
 			Local $aData,$iRows,$iColumns
+			ConsoleWrite("Executing Query: " & $arrQuery[26] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[26] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[26] & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				If(($aData[1][0] = 0) And ($aData[2][0] == "Both") And ($aData[3][0] = 1)) Then
@@ -31,10 +29,14 @@ $arrEvent = Call("openEventFile")
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings already enabled" & @CRLF)
 
 				Else
+					ConsoleWrite("Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
 					If (_SQL_Execute(-1,$arrQuery[14]) Or _SQL_Execute(-1,$arrQuery[15]) Or _SQL_Execute(-1,$arrQuery[16])) = $SQL_ERROR then
 						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
+						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						Exit
 
 					Else
@@ -44,12 +46,20 @@ $arrEvent = Call("openEventFile")
 				EndIf
 			Else
 				ConsoleWrite("ERROR Checking Service Settings...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Service Settings...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
 			_SQL_Close()
 
+If($arrConfig[9] == "Preconditions Check") Then
+	ConsoleWrite("Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
+	Exit
+
+Else
 
 ;Open CPS -Patient Chart
 	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- LOGIN TO CPS" & @CRLF)
@@ -61,7 +71,7 @@ $arrEvent = Call("openEventFile")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[14],$arrConfig[15])
+		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -69,25 +79,29 @@ $arrEvent = Call("openEventFile")
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				Call("createNewDocument",$arrConfig[16],$arrConfig[14],$arrConfig[15])
+				ConsoleWrite("Creating order #" &$counter+1 & @CRLF)
+				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[30],$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15],$arrConfig[24])
+					Call("createOrder",$arrConfig[32],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
 
 				Else
-					Call("createOrder",$arrConfig[18],$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15],$arrConfig[24])
+					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
 				EndIf
 
-				If($arrConfig[26]=="Yes") Then
+				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[27]) Then
+					Sleep(60000)
+					If($counter = $arrConfig[30]) Then
+						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
 					EndIf
 
 				Else
-					$counter = $arrConfig[27]
+					$counter = $arrConfig[30]
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[27]
+			Until $counter = $arrConfig[30]
 
 			Sleep(5000)
 
@@ -97,8 +111,9 @@ $arrEvent = Call("openEventFile")
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[14] & "' and Last = '" & $arrConfig[15] & "'")
-			ConsoleWrite($newQuery &  @CRLF)
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$PatientProfileId=$aData[1][6]
@@ -106,13 +121,21 @@ $arrEvent = Call("openEventFile")
 
 				ConsoleWrite("Patient Profile Id is " & $PatientProfileId & @CRLF	& "PID is " & $PID & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Patient Profile Id is " & $PatientProfileId & @CRLF & _NowCalc() &"  -- PID is " & $PID & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 		;Get loginname, PVID of authorizing provider
-			$temp = StringSplit($arrConfig[19], ', ', 1)
+			$temp = StringSplit($arrConfig[20], ', ', 1)
 			$newQuery = StringReplace($arrQuery[23],"LNAME","'" & $temp[1] & "'")
 			$newQuery = StringReplace($newQuery,"FNAME","'" & $temp[2] & "'")
-		ConsoleWrite($newQuery & @CRLF)
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				$authpvdrLogin = $aData[1][0]
@@ -120,10 +143,19 @@ $arrEvent = Call("openEventFile")
 
 				ConsoleWrite("Authorizing Provider PVID is " & $authpvdrPVID & @CRLF	& "Authorizing Provider login is " & $authpvdrLogin & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Authorizing Provider PVID is " & $authpvdrPVID & @CRLF & _NowCalc() &"  -- Authorizing Provider login is " & $authpvdrLogin & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 		;Get pvid of order creating provider
 			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $arrConfig[2] & "'")
+			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -131,9 +163,18 @@ $arrEvent = Call("openEventFile")
 
 				ConsoleWrite("Signing provider PVID is " & $signPvdrPVID & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Signing provider PVID is " & $signPvdrPVID & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 		;MUActivityLog- Event 4
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -167,6 +208,8 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -175,6 +218,8 @@ $arrEvent = Call("openEventFile")
 			FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- VERIFY ORDER DETAILS IN DATABASE" & @CRLF)
 
 		;cusMedfusionOutgoingToc
+			ConsoleWrite("Executing Query: " & $arrQuery[17] & $PatientProfileId & $arrQuery[18] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[17] & $PatientProfileId & $arrQuery[18] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[17] & $PatientProfileId & $arrQuery[18] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -184,12 +229,21 @@ $arrEvent = Call("openEventFile")
 
 				ConsoleWrite("Outgoing TOC Id is " & $outgoingTocId & @CRLF	& "Order number is " & $orderNum & @CRLF & "SDID is " & $sdid & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Outgoing TOC Id is " & $outgoingTocId & @CRLF & _NowCalc() &"  -- Order number is " & $orderNum & @CRLF & _NowCalc() & "  -- SDID is " & $sdid & @CRLF)
+
+			Else
+				ConsoleWrite("ERROR Querying Database...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
 			EndIf
 
 			ConsoleWrite("Wait of 3.5" & @CRLF)
 			Sleep(210000)
 		;cusMedfusionOutgoingTOCstatus
 			FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY ORDER DETAILS IN CUSMEDFUSIONOUTGOINGTOCSTATUS TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[19] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[19] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[19] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;TOC Status returned from SES
@@ -220,11 +274,15 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
 		;cusMedfusionOutgoingTocProvider
 			FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY ORDER DETAILS IN CUSMEDFUSIONOUTGOINGTOCPROVIDER TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[20] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[20] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[20] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;Status in provider table
@@ -249,13 +307,13 @@ $arrEvent = Call("openEventFile")
 					$temp[3] = $temp[3] & " " &$temp[$i]
 				Next
 
-				ConsoleWrite("Expected Result: " & $arrConfig[19] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- ")
-				If (StringCompare($arrConfig[19], $temp[3] &", " & $temp[1]) = 0) Then
+				ConsoleWrite("Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- ")
+				If (StringCompare($arrConfig[20], $temp[3] &", " & $temp[1]) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[19] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[19] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[3] &", " & $temp[1] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
@@ -271,13 +329,13 @@ $arrEvent = Call("openEventFile")
 					$temp[2] = $temp[2] & " " &$temp[$i]
 				Next
 
-				ConsoleWrite("Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- ")
-				If (StringCompare($arrConfig[20], $temp[2] &", " & $temp[1]) = 0) Then
+				ConsoleWrite("Expected Result: " & $arrConfig[21] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- ")
+				If (StringCompare($arrConfig[21], $temp[2] &", " & $temp[1]) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[21] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[20] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[21] &" and Actual Result: " & $temp[2] &", " & $temp[1] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
@@ -306,6 +364,8 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -313,6 +373,8 @@ $arrEvent = Call("openEventFile")
 		Sleep(60000)
 		;cusMedfusionOutgoingTOCPAtient
 			FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- VERIFY PATIENT LETTER DETAILS IN CUSMEDFUSIONOUTGOINGTOCPATIENT TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[21] & $outgoingTocId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[21] & $outgoingTocId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[21] & $outgoingTocId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 
@@ -349,6 +411,8 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -356,6 +420,8 @@ $arrEvent = Call("openEventFile")
 		Sleep(60000)
 		;cusMedfusionCommOutgoing
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY PATIENT LETTER DETAILS IN CUSMEDFUSIONCOMMOUTGOING TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[22] & $commOutgoingId & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[22] & $commOutgoingId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[22] & $commOutgoingId & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				;PateintProfileId
@@ -390,13 +456,13 @@ $arrEvent = Call("openEventFile")
 				ConsoleWrite("Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
 
-				ConsoleWrite("Expected Result: " & $arrConfig[25] &" and Actual Result: " & $aData[1][2] & " -- ")
-				If (StringCompare($arrConfig[25], $aData[1][2]) = 0) Then
+				ConsoleWrite("Expected Result: " & $arrConfig[26] &" and Actual Result: " & $aData[1][2] & " -- ")
+				If (StringCompare($arrConfig[26], $aData[1][2]) = 0) Then
 					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[25] &" and Actual Result: " & $aData[1][2] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[26] &" and Actual Result: " & $aData[1][2] & " -- PASSED" & @CRLF)
 				Else
 					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[25] &" and Actual Result: " & $aData[1][2] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[26] &" and Actual Result: " & $aData[1][2] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 
@@ -461,11 +527,15 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
 		;cusMedfusionMUEvents - Event 514
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY EVENT 514 DETAILS IN CUSMEDFUSIONMUEVENTS TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " &$arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[9] & $PatientProfileId & " and sdid = '" & $sdid & "'" & $arrQuery[10] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -556,11 +626,15 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
 		;MUActivityLog - Event 514
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13-- VERIFY EVENT 514 DETAILS IN MUACTIVITYLOG TABLE" & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
 			If $iRval = $SQL_OK then
@@ -638,6 +712,8 @@ $arrEvent = Call("openEventFile")
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Querying Database...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
 
@@ -647,7 +723,7 @@ $arrEvent = Call("openEventFile")
 		FileWriteLine($hFileOpen, @CRLF & " STEP 15-- VERIFY ORDER DETAILS IN DIRECT MESSAGING OUTBOX" & @CRLF)
 			Call("openMFDashboard")
 			Call("openMessageLink","Direct Messaging")
-			Call("verifyOrderInUI",$orderNum,$arrConfig[19],$arrConfig[20],$arrConfig[14],$arrConfig[15])
+			Call("verifyOrderInUI",$orderNum,$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16])
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 16-- VERIFY ORDER DETAILS IN SES INBOX" & @CRLF)
 			$SESjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\sesInbox.jar"
@@ -666,16 +742,16 @@ $arrEvent = Call("openEventFile")
 				EndIf
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 17-- VERIFY PATIENT LETTER IN PATIENT PORTAL" & @CRLF)
-			ConsoleWrite("Message Subject " & $arrConfig[25] & @CRLF)
-			$temp = StringSplit($arrConfig[25]," ")
+			ConsoleWrite("Message Subject " & $arrConfig[26] & @CRLF)
+			$temp = StringSplit($arrConfig[26]," ")
 			$messageSubject = Null
 			For $i = 1 to $temp[0]
 				$messageSubject = $messageSubject & $temp[$i]
 			Next
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
-			ConsoleWrite("Message Body " & $arrConfig[24] & @CRLF)
-			$temp = StringSplit($arrConfig[24]," ")
+			ConsoleWrite("Message Body " & $arrConfig[25] & @CRLF)
+			$temp = StringSplit($arrConfig[25]," ")
 			$messageBody = Null
 			For $i = 1 to $temp[0]
 				$messageBody = $messageBody & $temp[$i]
@@ -708,4 +784,4 @@ $arrEvent = Call("openEventFile")
 		ConsoleWrite("ERROR Attaching GE CPS App...." & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching GE CPS App...." & @CRLF)
 	EndIf
-
+EndIf

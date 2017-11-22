@@ -1,12 +1,12 @@
 CPS URL:-http://172.18.81.237:9080/centricityps122demo/cps/
 CPS Login UserName:-mmanohar
-CPS Login Password:-Medfusion123
+CPS Login Password:-Medfusion567
 SQL Server IP:-172.18.81.237
 Centricity DB:-centricityps122demo
 Central DB:-prod_cdb
 SQL UserName:-sa
 SQL Password:-*08oate
-Flag (Preconditions Check / Data Generation / Acceptance):-Preconditions Check
+Flag (Preconditions Check / Data Generation / Acceptance):-Acceptance
 --------------Patient Registration:--------------
 Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
 Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
@@ -30,8 +30,15 @@ SES UserName:-pmemrqa
 SES Password:-Password123@!
 Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
 Letter to Patient Subject (TOC):-Referral Initiated
+--------------Secure Messaging:--------------
+Email Message Subject:-Subject of test email
+Email Message Body:-This is body of test email
+Reply to Email Message:-This is response to test mail
 --------------Data Generation:--------------
 Number of order creation:-2
 Number of TOC Creation:-2
 Order Category2:-Gastroenterology
-Number of visits to be created:-2
+Number of visits to be created:-1
+Number of selfregistered patients to be created:-2
+Number of messages to be created:-2
+Number of appointments to be created:-5
