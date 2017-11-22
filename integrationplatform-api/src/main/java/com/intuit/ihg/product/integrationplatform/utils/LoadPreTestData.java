@@ -73,7 +73,13 @@ public class LoadPreTestData {
 		testData.PatientExternalId = propertyData.getPatientExternalIdAMDC();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.IntegrationPracticeID = propertyData.getIntegrationPracticeID();
-		
+		testData.allowAttachment=propertyData.getAllowAttachment();
+		testData.categoryType=propertyData.getCategoryType();
+		testData.fileName=propertyData.getFileNameAMDC();
+		testData.mimeType=propertyData.getMimeType();
+		testData.attachmentBody=propertyData.getAttachmentBody();
+		testData.downloadLocation=propertyData.getDownloadFileLocation();
+		testData.portalCategoryType= propertyData.getPortalCategoryType();
 		return testData;
 	}
 	
@@ -342,7 +348,7 @@ public class LoadPreTestData {
 		testData.resendPreviousMessage = propertyData.getresendPrevoiusMessage();
 		testData.ParamValue = propertyData.getParamValue1();
 		testData.ParamName = propertyData.getParamName1();
-		
+		testData.categoryType=propertyData.getCategoryType();
 		
 		testData.NumberOfParams = propertyData.getNumberOfParams();
 		testData.ParamValue1 = propertyData.getParamValue1();
@@ -375,6 +381,13 @@ public class LoadPreTestData {
 		testData.BulkEmailType = propertyData.getBulkEmailType();
 		testData.AddAttachment = propertyData.getAddAttachment();
 		testData.PatientExternalId = propertyData.getPatientExternalId();
+		
+		testData.categoryType = propertyData.getCategoryType();
+		testData.fileName = propertyData.getFileNameAMDC();
+		testData.mimeType = propertyData.getMimeType();
+		testData.attachmentBody = propertyData.getAttachmentBody();
+		testData.downloadLocation = propertyData.getDownloadFileLocation();
+		testData.portalCategoryType = propertyData.getPortalCategoryType();
 		
 		return testData;
 		}
