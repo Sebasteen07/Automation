@@ -110,8 +110,15 @@ public class IntegrationConstants {
 	public static final String PATIENTRELATIONTOSUBSCRIBER = "PatientRelationToSubscriber";
 
 	public static final String PRIMARYINSURANCE = "PrimaryInsurance";
+	public static final String SECONDARYINSURANCE ="SecondaryInsurance";
+	public static final String TERTIARYINSURANCE ="TertiaryInsurance";
 	public static final String POLICYNUMBER = "PolicyNumber";
 	public static final String COMPANYNAME = "CompanyName";
+	public static final String SUBSCRIBERNAME = "SubscriberName";
+	public static final String FIRSTNAME = "FirstName";
+	public static final String SUBSCRIBERID = "SubscriberId";
+	public static final String EFFECTIVEDATE = "EffectiveDate";
+	
 
 	public static final String DATEOFBIRTH = "DateOfBirth";
 	public static final String SUBSCRIBERDATEOFBIRTH = "SubscriberDateOfBirth";
@@ -136,7 +143,8 @@ public class IntegrationConstants {
 	public static final String PAYNOWPAYMENT = "Pay Now Payment";
 	public static final String VCSPAYMENT = "VCS Payment";
 	public static final String BILLPAYMENT = "BillPayment";
-
+	public static final String SOURCE = "Source";
+	
 	// Email notification constant
 	public static final String EMAIL_BODY_LINK = "fuseaction=com.start";
 	public static final String PI_EMAIL_BODY_LINK = "portal/#/user";
@@ -180,5 +188,6 @@ public class IntegrationConstants {
 		public static final String KEYVALUEPAIR ="KeyValuePair";
 		public static final String FORMTYPE="pre-reg";
 		public static final String NEXTURI="next-uri";
+		public static final String STATE = "State";
 }
 

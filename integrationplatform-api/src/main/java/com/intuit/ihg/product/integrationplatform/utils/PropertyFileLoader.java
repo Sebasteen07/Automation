@@ -1243,4 +1243,34 @@ public class PropertyFileLoader {
 	public String getPortalCategoryType() {
 		return property.getProperty("portalCategoryType");
 	}
+	public String getAppointmentPayload() {
+		return property.getProperty("precheckAppointmentPayload"); 
+	}
+	public String getPreCheckAppointmentRestUrl() {
+		return property.getProperty("appointmentRestURL");
+	}
+	public String getBasicAccesstokenPrecheck() {
+		return property.getProperty("basicAcessTokenPrecheck");
+	}
+	public String getPreCheckZipCode() {
+		return property.getProperty("preCheckZipCode");
+	}
+	public String getPreCheckDOB() {
+		return property.getProperty("preCheckDOB");
+	}
+	public String getPreCheckPatientEmailID_FE() {
+		return property.getProperty("preCheckPatientEmailID_FE");
+	}
+	public String getPreCheckPatientFirstName_FE() {
+		return property.getProperty("preCheckPatientFirstName_FE");
+	}
+	public String getPreCheckGetPIDC() {
+		return property.getProperty("preCheckGetPIDC");
+	}
+	public String getPreCheckEmailSubject() {
+		return property.getProperty("preCheckEmailSubject");
+	}
+	public String getPreCheckEmailLink() {
+		return property.getProperty("preCheckEmailLink");
+	}
 }
