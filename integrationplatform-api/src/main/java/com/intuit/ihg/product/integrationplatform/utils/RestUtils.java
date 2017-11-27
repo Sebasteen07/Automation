@@ -2981,11 +2981,14 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		// boolean found = false;
 		for (int i = 0; i < patients.getLength(); i++) {
 			if (patients.item(i).getTextContent().equals(practicePatientId)) {
+				Log4jUtil.log("Validating patient number "+(i+1)+" with practice patient id "+practicePatientId);
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 				if(!patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent().isEmpty() && list.get(0) !=null) {
 				
-				Log4jUtil.log("Checking Patient FirstName");
 				Node FirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				//Log4jUtil.log("Patient FirstName"+FirstName.getTextContent());
+				if(FirstName.getTextContent().equalsIgnoreCase(list.get(0).toString())) {
+				
 				BaseTestSoftAssert.verifyEquals(FirstName.getTextContent(), list.get(0),
 						"Patient has different FirstName than expected. FirstName is: " + FirstName.getTextContent());
 				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
@@ -3021,10 +3024,14 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 				Node EmailAddress = patient.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
 				BaseTestSoftAssert.verifyEquals(EmailAddress.getTextContent(), list.get(10),
 						"Patient has different EmailAddress than expected. EmailAddress is: " + EmailAddress.getTextContent());
-				
+				} else {
+					Log4jUtil.log(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent()+"Demographics update received without change."+list.get(0));
+				}
 				} else {
 					if(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent().isEmpty()) {
 						Log4jUtil.log("No updates for Demographics.");
+					} else {
+						Log4jUtil.log(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent()+"Demographics update received without change.");
 					}
 				}
 				Log4jUtil.log("---------------------------------------------------------------------------------");
@@ -3156,6 +3163,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 						Log4jUtil.log("No updates for Tertiary Insurance.");
 					}
 				}
+				Log4jUtil.log("---------------------------------------------------------------------------------");
 			}
 		}
 	}

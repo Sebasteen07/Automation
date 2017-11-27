@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -13,10 +14,8 @@ public class PropertyFileLoader {
 	public PropertyFileLoader() throws IOException {
 		String env = IHGUtil.getEnvironmentType().toString();
 		String propertyFileNameString = env + ".properties";
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+		InputStream url = ClassLoader.getSystemResourceAsStream("data-driven/" + propertyFileNameString);
+		property.load(url);
 
 	}
 	//CCD

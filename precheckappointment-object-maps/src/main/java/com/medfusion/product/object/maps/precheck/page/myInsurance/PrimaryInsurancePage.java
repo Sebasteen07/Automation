@@ -59,9 +59,18 @@ public class PrimaryInsurancePage extends BasePageObject  {
 		groupNumberInput.sendKeys(groupNumberValue);
 	}
 	
+	public void clearPrimaryDateIssued(String groupNumberValue) {
+		dateIssuedInput.clear();
+	}
+	
 	public void setPrimaryDateIssued(String dateValue) {
 		dateIssuedInput.clear();
-		dateIssuedInput.sendKeys(dateValue);
+		String[] date = dateValue.split(" ");
+		String[] date0=date[1].split("/");
+		dateIssuedInput.sendKeys(date[0]);
+		dateIssuedInput.sendKeys(date0[0]);
+		dateIssuedInput.sendKeys(date0[1]);
+		
 	}
 	
 	public void setClaimsPhoneNumberInput(String claimsPhoneNumberValue) {

@@ -72,8 +72,12 @@ public class MyDemoGraphicsDetailPage extends BasePageObject  {
 	}
 	
 	public void setDateOfBirth(String dob) {
+		String[] date = dob.split(" ");
+		String[] date0=date[1].split("/");
 		dobInput.clear();
-		dobInput.sendKeys(dob);
+		dobInput.sendKeys(date[0]);
+		dobInput.sendKeys(date0[0]);
+		dobInput.sendKeys(date0[1]);
 	}
 	
 	public void setStreet1Address(String street1Address) {

@@ -60,7 +60,11 @@ public class SecondaryInsurancePage  extends BasePageObject  {
 	
 	public void setSecondaryDateIssued(String dateIssuedValue) {
 		dateIssuedInput.clear();
-		dateIssuedInput.sendKeys(dateIssuedValue);
+		String[] date = dateIssuedValue.split(" ");
+		String[] date0=date[1].split("/");
+		dateIssuedInput.sendKeys(date[0]);
+		dateIssuedInput.sendKeys(date0[0]);
+		dateIssuedInput.sendKeys(date0[1]);
 	}
 	
 	public void setClaimsPhoneNumber(String claimsPhoneNumberValue) {

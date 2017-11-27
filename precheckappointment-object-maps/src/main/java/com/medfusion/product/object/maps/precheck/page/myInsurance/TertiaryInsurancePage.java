@@ -59,7 +59,12 @@ public class TertiaryInsurancePage extends BasePageObject {
 	
 	public void setTertiaryDateIssued(String dateIssuedValue) {
 		dateIssuedTertiaryInput.clear();
-		dateIssuedTertiaryInput.sendKeys(dateIssuedValue);
+		String[] date = dateIssuedValue.split(" ");
+		String[] date0=date[1].split("/");
+		dateIssuedTertiaryInput.sendKeys(date[0]);
+		dateIssuedTertiaryInput.sendKeys(date0[0]);
+		dateIssuedTertiaryInput.sendKeys(date0[1]);
+		
 	}
 	
 	public void setTertiaryClaimsPhoneNumber(String claimsPhoneNumberValue) {

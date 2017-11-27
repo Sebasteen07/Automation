@@ -262,6 +262,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
 			rb.keyPress(KeyEvent.VK_ENTER);
+			Thread.sleep(100);
 			rb.keyRelease(KeyEvent.VK_ENTER);
 			Thread.sleep(2000);
 		}
@@ -908,12 +909,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				log("Step 14: Verify name, from and catagory type");
 				String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
 				log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-				Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
+				Assert.assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
 				MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 				if (driver instanceof FirefoxDriver) {
 					Robot rb = new Robot();
 					Thread.sleep(2000);
 					rb.keyPress(KeyEvent.VK_ENTER);
+					Thread.sleep(100);
 					rb.keyRelease(KeyEvent.VK_ENTER);
 					Thread.sleep(2000);
 				}
@@ -924,9 +926,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
 				String pdfFileLocation = downloadFile + names.get(0);
 				String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
-				String attachmentInPayload = ExternalFileReader.readFromFile(testData.attachmentBody);
+				String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+				String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
 
 				Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
+				log("Is PDF Match "+pdfMatch);
 				Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 			}
 			homePage.clickOnLogout();
@@ -1678,7 +1682,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckDemoGraphicsUpdate() throws Exception {
+	public void testE2EPreCheckUpdatesOnlyDemographics() throws Exception {
 		Log4jUtil.log("Test Case: Precheck Appointment ");
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
@@ -1737,7 +1741,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckInsuranceUpdate() throws Exception {
+	public void testE2EPreCheckUpdatesOnlyInsurance() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -1785,14 +1789,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckUpdateAll() throws Exception {
+	public void testE2EPreCheckUpdates1stDemo2ndALLINS() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
-
+		
 		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
-		log("Step 5: Create data for Pre check Appointment form to Fill ");
 		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
 		List<String> patientData = new ArrayList<String>();
 		String randomString = IHGUtil.createRandomNumericString();
 		patientData.add("Fname" + "'" + randomString); 
@@ -1841,6 +1845,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
 		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
 		//Set DemoGraphic Detials
+		log("Setting Demographics details");
 		myDemoGraphicPage.setFirstName(patientData.get(0));
 		myDemoGraphicPage.setLastName(patientData.get(1));
 		myDemoGraphicPage.setStreet1Address(patientData.get(2));
@@ -1856,6 +1861,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
 		Thread.sleep(6000);
 		//Fill Insurance Details
+		log("Setting Primary Insurance details");
 		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
 		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
 		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
@@ -1864,7 +1870,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
 		primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
 		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
-		
+		log("Setting Secondary Insurance details");
 		SecondaryInsurancePage secondaryInsurancePage= primaryInsurancePage.gotoSecondaryInsurance();
 		secondaryInsurancePage.setSecondaryInsuranceName(patientData.get(19));
 		secondaryInsurancePage.setSecondarySubscriberName(patientData.get(20));
@@ -1872,7 +1878,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		secondaryInsurancePage.setSecondaryGroupNumber(patientData.get(22));
 		secondaryInsurancePage.setSecondaryDateIssued(patientData.get(23));
 		secondaryInsurancePage.setClaimsPhoneNumber(patientData.get(24));
-		
+		log("Setting Tertiary Insurance details");
 		TertiaryInsurancePage tertiaryInsurancePage = secondaryInsurancePage.gotoTertiaryInsurance();
 		tertiaryInsurancePage.setTertiaryInsuranceName(patientData.get(25));
 		tertiaryInsurancePage.setTertiarySubscriberName(patientData.get(26));
@@ -1886,7 +1892,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckUpdateInsuranceThenDemo() throws Exception {
+	public void testE2EPreCheckUpdates1stPrimaryINS2ndDemo() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -1943,13 +1949,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
 		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		log("Setting Primary Insurance details");
 		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
 		primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
 		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
 		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
 		primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
 		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
-		
+		log("Setting Secondary Insurance details");
 		SecondaryInsurancePage secondaryInsurancePage= primaryInsurancePage.gotoSecondaryInsurance();
 		secondaryInsurancePage.setSecondaryInsuranceName(patientData.get(19));
 		secondaryInsurancePage.setSecondarySubscriberName(patientData.get(20));
@@ -1957,7 +1964,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		secondaryInsurancePage.setSecondaryGroupNumber(patientData.get(22));
 		secondaryInsurancePage.setSecondaryDateIssued(patientData.get(23));
 		secondaryInsurancePage.setClaimsPhoneNumber(patientData.get(24));
-		
+		log("Setting Tertiary Insurance details");
 		TertiaryInsurancePage tertiaryInsurancePage = secondaryInsurancePage.gotoTertiaryInsurance();
 		tertiaryInsurancePage.setTertiaryInsuranceName(patientData.get(25));
 		tertiaryInsurancePage.setTertiarySubscriberName(patientData.get(26));
@@ -1967,9 +1974,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		tertiaryInsurancePage.setTertiaryClaimsPhoneNumber(patientData.get(30));
 		myAppointment = tertiaryInsurancePage.submitTertiaryInsurance();
 		
-		
+		Thread.sleep(6000);
 		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
 		//Set DemoGraphic Detials
+		log("Setting Demographics details");
 		myDemoGraphicPage.setFirstName(patientData.get(0));
 		myDemoGraphicPage.setLastName(patientData.get(1));
 		myDemoGraphicPage.setStreet1Address(patientData.get(2));
@@ -1989,7 +1997,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckDemoUpdateWithNoEffectiveDate() throws Exception {
+	public void testE2EPreCheckUpdates1stDemo2ndPrimaryINS() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -2033,6 +2041,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
 		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
 		//Set DemoGraphic Detials
+		log("Setting Demographics details");
 		myDemoGraphicPage.setFirstName(patientData.get(0));
 		myDemoGraphicPage.setLastName(patientData.get(1));
 		myDemoGraphicPage.setStreet1Address(patientData.get(2));
@@ -2050,8 +2059,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		//Fill Insurance Details
 		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
 		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
-		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
-		primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
+		log("Setting Primary Insurance details- SubscriberID, GroupNumber and ClaimsPhoneNumber");
+		//primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
+		//primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
 		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
 		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
 		//primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
@@ -2063,7 +2073,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckDemoUpdateWithoutData() throws Exception {
+	public void testE2EPreCheckUpdatesNoChangeInDemographics() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -2093,12 +2103,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 7: Select the appointment created and submit the fill form");
 		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
 		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		log("Submitting DemoGraphic");
 		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
 		preAppointmentObj.verifyPatientDetail(testData, patientData);
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckInsuranceUpdateWithoutData() throws Exception {
+	public void testE2EPreCheckUpdatesBLANKInsurance() throws Exception {
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -2127,6 +2138,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
 		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
 		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		log("Submitting Blank Insurance");
 		primaryInsurancePage.submitPrimaryInsurance();
 		for(int i=0;i<=6;i++) {
 			patientData.add(null);
