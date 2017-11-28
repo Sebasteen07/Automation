@@ -4,6 +4,7 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
+import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
@@ -65,6 +67,14 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
+import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyAppointmentPage;
+import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyDemoGraphicsDetailPage;
+import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyInsuranceDetailPage;
+import com.medfusion.product.object.maps.precheck.page.myAppointmentsList.AppointmentsListPage;
+import com.medfusion.product.object.maps.precheck.page.myInsurance.PrimaryInsurancePage;
+import com.medfusion.product.object.maps.precheck.page.myInsurance.SecondaryInsurancePage;
+import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsurancePage;
+import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
@@ -252,6 +262,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
 			rb.keyPress(KeyEvent.VK_ENTER);
+			Thread.sleep(100);
 			rb.keyRelease(KeyEvent.VK_ENTER);
 			Thread.sleep(2000);
 		}
@@ -898,12 +909,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				log("Step 14: Verify name, from and catagory type");
 				String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
 				log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-				Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
+				Assert.assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
 				MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 				if (driver instanceof FirefoxDriver) {
 					Robot rb = new Robot();
 					Thread.sleep(2000);
 					rb.keyPress(KeyEvent.VK_ENTER);
+					Thread.sleep(100);
 					rb.keyRelease(KeyEvent.VK_ENTER);
 					Thread.sleep(2000);
 				}
@@ -914,9 +926,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
 				String pdfFileLocation = downloadFile + names.get(0);
 				String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
-				String attachmentInPayload = ExternalFileReader.readFromFile(testData.attachmentBody);
+				String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+				String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
 
 				Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
+				log("Is PDF Match "+pdfMatch);
 				Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 			}
 			homePage.clickOnLogout();
@@ -1666,9 +1680,475 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Do a ccdExchangePdf call with the link found in FormsPdfLink");
 		RestUtils.setupHttpGetRequestExceptoAuthforPDF(PreCheckPdfLink, testData.responsePDF_FE);
 	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesOnlyDemographics() throws Exception {
+		Log4jUtil.log("Test Case: Precheck Appointment ");
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		
+		patientData.add("Fname" + "'" + randomString); 
+		patientData.add("TestPatient" + "'" + randomString);  
+		patientData.add("Line1" + "&" + randomString);  
+		patientData.add('"' + randomString + '"'); 
+		patientData.add("MName"+randomString);
+		patientData.add("01 01/1987");
+		patientData.add("New York");
+		patientData.add("NY");
+		patientData.add("12345");
+		patientData.add("9876543210");
+		patientData.add("xyz"+randomString+"@mailinator.com");
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		for(int i=0;i<=6;i++) {
+			patientData.add(null);
+		}
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment which is posted and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		//Set DemoGraphic Data
+		myDemoGraphicPage.setFirstName(patientData.get(0));
+		myDemoGraphicPage.setLastName(patientData.get(1));
+		myDemoGraphicPage.setStreet1Address(patientData.get(2));
+		myDemoGraphicPage.setStreet2Address(patientData.get(3));
+		myDemoGraphicPage.setMiddleName(patientData.get(4));
+		myDemoGraphicPage.setDateOfBirth(patientData.get(5));
+		myDemoGraphicPage.setCity(patientData.get(6));
+		myDemoGraphicPage.setState(patientData.get(7));
+		myDemoGraphicPage.setZip(patientData.get(8));
+		myDemoGraphicPage.setPhone(patientData.get(9));
+		myDemoGraphicPage.setEmail(patientData.get(10));
+		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
+		
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesOnlyInsurance() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForGuardian() throws Exception {
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		for(int i=0;i<=10;i++) {
+			patientData.add(null);
+		}
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		patientData.add("bajaj");
+		patientData.add("alliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/1987");
+		patientData.add("9876543210");
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment which is posted and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
+		primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
+		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
+		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
+		primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
+		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
+		primaryInsurancePage.submitPrimaryInsurance();
+		
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdates1stDemo2ndALLINS() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		patientData.add("Fname" + "'" + randomString); 
+		patientData.add("TestPatient" + "'" + randomString);  
+		patientData.add("Line1" + "&" + randomString);  
+		patientData.add('"' + randomString + '"'); 
+		patientData.add("MName"+randomString);
+		patientData.add("01 01/1987");
+		patientData.add("New York");
+		patientData.add("NY");
+		patientData.add("12345");
+		patientData.add("9876543210");
+		patientData.add("xyz"+randomString+"@mailinator.com");
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		patientData.add("PrimaryBajaj");
+		patientData.add("PrimaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("9876543210");
+		patientData.add("SecondaryBajaj");
+		patientData.add("SecondaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("7876543210");
+		patientData.add("TertiaryBajaj");
+		patientData.add("TertiaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("8876543210");
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment which is posted and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		//Set DemoGraphic Detials
+		log("Setting Demographics details");
+		myDemoGraphicPage.setFirstName(patientData.get(0));
+		myDemoGraphicPage.setLastName(patientData.get(1));
+		myDemoGraphicPage.setStreet1Address(patientData.get(2));
+		myDemoGraphicPage.setStreet2Address(patientData.get(3));
+		myDemoGraphicPage.setMiddleName(patientData.get(4));
+		myDemoGraphicPage.setDateOfBirth(patientData.get(5));
+		myDemoGraphicPage.setCity(patientData.get(6));
+		myDemoGraphicPage.setState(patientData.get(7));
+		myDemoGraphicPage.setZip(patientData.get(8));
+		myDemoGraphicPage.setPhone(patientData.get(9));
+		myDemoGraphicPage.setEmail(patientData.get(10));
+		
+		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
+		Thread.sleep(6000);
+		//Fill Insurance Details
+		log("Setting Primary Insurance details");
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
+		primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
+		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
+		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
+		primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
+		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
+		log("Setting Secondary Insurance details");
+		SecondaryInsurancePage secondaryInsurancePage= primaryInsurancePage.gotoSecondaryInsurance();
+		secondaryInsurancePage.setSecondaryInsuranceName(patientData.get(19));
+		secondaryInsurancePage.setSecondarySubscriberName(patientData.get(20));
+		secondaryInsurancePage.setSecondarySubscriberID(patientData.get(21));
+		secondaryInsurancePage.setSecondaryGroupNumber(patientData.get(22));
+		secondaryInsurancePage.setSecondaryDateIssued(patientData.get(23));
+		secondaryInsurancePage.setClaimsPhoneNumber(patientData.get(24));
+		log("Setting Tertiary Insurance details");
+		TertiaryInsurancePage tertiaryInsurancePage = secondaryInsurancePage.gotoTertiaryInsurance();
+		tertiaryInsurancePage.setTertiaryInsuranceName(patientData.get(25));
+		tertiaryInsurancePage.setTertiarySubscriberName(patientData.get(26));
+		tertiaryInsurancePage.setTertiarySubscriberID(patientData.get(27));
+		tertiaryInsurancePage.setTertiaryGroupNumber(patientData.get(28));
+		tertiaryInsurancePage.setTertiaryDateIssued(patientData.get(29));
+		tertiaryInsurancePage.setTertiaryClaimsPhoneNumber(patientData.get(30));
+		tertiaryInsurancePage.submitTertiaryInsurance();
+		
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdates1stPrimaryINS2ndDemo() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		patientData.add("Fname" + "'" + randomString); 
+		patientData.add("TestPatient" + "'" + randomString);  
+		patientData.add("Line1" + "&" + randomString);  
+		patientData.add('"' + randomString + '"'); 
+		patientData.add("MName"+randomString);
+		patientData.add("01 01/1987");
+		patientData.add("New York");
+		patientData.add("NY");
+		patientData.add("12345");
+		patientData.add("9876543210");
+		patientData.add("xyz"+randomString+"@mailinator.com");
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		patientData.add("PrimaryBajaj");
+		patientData.add("PrimaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("9876543210");
+		patientData.add("SecondaryBajaj");
+		patientData.add("SecondaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("9876543210");
+		patientData.add("TertiaryBajaj");
+		patientData.add("TertiaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add("01 01/2017");
+		patientData.add("9876543210");
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment created and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		log("Setting Primary Insurance details");
+		primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
+		primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
+		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
+		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
+		primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
+		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
+		log("Setting Secondary Insurance details");
+		SecondaryInsurancePage secondaryInsurancePage= primaryInsurancePage.gotoSecondaryInsurance();
+		secondaryInsurancePage.setSecondaryInsuranceName(patientData.get(19));
+		secondaryInsurancePage.setSecondarySubscriberName(patientData.get(20));
+		secondaryInsurancePage.setSecondarySubscriberID(patientData.get(21));
+		secondaryInsurancePage.setSecondaryGroupNumber(patientData.get(22));
+		secondaryInsurancePage.setSecondaryDateIssued(patientData.get(23));
+		secondaryInsurancePage.setClaimsPhoneNumber(patientData.get(24));
+		log("Setting Tertiary Insurance details");
+		TertiaryInsurancePage tertiaryInsurancePage = secondaryInsurancePage.gotoTertiaryInsurance();
+		tertiaryInsurancePage.setTertiaryInsuranceName(patientData.get(25));
+		tertiaryInsurancePage.setTertiarySubscriberName(patientData.get(26));
+		tertiaryInsurancePage.setTertiarySubscriberID(patientData.get(27));
+		tertiaryInsurancePage.setTertiaryGroupNumber(patientData.get(28));
+		tertiaryInsurancePage.setTertiaryDateIssued(patientData.get(29));
+		tertiaryInsurancePage.setTertiaryClaimsPhoneNumber(patientData.get(30));
+		myAppointment = tertiaryInsurancePage.submitTertiaryInsurance();
+		
+		Thread.sleep(6000);
+		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		//Set DemoGraphic Detials
+		log("Setting Demographics details");
+		myDemoGraphicPage.setFirstName(patientData.get(0));
+		myDemoGraphicPage.setLastName(patientData.get(1));
+		myDemoGraphicPage.setStreet1Address(patientData.get(2));
+		myDemoGraphicPage.setStreet2Address(patientData.get(3));
+		myDemoGraphicPage.setMiddleName(patientData.get(4));
+		myDemoGraphicPage.setDateOfBirth(patientData.get(5));
+		myDemoGraphicPage.setCity(patientData.get(6));
+		myDemoGraphicPage.setState(patientData.get(7));
+		myDemoGraphicPage.setZip(patientData.get(8));
+		myDemoGraphicPage.setPhone(patientData.get(9));
+		myDemoGraphicPage.setEmail(patientData.get(10));
+		
+		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
+		Thread.sleep(6000);
+		
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdates1stDemo2ndPrimaryINS() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		String randomString = IHGUtil.createRandomNumericString();
+		patientData.add("Fname" + "'" + randomString); 
+		patientData.add("TestPatient" + "'" + randomString);  
+		patientData.add("Line1" + "&" + randomString);  
+		patientData.add('"' + randomString + '"'); 
+		patientData.add("MName"+randomString);
+		patientData.add("01 01/1987");
+		patientData.add("New York");
+		patientData.add("NY");
+		patientData.add("12345");
+		patientData.add("9876543210");
+		patientData.add("xyz"+randomString+"@mailinator.com");
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		patientData.add("PrimaryBajaj");
+		patientData.add("PrimaryAlliance");
+		patientData.add("0"+randomString);
+		patientData.add("1"+randomString);
+		patientData.add(null);
+		patientData.add("9876543210");
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment created and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		//Set DemoGraphic Detials
+		log("Setting Demographics details");
+		myDemoGraphicPage.setFirstName(patientData.get(0));
+		myDemoGraphicPage.setLastName(patientData.get(1));
+		myDemoGraphicPage.setStreet1Address(patientData.get(2));
+		myDemoGraphicPage.setStreet2Address(patientData.get(3));
+		myDemoGraphicPage.setMiddleName(patientData.get(4));
+		myDemoGraphicPage.setDateOfBirth(patientData.get(5));
+		myDemoGraphicPage.setCity(patientData.get(6));
+		myDemoGraphicPage.setState(patientData.get(7));
+		myDemoGraphicPage.setZip(patientData.get(8));
+		myDemoGraphicPage.setPhone(patientData.get(9));
+		myDemoGraphicPage.setEmail(patientData.get(10));
+		
+		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
+		Thread.sleep(6000);
+		//Fill Insurance Details
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		log("Setting Primary Insurance details- SubscriberID, GroupNumber and ClaimsPhoneNumber");
+		//primaryInsurancePage.setPrimaryInsuranceName(patientData.get(13));
+		//primaryInsurancePage.setPrimarySubscriberName(patientData.get(14));
+		primaryInsurancePage.setPrimarySubscriberID(patientData.get(15));
+		primaryInsurancePage.setPrimaryGroupNumber(patientData.get(16));
+		//primaryInsurancePage.setPrimaryDateIssued(patientData.get(17));
+		primaryInsurancePage.setClaimsPhoneNumberInput(patientData.get(18));
+		primaryInsurancePage.submitPrimaryInsurance();
+		
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesNoChangeInDemographics() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		for(int i=0;i<=10;i++) {
+			patientData.add(null);
+		}
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		for(int i=0;i<=6;i++) {
+			patientData.add(null);
+		}
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment created and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
+		log("Submitting DemoGraphic");
+		myAppointment =myDemoGraphicPage.clickDemographicsSaveButton();
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesBLANKInsurance() throws Exception {
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log("Step 5: Create data for Pre check Appointment form to Fill ");
+		List<String> patientData = new ArrayList<String>();
+		for(int i=0;i<=10;i++) {
+			patientData.add(null);
+		}
+		patientData.add("GUEST");
+		patientData.add("PRECHECK");
+		
+		Thread.sleep(6000);
+		log("Step 6: Verify precheck patient zip and dateofBirth posted");
+		log(testData.preCheckZip+"  =  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		log("Step 7: Select the appointment created and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		PrimaryInsurancePage primaryInsurancePage = myInsuranceDetailPage.gotoInsuranceInfoPage();
+		log("Submitting Blank Insurance");
+		primaryInsurancePage.submitPrimaryInsurance();
+		for(int i=0;i<=6;i++) {
+			patientData.add(null);
+		}
+		preAppointmentObj.verifyPatientDetail(testData, patientData);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForGuardian() throws Exception 
+	{
 		Log4jUtil.log("Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());

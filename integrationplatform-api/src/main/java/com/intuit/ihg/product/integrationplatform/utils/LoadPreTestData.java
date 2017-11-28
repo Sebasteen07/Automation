@@ -520,6 +520,16 @@ public class LoadPreTestData {
 		testData.downloadFileLocation=propertyData.getDownloadFileLocation();
 		testData.preCheckURL=propertyData.getPreCheckURL();
 		testData.preCheckPatientExternalID=propertyData.getPreCheckPatientExternalID();
+		testData.precheckAppointmentPayload=propertyData.getAppointmentPayload();
+		testData.appointmentRestUrl=propertyData.getPreCheckAppointmentRestUrl();
+		testData.basicAccessToken = propertyData.getBasicAccesstokenPrecheck();
+		testData.preCheckZip=propertyData.getPreCheckZipCode();
+		testData.preCheckDOB=propertyData.getPreCheckDOB();
+		testData.preCheckPatientEmailID=propertyData.getPreCheckPatientEmailID_FE();
+		testData.preCheckPatientFirstName=propertyData.getPreCheckPatientFirstName_FE();
+		testData.preCheckGetPIDC=propertyData.getPreCheckGetPIDC();
+		testData.preCheckEmailSubject=propertyData.getPreCheckEmailSubject();
+		testData.preCheckEmailLink=propertyData.getPreCheckEmailLink();
 		return testData;
 		}
 }

@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -13,10 +14,8 @@ public class PropertyFileLoader {
 	public PropertyFileLoader() throws IOException {
 		String env = IHGUtil.getEnvironmentType().toString();
 		String propertyFileNameString = env + ".properties";
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+		InputStream url = ClassLoader.getSystemResourceAsStream("data-driven/" + propertyFileNameString);
+		property.load(url);
 
 	}
 	//CCD
@@ -1242,5 +1241,35 @@ public class PropertyFileLoader {
 	}
 	public String getPortalCategoryType() {
 		return property.getProperty("portalCategoryType");
+	}
+	public String getAppointmentPayload() {
+		return property.getProperty("precheckAppointmentPayload"); 
+	}
+	public String getPreCheckAppointmentRestUrl() {
+		return property.getProperty("appointmentRestURL");
+	}
+	public String getBasicAccesstokenPrecheck() {
+		return property.getProperty("basicAcessTokenPrecheck");
+	}
+	public String getPreCheckZipCode() {
+		return property.getProperty("preCheckZipCode");
+	}
+	public String getPreCheckDOB() {
+		return property.getProperty("preCheckDOB");
+	}
+	public String getPreCheckPatientEmailID_FE() {
+		return property.getProperty("preCheckPatientEmailID_FE");
+	}
+	public String getPreCheckPatientFirstName_FE() {
+		return property.getProperty("preCheckPatientFirstName_FE");
+	}
+	public String getPreCheckGetPIDC() {
+		return property.getProperty("preCheckGetPIDC");
+	}
+	public String getPreCheckEmailSubject() {
+		return property.getProperty("preCheckEmailSubject");
+	}
+	public String getPreCheckEmailLink() {
+		return property.getProperty("preCheckEmailLink");
 	}
 }

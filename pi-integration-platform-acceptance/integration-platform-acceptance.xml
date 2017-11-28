@@ -18,7 +18,10 @@
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-			<include name="testPreCheckForms"/>
+				<include name="testPreCheckForms"/>
+	    		<include name="testE2EPreCheckUpdatesOnlyDemographics" />
+	    		<include name="testE2EPreCheckUpdatesOnlyInsurance" />
+	    		<include name="testE2EPreCheckUpdates1stDemo2ndPrimaryINS"/>
 				<include name="testMUEventForExistingGuardianFromHealthRecord"/>
 				<include name="testMUEventForGuardianFromHealthRecord"/>
 				<include name="testPatientMUEventForGuardian"/>
