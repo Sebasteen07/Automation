@@ -7,7 +7,9 @@
 
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "directmessaging", "commonsteps") & "\ProcessLog_DirectMessaging_" & $time & ".txt"
+$commonStepsDir = StringReplace($currentDir , "directmessaging", "commonsteps")
+Call("deleteOldLogFiles",$commonStepsDir)
+$logPath = $commonStepsDir & "\ProcessLog_DirectMessaging_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
@@ -32,7 +34,6 @@ $arrEvent = Call("openEventFile")
 					ConsoleWrite("Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[14] & @CRLF & $arrQuery[15] & @CRLF & $arrQuery[16] & @CRLF)
 					If (_SQL_Execute(-1,$arrQuery[14]) Or _SQL_Execute(-1,$arrQuery[15]) Or _SQL_Execute(-1,$arrQuery[16])) = $SQL_ERROR then
-						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
@@ -79,10 +80,17 @@ Else
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				ConsoleWrite("Creating order #" &$counter+1 & @CRLF)
+				If($arrConfig[9]=="Data Generation") Then
+					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[33] & " orders"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[33] & " orders" & @CRLF)
+				Else
+					ConsoleWrite("Creating Order #" &$counter+1 & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" &$counter+1 & @CRLF)
+				EndIf
+
 				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[32],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$arrConfig[35],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
 
 				Else
 					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
@@ -91,17 +99,17 @@ Else
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
 					Sleep(60000)
-					If($counter = $arrConfig[30]) Then
+					If($counter = $arrConfig[33]) Then
 						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
 					EndIf
 
 				Else
-					$counter = $arrConfig[30]
+					$counter = $arrConfig[33]
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[30]
+			Until $counter = $arrConfig[33]
 
 			Sleep(5000)
 

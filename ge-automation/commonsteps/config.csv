@@ -34,11 +34,16 @@ Letter to Patient Subject (TOC):-Referral Initiated
 Email Message Subject:-Subject of test email
 Email Message Body:-This is body of test email
 Reply to Email Message:-This is response to test mail
+--------------Ask A Staff:--------------
+AAS Subject:-Subject of AAS
+AAS Body:-This is body of AAS
+Reply to AAS:-This is response to AAS
 --------------Data Generation:--------------
 Number of order creation:-2
-Number of TOC Creation:-2
+Number of TOC Creation:-3
 Order Category2:-Gastroenterology
 Number of visits to be created:-1
 Number of selfregistered patients to be created:-2
 Number of messages to be created:-2
 Number of appointments to be created:-5
+Number of AAS to be created:-4

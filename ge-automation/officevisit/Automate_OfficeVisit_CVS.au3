@@ -11,7 +11,9 @@
 
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "officevisit", "commonsteps") & "\ProcessLog_OfficeVisit_" & $time & ".txt"
+$commonStepsDir = StringReplace($currentDir , "officevisit", "commonsteps")
+Call("deleteOldLogFiles",$commonStepsDir)
+$logPath = $commonStepsDir & "\ProcessLog_OfficeVisit_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
@@ -21,7 +23,7 @@ $arrEvent = Call("openEventFile")
 $arrDoctype = Call("openDoctypeFile")
 
 ;Update servicesettings
-	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR OFFICE VISIT FLOW" & @CRLF)
+	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SOLUTIONS FOR OFFICE VISIT FLOW" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
 		Local $aData,$iRows,$iColumns
 		ConsoleWrite("Executing Query: " & $arrQuery[25] & @CRLF)
@@ -32,32 +34,64 @@ $arrDoctype = Call("openDoctypeFile")
 				ConsoleWrite("Executing Query: " & $arrQuery[24] & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[24] & @CRLF)
 				If _SQL_Execute(-1,$arrQuery[24]) = $SQL_ERROR then
-					;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
-					ConsoleWrite("ERROR Updating service settings...." & @CRLF)
+					ConsoleWrite("ERROR Updating solutions...." & @CRLF)
 					ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating solutions...." & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 					Exit
 
 				Else
-					ConsoleWrite("Service settings updated" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings updated" & @CRLF)
+					ConsoleWrite("Soutions updated" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Solutions updated" & @CRLF)
 				EndIf
 
 			Else
-				ConsoleWrite("Service settings already enabled" & @CRLF)
-				FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings already enabled" & @CRLF)
+				ConsoleWrite("Soultions already enabled" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Solutions already enabled" & @CRLF)
 			EndIf
 
 		Else
-			ConsoleWrite("ERROR Checking Service Settings...." & @CRLF)
+			ConsoleWrite("ERROR Checking Solutions...." & @CRLF)
 			ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Service Settings...." & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Solutions...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 			Exit
 		EndIf
 
+		FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- UPDATE SERVICESETTINGS FOR OFFICE VISIT FLOW" & @CRLF)
+		ConsoleWrite("Executing Query: " & $arrQuery[43] & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[43] & @CRLF)
+		$iRval = _SQL_GetTable2D(-1,$arrQuery[43] & ";",$aData,$iRows,$iColumns)
+		If $iRval = $SQL_OK then
+				If(($aData[1][0] = 1) And ($aData[2][0] = 1)) Then
+					ConsoleWrite("Service settings already enabled" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings already enabled" & @CRLF)
+
+				Else
+					ConsoleWrite("Executing Query: " & $arrQuery[44] & @CRLF & $arrQuery[45] & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[44] & @CRLF & $arrQuery[45] & @CRLF )
+					If (_SQL_Execute(-1,$arrQuery[44]) Or _SQL_Execute(-1,$arrQuery[45])) = $SQL_ERROR then
+						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
+						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+						Exit
+
+					Else
+						ConsoleWrite("Service settings updated...." & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Service Settings updated...." & @CRLF)
+					EndIf
+				EndIf
+			Else
+				ConsoleWrite("ERROR Checking Service Settings...." & @CRLF)
+				ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Checking Service Settings...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
+				Exit
+			EndIf
+
 		_SQL_Close()
+
 If($arrConfig[9] == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
@@ -65,45 +99,52 @@ If($arrConfig[9] == "Preconditions Check") Then
 
 Else
 	;Open CPS -Patient Chart
-	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- LOGIN TO CPS" & @CRLF)
+	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- LOGIN TO CPS" & @CRLF)
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
 	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
-		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- OPEN PATIENT CHART" & @CRLF)
+		FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
 		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
-		FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- CREATE A NEW OFFICE VISIT FOR THE PATIENT" & @CRLF)
+		FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- CREATE A NEW OFFICE VISIT FOR THE PATIENT" & @CRLF)
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				ConsoleWrite("Creating Office Visit #" &$counter+1 & @CRLF)
+				If($arrConfig[9]=="Data Generation") Then
+					ConsoleWrite("Creating Office Visit #" & $counter+1 & " of " & $arrConfig[36] & " office visits"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" & $counter+1 & " of " & $arrConfig[36] & " office visits" & @CRLF)
+				Else
+					ConsoleWrite("Creating Office Visit #" &$counter+1 & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" &$counter+1 & @CRLF)
+				EndIf
+
 				Call("createNewDocument",$arrConfig[18],$arrConfig[15],$arrConfig[16])
 				Call("createAsthmaVisit",$arrConfig[15],$arrConfig[16])
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
 					Sleep(60000)
-					If($counter = $arrConfig[33]) Then
+					If($counter = $arrConfig[36]) Then
 						ConsoleWrite("Exiting after data generation for Office Visit Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Office Visit Flow...." & @CRLF)
 						Exit
 					EndIf
 
 				Else
-					$counter = $arrConfig[33]
+					$counter = $arrConfig[36]
 				EndIf
-			Until $counter = $arrConfig[33]
+			Until $counter = $arrConfig[36]
 
 			ConsoleWrite("Office Visit created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit created successfully...." & @CRLF)
 
-		FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
+		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
@@ -146,7 +187,7 @@ Else
 				Exit
 			EndIf
 
-		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- VERIFY OFFICE VISIT DETAILS IN DOCUMENT TABLE" & @CRLF)
+		FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY OFFICE VISIT DETAILS IN DOCUMENT TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[28] & $PID & $arrQuery[29] & ";",$aData,$iRows,$iColumns)
@@ -199,7 +240,7 @@ Else
 			ConsoleWrite("Wait of 3" & @CRLF)
 			Sleep(180000)
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONCVSINFO TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONCVSINFO TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[30] & $visitDocumentId & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[30] & $visitDocumentId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[30] & $visitDocumentId & ";",$aData,$iRows,$iColumns)
@@ -263,7 +304,7 @@ Else
 			ConsoleWrite("Wait of 3" & @CRLF)
 			Sleep(180000)
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- VERIFY OFFICE VISIT DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[31] & $CVSInfoId & $arrQuery[32] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[31] & $CVSInfoId & $arrQuery[32] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[31] & $CVSInfoId & $arrQuery[32] &";",$aData,$iRows,$iColumns)
@@ -353,7 +394,7 @@ Else
 			EndIf
 			;_SQL_Close()
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- VERIFY OFFICE VISIT IN PATIENT PORTAL" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY OFFICE VISIT IN PATIENT PORTAL" & @CRLF)
 			$officeVisitJar = StringReplace($currentDir, "officevisit", "jarfiles")  & "\chkOfficeVisit.jar"
 			$ProcessID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' OfficeVisit ' & $CreationDate &'',"","",$STDOUT_CHILD)
 			ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
@@ -369,7 +410,7 @@ Else
 					Exit
 				EndIf
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY VDT EVENTS FOR OFFICE VISIT" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY VDT EVENTS FOR OFFICE VISIT" & @CRLF)
 				ConsoleWrite("Wait for events to arrive from Medfusion" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for events to arrive from Medfusion" & @CRLF)
 				Sleep(600000)
@@ -429,7 +470,7 @@ Else
 					Exit
 				EndIf
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- CREATE CLINICAL VISIT SUMMARY FOR OFFICE VISIT" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- CREATE CLINICAL VISIT SUMMARY FOR OFFICE VISIT" & @CRLF)
 				WinActivate("Chart - NOT FOR PATIENT USE")
 				$result = Call("createCVS")
 				If($result == "PASSED") Then
@@ -441,7 +482,7 @@ Else
 					Exit
 				EndIf
 ;-----------------------------------------------------------------------------
-			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY CVS DETAILS IN DOCUMENT TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY CVS DETAILS IN DOCUMENT TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[28] & $PID & $arrQuery[29] & ";",$aData,$iRows,$iColumns)
@@ -508,7 +549,7 @@ Else
 			ConsoleWrite("Wait of 3" & @CRLF)
 			Sleep(180000)
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY CVS DETAILS IN CUSMEDFUSIONCVSEXTINFO TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 14 -- VERIFY CVS DETAILS IN CUSMEDFUSIONCVSEXTINFO TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[33] & $cvsDocumentId & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[33] & $cvsDocumentId & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[33] & $cvsDocumentId & ";",$aData,$iRows,$iColumns)
@@ -586,7 +627,7 @@ Else
 			ConsoleWrite("Wait of 3" & @CRLF)
 			Sleep(180000)
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 14 -- VERIFY CVS DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 15 -- VERIFY CVS DETAILS IN CUSMEDFUSIONOUTBOUNDCCD TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[31] & $CVSExtInfoId  & $arrQuery[32] & ";",$aData,$iRows,$iColumns)
@@ -675,7 +716,7 @@ Else
 				Exit
 			EndIf
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 15 -- VERIFY EVENT FOR CVS CREATION IN MUACTIVITYLOG TABLE" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 16 -- VERIFY EVENT FOR CVS CREATION IN MUACTIVITYLOG TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
@@ -703,7 +744,7 @@ Else
 				EndIf
 			_SQL_Close()
 
-			FileWriteLine($hFileOpen, @CRLF & " STEP 16 -- VERIFY CVS IN PATIENT PORTAL" & @CRLF)
+			FileWriteLine($hFileOpen, @CRLF & " STEP 17 -- VERIFY CVS IN PATIENT PORTAL" & @CRLF)
 			$officeVisitJar = StringReplace($currentDir, "officevisit", "jarfiles")  & "\chkOfficeVisit.jar"
 			$ProcessID = Run(@ComSpec & ' /c java -jar ' & $officeVisitJar & ' CVS ' & $cvsCreationDate &'',"","",$STDOUT_CHILD)
 			ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)

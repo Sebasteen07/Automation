@@ -14,6 +14,7 @@ Patient Portal Login:-userid
 Patient Portal Password:-password
 Patient Portal SignIn:-signin_btn
 Patient Portal CreateNewPatient Button:-create_btn
+Patient Portal SignOut Button:-signout
 
 #Patient Portal Create New Patient Page
 New Account First Name:-firstName
@@ -50,6 +51,8 @@ Security Details Statement Preference Update Button:-updateMissingInfoButton
 Portal Messaging feature:-feature_messaging
 Portal Appointments feature:-feature_appointment_request
 Portal Appointment Send Confirmation:-//*[contains(text(),'Thank you')]
+Portal Ask A Staff Feature:-feature_ask_a_practitioner
+Portal Ask A Staff Pop Up Question1:-//*[@id="askAQuestionLightBox"]/div/div/div[2]/div/a
 
 #Patient Portal Message Page
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
@@ -70,6 +73,17 @@ Appointments Provider Page Continue button:-continue_button
 #Appointments Details Page
 Appointment Reason:-apptreason
 Request Appointment Button:-continue_button
+
+#Ask A Staff Details Page
+AAS Subject:-id3
+AAS Body:-id4
+AAS Submit Button:-idb
+AAS Location Dropdown:-id1
+AAS Provider Dropdown:-id2
+
+#Ask A Staff Confirm Page
+AAS Confirm Button:-id15
+AAS Confirmation Message:-//*[@id="pageContent"]/div/table/tbody/tr/td/div/p[1]
 
 #CCD Viewer
 CCD Viewer Download PDF:-savePdf

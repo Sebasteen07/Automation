@@ -155,12 +155,26 @@ Func setConfig()
 
 					Case "number of appointments to be created"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "aas subject"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "aas body"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "reply to aas"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of aas to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
 
 		Return($arrConfig)
 	EndIf
 EndFunc
+
+
 
 ;-----Function to open the log file in append mode
 ;-----Returns handle of log file
@@ -189,6 +203,32 @@ Func getTimestamp()
 	$NOW = _NowCalc()
 	$timestamp = _DateDiff("s", $EPOCH, $NOW)
 	Return($timestamp)
+EndFunc
+
+
+
+;-----Function to delete old log files
+;-----Input PArameter - path to commonsteps directory
+Func deleteOldLogFiles($commonStepsDir)
+	ConsoleWrite("METHOD: deleteOldLogFiles() started" & @CRLF)
+	;get date for deletion
+	$deleteDate = _DateAdd('d', -7, _NowCalcDate())
+	ConsoleWrite("Date before which log files to be deleted is " & $deleteDate & @CRLF)
+
+	;split deletion date into dd,mm,yyyy
+	Local $aMyDate, $aMyTime
+	_DateTimeSplit($deleteDate, $aMyDate, $aMyTime)
+
+	;get list of all log files
+	$arrFile = _FileListToArray($commonStepsDir,"ProcessLog_*.txt",$FLTA_FILES)
+
+	For $i = 1 To $arrFile[0]
+		$arrTime = FileGetTime($commonStepsDir &"\" & $arrFile[$i],$FT_CREATED,$FT_ARRAY)
+		If(($arrTime[2]<$aMyDate[3]) Or ($arrTime[1]<$aMyDate[2]) Or ($arrTime[0]<$aMyDate[1])) Then
+			FileDelete ( $commonStepsDir & "\" & $arrFile[$i] )
+		EndIf
+	Next
+	ConsoleWrite("METHOD: deleteOldLogFiles() ended" & @CRLF)
 EndFunc
 
 
@@ -1643,4 +1683,72 @@ Func verifyDocumentInPatientChart($docTitle)
 		Return("FAILED")
 	EndIf
 	ConsoleWrite("METHOD: verifyDocumentInPatientChart() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to reply 'Ask A Staff'
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
+;-----Input parameter - $subject = AAS Message Subject
+;-----Input parameter - $body = AAS MEssage Body
+;-----Input Parameter - $replyMsg = Text for replying AAS
+Func replyAAS($Fname,$Lname,$subject,$body,$replyMsg)
+	ConsoleWrite("METHOD: replyAAS() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	$newDocument = "Update - " & $Fname & " " & $Lname
+	WinActivate($newDocument)
+	ConsoleWrite("Activating Update Chart Window" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Update Chart Window" &@CRLF)
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If(WinActive($newDocument)) Then
+		Send("{TAB 1}")
+		Send("{SPACE}")
+		WinWaitActive("Secure Message: Reply-To")
+
+		$counter = 1
+		While $counter <=5
+			$str = WinGetText("Secure Message: Reply-To")
+
+			If((StringInStr($str, $subject)>0) And (StringInStr($str,$body)>0)) Then
+				ConsoleWrite("Found the message to reply" & @CRLF)
+				Sleep(1000)
+				ControlClick("Secure Message: Reply-To","","[NAME:ButtonSelect]")
+				Sleep(1000)
+
+				WinWaitActive($newDocument)
+				Send("{TAB 7}")
+				Send($replyMsg)
+				Sleep(1000)
+				Send("+{TAB 2}")
+				Sleep(2000)
+				Send("{SPACE}")
+				WinWaitActive("Centricity Practice Solution")
+				ControlClick("Centricity Practice Solution","","[CLASS:Button; INSTANCE:1]")
+
+				WinWaitActive($newDocument)
+				ConsoleWrite("Complete the document" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Complete the document" & @CRLF)
+				MouseClick("left",1290,35)
+				WinWaitActive("End Update")
+				ControlFocus("End Update","","[CLASS:Button; INSTANCE:15]")
+				ControlClick("End Update","","[CLASS:Button; INSTANCE:15]")
+				ExitLoop
+
+			Else
+				ConsoleWrite("Message not found" & @CRLF)
+				Send("{DOWN}")
+			EndIf
+			$counter += 1
+		WEnd
+
+	Else
+		ConsoleWrite("ERROR Opening Update Chart Window...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Update Chart Window...." & @CRLF)
+	EndIf
+
+	ConsoleWrite("METHOD: replyAAS() ended" & @CRLF)
 EndFunc

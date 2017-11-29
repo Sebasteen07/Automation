@@ -7,7 +7,9 @@
 
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\ProcessLog_SelfRegistration_" & $time & ".txt"
+$commonStepsDir = StringReplace($currentDir , "patientselfregistration", "commonsteps")
+Call("deleteOldLogFiles",$commonStepsDir)
+$logPath = $commonStepsDir & "\ProcessLog_SelfRegistration_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 $patientDetails = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\patientdetails.txt"
@@ -28,7 +30,6 @@ $arrEvent = Call("openEventFile")
 					ConsoleWrite("Executing Query: " & $arrQuery[1] & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[1] & @CRLF)
 					If _SQL_Execute(-1,$arrQuery[1]) = $SQL_ERROR then
-						;Msgbox(0 + 16 +262144,"Error",_SQL_GetErrMsg())
 						ConsoleWrite("ERROR Updating service settings...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating service settings...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
@@ -71,21 +72,41 @@ Else
 	ConsoleWrite($ptSelfRegjar & @CRLF)
 	$counter = 0
 	Do
-		ConsoleWrite("Creating Patient #" &$counter+1 & @CRLF)
-		ShellExecuteWait($ptSelfRegjar)
+		If($arrConfig[9]=="Data Generation") Then
+			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[37] & " patients"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[37] & " patients" & @CRLF)
+		Else
+			ConsoleWrite("Creating Patient #" &$counter+1 & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" &$counter+1 & @CRLF)
+		EndIf
+
+		$ProcessID = Run(@ComSpec & ' /c java -jar ' & $ptSelfRegjar &'',"","",$STDOUT_CHILD)
+		ConsoleWrite("$ProcessID :" & $ProcessID & @CRLF)
+		ProcessWaitClose($ProcessID)
+		$output =StdoutRead($ProcessID)
+
+			If(StringInStr($output,"PASSED")) Then
+				ConsoleWrite("Patient #" & $counter+1 & " created successfully" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Patient #" & $counter+1 & " created successfully" & @CRLF)
+			Else
+				ConsoleWrite("Error in Patient creation from Patient Portal" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Error in Paitent creation from Patient Portal -- FAILED" & @CRLF)
+				Exit
+			EndIf
+
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
 			Sleep(60000)
-			If($counter = $arrConfig[34]) Then
+			If($counter = $arrConfig[37]) Then
 				ConsoleWrite("Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				Exit
 			EndIf
 
 		Else
-			$counter = $arrConfig[34]
+			$counter = $arrConfig[37]
 		EndIf
-	Until $counter = $arrConfig[34]
+	Until $counter = $arrConfig[37]
 	;Sleep(105000)
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF)
 	ConsoleWrite("Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF )

@@ -11,7 +11,9 @@
 
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "appointments", "commonsteps") & "\ProcessLog_Appointments_" & $time & ".txt"
+$commonStepsDir = StringReplace($currentDir , "appointments", "commonsteps")
+Call("deleteOldLogFiles",$commonStepsDir)
+$logPath = $commonStepsDir & "\ProcessLog_Appointments_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
@@ -73,8 +75,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments" & @CRLF)
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments" & @CRLF)
 		Else
 			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
@@ -97,16 +99,16 @@ Else
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
 			Sleep(60000)
-			If($counter = $arrConfig[36]) Then
+			If($counter = $arrConfig[39]) Then
 				ConsoleWrite("Exiting after data generation for Appointments Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Appointments Flow...." & @CRLF)
 				Exit
 			EndIf
 
 		Else
-			$counter = $arrConfig[36]
+			$counter = $arrConfig[39]
 		EndIf
-	Until $counter = $arrConfig[36]
+	Until $counter = $arrConfig[39]
 ;----------------------------------------------------
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
