@@ -109,12 +109,14 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			Sleep(60000)
 			If($counter = $arrConfig[40]) Then
 				ConsoleWrite("Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				Exit
 			EndIf
+			ConsoleWrite("Wait for 1 min before next AAS generation" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for 1 min before next AAS generation" & @CRLF)
+			Sleep(60000)
 
 		Else
 			$counter = $arrConfig[40]
@@ -184,8 +186,8 @@ Else
 				Exit
 			EndIf
 
-	ConsoleWrite("Wait for AAS to arrive from Medfusion" & @CRLF)
-	FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for AAS to arrive from Medfusion"& @CRLF)
+	ConsoleWrite("Wait of 4 mins for AAS to arrive from Medfusion" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 4 mins for AAS to arrive from Medfusion"& @CRLF)
 	Sleep(240000)
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- VERIFY AAS DETAILS IN DATABASE" & @CRLF)
@@ -198,41 +200,17 @@ Else
 			;CommServiceType
 				ConsoleWrite("Verifying CommServiceType in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying CommServiceType in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][0] & " -- ")
-				If (StringCompare("Ask A Doctor", $aData[1][0]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "Ask A Doctor", $aData[1][0])
 
 			;EMRDocumentType
 				ConsoleWrite("Verifying EMRDocumentType in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EMRDocumentType in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "AAS" &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare("AAS", $aData[1][1]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "AAS" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "AAS" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "AAS", $aData[1][1])
 
 			;Subject
 				ConsoleWrite("Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][3] & " -- ")
-				If (StringCompare($subjectAAS & $time & "0", $aData[1][3]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][3] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][3] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", $subjectAAS & $time & "0", $aData[1][3])
 
 			;Received Date
 			$receiveingDate = $aData[1][4]
@@ -260,7 +238,7 @@ Else
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY EVENT FOR AAS CREATED BY PATIENT" & @CRLF)
-	ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
+			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$arrQuery[11] & $PID & $arrQuery[12] & ";",$aData,$iRows,$iColumns)
 
@@ -268,15 +246,7 @@ Else
 			;MUActivityLogId
 				ConsoleWrite("Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
-				ConsoleWrite("Expected Result: " & $arrEvent[8] &" and Actual Result: " & $aData[2][0] & " -- ")
-				If (StringCompare($arrEvent[8], $aData[2][0]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[8]  &" and Actual Result: " & $aData[2][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[8] &" and Actual Result: " & $aData[2][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", $arrEvent[8], $aData[2][0])
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -285,7 +255,6 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
-
 
 	ConsoleWrite("Wait for AAS to arrive in Patient Chart" & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for AAS to arrive in Patient Chart"& @CRLF)
@@ -303,6 +272,7 @@ Else
 			EndIf
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- REPLY AAS FROM PATIENT CHART" & @CRLF)
+		ConsoleWrite("Reply the AAS from Patient Chart" & @CRLF)
 		Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
 		Call("replyAAS","SR_1507883561241","1507883561241",$subjectAAS & $time & "0",$bodyAAS & $time & "0",$arrConfig[32])
 
@@ -319,16 +289,7 @@ Else
 				;Summary
 				ConsoleWrite("Verifying document summary in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying document summary in Document table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & "E-mail Message" &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare("E-mail Message", $aData[1][1]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "E-mail Message" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "E-mail Message" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "E-mail Message", $aData[1][1])
 
 				$CreationDate = $aData[1][3]
 				ConsoleWrite("Reply of AAS Creation Date is " & $CreationDate & @CRLF)
@@ -342,6 +303,8 @@ Else
 				Exit
 			EndIf
 
+			ConsoleWrite("Wait of 4 mins for reply to reach Medfusion" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 4 mins for reply to reach Medfusion" & @CRLF)
 			Sleep(240000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY MESSAGE DETAILS IN CUSMEDFUSIONCOMMOUTGOING TABLE" & @CRLF)
@@ -353,72 +316,27 @@ Else
 			;PateintProfileId
 				ConsoleWrite("Verifying PatientProfileId in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying PatientProfileId in cusMedfusionCommOutgoing table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & $PatientProfileId &" and Actual Result: " & $aData[1][0] & " -- ")
-				If (StringCompare($PatientProfileId, $aData[1][0]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $PatientProfileId &" and Actual Result: " & $aData[1][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $PatientProfileId &" and Actual Result: " & $aData[1][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", $PatientProfileId, $aData[1][0])
 
 			;CommServiceType
 				ConsoleWrite("Verifying CommServiceType in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying CommServiceType in cusMedfusionCommOutgoing table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare("Ask A Doctor", $aData[1][1]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Ask A Doctor" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "Ask A Doctor", $aData[1][1])
 
 			;Message Subject
 				ConsoleWrite("Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & "RE: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][2] & " -- ")
-				If (StringCompare("RE: " & $subjectAAS & $time & "0", $aData[1][2]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "RE: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][2] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "RE: " & $subjectAAS & $time & "0" &" and Actual Result: " & $aData[1][2] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "RE: " & $subjectAAS & $time & "0", $aData[1][2])
 
 			;Created by User
 				ConsoleWrite("Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][3] & " -- ")
-				If (StringCompare($arrConfig[2], $aData[1][3]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][3] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][3] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$arrConfig[2], $aData[1][3])
 
 			;CommSentStatus
 				ConsoleWrite("Verifying CommSentStatus in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying CommSentStatus in cusMedfusionCommOutgoing table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & "1" &" and Actual Result: " & $aData[1][4] & " -- ")
-				If (StringCompare("1", $aData[1][4]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "1" &" and Actual Result: " & $aData[1][4] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "1" &" and Actual Result: " & $aData[1][4] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData","1", $aData[1][4])
 
 			;CommSentDate
 				$messageSentDate = $aData[1][7]
@@ -446,58 +364,23 @@ Else
 			;EventId
 				ConsoleWrite("Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "PI_" & $commOutgoingId & "_" & $msgDocumentId &" and Actual Result: " & $aData[1][0] & " -- ")
-				If (StringCompare("PI_" & $commOutgoingId & "_" & $msgDocumentId, $aData[1][0]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "PI_" & $commOutgoingId & "_" & $msgDocumentId &" and Actual Result: " & $aData[1][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "PI_" & $commOutgoingId & "_" & $msgDocumentId &" and Actual Result: " & $aData[1][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData","PI_" & $commOutgoingId & "_" & $msgDocumentId, $aData[1][0])
 
 			;Evnet Type
 				ConsoleWrite("Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & "Provider Initiated" &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare("Provider Initiated", $aData[1][1]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Provider Initiated" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Provider Initiated" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData","Provider Initiated", $aData[1][1])
 
 			;Provider
 				ConsoleWrite("Verifying Provider in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Provider in cusMedfusionMUEvents table" & @CRLF)
-
-				ConsoleWrite("Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][2] & " -- ")
-				If (StringCompare($arrConfig[2], $aData[1][2]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][2] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrConfig[2] &" and Actual Result: " & $aData[1][2] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$arrConfig[2], $aData[1][2])
 
 			;SDID
 				ConsoleWrite("Verifying SDID in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying SDID in cusMedfusionMUEvents table" & @CRLF)
 				$DocumentIdInEvents = Int($aData[1][3]) - 1
-
-				ConsoleWrite("Expected Result: " & $msgDocumentId &" and Actual Result: " & $DocumentIdInEvents & " -- ")
-				If (StringCompare($msgDocumentId, $DocumentIdInEvents) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $msgDocumentId &" and Actual Result: " & $DocumentIdInEvents & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $msgDocumentId &" and Actual Result: " & $DocumentIdInEvents & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$msgDocumentId, $DocumentIdInEvents)
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -507,9 +390,9 @@ Else
 				Exit
 			EndIf
 
-			ConsoleWrite("Wait for event being processed" & @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for event being processed" & @CRLF)
-			Sleep(60000)
+			ConsoleWrite("Wait of 3 mins for event being processed" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 3 mins for event being processed" & @CRLF)
+			Sleep(180000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY EVENT 522 IN MUACTIVITYLOG TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[11] & $PID & $arrQuery[12] & @CRLF)
@@ -520,43 +403,19 @@ Else
 			;MUActivityLogId
 				ConsoleWrite("Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
-				ConsoleWrite("Expected Result: " & $arrEvent[9] &" and Actual Result: " & $aData[1][0] & " -- ")
-				If (StringCompare($arrEvent[9], $aData[1][0]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[9] &" and Actual Result: " & $aData[1][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[9] &" and Actual Result: " & $aData[1][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$arrEvent[9], $aData[1][0])
 
 			;PVID
 				ConsoleWrite("Verifying PVID in MUActivityLog table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying PVID in MUActivityLog table" & @CRLF)
 				$temp = Int($aData[1][2]) - 1
-				ConsoleWrite("Expected Result: " & $pvdrPVID &" and Actual Result: " & $temp & " -- ")
-				If (StringCompare($pvdrPVID, $temp) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $pvdrPVID &" and Actual Result: " & $temp & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $pvdrPVID &" and Actual Result: " & $temp & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$pvdrPVID, $temp)
 
 			;SDID
 				ConsoleWrite("Verifying SDID in MUActivityLog table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying SDID in MUActivityLog table" & @CRLF)
 				$temp = Int($aData[1][1]) - 1
-				ConsoleWrite("Expected Result: " & $msgDocumentId &" and Actual Result: " & $temp & " -- ")
-				If (StringCompare($msgDocumentId, $temp) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $msgDocumentId &" and Actual Result: " & $temp & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $msgDocumentId &" and Actual Result: " & $temp & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData",$msgDocumentId, $temp)
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -565,6 +424,7 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
+			_SQL_Close()
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 14 -- VERIFY MESSAGE IN PATIENT PORTAL AND REPLY THE MESSAGE" & @CRLF)
 

@@ -1752,3 +1752,24 @@ Func replyAAS($Fname,$Lname,$subject,$body,$replyMsg)
 
 	ConsoleWrite("METHOD: replyAAS() ended" & @CRLF)
 EndFunc
+
+
+
+;-----Function to assert values
+;-----Input parameter - $Expected = expected value
+;-----Input parameter - $Actual = actual value
+Func assertData($Expected, $Actual)
+	ConsoleWrite("METHOD: assertData() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	If(StringCompare($Expected, $Actual) = 0) Then
+		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+
+	Else
+		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- FAILED" & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: assertData() ended" & @CRLF)
+EndFunc

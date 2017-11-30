@@ -75,14 +75,14 @@ Appointment Reason:-apptreason
 Request Appointment Button:-continue_button
 
 #Ask A Staff Details Page
-AAS Subject:-id3
-AAS Body:-id4
-AAS Submit Button:-idb
-AAS Location Dropdown:-id1
-AAS Provider Dropdown:-id2
+AAS Subject:-//*[@id="form"]/div[4]/div/div[2]/input
+AAS Body:-//*[@id="form"]/div[5]/div/div[2]/textarea
+AAS Submit Button:-//*[@id="form"]/div[7]/div[2]/input
+AAS Location Dropdown:-//*[@id="form"]/div[2]/div/div[2]/select
+AAS Provider Dropdown:-//*[@id="form"]/div[3]/div/div[2]/select
 
 #Ask A Staff Confirm Page
-AAS Confirm Button:-id15
+AAS Confirm Button:-//*[@id="form"]/div[2]/div/input
 AAS Confirmation Message:-//*[@id="pageContent"]/div/table/tbody/tr/td/div/p[1]
 
 #CCD Viewer
