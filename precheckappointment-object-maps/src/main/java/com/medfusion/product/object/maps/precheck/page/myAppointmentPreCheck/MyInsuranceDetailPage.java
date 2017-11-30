@@ -19,7 +19,7 @@ public class MyInsuranceDetailPage extends BasePageObject  {
 	}
 	
 	public PrimaryInsurancePage gotoInsuranceInfoPage() {
-		insurancePageButton.click();
+		javascriptClick(insurancePageButton);
 		return PageFactory.initElements(driver, PrimaryInsurancePage.class);
 	}
 	

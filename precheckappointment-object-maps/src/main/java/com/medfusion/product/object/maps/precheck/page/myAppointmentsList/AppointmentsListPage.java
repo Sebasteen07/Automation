@@ -29,7 +29,7 @@ public class AppointmentsListPage extends BasePageObject {
 			WebElement timeText = driver.findElement(By.xpath("//*[@id=\"appointments\"]/ul[1]/li["+(i+1)+"]/h5"));
 			if(timeText.getText().contains(appointmentDateToSelect)) {
 				log("Appointment time Found at "+timeText.getText());
-				timeText.click();
+				javascriptClick(timeText);
 				return PageFactory.initElements(driver, MyAppointmentPage.class);
 			}
 			else {
