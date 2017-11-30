@@ -30,12 +30,12 @@ public class MyAppointmentPage extends BasePageObject  {
 	}
 	
 	public MyDemoGraphicsDetailPage gotoDemographicsDetailPage() {
-		demographicsHeaderLink.click();
+		javascriptClick(demographicsHeaderLink);
 		return PageFactory.initElements(driver, MyDemoGraphicsDetailPage.class);
 	}
 	
 	public MyInsuranceDetailPage gotoInsuranceDetailPage() {
-		insuranceHeaderLink.click();
+		javascriptClick(insuranceHeaderLink);
 		return PageFactory.initElements(driver, MyInsuranceDetailPage.class);
 	}
 	
