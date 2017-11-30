@@ -31,7 +31,7 @@ select cvsInfoId, medfusionPatientId, gePatientId, status from cusMedfusionCVSIn
 select outboundCcdId, medfusionPatientId, gePatientId, state, status, ccdType from cusMedfusionOutboundCcd where referenceId = 
 order by outboundCcdId desc
 select cvsInfoId, medfusionPatientId, gePatientId, status, xid from cusMedfusionCVSExtInfo where did = 
-select CommServiceType, EMRDocumentType, ResponseToDocumentId, SubjectText from cusMedfusionCommIncoming where PatientProfileId = 
+select CommServiceType, EMRDocumentType, ResponseToDocumentId, SubjectText, ReceivedDate from cusMedfusionCommIncoming where PatientProfileId = 
 order by CommIncomingId desc
 select settingvalue,settingtype from servicesettings where settingtype in ('RUN_SECURE_COMM','NOTIFY_READ','NO_REPLY') order by settingtype asc
 update servicesettings set settingvalue = '1' where settingtype = 'RUN_SECURE_COMM'
@@ -40,3 +40,8 @@ update servicesettings set settingvalue = '1' where settingtype = 'NOTIFY_READ'
 select settingvalue, settingtype from servicesettings where settingtype in ('RUN_APPT','VIEW_APPOINTMENT') order by settingtype asc
 update servicesettings set settingvalue = '1' where settingtype = 'RUN_APPT'
 update servicesettings set settingvalue = '1' where settingtype = 'VIEW_APPOINTMENT'
+select settingvalue,settingtype from servicesettings where settingtype in ('fetchCCDAfterEnocunter','fetchCVS') order by settingtype asc
+update servicesettings set settingvalue = '1' where settingtype = 'fetchCCDAfterEnocunter'
+update servicesettings set settingvalue = '1' where settingtype = 'fetchCVS'
+select settingvalue from servicesettings where settingtype = 'RUN_AAS'
+update servicesettings set settingvalue = '1' where settingtype = 'RUN_AAS'

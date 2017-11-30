@@ -11,7 +11,9 @@
 
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
-$logPath = StringReplace($currentDir, "appointments", "commonsteps") & "\ProcessLog_Appointments_" & $time & ".txt"
+$commonStepsDir = StringReplace($currentDir , "appointments", "commonsteps")
+Call("deleteOldLogFiles",$commonStepsDir)
+$logPath = $commonStepsDir & "\ProcessLog_Appointments_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
@@ -55,7 +57,6 @@ $arrDoctype = Call("openDoctypeFile")
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
-
 			_SQL_Close()
 
 If($arrConfig[9] == "Preconditions Check") Then
@@ -64,7 +65,6 @@ If($arrConfig[9] == "Preconditions Check") Then
 	Exit
 
 Else
-	;---------------------------------------------------------------
 	;Create Appointment
 	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- CREATE APPOINTMENT FROM PATIENT PORTAL" & @CRLF)
 	ConsoleWrite("Create appointments from Patient Portal" &@CRLF )
@@ -73,8 +73,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[36] & " appointments" & @CRLF)
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments" & @CRLF)
 		Else
 			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
@@ -96,18 +96,20 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			Sleep(60000)
-			If($counter = $arrConfig[36]) Then
+			If($counter = $arrConfig[39]) Then
 				ConsoleWrite("Exiting after data generation for Appointments Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Appointments Flow...." & @CRLF)
 				Exit
 			EndIf
+			ConsoleWrite("Wait for 1 min before next Appointment generation" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for 1 min before next Appointment generation" & @CRLF)
+			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[36]
+			$counter = $arrConfig[39]
 		EndIf
-	Until $counter = $arrConfig[36]
-;----------------------------------------------------
+	Until $counter = $arrConfig[39]
+
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 		Local $aData,$iRows,$iColumns
@@ -151,8 +153,8 @@ Else
 				Exit
 			EndIf
 
-	ConsoleWrite("Wait for appointment to arrive from Medfusion" & @CRLF)
-	FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for appointment to arrive from Medfusion"& @CRLF)
+	ConsoleWrite("Wait of 4 mins for appointment to arrive from Medfusion" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 4 mins for appointment to arrive from Medfusion"& @CRLF)
 	Sleep(240000)
 	FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- VERIFY APPOINTMENT DETAILS IN DATABASE" & @CRLF)
 
@@ -164,41 +166,17 @@ Else
 			;CommServiceType
 				ConsoleWrite("Verifying CommServiceType in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying CommServiceType in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][0] & " -- ")
-				If (StringCompare("Appointment Request", $aData[1][0]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "Appointment Request", $aData[1][0])
 
 			;EMRDocumentType
 				ConsoleWrite("Verifying EMRDocumentType in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EMRDocumentType in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "ApptReq" &" and Actual Result: " & $aData[1][1] & " -- ")
-				If (StringCompare("ApptReq", $aData[1][1]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "ApptReq" &" and Actual Result: " & $aData[1][1] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "ApptReq" &" and Actual Result: " & $aData[1][1] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "ApptReq", $aData[1][1])
 
 			;Subject
 				ConsoleWrite("Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
-				ConsoleWrite("Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][3] & " -- ")
-				If (StringCompare("Appointment Request", $aData[1][3]) = 0)  Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][3] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & "Appointment Request" &" and Actual Result: " & $aData[1][3] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", "Appointment Request", $aData[1][3])
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -207,7 +185,8 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
-
+		ConsoleWrite("Wait of 2 mins for event being generated" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 2 mins for event being generated" & @CRLF)
 		Sleep(120000)
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- LOGIN TO CPS" & @CRLF)
@@ -233,15 +212,7 @@ Else
 			;MUActivityLogId
 				ConsoleWrite("Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying MUActivityLogId in MUActivityLog table" & @CRLF)
-				ConsoleWrite("Expected Result: " & $arrEvent[8] &" and Actual Result: " & $aData[2][0] & " -- ")
-				If (StringCompare($arrEvent[8], $aData[2][0]) = 0) Then
-					ConsoleWrite("PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[8]  &" and Actual Result: " & $aData[2][0] & " -- PASSED" & @CRLF)
-				Else
-					ConsoleWrite("FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $arrEvent[8] &" and Actual Result: " & $aData[2][0] & " -- FAILED" & @CRLF)
-					Exit
-				EndIf
+				Call("assertData", $arrEvent[8], $aData[2][0])
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -313,8 +284,8 @@ Else
 				Exit
 			EndIf
 
-		ConsoleWrite("Wait for appointment to arrive" & @CRLF)
-		FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for appointment to arrive"& @CRLF)
+		ConsoleWrite("Wait of 4 mins for appointment to arrive" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 4 mins for appointment to arrive"& @CRLF)
 		Sleep(240000)
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY APPOINTMENT ARRIVED AS ALERT" & @CRLF)
