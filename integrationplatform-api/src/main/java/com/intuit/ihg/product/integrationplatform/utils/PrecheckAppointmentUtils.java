@@ -30,7 +30,7 @@ public class PrecheckAppointmentUtils {
 		String tzid = "EST";
 		TimeZone tz = TimeZone.getTimeZone(tzid);
 	    Date appointmentDate = new Date(appointmentTime);
-	    DateFormat dAppointmentFormat = new SimpleDateFormat("E MM/dd h:mm a zzz");
+	    DateFormat dAppointmentFormat = new SimpleDateFormat("E M/d h:mm a zzz");
 	    dAppointmentFormat.setTimeZone(tz);
 	    Log4jUtil.log("appointmentDate is "+dAppointmentFormat.format(appointmentDate));
 	    Log4jUtil.log("Step 3: Post precheck appointment");

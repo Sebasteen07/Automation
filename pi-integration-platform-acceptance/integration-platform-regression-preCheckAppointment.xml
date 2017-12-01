@@ -16,7 +16,7 @@
 	    		<include name="testE2EPreCheckUpdates1stDemo2ndALLINS"/>
 	    		<include name="testE2EPreCheckUpdates1stPrimaryINS2ndDemo"/>
 	    		<include name="testE2EPreCheckUpdatesNoChangeInDemographics"/>
-	    		<include name="testE2EPreCheckUpdatesOnlyDemographics"/>
+	    		<include name="testE2EPreCheckUpdatesBLANKInsurance"/>
       	</methods>
 	</classes>
 </test>
