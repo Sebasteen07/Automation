@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -402,5 +403,59 @@ public class FormsExportUtils {
 		testData.exercise=list.get(24);
 		testData.day=list.get(25);
 
+	}
+	
+	public int countDropDownValue(char key,WebElement value) {
+		IHGUtil.PrintMethodName();
+		Select select = null;
+		int size = 0;
+		switch (key) {
+			case 'R':
+				select = new Select(value);
+				break;
+			case 'E':
+				select = new Select(value);
+				break;
+			case 'G':
+				select = new Select(value);
+				break;
+			case 'S':
+				select = new Select(value);
+				break;
+			default:
+				break;
+		}
+		
+		List<WebElement> element = select.getOptions();
+		size = element.size();
+
+		return size;
+	}
+	
+	public String updateDropDownValue(int i, char key,WebElement valueToUpdate) {
+		IHGUtil.PrintMethodName();
+		Select select = null;
+		String changeValue = null;
+		switch (key) {
+			case 'R':
+				select = new Select(valueToUpdate);
+				break;
+			case 'E':
+				select = new Select(valueToUpdate);
+				break;
+			case 'G':
+				select = new Select(valueToUpdate);
+				break;
+			case 'S':
+				select = new Select(valueToUpdate);
+				break;
+			default:
+
+				break;
+		}
+		select.selectByIndex(i);
+		WebElement option = select.getFirstSelectedOption();
+		changeValue = option.getText();
+		return changeValue;
 	}
 }

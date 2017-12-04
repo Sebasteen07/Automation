@@ -2744,10 +2744,10 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		  for(int i=0; i<CcdMessageHeaders.getLength();i++)
 		  {
 			  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
-			  NodeList PAtientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
-			  for(int j=0; j<PAtientDemo.getLength();j++)
+			  NodeList PatientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
+			  for(int j=0; j<PatientDemo.getLength();j++)
 			  {
-				  Element childs=(Element) PAtientDemo.item(j);
+				  Element childs=(Element) PatientDemo.item(j);
 				  
 			  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
 			  if(PatientIdentifier.item(j)!=null) {
@@ -3167,4 +3167,25 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 			}
 		}
 	}
+	
+	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath,String EGQValue,char EGQType) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsepath);
+		if(EGQType == 'I') {
+			Node GenderIdentity=doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
+			Element GenderIdentityEle=(Element) GenderIdentity;
+			Node EGQGINode=GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+			Log4jUtil.log("GI node value= "+EGQGINode.getTextContent()+"   EGQValue = "+ EGQValue);
+			BaseTestSoftAssert.verifyTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+		}
+		if(EGQType == 'S') {
+			Node SexualOrientation=doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
+			Element SexualOrientationEle=(Element) SexualOrientation;
+			Node EGQSONode=SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+			Log4jUtil.log("SO node value = "+EGQSONode.getTextContent()+"   EGQValue = "+ EGQValue);
+			BaseTestSoftAssert.verifyTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+		}
+	}
+				
 }
