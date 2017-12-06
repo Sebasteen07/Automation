@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -330,6 +331,27 @@ public class FormBasicInfoPage extends PortalFormPage {
 	@Override
 	public boolean isPageLoaded() {
 		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Basic Information About You"))).isDisplayed();
+	}
+	
+	public WebElement getGenderIdentity() {
+		return genderIdentity;
+	}
+	public WebElement getGenderIdentityDetail() {
+		return genderIdentityDetail;
+	}
+	public WebElement getSexualOrientation() {
+		return sexualOrientation;
+	}
+	public WebElement getSexualOrientationDetial() {
+		return sexualOrientationDetail;
+	}
+	public FormBasicInfoPage saveAndContinue() throws InterruptedException {
+		javascriptClick(saveAndContinuebtn);
+		return PageFactory.initElements(driver,FormBasicInfoPage.class);
+	}
+	public void switchFrame() {
+		WebElement w1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+		driver.switchTo().frame(w1);
 	}
 
 }

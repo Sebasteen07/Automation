@@ -6,12 +6,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -52,6 +52,9 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.portal.utils.PortalUtil;
+import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
+import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -264,20 +267,19 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			rb.keyPress(KeyEvent.VK_ENTER);
 			Thread.sleep(100);
 			rb.keyRelease(KeyEvent.VK_ENTER);
-			Thread.sleep(2000);
-		}
-		Thread.sleep(6000);
-		String UIPDF = System.getProperty("user.dir");
-		String downloadFile = UIPDF + testData.downloadLocation;
-		File f = new File(downloadFile);
-		ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-		String pdfFileLocation = downloadFile + names.get(0);
-		String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
-		String attachmentInPayload = ExternalFileReader.readFromFile(testData.attachmentBody);
+			Thread.sleep(8000);
+			String UIPDF = System.getProperty("user.dir");
+			String downloadFile = UIPDF + testData.downloadLocation;
+			File f = new File(downloadFile);
+			ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+			String pdfFileLocation = downloadFile + names.get(0);
+			String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
+			String attachmentInPayload = ExternalFileReader.readFromFile(testData.attachmentBody);
 
-		Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
-		Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
-		log("Asserting for PDF match " + pdfMatch);
+			Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
+			Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+			log("Asserting for PDF match " + pdfMatch);
+		}
 		log("Logging out");
 		homePage.clickOnLogout();
 
@@ -1722,6 +1724,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		AppointmentsListPage appListPage = verificationPage.login();
 		log("Step 7: Select the appointment which is posted and submit the fill form");
 		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		Thread.sleep(6000);
 		MyDemoGraphicsDetailPage myDemoGraphicPage =myAppointment.gotoDemographicsDetailPage();
 		//Set DemoGraphic Data
 		myDemoGraphicPage.setFirstName(patientData.get(0));
@@ -2432,5 +2435,112 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(8000);
 		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false);
+	}
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientEGQUpdatesFromForms() throws Exception 
+	{
+		log("Test Case: Update patient EGQ from patientForm and verify in the ccdExchangeBatch and get PIDC api's response");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Read data from an external property file.");
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		FormsExportUtils formUtilsObject = new FormsExportUtils();
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
+		
+		log("Step 3: Get GI/SO corresponding values from an external file");
+		PIDCInfo testDataPIDC = new PIDCInfo();
+		loadFormsExportInfoobj.loadDataFromProperty(testDataPIDC, "v2", "2.0");
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testDataPIDC.getCsvFilePath();
+		PatientRegistrationUtils.csvFileReader(testDataPIDC, workingDir);
+		
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage =new JalapenoLoginPage(driver,testData.url_FE);
+		JalapenoHomePage jalapenoHomePage =loginPage.login(testData.patientuserid_FE, testData.patientPassword1_FE);
+		Thread.sleep(6000);
+        jalapenoHomePage.clickOnMenuHealthForms();
+    
+        log("Step 5: Click on Registration button ");
+        int sizeOfDropDown = testDataPIDC.patientDetailList.size();
+     	String dropValues[] = {"GenderIdentity", "SexualOrientation"};
+		HealthFormListPage healthListpage= new HealthFormListPage(driver);
+		for (int k = 0; k < dropValues.length; k++) {
+			log("Step "+(6+k)+": Updating Values of '" + dropValues[k] + "' field");
+			int count = sizeOfDropDown;
+			if(k==1 ) { count=sizeOfDropDown-1; }
+			log("Total number of values in '" + dropValues[k] + "' field drop-down:" + count);
+			for (int i = 0; i < count; i++) {
+				Long timestamp = System.currentTimeMillis();
+				Thread.sleep(8000);
+				log("Navigate to HealthForms ");
+				healthListpage.clickOnHealthFormsRegistrationLinkUpdated(k+i);
+				Thread.sleep(1000);
+				FormBasicInfoPage pFormBasicInfoPage=PageFactory.initElements(driver, FormBasicInfoPage.class);
+				if(i==0 && k==0) {
+					PortalUtil.setPortalFrame(driver);	
+					log("Fill in Patient GI/SO value");
+					pFormBasicInfoPage.switchFrame();
+				}
+				WebElement dropDownEGQ;
+				if(k==0) {
+					IHGUtil.waitForElement(driver, 60, pFormBasicInfoPage.getGenderIdentity());
+					dropDownEGQ = pFormBasicInfoPage.getGenderIdentity();
+				}
+				else {
+					IHGUtil.waitForElement(driver, 60, pFormBasicInfoPage.getSexualOrientation());
+					dropDownEGQ = pFormBasicInfoPage.getSexualOrientation();
+				}
+				//log(i+"   i:CharAt   "+dropValues[k].charAt(0)+"   :webElement=    "+dropDownEGQ);
+				String updatedValue = formUtilsObject.updateDropDownValue(i, dropValues[k].charAt(0),dropDownEGQ);
+				
+				log("updated Value on portal = "+updatedValue);
+				Thread.sleep(2000);
+				pFormBasicInfoPage.saveAndContinue();
+				Thread.sleep(4000);
+				pFormBasicInfoPage.submitForm();
+				
+				if (!updatedValue.equalsIgnoreCase("Choose...")) {
+					log("Wait for Values to get reflected in the API Call.. ");
+					Thread.sleep(12000);
+					char dropValue = dropValues[k].charAt(0);
+					if (dropValue == 'G') { dropValue = 'I'; }
+					if (dropValues[k].equalsIgnoreCase(IntegrationConstants.GENDERIDENTITY)) {
+						updatedValue = testDataPIDC.patientDetailList.get(i).getGenderIdentity();
+						if(i==4) {
+							updatedValue = testDataPIDC.patientDetailList.get(i-1).getGenderIdentity();
+						}
+						if(i==3) {
+							updatedValue = testDataPIDC.patientDetailList.get(i+1).getGenderIdentity();
+						}
+					}
+					if (dropValues[k].equalsIgnoreCase(IntegrationConstants.SEXUALORIENTATION)) {
+						updatedValue = testDataPIDC.patientDetailList.get(i).getSexualOrientation();
+					}
+					log("Updated Corresponding Expected Enum Value = " + updatedValue);
+					Long since = timestamp / 1000L;
+					String getURL = testData.ccd_url1_FE + "Batch";
+					log("Do a Get CcdExchangeBatch API call");
+					RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
+					log("Verify updated GI/SO values in Get CcdExchangeBatch API call response");
+					RestUtils.verifyEGQUpdatedValuesInCCDExchangeBatch(testData.responsePath_CCD1_FE,updatedValue,dropValue);
+					log("Do a Get PIDC API call");
+					String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.preCheckGetPIDC + "?since=" + since + ",0", testData.responsePDFBatch_FE);
+					if(responseCode.equalsIgnoreCase("200")) {
+						Thread.sleep(800);
+						log("Verify updated GI/SO values in Get PIDC API call response");
+						RestUtils.validateNode(testData.responsePDFBatch_FE, updatedValue, dropValue, testData.patientFirstName_FE);
+					}
+					Thread.sleep(12000);
+				}
+			}
+		}
+		log("Logout from patient portal");
+		driver.switchTo().defaultContent();
+		Thread.sleep(3000);
+		jalapenoHomePage.clickOnLogout();
 	}
 }
