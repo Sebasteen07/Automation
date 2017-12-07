@@ -2534,6 +2534,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 						log("Verify updated GI/SO values in Get PIDC API call response");
 						RestUtils.validateNode(testData.responsePDFBatch_FE, updatedValue, dropValue, testData.patientFirstName_FE);
 					}
+					if(k==0 && i==1) {
+						log("Verify no-updates for GI/SO values in Get PIDC v1 API call response");
+						String getpidcUrlv1 =testData.preCheckGetPIDC;
+						getpidcUrlv1 = getpidcUrlv1.replaceAll("v2", "v1");
+						String responseCodeValue = RestUtils.setupHttpGetRequestWithEmptyResponse(getpidcUrlv1 + "?since=" + since + ",0", testData.responsePDFBatch_FE);
+						Assert.assertTrue(responseCodeValue.equalsIgnoreCase("204"), "get pidc v1 api call without 204");
+					}
 					Thread.sleep(12000);
 				}
 			}
