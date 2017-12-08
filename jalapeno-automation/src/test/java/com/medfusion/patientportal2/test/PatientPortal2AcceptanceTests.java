@@ -887,13 +887,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String emailSubjectGuardien = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
 		String inEmail = "Sign Up!";
 
-		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 15);
+		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectPatient, inEmail, 30);
 		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
 		logStep("Retrieved patients activation link is " + patientUrl);
 		logStep("Comparing with patients link from PrP " + patientUrlEmail);
 		assertEquals(patientUrl, patientUrlEmail, "!patient unlock links are not equal!");
 
-		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 15);
+		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardien, inEmail, 30);
 		assertNotNull(guardianUrlEmail, "Error: Activation dependents link not found.");
 		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
 		logStep("Comparing with dependents link from PrP " + guardianUrl);

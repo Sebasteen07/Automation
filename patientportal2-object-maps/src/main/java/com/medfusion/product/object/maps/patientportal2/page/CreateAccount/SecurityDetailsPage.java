@@ -109,7 +109,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 	public void fillAccountDetailsAndContinueWithError(String userId, String password, PropertyFileLoader testData) {
 		fillAccountDetails(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 3);
-		buttonFinishStep.click();
+		javascriptClick(buttonFinishStep);
 	}
 
 	private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) {

@@ -22,7 +22,7 @@ $btnMsgYes = "Button3"
 $btnMsgOk = "Button4"
 
 $path="..\commonsteps\config.csv"
-$logPath = "..\commonsteps\ProcessLog.txt"
+$logPath = ""
 $queryPath = "..\commonsteps\queries.csv"
 $eventsPath = "..\commonsteps\events.csv"
 $doctypePath = "..\commonsteps\doctype.csv"
@@ -138,9 +138,38 @@ Func setConfig()
 					Case "flag (preconditions check / data generation / acceptance)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
+					Case "number of selfregistered patients to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of messages to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "email message subject"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "email message body"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "reply to email message"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of appointments to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "aas subject"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "aas body"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "reply to aas"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of aas to be created"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
-		;_ArrayDisplay($arrConfig, "1D - Single")
+
 		Return($arrConfig)
 	EndIf
 EndFunc
@@ -156,6 +185,50 @@ Func openLogFile()
 			Exit
 		EndIf
 		Return($hFileOpen)
+EndFunc
+
+
+
+;-----Sets path for log file
+;-----Input Parameter -
+Func setLogPath($mypath)
+	Assign($logPath,$mypath,$ASSIGN_FORCEGLOBAL)
+EndFunc
+
+
+
+;-----Get current timestamp
+Func getTimestamp()
+	$EPOCH = "1970/01/01 00:00:00"
+	$NOW = _NowCalc()
+	$timestamp = _DateDiff("s", $EPOCH, $NOW)
+	Return($timestamp)
+EndFunc
+
+
+
+;-----Function to delete old log files
+;-----Input PArameter - path to commonsteps directory
+Func deleteOldLogFiles($commonStepsDir)
+	ConsoleWrite("METHOD: deleteOldLogFiles() started" & @CRLF)
+	;get date for deletion
+	$deleteDate = _DateAdd('d', -7, _NowCalcDate())
+	ConsoleWrite("Date before which log files to be deleted is " & $deleteDate & @CRLF)
+
+	;split deletion date into dd,mm,yyyy
+	Local $aMyDate, $aMyTime
+	_DateTimeSplit($deleteDate, $aMyDate, $aMyTime)
+
+	;get list of all log files
+	$arrFile = _FileListToArray($commonStepsDir,"ProcessLog_*.txt",$FLTA_FILES)
+
+	For $i = 1 To $arrFile[0]
+		$arrTime = FileGetTime($commonStepsDir &"\" & $arrFile[$i],$FT_CREATED,$FT_ARRAY)
+		If(($arrTime[2]<$aMyDate[3]) Or ($arrTime[1]<$aMyDate[2]) Or ($arrTime[0]<$aMyDate[1])) Then
+			FileDelete ( $commonStepsDir & "\" & $arrFile[$i] )
+		EndIf
+	Next
+	ConsoleWrite("METHOD: deleteOldLogFiles() ended" & @CRLF)
 EndFunc
 
 
@@ -390,6 +463,8 @@ EndFunc
 
 ;-----Funcion to open Patient Chart
 ;-----Input parameters -> Patient Details from config file
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
 Func openPatientChart($ptFName,$ptLName)
 	ConsoleWrite("METHOD: openPatientChart() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
@@ -510,7 +585,7 @@ Func openMFDashboard()
 		MouseClick("left",689,85)
 		MouseWheel($MOUSE_WHEEL_DOWN,10)
 		Sleep(1000)
-		MouseClick("left",327,530,2)
+		MouseClick("left",345,545,2)
 		WinWaitActive("Medfusion Dashboard")
 		Local $sText1 = WinGetTitle("[ACTIVE]")
 		ConsoleWrite("Active Window is " & $sText1 & @CRLF)
@@ -521,6 +596,8 @@ EndFunc
 
 
 ;-----Funtion to verify that patient arrived in Medfusion Dashboard
+;-----Input parameter - $intPtCount = Initial Patient count in MEdfusion Dashboard
+;-----Input parameter - $lastName = Patient's Last Name to search in Medfusion Dashboard
 ;-----Returns new patient count if creaated patient didnot arrive in Dashboard
 ;-----Returns 0 if created patient arrived in Dashboard
 Func verifyPatientArrivalInDashboard($intPtCount,$lastName)
@@ -598,6 +675,8 @@ EndFunc
 
 ;-----Function to create a new document in patient chart
 ;-----Input parameter - Type of New Document to be created (Email / Office Visit etc.)
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
 Func createNewDocument($DocType,$Fname,$Lname)
 	ConsoleWrite("METHOD: createNewDocument() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
@@ -653,6 +732,9 @@ EndFunc
 ;-----Input parameters - $orderCat = Category of order to be created
 ;-----Input parameters - $authpvdr = Authorizing Provider for order (From)
 ;-----Input parameters - $refpvdr = Referring Provider for order (To)
+;-----Input parameters - $Fname = Patient's First Name
+;-----Input parameters - $Lname = Patient's Last Name
+;-----Input parameters - $letterToPatient - Text for patient letter
 Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
 	ConsoleWrite("METHOD: createOrder() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
@@ -905,7 +987,7 @@ EndFunc
 
 
 ;-----Function to verify order in Direct Messages Outbox
-;-----Input parameter - orderid (ordernum), status
+;-----Input parameter - orderid (ordernum), authorizing provider, referring provider, patient's first name & lastname
 Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName)
 	ConsoleWrite("METHOD: verifyOrderInUI() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
@@ -1097,7 +1179,10 @@ EndFunc
 
 
 ;-----Function to open Patient Registration
-;-----Input parameters - Patient Count, Timestamp to append, Patient First name, PAtient Email
+;-----Input parameter - $PtCount = Number of patients to be created
+;-----Input parameter - $iDateCalc = Current Timestamp
+;-----Input parameter - $pFirstName = Patient's First Name
+;-----Input parameter - $pEmailId = Patient's Email Id
 Func registerPatient($PtCount,$iDateCalc,$pFirstName,$pEmailId)
 	ConsoleWrite("METHOD: registerPatient() started" & @CRLF)
 	$hFileOpen = Call("openLogFile")
@@ -1401,7 +1486,8 @@ EndFunc
 
 
 ;-----Function to create Office Visist (Asthma Visit)
-;-----Input parameter - First Name & Last Name of PAtient
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
 Func createAsthmaVisit($Fname,$Lname)
 	ConsoleWrite("METHOD: createAsthmaVisit() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
@@ -1447,9 +1533,8 @@ EndFunc
 
 
 
-;-----Function to create Office Visist (Asthma Visit)
-;-----Input parameter -
-Func createCVS($Fname,$Lname)
+;-----Function to create Clinical Visit Summary
+Func createCVS()
 	ConsoleWrite("METHOD: createCVS() started" & @CRLF)
 	;WinActivate("Chart - NOT FOR PATIENT USE")
 	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
@@ -1498,12 +1583,193 @@ Func createCVS($Fname,$Lname)
 		;$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
 		If(StringInStr($str,"Clinical Visit Summary at")>0) Then
 			ConsoleWrite("CVS Created" & @CRLF)
+			Return("PASSED")
 
 		Else
-			ConsoleWrite("CVS Creation failed" & @CRLF)
+			ConsoleWrite("CVS Creation failed...." & @CRLF)
+			Return("FAILED")
 		EndIf
 	Else
-		ConsoleWrite("Unable to fetch Offcie Visit" & @CRLF)
+		ConsoleWrite("Unable to fetch Offcie Visit...." & @CRLF)
 	EndIf
 	ConsoleWrite("METHOD: createCVS() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to create a new email message
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
+;-----Input parameter - $subject = Email Message Subject
+;-----Input parameter - $body = Email MEssage Body
+Func createEmailMessage($Fname,$Lname,$subject,$body)
+	ConsoleWrite("METHOD: createEmailMessage() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	$newDocument = "Update - " & $Fname & " " & $Lname
+	WinActivate($newDocument)
+	ConsoleWrite("Activating Update Chart Window" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Update Chart Window" &@CRLF)
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If(WinActive($newDocument)) Then
+		Send("{TAB 2}")
+		Send($subject)
+		;ControlSetText($newDocument,"","[CLASSNN:Edit1]","Body of test email.")
+		Send("{TAB 4}")
+		Send($body)
+		Sleep(1000)
+		Send("+{TAB 2}")
+		Sleep(2000)
+		Send("{SPACE}")
+		WinWaitActive("Centricity Practice Solution")
+		ControlClick("Centricity Practice Solution","","[CLASS:Button; INSTANCE:1]")
+
+		WinWaitActive($newDocument)
+		ConsoleWrite("Complete the document" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Complete the document" & @CRLF)
+		MouseClick("left",1290,35)
+		WinWaitActive("End Update")
+		ControlFocus("End Update","","[CLASS:Button; INSTANCE:15]")
+		ControlClick("End Update","","[CLASS:Button; INSTANCE:15]")
+
+		ConsoleWrite("Email message creation completed" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Email message creation completed" & @CRLF)
+
+	Else
+		ConsoleWrite("ERROR Opening Update Chart Window...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Update Chart Window...." & @CRLF)
+	EndIf
+
+	ConsoleWrite("METHOD: createEmailMessage() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to verify document in PAtient Chart
+;-----Input Parmeter - Title of document  to be verified
+Func verifyDocumentInPatientChart($docTitle)
+	ConsoleWrite("METHOD: verifyDocumentInPatientChart() started" & @CRLF)
+	WinActivate("Chart - NOT FOR PATIENT USE")
+	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
+	Sleep(1000)
+	MouseMove($aCoord[0]+10,$aCoord[1]+5)
+	;Chart Summary in left menu
+	MouseMove($aCoord[0]+10,$aCoord[1]+35)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+	Sleep(1000)
+
+	Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
+	If Not @error Then
+		ConsoleWrite("Clicking Again"&@CRLF)
+		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+	EndIf
+
+	;Documents in left menu
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	Sleep(1000)
+
+	;Click first document in list
+	MouseClick("left",617,319)
+	$str = WinGetText("Chart - NOT FOR PATIENT USE")
+	;$str = ControlGetText("Chart - NOT FOR PATIENT USE","","[CLASS:Static; INSTANCE:4]")
+	;ConsoleWrite($str & @CRLF)
+	If(StringInStr($str,$docTitle)>0) Then
+		ConsoleWrite("Document " & $docTitle & " arrived" & @CRLF)
+		Return("PASSED")
+	Else
+		ConsoleWrite("Document " & $docTitle & " did not arrive..." & @CRLF)
+		Return("FAILED")
+	EndIf
+	ConsoleWrite("METHOD: verifyDocumentInPatientChart() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to reply 'Ask A Staff'
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
+;-----Input parameter - $subject = AAS Message Subject
+;-----Input parameter - $body = AAS MEssage Body
+;-----Input Parameter - $replyMsg = Text for replying AAS
+Func replyAAS($Fname,$Lname,$subject,$body,$replyMsg)
+	ConsoleWrite("METHOD: replyAAS() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	$newDocument = "Update - " & $Fname & " " & $Lname
+	WinActivate($newDocument)
+	ConsoleWrite("Activating Update Chart Window" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating Update Chart Window" &@CRLF)
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If(WinActive($newDocument)) Then
+		Send("{TAB 1}")
+		Send("{SPACE}")
+		WinWaitActive("Secure Message: Reply-To")
+
+		$counter = 1
+		While $counter <=5
+			$str = WinGetText("Secure Message: Reply-To")
+
+			If((StringInStr($str, $subject)>0) And (StringInStr($str,$body)>0)) Then
+				ConsoleWrite("Found the message to reply" & @CRLF)
+				Sleep(1000)
+				ControlClick("Secure Message: Reply-To","","[NAME:ButtonSelect]")
+				Sleep(1000)
+
+				WinWaitActive($newDocument)
+				Send("{TAB 7}")
+				Send($replyMsg)
+				Sleep(1000)
+				Send("+{TAB 2}")
+				Sleep(2000)
+				Send("{SPACE}")
+				WinWaitActive("Centricity Practice Solution")
+				ControlClick("Centricity Practice Solution","","[CLASS:Button; INSTANCE:1]")
+
+				WinWaitActive($newDocument)
+				ConsoleWrite("Complete the document" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Complete the document" & @CRLF)
+				MouseClick("left",1290,35)
+				WinWaitActive("End Update")
+				ControlFocus("End Update","","[CLASS:Button; INSTANCE:15]")
+				ControlClick("End Update","","[CLASS:Button; INSTANCE:15]")
+				ExitLoop
+
+			Else
+				ConsoleWrite("Message not found" & @CRLF)
+				Send("{DOWN}")
+			EndIf
+			$counter += 1
+		WEnd
+
+	Else
+		ConsoleWrite("ERROR Opening Update Chart Window...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Update Chart Window...." & @CRLF)
+	EndIf
+
+	ConsoleWrite("METHOD: replyAAS() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to assert values
+;-----Input parameter - $Expected = expected value
+;-----Input parameter - $Actual = actual value
+Func assertData($Expected, $Actual)
+	ConsoleWrite("METHOD: assertData() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	If(StringCompare($Expected, $Actual) = 0) Then
+		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+
+	Else
+		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- FAILED" & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: assertData() ended" & @CRLF)
 EndFunc

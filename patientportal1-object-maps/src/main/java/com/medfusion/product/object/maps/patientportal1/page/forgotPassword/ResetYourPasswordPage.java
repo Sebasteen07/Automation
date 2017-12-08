@@ -100,10 +100,10 @@ public class ResetYourPasswordPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 60, txtSecurityAnswer);
 
 		txtSecurityAnswer.sendKeys(securityAnswer);
-		btnContinue.click();
+		javascriptClick(btnContinue);
 
 		IHGUtil.waitForElement(driver, 60, feedBackError);
-		assertTrue(feedBackError.getText().contains("Your answer to the security question doesn't match our records. Please try again"));
+		assertTrue(feedBackError.getText().contains("Your answer to the secret question doesn't match our records. Please try again."));
 
 		btnContinue.click();
 

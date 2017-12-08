@@ -54,7 +54,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='state']")
 	private WebElement inputState;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='ui-select-choices-row-0-0']/span/div")
+	@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
 	private WebElement setState;
 	
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
@@ -117,7 +117,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	}
 
 	public SecurityDetailsPage continueToSecurityPage() {
-		buttonContinue.click();
+		javascriptClick(buttonContinue);
 		return PageFactory.initElements(driver, SecurityDetailsPage.class);
 	}
 
@@ -151,12 +151,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	private void setAddress(String address1, String address2, String city, String state, String zipCode) {
 		updateWebElement(inputAddress1, address1);
 		updateWebElement(inputAddress2, address2);
-		updateWebElement(inputCity, city);
-			
-		inputState.click();
-		setState.click();
-		
+		updateWebElement(inputCity, city);					
 		updateWebElement(inputZipCode, zipCode);
+	    inputState.click();
+	    setState.click();
 	}
 	
 }

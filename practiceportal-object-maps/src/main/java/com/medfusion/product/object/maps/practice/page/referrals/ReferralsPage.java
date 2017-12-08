@@ -111,10 +111,10 @@ public class ReferralsPage extends BasePageObject {
 		memberNameTestField.sendKeys(patientLastName + ", " + patientFirstName);
 		if (patientExists != false) {
 			IHGUtil.waitForElement(driver, 30, autocompleteName);
-			autocompleteName.click();
+			javascriptClick(autocompleteName);
 		} else {
 			memberNameTestField.sendKeys(Keys.TAB);
-			practiceNameTestField.click();
+			javascriptClick(practiceNameTestField);
 			genger.click();
 			new Select(month).selectByIndex(4);
 			new Select(day).selectByIndex(4);

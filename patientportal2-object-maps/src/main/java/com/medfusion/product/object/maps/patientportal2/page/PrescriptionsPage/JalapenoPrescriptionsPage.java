@@ -74,7 +74,7 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 		}
 
 		log("Clicking on continue button");
-		continueButton.click();
+		javascriptClick(continueButton);
 
 		driver.switchTo().defaultContent();
 	}
