@@ -3187,5 +3187,76 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 			BaseTestSoftAssert.verifyTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
 		}
 	}
+	
+	public static ArrayList<String> verifyInsuranceCardImageInGetPIDC(String xmlFileName,String practicePatientId ) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		ArrayList<String> consolidatedList = new ArrayList<String>();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for (int i = 0; i < patients.getLength(); i++) {
+			if (patients.item(i).getTextContent().equals(practicePatientId)) {
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 				
+				Node InsuranceImages = patient.getElementsByTagName(IntegrationConstants.INSURANCEIMAGES).item(0);
+				Element InsuranceImgEle = (Element) InsuranceImages;
+				
+				if(InsuranceImgEle.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0) !=null) {
+					Node PrimaryInsurance = InsuranceImgEle.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
+					Element PrimaryInsuranceEle = (Element) PrimaryInsurance;
+					Node PFrontImageLink =PrimaryInsuranceEle.getElementsByTagName(IntegrationConstants.FRONTIMAGELINK).item(0);
+					Node PBackImageLink =PrimaryInsuranceEle.getElementsByTagName(IntegrationConstants.BACKIMAGELINK).item(0);
+					consolidatedList.add(PFrontImageLink.getTextContent());
+					consolidatedList.add(PBackImageLink.getTextContent());
+					Log4jUtil.log("Patient Primary FrontImageLink ="+PFrontImageLink.getTextContent());
+					Log4jUtil.log("Patient Primary BackImageLink ="+PBackImageLink.getTextContent());
+				} 
+				if(InsuranceImgEle.getElementsByTagName(IntegrationConstants.SECONDARYINSURANCE).item(0)!=null) {
+					
+					Node SecondaryInsurance = InsuranceImgEle.getElementsByTagName(IntegrationConstants.SECONDARYINSURANCE).item(0);
+					Element SecondaryInsuranceEle = (Element) SecondaryInsurance;
+					Node SFrontImageLink =SecondaryInsuranceEle.getElementsByTagName(IntegrationConstants.FRONTIMAGELINK).item(0);
+					Node SBackImageLink =SecondaryInsuranceEle.getElementsByTagName(IntegrationConstants.BACKIMAGELINK).item(0);
+					consolidatedList.add(SFrontImageLink.getTextContent());
+					consolidatedList.add(SBackImageLink.getTextContent());
+					Log4jUtil.log("Patient Secondary FrontImageLink ="+SFrontImageLink.getTextContent());
+					Log4jUtil.log("Patient Secondary BackImageLink ="+SBackImageLink.getTextContent());
+				} 
+				if(InsuranceImgEle.getElementsByTagName(IntegrationConstants.TERTIARYINSURANCE).item(0)!=null) {
+					Node TertiaryInsurance = InsuranceImgEle.getElementsByTagName(IntegrationConstants.TERTIARYINSURANCE).item(0);
+					Element TertiaryInsuranceEle = (Element) TertiaryInsurance;
+					Node TFrontImageLink =TertiaryInsuranceEle.getElementsByTagName(IntegrationConstants.FRONTIMAGELINK).item(0);
+					Node TBackImageLink =TertiaryInsuranceEle.getElementsByTagName(IntegrationConstants.BACKIMAGELINK).item(0);
+					consolidatedList.add(TFrontImageLink.getTextContent());
+					consolidatedList.add(TBackImageLink.getTextContent());
+					Log4jUtil.log("Patient Tertiary FrontImageLink ="+TFrontImageLink.getTextContent());
+					Log4jUtil.log("Patient Tertiary BackImageLink ="+TBackImageLink.getTextContent());
+				}
+			}
+		}
+		return consolidatedList;
+	}
+	
+	public static void verifyInsuranceImageDetailsBase64(String xmlFileName,String uploadedImagBase64,String fileName,String fileType) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Node InsuranceImageDetail=doc.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
+		Node InsuranceFileName=doc.getElementsByTagName(IntegrationConstants.FILENAME).item(0);
+		Node InsuranceFileType=doc.getElementsByTagName(IntegrationConstants.MIMETYPE).item(0);
+		
+		Element attachmentContentEle=(Element) InsuranceImageDetail;
+		Element InsuranceFileNameEle=(Element) InsuranceFileName;
+		Element InsuranceFileTypeEle=(Element) InsuranceFileType;
+
+		Log4jUtil.log("Matching Actual FileName : "+InsuranceFileNameEle.getTextContent()+"   containing Expected "+fileName+" in order.");
+		Assert.assertTrue(InsuranceFileNameEle.getTextContent().contains(fileName), "File name did not Matched");
+		Log4jUtil.log("Matching Actual FileType : "+InsuranceFileTypeEle.getTextContent()+" with Expected "+fileType);
+		Assert.assertTrue(InsuranceFileTypeEle.getTextContent().equalsIgnoreCase(fileType), "File type did not Matched");
+		
+		Boolean base64FileMatch = matchBase64String(attachmentContentEle.getTextContent(), uploadedImagBase64);
+		Log4jUtil.log("Does insurance image card Matched : "+base64FileMatch);
+		Assert.assertTrue(base64FileMatch, "Image uploaded Did not Matched with image in the insurance detail api call.");
+	}
 }

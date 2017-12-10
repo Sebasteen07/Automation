@@ -118,8 +118,12 @@ public class IntegrationConstants {
 	public static final String FIRSTNAME = "FirstName";
 	public static final String SUBSCRIBERID = "SubscriberId";
 	public static final String EFFECTIVEDATE = "EffectiveDate";
+	public static final String INSURANCEIMAGES = "InsuranceImages";
+	public static final String FRONTIMAGELINK = "FrontImageLink";
+	public static final String BACKIMAGELINK= "BackImageLink";
+	public static final String FILENAME = "fileName";
+	public static final String MIMETYPE = "mimeType";
 	
-
 	public static final String DATEOFBIRTH = "DateOfBirth";
 	public static final String SUBSCRIBERDATEOFBIRTH = "SubscriberDateOfBirth";
 	public static final String CLAIMSPHONE = "ClaimsPhone";
