@@ -96,4 +96,5 @@ public class PatientFormsExportInfo
 		public String preCheckEmailLink="";
 		public String preCheckPatientEmailID="";
 		public String preCheckPatientFirstName="";
+		public String preCheckInsuranceImageType="";
 }

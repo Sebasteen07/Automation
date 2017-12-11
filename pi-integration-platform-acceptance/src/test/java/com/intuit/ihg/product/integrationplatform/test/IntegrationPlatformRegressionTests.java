@@ -77,6 +77,7 @@ import com.medfusion.product.object.maps.precheck.page.myAppointmentsList.Appoin
 import com.medfusion.product.object.maps.precheck.page.myInsurance.PrimaryInsurancePage;
 import com.medfusion.product.object.maps.precheck.page.myInsurance.SecondaryInsurancePage;
 import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsurancePage;
+import com.medfusion.product.object.maps.precheck.page.myInsuranceImage.InsuranceImagePage;
 import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
@@ -2549,5 +2550,167 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		driver.switchTo().defaultContent();
 		Thread.sleep(3000);
 		jalapenoHomePage.clickOnLogout();
+	}
+	
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesAllInsuranceImageCards() throws Exception 
+	{
+		log("Test Case: To verify Precheck Insurance Front back Image uploaded in Insuranceimage detail API Call");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		Long timestamp = System.currentTimeMillis();
+		String currentUsersHomeDir = System.getProperty("user.dir");
+		String imageLocation = testData.patientfilepath_FE;
+		imageLocation=imageLocation.replaceAll("FormExportData.txt","");
+		String frontImageLocation = imageLocation+"PInsuranceFront.jpg";
+		String backImageLocation = imageLocation+"PInsuranceBack.png";  
+		String[] imgType={"image/jpeg","image/png"};
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log(testData.preCheckZip+"  ,  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		log("Step 5: Verify precheck patient zip and dateofBirth posted");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		Thread.sleep(9000);
+		log("Step 6: Select the appointment which is posted and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		Thread.sleep(9000);
+		log("Step 7: Goto the appointments Insurance Detail page");
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		log("Step 8: Goto the appointments Insurance Image Uploading page");
+		InsuranceImagePage insuranceImagePage = myInsuranceDetailPage.gotoInsuranceImagePage();
+		
+		log("Step 9: Upload Insurance Image card");
+		String insuranceFrontCardPath =currentUsersHomeDir+frontImageLocation;
+		String insuranceBackCardPath =currentUsersHomeDir+backImageLocation;
+		String insuranceFrontCardBase64Path =ExternalFileReader.base64Encoder(insuranceFrontCardPath, false);
+		String insuranceBackCardBase64Path =ExternalFileReader.base64Encoder(insuranceBackCardPath, false);
+		log("Step 10: Uploading Primary Insurance Front and Back Image card");
+		insuranceImagePage.uploadPrimaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+		insuranceImagePage.uploadPrimaryInsuranceBackPhotoInput(insuranceBackCardPath);
+		insuranceImagePage.gotoSecondaryInsuranceImageTab();
+		log("Step 11: Uploading Secondary Insurance Front and Back Image card");
+		insuranceImagePage.uploadSecondaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+		insuranceImagePage.uploadSecondaryInsuranceBackPhotoInput(insuranceBackCardPath);
+		insuranceImagePage.gotoTertiaryInsuranceImageTab();
+		log("Step 12: Uploading Tertiary Insurance Front and Back Image card");
+		insuranceImagePage.uploadTertiaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+		insuranceImagePage.uploadTertiaryInsuranceBackPhotoInput(insuranceBackCardPath);
+		insuranceImagePage.submitInsuranceImage();
+		Thread.sleep(9000);
+		
+		Long since = timestamp / 1000L;
+		log("Setup Oauth client");
+		Thread.sleep(9000);
+		RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
+		log("Step 13: Verify precheck patient insurance image information updated in GET PIDC API call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(testData.preCheckGetPIDC + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
+		ArrayList<String> insuranceImageLinks = RestUtils.verifyInsuranceCardImageInGetPIDC(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
+		Assert.assertTrue(insuranceImageLinks.size()==6, "link not found or more links found.");
+		log("Step 14: Verify Front Image in the insuranceimage detail api call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(0), testData.responsePath_CCD1_FE);
+		String frontFileName = "PrimaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceFrontCardBase64Path,frontFileName,imgType[0]);
+		log("Step 15: Verify Back Image in the insuranceimage detail api call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(1), testData.responsePath_CCD1_FE);
+		String backFileName = "PrimaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceBackCardBase64Path,backFileName,imgType[1]);
+	}
+	
+	
+	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EPreCheckUpdatesSingleInsuranceImageCard() throws Exception 
+	{
+		log("Test Case: To verify Precheck Single Insurance front back Image uploaded in Insuranceimage detail API Call");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		Long timestamp = System.currentTimeMillis();
+		String currentUsersHomeDir = System.getProperty("user.dir");
+		String imageLocation = testData.patientfilepath_FE;
+		imageLocation=imageLocation.replaceAll("FormExportData.txt","");
+		String frontImageLocation = imageLocation+"PInsuranceFront.jpg";
+		String backImageLocation = imageLocation+"PInsuranceBack.png";  
+		String[] imgType={"image/jpeg","image/png"};
+		
+		PrecheckAppointmentUtils preAppointmentObj = new PrecheckAppointmentUtils();
+		String[] links = preAppointmentObj.createTestData(testData);
+		log(testData.preCheckZip+"  ,  "+testData.preCheckDOB);
+		String[] dob = testData.preCheckDOB.split("-");
+		log("Step 5: Verify precheck patient zip and dateofBirth posted");
+		VerifyIdentityPage verificationPage = new VerifyIdentityPage(driver,links[0]);
+		verificationPage.setZipCode(testData.preCheckZip);
+		verificationPage.setDateOfBirthMonthInput(dob[0]);
+		verificationPage.setDateOfBirthDayInput(dob[1]);
+		verificationPage.setDateOfBirthYearInput(dob[2]);
+		AppointmentsListPage appListPage = verificationPage.login();
+		Thread.sleep(9000);
+		log("Step 6: Select the appointment which is posted and submit the fill form");
+		MyAppointmentPage myAppointment = appListPage.selectAppointment(links[1]);
+		Thread.sleep(9000);
+		log("Step 7: Goto the appointments Insurance Detail page");
+		MyInsuranceDetailPage myInsuranceDetailPage =myAppointment.gotoInsuranceDetailPage();
+		log("Step 8: Goto the appointments Insurance Image Uploading page");
+		InsuranceImagePage insuranceImagePage = myInsuranceDetailPage.gotoInsuranceImagePage();
+		
+		log("Step 9: Upload Insurance Image card");
+		String insuranceFrontCardPath =currentUsersHomeDir+frontImageLocation;
+		String insuranceBackCardPath =currentUsersHomeDir+backImageLocation;
+		String insuranceFrontCardBase64Path =ExternalFileReader.base64Encoder(insuranceFrontCardPath, false);
+		String insuranceBackCardBase64Path =ExternalFileReader.base64Encoder(insuranceBackCardPath, false);		
+		String frontFileName = "";
+		String backFileName = "";
+		log("Step 10: Uploading Single Insurance Front and Back Image card");
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("primary")) {
+			insuranceImagePage.uploadPrimaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadPrimaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			frontFileName = "PrimaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+			backFileName = "PrimaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+			
+		}
+		insuranceImagePage.gotoSecondaryInsuranceImageTab();
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("secondary")) {
+			insuranceImagePage.uploadSecondaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadSecondaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			frontFileName = "SecondaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+			backFileName = "SecondaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+		}
+		insuranceImagePage.gotoTertiaryInsuranceImageTab();
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("tertiary")) {
+			insuranceImagePage.uploadTertiaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadTertiaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			backFileName = "TertiaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+			frontFileName = "TertiaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+		}
+		insuranceImagePage.submitInsuranceImage();
+		Thread.sleep(9000);
+		Long since = timestamp / 1000L;
+		log("Step 11: Wait for appointment to reflect in get api call");
+		Thread.sleep(9000);
+		log("Step 12: Setup Oauth client");
+		RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
+		log("Step 13: Verify precheck patient insurance image information updated in GET PIDC API call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(testData.preCheckGetPIDC + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
+		ArrayList<String> insuranceImageLinks = RestUtils.verifyInsuranceCardImageInGetPIDC(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
+		Assert.assertTrue(insuranceImageLinks.size()==2, "link not found or more links found.");
+		
+		log("Step 14: Verify Front Image in the insuranceimage detail api call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(0), testData.responsePath_CCD1_FE);
+		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceFrontCardBase64Path,frontFileName,imgType[0]);
+		log("Step 15: Verify Back Image in the insuranceimage detail api call");
+		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(1), testData.responsePath_CCD1_FE);
+		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceBackCardBase64Path,backFileName,imgType[1]);
 	}
 }
