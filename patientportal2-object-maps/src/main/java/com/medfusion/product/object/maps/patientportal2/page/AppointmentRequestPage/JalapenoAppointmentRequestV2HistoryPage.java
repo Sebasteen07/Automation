@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -71,7 +73,7 @@ public class JalapenoAppointmentRequestV2HistoryPage extends BasePageObject {
 
 	public boolean checkAppointmentDetails(String appointmentReason) {
 		IHGUtil.PrintMethodName();
-
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(reason));
 		try {
 			return (reason.getText().contains(appointmentReason) && preferredTime.getText().contains("Early Morning, Late Afternoon")
 					&& requestedDay.getText().contains("Monday - Thursday") && requestedTime.getText().contains("Anytime"));
