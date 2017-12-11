@@ -2552,7 +2552,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.clickOnLogout();
 	}
 	
-	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true,groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2EPreCheckUpdatesAllInsuranceImageCards() throws Exception 
 	{
 		log("Test Case: To verify Precheck Insurance Front back Image uploaded in Insuranceimage detail API Call");
@@ -2628,9 +2628,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	
 	@Test(enabled = true,groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EPreCheckUpdatesTertiaryInsuranceImageCard() throws Exception 
+	public void testE2EPreCheckUpdatesSingleInsuranceImageCard() throws Exception 
 	{
-		log("Test Case: To verify Precheck Tertiary Insurance front back Image uploaded in Insuranceimage detail API Call");
+		log("Test Case: To verify Precheck Single Insurance front back Image uploaded in Insuranceimage detail API Call");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
@@ -2670,11 +2670,30 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String insuranceBackCardPath =currentUsersHomeDir+backImageLocation;
 		String insuranceFrontCardBase64Path =ExternalFileReader.base64Encoder(insuranceFrontCardPath, false);
 		String insuranceBackCardBase64Path =ExternalFileReader.base64Encoder(insuranceBackCardPath, false);		
+		String frontFileName = "";
+		String backFileName = "";
+		log("Step 10: Uploading Single Insurance Front and Back Image card");
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("primary")) {
+			insuranceImagePage.uploadPrimaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadPrimaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			frontFileName = "PrimaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+			backFileName = "PrimaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+			
+		}
 		insuranceImagePage.gotoSecondaryInsuranceImageTab();
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("secondary")) {
+			insuranceImagePage.uploadSecondaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadSecondaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			frontFileName = "SecondaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+			backFileName = "SecondaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+		}
 		insuranceImagePage.gotoTertiaryInsuranceImageTab();
-		log("Step 10: Uploading Tertiary Insurance Front and Back Image card");
-		insuranceImagePage.uploadTertiaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
-		insuranceImagePage.uploadTertiaryInsuranceBackPhotoInput(insuranceBackCardPath);
+		if(testData.preCheckInsuranceImageType.equalsIgnoreCase("tertiary")) {
+			insuranceImagePage.uploadTertiaryInsuranceFrontPhotoInput(insuranceFrontCardPath);
+			insuranceImagePage.uploadTertiaryInsuranceBackPhotoInput(insuranceBackCardPath);
+			backFileName = "TertiaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
+			frontFileName = "TertiaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+		}
 		insuranceImagePage.submitInsuranceImage();
 		Thread.sleep(9000);
 		Long since = timestamp / 1000L;
@@ -2686,13 +2705,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequestWithEmptyResponse(testData.preCheckGetPIDC + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
 		ArrayList<String> insuranceImageLinks = RestUtils.verifyInsuranceCardImageInGetPIDC(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
 		Assert.assertTrue(insuranceImageLinks.size()==2, "link not found or more links found.");
-		String frontFileName = "TertiaryInsurance_Front_"+testData.preCheckPatientExternalID+"_";
+		
 		log("Step 14: Verify Front Image in the insuranceimage detail api call");
 		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(0), testData.responsePath_CCD1_FE);
 		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceFrontCardBase64Path,frontFileName,imgType[0]);
 		log("Step 15: Verify Back Image in the insuranceimage detail api call");
 		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(1), testData.responsePath_CCD1_FE);
-		String backFileName = "TertiaryInsurance_Back_"+testData.preCheckPatientExternalID+"_";
 		RestUtils.verifyInsuranceImageDetailsBase64(testData.responsePath_CCD1_FE, insuranceBackCardBase64Path,backFileName,imgType[1]);
 	}
 }

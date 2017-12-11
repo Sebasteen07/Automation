@@ -1272,4 +1272,7 @@ public class PropertyFileLoader {
 	public String getPreCheckEmailLink() {
 		return property.getProperty("preCheckEmailLink");
 	}
+	public String getPreCheckInsuranceImageType() {
+		return property.getProperty("preCheckImageInsuranceType");
+	}
 }

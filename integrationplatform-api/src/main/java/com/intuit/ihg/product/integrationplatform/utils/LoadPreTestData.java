@@ -530,6 +530,7 @@ public class LoadPreTestData {
 		testData.preCheckGetPIDC=propertyData.getPreCheckGetPIDC();
 		testData.preCheckEmailSubject=propertyData.getPreCheckEmailSubject();
 		testData.preCheckEmailLink=propertyData.getPreCheckEmailLink();
+		testData.preCheckInsuranceImageType=propertyData.getPreCheckInsuranceImageType();
 		return testData;
 		}
 }

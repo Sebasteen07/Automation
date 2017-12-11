@@ -18,7 +18,7 @@
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testE2EPreCheckUpdatesTertiaryInsuranceImageCard"/>
+				<include name="testE2EPreCheckUpdatesSingleInsuranceImageCard"/>
 				<include name="testPreCheckForms"/>
 	    		<include name="testE2EPreCheckUpdatesOnlyDemographics" />
 	    		<include name="testE2EPreCheckUpdatesOnlyInsurance" />
