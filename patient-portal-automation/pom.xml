@@ -22,6 +22,7 @@
     </repositories>
 	
 	<properties>
+		<additionalparam>-Xdoclint:none</additionalparam>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ihg.version>18.1.0-SNAPSHOT</ihg.version>
 	</properties>

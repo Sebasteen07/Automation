@@ -44,6 +44,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.JalapenoSymptomAssessmentPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
@@ -58,11 +59,14 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDash
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
+import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentDetailsPage;
+import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.tests.CommonSteps;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -1074,6 +1078,68 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(myAccountPage.checkExtendedGenderQuestion());
 		logStep("Log Out");
 		homePage.clickOnLogout();
+	}
+	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testSymptomAssessmentSafe() throws Exception {
+
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getProperty("saUsername"), testData.getPassword());
+		
+		JalapenoSymptomAssessmentPage saPage = jalapenoHomePage.clickOnSymptomAssessment(driver);
+		
+		log("Select your doctor");		
+		saPage.selectProvider(testData.getProperty("saProviderName"));
+		
+		log("type Your Symptom and submit");
+		saPage.typeYourSymptom(PortalConstants.Symptom);
+
+		log("DoYouHaveSymptom Now ?? Answer :-NO ");
+		saPage.answerDoYouHaveSymptom();
+		
+		
+		log("Logout of Patient Portal");
+		saPage.clickHome().clickOnLogout();
+
+		log("Login to Practice Portal");
+		// Load up practice test data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portalUrl"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("saProviderUsername"), testData.getProperty("saProviderPassword"));
+
+		log("On Practice Portal Home page Click SymptomAssessmentTab");
+		SymptomAssessmentFilterPage pSymptomAssessmentFilter = practiceHome.clicksymptomAssessmentTab();
+
+		log("On Practice Portal Home page Click SymptomAssessmentTab");
+		SymptomAssessmentDetailsPage pSymptomAssessmentDetailsPage = pSymptomAssessmentFilter.searchSymptomAssessment();
+
+		log("Verification on SymptomAssessmentDetailsPage");
+		assertTrue(verifyTextPresent(driver, "Date of Birth : 01/01/1987"));
+		/*
+		 * assertTrue(verifyTextPresent(driver, "Home Phone : (958) 963-1234"));
+		 */
+		assertTrue(verifyTextPresent(driver, "Reason for visit: \"cough\"."));
+		log("Sent Message to Patient");
+		String practiceResponse = pSymptomAssessmentDetailsPage.sentMessage();
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		logStep("back to PI");
+		jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoHomePage = jalapenoLoginPage.login(testData.getProperty("saUsername"), testData.getPassword());
+		
+		logStep("find SA message subject");
+		JalapenoMessagesPage messagePage = jalapenoHomePage.showMessages(driver);
+		
+		assertTrue(messagePage.isMessageDisplayed(driver, practiceResponse));
+		
+		
+		
+		
+		logStep("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
+		assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 	}
 
 }

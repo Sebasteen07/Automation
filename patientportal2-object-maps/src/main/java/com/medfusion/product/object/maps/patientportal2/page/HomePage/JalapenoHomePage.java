@@ -28,6 +28,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.JalapenoSymptomAssessmentPage;
 public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='home']")
@@ -41,6 +42,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "feature_ask_a_practitioner")
 	private WebElement askAQuestion;
+	
+	@FindBy(how = How.ID, using = "feature_symptomAssesment")
+	private WebElement symptomAss;
 
 	@FindBy(how = How.ID, using = "feature_rx_renewal")
 	private WebElement prescriptions;
@@ -255,6 +259,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		askAQuestion.click();
 
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	
+	public JalapenoSymptomAssessmentPage clickOnSymptomAssessment(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		symptomAss.click();
+		return PageFactory.initElements(driver, JalapenoSymptomAssessmentPage.class);
 	}
 
 	public void faChangePatient() {
