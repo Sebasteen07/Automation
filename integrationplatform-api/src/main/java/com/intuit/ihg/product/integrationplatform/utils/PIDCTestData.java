@@ -248,4 +248,10 @@ public class PIDCTestData {
 	public String getSexualOrientationValues() {
 		return PidcObj.SO;
 	}
+	
+	public String getNewPatientPassword() {
+		return PidcObj.NewPassword;
+	}
+	
+	
 }
