@@ -61,7 +61,7 @@ public class CreateIntegrationStep2Page extends BasePageObject {
 	 */
 	public ViewIntegrationsPage clickbtnSaveAndContinue() {
 		IHGUtil.PrintMethodName();
-		btnSaveAndContinue.click();
+		javascriptClick(btnSaveAndContinue);
 		return PageFactory.initElements(driver, ViewIntegrationsPage.class);
 	}
 

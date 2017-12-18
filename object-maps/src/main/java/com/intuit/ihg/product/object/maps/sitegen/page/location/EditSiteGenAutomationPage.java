@@ -42,7 +42,7 @@ public class EditSiteGenAutomationPage extends BasePageObject {
 
 	public ManageYourLocationsPage deleteLocation() {
 		SitegenlUtil.setSiteGenFrame(driver);
-		btnDelete.click();
+		javascriptClick(btnDelete);
 		return PageFactory.initElements(driver, ManageYourLocationsPage.class);
 	}
 

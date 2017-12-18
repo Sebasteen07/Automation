@@ -112,7 +112,7 @@ public class AddLocationPage extends BasePageObject {
 		txtOfficePhone.sendKeys(officePhone);
 		txtContactPerson.sendKeys(contactPerson);
 		txtEmail.sendKeys(email);
-		btnAddLocation.click();
+		javascriptClick(btnAddLocation);
 		return PageFactory.initElements(driver, ManageYourLocationsPage.class);
 	}
 }

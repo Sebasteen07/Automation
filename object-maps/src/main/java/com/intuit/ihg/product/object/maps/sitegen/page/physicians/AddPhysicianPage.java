@@ -146,7 +146,7 @@ public class AddPhysicianPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
-		btnDeletePhysican.click();
+		javascriptClick(btnDeletePhysican);
 		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}
