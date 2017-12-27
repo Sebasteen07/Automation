@@ -2,6 +2,7 @@
 #include <File.au3>
 #include <FileConstants.au3>
 #include <MsgBoxConstants.au3>
+#include <GuiComboBox.au3>
 #include <_sql.au3>
 #include "..\commonsteps\CommonSteps.au3"
 
@@ -73,8 +74,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[37] & " patients"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[37] & " patients" & @CRLF)
+			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients" & @CRLF)
 		Else
 			ConsoleWrite("Creating Patient #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" &$counter+1 & @CRLF)
@@ -96,7 +97,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[37]) Then
+			If($counter = $arrConfig[45]) Then
 				ConsoleWrite("Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				Exit
@@ -106,9 +107,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[37]
+			$counter = $arrConfig[45]
 		EndIf
-	Until $counter = $arrConfig[37]
+	Until $counter = $arrConfig[45]
 	;Sleep(105000)
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF)
 	ConsoleWrite("Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF )
@@ -151,7 +152,7 @@ Else
 						;$intPtCount=13
 						;ConsoleWrite(@CRLF & $intPtCount & @CRLF)
 			FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- VERIFY PATIENT ARRIVED FROM MEDFUSION" & @CRLF)
-			ConsoleWrite("Wait for self registered patient to come to Dashboard")
+			ConsoleWrite("Wait for self registered patient to come to Dashboard" & @CRLF)
 			Sleep(180000)
 			WinActivate("Medfusion Dashboard")
 
@@ -286,8 +287,17 @@ Else
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Accepting patient from Medfusion Dashboard" & @CRLF)
 
 				WinActivate("Medfusion Demographic Import Dashboard")
+				ControlFocus("Medfusion Demographic Import Dashboard","","[NAME:ComboBoxMatchedPatient]")
+				$hCombo = ControlGetHandle("Medfusion Demographic Import Dashboard","","[NAME:ComboBoxMatchedPatient]")
+				$aList = _GUICtrlComboBox_GetListArray($hCombo)
+				While($aList[0]>0)
+					Sleep(1000)
+					ControlSend("Medfusion Demographic Import Dashboard","","[NAME:ComboBoxMatchedPatient]","{DOWN}")
+					$aList[0] = $aList[0] - 1
+				WEnd
 
-				ControlSend("Medfusion Demographic Import Dashboard","","[NAME:ComboBoxMatchedPatient]","(create new account)")
+				;ControlSend("Medfusion Demographic Import Dashboard","","[NAME:ComboBoxMatchedPatient]","(create new account)")
+				;Sleep(2000)
 				ControlClick("Medfusion Demographic Import Dashboard","","[NAME:ButtonAccept]")
 				ConsoleWrite("Patient accepted from Demographics Dashboard" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Patient accepted from Demographics Dashboard" & @CRLF)

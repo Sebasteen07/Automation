@@ -85,8 +85,8 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[38] & " secure messages"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[38] & " secure messages" & @CRLF)
+					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages" & @CRLF)
 				Else
 					ConsoleWrite("Creating Secure Message #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure Message #" &$counter+1 & @CRLF)
@@ -97,7 +97,7 @@ Else
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[38]) Then
+					If($counter = $arrConfig[46]) Then
 						ConsoleWrite("Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						Exit
@@ -107,9 +107,9 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[38]
+					$counter = $arrConfig[46]
 				EndIf
-			Until $counter = $arrConfig[38]
+			Until $counter = $arrConfig[46]
 
 			ConsoleWrite("Secure Message created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Secure Message created successfully...." & @CRLF)
@@ -209,7 +209,7 @@ Else
 			EndIf
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 7 -- VERIFY MESSAGE DETAILS IN CUSMEDFUSIONCOMMOUTGOING TABLE" & @CRLF)
-			$newQuery = StringReplace($arrQuery[22],"where CommOutgoingId =","order by CommOutgoingId desc")
+			$newQuery = StringReplace($arrQuery[22],"where CommOutgoingId =","where PatientProfileId = " & $PatientProfileId & " order by CommOutgoingId desc")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -341,20 +341,13 @@ Else
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY MESSAGE IN PATIENT PORTAL AND REPLY THE MESSAGE" & @CRLF)
 			ConsoleWrite("Message Subject " & $arrConfig[27] & @CRLF)
-			$temp = StringSplit($arrConfig[27]," ")
-			$messageSubject = Null
-			For $i = 1 to $temp[0]
-				$messageSubject = $messageSubject & $temp[$i]
-			Next
+			$messageSubject = StringReplace($arrConfig[27]," ","")
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
 			ConsoleWrite("Message Body " & $arrConfig[28] & @CRLF)
-			$temp = StringSplit($arrConfig[28]," ")
-			$messageBody = Null
-			For $i = 1 to $temp[0]
-				$messageBody = $messageBody & $temp[$i]
-			Next
+			$messageBody = StringReplace($arrConfig[28]," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
+
 			$secureMessagejar = StringReplace($currentDir, "securemessaging", "jarfiles")  & "\secureMessage.jar"
 			$PID = Run(@ComSpec & ' /c java -jar ' & $secureMessagejar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $CreationDate &'' ,"","",$STDOUT_CHILD)
 			ConsoleWrite("$PID :" & $PID & @CRLF)
@@ -387,7 +380,7 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EMRDocumentType in cusMedfusionCommIncoming table" & @CRLF)
 				Call("assertData", "Pt Comm", $aData[1][1])
 
-			;MessageThread
+			;MessageThread - ResponseToDocumentId
 				ConsoleWrite("Verifying MessageThread in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying MessageThread in cusMedfusionCommIncoming table" & @CRLF)
 				Call("assertData", $docId, $aData[1][2])
@@ -396,6 +389,11 @@ Else
 				ConsoleWrite("Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
 				Call("assertData", "Re: " & $arrConfig[27], $aData[1][3])
+
+			;REsponseToOutgoingId
+				ConsoleWrite("Verifying ResponseToOutgoingId in cusMedfusionCommIncoming table" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying ReponseToOutgoingId in cusMedfusionCommIncoming table" & @CRLF)
+				Call("assertData", $commOutgoingId, $aData[1][6])
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)

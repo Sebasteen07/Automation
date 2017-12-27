@@ -117,8 +117,8 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Office Visit #" & $counter+1 & " of " & $arrConfig[36] & " office visits"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" & $counter+1 & " of " & $arrConfig[36] & " office visits" & @CRLF)
+					ConsoleWrite("Creating Office Visit #" & $counter+1 & " of " & $arrConfig[44] & " office visits"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" & $counter+1 & " of " & $arrConfig[44] & " office visits" & @CRLF)
 				Else
 					ConsoleWrite("Creating Office Visit #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" &$counter+1 & @CRLF)
@@ -129,7 +129,7 @@ Else
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[36]) Then
+					If($counter = $arrConfig[44]) Then
 						ConsoleWrite("Exiting after data generation for Office Visit Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Office Visit Flow...." & @CRLF)
 						Exit
@@ -139,9 +139,9 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[36]
+					$counter = $arrConfig[44]
 				EndIf
-			Until $counter = $arrConfig[36]
+			Until $counter = $arrConfig[44]
 
 			ConsoleWrite("Office Visit created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit created successfully...." & @CRLF)

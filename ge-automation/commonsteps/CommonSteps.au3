@@ -167,6 +167,33 @@ Func setConfig()
 
 					Case "number of aas to be created"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request medication name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of rx requests to be generated"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request dosage"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request quantity"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request refills"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request prescription number"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request notes"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request pharmacy"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "rx request pharmacy phone"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
 
@@ -336,6 +363,9 @@ Func openDoctypeFile()
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "clinical visit summary"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "append"
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "lab report"
@@ -1547,8 +1577,15 @@ Func createCVS()
 
 	Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
 	If Not @error Then
-		ConsoleWrite("Clicking Again"&@CRLF)
+		ConsoleWrite("Clicking Charts Again"&@CRLF)
 		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+
+	Else
+		Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,12404009)
+		If Not @error Then
+			ConsoleWrite("Clicking Charts Again"&@CRLF)
+			MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+		EndIf
 	EndIf
 
 	;Documents in left menu
@@ -1590,7 +1627,8 @@ Func createCVS()
 			Return("FAILED")
 		EndIf
 	Else
-		ConsoleWrite("Unable to fetch Offcie Visit...." & @CRLF)
+		ConsoleWrite("Unable to fetch Office Visit...." & @CRLF)
+		Exit
 	EndIf
 	ConsoleWrite("METHOD: createCVS() ended" & @CRLF)
 EndFunc
@@ -1662,8 +1700,15 @@ Func verifyDocumentInPatientChart($docTitle)
 
 	Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
 	If Not @error Then
-		ConsoleWrite("Clicking Again"&@CRLF)
+		ConsoleWrite("Clicking Charts Again"&@CRLF)
 		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+
+	Else
+		Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,12404009)
+		If Not @error Then
+			ConsoleWrite("Clicking Charts Again"&@CRLF)
+			MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+		EndIf
 	EndIf
 
 	;Documents in left menu
@@ -1767,9 +1812,185 @@ Func assertData($Expected, $Actual)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
 
 	Else
-		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- PASSED" & @CRLF)
+		ConsoleWrite("Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- FAILED" & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Expected Result: " & $Expected &" and Actual Result: " & $Actual & " -- FAILED" & @CRLF)
 		Exit
 	EndIf
 	ConsoleWrite("METHOD: assertData() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to reply Prescription Renewal Request vi Append Flow
+;-----Input Parameter - $Fname = Patient's First Name
+;-----Input Parameter - $Lname = Patient's Last Name
+;-----Input Parameter - $medName = Medication Name as per Patient's Prescription Renewal Request
+;-----Input Parameter - $medDosage = Medication Dose as per Patient's Prescription Renewal Request
+;-----Input Parameter - $medQuantity = Medication Quantity as per Patient's Prescription Renewal Request
+;-----Input Parameter - $medRefills = Medication Refills as per Patient's Prescription Renewal Request
+;-----Input Parameter - $prescriptionNo = Medication Prescription Number as per Patient's Prescription Renewal Request
+;-----Input Parameter - $medNotes = Additional Notes along with Medication Details as per Patient's Prescription Renewal Request
+;-----Input Parameter - $pharmacyName = Pharmacy Name as per Patient's Prescription Renewal Request
+Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefills, $prescriptionNo, $medNotes, $pharmacyName)
+	ConsoleWrite("METHOD: replyRxAppend() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+	WinActivate("Chart - NOT FOR PATIENT USE")
+	Local $aCoord = PixelSearch(15, 190, 94, 296, 3245766)
+	Sleep(1000)
+	MouseMove($aCoord[0]+10,$aCoord[1]+5)
+	;Chart Summary in left menu
+	MouseMove($aCoord[0]+10,$aCoord[1]+35)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+	Sleep(1000)
+
+	Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
+	If Not @error Then
+		ConsoleWrite("Clicking Charts Again"&@CRLF)
+		MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+
+	Else
+		Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,12404009)
+		If Not @error Then
+			ConsoleWrite("Clicking Charts Again"&@CRLF)
+			MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+		EndIf
+	EndIf
+
+	;Documents in left menu
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	Sleep(1000)
+
+	;Click first document in list
+	MouseClick("left",617,319)
+	$str = WinGetText("Chart - NOT FOR PATIENT USE")
+
+	If(StringInStr($str,"Rx Refill")>0) Then
+ 		;right click Rx Request in documnet list to append reply
+		;ControlClick("Chart - NOT FOR PATIENT USE","","[CLASS:SftTreeControl70; INSTANCE:1]","right",1,240,28)
+		ConsoleWrite("Reply Rx Request via Append flow" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Reply Rx Request via Append flow" & @CRLF)
+		MouseClick("right",617,319)
+		Sleep(1000)
+		Send("{DOWN 3}")
+		Send("{ENTER}")
+
+		ConsoleWrite("Verify Prescription Renewal request details sent by patient in Append Form (top panel)" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify Prescription Renewal request details sent by patient in Append Form (top panel)" & @CRLF)
+		WinWaitActive("Append to Document")
+		$str = WinGetText("Append to Document")
+
+		If((StringInStr($str,$pharmacyName)>0) And (StringInStr($str,$medName)>0) And (StringInStr($str,$medDosage)>0) And (StringInStr($str,"Refills: " & $medRefills)>0) And (StringInStr($str,"Rx #: " & $prescriptionNo)>0) And (StringInStr($str,"Quantity: " & $medQuantity)>0) And (StringInStr($str,"NOTES: " & $medNotes)>0)) Then
+			ConsoleWrite("Prescription Renewal Request details verified -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Prescription Renewal Request details verified -- PASSED" & @CRLF)
+
+			ControlClick("Append to Document","","[CLASS:Button; INSTANCE:1]")
+			ConsoleWrite("Click on full update" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Click on full update" & @CRLF)
+
+			WinWaitActive("Append Document")
+			If( WinActive("Append Document") ) Then
+				ControlFocus("Append Document","","[CLASS:Edit; INSTANCE:1]")
+;~ 				ControlSetText("Append Document","","[CLASS:Edit; INSTANCE:1]","** Medfusion Rx Refill (Append)")
+;~ 				ControlClick("Append Document","","[CLASS:Button; INSTANCE:5]")
+				Send("{DOWN}")
+
+				ConsoleWrite("Select the Medfusion Rx Refill (Append) form" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Select the Medfusion Rx Refill (Append) form" & @CRLF)
+
+				For $i = 0 To 40
+					$text_v_okne = ControlGetText("Append Document","","[CLASS:Edit; INSTANCE:1]")
+
+					If StringInStr($text_v_okne, "** Medfusion Rx Refill (Append)") > 0 Then
+						ControlFocus("Append Document","","[CLASS:Button; INSTANCE:5]")
+						Sleep(3000)
+						ControlClick("Append Document","","[CLASS:Button; INSTANCE:5]")
+						$i = 40
+					EndIf
+					ControlSend("Append Document","","[CLASS:ComboLBox; INSTANCE:1]",'{Down}')
+				Next
+
+				ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+				;Signing permission popoup if appears
+				If(WinGetTitle("[ACTIVE]") == "Sign Document") Then
+					ControlClick("Sign Document","","[CLASS:Button; INSTANCE:1]")
+				EndIf
+
+				;wait till Append form opens
+				WinWaitActive("Update - " & $Fname & " " & $Lname & " -- Append")
+				ConsoleWrite("Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
+				WinWaitActive("Rx Refill")
+				Sleep(8000)
+
+				If((StringInStr($str,$pharmacyName)>0) And (StringInStr($str,$medName)>0) And (StringInStr($str,$medDosage)>0) And (StringInStr($str,"Refills: " & $medRefills)>0) And (StringInStr($str,"Rx #:" & $prescriptionNo)>0) And (StringInStr($str,"Quantity: " & $medQuantity)>0) And (StringInStr($str,"Note: " & $medNotes)>0)) Then
+					ConsoleWrite("Prescription Renewal Request details verified -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Prescription Renewal Request details verified -- PASSED" & @CRLF)
+					WinClose("Rx Refill")
+
+					WinActivate("Update - " & $Fname & " " & $Lname & " -- Append")
+					WinSetState("Update - " & $Fname & " " & $Lname & " -- Append","",@SW_MAXIMIZE)
+					MouseClick("left",410,220)
+					ConsoleWrite("Set the Pharmacy" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Set the Pharmacy" & @CRLF)
+					;Set Pharmacy
+					WinWaitActive("Find Pharmacy")
+					ControlFocus("Find Pharmacy","","[NAME:m_btnSearch]")
+					ControlClick("Find Pharmacy","","[NAME:m_btnSearch]")
+					Sleep(1000)
+					ControlClick("Find Pharmacy","","[NAME:m_btnOk]")
+
+					ConsoleWrite("Set the Medication" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Set the Medication" & @CRLF)
+					;SEt Medication
+					MouseClick("left",625,175)
+					WinWaitActive("Update Medications")
+					ControlFocus("Update Medications","","[CLASS:MLogicFormWindow; INSTANCE:1]")
+					ControlClick("Update Medications","","[CLASS:MLogicFormWindow; INSTANCE:1]","left",1,30,480)
+					WinWaitActive("New Medication")
+					ControlFocus("New Medication","","[CLASS:Edit; INSTANCE:6]")
+					Send("{DOWN 2}")
+					Send("{ENTER}")
+					WinWaitActive("Update Medications")
+					ControlFocus("Update Medications","","[CLASS:MLogicFormWindow; INSTANCE:1]")
+					ControlClick("Update Medications","","[CLASS:MLogicFormWindow; INSTANCE:1]","left",1,545,510)
+
+					ConsoleWrite("Send reply message for Rx Request" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Send reply message for Rx Request" & @CRLF)
+					WinActivate("Update - " & $Fname & " " & $Lname & " -- Append")
+					ControlClick("Update - " & $Fname & " " & $Lname & " -- Append","","[CLASS:Button; INSTANCE:1]")
+					Send("{TAB 3}")
+					Send("{SPACE}")
+					WinWaitActive("Centricity Practice Solution")
+					ControlClick("Centricity Practice Solution","","[CLASS:Button; INSTANCE:1]")
+
+					WinWaitActive("Update - " & $Fname & " " & $Lname & " -- Append")
+					ConsoleWrite("Complete the document" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Complete the document" & @CRLF)
+					MouseClick("left",1290,35)
+					WinWaitActive("End Update")
+					ControlFocus("End Update","","[CLASS:Button; INSTANCE:15]")
+					ControlClick("End Update","","[CLASS:Button; INSTANCE:15]")
+
+				Else
+					ConsoleWrite("Prescription Renewal Request details did not match -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Prescription Renewal Request details did not match -- FAILED" & @CRLF)
+					Exit
+				EndIf
+
+			Else
+				ConsoleWrite("ERROR Opening Append Document Window...." & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Append Document Window...." & @CRLF)
+			EndIf
+
+		Else
+			ConsoleWrite("Prescription Renewal Request details did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Prescription Renewal Request details did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+
+	Else
+		ConsoleWrite("Unable to fetch Rx Request...." & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: replyRxAppend() ended" & @CRLF)
 EndFunc
