@@ -3,7 +3,7 @@ CPS Login UserName:-mmanohar
 CPS Login Password:-Medfusion567
 SQL Server IP:-172.18.81.237
 Centricity DB:-centricityps122demo
-Central DB:-prod_cdb
+Central DB:-demo_central_db
 SQL UserName:-sa
 SQL Password:-*08oate
 Flag (Preconditions Check / Data Generation / Acceptance):-Acceptance
@@ -12,13 +12,13 @@ Patient first Name to be appended with timestamp (For Patient Creation in CPS):-
 Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
 Patient Count:-1
 -------------Patient Portal Details:--------------
-Patient Portal url:-https://www.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=14225&muuid=15772
-Patient Portal Login:-SR_1507883561241
+Patient Portal url:-https://demo.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=857&muuid=2606
+Patient Portal Login:-SR_1513683855693
 Patient Portal Password:-Admin123#
 CCD Transmit Email:-tattempt@gmail.com
 --------------Patient Chart:--------------
-Patient First Name (For Patient Chart):-SR_1507883561241
-Patient Last Name (For Patient Chart):-1507883561241
+Patient First Name (For Patient Chart):-SR_1513683855693
+Patient Last Name (For Patient Chart):-TestPatient_1513683855693
 New Document (Email Message):-* E-mail Message
 New Document (Asthma Visit):-Asthma Visit
 --------------Direct Messaging:--------------
@@ -38,12 +38,22 @@ Reply to Email Message:-This is response to test mail
 AAS Subject:-Subject of AAS
 AAS Body:-This is body of AAS
 Reply to AAS:-This is response to AAS
+--------------Prescription Renewal:--------------
+Rx Request Medication Name:-Bactrim
+Rx Request Dosage:-1bd
+Rx Request Quantity:-2
+Rx Request Refills:-3
+Rx Request Prescription Number:-456
+Rx Request Notes:-Auto-generated Additional Information for Rx
+Rx Request Pharmacy:-Gufic Pharmacy
+Rx Request Pharmacy Phone:-1521521523
 --------------Data Generation:--------------
 Number of order creation:-2
 Number of TOC Creation:-3
 Order Category2:-Gastroenterology
-Number of visits to be created:-1
-Number of selfregistered patients to be created:-2
+Number of visits to be created:-2
+Number of selfregistered patients to be created:-20
 Number of messages to be created:-2
 Number of appointments to be created:-5
 Number of AAS to be created:-4
+Number of Rx requests to be generated:-6
