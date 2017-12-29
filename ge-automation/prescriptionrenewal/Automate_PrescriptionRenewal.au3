@@ -281,25 +281,16 @@ Else
 			;MedicationName
 				ConsoleWrite("Verifying Medication Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-;~ 				$medNameInConfig = StringReplace($arrConfig[33] & $time & "0"," ","")
-;~ 				$medNameInDB = StringReplace($aData[1][0]," ","")
-;~ 				Call("assertData", $medNameInConfig, $medNameInDB)
 				Call("assertData", $arrConfig[33] & $time & "0", $aData[1][0])
 
 			;Dosage
 				ConsoleWrite("Verifying Medication Dosage in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Dosage in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-;~ 				$medDosageInConfig = StringReplace($arrConfig[34]," ","")
-;~ 				$medDosageInDB = StringReplace($aData[1][1]," ","")
-;~ 				Call("assertData", $medDosageInConfig, $medDosageInDB)
 				Call("assertData", $arrConfig[34], $aData[1][1])
 
 			;Prescription Number
 				ConsoleWrite("Verifying Prescription Number in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Prescriiption Number in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-;~ 				$medNoInConfig = StringReplace($arrConfig[37]," ","")
-;~ 				$medNoInDB = StringReplace($aData[1][2]," ","")
-;~ 				Call("assertData", $medNoInConfig, $medNoInDB)
 				Call("assertData", $arrConfig[37], $aData[1][2])
 
 			;REfills
@@ -310,9 +301,6 @@ Else
 			;Notes
 				ConsoleWrite("Verifying Medication Notes in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Notes in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-;~ 				$medNotesInConfig = StringReplace($arrConfig[38]," ","")
-;~ 				$medNotesInDB = StringReplace($aData[1][4]," ","")
-;~ 				Call("assertData", $medNotesInConfig, $medNotesInDB)
 				Call("assertData",$arrConfig[38],$aData[1][4])
 
 			;Quantity
@@ -323,9 +311,6 @@ Else
 			;Pharmacy Name
 				ConsoleWrite("Verifying Pharmacy Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Pharmacy Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-;~ 				$pharmacyNameInConfig = StringReplace($arrConfig[39]," ","")
-;~ 				$pharmacyNameInDB = StringReplace($aData[1][6]," ","")
-;~ 				Call("assertData", $pharmacyNameInConfig, $pharmacyNameInDB)
 				Call("assertData",  $arrConfig[39],$aData[1][6])
 
 			;Pharmacy Phone
