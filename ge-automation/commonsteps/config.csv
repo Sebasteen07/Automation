@@ -1,0 +1,49 @@
+CPS URL:-http://172.18.81.237:9080/centricityps122demo/cps/
+CPS Login UserName:-mmanohar
+CPS Login Password:-Medfusion567
+SQL Server IP:-172.18.81.237
+Centricity DB:-centricityps122demo
+Central DB:-prod_cdb
+SQL UserName:-sa
+SQL Password:-*08oate
+Flag (Preconditions Check / Data Generation / Acceptance):-Acceptance
+--------------Patient Registration:--------------
+Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
+Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
+Patient Count:-1
+-------------Patient Portal Details:--------------
+Patient Portal url:-https://www.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=14225&muuid=15772
+Patient Portal Login:-SR_1507883561241
+Patient Portal Password:-Admin123#
+CCD Transmit Email:-tattempt@gmail.com
+--------------Patient Chart:--------------
+Patient First Name (For Patient Chart):-SR_1507883561241
+Patient Last Name (For Patient Chart):-1507883561241
+New Document (Email Message):-* E-mail Message
+New Document (Asthma Visit):-Asthma Visit
+--------------Direct Messaging:--------------
+Order Category1:-Neurology
+Authorizing Provider for TOC Flow (Lastname,Firstname):-Jain, Swati
+Referring provider for TOC flow (Lastname,Firstname):-Azhar MD, Elle
+SES Inbox URL:-https://service2.directaddress.net
+SES UserName:-pmemrqa
+SES Password:-Password123@!
+Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
+Letter to Patient Subject (TOC):-Referral Initiated
+--------------Secure Messaging:--------------
+Email Message Subject:-Subject of test email
+Email Message Body:-This is body of test email
+Reply to Email Message:-This is response to test mail
+--------------Ask A Staff:--------------
+AAS Subject:-Subject of AAS
+AAS Body:-This is body of AAS
+Reply to AAS:-This is response to AAS
+--------------Data Generation:--------------
+Number of order creation:-2
+Number of TOC Creation:-3
+Order Category2:-Gastroenterology
+Number of visits to be created:-1
+Number of selfregistered patients to be created:-2
+Number of messages to be created:-2
+Number of appointments to be created:-5
+Number of AAS to be created:-4

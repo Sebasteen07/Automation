@@ -110,14 +110,14 @@ public class JalapenoAppointmentRequestV2Step2 extends BasePageObject {
 		IHGUtil.PrintMethodName();
 
 		log("Set Times of day: Early morning and Late afternoon");
-		earlyMorningButton.sendKeys(" ");
-		lateAfternoonButton.sendKeys(" ");
+		javascriptClick(earlyMorningButton);
+		javascriptClick(lateAfternoonButton);
 
 		log("Set Days of week: Monday - Thursday");
-		mondayButton.sendKeys(" ");
-		tuesdayButton.sendKeys(" ");
-		wednesdayButton.sendKeys(" ");
-		thursdayButton.sendKeys(" ");
+		javascriptClick(mondayButton);
+		javascriptClick(tuesdayButton);
+		javascriptClick(wednesdayButton);
+		javascriptClick(thursdayButton);
 
 		log("Leave Week: Any");
 

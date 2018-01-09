@@ -63,7 +63,6 @@ import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
@@ -1643,17 +1642,27 @@ public class RestUtils {
 						break;
 					case 'G':
 						node = ele.getElementsByTagName(IntegrationConstants.GENDER).item(0);
-						break;	
+						break;
+					case 'I':
+						node = ele.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
+						break;
+					case 'S':
+						node = ele.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
+						break;
 					default:
 						break;
 				}
 				if (node == null) {
+					if (nodeName == 'I' || nodeName == 'S') {
+						Log4jUtil.log("GI/SO node not presnt of v1");
+						found = true;
+					}
 					BaseTestSoftAssert.verifyTrue(found, "Node Not Found");
 					found = true;
 					break;
 				}
-				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent());
-				BaseTestSoftAssert.verifyTrue(node.getTextContent().equalsIgnoreCase(value), "Value mismatched");
+				Log4jUtil.log("Expected Value: " + value + ", and Actual Value is: " + node.getTextContent().trim() + ".");
+				BaseTestSoftAssert.verifyTrue(node.getTextContent().trim().equalsIgnoreCase(value), "Value mismatched");
 
 				found = true;
 				break;
@@ -2706,61 +2715,74 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	{
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
-		Log4jUtil.log("finding CCDFORM INFO");
 		boolean found = false;
-		String PDfURL1="";
 		Node CcdMessageHeaders=doc.getElementsByTagName(IntegrationConstants.CCDMESSAGEHEADERS).item(0);
 		Element ccdheaders=(Element) CcdMessageHeaders;
 		Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
 		Element Forms=(Element) Formname;
-		Node Value1=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(0);
-		String Formname1=Value1.getTextContent();
-		Node FormType=Forms.getElementsByTagName("KeyValuePair").item(1);
-		Assert.assertEquals(Formname1, FormValue, "Form Name is different from expected ");
-		Assert.assertTrue(FormType.getTextContent().contains(IntegrationConstants.FORMTYPE), "Form Type is different than expected");
-
+		NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
+		for(int i=0;i<KeyValuePairList.getLength();i++) {
+			Node FormTypeValue=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(i);
+			Node FormTypeKey=Forms.getElementsByTagName("Key").item(i);
+			if(FormTypeValue.getTextContent().contains(FormValue)) {
+				Assert.assertEquals(FormTypeValue.getTextContent(), FormValue, "Form Name is different from expected ");
+			}
+			if(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE)) {
+				Assert.assertTrue(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE), "Form Type is different than expected");
+				break;
+			}
+		}
 	}
 
 	public static String verifyCCDHeaderDetailsandGetURL(String responsepath, String externalID) throws ParserConfigurationException, SAXException, IOException{
-	  IHGUtil.PrintMethodName();
-	  Document doc = buildDOMXML(responsepath);
-	  Log4jUtil.log("finding CCDFORM INFO");
-	  boolean found = false;
-	  String PDfURL1="";
-	  NodeList CcdMessageHeaders=doc.getElementsByTagName("ns2:CcdExchange");
-	  for(int i=0; i<CcdMessageHeaders.getLength();i++)
-	  {
-		  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
-		  NodeList PAtientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
-		  for(int j=0; j<PAtientDemo.getLength();j++)
+		  IHGUtil.PrintMethodName();
+		  Document doc = buildDOMXML(responsepath);
+		  Log4jUtil.log("finding CCDFORM INFO");
+		  boolean found = false;
+		  String PDfURL1="";
+		  NodeList CcdMessageHeaders=doc.getElementsByTagName("ns2:CcdExchange");
+		  for(int i=0; i<CcdMessageHeaders.getLength();i++)
 		  {
-			  Element childs=(Element) PAtientDemo.item(j);
-			  
-		  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
-		  if(PatientIdentifier.item(j)!=null) {
-			  Element external=(Element) PatientIdentifier.item(j);
-		  	  Log4jUtil.log("Patient External ID is "+external.getTextContent());
-		  	  ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
-			  for(int n=0;n<names.size();n++)
+			  Element ccdheaders=(Element) CcdMessageHeaders.item(i);
+			  NodeList PatientDemo=ccdheaders.getElementsByTagName("PatientDemographics");
+			  for(int j=0; j<PatientDemo.getLength();j++)
 			  {
-				  if (names.get(n).contains(externalID))
+				  Element childs=(Element) PatientDemo.item(j);
+				  
+			  	  NodeList PatientIdentifier=childs.getElementsByTagName("PracticePatientId");
+			  if(PatientIdentifier.item(j)!=null) {
+				  Element external=(Element) PatientIdentifier.item(j);
+			  	  Log4jUtil.log("Patient External ID is "+external.getTextContent());
+			  	  ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
+				  for(int n=0;n<names.size();n++)
 				  {
-					  //Log4jUtil.log("Elements are in the condition "+names.get(n));
-					  Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
-					  Element Forms=(Element) Formname;
-					  Node FormURL=Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
-					  Element URL=(Element) FormURL;
-					  Node Value1=URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
-					  Log4jUtil.log("Form url is "+Value1.getTextContent());
-							  PDfURL1=Value1.getTextContent();
-							  break;
-				  }
-				}
-			}  
-		  }
-	  	}
-	  return PDfURL1;
-	  }
+					  if (names.get(n).contains(externalID))
+					  {
+						  //Log4jUtil.log("Elements are in the condition "+names.get(n));
+						  Node Formname=ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
+						  Element Forms=(Element) Formname;
+						  Node FormURL=Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
+						  Element URL=(Element) FormURL;
+						  Node Value1=URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+						  
+						  NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
+							for(int m=0;i<KeyValuePairList.getLength();m++) {
+								Node FormTypeValue=Forms.getElementsByTagName(IntegrationConstants.VALUE).item(m);
+								Node FormTypeKey=Forms.getElementsByTagName("Key").item(m);
+								if(FormTypeKey.getTextContent().contains("FormsPdfLink")) {
+									Log4jUtil.log("value of pdf link "+FormTypeValue.getTextContent());
+									PDfURL1=FormTypeValue.getTextContent();
+									break;
+								}
+							}
+							break;
+					  }
+					}
+				}  
+			  }
+		  	}
+		  return PDfURL1;
+	 }
 
 	 public static void verifyPDFBatchDetails(String responsepath,String externalPatientID, String medfusionID) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException, JDOMException {
 	   IHGUtil.PrintMethodName();
@@ -2861,8 +2883,12 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
 				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
 				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
-				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"), "CCD DATA was not Found");
-				break;
+				Boolean patientFound=node.item(i).getTextContent().contains("<given>" + firstname + "</given>");
+				Log4jUtil.log("Is Patient appeared = "+patientFound);
+				if(patientFound==true) {
+					Assert.assertTrue(patientFound,"Updated patient name appeared");
+					break; 
+				}
 			}
 			if (i == nodes.getLength() - 1) {
 				Assert.fail("Patient was not found");
@@ -2892,4 +2918,274 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	  }
 	   return PatientPDFUrl;
 	}
+	
+	public static String setupHttpGetRequestWithEmptyResponse(String strUrl, String responseFilePath) throws IOException {
+		IHGUtil.PrintMethodName();
+		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
+		
+		HttpEntity entity = resp.getEntity();
+		String sResp = null;
+		if (entity != null) {
+			sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+			writeFile(responseFilePath, sResp);
+		} else {
+			Log4jUtil.log("204 response found");
+		}
+		if (resp.containsHeader(IntegrationConstants.NEXTURI)) {
+			Header[] h = resp.getHeaders(IntegrationConstants.NEXTURI);
+			return h[0].getValue();
+		}
+		return Integer.toString(resp.getStatusLine().getStatusCode());
+	}
+	
+		public static String setupHttpJSONPostRequest(String strUrl, String payload, String responseFilePath,String accessToken) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(payload));
+		request.setHeader("Noun", "Encounter");
+		request.setHeader("Verb", "Completed");
+		request.addHeader("Authorization", accessToken);
+		request.addHeader("Content-Type", "application/json");
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		Assert.assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
+
+		if (response.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
+			Header[] h = response.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+		}
+		return null;
+	}
+	public static void verifyPatientDetailsForPrecheckAppointment(String xmlFileName,String practicePatientId ,List list) throws ParserConfigurationException, SAXException, IOException, ParseException  {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		// boolean found = false;
+		for (int i = 0; i < patients.getLength(); i++) {
+			if (patients.item(i).getTextContent().equals(practicePatientId)) {
+				Log4jUtil.log("Validating patient number "+(i+1)+" with practice patient id "+practicePatientId);
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				if(!patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent().isEmpty() && list.get(0) !=null) {
+				
+				Node FirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				//Log4jUtil.log("Patient FirstName"+FirstName.getTextContent());
+				if(FirstName.getTextContent().equalsIgnoreCase(list.get(0).toString())) {
+				
+				BaseTestSoftAssert.verifyEquals(FirstName.getTextContent(), list.get(0),
+						"Patient has different FirstName than expected. FirstName is: " + FirstName.getTextContent());
+				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				BaseTestSoftAssert.verifyEquals(LastName.getTextContent(), list.get(1),
+						"Patient has different LastName than expected. LastName is: " + LastName.getTextContent());
+				Log4jUtil.log("Checking Patient Address1, Address2, MiddleName, DateOfBirth, City, State, Zipcode");
+				Node Line1 = patient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
+				BaseTestSoftAssert.verifyEquals(Line1.getTextContent(), list.get(2),
+						"Patient has different Address1 than expected. Address1 is: " + Line1.getTextContent());
+				Node Line2 = patient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
+				BaseTestSoftAssert.verifyEquals(Line2.getTextContent(), list.get(3),
+						"Patient has different Address2 than expected. Address2 is: " + Line2.getTextContent());
+				Node MiddleN = patient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
+				BaseTestSoftAssert.verifyEquals(MiddleN.getTextContent(), list.get(4),
+						"Patient has different MiddleName than expected. MiddleName is: " + MiddleN.getTextContent());
+				String bDate = list.get(5).toString().replaceAll("01 ", "01/");
+				String birthdate = convertDate(bDate) + "T00:00:00";
+				Log4jUtil.log("Checking Patient Date of Birth, Middle Name");
+				Node DateOfBirth = patient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
+				BaseTestSoftAssert.verifyEquals(DateOfBirth.getTextContent(), birthdate,
+						"Patient has different DateOfBirth than expected. DateOfBirth is: " + DateOfBirth.getTextContent());
+				
+				Node City = patient.getElementsByTagName(IntegrationConstants.CITY).item(0);
+				BaseTestSoftAssert.verifyEquals(City.getTextContent(), list.get(6), "Patient has different City than expected. City is: " + City.getTextContent());
+				Node State = patient.getElementsByTagName(IntegrationConstants.STATE).item(0);
+				BaseTestSoftAssert.verifyEquals(State.getTextContent(), list.get(7), "Patient has different State than expected. Stateis: " + State.getTextContent());
+				Node ZipCode = patient.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
+				BaseTestSoftAssert.verifyEquals(ZipCode.getTextContent(), list.get(8),
+						"Patient has different ZipCode than expected. ZipCode is: " + ZipCode.getTextContent());
+				Node HomePhone = patient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
+				BaseTestSoftAssert.verifyEquals(HomePhone.getTextContent(), list.get(9),
+						"Patient has different HomePhone than expected. HomePhone is: " + HomePhone.getTextContent());
+				Node EmailAddress = patient.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
+				BaseTestSoftAssert.verifyEquals(EmailAddress.getTextContent(), list.get(10),
+						"Patient has different EmailAddress than expected. EmailAddress is: " + EmailAddress.getTextContent());
+				} else {
+					Log4jUtil.log(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent()+"Demographics update received without change."+list.get(0));
+				}
+				} else {
+					if(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent().isEmpty()) {
+						Log4jUtil.log("No updates for Demographics.");
+					} else {
+						Log4jUtil.log(patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0).getTextContent()+"Demographics update received without change.");
+					}
+				}
+				Log4jUtil.log("---------------------------------------------------------------------------------");
+				Log4jUtil.log("Verifying Precheck Patient Status");
+				Node PatientStatus = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
+				BaseTestSoftAssert.verifyEquals(PatientStatus.getTextContent(), list.get(11),
+						"Patient has different status than expected. status is: " + PatientStatus.getTextContent());
+				Node PatientSource = patient.getElementsByTagName(IntegrationConstants.SOURCE).item(0);
+				BaseTestSoftAssert.verifyEquals(PatientSource.getTextContent(), list.get(12),
+						"Patient has different source value than expected. source is: " + PatientSource.getTextContent());
+				Log4jUtil.log("---------------------------------------------------------------------------------");
+				
+				Node pNode = patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
+				Element eleP = (Element) pNode;
+				
+				if(list.get(17) !=null && !eleP.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+					Log4jUtil.log("Verifying Patient Insurance Details");
+					Log4jUtil.log("Patient Primary Insurance Details Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
+					Node CompanyName = eleP.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(CompanyName.getTextContent(), list.get(13),
+							"Patient has different Primary Insurance Name than expected. CompanyName is: " + CompanyName.getTextContent());
+					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(0);
+					Element eleSub = (Element) subNode;
+					
+					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberFirstName.getTextContent(), list.get(14),
+							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: " + SubscriberFirstName.getTextContent());
+					
+					Node SubscriberId = eleP.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberId.getTextContent(), list.get(15),
+							"Patient has different Primary SubscriberId than expected. SubscriberId is: " + SubscriberId.getTextContent());
+					
+					Node GroupNumber = eleP.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
+					BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), list.get(16),
+							"Patient has different Primary GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
+					
+					String iDate = list.get(17).toString().replaceAll("01 ", "01/");
+					String effectiveD = convertDate(iDate) + "T00:00:00";
+					
+					Node DateIssued = eleP.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
+					BaseTestSoftAssert.verifyEquals(DateIssued.getTextContent(), effectiveD,
+							"Patient has different Primary DateIssued than expected. DateIssued is: " + DateIssued.getTextContent());
+					
+					Node ClaimsPhone = eleP.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(ClaimsPhone.getTextContent(), list.get(18),
+							"Patient has different Primary ClaimsPhone than expected. DateIssued is: " + ClaimsPhone.getTextContent());
+				} else {
+					if(eleP.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+						Log4jUtil.log("No updates for Primary Insurance.");
+					}
+				}
+				
+				Log4jUtil.log("---------------------------------------------------------------------------------");
+				
+				Node sNode = patient.getElementsByTagName(IntegrationConstants.SECONDARYINSURANCE).item(0);
+				Element eleS = (Element) sNode;
+				if(list.get(17) !=null && !eleS.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+					Log4jUtil.log("Patient Secondary Insurance Details - Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
+					Node CompanyName = eleS.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(CompanyName.getTextContent(), list.get(19),
+							"Patient has different Primary Insurance Name than expected. CompanyName is: " + CompanyName.getTextContent());
+					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(1);
+					Element eleSub = (Element) subNode;
+					
+					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberFirstName.getTextContent(), list.get(20),
+							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: " + SubscriberFirstName.getTextContent());
+					
+					Node SubscriberId = eleS.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberId.getTextContent(), list.get(21),
+							"Patient has different Primary SubscriberId than expected. SubscriberId is: " + SubscriberId.getTextContent());
+					
+					Node GroupNumber = eleS.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
+					BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), list.get(22),
+							"Patient has different Primary GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
+					
+					String iDate = list.get(23).toString().replaceAll("01 ", "01/");
+					String effectiveD = convertDate(iDate) + "T00:00:00";
+					
+					Node DateIssued = eleS.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
+					BaseTestSoftAssert.verifyEquals(DateIssued.getTextContent(), effectiveD,
+							"Patient has different Primary DateIssued than expected. DateIssued is: " + DateIssued.getTextContent());
+					
+					Node ClaimsPhone = eleS.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(ClaimsPhone.getTextContent(), list.get(24),
+							"Patient has different Primary ClaimsPhone than expected. DateIssued is: " + ClaimsPhone.getTextContent());
+				} else {
+					if(eleS.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+						Log4jUtil.log("No updates for Secondary Insurance.");
+					}
+				}
+				
+				Log4jUtil.log("---------------------------------------------------------------------------------");
+				
+				Node tNode = patient.getElementsByTagName(IntegrationConstants.TERTIARYINSURANCE).item(0);
+				Element eleT = (Element) tNode;
+				if(list.get(17) !=null && !eleT.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+					Log4jUtil.log("Patient Tertiary Insurance Details - Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
+					Node CompanyName = eleT.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(CompanyName.getTextContent(), list.get(25),
+							"Patient has different Primary Insurance Name than expected. CompanyName is: " + CompanyName.getTextContent());
+					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(2);
+					Element eleSub = (Element) subNode;
+					
+					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberFirstName.getTextContent(), list.get(26),
+							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: " + SubscriberFirstName.getTextContent());
+					
+					Node SubscriberId = eleT.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
+					BaseTestSoftAssert.verifyEquals(SubscriberId.getTextContent(), list.get(27),
+							"Patient has different Primary SubscriberId than expected. SubscriberId is: " + SubscriberId.getTextContent());
+					
+					Node GroupNumber = eleT.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
+					BaseTestSoftAssert.verifyEquals(GroupNumber.getTextContent(), list.get(28),
+							"Patient has different Primary GroupNumber than expected. GroupNumber is: " + GroupNumber.getTextContent());
+					
+					String iDate = list.get(29).toString().replaceAll("01 ", "01/");
+					String effectiveD = convertDate(iDate) + "T00:00:00";
+					
+					Node DateIssued = eleT.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
+					BaseTestSoftAssert.verifyEquals(DateIssued.getTextContent(), effectiveD,
+							"Patient has different Primary DateIssued than expected. DateIssued is: " + DateIssued.getTextContent());
+					
+					Node ClaimsPhone = eleT.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
+					BaseTestSoftAssert.verifyEquals(ClaimsPhone.getTextContent(), list.get(30),
+							"Patient has different Primary ClaimsPhone than expected. DateIssued is: " + ClaimsPhone.getTextContent());
+				} else {
+					if(eleT.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0).getTextContent().isEmpty()) {
+						Log4jUtil.log("No updates for Tertiary Insurance.");
+					}
+				}
+				Log4jUtil.log("---------------------------------------------------------------------------------");
+			}
+		}
+	}
+	
+	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath,String EGQValue,char EGQType) throws ParserConfigurationException, SAXException, IOException
+	{
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responsepath);
+		if(EGQType == 'I') {
+			Node GenderIdentity=doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
+			Element GenderIdentityEle=(Element) GenderIdentity;
+			Node EGQGINode=GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+			Log4jUtil.log("GI node value= "+EGQGINode.getTextContent()+"   EGQValue = "+ EGQValue);
+			BaseTestSoftAssert.verifyTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+		}
+		if(EGQType == 'S') {
+			Node SexualOrientation=doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
+			Element SexualOrientationEle=(Element) SexualOrientation;
+			Node EGQSONode=SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
+			Log4jUtil.log("SO node value = "+EGQSONode.getTextContent()+"   EGQValue = "+ EGQValue);
+			BaseTestSoftAssert.verifyTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+		}
+	}
+				
 }

@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,14 +52,18 @@ public class HealthFormListPage extends BasePageObject {
 	@FindBy(xpath="//li/a[text()='General Registration and Health History']")
 	public static WebElement healthFormsRegistrationLink;
 	
+	@FindBy(xpath="//li/a[text()='General Registration and Health History Updated']")
+	public static WebElement healthFormsRegistrationLinkUpdated;
+	
 	@FindBy(linkText="View as PDF")
 	private static WebElement pdfLinkText;
 	
 	private static String formValueNew;
-
+	
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))).click();
+		javascriptClick(wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))));
+		Thread.sleep(3000);
 		if (!IHGUtil.exists(driver, newFormIframe)) {
 			driver.switchTo().defaultContent();
 		}
@@ -67,7 +72,7 @@ public class HealthFormListPage extends BasePageObject {
 	}
 
 	public OldCustomFormPages openOldCustomForm(String formName) throws InterruptedException {
-		driver.findElement(By.linkText(formName)).click();
+		javascriptClick(driver.findElement(By.linkText(formName)));
 		Thread.sleep(3000);
 		return PageFactory.initElements(driver, OldCustomFormPages.class);
 	}
@@ -75,7 +80,7 @@ public class HealthFormListPage extends BasePageObject {
 	public void clickOnHealthForms() {
 		log("Clicking on Health Forms button");
 		IHGUtil.setDefaultFrame(driver);
-		healthFormsLink.click();
+		javascriptClick(healthFormsLink);
 		IHGUtil.setFrame(driver, "iframe");
 	}
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{
@@ -154,5 +159,17 @@ public class HealthFormListPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 90, pdfLinkText);
 		pdfLinkText.click();
 	}
-
+	
+	public void clickOnHealthFormsRegistrationLinkUpdated(int i) throws InterruptedException{
+		log("Clicking On General Registration and Health History Updated ");
+		IHGUtil.waitForElement(driver, 60, healthFormsRegistrationLinkUpdated);
+		healthFormsRegistrationLinkUpdated.click();
+		driver.switchTo().frame(iframeforms);
+		List<WebElement> continueButtonClick = driver.findElements(By.xpath("//a[text()='Continue']"));
+		if(i==0 && !continueButtonClick.isEmpty()) {
+			IHGUtil.waitForElement(driver, 60, Continuebutton1);
+			javascriptClick(Continuebutton1);
+		}
+		
+	}
 }

@@ -32,4 +32,12 @@ public class AMDC {
 	public String AllowReply = "";
 	public String Message = "";
 	public String PatientExternalId = "";
+	public String allowAttachment="";
+	public String categoryType="";
+	public String fileName="";
+	public String mimeType="";
+	public String attachmentBody="";
+	public String allowOnce="";
+	public String downloadLocation="";
+	public String portalCategoryType="";
 }

@@ -95,7 +95,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	}
 
 	public void clickOnNewSection() throws InterruptedException {
-		newSection.click();
+	    javascriptClick(newSection);
 	}
 
 	// LEFT SIDE MENU CONTENT
@@ -193,7 +193,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	public SocialHistoryPage clicklnkSocialHistory() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkSocialHistory);
-		lnkSocialHistory.click();
+		javascriptClick(lnkSocialHistory);
 		return PageFactory.initElements(driver, SocialHistoryPage.class);
 	}
 

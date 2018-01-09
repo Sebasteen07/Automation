@@ -134,7 +134,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 			log("Checking gender value: " + genderValue);
 			new Select(genderQuestion).selectByVisibleText(genderValue);
 			log("Value " + genderValue + " is verified.");
-			saveMyChanges.click();
+			javascriptClick(saveMyChanges);
 			IHGUtil.waitForElement(driver, 30, genderQuestion);
 			} catch (NoSuchElementException e) {
 				log("Gender value: " + genderValue + "is missing.");
@@ -257,9 +257,10 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
 		itemsToChange.put(address1Textbox, "address");
 		itemsToChange.put(cityTextbox, "city");
-		itemsToChange.put(stateSelect, "Alaska");
 		itemsToChange.put(zipCodeTextbox, "54321");
-
+		itemsToChange.put(race, "White");
+		itemsToChange.put(ethnicity, "Hispanic or Latino");
+		
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
 

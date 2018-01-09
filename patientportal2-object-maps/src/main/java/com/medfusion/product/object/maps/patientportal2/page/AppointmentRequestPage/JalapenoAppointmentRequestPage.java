@@ -56,7 +56,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 		log("Click on Continue button");
 		IHGUtil.setFrame(driver, "iframebody");
 
-		continueButton.click();
+		javascriptClick(continueButton);
 	}
 
 	public JalapenoHomePage returnToHomePage(WebDriver driver) {
@@ -70,7 +70,12 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 	public boolean fillAndSendTheAppointmentRequest(WebDriver driver) {
 		IHGUtil.setFrame(driver, "iframebody");
 		log("Filling the appointment form");
-
+		//unfortunately the most stable way to wait for styles and full display of the appointment iframe is to wait out the first two seconds...
+		try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
 		Select dropdown = new Select(prefTimeFrame);
 		dropdown.selectByVisibleText("First Available");
 
@@ -94,7 +99,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 		for (int i = 1; i <= 5; i++) {
 			try {
 				log("Find Submit the Request button, trial: " + i);
-				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.name(":submit"))).click();
+				javascriptClick(new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.name(":submit"))));
 				log("Click on Submit the Request was successful");
 				break;
 			} catch (StaleElementReferenceException ex) {

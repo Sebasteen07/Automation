@@ -126,11 +126,11 @@ public class Utils {
 		return home;
 	}
 
-	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
+	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {	    
 		IHGUtil.setFrame(driver, "iframe");
 		Thread.sleep(8000);
-		Date submittedDate = formsPage.getSubmittedDate(formName);
 		Date now = getCurrentESTTime();
+		Date submittedDate = formsPage.getSubmittedDate(formName);
 		log("Date from web: " + submittedDate);
 		log("Current US date: " + now);
 		// date on web is max. 5 min after submit date

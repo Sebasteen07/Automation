@@ -128,6 +128,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		
+		//TODO remove this workaround after the forms refresh after submit is fixed! 
 		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();
@@ -156,6 +158,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 5: Test if the submission date is correct");
+		formsPage.clickOnHealthForms();
 		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);
 		formsPage.logout();
 	}

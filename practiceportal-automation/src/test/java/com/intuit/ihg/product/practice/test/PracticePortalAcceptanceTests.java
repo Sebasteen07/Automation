@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.testng.annotations.Test;
 
+import com.medfusion.common.utils.Mailinator;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -259,15 +261,15 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Test Case: testPatientSearchLink");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Getting Test Data");
+		PropertyFileLoader testData = new PropertyFileLoader();
 
-		Date startEmailSearchDate = new Date();
+		Mailinator mailinator = new Mailinator();
 
 
 		log("step 1: Login to Practice Portal");
 		Practice practice = new Practice();
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		Gmail gmail = new Gmail(practiceTestData.getPatientEmail(), practiceTestData.getPatientPassword());
 
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
 		PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
@@ -284,32 +286,14 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 5: click Send Email");
 		pPatientDashboardPage = pPatientSearchPage.sendUserNameEmail();
-		verifyEquals(true, pPatientDashboardPage.getFeedback().contains("Username email sent to patient"));
-
-		log("step 6: Access Gmail and check for received email");
-		log("patient userID: " + practiceTestData.getPatientUser());
-		log("email: " + practiceTestData.getPatientEmail());
-		log("pass: " + practiceTestData.getPatientPassword());
-
-		int count = 1;
-		boolean flag = false;
-		do {
-			boolean foundEmail = CheckEmail.validateForgotUserID(gmail, startEmailSearchDate, practiceTestData.getPatientEmail(), "Your User ID for",
-					practiceTestData.getPatientUser());
-			if (foundEmail) {
-				assertTrue(foundEmail, "The Forgot User ID email wasn't received.");
-				System.out.println("The User ID email receiced In between :" + count * 60 + "seconds");
-				flag = true;
-				break;
-			} else {
-				Thread.sleep(60000);
-				count++;
-			}
-
-		} while (count < 21);
-		if (!flag) {
-			log("The User ID email wasn't received even after Five minutes of wait");
-		}
+		assertTrue(pPatientDashboardPage.getFeedback().contains("Username email sent to patient"), "No success message on send!");		
+		log("step 6: Access Gmail and check for received email");		
+		log("email: " + testData.getProperty("forgotUsernameMail"));
+		log("subject: " + testData.getProperty("forgotUsernameMailSubject"));
+		log("patient userID: " + testData.getProperty("forgotUsernameLogin"));
+		assertTrue(
+		        mailinator.catchNewMessageCheckContent(testData.getProperty("forgotUsernameMail"), testData.getProperty("forgotUsernameMailSubject"), testData.getProperty("forgotUsernameLogin"),10)
+		        , "Mail not received after max retries");		
 
 	}
 
@@ -369,7 +353,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testQuickSendPatientPDF() throws Exception {
 
 		log("Test Case: testQuickSendPatientPDF");
@@ -398,6 +382,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		IHGUtil.setFrame(driver, PracticeConstants.frameName);
 		IHGUtil.waitForElement(driver, 20, pPatientMessagingPage.publishedSuccessfullyMessage);
 		verifyEquals(pPatientMessagingPage.publishedSuccessfullyMessage.getText(), "Message Published Successfully");
+		
+		log("step 6:Verify the Published Message Succesfully text");
 
 
 	}

@@ -1134,7 +1134,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
-
 		for (int i = 1; i < 3; i++) {
 			log("Step 2: Click Sign-UP");
 			PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
@@ -1259,18 +1258,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				log("Step 25: Verify 204 response when no new forms is present");
 				long timeStamp204 = System.currentTimeMillis();
 				Long sinceTime = timeStamp204 / 1000;
-				RestUtils.setupHttpGetRequestExceptOauth(getURL + "?since=" + sinceTime + ",0", testData.getResponsePath());
+				String ccdExchangeBatchURL=RestUtils.setupHttpGetRequestWithEmptyResponse(getURL + "?since=" + sinceTime + ",0", testData.getResponsePath());
 				Thread.sleep(800);
 				log("Step 26: Invoke ccdExchangeBatch api when there are no forms");
-				String ccdExchangeBatchURL = RestUtils.headerUrl;
-				RestUtils.setupHttpGetRequestExceptOauth(ccdExchangeBatchURL, testData.getResponsePath());
+				RestUtils.setupHttpGetRequestWithEmptyResponse(ccdExchangeBatchURL, testData.getResponsePath());
 			}
 			log("Step 27: Logout");
 			pMyPatientPage.clickLogout(driver);
 
 		}
 	}
-
+	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testOnlineBillPayment() throws Exception {
 

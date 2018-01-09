@@ -36,7 +36,7 @@ public class JalapenoPayBillsConfirmationPage extends BasePageObject {
 		comment.sendKeys(commentString);
 
 		log("Click on Submit Payment button");
-		submitPayment.click();
+		javascriptClick(submitPayment);
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}

@@ -133,7 +133,35 @@ public class AMDCPayload {
 			Element Message = doc.createElement("Message");
 			Message.appendChild(doc.createTextNode(testData.Message));
 			SecureMessage.appendChild(Message);
-
+			if(testData.allowAttachment.equalsIgnoreCase("true")) {
+				String[] catEnum = testData.categoryType.split(",");
+				int maxLength=1;
+				if(!testData.allowOnce.equalsIgnoreCase("true")) {
+					maxLength=catEnum.length;
+				}
+				for(int i=0;i<maxLength;i++) {
+					//Attachment
+					Element Attachment = doc.createElement("Attachment");
+					//FileName
+					Element FileName = doc.createElement("FileName");
+					FileName.appendChild(doc.createTextNode(i+testData.fileName));
+					Attachment.appendChild(FileName);
+					//MimeType
+					Element MimeType = doc.createElement("MimeType");
+					MimeType.appendChild(doc.createTextNode(testData.mimeType));
+					Attachment.appendChild(MimeType);
+					//Body
+					Element Body = doc.createElement("Body");
+					Body.appendChild(doc.createTextNode( ExternalFileReader.readFromFile(testData.attachmentBody)));
+					Attachment.appendChild(Body);
+					
+					Element Category = doc.createElement("Category");
+					Category.appendChild(doc.createTextNode(catEnum[i]));
+					Attachment.appendChild(Category);
+					
+					SecureMessage.appendChild(Attachment);
+				}
+			}
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

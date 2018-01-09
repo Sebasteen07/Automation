@@ -59,6 +59,11 @@ public class BulkAdmin {
 	public String oPassword = "";
 	public String oPatientID = "";
 	public String oEmailID = "";
-
+	public String categoryType="";
+	public String attachmentBody = "";
+	public String downloadLocation = "";
+	public String fileName = "";
+	public String mimeType = "";
+	public String portalCategoryType = "";
 
 }

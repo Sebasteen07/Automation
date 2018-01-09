@@ -17,6 +17,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
 public class MedicalRecordSummariesPage extends MedfusionPage {
@@ -38,10 +39,10 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[1]/input")
 	private WebElement firstVisibleCCDCheckbox;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[1]/input")
 	private WebElement secondVisibleCCDCheckbox;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[2]/a")
 	private WebElement firstVisibleCCDDate;
 
@@ -53,27 +54,36 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "emailAddress")
 	private WebElement emailAddressInput;
-	
+
 	@FindBy(how = How.ID, using = "transmitButton")
 	private WebElement transmitButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='notification-message']/p[@data-ng-if='vm.transmitSuccess']")
-	private WebElement successNotificationMessage;	
-	
-	//Adding new radioButton and acknowledgement check box
-	
+	private WebElement successNotificationMessage;
+
+	// Adding new radioButton and acknowledgement check box
+
 	@FindBy(how = How.ID, using = "secureTransmit")
 	private WebElement secureTransmit;
-	
+
 	@FindBy(how = How.ID, using = "unsecureTransmit")
 	private WebElement unsecureTransmit;
-	
+
 	@FindBy(how = How.ID, using = "acknowledgement")
 	private WebElement acknowledgement;
-	
+
 	@FindBy(how = How.ID, using = "plusLinkButton")
-    private WebElement getStartedButton;
-	
+	private WebElement getStartedButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"common-nav-container\"]/ul/li[2]/a")
+	private WebElement otherDocument;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"documentsTable\"]")
+	private WebElement secureMessageAttachmentData;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"documentsTable\"]/tbody[1]/tr/td[5]/button")
+	private WebElement downloadAttachment;
+
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
 	}
@@ -96,10 +106,10 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	public void sendCCDIfNewestIsOlderThan(int days) {
 		if (System.currentTimeMillis() >= getTimeStampOfDate(firstVisibleCCDDate) + (days * 86400000)) {
-			//log("The test will send newer CCD to a patient.");
+			// log("The test will send newer CCD to a patient.");
 			// TODO: Send CCD
-		}else{
-			//log("The newest CCD isn't older than " + days + " days.");
+		} else {
+			// log("The newest CCD isn't older than " + days + " days.");
 		}
 	}
 
@@ -107,29 +117,33 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		setFilterToElementsDate(thirdVisibleCCDDate);
 	}
 
-	public void selectFirstVisibleCCD(){
+	public void selectFirstVisibleCCD() {
 		firstVisibleCCDCheckbox.click();
 	}
-	
-	public void selectSecondVisibleCCD(){
+
+	public void selectSecondVisibleCCD() {
 		secondVisibleCCDCheckbox.click();
 	}
-	public void selectAllVisibleCCD(){
+
+	public void selectAllVisibleCCD() {
 		selectAll.click();
 	}
-	public void selectDirectProtocol(){
+
+	public void selectDirectProtocol() {
 		secureTransmit.click();
 	}
-	public void selectStandardEmail(){
+
+	public void selectStandardEmail() {
 		unsecureTransmit.click();
 	}
-	public void acknowledgeToSendUnsecureEmail(){
+
+	public void acknowledgeToSendUnsecureEmail() {
 		acknowledgement.click();
 	}
-	
-	
-	
-	public void sendFirstVisibleCCDUsingDirectProtocol(String directEmailAddress){
+
+
+
+	public void sendFirstVisibleCCDUsingDirectProtocol(String directEmailAddress) {
 		emailButton.click();
 		assertTrue(areEmailLightboxElementsPresent());
 		selectDirectProtocol();
@@ -138,8 +152,8 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		log("Wait for success notification message");
 		new WebDriverWait(driver, 60).until(ExpectedConditions.textToBePresentInElement(successNotificationMessage, "Your health data has been successfully sent"));
 	}
-	
-	public void sendFirstVisibleCCDUsingStandardEmail(String directEmailAddress){
+
+	public void sendFirstVisibleCCDUsingStandardEmail(String directEmailAddress) {
 		emailButton.click();
 		assertTrue(areEmailLightboxElementsPresent());
 		selectStandardEmail();
@@ -149,17 +163,17 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		log("Wait for success notification message");
 		new WebDriverWait(driver, 60).until(ExpectedConditions.textToBePresentInElement(successNotificationMessage, "Your health data has been successfully sent"));
 	}
-	
-	public void setFilterToDefaultPositionAndCheckElements(){
+
+	public void setFilterToDefaultPositionAndCheckElements() {
 		filterCCDs(getOnlyDateFromElement(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
 		assertTrue(areBasicPageElementsPresent());
 	}
-	
+
 	private boolean areEmailLightboxElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(secureTransmit);
 		webElementsList.add(unsecureTransmit);
-		if(unsecureTransmit.isSelected()==true) {
+		if (unsecureTransmit.isSelected() == true) {
 			webElementsList.add(acknowledgement);
 		}
 		webElementsList.add(emailAddressInput);
@@ -167,7 +181,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 		return assessPageElements(webElementsList);
 	}
-	
+
 	private void setFilterToElementsDate(WebElement element) {
 		String date = getOnlyDateFromElement(element);
 		filterCCDs(date, date);
@@ -212,18 +226,31 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	public void selectFirstVisibleCCDDate() {
 		firstVisibleCCDDate.click();
 	}
-	
+
 	public void selectSecondVisibleCCDDate() {
 		secondVisibleCCDDate.click();
 	}
-	
-	public void setFilterToDefaultPositionAndCheckElementsNew(){
+
+	public void setFilterToDefaultPositionAndCheckElementsNew() {
 		filterCCDs(getOnlyDateFromElementNew(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
 		assertTrue(areBasicPageElementsPresent());
 	}
-	
+
 	private String getOnlyDateFromElementNew(WebElement element) {
 		return element.getText().substring(0, element.getText().length() - 9);
 	}
 
+	public void downloadSecureMessageAttachment() {
+		downloadAttachment.click();
+	}
+
+	public void gotoOtherDocumentTab() {
+		IHGUtil.waitForElement(driver, 60, otherDocument);
+		otherDocument.click();
+	}
+
+	public String getMessageAttachmentData() {
+		IHGUtil.waitForElement(driver, 60, secureMessageAttachmentData);
+		return secureMessageAttachmentData.getText();
+	}
 }

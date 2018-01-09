@@ -86,4 +86,14 @@ public class PatientFormsExportInfo
 		public String downloadFileLocation="";
 		public String preCheckURL="";
 		public String preCheckPatientExternalID="";
+		public String precheckAppointmentPayload="";
+		public String appointmentRestUrl="";
+		public String basicAccessToken="";
+		public String preCheckZip="";
+		public String preCheckDOB="";
+		public String preCheckGetPIDC="";
+		public String preCheckEmailSubject="";
+		public String preCheckEmailLink="";
+		public String preCheckPatientEmailID="";
+		public String preCheckPatientFirstName="";
 }

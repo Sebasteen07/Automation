@@ -57,7 +57,7 @@ public class JalapenoForgotPasswordPage2 extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		log("Clicking on Close button");
-		closeButton.click();
+		javascriptClick(closeButton);
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
 

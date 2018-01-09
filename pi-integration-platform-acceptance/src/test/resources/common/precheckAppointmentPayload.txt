@@ -1,0 +1,33 @@
+{
+  "status":"NEW",
+  "time":timeValue,
+  "locationName":"Automation-Location-24",
+  "providerName":"Kelvin Jlores",
+  "appointmentAddress":{},
+  "practiceDemographics":{
+    "pmExternalId":"externalIDValue",
+    "firstName":"firstNameValue",
+    "middleName":"Ak",
+    "lastName":"TestPatient01",
+    "dob":479417879531,
+    "address":"Street 102",
+    "address2":"Park 58",
+    "city":"Kansas",
+    "state":"AL",
+    "zip":"27560",
+    "phone":"1234567890",
+    "email":"emailIDValue"
+  },
+  "insurance":{
+    "status":"INCOMPLETE"
+  },
+  "coPayment":{
+    "status":"INCOMPLETE"
+    ,"amount":1
+  },
+  "balance":{
+    "status":"INCOMPLETE",
+    "amount":1
+  },
+  "integrationId":"9"
+}

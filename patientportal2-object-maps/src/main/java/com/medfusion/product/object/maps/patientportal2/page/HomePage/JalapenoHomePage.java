@@ -1,8 +1,12 @@
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
+
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,10 +28,9 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
-
 public class JalapenoHomePage extends JalapenoMenu {
 
-	@FindBy(how = How.XPATH, using = "//*[@id='home' and contains(@class,'active')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='home']")
 	private WebElement home;
 
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -127,7 +130,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public HealthFormListPage clickOnHealthForms() throws Exception {
 		log("Clicking on Health Forms button");
-		forms.click();
+		javascriptClick(forms);
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
@@ -203,11 +206,33 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@Override
 	//Checks elements located every time on PI Dashboard
 	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(home);
-		webElementsList.add(messages);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
+		 ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		  webElementsList.add(home);
+		  webElementsList.add(messages);
+		  log("Checking all elements on " + this.getClass().getSimpleName());
+
+		        for (WebElement w : webElementsList) {
+		            int attempt = 1;
+		            while (attempt < 3) {
+		                try {
+		                    new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(w));
+		                    log("Element " + w.toString() + " : is displayed", Level.DEBUG);
+		                    attempt = 3;
+		                } catch (StaleElementReferenceException ex) {
+		                    log("StaleElementReferenceException was catched, attempt: " + attempt++);
+		                } catch (TimeoutException ex) {
+		                    log(ex.getMessage());
+		                    return false;
+		                } catch (Exception ex) {
+		                    ex.printStackTrace();
+		                    return false;
+		                }
+		            }
+		        }
+
+		        return true;
+		    }
+	
 
 	public boolean assessFamilyAccountElements(boolean button) {
 		IHGUtil.PrintMethodName();
@@ -222,7 +247,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public boolean isHomeButtonPresent(WebDriver driver) {
-		return IHGUtil.waitForElement(driver, 60, home);
+		return IHGUtil.waitForElement(driver, 120, home);
 	}
 
 	public JalapenoAskAStaffPage clickOnAskAStaff(WebDriver driver) {

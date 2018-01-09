@@ -10,8 +10,12 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testMUEventForNewGuardianFromHealthRecord" />
-				<include name="testPatientMUEventForNewGuardian" />
+				<include name="testPatientEGQUpdatesFromForms"/>
+	    		<include name="testE2EPreCheckUpdates1stDemo2ndALLINS"/>
+	    		<include name="testE2EPreCheckUpdates1stPrimaryINS2ndDemo"/>
+	    		<include name="testE2EPreCheckUpdatesNoChangeInDemographics"/>
+	    		<include name="testE2EPreCheckUpdatesBLANKInsurance"/>
+				<include name="testAMDCSecureMessagesWithAllCategoryTypes" />
 				<include name="testCCDE2EFormExportfromPracticeRegression" />
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>

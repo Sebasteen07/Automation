@@ -43,7 +43,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<projectFile>Project-Plus-soapui-project2.24.xml</projectFile>
+							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
 							<outputFolder>./report</outputFolder>
 							<exportwAll>true</exportwAll>
@@ -90,5 +90,4 @@
          </plugin>
       </plugins>
 	</reporting>
-	</build>	
 </project>

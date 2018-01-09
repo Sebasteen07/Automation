@@ -133,7 +133,7 @@ public class NewRxRenewalPage extends BasePageObject {
 	public void setPharmacyFields() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-		chooseFromList.click();
+		javascriptClick(chooseFromList);
 		try {
 			List<WebElement> list = driver.findElements(By.xpath("//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']/option"));
 			for (WebElement li : list) {

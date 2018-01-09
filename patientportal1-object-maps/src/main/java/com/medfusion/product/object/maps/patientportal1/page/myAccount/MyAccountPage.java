@@ -79,8 +79,14 @@ public class MyAccountPage extends BasePageObject {
 	// @FindBy (xpath = ".//form[@id='editForm']/table/tbody/tr[20]/td[2]/select[@name='inputs:19:input:input']/option")
 	// private WebElement preferredCommunicationMethod;
 
-	@FindBy(xpath = "//select[@name='inputs:19:input:input']")
+	@FindBy(xpath = "//select[@name='inputs:23:input:input']")
 	private WebElement chooseCommunicationDropDrown;
+	
+	@FindBy(xpath = "//select[@name='inputs:16:input:input']")
+	private WebElement chooseGenderIdentityDropDown;
+
+	@FindBy(xpath = "//select[@name='inputs:18:input:input']")
+	private WebElement chooseSexualOrientationDropDown;
 
 	@FindBy(name = "inputs:2:input:input")
 	private WebElement txtFirstName;
@@ -112,16 +118,15 @@ public class MyAccountPage extends BasePageObject {
 	@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Female']]")
 	private WebElement genderFemaleRadio;
 
-	@FindBy(name = "inputs:16:input:input")
+	@FindBy(name = "inputs:20:input:input")
 	private WebElement raceDropDown;
 
-	@FindBy(name = "inputs:17:input:input")
+	@FindBy(name = "inputs:21:input:input")
 	private WebElement ethnicityDropDown;
 
-	@FindBy(name = "inputs:18:input:input")
+	@FindBy(name = "inputs:22:input:input")
 	private WebElement maritalStatusDropDown;
-
-
+	
 	public MyAccountPage(WebDriver driver) {
 		super(driver);
 	}
@@ -381,6 +386,12 @@ public class MyAccountPage extends BasePageObject {
 			case 'C':
 				select = new Select(chooseCommunicationDropDrown);
 				break;
+			case 'G':
+				select = new Select(chooseGenderIdentityDropDown);
+				break;
+			case 'S':
+				select = new Select(chooseSexualOrientationDropDown);
+				break;
 			default:
 				break;
 		}
@@ -418,6 +429,12 @@ public class MyAccountPage extends BasePageObject {
 				break;
 			case 'C':
 				select = new Select(chooseCommunicationDropDrown);
+				break;
+			case 'G':
+				select = new Select(chooseGenderIdentityDropDown);
+				break;
+			case 'S':
+				select = new Select(chooseSexualOrientationDropDown);
 				break;
 			default:
 
@@ -488,7 +505,7 @@ public class MyAccountPage extends BasePageObject {
 	}
 
 	public void submit() {
-		btnSubmit.click();
+		javascriptClick(btnSubmit);
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 

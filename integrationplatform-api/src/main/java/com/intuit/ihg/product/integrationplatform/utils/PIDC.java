@@ -57,4 +57,6 @@ public class PIDC {
 	public String LnameSC = "";
 	public String Address1SC = "";
 	public String Address2SC = "";
+	public String GI = "";
+	public String SO = "";
 }
