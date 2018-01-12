@@ -51,10 +51,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement inputCity;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='state']")
+	@FindBy(how = How.XPATH, using = "//*[@id=\'state_field\']/mf-us-states/div/div[1]/span/span[1]")
 	private WebElement inputState;
 	
-	@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ui-select-choices-row-0-0\"]/span/div")
 	private WebElement setState;
 	
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
