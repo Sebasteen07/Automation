@@ -47,6 +47,13 @@ Rx Request Prescription Number:-456
 Rx Request Notes:-Auto-generated Additional Information for Rx
 Rx Request Pharmacy:-Gufic Pharmacy
 Rx Request Pharmacy Phone:-1521521523
+--------------Discrete Forms:--------------
+Discrete Form Name:-Automation Discrete Form
+Discrete Form Medication Name:-Abilify 10 mg Disintegrating Tablet
+Discrete Form Medication Frequency:-2
+Discrete Form Medication Frequency Type(Day/Week/Month/Year):-month
+Discrete Form Medication Name OBS Term:-30DYNUMBDAY
+Discrete Form Allergies OBS Term:-30DY1STWAKNG
 --------------Data Generation:--------------
 Number of order creation:-2
 Number of TOC Creation:-3
@@ -57,3 +64,4 @@ Number of messages to be created:-2
 Number of appointments to be created:-5
 Number of AAS to be created:-4
 Number of Rx requests to be generated:-6
+Number of Health Forms to be filled:-2

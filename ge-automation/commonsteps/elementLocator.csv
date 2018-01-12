@@ -54,6 +54,7 @@ Portal Appointment Send Confirmation:-//*[contains(text(),'Thank you')]
 Portal Ask A Staff Feature:-feature_ask_a_practitioner
 Portal Ask A Staff Pop Up Question1:-//*[@id="askAQuestionLightBox"]/div/div/div[2]/div/a
 Portal Prescription Renewal feature:-feature_rx_renewal
+Portal Health Forms Feature:-feature_discrete_forms
 
 #Patient Portal Message Page
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
@@ -118,3 +119,20 @@ CCD Viewer Send Button:-unsecureSubmitButton
 CCD Viewer Confirmation Message for sending Email:-//*[@id="email_share"]/form/div[3]/span
 CCD Viewer Close Email Box:-//*[@id="email_share"]/h3/a
 Close CCD Viewer:-closeCcd
+
+#Forms Selection Page
+Forms Location Select:-//*[@id="filtersForm"]/table[2]/tbody/tr[2]/td[2]/select
+Forms Select Location Button:-//*[@id="filtersForm"]/div[2]/div/input
+
+#Forms Details Page
+Forms Welcome Continue Button:-continueWelcomePageButton
+Forms Next Page Button:-nextPageButton
+Forms Language Dropdown:-language
+Forms No Medication:-idonot_medications
+Forms Medication Name:-medications_other_field_autocomplete
+Forms Medication Frequency:-medications_other_field_frequency
+Forms Medication Frequency Type:-medications_other_field_frequency_type
+Forms No Allergies:-idonot_food_allergies
+Forms Peanuts Allergies:-peanuts_allergy_food
+Forms Completion Message:-section4
+Forms Submit Button:-//*[@id="section4"]/section/div[2]/a

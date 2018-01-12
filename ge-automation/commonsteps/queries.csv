@@ -1,21 +1,21 @@
 update servicesettings set settingvalue = '1' where settingtype in ('POLL_INTENGINE','SEND_LOCKS','PROCESS_PAT_REG') and grouptype = 'PRACTICE_CONFIG'
 select ValueString, ValueDateTime from cusMedfusionMemberMap mm inner join cusMedfusionMember m on m.memberid = mm.memberid inner join PatientProfile p on p.PatientProfileId = CAST(m.PatientProfileId as Integer) where mm.fieldid in (2,4,6,8) and p.PatientId = 
-order by fieldid asc
+ order by fieldid asc
 select MemberId from cusMedfusionMemberMap where FieldId = '2' and ValueString =
 select PatientProfileId, staff, MemberId from cusMedfusionMember where MemberId = 
 select PatientId, PId, First, Last, EMailAddress, Birthdate, PatientProfileId from PatientProfile where PatientProfileId = 
 select registrationType, status, pregId from cusMedfusionPatientRegistration where patientProfileId = 
-order by pregId asc
+ order by pregId asc
 select eventId, EventType, EligibleProvider, sdid from cusMedfusionMUEvents where patientprofileid = 
-order by muEventId desc
+ order by muEventId desc
 select MUActivityLogTypeId, SDID, PVID from MUActivityLog where PID =
-order by DB_Create_Timestamp desc
+ order by DB_Create_Timestamp desc
 select Status,GeStaffId,MedfusionMemberLockedId from cusMedfusionMemberLocked where PatientProfileId = 
 update servicesettings set settingvalue = 'Both' where settingtype = 'ORDER_STATUS'
 update servicesettings set settingvalue = '0' where settingtype = 'CUSTOM_TOC'
 update servicesettings set settingvalue = '1' where settingtype = 'RUN_BULK'
 select outgoingtocid, ordernum, sdid from cusMedfusionOutgoingTOC where PatientProfileId = 
-order by outgoingtocid desc
+ order by outgoingtocid desc
 select status, mdnConfirmationDate from cusMedfusionOutgoingTOCStatus where outgoingtocid = 
 select IntServProv,internalTOCaddress,ExtServProv,externalTOCaddress,status,Subject,lettertext,AttachmentName from cusMedfusionOutgoingTOCProvider where outgoingtocid = 
 select patientprofileid, status, CommOutgoingId from cusMedfusionOutgoingTOCPatient where outgoingtocid = 
@@ -50,3 +50,10 @@ select DrugName, Dosage, PrescriptionNumber, Refills, Note, Quantity, PharmacyNa
 select settingvalue from servicesettings where settingtype in ('RUN_RX','CHECK_PHARMACIES','SEND_PHARMACIES','CHECK_MEDS','SEND_MEDS')
 update servicesettings set settingvalue = 1 where settingtype in ('RUN_RX','CHECK_PHARMACIES','SEND_PHARMACIES','CHECK_MEDS','SEND_MEDS')
 update servicesettings set settingvalue = 2 where settingtype in ('EXPORT_PHARMACIES_FREQUENCY','EXPORT_MEDICATION_FREQUENCY')
+select settingvalue from servicesettings where settingtype = 'POLL_CUSTOMFORM'
+update servicesettings set settingvalue = '1' where settingtype = 'POLL_CUSTOMFORM'
+select Destination, EMRFormType, RouteTo from cusMedfusionCustomFormForms where cffTitle = 
+update cusMedfusionCustomFormForms set Destination = 'EMR', EMRFormType = '32', RouteTo = '{PVDR}' where cffTitle = 
+select status, RouteToStaff, discreteFormsId from cusMedfusionDiscreteFormForms where intuitPatientId = {MedfusionMemberId} order by discreteFormsId desc
+select HDID from OBSHEAD where NAME =
+select OBSVALUE from OBS where HDID = {HDID} and PID = {PID} and SDID = {SDID}

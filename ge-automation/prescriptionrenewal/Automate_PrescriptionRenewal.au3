@@ -380,6 +380,11 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying document summary in Document table" & @CRLF)
 				Call("assertData", "Medfusion Rx Refill Reply", $aData[1][1])
 
+				;Doctype
+				ConsoleWrite("Verifying doctype in Document table" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying dooctype in Document table" & @CRLF)
+				Call("assertData", $arrDoctype[3], $aData[1][2])
+
 				$CreationDate = $aData[1][3]
 				ConsoleWrite("Reply of Rx Request Creation Date is " & $CreationDate & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Reply of Rx Request Creation Date is " & $CreationDate & @CRLF)
