@@ -108,7 +108,7 @@ public class ReferralsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, sendReferrals);
 		sendReferrals.click();
 		driver.switchTo().frame("iframe");
-		memberNameTestField.sendKeys(patientLastName + ", " + patientFirstName);
+		memberNameTestField.sendKeys(patientLastName);
 		if (patientExists != false) {
 			IHGUtil.waitForElement(driver, 30, autocompleteName);
 			javascriptClick(autocompleteName);
