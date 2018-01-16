@@ -15,6 +15,7 @@
         		<include name="testE2EAppointmentRequest20" />
 				<exclude name="testE2E_OLBP20" />
 				<include name="testStatementPreference" />
+				<include name="testE2EBalancePresentment" />
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>

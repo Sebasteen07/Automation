@@ -36,6 +36,7 @@ public class StatementsMessagePayload {
 		DocumentBuilder icBuilder;
 	
 		long timestamp = (System.currentTimeMillis());
+		timestamp = timestamp-86400000;
 		SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date resultdate = new Date(timestamp);

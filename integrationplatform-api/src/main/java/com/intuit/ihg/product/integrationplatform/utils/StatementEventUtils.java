@@ -354,5 +354,29 @@ public class StatementEventUtils {
 		}
 		return PatternMatch;
 	}
+	
+	public void postStatement(StatementEventData testData,String statement) throws Exception {
+		Log4jUtil.log("Statement Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername,
+				testData.OAuthPassword);
+		
+		Log4jUtil.log("Statement Step 2: Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, statement, testData.ResponsePath);
+		Log4jUtil.log("processing Status"+processingUrl);
+		
+		Log4jUtil.log("Statement Step 3: Get processing status until it is completed");
+		
+		boolean completed = false;
+		for (int i = 0; i < 1; i++) {
+			// wait 60 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+	}
 
 }
