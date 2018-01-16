@@ -207,6 +207,9 @@ Func setConfig()
 					Case "discrete form medication frequency type(day/week/month/year)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
+					Case "discrete form allergy(peanuts / eggs / seafood)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
 					Case "discrete form medication name obs term"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 

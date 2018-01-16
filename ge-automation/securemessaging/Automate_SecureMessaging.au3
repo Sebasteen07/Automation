@@ -85,8 +85,8 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages" & @CRLF)
+					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[53] & " secure messages"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[53] & " secure messages" & @CRLF)
 				Else
 					ConsoleWrite("Creating Secure Message #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure Message #" &$counter+1 & @CRLF)
@@ -97,7 +97,7 @@ Else
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[46]) Then
+					If($counter = $arrConfig[53]) Then
 						ConsoleWrite("Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						Exit
@@ -107,9 +107,9 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[46]
+					$counter = $arrConfig[53]
 				EndIf
-			Until $counter = $arrConfig[46]
+			Until $counter = $arrConfig[53]
 
 			ConsoleWrite("Secure Message created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Secure Message created successfully...." & @CRLF)

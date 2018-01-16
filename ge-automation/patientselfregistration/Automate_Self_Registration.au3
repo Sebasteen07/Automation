@@ -74,8 +74,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients" & @CRLF)
+			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[52] & " patients"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[52] & " patients" & @CRLF)
 		Else
 			ConsoleWrite("Creating Patient #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" &$counter+1 & @CRLF)
@@ -97,7 +97,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[45]) Then
+			If($counter = $arrConfig[52]) Then
 				ConsoleWrite("Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				Exit
@@ -107,9 +107,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[45]
+			$counter = $arrConfig[52]
 		EndIf
-	Until $counter = $arrConfig[45]
+	Until $counter = $arrConfig[52]
 	;Sleep(105000)
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF)
 	ConsoleWrite("Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF )

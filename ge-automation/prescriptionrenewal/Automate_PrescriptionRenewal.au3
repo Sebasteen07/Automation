@@ -37,7 +37,7 @@ $arrDoctype = Call("openDoctypeFile")
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Updating export frequencies for Pharmaciies and Medications" & @CRLF)
 					ConsoleWrite("Executing Query: " & $arrQuery[52] & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[52] & @CRLF )
-					If (_SQL_Execute(-1,$arrQuery[51]) Or _SQL_Execute(-1,$arrQuery[52])) = $SQL_ERROR then
+					If (_SQL_Execute(-1,$arrQuery[52])) = $SQL_ERROR then
 						ConsoleWrite("ERROR Updating frequencies for Pharmaciies and Medications...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating frequencies for Pharmacies and Medications...." & @CRLF)
@@ -89,8 +89,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[49] & " requests"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[49] & " requests" & @CRLF)
+			ConsoleWrite("Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[56] & " requests"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[56] & " requests" & @CRLF)
 		Else
 			ConsoleWrite("Creating Prescription Renewal Request #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" &$counter+1 & @CRLF)
@@ -112,7 +112,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[49]) Then
+			If($counter = $arrConfig[56]) Then
 				ConsoleWrite("Exiting after data generation for Prescription Renewal Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Prescription Renewal Flow...." & @CRLF)
 				Exit
@@ -122,9 +122,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[49]
+			$counter = $arrConfig[56]
 		EndIf
-	Until $counter = $arrConfig[49]
+	Until $counter = $arrConfig[56]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])

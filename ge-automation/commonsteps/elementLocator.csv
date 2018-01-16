@@ -134,5 +134,7 @@ Forms Medication Frequency:-medications_other_field_frequency
 Forms Medication Frequency Type:-medications_other_field_frequency_type
 Forms No Allergies:-idonot_food_allergies
 Forms Peanuts Allergies:-peanuts_allergy_food
+Forms Eggs Allergies:-eggs_allergy_food
+Forms Seafood Allergies:-seafood_allergy_food
 Forms Completion Message:-section4
 Forms Submit Button:-//*[@id="section4"]/section/div[2]/a
