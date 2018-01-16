@@ -77,8 +77,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[48] & " ask a staff questions"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[48] & " ask a staff questions" & @CRLF)
+			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[55] & " ask a staff questions"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[55] & " ask a staff questions" & @CRLF)
 		Else
 			ConsoleWrite("Creating AAS #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" &$counter+1 & @CRLF)
@@ -100,7 +100,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[48]) Then
+			If($counter = $arrConfig[55]) Then
 				ConsoleWrite("Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				Exit
@@ -110,9 +110,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[48]
+			$counter = $arrConfig[55]
 		EndIf
-	Until $counter = $arrConfig[48]
+	Until $counter = $arrConfig[55]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])

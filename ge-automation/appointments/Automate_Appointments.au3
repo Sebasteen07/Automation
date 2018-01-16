@@ -73,8 +73,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[47] & " appointments"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[47] & " appointments" & @CRLF)
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[54] & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[54] & " appointments" & @CRLF)
 		Else
 			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
@@ -96,7 +96,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[47]) Then
+			If($counter = $arrConfig[54]) Then
 				ConsoleWrite("Exiting after data generation for Appointments Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Appointments Flow...." & @CRLF)
 				Exit
@@ -106,9 +106,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[47]
+			$counter = $arrConfig[54]
 		EndIf
-	Until $counter = $arrConfig[47]
+	Until $counter = $arrConfig[54]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])

@@ -194,6 +194,30 @@ Func setConfig()
 
 					Case "rx request pharmacy phone"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication frequency"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication frequency type(day/week/month/year)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form allergy(peanuts / eggs / seafood)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication name obs term"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form allergies obs term"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of health forms to be filled"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
 
@@ -366,6 +390,12 @@ Func openDoctypeFile()
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "append"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "external other"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "clinical summary"
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "lab report"
@@ -1589,7 +1619,7 @@ Func createCVS()
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1712,7 +1742,7 @@ Func verifyDocumentInPatientChart($docTitle)
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1857,7 +1887,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1909,6 +1939,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 					ControlSend("Append Document","","[CLASS:ComboLBox; INSTANCE:1]",'{Down}')
 				Next
 
+				Sleep(5000)
 				ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
 				;Signing permission popoup if appears
 				If(WinGetTitle("[ACTIVE]") == "Sign Document") Then
@@ -1920,7 +1951,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 				ConsoleWrite("Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
 				WinWaitActive("Rx Refill")
-				Sleep(8000)
+				Sleep(20000)
 
 				If((StringInStr($str,$pharmacyName)>0) And (StringInStr($str,$medName)>0) And (StringInStr($str,$medDosage)>0) And (StringInStr($str,"Refills: " & $medRefills)>0) And (StringInStr($str,"Rx #:" & $prescriptionNo)>0) And (StringInStr($str,"Quantity: " & $medQuantity)>0) And (StringInStr($str,"Note: " & $medNotes)>0)) Then
 					ConsoleWrite("Prescription Renewal Request details verified -- PASSED" & @CRLF)
