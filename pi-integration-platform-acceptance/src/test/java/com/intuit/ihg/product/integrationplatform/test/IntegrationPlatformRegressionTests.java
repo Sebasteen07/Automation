@@ -2739,7 +2739,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 7: Verify the balance amount");
+		log("Step 3: Verify the balance amount");
 		log("homepage patient Balance : - "+homePage.getOutstandingPatientBalance());
 		log("paylaod amountDue :- "+SMPObj.amountDue);
 		assertTrue(homePage.getOutstandingPatientBalance().contains(SMPObj.amountDue));
@@ -2763,7 +2763,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(completed);
 		driver.navigate().refresh();
 		Thread.sleep(6000);
-		
+		log("Step 6: Loginto Portal 2.0");
 		loginPage = new JalapenoLoginPage(driver, testData.Url);
 		homePage = loginPage.login(testData.UserName, testData.Password);
 
@@ -2781,6 +2781,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Amount due in payload "+BalancePayLoadObject.amountDue+" and on Portal "+PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance());
 		
 		Thread.sleep(6000);
+		log("Step 8: Logout");
 		homePage.clickOnLogout();
 	}
 	
