@@ -127,9 +127,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = "OldPortalForms")
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
-		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
-		
-		//TODO remove this workaround after the forms refresh after submit is fixed! 
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);		
 		testFormPdfCcd(home.clickOnHealthForms());
 		log("Step 6: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();

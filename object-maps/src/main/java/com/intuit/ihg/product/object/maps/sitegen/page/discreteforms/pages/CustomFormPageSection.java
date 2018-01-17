@@ -215,23 +215,19 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	private void selectItemType(int itemOrdinalNumber, String itemType) {
-		new Select(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-				.selectByVisibleText(itemType);;
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))),itemType);
 	}
 
 	private void selectItemTypeFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String itemType) {
-		new Select(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
-				.selectByVisibleText(itemType);
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_itemtype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))),itemType);
 	}
 
 	private void selectQuestionType(int itemOrdinalNumber, String questionType) {
-		new Select(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-				.selectByVisibleText(questionType);
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))),questionType);
 	}
 
 	private void selectQuestionTypeFUP(int itemOrdinalNumber, int FUPOrdinalNumber, String questionType) {
-		new Select(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
-				.selectByVisibleText(questionType);
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questiontype_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))),questionType);
 	}
 
 	private void fillQuestionTitle(int itemOrdinalNumber, String title) {
@@ -244,24 +240,19 @@ public class CustomFormPageSection extends BasePageObject {
 	}
 
 	private void setQuestionPrefillOption(int itemOrdinalNumber, boolean prefilled) {
-		new Select(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-				.selectByVisibleText(prefilled ? "Yes" : "No");
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))),prefilled ? "Yes" : "No");
 	}
 
 	private void setQuestionPrefillOptionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, boolean prefilled) {
-		new Select(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
-				.selectByVisibleText(prefilled ? "Yes" : "No");
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questionprefill_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))),prefilled ? "Yes" : "No");
 	}
 
 	private void setQuestionRequiredOption(int itemOrdinalNumber, boolean required) {
-		new Select(driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))))
-				.selectByVisibleText(required ? "Yes" : "No");
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_section_" + (itemOrdinalNumber - 1))),required ? "Yes" : "No");
 	}
 
 	private void setQuestionRequiredOptionFUP(int itemOrdinalNumber, int FUPOrdinalNumber, boolean required) {
-		new Select(
-				driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))))
-						.selectByVisibleText(required ? "Yes" : "No");
+		focusSelectAndSelectByValue(driver.findElement(By.id("custom_questionrequired_custom" + sectionOrdinalString + "_" + (itemOrdinalNumber - 1) + "-" + (FUPOrdinalNumber - 1))),required ? "Yes" : "No");
 	}
 
 	private List<WebElement> getAnswerFieldsOfFUPQuestion(int itemOrdinalNumber, int FUPOrdinalNumber) {

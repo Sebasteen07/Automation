@@ -305,9 +305,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
+		logStep("Send a new secure message to static patient");
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
 		patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
-
+		
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());

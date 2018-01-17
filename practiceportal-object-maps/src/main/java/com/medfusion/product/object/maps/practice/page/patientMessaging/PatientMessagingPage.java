@@ -240,7 +240,7 @@ public class PatientMessagingPage extends BasePageObject {
 	}
 
 	public void setFieldsAndPublishMessage(String firstName, String lastName, String templateName, String subjectText) {
-		setFieldsAndPublishMessage(firstName, lastName, null, templateName, subjectText);
+		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
 	}
 
 	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
