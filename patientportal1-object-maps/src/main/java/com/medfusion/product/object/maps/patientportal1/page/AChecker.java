@@ -3,7 +3,6 @@ package com.medfusion.product.object.maps.patientportal1.page;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
@@ -27,7 +25,7 @@ public class AChecker extends BasePageObject {
 	public static final String ACECKER_URL = "http://achecker.ca/checker/index.php";
 
 	// The Options link
-	@FindBy(how = How.XPATH, using = "//*[@id='center-content']/table/tbody/tr/td/div/form/div/fieldset/div[5]/h2/a")
+	@FindBy(how = How.XPATH, using = ".//*[@id='center-content']/table/tbody/tr/td/div/form/div/fieldset/div[5]/h2/a")
 	public WebElement options; // = driver.findElement(By.linkText("Options"));
 
 	// The WCAG 2.0 (Level A) radio button under Options
@@ -37,7 +35,7 @@ public class AChecker extends BasePageObject {
 	@FindBy(how = How.ID, using = "radio_gid_8")
 	public WebElement WCAGLevelAAOption;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\'guideline_in_radio\']/table/tbody/tr[3]/td[3]/label")
+	@FindBy(how = How.ID, using = "radio_gid_9")
 	public WebElement WCAGLevelAAAOption;
 
 	// The Paste HTML Markup tab
@@ -80,13 +78,13 @@ public class AChecker extends BasePageObject {
 		openOptions();
 		switch (level) {
 			case A:
-				((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", WCAGLevelAOption);
+				javascriptClick(WCAGLevelAOption);
 				break;
 			case AA:
-				((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", WCAGLevelAAOption);
+				javascriptClick(WCAGLevelAAOption);
 				break;
 			case AAA:
-				((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", WCAGLevelAAAOption);
+				javascriptClick(WCAGLevelAAAOption);
 				break;
 		}
 		closeOptions();
@@ -106,7 +104,6 @@ public class AChecker extends BasePageObject {
 	}
 	
 	private void openOptions(){
-		
 		tabPaste.click();
 		options.click();
 	}

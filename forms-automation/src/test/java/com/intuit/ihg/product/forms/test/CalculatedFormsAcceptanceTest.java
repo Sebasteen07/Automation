@@ -32,11 +32,10 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	@Test
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
-		log("step 1: login to SG as superuser");
+		log("step 1: login to SG as superuser - THIS REQUIRES MANUAL INPUT");
 		Sitegen sitegen = new Sitegen();
 		SitegenTestData testcasesData = new SitegenTestData(sitegen);
 		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
-		// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 		log("step 2: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
 		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(String.valueOf(Utils.getAutomationPracticeID()));
@@ -58,8 +57,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		assertTrue(pManageDiscreteForms.searchCalculatedForm(SitegenConstants.CALCULATED_PHQ2_FORM));
 
 		log("step 7: Close the window and logout from SiteGenerator");
-		// Switching back to original window using previously saved handle
-		// descriptor
+		// Switching back to original window using previously saved handle descriptor
 		driver.close();
 		driver.switchTo().window(parentHandle);
 		pSiteGenPracticeHomePage.clicklogout();
@@ -118,8 +116,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	    Utils.checkIfPDFCanBeDownloaded(SitegenConstants.CALCULATED_PHQ9_FORM, driver);
 
 	    log("Step 4: Check if the date is correct");
-	    //TODO remove workaround refresh after PP-678
-	    formsPage.clickOnHealthForms();
 	    Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.CALCULATED_PHQ9_FORM, driver);
 	}
 
@@ -145,7 +141,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		log("Step 2: Try to Save and continue without any answer.");
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		CalculatedFormPage calculatedFormPage = welcomePage.initToFirstPage(CalculatedFormPage.class);
-		//assertTrue(calculatedFormPage.isPageLoaded());
 		assertFalse(calculatedFormPage.isValidationErrorDisplayed());
 		calculatedFormPage.clickSaveContinue();
 		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
