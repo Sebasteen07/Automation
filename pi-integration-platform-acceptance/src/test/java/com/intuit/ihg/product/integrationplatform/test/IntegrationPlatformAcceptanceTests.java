@@ -959,7 +959,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Balance account number in payload "+BalancePayLoadObject.balanceAccountNumber+" and on Portal "+PayBillsMakePaymentPageObject.getAccountNumber());
 		log("Balance due amount in payload "+BalancePayLoadObject.patientOutstandingBalance+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDue());
-		log("Balance due date in payload "+testData.PaymentDueDate+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
+		log("Balance due date in payload "+BalancePayLoadObject.formattedUTCTime+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
 		log("Amount due in payload "+BalancePayLoadObject.amountDue+" and on Portal "+PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance());
 		
 		assertTrue(PayBillsMakePaymentPageObject.getAccountNumber().contains(BalancePayLoadObject.balanceAccountNumber));

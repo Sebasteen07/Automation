@@ -782,6 +782,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		Thread.sleep(12000);
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
 
 		Long timestamp = System.currentTimeMillis();
@@ -789,7 +790,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Getting patients since timestamp: " + since);
 
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		Thread.sleep(6000);
+		Thread.sleep(14000);
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
@@ -2728,18 +2729,60 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
 		StatementEventUtils sEventObj = new StatementEventUtils();
+		
+		log("Statement Event for Practice: " + testData.PracticeName);
+		log("Step 2: Create a new patient from portal");
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		patient.setUrl(testData.Url);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		Thread.sleep(5000);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
+
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+
+		log("Step 3: logout");
+		Thread.sleep(6000);
+		homePage.clickOnLogout();
+
+		log("Step 4: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		log("Step 5: Do a get pidc call to get medfusion member id");
+		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
+		Thread.sleep(2000);
+		
+		log("Step 6: Extract medfusion member id");
+		String responseXML = RestUtils.prepareCCD(testData.ResponsePath);
+		String medfusionID = sEventObj.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID " + medfusionID);
+		log("Step 7: set patient details ");
+		testData.UserName = patient.getUsername();
+		testData.Password = patient.getPassword();
+		testData.FirstName = patient.getFirstName();
+		testData.LastName = patient.getLastName();
+		testData.Email = patient.getEmail();
+		testData.PatientID = "";
+		testData.MFPatientID = medfusionID;
+		testData.UserName = patient.getEmail();
+		testData.StatementType = "New";
+		testData.since = since;
+		
 		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
 		String statement =SMPObj.getStatementsMessagePayload(testData);
 		
-		log("Step 2: Post statement to patient");
+		log("Step 8: Post statement to patient");
 		sEventObj.postStatement(testData, statement);
-		testData.MFPatientID="";
-		log("MFPatientID = "+ testData.MFPatientID.isEmpty());
 		
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
-		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-
-		log("Step 3: Verify the balance amount");
+		loginPage = new JalapenoLoginPage(driver, testData.Url);
+		homePage = loginPage.login(testData.UserName, testData.Password);
+		Thread.sleep(6000);
+		log("Step 9: Verify the balance amount");
 		log("homepage patient Balance : - "+homePage.getOutstandingPatientBalance());
 		log("paylaod amountDue :- "+SMPObj.amountDue);
 		assertTrue(homePage.getOutstandingPatientBalance().contains(SMPObj.amountDue));
@@ -2748,9 +2791,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 		BalancePayLoad BalancePayLoadObject = new BalancePayLoad();
 		String payload = BalancePayLoadObject.getBalancePayLoad(testData, 1,testData.PatientID);
-		log("Step 4: Post balance Presentment to patient");
+		
+		log("Step 10: Post balance Presentment to patient");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.balanceUrl, payload, testData.ResponsePath);
-		log("Step 5: Get processing status until it is completed");
+		log("Step 11: Get processing status until it is completed");
 		boolean completed = false;
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
@@ -2763,11 +2807,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(completed);
 		driver.navigate().refresh();
 		Thread.sleep(6000);
-		log("Step 6: Loginto Portal 2.0");
+		log("Step 12: Loginto Portal 2.0");
 		loginPage = new JalapenoLoginPage(driver, testData.Url);
 		homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 7: Verify the balance amount");
+		log("Step 13: Verify the balance amount");
 		log(homePage.getOutstandingPatientBalance());
 		
 		JalapenoPayBillsMakePaymentPage PayBillsMakePaymentPageObject = homePage.clickOnMenuPayBills();
@@ -2777,11 +2821,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance().contains(BalancePayLoadObject.amountDue));
 		log("Balance account number in payload "+BalancePayLoadObject.balanceAccountNumber+" and on Portal "+PayBillsMakePaymentPageObject.getAccountNumber());
 		log("Balance due amount in payload "+BalancePayLoadObject.patientOutstandingBalance+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDue());
-		log("Balance due date in payload "+testData.PaymentDueDate+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
+		log("Balance due date in payload "+BalancePayLoadObject.formattedUTCTime+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
 		log("Amount due in payload "+BalancePayLoadObject.amountDue+" and on Portal "+PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance());
 		
 		Thread.sleep(6000);
-		log("Step 8: Logout");
+		log("Step 14: Logout");
 		homePage.clickOnLogout();
 	}
 	
@@ -2804,14 +2848,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		Thread.sleep(12000);
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
 
 		Long timestamp = System.currentTimeMillis();
-		Long since = timestamp / 1000L - 60 * 24;
+		Long since = timestamp / 1000L;
 		Log4jUtil.log("Getting patients since timestamp: " + since);
 
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		Thread.sleep(6000);
+		Thread.sleep(12000);
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
@@ -2868,7 +2913,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance().contains(BalancePayLoadObject.amountDue));
 		log("Balance account number in payload "+BalancePayLoadObject.balanceAccountNumber+" and on Portal "+PayBillsMakePaymentPageObject.getAccountNumber());
 		log("Balance due amount in payload "+BalancePayLoadObject.patientOutstandingBalance+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDue());
-		log("Balance due date in payload "+testData.PaymentDueDate+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
+		log("Balance due date in payload "+BalancePayLoadObject.formattedUTCTime+" and on Portal "+PayBillsMakePaymentPageObject.getBalanceDueDate());
 		log("Amount due in payload "+BalancePayLoadObject.amountDue+" and on Portal "+PayBillsMakePaymentPageObject.getOutstandingInsuranceBalance());
 		log("Step 8: Logout");
 		Thread.sleep(6000);
@@ -2907,5 +2952,27 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			pPracticeHomePage.logOut();
 
 		}
+		
+		log("Step 16: Prepare Statement Payload");
+		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
+		String statement =SMPObj.getStatementsMessagePayload(testData);
+		
+		log("Step 17: Post statement to patient");
+		sEventObj.postStatement(testData, statement);
+		testData.MFPatientID="";
+		log("MFPatientID = "+ testData.MFPatientID.isEmpty());
+		
+		log("Step 18: Login into patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.Url);
+		homePage = loginPage.login(testData.UserName, testData.Password);
+		Thread.sleep(7000);
+		log("Step 19: Verify the balance amount");
+		log("homepage patient Balance : - "+homePage.getOutstandingPatientBalance());
+		log("paylaod amountDue :- "+SMPObj.amountDue);
+		assertTrue(homePage.getOutstandingPatientBalance().contains(SMPObj.amountDue));
+		Thread.sleep(7000);
+		
+		log("Step 20: Logout");
+		homePage.clickOnLogout();
 	}
 }
