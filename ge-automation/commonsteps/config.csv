@@ -30,6 +30,11 @@ SES UserName:-pmemrqa
 SES Password:-Password123@!
 Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
 Letter to Patient Subject (TOC):-Referral Initiated
+Instructions for ToC:-Instructions for auto-generated TOC
+Reason for referal:-This is reason for auto-generated TOC
+Receiving ToC (to address):-medfusion.teamge@service2.directaddress.net
+Receiving ToC (from address):-medfusiontest1@service2.directaddress.net
+ToC Download Location:-C:\XASYST\ge-automation\ge-automation
 --------------Secure Messaging:--------------
 Email Message Subject:-Subject of test email
 Email Message Body:-This is body of test email
