@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DirectMessage xmlns="http://schema.medfusion.com/directmessage/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.medfusion.com/directmessage/v1">
+<DirectMessageHeader xmlns="">
+<Sender DeviceLocalTime="2017-07-19T12:45:12-04:00" DeviceName="GE Centricity PM" DeviceVersion="1.0" VendorName="GE Centricity PM"/>
+</DirectMessageHeader>
+<Message xmlns="" partnerMessageId="--partnerMessageId--">
+<SenderAddress>
+<EmailAddress>medfusiontest1@service2.directaddress.net</EmailAddress>
+</SenderAddress>
+<ReceiverAddress>
+<EmailAddress>medfusiontest2@service2.directaddress.net</EmailAddress>
+</ReceiverAddress>
+<ApplicationName>GE</ApplicationName>
+<Subject>--Subject--</Subject>
+<MessageBody>This is test message generated from Automation 1.0</MessageBody>
+<PatientDemographics>
+<PatientId>1235</PatientId>
+</PatientDemographics>
+</Message>
+</DirectMessage>

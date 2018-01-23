@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:Balances xmlns:ns2="http://schema.medfusion.com/statements/v1">
+<BalanceMessageHeaders>
+<Sender DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceName="VertexDR" DeviceVersion="8.2" VendorName="Meridian Medical Management"/>
+</BalanceMessageHeaders>
+<Balance id="--id--">
+<BalanceAccountNumber>099</BalanceAccountNumber>
+<OutstandingPatientBalance>107</OutstandingPatientBalance>
+<OutstandingInsuranceBalance>088</OutstandingInsuranceBalance>
+<BalanceDate>2018-02-08T00:00:00</BalanceDate>
+<BalanceDueDate>2017-06-01T02:00:00</BalanceDueDate>
+<TransactionId>523-000001-50756-00001</TransactionId>
+<PatientDemographics>
+<PatientIdentifier>
+<PracticePatientId>patientExternalId</PracticePatientId>
+<!--MedfusionMemberId>638688</MedfusionMemberId-->
+</PatientIdentifier>
+<Name>
+<FirstName>mf.testing</FirstName>
+<MiddleName/>
+<LastName>TestPatient01</LastName>
+</Name>
+</PatientDemographics>
+</Balance>
+</ns2:Balances>
