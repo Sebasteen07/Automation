@@ -1,12 +1,23 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +31,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -65,9 +78,9 @@ public class OauthUtils {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
+			writeFile(responseFilePath, sResp);
 			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
 					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of " + 200 + ". Response message received:\n" + sResp);
-
 		} else {
 			Log4jUtil.log("204 response found");
 
@@ -199,13 +212,19 @@ public class OauthUtils {
 		Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 
-
-		Header[] h = resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
-		return h[0].getValue();
+		Header[] h;
+		if (resp.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
+			h =resp.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+		}
+		else {
+			return null;
+		}
+		
 
 	}
 
-	private static Document buildDOMXML(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+	public static Document buildDOMXML(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		File response = new File(xmlFileName);
 
@@ -286,6 +305,72 @@ public class OauthUtils {
 		}
 		return found;
 	}
-
+	
+	public static String getUUID() {
+		return UUID.randomUUID().toString();
+	}
+	
+	public static String getOauth10Token(String url,String externalSystemID,String token,String responseFilePath) throws Exception {
+		Log4jUtil.log("Getting processingurl Status:- " + url);
+		Log4jUtil.log("token:- " + token);
+		URLConnection getConnection = null;
+		String output = "";
+		try {
+			URL processingURL = new URL(url);
+			getConnection = processingURL.openConnection();
+			((HttpURLConnection) getConnection).setRequestMethod("GET");
+			getConnection.setRequestProperty("Authorization", token);
+			getConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			getConnection.setRequestProperty("Cache-Control", "no-cache");
+			getConnection.setRequestProperty("ExternalSystemId", externalSystemID);
+			
+			int responseCode = ((HttpURLConnection) getConnection).getResponseCode();
+			Log4jUtil.log("Get Response Code : " + responseCode);
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(getConnection.getInputStream()));
+			String line;
+			StringBuffer response = new StringBuffer();
+			while ((line = in.readLine()) != null) {
+				response.append(line);
+			}
+			in.close();
+			output = response.toString();
+			writeFile(responseFilePath, output);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		} finally {
+			((HttpURLConnection) getConnection).disconnect();
+		}
+		return output;
+	}
+	
+	public static int setupHttpDeleteRequestOauth10(String strUrl,String responseFilePath,String token) throws org.apache.http.ParseException, IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Get Request Url: " + strUrl);
+		
+		HttpDelete httpDelReq = new HttpDelete(strUrl);
+		httpDelReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		httpDelReq.setURI(new URI(strUrl));
+		httpDelReq.addHeader("Authorization", token);
+		httpDelReq.addHeader("Content-Type", "application/xml");
+		
+		HttpResponse resp = client.execute(httpDelReq);
+		HttpEntity entity = resp.getEntity();
+		String sResp ="";
+		if(entity!=null){
+		sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http response "+resp.getStatusLine().getStatusCode());
+		} else
+		{
+			Log4jUtil.log("http 204 response is empty");
+		}
+		
+		writeFile(responseFilePath, sResp);
+		return resp.getStatusLine().getStatusCode();
+	}
 }
 
