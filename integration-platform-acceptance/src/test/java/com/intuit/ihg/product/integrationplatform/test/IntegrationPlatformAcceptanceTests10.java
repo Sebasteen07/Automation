@@ -280,7 +280,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		String practicePatientId = "Patient" + sinceTime;
 		String firstName = "Name" + sinceTime;
 		String lastName = "TestPatient1" + sinceTime;
-		String email = "vasudeo.parab" + sinceTime + "@tejora.com";
+		String email = "Test" + sinceTime + "@mailinator.com";
 		payload = OauthUtils.preparePatient(testData.getCommonPath() + "/patient_Oauth10.xml", practicePatientId, firstName, lastName, email, null);
 		payload = payload.replaceAll("patient/v1", "patient/v2");
 		Log4jUtil.log("Step 2: Do a POST call and get processing status URL");
@@ -319,19 +319,6 @@ public class IntegrationPlatformAcceptanceTests10 {
 
 		Log4jUtil.log("Step 2: Do a Get call ");
 		OauthUtils.setupHttpGetRequest(testData.getDirectMessageStatus() , testData.getCommonPath() + "/response.xml");
-	}
-	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testGetDirectMessageHeaders() throws Exception {
-
-		Log4jUtil.log("TestGetDirectMessageHeaders covers DirectMessageHeaders API with OAuth 1.0");
-		Log4jUtil.log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		
-		setConnection();
-
-		Log4jUtil.log("Step 2: Do a Get call ");
-		OauthUtils.setupHttpGetRequest(testData.getDirectMessageHeaders() , testData.getCommonPath() + "/response.xml");
-
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -436,7 +423,10 @@ public class IntegrationPlatformAcceptanceTests10 {
 		Log4jUtil.log("Step 7: Extract message uid from the response payload "+subject);
 		String msgUid = RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.getCommonPath() + "/response.xml", subject);
 		
-		Log4jUtil.log("Step 8:Message Uuid is  " + msgUid + ".");
+		Log4jUtil.log("Step 8:Get Direct message with Message Uuid is  " + msgUid + ".");
+		String directmessageUrl = testData.getDirectMessageDelete()+msgUid;
+		OauthUtils.setupHttpGetRequest(directmessageUrl , testData.getCommonPath() + "/response.xml");
+		
 		String deleteUrl = testData.getDirectMessageDelete()+msgUid+"/delete";
 		timeStamp = (timeStamp+3600000)/1000;
 		Log4jUtil.log("timeStamp :- "+Long.toString(timeStamp));
@@ -444,6 +434,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		String token = testData.getToken();
 		token = token.replaceAll("--nonce--", OauthUtils.getUUID());
 		token = token.replaceAll("--timeStamp--",Long.toString(timeStamp));
+		Log4jUtil.log("Step 9:Delete Direct message");
 		OauthUtils.setupHttpDeleteRequestOauth10(deleteUrl,testData.getCommonPath() + "/response.xml",token);
 	}
 	
