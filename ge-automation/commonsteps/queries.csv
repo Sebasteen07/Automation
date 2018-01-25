@@ -57,3 +57,7 @@ update cusMedfusionCustomFormForms set Destination = 'EMR', EMRFormType = '32', 
 select status, RouteToStaff, discreteFormsId from cusMedfusionDiscreteFormForms where intuitPatientId = {MedfusionMemberId} order by discreteFormsId desc
 select HDID from OBSHEAD where NAME =
 select OBSVALUE from OBS where HDID = {HDID} and PID = {PID} and SDID = {SDID}
+select incomingtocid, fromAddress, toAddress, dateReceived, cpsloginid, ReadStatus from cusMedfusionIncomingTOCHeader where toAddress = '{TOADDRESS}' and fromAddress = '{FROMADDRESS}' order by incomingtocid desc
+select incomingtocmessageid, hasattachment, subject, body from cusMedfusionIncomingTOCMessage where incomingtocid = 
+select incomingtocmessageattachmentid, attachmentname,status from cusMedfusionIncomingTOCMessageAttachment where incomingtocmessageid = 
+select incomingtocattachmentcontentid, status, patientprofileid from cusMedfusionIncomingTOCAttachmentContent where incomingtocmessageattachmentid = 

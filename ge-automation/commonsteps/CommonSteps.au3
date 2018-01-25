@@ -3,6 +3,7 @@
 #include <Array.au3>
 #include <File.au3>
 #include <Date.au3>
+#include <DateTimeConstants.au3>
 #include <AutoItConstants.au3>
 #include <FileConstants.au3>
 #include <WinAPIFiles.au3>
@@ -217,6 +218,21 @@ Func setConfig()
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
 					Case "number of health forms to be filled"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "receiving toc (to address)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "sending/receiving toc (from address)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "toc download location"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "instructions for toc"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "reason for referal"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
@@ -795,7 +811,9 @@ EndFunc
 ;-----Input parameters - $Fname = Patient's First Name
 ;-----Input parameters - $Lname = Patient's Last Name
 ;-----Input parameters - $letterToPatient - Text for patient letter
-Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
+;-----Input parameters - $instructions - Instructions to be added for order creation
+;-----Input parameters - $referalReason - Reason of referal for order
+Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient,$instructions,$referalReason)
 	ConsoleWrite("METHOD: createOrder() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
 	$hFileOpen = Call("openLogFile")
@@ -879,13 +897,13 @@ Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
 			ConsoleWrite("Enter instructions for referral order" &@CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter instructions for referral order" &@CRLF)
 			ControlFocus($orderWnd,"","[CLASS:Edit; INSTANCE:4]")
-			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:4]","Instructions for auto-generated TOC")
+			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:4]",$instructions)
 			Sleep(1000)
 
 			ConsoleWrite("Enter reason for referral order" &@CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter reason for referral order" &@CRLF)
 			ControlFocus($orderWnd,"","[CLASS:Edit; INSTANCE:12]")
-			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:12]","This is reason for auto-generated TOC")
+			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:12]",$referalReason)
 			Sleep(1000)
 
 			ConsoleWrite("Set referring provider (external) as " & $refpvdr &@CRLF)
@@ -1009,25 +1027,25 @@ Func openMessageLink($MsgType)
 			Case "Mass Messaging"
 				ConsoleWrite("Opening Mass Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Mass Messaging UI" & @CRLF)
-				MouseClick("left",331,246)
-				WinWaitActive("Bulk Messaging")
+				ControlClick("Messaging","","[NAME:pbBMM]")
+				WinWaitActive("Mass Messaging")
 
 			Case "Automated Messaging"
 				ConsoleWrite("Opening Automated Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Automated Messaging UI" & @CRLF)
-				MouseClick("left",625,246)
+				ControlClick("Messaging","","[NAME:pbAM]")
 				WinWaitActive("Automated Messaging")
 
 			Case "Direct Messaging"
 				ConsoleWrite("Opening Direct Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging UI" & @CRLF)
-				MouseClick("left",945,246)
+				ControlClick("Messaging","","[NAME:PBPP]")
 				WinWaitActive("Direct Messaging")
 
 			Case "Template Editor"
 				ConsoleWrite("Opening Template Editor UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Template Editor UI" & @CRLF)
-				MouseClick("left",335,380)
+				ControlClick("Messaging","","[NAME:pbTempEdit]")
 				WinWaitActive("Templates")
 
 			Case Else
@@ -2024,4 +2042,226 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 		Exit
 	EndIf
 	ConsoleWrite("METHOD: replyRxAppend() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to verify Incoming ToC in Direct Messaging Inbox
+;-----Input parameter - $dateReceived = Date on which direct message was received
+;-----Input parameter - $fromAddress = SES address from whom direct message was sent
+;-----Input parameter - $toAddress = SES address to whom direct message was sent
+;-----Input parameter - $msgSubject = Subject of direct message
+;-----Input parameter - $msgBody = Body of direct message
+;-----Input parameter - $attachmentName = Name of attachment sent along with direct message
+Func verifyIncomingToCInInbox($dateReceived, $fromAddress, $toAddress, $msgSubject, $msgBody, $attachmentName)
+	ConsoleWrite("METHOD: verifyIncomingToCInInbox() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	If(WinActive("Direct Messaging")) Then
+		ConsoleWrite("Opening Direct Messaging Inbox" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Inbox" & @CRLF)
+		;Navigate to Direct Messaging -> Messages
+		ControlFocus("Direct Messaging","","[NAME:pbTOC]")
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+		Sleep(1000)
+
+		;Select SES address from drpdown
+		ConsoleWrite("Select SES address " & $toAddress & " from dropdown" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select SES address " & $toAddress & " from dropdown" & @CRLF)
+		ControlFocus("Direct Messaging","","[NAME:cbTOCEmailIds]")
+		While 1
+			;ConsoleWrite("I am in While Loop")
+			$inboxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
+			;ConsoleWrite("Address is -->" & $inboxAddress & @CRLF)
+			If(StringCompare($inboxAddress,$toAddress) = 0) Then
+				ExitLoop
+			Else
+				ControlSend("Direct Messaging","","[NAME:cbTOCEmailIds]",'{DOWN}')
+			EndIf
+		WEnd
+		Sleep(1000)
+		;click Inbox
+		ControlClick("Direct Messaging","","[NAME:lblRTOCInbox]")
+		Sleep(1000)
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+
+		ConsoleWrite("Select the message from LHS list" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select the message from LHS list" & @CRLF)
+		While(StringCompare($dateReceived,ControlGetText("Direct Messaging","","[NAME:lblDInTOCSentOn]"))<> 0)
+			ControlFocus("Direct Messaging", "", "[NAME:pbTocInboxNext]")
+			ControlClick("Direct Messaging", "", "[NAME:pbTocInboxNext]")
+			Sleep(500)
+		WEnd
+
+		ConsoleWrite("Verify message details on RHS" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message details on RHS" & @CRLF)
+
+		ConsoleWrite("Verify sending provider address" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify sending provider address" & @CRLF)
+		Call("assertData",$fromAddress, ControlGetText("Direct Messaging","","[NAME:lblDInTOCFromAddress]"))
+
+		ConsoleWrite("Verify receiving provider address" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify receiving provider address" & @CRLF)
+		Call("assertData",$toAddress, ControlGetText("Direct Messaging","","[NAME:lblDInTOCToAddress]"))
+
+		ConsoleWrite("Verify sent date" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify sent date" & @CRLF)
+		Call("assertData",$dateReceived, ControlGetText("Direct Messaging","","[NAME:lblDInTOCSentOn]"))
+
+		ConsoleWrite("Verify message subject" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message subject" & @CRLF)
+		Call("assertData",$msgSubject, ControlGetText("Direct Messaging","","[NAME:lblDInTOCSubject]"))
+
+		ConsoleWrite("Verify message body" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message body" & @CRLF)
+		$str = WinGetText("Direct Messaging")
+		If(StringInStr($str,$msgBody)  > 0 ) Then
+			ConsoleWrite("Message Body verified -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Message Body verified -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Message Body did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Message Body did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+
+		ConsoleWrite("Verify message attachment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message attachment" & @CRLF)
+		If(StringInStr($str,$attachmentName)  > 0 ) Then
+			ConsoleWrite("Attachment Name verified -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment Name verified -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Attachment Name did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment Name did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+
+	Else
+		ConsoleWrite("ERROR Opening Direct Messaging UI...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Direct Messaging UI...." & @CRLF)
+	EndIf
+
+	ConsoleWrite("METHOD: verifyIncomingToCInInbox() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to format date
+;-----Input parameter - $Date = Input date to be formatted
+;-----Input parameter - $style = format to which date to be converted
+Func _DateFormat($Date, $style)
+    Local $hGui = GUICreate("My GUI get date", 200, 200, 800, 200)
+    Local $idDate = GUICtrlCreateDate($Date, 10, 10, 185, 20)
+    GUICtrlSendMsg($idDate, 0x1032, 0, $style)
+    Local $sReturn = GUICtrlRead($idDate)
+    GUIDelete($hGui)
+    Return $sReturn
+EndFunc
+
+
+
+;-----Function to import ToC in Patient Chart
+;-----Input parameter - $attachmentName = Name of attachment to be imported
+;-----Input parameter - $firstName = First name of patient to whose chart ToC is to be imported (preferred unique First Name)
+Func importToCToChart($attachmentName,$firstName)
+	ConsoleWrite("METHOD: importToCToChart() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	ControlFocus("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	ControlClick("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	Sleep(2000)
+
+	ConsoleWrite("Verify attachment name" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify attachment name" & @CRLF)
+	Call("assertData",$attachmentName, ControlGetText("Direct Messaging","","[NAME:lblMsgAttachment2]"))
+
+	ControlFocus("Direct Messaging","","[NAME:panAddtoChart]")
+	Sleep(2000)
+	ControlClick("Direct Messaging","","[NAME:panAddtoChart]")
+
+	ControlFocus("Direct Messaging","","[NAME:txtIncomingTOCMatPat]")
+	ConsoleWrite("First Name is -->" & $firstName & @CRLF)
+	ControlSend("Direct Messaging","","[NAME:txtIncomingTOCMatPat]",$firstName)
+	Sleep(3000)
+	ControlClick("Direct Messaging","","[NAME:dgvIncomingTOCMatPat]","left",1,83,30)
+	Sleep(2000)
+	WinWaitActive("Add to Chart")
+	ControlClick("Add to Chart","","[CLASS:Button; INSTANCE:1]")
+	Sleep(2000)
+	If(StringInStr(WinGetText("[ACTIVE]"),"Attachment imported for patient :"&$firstName) >0) Then
+		ConsoleWrite("Attachment imported successfully -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment imported successfully -- PASSED" & @CRLF)
+		WinKill("[ACTIVE]")
+
+	Else
+		ConsoleWrite("Attachment not imported -- FAILED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment not imported -- FAILED" & @CRLF)
+		Exit
+	EndIf
+
+	ConsoleWrite("METHOD: importToCToChart() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to download ToC
+;-----Input parameter - $attachmentName = Name of attachment to be downloaded
+;-----Input parameter - $location = path where attachment to be downloaded
+;-----Input parameter - $firstName = First Name of patient for whom ToC was generated
+;-----Input parameter - $lastName = Last Name of patient for whom ToC was generated
+;-----Input parameter - $referalReason = Reason for referral mentioned in ToC
+Func downloadToC($attachmentName,$location,$firstName,$lastName,$referalReason)
+	ConsoleWrite("METHOD: downloadToC() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	ControlFocus("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	ControlClick("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	Sleep(2000)
+
+	ConsoleWrite("Verify attachment name" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify attachment name" & @CRLF)
+	Call("assertData",$attachmentName, ControlGetText("Direct Messaging","","[NAME:lblMsgAttachment2]"))
+
+	ControlFocus("Direct Messaging","","[NAME:panDownload]")
+	Sleep(2000)
+	ControlClick("Direct Messaging","","[NAME:panDownload]")
+
+	WinWaitActive("Save As")
+
+	ControlSend("Save As","", 1001,$location & "\" & $attachmentName,0)
+	ControlClick("Save As", "", "[CLASS:Button; INSTANCE:1]")
+	Sleep(2000)
+	If(StringInStr(WinGetText("[ACTIVE]"),"File Downloaded Successfully") >0) Then
+		ConsoleWrite("File downloaded successfully -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- File downloaded successfully -- PASSED" & @CRLF)
+		WinKill("[ACTIVE]")
+
+	Else
+		ConsoleWrite("File not downloaded -- FAILED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- File not downloaded -- FAILED" & @CRLF)
+		Exit
+	EndIf
+
+	ConsoleWrite("Verify the contents of downloaded file" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify the contents of downloaded file" & @CRLF)
+
+	$fileHnd = FileOpen($location & "\" & $attachmentName, $FO_READ)
+	Local $sFileRead = FileRead($fileHnd)
+	FileClose($fileHnd)
+
+		If((StringInStr($sFileRead, $firstName)>0) And (StringInStr($sFileRead, $lastName)>0) And (StringInStr($sFileRead, $referalReason)>0))  Then
+			ConsoleWrite("Contents of ToC match -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Contents of ToC match -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Contents of ToC did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Contents of ToC did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+	ConsoleWrite("METHOD: downloadToC() ended" & @CRLF)
 EndFunc

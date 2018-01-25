@@ -8,6 +8,7 @@
 #include <WinAPIFiles.au3>
 #include <String.au3>
 #include "..\commonsteps\CommonSteps.au3"
+
 $time = Call("getTimestamp")
 $currentDir = @ScriptDir
 $commonStepsDir = StringReplace($currentDir , "discreteforms", "commonsteps")
@@ -87,18 +88,18 @@ $arrDoctype = Call("openDoctypeFile")
 		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- UPDATE FORM DESTINATION TO EMR (PATIENT CHART)" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
 		Local $aData,$iRows,$iColumns
-		ConsoleWrite("Executing Query: " & $arrQuery[55] & "'" & $arrConfig[41] & "';" & @CRLF)
-		FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[55] & "'" & $arrConfig[41] & "';" & @CRLF)
-		$iRval = _SQL_GetTable2D(-1,$arrQuery[55] & "'" & $arrConfig[41] & "';",$aData,$iRows,$iColumns)
+		ConsoleWrite("Executing Query: " & $arrQuery[55] & "'" & $arrConfig[46] & "';" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[55] & "'" & $arrConfig[46] & "';" & @CRLF)
+		$iRval = _SQL_GetTable2D(-1,$arrQuery[55] & "'" & $arrConfig[46] & "';",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 				If(($aData[1][0] == "EMR") And ($aData[1][1] <> Null) And ($aData[1][2] <> Null)) Then
 					ConsoleWrite("Form destination already set" & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Form destination already set" & @CRLF)
 				Else
 					$newQuery = StringReplace($arrQuery[56],"{PVDR}", $arrConfig[2])
-					ConsoleWrite("Executing Query: " & $newQuery & "'" & $arrConfig[41] & "';" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & "'" & $arrConfig[41] & "';"  & @CRLF)
-					If (_SQL_Execute(-1,$newQuery & "'" & $arrConfig[41] & "';" )) = $SQL_ERROR then
+					ConsoleWrite("Executing Query: " & $newQuery & "'" & $arrConfig[46] & "';" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & "'" & $arrConfig[46] & "';"  & @CRLF)
+					If (_SQL_Execute(-1,$newQuery & "'" & $arrConfig[46] & "';" )) = $SQL_ERROR then
 						ConsoleWrite("ERROR Updating form destination...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating form destination...." & @CRLF)
@@ -128,8 +129,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Filling Discrete Form #" & $counter+1 & " of " & $arrConfig[57] & " requests"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Filling Discrete Form #" & $counter+1 & " of " & $arrConfig[57] & " requests" & @CRLF)
+			ConsoleWrite("Filling Discrete Form #" & $counter+1 & " of " & $arrConfig[62] & " requests"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Filling Discrete Form #" & $counter+1 & " of " & $arrConfig[62] & " requests" & @CRLF)
 		Else
 			ConsoleWrite("Filling Discrete Form #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Filling Discrete Form #" &$counter+1 & @CRLF)
@@ -148,7 +149,7 @@ Else
 			EndIf
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[57]) Then
+			If($counter = $arrConfig[62]) Then
 				ConsoleWrite("Exiting after data generation for Discrete Forms Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Discrete Forms Flow...." & @CRLF)
 				Exit
@@ -157,9 +158,9 @@ Else
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait for 1 min before next Discrete Form" & @CRLF)
 			Sleep(60000)
 		Else
-			$counter = $arrConfig[57]
+			$counter = $arrConfig[62]
 		EndIf
-	Until $counter = $arrConfig[57]
+	Until $counter = $arrConfig[62]
 
 	;Open CPS -Patient Chart
 	FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- LOGIN TO CPS" & @CRLF)
@@ -266,13 +267,13 @@ Else
 							ConsoleWrite(" SDID for Document 'Data Submitted by Patient in Portal' is " & $DocId_DataSubmitted & @CRLF)
 							FileWriteLine($hFileOpen, _NowCalc() & "  -- SDID for Document 'Data Submitted by Patient in Portal' is " & $DocId_DataSubmitted & @CRLF)
 
-						ElseIf(StringInStr($aData[$i][1],$arrConfig[41])) Then
-							ConsoleWrite("Document with Form Name '" & $arrConfig[41] & "' created in Document table -- PASSED" & @CRLF)
-							FileWriteLine($hFileOpen, _NowCalc() & "  -- Document with Form Name '" & $arrConfig[41] & "' created in Document table -- PASSED" & @CRLF)
+						ElseIf(StringInStr($aData[$i][1],$arrConfig[46])) Then
+							ConsoleWrite("Document with Form Name '" & $arrConfig[46] & "' created in Document table -- PASSED" & @CRLF)
+							FileWriteLine($hFileOpen, _NowCalc() & "  -- Document with Form Name '" & $arrConfig[46] & "' created in Document table -- PASSED" & @CRLF)
 
 							$visDocId_FormName = $aData[$i][5]
-							ConsoleWrite("VisDocId for '" & $arrConfig[41] & "' is " & $visDocId_FormName & @CRLF)
-							FileWriteLine($hFileOpen, _NowCalc() & "  -- VisDocId for '" & $arrConfig[41] & "' is " & $visDocId_FormName & @CRLF)
+							ConsoleWrite("VisDocId for '" & $arrConfig[46] & "' is " & $visDocId_FormName & @CRLF)
+							FileWriteLine($hFileOpen, _NowCalc() & "  -- VisDocId for '" & $arrConfig[46] & "' is " & $visDocId_FormName & @CRLF)
 						Else
 							ConsoleWrite("Document for form submitted from Patient Portal not created in Document table -- FAILED" & @CRLF)
 							FileWriteLine($hFileOpen, _NowCalc() & "  -- Document for form submitted from Patient Portal not created in Document table -- FAILED" & @CRLF)
@@ -404,9 +405,9 @@ Else
 			MouseClick("left",$aCoord[0]+10,$aCoord[1]+90)
 			Sleep(1000)
 		FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- VERIFY MAPPED MEDICATIONS IN DATABASE" & @CRLF)
-			ConsoleWrite("Executing Query: " & $arrQuery[58] & " '" & $arrConfig[46] & "'" & @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[58] & " '" & $arrConfig[46] & "'" & @CRLF)
-			$iRval = _SQL_GetTable2D(-1,$arrQuery[58] & " '" & $arrConfig[46] & "'" & ";",$aData,$iRows,$iColumns)
+			ConsoleWrite("Executing Query: " & $arrQuery[58] & " '" & $arrConfig[51] & "'" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[58] & " '" & $arrConfig[51] & "'" & @CRLF)
+			$iRval = _SQL_GetTable2D(-1,$arrQuery[58] & " '" & $arrConfig[51] & "'" & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;HDID for Medication Name
 				$HDID_MedicationName = $aData[1][0]
@@ -427,12 +428,12 @@ Else
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;Medication NAme Mapping
-				If(StringInStr($aData[1][0],$arrConfig[42])>0) Then
-					ConsoleWrite("Medication Name correctly mapped to OBS term " & $arrConfig[46] & " -- PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication Name correctly mapped to OBS term " & $arrConfig[46] & " -- PASSED" & @CRLF)
+				If(StringInStr($aData[1][0],$arrConfig[47])>0) Then
+					ConsoleWrite("Medication Name correctly mapped to OBS term " & $arrConfig[51] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication Name correctly mapped to OBS term " & $arrConfig[51] & " -- PASSED" & @CRLF)
 				Else
-					ConsoleWrite("Medication Name not correctly mapped to OBS term " & $arrConfig[46] & " -- FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication Name not correctly mapped to OBS term " & $arrConfig[46] & " -- FAILED" & @CRLF)
+					ConsoleWrite("Medication Name not correctly mapped to OBS term " & $arrConfig[51] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication Name not correctly mapped to OBS term " & $arrConfig[51] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 			Else
@@ -443,9 +444,9 @@ Else
 				Exit
 			EndIf
 		FileWriteLine($hFileOpen, @CRLF & " STEP 14 -- VERIFY MAPPED ALLERGIES IN DATABASE" & @CRLF)
-			ConsoleWrite("Executing Query: " & $arrQuery[58] & " '" & $arrConfig[47] & "'" & @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[58] & " '" & $arrConfig[47] & "'" & @CRLF)
-			$iRval = _SQL_GetTable2D(-1,$arrQuery[58] & " '" & $arrConfig[47] & "'" & ";",$aData,$iRows,$iColumns)
+			ConsoleWrite("Executing Query: " & $arrQuery[58] & " '" & $arrConfig[52] & "'" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[58] & " '" & $arrConfig[52] & "'" & @CRLF)
+			$iRval = _SQL_GetTable2D(-1,$arrQuery[58] & " '" & $arrConfig[52] & "'" & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;HDID for Allergy Name
 				$HDID_Allergies = $aData[1][0]
@@ -466,12 +467,12 @@ Else
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
 			If $iRval = $SQL_OK then
 			;Allergy Mapping
-				If(StringInStr($aData[1][0],$arrConfig[45])>0) Then
-					ConsoleWrite("Allergies correctly mapped to OBS term " & $arrConfig[47] & " -- PASSED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergies correctly mapped to OBS term " & $arrConfig[47] & " -- PASSED" & @CRLF)
+				If(StringInStr($aData[1][0],$arrConfig[50])>0) Then
+					ConsoleWrite("Allergies correctly mapped to OBS term " & $arrConfig[52] & " -- PASSED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergies correctly mapped to OBS term " & $arrConfig[52] & " -- PASSED" & @CRLF)
 				Else
-					ConsoleWrite("Allergies not correctly mapped to OBS term " & $arrConfig[47] & " -- FAILED" & @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergies not correctly mapped to OBS term " & $arrConfig[47] & " -- FAILED" & @CRLF)
+					ConsoleWrite("Allergies not correctly mapped to OBS term " & $arrConfig[52] & " -- FAILED" & @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergies not correctly mapped to OBS term " & $arrConfig[52] & " -- FAILED" & @CRLF)
 					Exit
 				EndIf
 			Else
@@ -481,6 +482,9 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 				Exit
 			EndIf
+
+		_SQL_Close()
+
 		FileWriteLine($hFileOpen, @CRLF & " STEP 15 -- IMPORT THE MEDICATIONS SUBMITTED USING CCC BASIC FORM" & @CRLF)
 			ConsoleWrite("Open 'CCC Basic' Form" & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Open 'CCC Basic' Form" & @CRLF)
@@ -533,15 +537,15 @@ Else
 				$allergyBody = _IETagNameGetCollection($allergyTable,"tr",1)
 				$strAllergy = _IEPropertyGet($allergyBody,"innertext")
 
-				If (StringInStr($strAllergy,$arrConfig[45])>0) Then
-					ConsoleWrite("Allergy " & $arrConfig[45] & " imported successfully" &@CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergy " & $arrConfig[45] & " imported successfully" & @CRLF)
+				If (StringInStr($strAllergy,$arrConfig[50])>0) Then
+					ConsoleWrite("Allergy " & $arrConfig[50] & " imported successfully" &@CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergy " & $arrConfig[50] & " imported successfully" & @CRLF)
 					$allergyChkBox = _IETagNameGetCollection($allergyBody,"input",0)
 					_IEAction($allergyChkBox,"click")
 					Sleep(2000)
 					_IEAction($allergyAddToListBtn,"click")
-					ConsoleWrite("Allergy " & $arrConfig[45] & " added to list" &@CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergy " & $arrConfig[45] & " added to list" & @CRLF)
+					ConsoleWrite("Allergy " & $arrConfig[50] & " added to list" &@CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Allergy " & $arrConfig[50] & " added to list" & @CRLF)
 
 				Else
 					ConsoleWrite("Allergy not imported...." & @CRLF)
@@ -562,18 +566,18 @@ Else
 				$strMedication = _IEPropertyGet($medicationBody,"innertext")
 
 				;Get Medication entered in form
-				$temp = StringSplit($arrConfig[42], " ")
-				$instructions = $arrConfig[43] & " times per " & $arrConfig[44]
+				$temp = StringSplit($arrConfig[47], " ")
+				$instructions = $arrConfig[48] & " times per " & $arrConfig[49]
 				If (StringInStr($strMedication,$instructions)>0) Then
-					ConsoleWrite("Medication " & $arrConfig[42] & " imported successfully" &@CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication " & $arrConfig[42] & " imported successfully" & @CRLF)
+					ConsoleWrite("Medication " & $arrConfig[47] & " imported successfully" &@CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication " & $arrConfig[47] & " imported successfully" & @CRLF)
 					$medicationChkbox = _IETagNameGetCollection($medicationBody,"input",0)
 					_IEAction($medicationChkbox,"click")
 					Sleep(2000)
 					_IEAction($medicationAddToListBtn,"click")
 					_IEAction($allergyAddToListBtn,"click")
-					ConsoleWrite("Medication " & $arrConfig[42] & " added to list" &@CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication " & $arrConfig[42] & " added to list" & @CRLF)
+					ConsoleWrite("Medication " & $arrConfig[47] & " added to list" &@CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Medication " & $arrConfig[47] & " added to list" & @CRLF)
 
 				Else
 					ConsoleWrite("Medication not imported...." & @CRLF)
