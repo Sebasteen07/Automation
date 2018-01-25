@@ -1065,19 +1065,48 @@ EndFunc
 
 
 ;-----Function to verify order in Direct Messages Outbox
-;-----Input parameter - orderid (ordernum), authorizing provider, referring provider, patient's first name & lastname
-Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName)
+;-----Input parameter - $orderid = Ordernum for the generated ToC
+;-----Input parameter - $authpvdr = Authorizing provider for generated ToC
+;-----Input parameter - $refpvdr = Referring  provider for generated ToC
+;-----Input parameter - $ptFName = Patient's first Name for whom ToC was generated
+;-----Input parameter - $ptLName = Patient's last Name for whom ToC was generated
+;-----Input parameter - $fromAddress = SES address of authorizing provider
+Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName, $fromAddress)
 	ConsoleWrite("METHOD: verifyOrderInUI() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
 	$hFileOpen = Call("openLogFile")
 
 	WinActivate("Direct Messaging")
 	If(WinActive("Direct Messaging")) Then
-		ConsoleWrite("Opening Direct Messaging Outbox" & @CRLF)
-		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Outbox" & @CRLF)
-		ControlFocus("Direct Messaging","","[NAME:pbMessages]")
-		ControlClick("Direct Messaging","","[NAME:pbMessages]")
+		ConsoleWrite("Opening Direct Messaging Sent box" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Sent box" & @CRLF)
+		;Navigate to Direct Messaging -> Messages
+		ControlFocus("Direct Messaging","","[NAME:pbTOC]")
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+		Sleep(1000)
 
+		;Select SES address from drpdown
+		ConsoleWrite("Select SES address " & $fromAddress & " from dropdown" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select SES address " & $fromAddress & " from dropdown" & @CRLF)
+		ControlFocus("Direct Messaging","","[NAME:cbTOCEmailIds]")
+		While 1
+			;ConsoleWrite("I am in While Loop")
+			$inboxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
+			;ConsoleWrite("Address is -->" & $inboxAddress & @CRLF)
+			If(StringCompare($inboxAddress,$fromAddress) = 0) Then
+				ExitLoop
+			Else
+				ControlSend("Direct Messaging","","[NAME:cbTOCEmailIds]",'{DOWN}')
+			EndIf
+		WEnd
+		Sleep(1000)
+		;click Inbox
+		ControlClick("Direct Messaging","","[NAME:lblRTocSent]")
+		Sleep(1000)
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+
+		ConsoleWrite("Select the message from LHS list" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select the message from LHS list" & @CRLF)
 		Sleep(2000)
 		;ConsoleWrite("Oredr Id is " & ControlGetText("Direct Messaging","","[NAME:lblDorderid]") & @CRLF)
 		While(StringCompare($orderid,ControlGetText("Direct Messaging","","[NAME:lblDorderid]"))<> 0)

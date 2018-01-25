@@ -442,7 +442,7 @@ Else
 			;EventId
 				ConsoleWrite("Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
-				Call("assertData", "TOC_" & $outgoingTocId, $aData[2][0])
+				Call("assertData", "TOC_" & $outgoingTocId & "_" & $sdid, $aData[2][0])
 
 			;Evnet Type
 				ConsoleWrite("Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
@@ -459,7 +459,7 @@ Else
 			;EventId
 				ConsoleWrite("Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
-				Call("assertData", "PI_" & $commOutgoingId, $aData[1][0])
+				Call("assertData", "PI_" & $commOutgoingId & "_" & $sdid, $aData[1][0])
 
 			;Evnet Type
 				ConsoleWrite("Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
@@ -531,7 +531,7 @@ Else
 		FileWriteLine($hFileOpen, @CRLF & " STEP 15-- VERIFY ORDER DETAILS IN DIRECT MESSAGING OUTBOX" & @CRLF)
 			Call("openMFDashboard")
 			Call("openMessageLink","Direct Messaging")
-			Call("verifyOrderInUI",$orderNum,$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16])
+			Call("verifyOrderInUI",$orderNum,$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[30])
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 16-- VERIFY ORDER DETAILS IN SES INBOX" & @CRLF)
 			$SESjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\sesInbox.jar"
