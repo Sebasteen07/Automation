@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><ns2:DirectorySearchRequest xmlns:ns2="http://schema.medfusion.com/directmessage/v1">
+<SearchType>PROVIDER</SearchType>
+<FirstName>Andrew</FirstName>
+<LastName>Cookson</LastName>
+<State>VA</State>
+<ZipCode>20194</ZipCode>
+</ns2:DirectorySearchRequest>
