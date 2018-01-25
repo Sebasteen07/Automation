@@ -223,7 +223,7 @@ Func setConfig()
 					Case "receiving toc (to address)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
-					Case "receiving toc (from address)"
+					Case "sending/receiving toc (from address)"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 
 					Case "toc download location"
@@ -1027,25 +1027,25 @@ Func openMessageLink($MsgType)
 			Case "Mass Messaging"
 				ConsoleWrite("Opening Mass Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Mass Messaging UI" & @CRLF)
-				ControlClick("Messaging","","[NAME:panBulkMsg]")
+				ControlClick("Messaging","","[NAME:pbBMM]")
 				WinWaitActive("Mass Messaging")
 
 			Case "Automated Messaging"
 				ConsoleWrite("Opening Automated Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Automated Messaging UI" & @CRLF)
-				ControlClick("Messaging","","[NAME:panAMMsg]")
+				ControlClick("Messaging","","[NAME:pbAM]")
 				WinWaitActive("Automated Messaging")
 
 			Case "Direct Messaging"
 				ConsoleWrite("Opening Direct Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging UI" & @CRLF)
-				ControlClick("Messaging","","[NAME:panProviderToProvider]")
+				ControlClick("Messaging","","[NAME:PBPP]")
 				WinWaitActive("Direct Messaging")
 
 			Case "Template Editor"
 				ConsoleWrite("Opening Template Editor UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Template Editor UI" & @CRLF)
-				ControlClick("Messaging","","[NAME:panTempEditor]")
+				ControlClick("Messaging","","[NAME:pbTempEdit]")
 				WinWaitActive("Templates")
 
 			Case Else

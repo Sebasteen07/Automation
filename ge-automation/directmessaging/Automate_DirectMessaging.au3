@@ -81,8 +81,8 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[48] & " orders"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[48] & " orders" & @CRLF)
+					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[53] & " orders"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[53] & " orders" & @CRLF)
 				Else
 					ConsoleWrite("Creating Order #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" &$counter+1 & @CRLF)
@@ -90,15 +90,15 @@ Else
 
 				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[50],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$arrConfig[55],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25],$arrConfig[27],$arrConfig[28])
 
 				Else
-					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25],$arrConfig[27],$arrConfig[28])
 				EndIf
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[48]) Then
+					If($counter = $arrConfig[53]) Then
 						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
@@ -108,10 +108,10 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[48]
+					$counter = $arrConfig[53]
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[48]
+			Until $counter = $arrConfig[53]
 
 			Sleep(5000)
 

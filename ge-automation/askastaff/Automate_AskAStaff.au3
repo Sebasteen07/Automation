@@ -71,14 +71,14 @@ Else
 	ConsoleWrite("Create ask a staff question from Patient Portal" &@CRLF )
 
  	$createAASJar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaff.jar"
-		$subjectAAS = StringReplace($arrConfig[30]," ","")
-		$bodyAAS = StringReplace($arrConfig[31]," ","")
+		$subjectAAS = StringReplace($arrConfig[35]," ","")
+		$bodyAAS = StringReplace($arrConfig[36]," ","")
 
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[55] & " ask a staff questions"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[55] & " ask a staff questions" & @CRLF)
+			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[60] & " ask a staff questions"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[60] & " ask a staff questions" & @CRLF)
 		Else
 			ConsoleWrite("Creating AAS #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" &$counter+1 & @CRLF)
@@ -100,7 +100,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[55]) Then
+			If($counter = $arrConfig[60]) Then
 				ConsoleWrite("Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				Exit
@@ -110,9 +110,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[55]
+			$counter = $arrConfig[60]
 		EndIf
-	Until $counter = $arrConfig[55]
+	Until $counter = $arrConfig[60]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
@@ -268,7 +268,7 @@ Else
 	FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- REPLY AAS FROM PATIENT CHART" & @CRLF)
 		ConsoleWrite("Reply the AAS from Patient Chart" & @CRLF)
 		Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
-		Call("replyAAS","SR_1507883561241","1507883561241",$subjectAAS & $time & "0",$bodyAAS & $time & "0",$arrConfig[32])
+		Call("replyAAS",$arrConfig[15],$arrConfig[16],$subjectAAS & $time & "0",$bodyAAS & $time & "0",$arrConfig[37])
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY MESSAGE DETAILS IN DOCUMENT TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
@@ -430,8 +430,8 @@ Else
 			$messageSubject = "RE:" & $subjectAAS & $time & "0"
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
-			ConsoleWrite("Message Body " & $arrConfig[32] & @CRLF)
-			$messageBody = StringReplace($arrConfig[32]," ","")
+			ConsoleWrite("Message Body " & $arrConfig[37] & @CRLF)
+			$messageBody = StringReplace($arrConfig[37]," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
 			$secureMessagejar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaffreply.jar"
 			$PID = Run(@ComSpec & ' /c java -jar ' & $secureMessagejar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $CreationDate &'' ,"","",$STDOUT_CHILD)
