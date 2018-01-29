@@ -1090,16 +1090,14 @@ Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName, $fromAddr
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select SES address " & $fromAddress & " from dropdown" & @CRLF)
 		ControlFocus("Direct Messaging","","[NAME:cbTOCEmailIds]")
 		While 1
-			;ConsoleWrite("I am in While Loop")
-			$inboxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
-			;ConsoleWrite("Address is -->" & $inboxAddress & @CRLF)
-			If(StringCompare($inboxAddress,$fromAddress) = 0) Then
+			$sentBoxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
+			If(StringCompare($sentBoxAddress,$fromAddress) = 0) Then
 				ExitLoop
 			Else
 				ControlSend("Direct Messaging","","[NAME:cbTOCEmailIds]",'{DOWN}')
 			EndIf
 		WEnd
-		Sleep(1000)
+
 		;click Inbox
 		ControlClick("Direct Messaging","","[NAME:lblRTocSent]")
 		Sleep(1000)
@@ -1110,8 +1108,8 @@ Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName, $fromAddr
 		Sleep(2000)
 		;ConsoleWrite("Oredr Id is " & ControlGetText("Direct Messaging","","[NAME:lblDorderid]") & @CRLF)
 		While(StringCompare($orderid,ControlGetText("Direct Messaging","","[NAME:lblDorderid]"))<> 0)
-			ControlFocus("Direct Messaging", "", "[NAME:pbDMPrev]")
-			ControlClick("Direct Messaging", "", "[NAME:pbDMPrev]")
+			ControlFocus("Direct Messaging", "", "[NAME:pbDMNext]")
+			ControlClick("Direct Messaging", "", "[NAME:pbDMNext]")
 			Sleep(500)
 		WEnd
 
