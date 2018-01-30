@@ -85,19 +85,19 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[46] & " secure messages" & @CRLF)
+					ConsoleWrite("Creating Secure Message #" & $counter+1 & " of " & $arrConfig[58] & " secure messages"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure message #" & $counter+1 & " of " & $arrConfig[58] & " secure messages" & @CRLF)
 				Else
 					ConsoleWrite("Creating Secure Message #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Secure Message #" &$counter+1 & @CRLF)
 				EndIf
 
 				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
-				Call("createEmailMessage",$arrConfig[15],$arrConfig[16],$arrConfig[27],$arrConfig[28])
+				Call("createEmailMessage",$arrConfig[15],$arrConfig[16],$arrConfig[32],$arrConfig[33])
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[46]) Then
+					If($counter = $arrConfig[58]) Then
 						ConsoleWrite("Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Secure Messaging Flow...." & @CRLF)
 						Exit
@@ -107,9 +107,9 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[46]
+					$counter = $arrConfig[58]
 				EndIf
-			Until $counter = $arrConfig[46]
+			Until $counter = $arrConfig[58]
 
 			ConsoleWrite("Secure Message created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Secure Message created successfully...." & @CRLF)
@@ -227,7 +227,7 @@ Else
 			;Message Subject
 				ConsoleWrite("Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
-				Call("assertData", $arrConfig[27], $aData[1][2])
+				Call("assertData", $arrConfig[32], $aData[1][2])
 
 			;Created by User
 				ConsoleWrite("Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
@@ -340,12 +340,12 @@ Else
 			EndIf
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY MESSAGE IN PATIENT PORTAL AND REPLY THE MESSAGE" & @CRLF)
-			ConsoleWrite("Message Subject " & $arrConfig[27] & @CRLF)
-			$messageSubject = StringReplace($arrConfig[27]," ","")
+			ConsoleWrite("Message Subject " & $arrConfig[32] & @CRLF)
+			$messageSubject = StringReplace($arrConfig[32]," ","")
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
-			ConsoleWrite("Message Body " & $arrConfig[28] & @CRLF)
-			$messageBody = StringReplace($arrConfig[28]," ","")
+			ConsoleWrite("Message Body " & $arrConfig[33] & @CRLF)
+			$messageBody = StringReplace($arrConfig[33]," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
 
 			$secureMessagejar = StringReplace($currentDir, "securemessaging", "jarfiles")  & "\secureMessage.jar"
@@ -388,7 +388,7 @@ Else
 			;Subject
 				ConsoleWrite("Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Subject in cusMedfusionCommIncoming table" & @CRLF)
-				Call("assertData", "Re: " & $arrConfig[27], $aData[1][3])
+				Call("assertData", "Re: " & $arrConfig[32], $aData[1][3])
 
 			;REsponseToOutgoingId
 				ConsoleWrite("Verifying ResponseToOutgoingId in cusMedfusionCommIncoming table" & @CRLF)

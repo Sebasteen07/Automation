@@ -46,4 +46,9 @@ public class StatementEventData {
 	public String practicePassword="";
 	public String emailSubject="";
 	public long since;
+	public String balanceUrl="";
+	public String balanceIntegrationPracticeId="";
+	public String newPassword="";
+	public String emailSubjectBalance="";
+	public String emailLinkText="";
 }

@@ -90,5 +90,52 @@ public class Oauth10TestData {
 	public String getPaymentURL() {
 		return OauthObj.paymentURL;
 	}
-
+	public String getCcdExchangePdfBatchURL() {
+		return OauthObj.CCDExchangePdfBatch;
+	}
+	public String getCcdExchangePdfURL() {
+		return OauthObj.CCDExchangePdf;
+	}
+	public String getStatement() {
+		return OauthObj.Statement;
+	}
+	public String getBalance() {
+		return OauthObj.Balance;
+	}
+	public String getPayments() {
+		return OauthObj.Payments;
+	}
+	public String getMassAdminMessage() {
+		return OauthObj.MassAdminMessage;
+	}
+	public String getStatementPreference() {
+		return OauthObj.StatementPreference;
+	}
+	public String getAppointmentData() {
+		return OauthObj.AppointmentData;
+	}
+	public String getDirectMessages() {
+		return OauthObj.DirectMessages;
+	}
+	public String getDirectMessageStatus() {
+		return OauthObj.DirectMessageStatus;
+	}
+	public String getDirectMessageHeaders() {
+		return OauthObj.DirectMessageHeaders;
+	}
+	public String getDirectMessageRead() {
+		return OauthObj.DirectMessageRead;
+	}
+	public String getDirectorySearch() {
+		return OauthObj.DirectorySearch;
+	}
+	public String getDirectMessageDelete() {
+		return OauthObj.DirectMessageDelete;
+	}
+	public String getXmlResourcePath() {
+		return OauthObj.XmlResourcePath;
+	}
+	public String getToken() {
+		return OauthObj.Token;
+	}
 }

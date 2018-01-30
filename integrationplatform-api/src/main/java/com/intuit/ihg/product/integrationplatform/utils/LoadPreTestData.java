@@ -303,6 +303,11 @@ public class LoadPreTestData {
 		testData.practiceUserName = propertyData.getPortalUserName_SE();
 		testData.practicePassword = propertyData.getPortalPassword_SE();
 		testData.emailSubject = propertyData.getStatementEmailSubject();
+		testData.balanceUrl = propertyData.getBalanceUrl();
+		testData.balanceIntegrationPracticeId = propertyData.getBalanceIntegrationPracticeId();
+		testData.newPassword = propertyData.getNewPassword();
+		testData.emailSubjectBalance = propertyData.getEmailSubjectBalance();
+		testData.emailLinkText = propertyData.getEmailLinkText();
 		return testData;
 	}
 	

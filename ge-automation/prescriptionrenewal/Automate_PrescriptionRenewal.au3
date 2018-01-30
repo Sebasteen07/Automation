@@ -37,7 +37,7 @@ $arrDoctype = Call("openDoctypeFile")
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Updating export frequencies for Pharmaciies and Medications" & @CRLF)
 					ConsoleWrite("Executing Query: " & $arrQuery[52] & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[52] & @CRLF )
-					If (_SQL_Execute(-1,$arrQuery[51]) Or _SQL_Execute(-1,$arrQuery[52])) = $SQL_ERROR then
+					If (_SQL_Execute(-1,$arrQuery[52])) = $SQL_ERROR then
 						ConsoleWrite("ERROR Updating frequencies for Pharmaciies and Medications...." & @CRLF)
 						ConsoleWrite("ERROR MESSAGE: " & _SQL_GetErrMsg() & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Updating frequencies for Pharmacies and Medications...." & @CRLF)
@@ -89,8 +89,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[49] & " requests"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[49] & " requests" & @CRLF)
+			ConsoleWrite("Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[61] & " requests"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" & $counter+1 & " of " & $arrConfig[61] & " requests" & @CRLF)
 		Else
 			ConsoleWrite("Creating Prescription Renewal Request #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Prescription Renewal Request #" &$counter+1 & @CRLF)
@@ -112,7 +112,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[49]) Then
+			If($counter = $arrConfig[61]) Then
 				ConsoleWrite("Exiting after data generation for Prescription Renewal Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Prescription Renewal Flow...." & @CRLF)
 				Exit
@@ -122,9 +122,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[49]
+			$counter = $arrConfig[61]
 		EndIf
-	Until $counter = $arrConfig[49]
+	Until $counter = $arrConfig[61]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
@@ -281,37 +281,37 @@ Else
 			;MedicationName
 				ConsoleWrite("Verifying Medication Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData", $arrConfig[33] & $time & "0", $aData[1][0])
+				Call("assertData", $arrConfig[38] & $time & "0", $aData[1][0])
 
 			;Dosage
 				ConsoleWrite("Verifying Medication Dosage in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Dosage in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData", $arrConfig[34], $aData[1][1])
+				Call("assertData", $arrConfig[39], $aData[1][1])
 
 			;Prescription Number
 				ConsoleWrite("Verifying Prescription Number in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Prescriiption Number in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData", $arrConfig[37], $aData[1][2])
+				Call("assertData", $arrConfig[42], $aData[1][2])
 
 			;REfills
 				ConsoleWrite("Verifying Medication Refills in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Refills in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData", $arrConfig[36], $aData[1][3])
+				Call("assertData", $arrConfig[41], $aData[1][3])
 
 			;Notes
 				ConsoleWrite("Verifying Medication Notes in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Notes in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData",$arrConfig[38],$aData[1][4])
+				Call("assertData",$arrConfig[43],$aData[1][4])
 
 			;Quantity
 				ConsoleWrite("Verifying Medication Quantity in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Medication Quantity in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData", $arrConfig[35], $aData[1][5])
+				Call("assertData", $arrConfig[40], $aData[1][5])
 
 			;Pharmacy Name
 				ConsoleWrite("Verifying Pharmacy Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Pharmacy Name in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
-				Call("assertData",  $arrConfig[39],$aData[1][6])
+				Call("assertData",  $arrConfig[44],$aData[1][6])
 
 			;Pharmacy Phone
 				ConsoleWrite("Verifying Pharmacy Phone in cusMedfusionPrescriptionRenewalRequestLineItems table" & @CRLF)
@@ -320,7 +320,7 @@ Else
 				$pharmacyPhoneInDB = StringReplace($pharmacyPhoneInDB,"(","")
 				$pharmacyPhoneInDB = StringReplace($pharmacyPhoneInDB,")","")
 				$pharmacyPhoneInDB = StringReplace($pharmacyPhoneInDB,"-","")
-				Call("assertData", $arrConfig[40], $pharmacyPhoneInDB)
+				Call("assertData", $arrConfig[45], $pharmacyPhoneInDB)
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -363,7 +363,7 @@ Else
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- REPLY PRESCRIPTION RENEWAL REQUEST FROM PATIENT CHART" & @CRLF)
 			ConsoleWrite("Reply Prescription Renewal Request from Patient Chart" & @CRLF)
-			Call("replyRxAppend",$arrConfig[15],$arrConfig[16],$arrConfig[33] & $time & "0",$arrConfig[34],$arrConfig[35],$arrConfig[36],$arrConfig[37],$arrConfig[38],$arrConfig[39])
+			Call("replyRxAppend",$arrConfig[15],$arrConfig[16],$arrConfig[38] & $time & "0",$arrConfig[39],$arrConfig[40],$arrConfig[41],$arrConfig[42],$arrConfig[43],$arrConfig[44])
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- VERIFY REPLY DETAILS IN DOCUMENT TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
@@ -379,6 +379,11 @@ Else
 				ConsoleWrite("Verifying document summary in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying document summary in Document table" & @CRLF)
 				Call("assertData", "Medfusion Rx Refill Reply", $aData[1][1])
+
+				;Doctype
+				ConsoleWrite("Verifying doctype in Document table" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying dooctype in Document table" & @CRLF)
+				Call("assertData", $arrDoctype[3], $aData[1][2])
 
 				$CreationDate = $aData[1][3]
 				ConsoleWrite("Reply of Rx Request Creation Date is " & $CreationDate & @CRLF)
@@ -534,8 +539,8 @@ Else
 			EndIf
 ;-------------------------------------------------------------------------------------
 			FileWriteLine($hFileOpen, @CRLF & " STEP 16 -- VERIFY MESSAGE IN PATIENT PORTAL AND REPLY THE MESSAGE" & @CRLF)
-			$medNameInConfig = StringReplace($arrConfig[33] & $time & "0"," ","")
-			$pharmacyNameInConfig = StringReplace($arrConfig[39]," ","")
+			$medNameInConfig = StringReplace($arrConfig[38] & $time & "0"," ","")
+			$pharmacyNameInConfig = StringReplace($arrConfig[44]," ","")
 			$messageSubject = StringReplace("Your Rx Refill Request"," ","")
 
 			$rxReplyJar = StringReplace($currentDir, "prescriptionrenewal", "jarfiles")  & "\verifyRxReply.jar"

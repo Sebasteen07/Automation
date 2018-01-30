@@ -44,7 +44,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement selectPhoneType;
 
-	@FindBy(how = How.XPATH, using = "/*[@id='preferredLocationId_field']/mf-locations/div/div[1]/span/span[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/div[1]/span/span[1]")
 	private WebElement primaryLocationElement;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='ui-select-choices-row-1-0']/span/div")

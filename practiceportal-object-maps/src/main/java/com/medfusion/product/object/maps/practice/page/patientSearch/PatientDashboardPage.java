@@ -76,7 +76,7 @@ public class PatientDashboardPage extends BasePageObject {
 	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td/a")
 	private WebElement ediPatientID1;
 	
-	@FindBy(xpath= "//td/b[text()='Patient Id for Centricity PM']/../../td[2]/input")
+	@FindBy(xpath= "//td/b[contains(text(),'Patient Id for')]/../../td[2]/input")
 	private WebElement txtexternalIDPM;
 	
 	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td[2]")
@@ -263,6 +263,14 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 120, externalID);
 		patientID = externalID.getAttribute("value").toString();
+		return patientID;
+	}
+	
+	public String getExternalPatientID() {
+		IHGUtil.PrintMethodName();
+		ediPatientID1.click();
+		IHGUtil.waitForElement(driver, 120, txtexternalIDPM);
+		patientID = txtexternalIDPM.getAttribute("value").toString();
 		return patientID;
 	}
 
