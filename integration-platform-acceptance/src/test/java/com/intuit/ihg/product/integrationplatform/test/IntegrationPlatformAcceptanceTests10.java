@@ -309,7 +309,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetDirectMessageStatus() throws Exception {
 
 		Log4jUtil.log("TestGetDirectMessageStatus covers DirectMessageStatus API with OAuth 1.0");
@@ -377,7 +377,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectSearch() throws Exception {
 
 		Log4jUtil.log("TestDirectSearch covers Post and of direct search API for Provider with OAuth 1.0");
@@ -391,7 +391,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectMessage() throws Exception {
 
 		Log4jUtil.log("TestDirectMessage covers Post of p2p message with OAuth 1.0");
