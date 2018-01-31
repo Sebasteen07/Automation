@@ -27,6 +27,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
@@ -66,7 +67,6 @@ import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.tests.CommonSteps;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -385,7 +385,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testMedicalRecordSummaries() throws Exception {
+	public void testHealthRecords() throws Exception {
 		logStep("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -407,6 +407,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Set filter to default position and check page elements");
 		recordSummaries.setFilterToDefaultPositionAndCheckElements();
+		
+		logStep("Go to Documents tab");
+		DocumentsPage documentsPage = recordSummaries.gotoOtherDocumentTab();
+		//assertTrue(documentsPage.areBasicPageElementsPresent());
+		
 	}
 
 	@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
