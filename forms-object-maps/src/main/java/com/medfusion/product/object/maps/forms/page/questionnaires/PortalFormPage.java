@@ -217,6 +217,12 @@ public abstract class PortalFormPage extends BasePageObject {
 		scrollToFooter();
 		while (previousPageButton.isDisplayed()) {
 		    javascriptClick(previousPageButton);
+		    try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			scrollToFooter(3);
 		}
 	}
