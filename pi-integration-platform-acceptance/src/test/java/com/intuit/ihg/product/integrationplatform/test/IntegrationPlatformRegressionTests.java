@@ -749,7 +749,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementEventForExistingPatient() throws Exception {
-		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner In Firefox Browser");
+		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
+		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		StatementEventData testData = new StatementEventData();
@@ -765,7 +766,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementEventForNewSelfPatient() throws Exception {
-		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner In Firefox Browser");
+		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
+		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Create patient");
