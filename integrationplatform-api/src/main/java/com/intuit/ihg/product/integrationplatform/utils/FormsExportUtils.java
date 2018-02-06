@@ -198,6 +198,7 @@ public class FormsExportUtils {
 				    Log4jUtil.log("File location is "+pdfFileLocation);
 				}
 				if(driver instanceof ChromeDriver) {
+					testData.responsePDF_FE = "./true/CCDExchangePdfBatch.pdf";
 					String home = System.getProperty("user.home");
 					String fileName = externalPatientID+"_General_Registration_and_Health_History_"+currentDate;
 					File file = new File(home+"/Downloads/" + fileName + ".pdf");
@@ -261,7 +262,7 @@ public class FormsExportUtils {
 				
 				Log4jUtil.log("Step 33: Save PDF file returned as response from RESTAPI " + since + " using ccdExchange API");
 				
-				RestUtils.setupHttpGetRequestExceptoAuthforPDF(GetPatientPDfURL + "?since=" + since + ",0", testData.responsePDF_FE);
+				RestUtils.setupHttpGetRequestExceptoAuthforPDF(GetPatientPDfURL , testData.responsePDF_FE);
 				Thread.sleep(4000);
 				
 				long timeStamp204 = System.currentTimeMillis();
@@ -272,6 +273,8 @@ public class FormsExportUtils {
 				
 				RestUtils.verifyPDFBatchDetails(testData.responsePath_CCD1_FE,externalPatientID,patientID);
 				Thread.sleep(2000);
+				Log4jUtil.log("portal pdf location "+pdfFileLocation);
+				Log4jUtil.log("ccdExhchangePdf api location "+testData.responsePDF_FE);
 				RestUtils.comparePDFfiles(pdfFileLocation, testData.responsePDF_FE);
 			}
 				
@@ -293,7 +296,13 @@ public class FormsExportUtils {
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
+			
 		}
+		
+		Log4jUtil.log("Step 35: Deleting downloaded file");
+		deleteFile(pdfFileLocation);
+		deleteFile(testData.responsePDF_FE);
+		
 	}
 	
 	public void fillForm(WebDriver driver,PatientFormsExportInfo testData,String firstName,Boolean isFormTypePreCheck) throws Exception {
@@ -478,4 +487,22 @@ public class FormsExportUtils {
 		changeValue = option.getText();
 		return changeValue;
 	}
+	
+	public Boolean deleteFile(String fileName)
+    {
+		Boolean isFileDeleted = false;
+    	try{
+    		File file = new File(fileName);
+    		if(file.delete()){
+    			Log4jUtil.log(file.getName() + " is deleted!");
+    			isFileDeleted = true;
+    		}else{
+    			Log4jUtil.log("Delete operation is failed.");
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return isFileDeleted;
+    }
+	
 }
