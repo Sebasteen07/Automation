@@ -17,14 +17,29 @@ $logPath = $commonStepsDir & "\ProcessLog_OfficeVisit_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 $arrDoctype = Call("openDoctypeFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of visits to be created")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+$docTypeAsthmaVisit = Call("readConfig","New Document (Asthma Visit)")
+
 ;Update servicesettings
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SOLUTIONS FOR OFFICE VISIT FLOW" & @CRLF)
-		Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 		Local $aData,$iRows,$iColumns
 		ConsoleWrite("Executing Query: " & $arrQuery[25] & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[25] & @CRLF)
@@ -92,7 +107,7 @@ $arrDoctype = Call("openDoctypeFile")
 
 		_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Office Visit Flow...." & @CRLF)
 	Exit
@@ -102,13 +117,13 @@ Else
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- LOGIN TO CPS" & @CRLF)
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
-	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+	Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 4 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+		Call("openPatientChart",$patientFirstName,$patientLastName)
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -116,20 +131,20 @@ Else
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Office Visit #" & $counter+1 & " of " & $arrConfig[56] & " office visits"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" & $counter+1 & " of " & $arrConfig[56] & " office visits" & @CRLF)
+				If($runFlag=="Data Generation") Then
+					ConsoleWrite("Creating Office Visit #" & $counter+1 & " of " & $dataGenerationCounter & " office visits"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" & $counter+1 & " of " & $dataGenerationCounter & " office visits" & @CRLF)
 				Else
 					ConsoleWrite("Creating Office Visit #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Office Visit #" &$counter+1 & @CRLF)
 				EndIf
 
-				Call("createNewDocument",$arrConfig[18],$arrConfig[15],$arrConfig[16])
-				Call("createAsthmaVisit",$arrConfig[15],$arrConfig[16])
+				Call("createNewDocument",$docTypeAsthmaVisit,$patientFirstName,$patientLastName)
+				Call("createAsthmaVisit",$patientFirstName,$patientLastName)
 
-				If($arrConfig[9]=="Data Generation") Then
+				If($runFlag=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[56]) Then
+					If($counter = $dataGenerationCounter) Then
 						ConsoleWrite("Exiting after data generation for Office Visit Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Office Visit Flow...." & @CRLF)
 						Exit
@@ -139,19 +154,19 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[56]
+					$counter = $dataGenerationCounter
 				EndIf
-			Until $counter = $arrConfig[56]
+			Until $counter = $dataGenerationCounter
 
 			ConsoleWrite("Office Visit created successfully...." & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Office Visit created successfully...." & @CRLF)
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
-		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $patientFirstName & "' and Last = '" & $patientLastName & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -202,7 +217,7 @@ Else
 				;Summary
 				ConsoleWrite("Verifying document summary in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying document summary in Document table" & @CRLF)
-				Call("assertData", $arrConfig[18], $aData[1][1])
+				Call("assertData", $docTypeAsthmaVisit, $aData[1][1])
 
 				;Doctype
 				ConsoleWrite("Verifying doctype in Document table" & @CRLF)

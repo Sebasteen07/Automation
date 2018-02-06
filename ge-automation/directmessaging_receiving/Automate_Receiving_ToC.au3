@@ -16,14 +16,41 @@ Call("deleteOldLogFiles",$commonStepsDir)
 $logPath = $commonStepsDir & "\ProcessLog_DirectMessaging_Receiving_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 $arrDoctype = Call("openDoctypeFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of order creation")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+$docTypeEmailMessage = Call("readConfig","New Document (Email Message)")
+
+$orderCategory1 =  Call("readConfig","Order Category1")
+$orderCategory2 =  Call("readConfig","Order Category2")
+$orderAuthPvdr =  Call("readConfig","Authorizing Provider for TOC Flow (Lastname,Firstname)")
+$orderRefPvdr =  Call("readConfig","Referring provider for TOC flow (Lastname,Firstname)")
+$orderInstructions =  Call("readConfig","Instructions for ToC")
+$orderReferalReason =  Call("readConfig","Reason for referal")
+$orderPatientLetterSubject =  Call("readConfig","Letter to Patient Subject (TOC)")
+$orderPatientLetter =  Call("readConfig","Letter to Patient(TOC)")
+$orderToAddress =  Call("readConfig","Receiving ToC (to address)")
+$orderFromAddress =  Call("readConfig","Sending/Receiving ToC (from address)")
+$orderDownloadLocation =  Call("readConfig","ToC Download Location")
+
 ;Update servicesettings for TOC flow
 		FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR DIRECT MESSAGING - RECEIVING TOC FLOW" & @CRLF)
-			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns
 			ConsoleWrite("Executing Query: " & $arrQuery[26] & @CRLF)
@@ -59,7 +86,7 @@ $arrDoctype = Call("openDoctypeFile")
 
 			_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Direct Messaging - Receiving Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Direct Messaging - Receiving Flow...." & @CRLF)
 	Exit
@@ -69,13 +96,13 @@ Else
 	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- LOGIN TO CPS" & @CRLF)
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
-	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+	Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+		Call("openPatientChart",$patientFirstName,$patientLastName)
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -83,25 +110,25 @@ Else
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[53] & " orders"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[53] & " orders" & @CRLF)
+				If($runFlag=="Data Generation") Then
+					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $dataGenerationCounter & " orders"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $dataGenerationCounter & " orders" & @CRLF)
 				Else
 					ConsoleWrite("Creating Order #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" &$counter+1 & @CRLF)
 				EndIf
 
-				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
+				Call("createNewDocument",$docTypeEmailMessage,$patientFirstName,$patientLastName)
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[55],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25],$arrConfig[27],$arrConfig[28])
+					Call("createOrder",$orderCategory2,$orderAuthPvdr,$orderRefPvdr,$patientFirstName,$patientLastName,$orderPatientLetter,$orderInstructions,$orderReferalReason)
 
 				Else
-					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25],$arrConfig[27],$arrConfig[28])
+					Call("createOrder",$orderCategory1,$orderAuthPvdr,$orderRefPvdr,$patientFirstName,$patientLastName,$orderPatientLetter,$orderInstructions,$orderReferalReason)
 				EndIf
 
-				If($arrConfig[9]=="Data Generation") Then
+				If($runFlag=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[53]) Then
+					If($counter = $dataGenerationCounter) Then
 						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
@@ -111,20 +138,20 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[53]
+					$counter = $dataGenerationCounter
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[53]
+			Until $counter = $dataGenerationCounter
 
 			Sleep(5000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- GET PATIENT DETAILS" & @CRLF)
 
-			Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $patientFirstName & "' and Last = '" & $patientLastName & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -144,8 +171,8 @@ Else
 			EndIf
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- GET LAST INCOMINGTOCID FROM CUSMEDFUSIONINCOMINGTOCHEADER TABLE" & @CRLF)
-			$newQuery = StringReplace($arrQuery[60],"{TOADDRESS}",$arrConfig[29])
-			$newQuery = StringReplace($newQuery,"{FROMADDRESS}",$arrConfig[30])
+			$newQuery = StringReplace($arrQuery[60],"{TOADDRESS}",$orderToAddress)
+			$newQuery = StringReplace($newQuery,"{FROMADDRESS}",$orderFromAddress)
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -163,8 +190,8 @@ Else
 				Exit
 			EndIf
 
-			ConsoleWrite("Wait of 6 minutes for ToC to be posted successfully to " & $arrConfig[29] & @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 6 minutes for ToC to be posted successfully to " & $arrConfig[29] & @CRLF)
+			ConsoleWrite("Wait of 6 minutes for ToC to be posted successfully to " & $orderToAddress & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 6 minutes for ToC to be posted successfully to " & $orderToAddress & @CRLF)
 			Sleep(360000)
 
 			ConsoleWrite("Verify Incoming ToC arrived from Medfusion" & @CRLF)
@@ -185,12 +212,12 @@ Else
 						;From SES Address
 						ConsoleWrite("Verifying From SES Address in cusMedfusionIncomingTOCHeader table" & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying From SES Address in cusMedfusionIncomingTOCHeader table" & @CRLF)
-						Call("assertData",$arrConfig[30], $aData[1][1])
+						Call("assertData",$orderFromAddress, $aData[1][1])
 
 						;To SES Address
 						ConsoleWrite("Verifying To SES Address in cusMedfusionIncomingTOCHeader table" & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying To SES Address in cusMedfusionIncomingTOCHeader table" & @CRLF)
-						Call("assertData",$arrConfig[29], $aData[1][2])
+						Call("assertData",$orderToAddress, $aData[1][2])
 
 						;Date received
 						$dateReceived = $aData[1][3]
@@ -212,8 +239,8 @@ Else
 							FileWriteLine($hFileOpen, _NowCalc() & "  -- 3 attemptsto retrieve ToC failed -- FAILED" & @CRLF)
 							Exit
 						EndIf
-						ConsoleWrite("Wait of 2 minutes - next WebService Poll for successful ToC retrieval for " & $arrConfig[29] & @CRLF)
-						FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 2 minutes - next WebService Poll for successful ToC retrieval for " & $arrConfig[29] & @CRLF)
+						ConsoleWrite("Wait of 2 minutes - next WebService Poll for successful ToC retrieval for " & $orderToAddress & @CRLF)
+						FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 2 minutes - next WebService Poll for successful ToC retrieval for " & $orderToAddress & @CRLF)
 						Sleep(120000)
 					EndIf
 
@@ -321,13 +348,13 @@ Else
 			FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY INCOMING TOC IN DIRECT MESSAGING INBOX" & @CRLF)
 				Call("openMFDashboard")
 				Call("openMessageLink","Direct Messaging")
-				Call("verifyIncomingToCInInbox", $dateInUI, $arrConfig[30], $arrConfig[29], $subject, $body, $attachmentName)
+				Call("verifyIncomingToCInInbox", $dateInUI, $orderFromAddress, $orderToAddress, $subject, $body, $attachmentName)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 12 -- IMPORT ToC TO PATIENT CHART" & @CRLF)
-				Call("importToCToChart",$attachmentName,$arrConfig[15])
+				Call("importToCToChart",$attachmentName,$patientFirstName)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 13 -- DOWNLOAD ToC" & @CRLF)
-				Call("downloadToC",$attachmentName,$arrConfig[31],$arrConfig[15],$arrConfig[16],$arrConfig[28])
+				Call("downloadToC",$attachmentName,$orderDownloadLocation,$patientFirstName,$patientLastName,$orderReferalReason)
 
 			ConsoleWrite("Wait of 2.5 minutes for imported ToC to appear in Chart" & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Wait of 2.5 minutes for imported ToC to appear in Chart" & @CRLF)
@@ -348,7 +375,7 @@ Else
 				;Imported Document Summary
 				ConsoleWrite("Verifying Summary of imported document in Document table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Summary of imported document in Document table" & @CRLF)
-				Call("assertData",$arrConfig[28], $aData[1][1])
+				Call("assertData",$orderReferalReason, $aData[1][1])
 
 				;Imported Document Doctype
 				ConsoleWrite("Verifying Doctype of imported document in Document table" & @CRLF)
@@ -409,8 +436,8 @@ Else
 			WEnd
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 16 -- VERIFY READ STATUS OF INCOMING TOC IN DATABASE" & @CRLF)
-			$newQuery = StringReplace($arrQuery[60],"{TOADDRESS}",$arrConfig[29])
-			$newQuery = StringReplace($newQuery,"{FROMADDRESS}",$arrConfig[30])
+			$newQuery = StringReplace($arrQuery[60],"{TOADDRESS}",$orderToAddress)
+			$newQuery = StringReplace($newQuery,"{FROMADDRESS}",$orderFromAddress)
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
