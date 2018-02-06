@@ -1,140 +1,145 @@
 #SES Login Page
-SES Login:-UserName
-SES Password:-Password
-SES Sign In button:-//*[@id="sesMainContentWrapper"]/div[1]/div[1]/div/form/div[4]/button
-SES Select email dropdown:-selectedEmailDropDown
-SES Message List Subject:-//*[contains(text(),'mailSubject')]
-SES From Provider:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[1]/span
-SES To Provider:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[3]/span
-SES Message Body:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[6]/div[3]/div
-SES Attachment Name:-//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[5]/ul/li/span[2]
+SES Login=UserName
+SES Password=Password
+SES Sign In button=//*[@id="sesMainContentWrapper"]/div[1]/div[1]/div/form/div[4]/button
+SES Select email dropdown=selectedEmailDropDown
+SES Message List Subject=//*[contains(text(),'mailSubject')]
+SES From Provider=//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[1]/span
+SES To Provider=//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[4]/div[3]/span[3]/span
+SES Message Body=//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[6]/div[3]/div
+SES Attachment Name=//*[@id='layout_3pane']/div/div[5]/div/div[3]/div[5]/ul/li/span[2]
+SES Mail Dropdown=//*[@id="navbar"]/li[1]/a
+SES WebMail Option=Webmail
 
 #Patient Portal Login Page
-Patient Portal Login:-userid
-Patient Portal Password:-password
-Patient Portal SignIn:-signin_btn
-Patient Portal CreateNewPatient Button:-create_btn
-Patient Portal SignOut Button:-signout
+Patient Portal Login=userid
+Patient Portal Password=password
+Patient Portal SignIn=signin_btn
+Patient Portal CreateNewPatient Button=create_btn
+Patient Portal SignOut Button=signout
 
 #Patient Portal Create New Patient Page
-New Account First Name:-firstName
-New Account Last Name:-lastName
-New Account Email:-email
-New Account BirthMonth:-birthDate_month
-New Account BirthDay:-birthDate_day
-New Account BirthYear:-birthDate_year
-New Account GenderMale:-gender_male
-New Account Address1:-address1
-New Account Address2:-address2
-New Account City:-city
-New Account State:-state
-New Account State Dropdown:-ui-select-choices-row-0-0
-New Account ZipCode:-postalCode
-New Account ContinueButton:-nextStep
+New Account First Name=firstName
+New Account Last Name=lastName
+New Account Email=email
+New Account BirthMonth=birthDate_month
+New Account BirthDay=birthDate_day
+New Account BirthYear=birthDate_year
+New Account GenderMale=gender_male
+New Account Address1=address1
+New Account Address2=address2
+New Account City=city
+New Account State=//*[@id="state_field"]/mf-us-states/div
+New Account State Dropdown=ui-select-choices-row-0-0
+New Account ZipCode=postalCode
+New Account ContinueButton=nextStep
 
 #Patient Portal New Patient Security Details Page
-Security Details UserName:-userid
-Security Details Password:-password
-Security Details Secret Question:-secretQuestion
-Security Details Secret Answer:-secretAnswer
-Security Details Phone1:-phone1
-Security Details Phone2:-phone2
-Security Details Phone3:-phone3
-Security Details Preferred Location:-preferredLocationId
-Security Details Preferred Location Dropdown:-ui-select-choices-row-1-0
+Security Details UserName=userid
+Security Details Password=password
+Security Details Secret Question=secretQuestion
+Security Details Secret Answer=secretAnswer
+Security Details Phone1=phone1
+Security Details Phone2=phone2
+Security Details Phone3=phone3
+Security Details Preferred Location=preferredLocationId
+Security Details Preferred Location Dropdown=ui-select-choices-row-1-0
 
 #Patient Portal New Patient Security Details Statement Preference
-Security Details Statement Preference Electronic:-paymentPreference_Electronic
-Security Details Statement Preference Update Button:-updateMissingInfoButton
+Security Details Statement Preference Electronic=paymentPreference_Electronic
+Security Details Statement Preference Update Button=updateMissingInfoButton
 
 #Patient Portal Home Page
-Portal Messaging feature:-feature_messaging
-Portal Appointments feature:-feature_appointment_request
-Portal Appointment Send Confirmation:-//*[contains(text(),'Thank you')]
-Portal Ask A Staff Feature:-feature_ask_a_practitioner
-Portal Ask A Staff Pop Up Question1:-//*[@id="askAQuestionLightBox"]/div/div/div[2]/div/a
-Portal Prescription Renewal feature:-feature_rx_renewal
-Portal Health Forms Feature:-feature_discrete_forms
+Portal Messaging feature=feature_messaging
+Portal Appointments feature=feature_appointment_request
+Portal Appointment Send Confirmation=//*[contains(text(),'Thank you')]
+Portal Ask A Staff Feature=feature_ask_a_practitioner
+Portal Ask A Staff Pop Up Question1=//*[@id="askAQuestionLightBox"]/div/div/div[2]/div/a
+Portal Prescription Renewal feature=feature_rx_renewal
+Portal Health Forms Feature=feature_discrete_forms
 
 #Patient Portal Message Page
-Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
-Portal Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
-Portal Email Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]
-Portal Message Body Rx Details:-//*[@id="messageContainer"]/div[3]/div[2]/div[3]/div
-Portal Message Time:-//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]
-CCD Link:-View health data
-Portal Message Reply Button:-replyButton
-Portal Message Reply Body:-replyBody
-Portal Message Send Button:-//button[contains(text(),'Send')]
-Portal Message Send Confirmation:-//*[contains(text(),'Your reply was successfully sent')]
+Portal Message Subject=//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
+Portal Message Body=//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
+Portal Email Message Body=//*[@id='messageContainer']/div[3]/div[2]/div[2]
+Portal Message Body Rx Details=//*[@id="messageContainer"]/div[3]/div[2]/div[3]/div
+Portal Message Time=//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]
+CCD Link=View health data
+Portal Message Reply Button=replyButton
+Portal Message Reply Body=replyBody
+Portal Message Send Button=//button[contains(text(),'Send')]
+Portal Message Send Confirmation=//*[contains(text(),'Your reply was successfully sent')]
 
 #Appointments Select Provider/ Location Page
-Appointments Provider Show All Button:-showall
-Appointments Select First Provider:-//*[@id="locationProviderResultList"]/ol/li/ul/li/label/span[1]
-Appointments Provider Page Continue button:-continue_button
+Appointments Provider Show All Button=showall
+Appointments Select First Provider=//*[@id="locationProviderResultList"]/ol/li/ul/li/label/span[1]
+Appointments Provider Page Continue button=continue_button
 
 #Appointments Details Page
-Appointment Reason:-apptreason
-Request Appointment Button:-continue_button
+Appointment Reason=apptreason
+Request Appointment Button=continue_button
 
 #Ask A Staff Details Page
-AAS Subject:-//*[@id="form"]/div[4]/div/div[2]/input
-AAS Body:-//*[@id="form"]/div[5]/div/div[2]/textarea
-AAS Body Label:-//*[@id="form"]/div[5]/div/div[1]/label
-AAS Submit Button:-//*[@id="form"]/div[7]/div[2]/input
-AAS Submit Button(No Provider):-//*[@id="form"]/div[6]/div[2]/input
-AAS Location Dropdown:-//*[@id="form"]/div[2]/div/div[2]/select
-AAS Provider Dropdown:-//*[@id="form"]/div[3]/div/div[2]/select
+AAS Subject=//*[@id="form"]/div[4]/div/div[2]/input
+AAS Body=//*[@id="form"]/div[5]/div/div[2]/textarea
+AAS Body Label=//*[@id="form"]/div[5]/div/div[1]/label
+AAS Submit Button=//*[@id="form"]/div[7]/div[2]/input
+AAS Submit Button(No Provider)=//*[@id="form"]/div[6]/div[2]/input
+AAS Location Dropdown=//*[@id="form"]/div[2]/div/div[2]/select
+AAS Provider Dropdown=//*[@id="form"]/div[3]/div/div[2]/select
 
 #Ask A Staff Confirm Page
-AAS Confirm Button:-//*[@id="form"]/div[2]/div/input
-AAS Confirmation Message:-//*[@id="pageContent"]/div/table/tbody/tr/td/div/p[1]
+AAS Confirm Button=//*[@id="form"]/div[2]/div/input
+AAS Confirmation Message=//*[@id="pageContent"]/div/table/tbody/tr/td/div/p[1]
 
 #Prescription Renewal Request Location / Provider Page
-Rx Location Select:-//*[@id="pageContent"]/div/div[4]/div[2]/select
-Rx Provider Select:-//*[@id="pageContent"]/div/div[5]/div[2]/select
-Rx Page1 Continue Button:-//*[@id="continueF"]/div[2]/div[2]/input
+Rx Location Select=//*[@id="pageContent"]/div/div[4]/div[2]/select
+Rx Provider Select=//*[@id="pageContent"]/div/div[5]/div[2]/select
+Rx Page1 Continue Button=//*[@id="continueF"]/div[2]/div[2]/input
 
 #Prescription Renewal Request Details Page
-Rx Request Medication Name:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[1]/div/div[2]/input
-Rx Request Dosage:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[2]/div/div[2]/input
-Rx Request Quantity:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[3]/div/div[2]/input
-Rx Request Refills:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[4]/div/div[2]/input
-Rx Request Prescription Number:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[5]/div/div[2]/input
-Rx Request Notes:-//*[@id="medicationForm"]/div[2]/div/div[3]/div/div[2]/textarea
-Rx Page2 Continue Button:-//*[@id="rxrenewalform"]/div[14]/div[2]/input
-Rx Add Pharmacy Name:-pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyNameWrapper:_body:pharmacyName
-Rx Add Pharmacy Phone:-pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyPhoneWrapper:_body:pharmacyPhone
+Rx Request Medication Name=//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[1]/div/div[2]/input
+Rx Request Dosage=//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[2]/div/div[2]/input
+Rx Request Quantity=//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[3]/div/div[2]/input
+Rx Request Refills=//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[4]/div/div[2]/input
+Rx Request Prescription Number=//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[5]/div/div[2]/input
+Rx Request Notes=//*[@id="medicationForm"]/div[2]/div/div[3]/div/div[2]/textarea
+Rx Page2 Continue Button=//*[@id="rxrenewalform"]/div[14]/div[2]/input
+Rx Add Pharmacy Name=pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyNameWrapper:_body:pharmacyName
+Rx Add Pharmacy Phone=pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyPhoneWrapper:_body:pharmacyPhone
 
 #Prescription Renewal Confirmation Page
-Rx Request Confirm Button:-//*[@id="rxrenewalconfirmationform"]/div[6]/input
-Rx Request Confirmation Message:-//*[@id="pageContent"]/div/div[4]/p[1]
+Rx Request Confirm Button=//*[@id="rxrenewalconfirmationform"]/div[6]/input
+Rx Request Confirmation Message=//*[@id="pageContent"]/div/div[4]/p[1]
 
 #CCD Viewer
-CCD Viewer Download PDF:-savePdf
-CCD Viewer Send CCD to non-secure email:-non_secured_share
-CCD Viewer Email Address:-emailAddr
-CCD Viewer Confirm Email Address:-emailAddrConfirm
-CCD Viewer Send Button:-unsecureSubmitButton
-CCD Viewer Confirmation Message for sending Email:-//*[@id="email_share"]/form/div[3]/span
-CCD Viewer Close Email Box:-//*[@id="email_share"]/h3/a
-Close CCD Viewer:-closeCcd
+CCD Viewer Download PDF=savePdf
+CCD Viewer Send CCD to non-secure email=non_secured_share
+CCD Viewer Email Address=emailAddr
+CCD Viewer Confirm Email Address=emailAddrConfirm
+CCD Viewer Send Button=unsecureSubmitButton
+CCD Viewer Confirmation Message for sending Email=//*[@id="email_share"]/form/div[3]/span
+CCD Viewer Close Email Box=//*[@id="email_share"]/h3/a
+Close CCD Viewer=closeCcd
 
 #Forms Selection Page
-Forms Location Select:-//*[@id="filtersForm"]/table[2]/tbody/tr[2]/td[2]/select
-Forms Select Location Button:-//*[@id="filtersForm"]/div[2]/div/input
+Forms Selection Dropdown Label=//*[@id="filtersForm"]/table[2]/tbody/tr[2]/td[1]
+Forms Location Select=//*[@id="filtersForm"]/table[2]/tbody/tr[2]/td[2]/select
+Forms Select Location Button=//*[@id="filtersForm"]/div[2]/div/input
+Forms Provider Select=//*[@id="providerFilter_row"]/td[2]/select
+Forms Select Provider Button=//*[@id="filtersForm"]/div[2]/div/input
 
 #Forms Details Page
-Forms Welcome Continue Button:-continueWelcomePageButton
-Forms Next Page Button:-nextPageButton
-Forms Language Dropdown:-language
-Forms No Medication:-idonot_medications
-Forms Medication Name:-medications_other_field_autocomplete
-Forms Medication Frequency:-medications_other_field_frequency
-Forms Medication Frequency Type:-medications_other_field_frequency_type
-Forms No Allergies:-idonot_food_allergies
-Forms Peanuts Allergies:-peanuts_allergy_food
-Forms Eggs Allergies:-eggs_allergy_food
-Forms Seafood Allergies:-seafood_allergy_food
-Forms Completion Message:-section4
-Forms Submit Button:-//*[@id="section4"]/section/div[2]/a
+Forms Welcome Continue Button=continueWelcomePageButton
+Forms Next Page Button=nextPageButton
+Forms Language Dropdown=language
+Forms No Medication=idonot_medications
+Forms Medication Name=medications_other_field_autocomplete
+Forms Medication Frequency=medications_other_field_frequency
+Forms Medication Frequency Type=medications_other_field_frequency_type
+Forms No Allergies=idonot_food_allergies
+Forms Peanuts Allergies=peanuts_allergy_food
+Forms Eggs Allergies=eggs_allergy_food
+Forms Seafood Allergies=seafood_allergy_food
+Forms Completion Message=section4
+Forms Submit Button=//*[@id="section4"]/section/div[2]/a
