@@ -18,8 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,8 +33,10 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.practice.api.pojo.Practice;
 
@@ -52,7 +53,7 @@ public class StatementEventUtils {
 	public static final String PracticeResourceId = "PracticeResourceId";
 	public static final String RESOURCE_TYPE = "EStatement";
 	
-	public void generateViewEvent(WebDriver driver,StatementEventData testData) throws Exception {
+	public void generateViewEvent(WebDriver driver,StatementEventData testData, char type) throws Exception {
 		
 		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
 		String statement =SMPObj.getStatementsMessagePayload(testData);
@@ -99,23 +100,17 @@ public class StatementEventUtils {
 			Log4jUtil.log("step 8:Set Patient Search Fields");
 			pPatientSearchPage.searchForPatientInPatientSearch(testData.FirstName, testData.LastName);
 
-			Log4jUtil.log("step 9:Verify the Search Result");
-			IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
-			
-			String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
-			driver.findElement(By.xpath(searchResult)).click();
-			String editPatientD =null;
-			editPatientD = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[5]/td[2]/a";
+			Log4jUtil.log("Step 12: Click on Patient");
+			PatientDashboardPage patientPage = pPatientSearchPage.clickOnPatient(testData.FirstName, testData.LastName);
 
-			driver.findElement(By.xpath(editPatientD)).click();
-			Thread.sleep(3000);
-			String externalID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
-			String patientExternalID = driver.findElement(By.xpath(externalID)).getAttribute("value");
-			
-			Log4jUtil.log("On Demand PatientID "+patientExternalID);	
+			Thread.sleep(12000);
+			Log4jUtil.log("Step 13: Get External Patient ID");
+			String externalPatientID=patientPage.getExternalPatientID();
+
+			Log4jUtil.log("On Demand PatientID "+externalPatientID);	
 			Log4jUtil.log("Expected patient ID "+SMPObj.patientID);
 			
-			Assert.assertEquals(SMPObj.patientID, patientExternalID, "Patient External ID Matched !");
+			Assert.assertEquals(SMPObj.patientID, externalPatientID, "Patient External ID Matched !");
 			pPracticeHomePage.logOut();
 		}
 		
@@ -130,81 +125,38 @@ public class StatementEventUtils {
 		Log4jUtil.log("Click on messages solution");
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		Thread.sleep(8000);
-		WebDriverWait wait = new WebDriverWait(driver, 80);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='messageActions']")));
-		Assert.assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
-		
-		Log4jUtil.log("Expect an estatement message");
-		Assert.assertTrue(jalapenoMessagesPage.isMessageFromEstatementsDisplayed(driver));
-		
-		WebElement messageTimeStamp = driver.findElement(By.xpath("//*[@id=\"messageContainer\"]/div[3]/div[2]/div[1]/span[4]"));
-		Log4jUtil.log("messageTimeStamp : "+messageTimeStamp.getText());
-		
+
 		long timeStamp = System.currentTimeMillis();
 		
-		Log4jUtil.log("Statement Link text");
-		jalapenoMessagesPage.openPDFStatement();
-		
-		List<WebElement> frameList=driver.findElements(By.tagName("iframe"));
-		Log4jUtil.log("iFrame "+frameList.get(1).getAttribute("id"));
-		
-		driver.switchTo().frame(frameList.get(1).getAttribute("id"));
-		Log4jUtil.log("Frame Title is "+driver.getTitle());
-		
-		Log4jUtil.log("Wait for pdf container to load.");
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id,'pageContainer1')]")));
-		
-		//This is temporary Need to create a Page Object for PDF Viewer.
-		WebElement amountDue = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[7]"));
-		WebElement paymentDueDate = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[6]"));
-		WebElement accountNumber = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[5]"));
-		WebElement statementComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[13]"));
-		WebElement dunningComment;
-		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
-			dunningComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[39]"));
-		} else {
-			dunningComment = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[34]"));
-		}
-		WebElement practiceName = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[11]"));
-		WebElement totalCharge = driver.findElement(By.xpath("//*[contains(@id,'pageContainer1')]/div[2]/div[16]"));
-		
-		Log4jUtil.log(amountDue.isDisplayed()+" Expected amount Due is :- "+amountDue.getText());	
-		Log4jUtil.log("amountDue: "+SMPObj.amountDue);
-		Log4jUtil.log("portal PaymentDueDate: "+paymentDueDate.getText()+" and DueDate in payload "+SMPObj.paymentPortalDueDate);
-		Log4jUtil.log("billAccountNumber: "+accountNumber.getText());
-		Log4jUtil.log("StatementComment: "+statementComment.getText());
-		Log4jUtil.log("DunningMessage: "+dunningComment.getText());
-		Log4jUtil.log("practiceName: "+practiceName.getText());
-		Log4jUtil.log("totalCharge: "+totalCharge.getText());
-		
-		Assert.assertEquals(amountDue.getText(), SMPObj.amountDue);
-		Assert.assertEquals(paymentDueDate.getText(), SMPObj.paymentPortalDueDate);
-		Assert.assertEquals(accountNumber.getText(), SMPObj.billAccountNumber);
-		Assert.assertEquals(statementComment.getText(), testData.StatementComment);
-		Assert.assertEquals(dunningComment.getText(), testData.DunningMessage);
-		Assert.assertEquals(totalCharge.getText(), "$"+testData.TotalCharges);
-		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
-			Assert.assertEquals(practiceName.getText(), testData.PracticeName);
-		} else {
-			testData.PracticeName = testData.PracticeName.substring(0, 17) + "& " + testData.PracticeName.substring(17, testData.PracticeName.length());
-			Assert.assertEquals(practiceName.getText(), testData.PracticeName);
-		}
+		JalapenoPayBillsStatementPdfPage statementPdfPageObject = jalapenoMessagesPage.openPDFStatement();
+		Thread.sleep(2000);
+		if(driver instanceof FirefoxDriver) {
+			List<WebElement> frameList=driver.findElements(By.tagName("iframe"));
+			Log4jUtil.log("iFrame "+frameList.get(1).getAttribute("id"));
 			
-		
+			driver.switchTo().frame(frameList.get(1).getAttribute("id"));
+			Log4jUtil.log("Frame Title is "+driver.getTitle());
+	
+			Log4jUtil.log("account number "+statementPdfPageObject.getAccountNumber());
+			Log4jUtil.log("practice Name "+statementPdfPageObject.getPracticeName());
+			Log4jUtil.log("Amount Due "+statementPdfPageObject.getAmountDue());
+			Log4jUtil.log("Due Date "+statementPdfPageObject.getDueDate());
+			Log4jUtil.log("TotalCharges "+statementPdfPageObject.getTotalCharges());
+			
+			Assert.assertEquals(statementPdfPageObject.getAmountDue(), SMPObj.amountDue);
+			Assert.assertEquals(statementPdfPageObject.getDueDate(), SMPObj.paymentPortalDueDate);
+			Assert.assertEquals(statementPdfPageObject.getAccountNumber(), SMPObj.billAccountNumber);
+			Assert.assertEquals(statementPdfPageObject.getPracticeName(), testData.PracticeName);
+		}
 		driver.switchTo().defaultContent();
 	    long transitTimeStamp1 = System.currentTimeMillis();
 	    Thread.sleep(8000);
-	    JalapenoPayBillsMakePaymentPage jalapenoMenuObj = new JalapenoPayBillsMakePaymentPage(driver);
-	    jalapenoHomePage.clickOnMenuPayBills();
-	    Thread.sleep(2000);
-	   
-	    //WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"statementPanel\"]/div/div/div[1]/table/tfoot/tr/td[2]"));
-	    WebElement paymentDue = driver.findElement(By.xpath("//*[@id=\"balanceDue\"]/span[1]/strong"));
-	    Log4jUtil.log("due Amount "+paymentDue.getText());
-	   
-	    //long transitTimeStamp2 = System.currentTimeMillis();
-	    jalapenoMenuObj.gotoStatementDetail();
-	   
+	    JalapenoPayBillsMakePaymentPage makebillpayments= jalapenoHomePage.clickOnMenuPayBills();	
+	    
+	    Thread.sleep(3000);
+	    if(type=='E') {
+	    	makebillpayments.gotoStatementDetail();
+	    }
 	    Thread.sleep(3000);
 	   
 	    driver.switchTo().defaultContent();

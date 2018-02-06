@@ -14,6 +14,7 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
 public class JalapenoMessagesPage extends MedfusionPage {
@@ -171,8 +172,9 @@ public class JalapenoMessagesPage extends MedfusionPage {
 		return lableSent.getText().toString();
 	}
 	
-	public void openPDFStatement() {
+	public JalapenoPayBillsStatementPdfPage openPDFStatement() {
 		log("Statement: "+statementLinkText.getText());
 		statementLinkText.click();
+		return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
 	}
 }

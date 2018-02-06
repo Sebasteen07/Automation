@@ -91,6 +91,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	}
 	public void setStreetAddress_20() throws Exception {
 		PortalUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, address);
 		address.clear();
 		address.sendKeys(IHGUtil.createRandomStreet());
 	}
@@ -278,6 +279,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 			WebElement w1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
 			driver.switchTo().frame(w1);
 		}
+		
 		setStreetAddress_20();
 			setCity_20();
 			setState_20(state1);
