@@ -143,3 +143,68 @@ Forms Eggs Allergies=eggs_allergy_food
 Forms Seafood Allergies=seafood_allergy_food
 Forms Completion Message=section4
 Forms Submit Button=//*[@id="section4"]/section/div[2]/a
+
+#Precheck Verify Patient Page
+Precheck Patient ZipCode=zipCode
+Precheck Patient DOB Month=month
+Precheck Patient DOB Date=day
+Precheck Patient DOB Year=year
+Precheck Login Button=loginButton
+Precheck Appointments List=//*[@id="appointments"]/ul[1]/li
+Precheck Demographics Link=demographicsHeader
+Precheck Insurance Link=insuranceHeader
+
+#Precheck Demographics Page
+Precheck Patient First Name=firstName
+Precheck Patient Middle Name=middleName
+Precheck Patient Last Name=lastName
+Precheck Patient DOB=dob
+Precheck Patient Street=street
+Precheck Patient Street2=street2
+Precheck Patient City=city
+Precheck Patient State=state
+Precheck Patient ZipCode=zip
+Precheck Patient Phone=phone
+Precheck Patient Email=email
+Precheck Patient Pharmacy=preferredPharmacyName
+Precheck Patient Pharmacy Phone=preferredPharmacyPhoneNumber
+Precheck Demographics Confirm Button=demographicsConfirmButton
+
+#Precheck Insurance Page
+Precheck Insurance Details Button=//*[@id="body"]/div/div[2]/button[2]
+Precheck Insurance Photo Button=//*[@id="body"]/div/div[2]/button[1]
+
+#Precheck Insurance Details Page
+Precheck Insurance Confirm Button=insuranceConfirmButton
+Precheck Primary Insurance Tab=//*[@id="insuranceTabs"]/li[1]
+Precheck Primary Insurance Name=insuranceNameprimary
+Precheck Primary Insurance Subscriber Name=memberNameprimary
+Precheck Primary Insurance Subscriber Id=memberIdprimary
+Precheck Primary Insurance Group Id=groupNumberprimary
+Precheck Primary Insurance Date Issued=dateIssuedprimary
+Precheck Primary Insurance Phone=claimsPhoneNumberprimary
+
+Precheck Secondary Insurance Tab=//*[@id="insuranceTabs"]/li[2]
+Precheck Secondary Insurance Name=insuranceNamesecondary
+Precheck Secondary Insurance Subscriber Name=memberNamesecondary
+Precheck Secondary Insurance Subscriber Id=memberIdsecondary
+Precheck Secondary Insurance Group Id=groupNumbersecondary
+Precheck Secondary Insurance Date Issued=dateIssuedsecondary
+Precheck Secondary Insurance Phone=claimsPhoneNumbersecondary
+
+Precheck Tertiary Insurance Tab=//*[@id="insuranceTabs"]/li[3]
+Precheck Tertiary Insurance Name=insuranceNametertiary
+Precheck Tertiary Insurance Subscriber Name=memberNametertiary
+Precheck Tertiary Insurance Subscriber Id=memberIdtertiary
+Precheck Tertiary Insurance Group Id=groupNumbertertiary
+Precheck Tertiary Insurance Date Issued=dateIssuedtertiary
+Precheck Tertiary Insurance Phone=claimsPhoneNumbertertiary
+
+Precheck Primary Insurance Front Image=//*[@id='insuranceFormWrapper']/form/div[1]/div/data-mf-camera[1]/label/input
+Precheck Primary Insurance Back Image=//*[@id='insuranceFormWrapper']/form/div[1]/div/data-mf-camera[2]/label/input
+
+Precheck Secondary Insurance Front Image=cardImageFrontsecondary
+Precheck Secondary Insurance Back Image=cardImageBacksecondary
+
+Precheck Tertiary Insurance Front Image=cardImageFronttertiary
+Precheck Tertiary Insurance Back Image=cardImageBacktertiary

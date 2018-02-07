@@ -64,10 +64,17 @@ Discrete Form Allergies OBS Term=30DY1STWAKNG
 [------Precheck Appointments------]
 Precheck Facility Name=Anesthesia Hospital
 Precheck Resource Name=Resource1
-Precheck Appointment Date(mm/dd/yyyy)=01/31/2018
+Precheck Appointment Date(mm/dd/yyyy)=02/16/2018
 Precheck Responsible provider=Brown, Jennifer J.
-Precheck Appointment Start Time=11:00 AM
-Precheck Appointment Stop Time(As per slot)=11:15 AM
+Precheck Appointment Start Time=11:43 AM
+Precheck Appointment Stop Time(As per slot)=11:53 AM
+Precheck Add Demographics=No
+Precheck Add Insurance Details=No
+Precheck Add Insurance Images=Yes
+Precheck Primary Insurance=Yes
+Precheck Secondary Insurance=Yes
+Precheck Tertiary Insurance=No
+Precheck Insurance Images Path=E:\Jar_Test\createjar\Images
 [------Data Generation------]
 Number of order creation=2
 Number of TOC Creation=3
