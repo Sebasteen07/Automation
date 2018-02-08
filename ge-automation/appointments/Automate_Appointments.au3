@@ -17,14 +17,28 @@ $logPath = $commonStepsDir & "\ProcessLog_Appointments_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 $arrDoctype = Call("openDoctypeFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of appointments to be created from Patient Portal")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+
 ;Update servicesettings
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR APPOINTMENTS FLOW" & @CRLF)
-	Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+	Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns
 			ConsoleWrite("Executing Query: " & $arrQuery[40] & @CRLF)
@@ -59,7 +73,7 @@ $arrDoctype = Call("openDoctypeFile")
 			EndIf
 			_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Appointments Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Appointments Flow...." & @CRLF)
 	Exit
@@ -72,9 +86,9 @@ Else
  	$createAppointmentJar = StringReplace($currentDir, "appointments", "jarfiles")  & "\createAppointments.jar"
 	$counter = 0
 	Do
-		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[59] & " appointments"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[59] & " appointments" & @CRLF)
+		If($runFlag=="Data Generation") Then
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $dataGenerationCounter & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $dataGenerationCounter & " appointments" & @CRLF)
 		Else
 			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
@@ -94,9 +108,9 @@ Else
 				Exit
 			EndIf
 
-		If($arrConfig[9]=="Data Generation") Then
+		If($runFlag=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[59]) Then
+			If($counter = $dataGenerationCounter) Then
 				ConsoleWrite("Exiting after data generation for Appointments Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Appointments Flow...." & @CRLF)
 				Exit
@@ -106,16 +120,16 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[59]
+			$counter = $dataGenerationCounter
 		EndIf
-	Until $counter = $arrConfig[59]
+	Until $counter = $dataGenerationCounter
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
-		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 		Local $aData,$iRows,$iColumns
 
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $patientFirstName & "' and Last = '" & $patientLastName & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -193,13 +207,13 @@ Else
 	;Open CPS -Patient Chart
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
-	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+	Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+		Call("openPatientChart",$patientFirstName,$patientLastName)
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -249,7 +263,7 @@ Else
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- UPDATE SERVICE SETTINGS TO VIEW APPOINTMENT AS ALERT" & @CRLF)
 		ConsoleWrite("Update servicesettings to view appointment as Alert" & @CRLF)
-		Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 		Local $aData,$iRows,$iColumns
 
 			$newQuery = StringReplace($arrQuery[42],"'1'","'0'")
@@ -290,7 +304,7 @@ Else
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 11 -- VERIFY APPOINTMENT ARRIVED AS ALERT" & @CRLF)
 			Call("openPatientChart","","")
-			Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+			Call("openPatientChart",$patientFirstName,$patientLastName)
 
 			$result = Call("verifyDocumentInPatientChart","ApptReq")
 			If($result == "PASSED") Then

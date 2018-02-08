@@ -234,6 +234,24 @@ Func setConfig()
 
 					Case "reason for referal"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck facility name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck resource name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment date(mm/dd/yyyy)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck responsible provider"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment start time"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment stop time(as per slot)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
 
@@ -2291,4 +2309,183 @@ Func downloadToC($attachmentName,$location,$firstName,$lastName,$referalReason)
 			Exit
 		EndIf
 	ConsoleWrite("METHOD: downloadToC() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to schedule appointment
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
+;-----Input parameter - $facility = Facility to schedule appointment
+;-----Input parameter - $resource = Resource t oschedule appointment
+;-----Input parameter - $apptDt = Date for which appointment to be scheduled
+;-----Input parameter - $respPvdr = Patient's responsible provider
+;-----Input parameter - $apptStartTime = Start time for appointment to be scheduled
+;-----Input parameter - $apptStopTime = Stop (End) time for appointment to be scheduled
+Func scheduleAppointment($Fname,$Lname,$facility,$resource,$apptDt,$respPvdr,$apptStartTime,$apptStopTime)
+	ConsoleWrite("METHOD: scheduleAppointment() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate($title)
+	ConsoleWrite("Activate GE CPS window" &@CRLF )
+
+	Local $oIEEmbed =_IEAttach("Centricity Practice Solution","embedded",1)
+	Sleep(1000)
+	ConsoleWrite("Activating GE CPS App" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating GE CPS App" &@CRLF)
+	WinWaitActive("Centricity Practice Solution")
+
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If ( IsObj($oIEEmbed) ) Then
+		ConsoleWrite("Attached successfully to IE instance running under GE app" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attached successfully to IE instance running under GE app" & @CRLF)
+
+		ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') : $oIEEmbed = ' & $oIEEmbed & @CRLF & '>Error code: ' & @error & '    Extended code: 0x' & Hex(@extended) & @CRLF) ;### Debug Console
+		ConsoleWrite("Embedded IE Url " &  _IEPropertyGet($oIEEmbed, "locationurl") &@CRLF )
+		Sleep(1000)
+
+		Local $oDoc = _IEBodyReadHTML($oIEEmbed)
+		Local $oLinkCollection = _IELinkGetCollection($oIEEmbed)
+
+		ConsoleWrite("Finding links collection" & @CRLF)
+		If ( IsObj($oLinkCollection) ) Then
+			$lCount = 0
+			For $oLink in $oLinkCollection
+				$lCount = $lCount + 1
+			Next
+		;_ArrayDisplay($oLinkCollection)
+		ConsoleWrite("Links found - " & $lCount & @CRLF)
+		EndIf
+
+		ConsoleWrite("Clicking SCHEDULING link of GE CPS App...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicking SCHEDULING link of GE CPS App" & @CRLF)
+		Sleep(5000)
+		_IELinkClickByIndex($oIEEmbed,1)
+
+		WinWaitActive("Open Schedule")
+		;Facility
+		ConsoleWrite("Enter Facility for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Facility for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:1]")
+		ControlClick("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:1]")
+		WinWaitActive("Find Facility")
+		ConsoleWrite("Search and Select Facility for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Facility for scheduling appointment" & @CRLF)
+		ControlSend("Find Facility","","[CLASS:Edit; INSTANCE:1]",$facility)
+		ControlClick("Find Facility","","[CLASS:Button; INSTANCE:3]")
+		Sleep(1000)
+		ControlClick("Find Facility","","[CLASS:ListBox; INSTANCE:2]","left",2)
+
+		WinWaitActive("Open Schedule")
+		;Resource
+		ConsoleWrite("Enter Resource for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Resource for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:2]")
+		ControlClick("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:2]")
+		WinWaitActive("Find Resource")
+		ConsoleWrite("Search and Select Resource for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Resource for scheduling appointment" & @CRLF)
+		ControlSend("Find Resource","","[CLASS:Edit; INSTANCE:1]",$resource)
+		ControlClick("Find Resource","","[CLASS:Button; INSTANCE:3]")
+		Sleep(1000)
+		ControlClick("Find Resource","","[CLASS:ListBox; INSTANCE:2]","left",2)
+
+		WinWaitActive("Open Schedule")
+		;Appointment Date
+		ConsoleWrite("Enter Date for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Date for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:Edit; INSTANCE:3]")
+		Send("{DEL 8}")
+		ControlSend("Open Schedule","","[CLASS:Edit; INSTANCE:3]",$apptDt)
+		ControlClick("Open Schedule","","[CLASS:Button; INSTANCE:5]")
+
+		$scheduleApptWnd = "Schedule " & $facility & " - " & $apptDt & " (" & $resource & ")"
+		WinWaitActive($scheduleApptWnd)
+			;click new appointment
+			ControlClick($scheduleApptWnd,"","[CLASS:ToolbarWindow32; INSTANCE:3]","left",1,46,12)
+			Sleep(2000)
+
+			;handling popup
+			If((WinGetTitle("[ACTIVE]") = "Centricity Practice Solution") And (StringInStr(WinGetText("[ACTIVE]"),"Some portion of the time you are attempting to book is not available at this facility."))) Then
+				ControlClick("Centricity Practice Solution","Some portion of the time you are attempting to book is not available at this facility.","[CLASS:Button; INSTANCE:4]")
+			EndIf
+
+			WinWaitActive("Find Patient")
+
+			If(WinActive("Find Patient")) Then
+				ConsoleWrite("Find the patient for whom appointment to be scheduled" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Find the patient for whom appointment to be scheduled" & @CRLF)
+				ControlFocus("Find Patient","","[CLASS:Edit; INSTANCE:1]")
+				ControlSetText("Find Patient","","[CLASS:Edit; INSTANCE:1]",$Lname)
+				Sleep(1000)
+				ControlClick("Find Patient","","[CLASS:Button; INSTANCE:2]")
+				Sleep(2000)
+				ControlClick("Find Patient","","[CLASS:Button; INSTANCE:8]")
+
+				$newApptWnd = "New Appointment - " & $Lname & ", " & $Fname
+				WinWaitActive($newApptWnd)
+				;Responsible Provider
+				ConsoleWrite("Enter responsible provider for patient" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter responsible provider for patient" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:3]")
+				ControlClick($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:3]")
+				WinWaitActive("Find Provider")
+				ConsoleWrite("Search and Select Responsible provider for patient" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Responsible provider for patient" & @CRLF)
+				ControlSend("Find Provider","","[CLASS:Edit; INSTANCE:1]",$respPvdr)
+				ControlClick("Find Provider","","[CLASS:Button; INSTANCE:3]")
+				Sleep(1000)
+				ControlClick("Find Provider","","[CLASS:Button; INSTANCE:9]")
+
+				WinWaitActive($newApptWnd)
+				;Appointment Type
+				ConsoleWrite("Enter appointment type" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment type" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:5]")
+				ControlClick($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:5]")
+				WinWaitActive("Find Appointment Type")
+				ConsoleWrite("Search and Select appointment type" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select appointment type" & @CRLF)
+				ControlClick("Find Appointment Type","","[CLASS:Button; INSTANCE:3]")
+				Sleep(1000)
+				ControlClick("Find Appointment Type","","[CLASS:ListBox; INSTANCE:1]","left",2)
+
+				WinWaitActive($newApptWnd)
+				;Appt Start Time
+				ConsoleWrite("Enter appointment start time" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment start time" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:Edit; INSTANCE:14]")
+				Send("{DEL 6}")
+				ControlSend($newApptWnd,"","[CLASS:Edit; INSTANCE:14]",$apptStartTime)
+
+				;Appt Stop Time
+				ConsoleWrite("Enter appointment end time" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment end time" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:Edit; INSTANCE:15]")
+				Send("{DEL 6}")
+				ControlSend($newApptWnd,"","[CLASS:Edit; INSTANCE:15]",$apptStopTime)
+				Sleep(2000)
+
+				ControlClick($newApptWnd,"","[CLASS:Button; INSTANCE:5]")
+				Sleep(2000)
+
+				;handling popup
+				If((WinGetTitle("[ACTIVE]") = "Centricity Practice Solution") And (StringInStr(WinGetText("[ACTIVE]"),"Some portion of the time you are attempting to book is not available at this facility. Would you like to create an overbooked appointment?"))) Then
+					ControlClick("Centricity Practice Solution","Some portion of the time you are attempting to book is not available at this facility. Would you like to create an overbooked appointment?","[CLASS:Button; INSTANCE:3]")
+				EndIf
+
+			Else
+				ConsoleWrite("ERROR Inactive Find Patient Window...." & @CRLF)
+ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Inactive Find Patient Window...." & @CRLF)
+				Exit
+			EndIf
+
+	Else
+		ConsoleWrite("ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: scheduleAppointment() ended" & @CRLF)
 EndFunc

@@ -17,14 +17,33 @@ $logPath = $commonStepsDir & "\ProcessLog_AskAStaff_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 $arrDoctype = Call("openDoctypeFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of appointments to be scheduled from CPS")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+$docTypeEmailMessage = Call("readConfig","New Document (Email Message)")
+
+$askAStaffSubject =  Call("readConfig","AAS Subject")
+$askAStaffBody =  Call("readConfig","AAS Body")
+$askAStaffReply =  Call("readConfig","Reply to AAS")
+
 ;Update servicesettings
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR ASK A STAFF FLOW" & @CRLF)
-	Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+	Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns
 			ConsoleWrite("Executing Query: " & $arrQuery[46] & @CRLF)
@@ -60,7 +79,7 @@ $arrDoctype = Call("openDoctypeFile")
 
 			_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 		ConsoleWrite("Exiting after checking pre-conditions for Ask A Staff Flow...." & @CRLF)
 		FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Ask A Staff Flow...." & @CRLF)
 		Exit
@@ -71,14 +90,14 @@ Else
 	ConsoleWrite("Create ask a staff question from Patient Portal" &@CRLF )
 
  	$createAASJar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaff.jar"
-		$subjectAAS = StringReplace($arrConfig[35]," ","")
-		$bodyAAS = StringReplace($arrConfig[36]," ","")
+		$subjectAAS = StringReplace($askAStaffSubject," ","")
+		$bodyAAS = StringReplace($askAStaffBody," ","")
 
 	$counter = 0
 	Do
-		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[60] & " ask a staff questions"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[60] & " ask a staff questions" & @CRLF)
+		If($runFlag=="Data Generation") Then
+			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $dataGenerationCounter & " ask a staff questions"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $dataGenerationCounter & " ask a staff questions" & @CRLF)
 		Else
 			ConsoleWrite("Creating AAS #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" &$counter+1 & @CRLF)
@@ -98,9 +117,9 @@ Else
 				Exit
 			EndIf
 
-		If($arrConfig[9]=="Data Generation") Then
+		If($runFlag=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[60]) Then
+			If($counter = $dataGenerationCounter) Then
 				ConsoleWrite("Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				Exit
@@ -110,16 +129,16 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[60]
+			$counter = $dataGenerationCounter
 		EndIf
-	Until $counter = $arrConfig[60]
+	Until $counter = $dataGenerationCounter
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
-		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 		Local $aData,$iRows,$iColumns
 
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $patientFirstName & "' and Last = '" & $patientLastName & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -158,7 +177,7 @@ Else
 			EndIf
 
 			;Get loginname, PVID of provider
-			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $arrConfig[2] & "'")
+			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $CPSLogin & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -221,13 +240,13 @@ Else
 	;Open CPS -Patient Chart
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
-	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+	Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 6 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+		Call("openPatientChart",$patientFirstName,$patientLastName)
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -267,8 +286,8 @@ Else
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 9 -- REPLY AAS FROM PATIENT CHART" & @CRLF)
 		ConsoleWrite("Reply the AAS from Patient Chart" & @CRLF)
-		Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
-		Call("replyAAS",$arrConfig[15],$arrConfig[16],$subjectAAS & $time & "0",$bodyAAS & $time & "0",$arrConfig[37])
+		Call("createNewDocument",$docTypeEmailMessage,$patientFirstName,$patientLastName)
+		Call("replyAAS",$patientFirstName,$patientLastName,$subjectAAS & $time & "0",$bodyAAS & $time & "0",$askAStaffReply)
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 10 -- VERIFY MESSAGE DETAILS IN DOCUMENT TABLE" & @CRLF)
 			ConsoleWrite("Executing Query: " & $arrQuery[28] & $PID & $arrQuery[29] & @CRLF)
@@ -325,7 +344,7 @@ Else
 			;Created by User
 				ConsoleWrite("Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
-				Call("assertData",$arrConfig[2], $aData[1][3])
+				Call("assertData",$CPSLogin, $aData[1][3])
 
 			;CommSentStatus
 				ConsoleWrite("Verifying CommSentStatus in cusMedfusionCommOutgoing table" & @CRLF)
@@ -373,7 +392,7 @@ Else
 			;Provider
 				ConsoleWrite("Verifying Provider in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Provider in cusMedfusionMUEvents table" & @CRLF)
-				Call("assertData",$arrConfig[2], $aData[1][2])
+				Call("assertData",$CPSLogin, $aData[1][2])
 
 			;SDID
 				ConsoleWrite("Verifying SDID in cusMedfusionMUEvents table" & @CRLF)
@@ -430,8 +449,8 @@ Else
 			$messageSubject = "RE:" & $subjectAAS & $time & "0"
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
-			ConsoleWrite("Message Body " & $arrConfig[37] & @CRLF)
-			$messageBody = StringReplace($arrConfig[37]," ","")
+			ConsoleWrite("Message Body " & $askAStaffReply & @CRLF)
+			$messageBody = StringReplace($askAStaffReply," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
 			$secureMessagejar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaffreply.jar"
 			$PID = Run(@ComSpec & ' /c java -jar ' & $secureMessagejar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $CreationDate &'' ,"","",$STDOUT_CHILD)
