@@ -31,10 +31,6 @@ public class SecureExchangeLoginPage {
 	}
 
 	public SecureExchangeEmailPage SecureLogin(String username, String password) {
-		WebDriverWait wait = new WebDriverWait(driver, 8000);
-		wait.until(ExpectedConditions.visibilityOf(inputUserName));
-		wait.until(ExpectedConditions.visibilityOf(inputPassword));
-		
 		inputUserName.sendKeys(username);
 		inputPassword.sendKeys(password);
 		buttonSignIn.click();

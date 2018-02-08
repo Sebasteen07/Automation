@@ -750,6 +750,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementEventForExistingPatient() throws Exception {
 		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
+		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		StatementEventData testData = new StatementEventData();
@@ -759,13 +760,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("url is " + testData.Url);
 		log("Step 2: Call Statement Post");
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		sEventObj.generateViewEvent(driver, testData);
+		sEventObj.generateViewEvent(driver, testData, 'E');
 
 	}
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementEventForNewSelfPatient() throws Exception {
 		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
+		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Create patient");
@@ -814,7 +816,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.StatementType = "New";
 		testData.since = since;
 		log("Step 4: Call Statement Post");
-		sEventObj.generateViewEvent(driver, testData);
+		sEventObj.generateViewEvent(driver, testData, 'N');
 	}
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -1610,15 +1612,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDE2EFormExportfromPractice() throws Exception {
 		log("Test Case: Fill CCD Form and Verify the Details in Export");
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
 		FormsExportUtils formUtilsObject = new FormsExportUtils();
-		formUtilsObject.ccdExchangeFormsImport(driver, 0);
+		formUtilsObject.ccdExchangeFormsImport(driver, 0, testData);
 	}
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDE2EFormExportfromPracticeRegression() throws Exception {
-		Log4jUtil.log("Test Case: Fill CCD Form and Verify the Details in Export Regression");
+		log("Test Case: Fill CCD Form and Verify the Details in Export Regression");
+		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
+		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
+		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+		
 		FormsExportUtils formUtilsObject = new FormsExportUtils();
-		formUtilsObject.ccdExchangeFormsImport(driver, 1);
+		formUtilsObject.ccdExchangeFormsImport(driver, 1,testData);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

@@ -57,7 +57,7 @@ public class SecureExchangeEmailPage {
 		Log4jUtil.log("SearchBy  "+searchOrder.getText());
 		
 		WebElement secureEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
-		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(secureEmail));
+//		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(secureEmail));
 		Log4jUtil.log("Verify Subject if matched actual "+secureEmail.getText()+" expected "+subject);
 		Assert.assertEquals(secureEmail.getText(),subject);
 		
@@ -69,7 +69,7 @@ public class SecureExchangeEmailPage {
 		//Assert.assertEquals(toEmailID.getText(), toEmail);
 		if(AttachmentType!=null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
 			WebElement attachmentName =driver.findElement(By.xpath("//*[contains(text(),'"+fileName+"')]"));
-			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(attachmentName));
+//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(attachmentName));
 			Log4jUtil.log("Actual name is "+attachmentName.getText()+" should contain name: "+fileName);
 			Assert.assertTrue(attachmentName.getText().contains(fileName), "filename not matched");
 		}
@@ -88,7 +88,7 @@ public class SecureExchangeEmailPage {
 			tocDocument.click();
 			//wait for TOC to load
 			WebElement tocName= driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div/div/div/h1"));
-			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(tocName));
+//			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(tocName));
 			Log4jUtil.log("Verify the TOC name Actual "+tocName.getText()+" expected name is "+attachTOCName);
 			Assert.assertEquals(tocName.getText(), attachTOCName);
 			driver.close();
@@ -112,13 +112,13 @@ public class SecureExchangeEmailPage {
 		Log4jUtil.log("Searching for Email with subject "+subject);
 		try{
 			WebElement secureSendEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
-			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(secureSendEmail));
+//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(secureSendEmail));
 			Log4jUtil.log("Verify Subject if matched actual "+secureSendEmail.getText()+" expected "+subject);
 			Assert.assertEquals(secureSendEmail.getText(),subject);
 			secureSendEmail.click();
 			JavascriptExecutor jse = (JavascriptExecutor)driver;
 			jse.executeScript("window.scrollBy(0,400)", "");	
-			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(deleteMessage));
+//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(deleteMessage));
 			deleteMessage.click();
 			WebElement deleteConf = driver.findElement(By.xpath("//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div/div"));
 			

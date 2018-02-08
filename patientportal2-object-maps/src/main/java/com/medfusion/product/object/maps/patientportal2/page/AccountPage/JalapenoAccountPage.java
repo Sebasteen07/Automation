@@ -26,7 +26,7 @@ public class JalapenoAccountPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/ul/li/div/div[3]/button")
 	private WebElement editDependentAccountButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='ladda-button ng-binding primary inviteBtn']")
+	@FindBy(how = How.XPATH, using = "//*[@id=\'frame\']/div[3]/div/button")
 	private WebElement inviteNewButton;
 
 	@FindBy(how = How.ID, using = "trustedRepFirstName")

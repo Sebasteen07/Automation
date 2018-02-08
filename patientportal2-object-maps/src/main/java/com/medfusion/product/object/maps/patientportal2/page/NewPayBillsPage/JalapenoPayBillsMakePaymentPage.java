@@ -74,7 +74,7 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "visa")
 	private WebElement visaCard;
 	
-	@FindBy(how = How.ID, using = "viewStatementDetail")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[2]/a")
 	private WebElement statementDetails;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")

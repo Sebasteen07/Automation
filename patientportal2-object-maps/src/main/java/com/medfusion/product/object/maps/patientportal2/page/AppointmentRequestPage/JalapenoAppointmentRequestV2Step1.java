@@ -19,7 +19,7 @@ public class JalapenoAppointmentRequestV2Step1 extends BasePageObject {
 	@FindBy(how = How.ID, using = "history_button")
 	private WebElement previousAppoitmentRequestsButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\'provsearch\']")
+	@FindBy(how = How.XPATH, using = "//*[@id=\'frame\']/div[3]/div[3]/div[1]/div/mf-providers-locations/div/div[1]/span")
 	private WebElement providerSearchInput;
 
 	@FindBy(how = How.ID, using = "showall")

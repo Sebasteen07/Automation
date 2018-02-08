@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.personnel;
 
-import java.net.URL;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -90,10 +90,10 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 	 */
 	public ImportOrExportProgressPage clickbtnimportStaffFile() {
 		IHGUtil.PrintMethodName();
-		URL url = ClassLoader.getSystemResource(SitegenConstants.FILEPATH);
-		log("########################File Path" + url);
+		File url = new File(SitegenConstants.FILEPATH);
+		log("########################File Path" + url.getPath());
 		Assert.assertNotNull(url, "### getSystemResource returned null: [" + SitegenConstants.FILEPATH + "] ");
-		fileUploadimportStaffFile.sendKeys(url.toString());
+		fileUploadimportStaffFile.sendKeys(url.getAbsolutePath());
 		btnimportStaff.click();
 		return PageFactory.initElements(driver, ImportOrExportProgressPage.class);
 	}
