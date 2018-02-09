@@ -2814,7 +2814,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	  }
 	}
 
-	public static Response setupHttpGetRequestExceptoAuthforPDF(String strUrl, String responseFilePath) throws IOException, URISyntaxException, TransformerException 
+	public static Response setupHttpGetRequestForPDF(String strUrl, String responseFilePath) throws IOException, URISyntaxException, TransformerException 
 	{
 		IHGUtil.PrintMethodName();
 		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
@@ -2842,7 +2842,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
 	}
 	
-	public static int setupHttpDeleteRequestExceptOauth(String strUrl,String responseFilePath) throws org.apache.http.ParseException, IOException, URISyntaxException {
+	public static int setupHttpDeleteRequestExceptOauth(String strUrl,String responseFilePath, String token) throws org.apache.http.ParseException, IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("Get Request Url: " + strUrl);
@@ -2850,7 +2850,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		HttpDelete httpDelReq = new HttpDelete(strUrl);
 		httpDelReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		httpDelReq.setURI(new URI(strUrl));
-		httpDelReq.addHeader("Authentication-Type", "2wayssl");
+		httpDelReq.addHeader("Authorization", token);
 		httpDelReq.addHeader("Content-Type", "application/xml");
 		
 		HttpResponse resp = client.execute(httpDelReq);

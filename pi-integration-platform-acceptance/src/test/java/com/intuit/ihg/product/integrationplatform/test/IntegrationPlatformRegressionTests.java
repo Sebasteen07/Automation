@@ -442,6 +442,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testMU2GetEventForNewPatient() throws Exception {
 		log("Test Case (testMU2GetEventForNewPatient): Consolidated CCD related events verification for newly created patients");
+		log("Environment "+IHGUtil.getEnvironmentType());
 		log("Step 1:  Create Patient");
 		long timestamp = System.currentTimeMillis();
 		MU2GetEventData testData = new MU2GetEventData();
@@ -454,7 +455,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
 		ArrayList<String> patientDetail =
 				sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID, testData.PATIENT_EXTERNAL_ID,
-						"01/01/1987", "27560");
+						"01/01/1987", "27560",testData.token);
 
 		log("Follwing are patient details");
 		for (String values : patientDetail) {
@@ -478,28 +479,28 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Send 1st CCD to Patient");
 		ArrayList<String> ccdDetail1 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 
 		log("Send 2nd CCD to Patient");
 		ArrayList<String> ccdDetail2 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH1,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail2.get(0));
 		Thread.sleep(8000);
 
 		log("Send 3rd CCD to Patient");
 		ArrayList<String> ccdDetail3 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH2,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail3.get(0));
 		Thread.sleep(8000);
 
 		log("Send 4th CCD to Patient");
 		ArrayList<String> ccdDetail4 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH3,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail4.get(0));
 
 		log("Set username and password for MU2 : UserName " + patientDetail.get(4) + " password: " + testData.PatientPassword);
@@ -1458,7 +1459,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String invalidMessageUIDURLDelete =
 				testData.messageHeaderURL + testData.validPracticeID + "/directmessage/" + testData.ToEmalID + "/message/" + testData.invalidUID + "/delete";
 		log(invalidMessageUIDURLDelete);
-		int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete, testData.ResponsePath);
+		int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete, testData.ResponsePath,testData.token);
 		log("responseCode for InvalidMsg Delete API is " + responseCodeInvalidMsgDelete);
 		Assert.assertEquals(responseCodeInvalidMsgDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", testData.invalidUID);
@@ -1466,7 +1467,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3 : Call Delete Message API with Invalid Email Address");
 		String invalidEmailIDDelete =
 				testData.messageHeaderURL + testData.validPracticeID + "/directmessage/" + testData.invalidEmailMessageHeaderURL + "/message/1/delete";
-		int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete, testData.ResponsePath);
+		int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete, testData.ResponsePath,testData.token);
 		log("responseCode for InvalidEmailDelete is " + responseCodeInvalidEmailDelete);
 		Assert.assertEquals(responseCodeInvalidEmailDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", testData.invalidEmailMessageHeaderURL);
@@ -1504,7 +1505,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 6 : execute Delete API and Verify the response");
 		String messageDeleteURL = testData.messageStatusUpdate + "/" + msgUid + "/delete";
-		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath);
+		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,testData.token);
 		log("responseCode is " + responseCode + " message not found !!!");
 		Assert.assertEquals(responseCode, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", msgUid);
@@ -1566,23 +1567,23 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 11: Post Read message to delete with message Status as DELETE");
 		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
-		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath);
+		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,testData.token);
 		log("responseCode1 is " + responseCode1);
 		Assert.assertEquals(responseCode1, 200);
 
 		log("Step 12: Post Unread message to delete with message Status as DELETE");
-		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath);
+		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath,testData.token);
 		log("responseCode2 is " + responseCode2);
 		Assert.assertEquals(responseCode2, 200);
 
 		log("Step 13: Verify deletion of read message in get getMessageBody API " + messageUpdateURL1);
-		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath);
+		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,testData.token);
 		log("responseCodeE is " + responseCodeE);
 		String ErrorMsg1 = "Error GetMessage No Message for Message Uid = " + msgUid + ".";
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", ErrorMsg1);
 
 		log("Step 14: Verify deletion of unread message message in getMessageBody API  " + messageUpdateURL2);
-		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath);
+		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath,testData.token);
 		log("responseCodeE1 is " + responseCodeE1);
 		String ErrorMsg2 = "Error GetMessage No Message for Message Uid = " + msgUid1 + ".";
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", ErrorMsg2);
@@ -1603,7 +1604,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 18 : Call Delete Message API from Sender Email Address");
 		String senderEmail = testData.messageHeaderURL + testData.validPracticeID + "/directmessage/" + testData.FromEmalID + "/message/" + msgUid + "/delete";
 		log(senderEmail);
-		int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail, testData.ResponsePath);
+		int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail, testData.ResponsePath,testData.token);
 		log("responseCode for InvalidEmailDelete is " + senderEmailID);
 		Assert.assertEquals(senderEmailID, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>", subject1);
@@ -1694,7 +1695,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Asserting FormsPdfLink for Precheck from ccdExchangeBatch and ccdExchangePdfBatch");
 		Assert.assertEquals(ccdExchangeBatchPdfLink, PreCheckPdfLink);
 		log("Do a ccdExchangePdf call with the link found in FormsPdfLink");
-		RestUtils.setupHttpGetRequestExceptoAuthforPDF(PreCheckPdfLink, testData.responsePDF_FE);
+		RestUtils.setupHttpGetRequestForPDF(PreCheckPdfLink, testData.responsePDF_FE);
 	}
 	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -2180,7 +2181,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iEHDCSendCCD sendCCDObj = new SendCCD();
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2206,7 +2207,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Send CCD to Patient");
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2_Existing,
-						EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID);
+						EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2232,7 +2233,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
 		ArrayList<String> patientDetail =
 				sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID, testData.PATIENT_EXTERNAL_ID,
-						"01/01/2010", "27560");
+						"01/01/2010", "27560",testData.token);
 
 		log("Follwing are patient details");
 		for (String values : patientDetail) {
@@ -2258,7 +2259,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 5: Post CCD to Patient");
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2303,13 +2304,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iEHDCSendCCD sendCCDObj = new SendCCD();
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 
 		ArrayList<String> ccdDetail1 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2337,13 +2338,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Send CCD to Patient");
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2_Existing,
-						EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID);
+						EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 
 		ArrayList<String> ccdDetail1 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2371,7 +2372,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
 		ArrayList<String> patientDetail =
 				sendPatientInviteObj.sendPatientInviteToPractice(testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID, testData.PATIENT_EXTERNAL_ID,
-						"01/01/2010", "27560");
+						"01/01/2010", "27560",testData.token);
 
 		log("Follwing are patient details");
 		int i = 0;
@@ -2400,27 +2401,27 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 5: Post CCD to Patient");
 		ArrayList<String> ccdDetail =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 		log("Send 2nd CCD to Patient");
 		ArrayList<String> ccdDetail1 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 
 		log("Send 3rd CCD to Patient");
 		ArrayList<String> ccdDetail3 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH2,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail3.get(0));
 		Thread.sleep(8000);
 
 		log("Send 4th CCD to Patient");
 		ArrayList<String> ccdDetail4 =
 				sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From, testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH3,
-						testData.PATIENT_EXTERNAL_ID);
+						testData.PATIENT_EXTERNAL_ID,testData.token);
 		log(ccdDetail4.get(0));
 
 		testData.CCDMessageID1 = ccdDetail.get(0);

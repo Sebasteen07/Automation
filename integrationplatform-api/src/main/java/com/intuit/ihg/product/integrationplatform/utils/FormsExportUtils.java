@@ -262,7 +262,7 @@ public class FormsExportUtils {
 				
 				Log4jUtil.log("Step 33: Save PDF file returned as response from RESTAPI " + since + " using ccdExchange API");
 				
-				RestUtils.setupHttpGetRequestExceptoAuthforPDF(GetPatientPDfURL , testData.responsePDF_FE);
+				RestUtils.setupHttpGetRequestForPDF(GetPatientPDfURL , testData.responsePDF_FE);
 				Thread.sleep(4000);
 				
 				long timeStamp204 = System.currentTimeMillis();

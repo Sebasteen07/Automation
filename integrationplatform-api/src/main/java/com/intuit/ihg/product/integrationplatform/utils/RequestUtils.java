@@ -31,7 +31,7 @@ public class RequestUtils {
 	private static String getResponse;
 	private String output = "";
 
-	private void sendPost(String url, String payload,String externalSystemID) throws Exception {
+	private void sendPost(String url, String payload,String externalSystemID, String token) throws Exception {
 		try {
 		
 		Log4jUtil.log("resturl  : " + url);
@@ -44,7 +44,7 @@ public class RequestUtils {
 		postConnection.setUseCaches(false);
 		postConnection.setRequestMethod("POST");
 		postConnection.setRequestProperty("Content-Type", "application/xml");
-		postConnection.setRequestProperty("Authentication-Type", "2wayssl");
+		postConnection.setRequestProperty("Authorization", "Bearer "+token);
 		postConnection.setRequestProperty("ExternalSystemId", externalSystemID);
 		postConnection.setDoOutput(true);
 		postConnection.setDoInput(true);
@@ -83,13 +83,13 @@ public class RequestUtils {
 		}
 	}
 
-	private String getProcessingUrlStatus(String url,String externalSystemID) throws Exception {
+	private String getProcessingUrlStatus(String url,String externalSystemID, String token) throws Exception {
 		Log4jUtil.log("Getting processingurl Status:- " + url);
 		try {
 			URL processingURL = new URL(url);
 			getConnection = processingURL.openConnection();
 			((HttpURLConnection) getConnection).setRequestMethod("GET");
-			getConnection.setRequestProperty("Authentication-Type", "2wayssl");
+			getConnection.setRequestProperty("Authorization", "Bearer "+token);
 			getConnection.setRequestProperty("ExternalSystemId", externalSystemID);
 			
 			int responseCode = ((HttpURLConnection) getConnection).getResponseCode();
@@ -116,11 +116,11 @@ public class RequestUtils {
 		return output;
 	}
 
-	public static String getStatus(String url, String payload, String externalSystemID) throws Exception {
+	public static String getStatus(String url, String payload, String externalSystemID,String token) throws Exception {
 		RequestUtils http = new RequestUtils();
-		http.sendPost(url, payload,externalSystemID);
+		http.sendPost(url, payload,externalSystemID,token);
 		Thread.sleep(25000);
-		getResponse = http.getProcessingUrlStatus(processingURL,externalSystemID);
+		getResponse = http.getProcessingUrlStatus(processingURL,externalSystemID, token);
 		Log4jUtil.log("Response is " + getResponse);
 		return getResponse;
 	}

@@ -64,5 +64,5 @@ public class MU2GetEventData {
 		public String standardEmailTransmitActivity="";
 		public String patientUA_MU2_LastName="";
 		public String patientUA_MU2_LastName_Existing="";
-        
+		public String token="";
 }

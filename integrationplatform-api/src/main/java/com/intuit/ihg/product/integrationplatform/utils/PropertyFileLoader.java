@@ -1290,5 +1290,10 @@ public class PropertyFileLoader {
 	public String getEmailLinkText() {
 		return property.getProperty("emailLinkText");
 	}
-	
+	public String getToken_MU() {
+		return property.getProperty("token_MU");
+	}
+	public String getDeleteToken() {
+		return property.getProperty("token_p2p");
+	}
 }
