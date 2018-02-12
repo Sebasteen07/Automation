@@ -2850,7 +2850,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		HttpDelete httpDelReq = new HttpDelete(strUrl);
 		httpDelReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		httpDelReq.setURI(new URI(strUrl));
-		httpDelReq.addHeader("Authorization", token);
+		httpDelReq.addHeader("Authorization", "Bearer "+token);
 		httpDelReq.addHeader("Content-Type", "application/xml");
 		
 		HttpResponse resp = client.execute(httpDelReq);
