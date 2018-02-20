@@ -43,7 +43,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<projectFile>AdvocateTests.xml</projectFile>
+							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
 							<outputFolder>./report</outputFolder>
 							<exportwAll>true</exportwAll>

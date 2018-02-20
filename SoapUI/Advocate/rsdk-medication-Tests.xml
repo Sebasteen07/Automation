@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="6feb08ee-be22-4e22-8215-706bb4f3aa06" activeEnvironment="Dev3" name="rsdk-medication-soapui-project" resourceRoot="" soapui-version="6.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="abaf94b5-afdd-46f5-ba0a-2e8af9f9daa9" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 1" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:resource name="/healthinfo/v1/practice/fd6d1bd5-8168-452a-be37-d856d3734edb/medications" path="/${#Project#url}" id="2abdb759-c329-4ccf-af96-94f93596a0b7"><con:settings/><con:parameters/><con:method name="POST" id="559e4b3b-97d1-4070-945d-5b9b42104e72" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/><con:element xmlns:v1="http://schema.medfusion.com/medications/v1">v1:Medications</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/xml</con:mediaType><con:status>202</con:status><con:params/><con:element xmlns:v1="http://schema.intuit.com/health/securePayments/v1">v1:ProcessingResponse</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/xml</con:mediaType><con:status>400</con:status><con:params/><con:element xmlns:v1="http://schema.intuit.com/health/securePayments/v1">v1:ProcessingResponse</con:element></con:representation><con:request name="POST Request" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/json" postQueryString="false"><con:settings/><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource></con:interface><con:testSuite id="f62b167e-b51f-4ffb-92d8-51e976880093" name="postMedicationToPatient"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="85741176-ebf6-4867-a74e-5ba7141f11fc" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="postSingleMedication" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="ea829b5d-218f-4333-a5bc-29621d4ca4ef"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="31462756-65d1-44e2-9eed-2f334b63761d"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bb7089cf-8f5c-40c7-a074-66dabf787e0d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="bd8f06d6-f6e9-4438-8c5e-778c2255614c" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="89174964-7a19-4089-a3bb-853d3e576bb1"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="f7406094-6a6d-43e7-8e47-b6e4ede05f50"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info test
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	assert status == "COMPLETED"
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/65ba3a36-7238-4e2e-bfa6-e990ebb0de56]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>ea829b5d-218f-4333-a5bc-29621d4ca4ef</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="2c936922-6d77-478d-a0a3-070af580fec1" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="postMedicationBatch" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="6bb04a6e-fad1-4dcc-bc86-fea737cb7cd2"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="groovy" name="generateID1" id="585ccadb-789d-46d0-bfcb-f908adbc86e3"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="e4a21675-3d84-4b09-a974-8dbfd4878f71"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+	 	<Medication id="${generateID1#result}">
+	  <GenericName>${#Project#GenericName1}</GenericName> 
+	  <ProductName>${#Project#ProductName1}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage1}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit1}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode1}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode1}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bb7089cf-8f5c-40c7-a074-66dabf787e0d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="ee95cc76-5401-4cc5-8339-506c7533f430"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="c13d5362-6515-4e9f-88d4-3a1d3b7d27a9"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	assert status == "COMPLETED"
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/10c41413-11c6-4923-8113-1dc82da1eb2a]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>585ccadb-789d-46d0-bfcb-f908adbc86e3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="8682dcd3-6270-41dd-83a4-620cfd0928fa" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="InactiveStatus" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="ac5cb9d7-da9f-41d7-94e2-223e678df301"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="35c44a9c-170a-4833-83ca-879e5f4141c4"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>INACTIVE</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="f26d56bb-096c-4ecf-a261-4714235ece44" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="aa352b6a-a19f-4d91-919a-f737e92162a9" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="b94b5988-bba3-4005-8485-de2fc12f58e6"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="7504cc72-2582-4e5c-8c9b-1be8f476fb65"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status == "ERROR") {
+	 	  assert status == "ERROR"	
+	 	}
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/d4818857-f3e6-4a1d-96b2-26f54f777b48]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="d8aff078-3888-43f4-b608-78faeecfe44e" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="PracticePatientIdOnly" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="79ebd7b6-df8d-46dd-a910-85622437ff73"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="01cb89aa-cb2f-4366-8bd5-4539e4b40463"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="5baf0c57-cfb2-4582-a275-a3641236edd4" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="df9105bb-7887-40a9-a8a1-66f842093359" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="b5bcd251-7307-4783-a5a5-1a33c590e44d"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="73dfc975-0c4e-4f9b-a714-9834a949fbfc"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status == "ERROR") {
+	 	  assert status == "ERROR"	
+	 	}
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/7b3c1da2-7cf3-45a4-abf9-e647dc7d035e]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:testSuite id="6b487f9e-106a-47ef-afbc-d579abd919bd" name="postMedicationInvalidCases"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="6191c77a-b2a9-4fd2-b6e1-6c018848e1cf" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="EmptyRXNormCode" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="9c5afb55-f18b-4ef7-9315-78ed22623eae"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="d505e9e5-eea4-40d0-aee1-826cbd64345b"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode></RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="fe32dd15-5c2c-4212-b69a-292b54a8df70"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="7c764eaa-44c8-496b-8e71-0b21229381ac"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+def practicePatientId = context.expand( '${#Project#PracticePatientId}' )
+def medicationID = context.expand( '${generateID#result}' )
+
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 def description = processingURL.depthFirst().findAll { it.name() == 'Description'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status =="ERROR") {
+	 		assert status == "ERROR"	
+	 	}
+	 }
+	 for(desc in description) {
+	 	String desString = desc.toString()
+	 	String descMessage = "Medication RXNormCode can not be empty for patient id $practicePatientId and for medication id $medicationID"
+	 	assert desString.contains(descMessage)
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/a42d7e57-d015-4ec3-8a36-e1d54f40f6f1]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="2266c459-463b-4db1-a47d-47077d91d929" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="NoRXNormCodeNode" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="0f508a02-88c6-488e-bcd3-e38bb6babf1e"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="6da1b883-ffe2-40c0-88b8-6a61f8544a7c"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode/> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="7b43e024-491b-4d5c-a3f1-5fb73e9cdf54" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202
+</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="3fefc131-096c-4d65-beb6-33428bf30924" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="cf2fa0e7-dd94-46c3-98db-9fbbac55ea29"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="a6bc9be9-97db-43fb-aaa5-2fd4bc76ead3"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status == "ERROR") {
+	 	  assert status == "ERROR"	
+	 	}
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/a9dc7def-445d-413d-8659-57c672f997be]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="6ebcf80e-f4c2-44e1-a9f5-94005dff5b4b" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="InvalidPatientId" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="25500430-f6d5-434d-9a81-84879f9957e7"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="ec0ef590-211c-4374-a62c-d882ec53de3e"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#InvalidPracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="76baba0f-b9f8-4e73-bd1c-f26f2c0112af" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="c4de40ec-ffef-4971-b9ef-7619bdf3a6f2"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="db7755b4-4851-4f1a-a4f4-758f61925d3b"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 def description = processingURL.depthFirst().findAll { it.name() == 'Description'}
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status == "ERROR") {
+	 	  assert status == "ERROR"	
+	 	}
+	 }
+	 for(desc in description) {
+	 	String desString = desc.toString()
+	 	log.info desString
+		def invalidPracticePatientId = context.expand( '${#Project#InvalidPracticePatientId}' )
+		def medfusionMemberId = context.expand( '${#Project#MedfusionMemberId}' )
+		def practiceId = context.expand( '${#Project#practiceId}' )
+		def externalsystemId = context.expand( '${#Project#externalsystemId}' )
+	 	String descMessage = "External Patient Id discrepancy during medication processing. External Patient Id $invalidPracticePatientId does not belong to medfusion member Id $medfusionMemberId in Practice Id $practiceId and External System Id $externalsystemId"
+	 	log.info descMessage
+	 	assert desString.contains(descMessage)
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/ee354939-e860-40ab-9ac9-47d1bf3ec163]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="70a7e6ec-8fa4-418b-be53-af7f15968444" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="NoPatientIdNode" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="ad19d5a2-b872-44ee-a79b-29e4717aaf1f"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="64bda008-3212-41af-a208-008d636f6204"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+	   <PracticePatientId/>
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="5dac47ba-c031-47d0-a18f-0531e0ba5243" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>400</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="23c18f07-d473-4cc5-9340-a248b109dcc4" name="Match content of [ResponseMessage]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ResponseMessage[1]/text()</path><content>DC_CORE_033-Error in (16 , 25) : cvc-minLength-valid: Value '' with length = '0' is not facet-valid with respect to minLength '1' for type '#AnonType_PracticePatientIdPatientIdentifierType'. Error in (16 , 25) : cvc-type.3.1.3: The value '' of element 'PracticePatientId' is not valid.</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" id="488abac6-7d9e-4b38-b234-12a752641515" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Failure</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/ce8027f6-b556-42a4-8cf7-9df575f78f9a]</con:value></con:property></con:properties><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="4bf5277f-f5b7-4348-afc1-606c5f9ac624" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="NoGenericName" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="b220cccb-a248-489a-be99-832c0e1edd7a"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="a8378e6f-eee0-47c3-8dcc-88f373115cdd"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName/> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bb7089cf-8f5c-40c7-a074-66dabf787e0d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="bd8f06d6-f6e9-4438-8c5e-778c2255614c" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="cfd7ac6f-d8aa-4516-ae21-11fefde69fb1"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="71380957-0dbd-48ec-83ec-6cffc03c6c02"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info test
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 def description = processingURL.depthFirst().findAll { it.name() == 'Description'}
+	 def practicePatientId = context.expand( '${#Project#PracticePatientId}' )
+	 def medicationID = context.expand( '${generateID#result}' )
+
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status =="ERROR") {
+	 		assert status == "ERROR"	
+	 	}
+	 }
+	 for(desc in description) {
+	 	String desString = desc.toString()
+	 	log.info "asserting for description := $desString "
+	 	String descMessage = "Medication generic name can not be empty for patient id $practicePatientId and for medication id $medicationID"
+	 	assert desString.contains(descMessage)
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/01b68e03-2232-4228-87ba-1fbc5daab24d]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>ea829b5d-218f-4333-a5bc-29621d4ca4ef</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="54ba686f-36fb-4153-95d3-709d2c24533f" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="NoDosageUnit" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="3c6f5ea7-52eb-4fd9-9132-af21e564c865"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="18d5d34d-e919-421b-a8a0-f55cb1a31267"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit/>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bb7089cf-8f5c-40c7-a074-66dabf787e0d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="XPath Match" id="bd8f06d6-f6e9-4438-8c5e-778c2255614c" name="Match content of [ProcessingStatus]"><con:configuration><path>declare namespace ns2='http://schema.intuit.com/health/securePayments/v1';
+//ns2:ProcessingResponse[1]/ProcessingStatus[1]/text()</path><content>Successful</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="c5b53305-74b5-486e-a456-ec1f8ae419ef"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="c9a5ad7d-1cea-4602-b992-7a89f3ad85dd"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info test
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 def description = processingURL.depthFirst().findAll { it.name() == 'Description'}
+	 def practicePatientId = context.expand( '${#Project#PracticePatientId}' )
+	 def medicationID = context.expand( '${generateID#result}' )
+
+	 log.info statusCheck
+	 for(status in statusCheck) {
+	 	if(status =="ERROR") {
+	 		assert status == "ERROR"	
+	 	}
+	 }
+	 for(desc in description) {
+	 	String desString = desc.toString()
+	 	log.info "asserting for description := $desString "
+	 	String descMessage = "Medication dose unit can not be empty for patient id $practicePatientId and for medication id $medicationID"
+	 	assert desString.contains(descMessage)
+	 }
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/0521570e-c592-4046-a3ae-2fea9bd17766]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>ea829b5d-218f-4333-a5bc-29621d4ca4ef</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="19ffac25-1e6f-4015-96eb-ad923abbb0ad" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="BatchWithOneFailure" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="generateID" id="7e797adc-5a72-438e-a169-04650806b946"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="groovy" name="generateID1" id="4d7c6066-d345-4d1a-a741-f9dc25b66dcc"><con:settings/><con:config><script>int random = Math.random()*(99999-10000000)+10000000</script></con:config></con:testStep><con:testStep type="restrequest" name="postMedication" id="a3c05e62-0dc7-407a-a7cd-b66aa70703ab"><con:settings/><con:config service="REST Service 1" resourcePath="/${#Project#url}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postMedication" id="95d25f27-794e-4544-b8d3-84782e11a8f8" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://d3-pp-aapp07.dev.medfusion.net:8080</con:endpoint><con:request><![CDATA[<?xml version="1.0"?>
+<ns2:Medications xmlns:ns2="http://schema.medfusion.com/medications/v1">
+	<MedicationMessageHeaders>
+		<Sender VendorName="Meridian Medical Management" DeviceLocalTime="2016-07-19T12:45:12-04:00" DeviceVersion="8.2" DeviceName="VertexDR" />
+	</MedicationMessageHeaders>
+	<Medication id="${generateID#result}">
+	  <GenericName>${#Project#GenericName}</GenericName> 
+	  <ProductName>${#Project#ProductName}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#PracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+	 <Medication id="${generateID1#result}">
+	  <GenericName>${#Project#GenericName1}</GenericName> 
+	  <ProductName>${#Project#ProductName1}</ProductName> 
+	  <Status>${#Project#Status}</Status> 
+	  <Dosage>${#Project#Dosage1}</Dosage> 
+	  <DoseUnit>${#Project#DoseUnit1}</DoseUnit>     
+	  <RXNormCode>${#Project#RXNormCode1}</RXNormCode> 
+	  <NDCCode>${#Project#NDCCode1}</NDCCode>
+	  <PatientDemographics> 
+	   <PatientIdentifier>  
+		<PracticePatientId>${#Project#InvalidPracticePatientId}</PracticePatientId> 
+		<MedfusionMemberId>${#Project#MedfusionMemberId}</MedfusionMemberId> 
+	   </PatientIdentifier>
+	   <Name>     
+		 <FirstName>${#Project#FirstName}</FirstName> 
+		 <LastName>${#Project#LastName}</LastName> 
+	   </Name>   
+	  </PatientDemographics>
+	 </Medication>
+</ns2:Medications>]]></con:request><con:originalUri>http://d3-pp-aapp07.dev.medfusion.net/healthinfo/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bb7089cf-8f5c-40c7-a074-66dabf787e0d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="delay" name="Delay" id="c316ca37-833e-4a5e-b22b-69bdf7d3a17e"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="groovy" name="verifyProcessingStatus" id="87600ed9-426b-45de-af4f-6fc3c8206dcf"><con:settings/><con:config><script>def headerValue = testRunner.testCase.getTestStepByName("postMedication").httpRequest.response.responseHeaders["Location"]
+context.testCase.setPropertyValue("Value",headerValue.toString())
+String test=context.testRunner.testCase.getPropertyValue("Value");
+test = test.replace("[","").replace("]","");
+
+log.info headerValue
+//HTTP GET 
+log.info "Get Processing URL...."
+HttpURLConnection conn = (HttpURLConnection) test.toURL().openConnection()
+conn.setRequestProperty( "Content-Type", "application/xml" )
+def accessToken = context.expand( '${#Project#accesstoken}' )
+conn.setRequestProperty( "Authorization", accessToken )
+if( conn.responseCode == 200 ) {
+	def json = conn.getInputStream().getText()
+	String jsonText = json.toString()
+	log.info jsonText
+
+	 def processingURL = new XmlSlurper().parseText(jsonText)
+	 def statusCheck = processingURL.depthFirst().findAll { it.name() == 'State'}
+	 def description = processingURL.depthFirst().findAll { it.name() == 'Description'}
+	 
+	 log.info statusCheck
+	 int counter =0
+	 for(status in statusCheck) {
+	 	if(counter==0 || counter ==1) {
+	 		assert status == "COMPLETED"
+	 	}
+	 	if(counter==2) {
+	 		assert status == "ERROR"
+	 	}
+	 	counter++
+	 }
+	 
+} else {
+  log.info "Error while processing URL."
+  log.info "${conn.responseCode}: ${conn.responseMessage}" 
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/99053667-8e8e-4ff4-b559-676ad2af1f25]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>585ccadb-789d-46d0-bfcb-f908adbc86e3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:requirements/><con:properties><con:property><con:name>GenericName</con:name></con:property><con:property><con:name>ProductName</con:name></con:property><con:property><con:name>Status</con:name></con:property><con:property><con:name>Dosage</con:name></con:property><con:property><con:name>DoseUnit</con:name></con:property><con:property><con:name>RXNormCode</con:name></con:property><con:property><con:name>NDCCode</con:name></con:property><con:property><con:name>PracticePatientId</con:name></con:property><con:property><con:name>MedfusionMemberId</con:name></con:property><con:property><con:name>FirstName</con:name></con:property><con:property><con:name>LastName</con:name></con:property><con:property><con:name>url</con:name></con:property><con:property><con:name>accesstoken</con:name></con:property><con:property><con:name>GenericName1</con:name></con:property><con:property><con:name>ProductName1</con:name></con:property><con:property><con:name>Dosage1</con:name></con:property><con:property><con:name>DoseUnit1</con:name></con:property><con:property><con:name>RXNormCode1</con:name></con:property><con:property><con:name>NDCCode1</con:name></con:property><con:property><con:name>InvalidPracticePatientId</con:name></con:property><con:property><con:name>practiceId</con:name></con:property><con:property><con:name>externalsystemId</con:name></con:property></con:properties><con:wssContainer/><con:databaseConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:xmlTemplates/><con:parameters/></con:reporting><con:environment id="3af524ef-9e00-47fd-bf53-524b5a98bd2b" name="Dev3"><con:service type="REST" name="REST Service 1"><con:endpoint authProfile="No Authorization" proxyHost="" proxyPort="" proxyUsername="" proxyPassword="">http://d3-pp-aapp07.dev.medfusion.net:8080/healthinfo</con:endpoint></con:service><con:property><con:name>GenericName</con:name><con:value>HYDROCORTISONE SOD SUCCINATE</con:value></con:property><con:property><con:name>ProductName</con:name><con:value>8-MOP</con:value></con:property><con:property><con:name>Status</con:name><con:value>ACTIVE</con:value></con:property><con:property><con:name>Dosage</con:name><con:value>100</con:value></con:property><con:property><con:name>DoseUnit</con:name><con:value>MG</con:value></con:property><con:property><con:name>RXNormCode</con:name><con:value>208947</con:value></con:property><con:property><con:name>NDCCode</con:name><con:value>187065142</con:value></con:property><con:property><con:name>PracticePatientId</con:name><con:value>mfTesting00001</con:value></con:property><con:property><con:name>MedfusionMemberId</con:name><con:value>622452</con:value></con:property><con:property><con:name>FirstName</con:name><con:value>mfTesting00001</con:value></con:property><con:property><con:name>LastName</con:name><con:value>TestPatient01</con:value></con:property><con:property><con:name>url</con:name><con:value>v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/medications</con:value></con:property><con:property><con:name>accesstoken</con:name><con:value>Bearer e1e4303fc5b9714749ebfa1bff1da</con:value></con:property><con:property><con:name>GenericName1</con:name><con:value>HYDROCORTISONE SOD SUCCINATE</con:value></con:property><con:property><con:name>ProductName1</con:name><con:value>8-MOP</con:value></con:property><con:property><con:name>Dosage1</con:name><con:value>10</con:value></con:property><con:property><con:name>DoseUnit1</con:name><con:value>MG</con:value></con:property><con:property><con:name>RXNormCode1</con:name><con:value>208947</con:value></con:property><con:property><con:name>NDCCode1</con:name><con:value>187065142</con:value></con:property><con:property><con:name>InvalidPracticePatientId</con:name><con:value>1001</con:value></con:property><con:property><con:name>practiceId</con:name><con:value>24079</con:value></con:property><con:property><con:name>externalsystemId</con:name><con:value>9</con:value></con:property><con:databaseConnectionContainer/></con:environment><con:environment id="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c" name="Demo"><con:service type="REST" name="REST Service 1"><con:endpoint authProfile="No Authorization"/></con:service><con:property><con:name>GenericName</con:name><con:value/></con:property><con:property><con:name>ProductName</con:name><con:value/></con:property><con:property><con:name>Status</con:name><con:value/></con:property><con:property><con:name>Dosage</con:name><con:value/></con:property><con:property><con:name>DoseUnit</con:name><con:value/></con:property><con:property><con:name>RXNormCode</con:name><con:value/></con:property><con:property><con:name>NDCCode</con:name><con:value/></con:property><con:property><con:name>PracticePatientId</con:name><con:value/></con:property><con:property><con:name>MedfusionMemberId</con:name><con:value/></con:property><con:property><con:name>FirstName</con:name><con:value/></con:property><con:property><con:name>LastName</con:name><con:value/></con:property><con:property><con:name>url</con:name><con:value/></con:property><con:property><con:name>accesstoken</con:name><con:value/></con:property><con:property><con:name>GenericName1</con:name><con:value/></con:property><con:property><con:name>ProductName1</con:name><con:value/></con:property><con:property><con:name>Dosage1</con:name><con:value/></con:property><con:property><con:name>DoseUnit1</con:name><con:value/></con:property><con:property><con:name>RXNormCode1</con:name><con:value/></con:property><con:property><con:name>NDCCode1</con:name><con:value/></con:property><con:property><con:name>InvalidPracticePatientId</con:name><con:value/></con:property><con:property><con:name>practiceId</con:name><con:value/></con:property><con:property><con:name>externalsystemId</con:name><con:value/></con:property><con:databaseConnectionContainer/></con:environment><con:environment id="66cfa89a-c4d8-4673-a774-59255a4a6a6e" name="Prod"><con:service type="REST" name="REST Service 1"><con:endpoint authProfile="No Authorization"/></con:service><con:property><con:name>GenericName</con:name><con:value/></con:property><con:property><con:name>ProductName</con:name><con:value/></con:property><con:property><con:name>Status</con:name><con:value/></con:property><con:property><con:name>Dosage</con:name><con:value/></con:property><con:property><con:name>DoseUnit</con:name><con:value/></con:property><con:property><con:name>RXNormCode</con:name><con:value/></con:property><con:property><con:name>NDCCode</con:name><con:value/></con:property><con:property><con:name>PracticePatientId</con:name><con:value/></con:property><con:property><con:name>MedfusionMemberId</con:name><con:value/></con:property><con:property><con:name>FirstName</con:name><con:value/></con:property><con:property><con:name>LastName</con:name><con:value/></con:property><con:property><con:name>url</con:name><con:value/></con:property><con:property><con:name>accesstoken</con:name><con:value/></con:property><con:property><con:name>GenericName1</con:name><con:value/></con:property><con:property><con:name>ProductName1</con:name><con:value/></con:property><con:property><con:name>Dosage1</con:name><con:value/></con:property><con:property><con:name>DoseUnit1</con:name><con:value/></con:property><con:property><con:name>RXNormCode1</con:name><con:value/></con:property><con:property><con:name>NDCCode1</con:name><con:value/></con:property><con:property><con:name>InvalidPracticePatientId</con:name><con:value/></con:property><con:property><con:name>practiceId</con:name><con:value/></con:property><con:property><con:name>externalsystemId</con:name><con:value/></con:property><con:databaseConnectionContainer/></con:environment><con:environment id="3a41ef6d-986f-499e-9fd9-ec5296990cef" name="qa1"><con:service type="REST" name="REST Service 1"><con:endpoint authProfile="No Authorization"/></con:service><con:property><con:name>GenericName</con:name><con:value/></con:property><con:property><con:name>ProductName</con:name><con:value/></con:property><con:property><con:name>Status</con:name><con:value/></con:property><con:property><con:name>Dosage</con:name><con:value/></con:property><con:property><con:name>DoseUnit</con:name><con:value/></con:property><con:property><con:name>RXNormCode</con:name><con:value/></con:property><con:property><con:name>NDCCode</con:name><con:value/></con:property><con:property><con:name>PracticePatientId</con:name><con:value/></con:property><con:property><con:name>MedfusionMemberId</con:name><con:value/></con:property><con:property><con:name>FirstName</con:name><con:value/></con:property><con:property><con:name>LastName</con:name><con:value/></con:property><con:property><con:name>url</con:name><con:value/></con:property><con:property><con:name>accesstoken</con:name><con:value/></con:property><con:property><con:name>GenericName1</con:name><con:value/></con:property><con:property><con:name>ProductName1</con:name><con:value/></con:property><con:property><con:name>Dosage1</con:name><con:value/></con:property><con:property><con:name>DoseUnit1</con:name><con:value/></con:property><con:property><con:name>RXNormCode1</con:name><con:value/></con:property><con:property><con:name>NDCCode1</con:name><con:value/></con:property><con:property><con:name>InvalidPracticePatientId</con:name><con:value/></con:property><con:property><con:name>practiceId</con:name><con:value/></con:property><con:property><con:name>externalsystemId</con:name><con:value/></con:property><con:databaseConnectionContainer/></con:environment><con:authRepository/><con:environmentSpec><con:entry environmentId="3af524ef-9e00-47fd-bf53-524b5a98bd2b"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="88d0a41d-79c6-4d7a-8ce2-8eb2d63b709c"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="66cfa89a-c4d8-4673-a774-59255a4a6a6e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="3a41ef6d-986f-499e-9fd9-ec5296990cef"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec><con:tags/></con:soapui-project>
