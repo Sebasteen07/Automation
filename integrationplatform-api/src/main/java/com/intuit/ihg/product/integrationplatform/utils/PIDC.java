@@ -59,4 +59,6 @@ public class PIDC {
 	public String Address2SC = "";
 	public String GI = "";
 	public String SO = "";
+	public String NewPassword = "";
+
 }

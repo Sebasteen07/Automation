@@ -14,11 +14,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+
+
+
+
 
 public class MedicalRecordSummariesPage extends MedfusionPage {
 
@@ -83,7 +88,8 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"documentsTable\"]/tbody[1]/tr/td[5]/button")
 	private WebElement downloadAttachment;
-
+	
+	
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
 	}
@@ -106,8 +112,8 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	public void sendCCDIfNewestIsOlderThan(int days) {
 		if (System.currentTimeMillis() >= getTimeStampOfDate(firstVisibleCCDDate) + (days * 86400000)) {
-			// log("The test will send newer CCD to a patient.");
-			// TODO: Send CCD
+			//log("The test will send newer CCD to a patient.");
+			
 		} else {
 			// log("The newest CCD isn't older than " + days + " days.");
 		}
@@ -244,13 +250,16 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		downloadAttachment.click();
 	}
 
-	public void gotoOtherDocumentTab() {
+	public DocumentsPage gotoOtherDocumentTab() {
 		IHGUtil.waitForElement(driver, 60, otherDocument);
 		otherDocument.click();
+		return PageFactory.initElements(driver, DocumentsPage.class);
 	}
 
 	public String getMessageAttachmentData() {
 		IHGUtil.waitForElement(driver, 60, secureMessageAttachmentData);
 		return secureMessageAttachmentData.getText();
 	}
+	
+	
 }

@@ -73,8 +73,8 @@ Else
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[39] & " appointments" & @CRLF)
+			ConsoleWrite("Creating Appointment #" & $counter+1 & " of " & $arrConfig[47] & " appointments"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" & $counter+1 & " of " & $arrConfig[47] & " appointments" & @CRLF)
 		Else
 			ConsoleWrite("Creating Appointment #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Appointment #" &$counter+1 & @CRLF)
@@ -96,7 +96,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[39]) Then
+			If($counter = $arrConfig[47]) Then
 				ConsoleWrite("Exiting after data generation for Appointments Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Appointments Flow...." & @CRLF)
 				Exit
@@ -106,9 +106,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[39]
+			$counter = $arrConfig[47]
 		EndIf
-	Until $counter = $arrConfig[39]
+	Until $counter = $arrConfig[47]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
@@ -318,8 +318,15 @@ Else
 
 				Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,255)
 				If @error Then
-					ConsoleWrite("Clicking Again"&@CRLF)
+					ConsoleWrite("Clicking Charts Again"&@CRLF)
 					MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+
+				Else
+					Local $bCoord = PixelSearch($aCoord[0]+45,$aCoord[1]+50,$aCoord[0]+80,$aCoord[1]+150,12404009)
+					If @error Then
+						ConsoleWrite("Clicking Charts Again"&@CRLF)
+						MouseClick("left",$aCoord[0]+10,$aCoord[1]+35,2)
+					EndIf
 				EndIf
 				;open Alerts
 				MouseMove($aCoord[0]+10,$aCoord[1]+140)

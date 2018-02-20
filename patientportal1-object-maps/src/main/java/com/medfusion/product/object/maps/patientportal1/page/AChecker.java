@@ -65,7 +65,7 @@ public class AChecker extends BasePageObject {
 		super(driver);
 		driver.manage().deleteAllCookies();
 		driver.get(ACECKER_URL);
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
 
@@ -78,13 +78,13 @@ public class AChecker extends BasePageObject {
 		openOptions();
 		switch (level) {
 			case A:
-				WCAGLevelAOption.click();
+				javascriptClick(WCAGLevelAOption);
 				break;
 			case AA:
-				WCAGLevelAAOption.click();
+				javascriptClick(WCAGLevelAAOption);
 				break;
 			case AAA:
-				WCAGLevelAAAOption.click();
+				javascriptClick(WCAGLevelAAAOption);
 				break;
 		}
 		closeOptions();

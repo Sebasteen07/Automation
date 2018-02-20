@@ -53,11 +53,13 @@ Portal Appointments feature:-feature_appointment_request
 Portal Appointment Send Confirmation:-//*[contains(text(),'Thank you')]
 Portal Ask A Staff Feature:-feature_ask_a_practitioner
 Portal Ask A Staff Pop Up Question1:-//*[@id="askAQuestionLightBox"]/div/div/div[2]/div/a
+Portal Prescription Renewal feature:-feature_rx_renewal
 
 #Patient Portal Message Page
 Portal Message Subject:-//*[@id='messageContainer']/div[3]/div[2]/div[1]/span[1]
 Portal Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]/div/p/span/span
 Portal Email Message Body:-//*[@id='messageContainer']/div[3]/div[2]/div[2]
+Portal Message Body Rx Details:-//*[@id="messageContainer"]/div[3]/div[2]/div[3]/div
 Portal Message Time:-//*[@id="messageContainer"]/div[3]/div[2]/div[1]/span[4]
 CCD Link:-View health data
 Portal Message Reply Button:-replyButton
@@ -77,13 +79,35 @@ Request Appointment Button:-continue_button
 #Ask A Staff Details Page
 AAS Subject:-//*[@id="form"]/div[4]/div/div[2]/input
 AAS Body:-//*[@id="form"]/div[5]/div/div[2]/textarea
+AAS Body Label:-//*[@id="form"]/div[5]/div/div[1]/label
 AAS Submit Button:-//*[@id="form"]/div[7]/div[2]/input
+AAS Submit Button(No Provider):-//*[@id="form"]/div[6]/div[2]/input
 AAS Location Dropdown:-//*[@id="form"]/div[2]/div/div[2]/select
 AAS Provider Dropdown:-//*[@id="form"]/div[3]/div/div[2]/select
 
 #Ask A Staff Confirm Page
 AAS Confirm Button:-//*[@id="form"]/div[2]/div/input
 AAS Confirmation Message:-//*[@id="pageContent"]/div/table/tbody/tr/td/div/p[1]
+
+#Prescription Renewal Request Location / Provider Page
+Rx Location Select:-//*[@id="pageContent"]/div/div[4]/div[2]/select
+Rx Provider Select:-//*[@id="pageContent"]/div/div[5]/div[2]/select
+Rx Page1 Continue Button:-//*[@id="continueF"]/div[2]/div[2]/input
+
+#Prescription Renewal Request Details Page
+Rx Request Medication Name:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[1]/div/div[2]/input
+Rx Request Dosage:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[2]/div/div[2]/input
+Rx Request Quantity:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[3]/div/div[2]/input
+Rx Request Refills:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[4]/div/div[2]/input
+Rx Request Prescription Number:-//*[@id="medicationForm"]/div[2]/div/div[2]/div/div[5]/div/div[2]/input
+Rx Request Notes:-//*[@id="medicationForm"]/div[2]/div/div[3]/div/div[2]/textarea
+Rx Page2 Continue Button:-//*[@id="rxrenewalform"]/div[14]/div[2]/input
+Rx Add Pharmacy Name:-pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyNameWrapper:_body:pharmacyName
+Rx Add Pharmacy Phone:-pharmacyPanel:radioGroup:pharmacyInputContainer:pharmacyPhoneWrapper:_body:pharmacyPhone
+
+#Prescription Renewal Confirmation Page
+Rx Request Confirm Button:-//*[@id="rxrenewalconfirmationform"]/div[6]/input
+Rx Request Confirmation Message:-//*[@id="pageContent"]/div/div[4]/p[1]
 
 #CCD Viewer
 CCD Viewer Download PDF:-savePdf

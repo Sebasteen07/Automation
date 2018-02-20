@@ -81,8 +81,8 @@ Else
 			$counter = 0
 			Do
 				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[33] & " orders"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[33] & " orders" & @CRLF)
+					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[41] & " orders"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[41] & " orders" & @CRLF)
 				Else
 					ConsoleWrite("Creating Order #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" &$counter+1 & @CRLF)
@@ -90,7 +90,7 @@ Else
 
 				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[35],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$arrConfig[43],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
 
 				Else
 					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
@@ -98,7 +98,7 @@ Else
 
 				If($arrConfig[9]=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[33]) Then
+					If($counter = $arrConfig[41]) Then
 						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
@@ -108,10 +108,10 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[33]
+					$counter = $arrConfig[41]
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[33]
+			Until $counter = $arrConfig[41]
 
 			Sleep(5000)
 
@@ -324,12 +324,7 @@ Else
 			Next
 
 			;Order Body
-			$temp = StringSplit($aData[1][6]," ")
-			$orderBody = Null
-			For $i = 1 to $temp[0]
-				$orderBody = $orderBody & $temp[$i]
-			Next
-
+			$orderBody = StringReplace($aData[1][6]," ","")
 
 			;Order Attachment Name
 			$orderAttachmentName = $aData[1][7]
@@ -556,20 +551,13 @@ Else
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 17-- VERIFY PATIENT LETTER IN PATIENT PORTAL" & @CRLF)
 			ConsoleWrite("Message Subject " & $arrConfig[26] & @CRLF)
-			$temp = StringSplit($arrConfig[26]," ")
-			$messageSubject = Null
-			For $i = 1 to $temp[0]
-				$messageSubject = $messageSubject & $temp[$i]
-			Next
+			$messageSubject = StringReplace($arrConfig[26]," ","")
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
 			ConsoleWrite("Message Body " & $arrConfig[25] & @CRLF)
-			$temp = StringSplit($arrConfig[25]," ")
-			$messageBody = Null
-			For $i = 1 to $temp[0]
-				$messageBody = $messageBody & $temp[$i]
-			Next
+			$messageBody = StringReplace($arrConfig[25]," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
+
 			$TOCjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\TOCLetterToPatient.jar"
 			$PID = Run(@ComSpec & ' /c java -jar ' & $TOCjar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $messageSentDate &'' ,"","",$STDOUT_CHILD)
 			ConsoleWrite("$PID :" & $PID & @CRLF)

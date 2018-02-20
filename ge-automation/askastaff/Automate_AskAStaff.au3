@@ -71,23 +71,14 @@ Else
 	ConsoleWrite("Create ask a staff question from Patient Portal" &@CRLF )
 
  	$createAASJar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaff.jar"
-		$temp = StringSplit($arrConfig[30]," ")
-		$subjectAAS = Null
-			For $i = 1 to $temp[0]
-				$subjectAAS = $subjectAAS & $temp[$i]
-			Next
-
-		$temp = StringSplit($arrConfig[31]," ")
-		$bodyAAS = Null
-			For $i = 1 to $temp[0]
-				$bodyAAS = $bodyAAS & $temp[$i]
-			Next
+		$subjectAAS = StringReplace($arrConfig[30]," ","")
+		$bodyAAS = StringReplace($arrConfig[31]," ","")
 
 	$counter = 0
 	Do
 		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[40] & " ask a staff questions"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[40] & " ask a staff questions" & @CRLF)
+			ConsoleWrite("Creating AAS #" & $counter+1 & " of " & $arrConfig[48] & " ask a staff questions"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" & $counter+1 & " of " & $arrConfig[48] & " ask a staff questions" & @CRLF)
 		Else
 			ConsoleWrite("Creating AAS #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating AAS #" &$counter+1 & @CRLF)
@@ -109,7 +100,7 @@ Else
 
 		If($arrConfig[9]=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[40]) Then
+			If($counter = $arrConfig[48]) Then
 				ConsoleWrite("Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Ask A Staff Flow...." & @CRLF)
 				Exit
@@ -119,9 +110,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[40]
+			$counter = $arrConfig[48]
 		EndIf
-	Until $counter = $arrConfig[40]
+	Until $counter = $arrConfig[48]
 
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- GET PATIENT DETAILS FROM DATABASE" & @CRLF)
 		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
@@ -214,6 +205,9 @@ Else
 
 			;Received Date
 			$receiveingDate = $aData[1][4]
+
+			;CommIncomingID
+			$commIncomingId  = $aData[1][5]
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)
@@ -338,6 +332,11 @@ Else
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying CommSentStatus in cusMedfusionCommOutgoing table" & @CRLF)
 				Call("assertData","1", $aData[1][4])
 
+			;ResponseToIncomingId
+				ConsoleWrite("Verifying ResponseToIncomingId in cusMedfusionCommOutgoing table" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying ResponseToIncomingId in cusMedfusionCommOutgoing table" & @CRLF)
+				Call("assertData",$commIncomingId, $aData[1][9])
+
 			;CommSentDate
 				$messageSentDate = $aData[1][7]
 
@@ -432,11 +431,7 @@ Else
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
 			ConsoleWrite("Message Body " & $arrConfig[32] & @CRLF)
-			$temp = StringSplit($arrConfig[32]," ")
-			$messageBody = Null
-			For $i = 1 to $temp[0]
-				$messageBody = $messageBody & $temp[$i]
-			Next
+			$messageBody = StringReplace($arrConfig[32]," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
 			$secureMessagejar = StringReplace($currentDir, "askastaff", "jarfiles")  & "\askastaffreply.jar"
 			$PID = Run(@ComSpec & ' /c java -jar ' & $secureMessagejar & ' ' & $messageSubject & ' ' & $messageBody & ' ' & $CreationDate &'' ,"","",$STDOUT_CHILD)

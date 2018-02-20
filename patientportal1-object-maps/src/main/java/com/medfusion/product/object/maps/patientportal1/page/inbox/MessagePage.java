@@ -134,6 +134,7 @@ public class MessagePage extends BasePageObject {
 	public MyPatientPage clickMyPatientPage() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setDefaultFrame(driver);
+		IHGUtil.waitForElement(driver, 120, lnkMyPatientPage);
 		lnkMyPatientPage.click();
 		return PageFactory.initElements(driver, MyPatientPage.class);
 	}
@@ -227,7 +228,7 @@ public class MessagePage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 20, webframe);
 		driver.switchTo().frame(webframe);
 		btnShareWithDoctor.click();
-		IHGUtil.waitForElement(driver, 20, textBoxToEnterEmailAddress);
+		IHGUtil.waitForElement(driver, 90, textBoxToEnterEmailAddress);
 		textBoxToEnterEmailAddress.sendKeys(email);
 		btnSendToShareTheHealthInformation.click();
 		IHGUtil.waitForElement(driver, 70, textBoxResponseMsg);

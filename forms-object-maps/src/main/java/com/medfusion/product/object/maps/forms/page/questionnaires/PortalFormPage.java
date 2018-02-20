@@ -132,6 +132,13 @@ public abstract class PortalFormPage extends BasePageObject {
 
 	public <T extends PortalFormPage> T goBack(Class<T> previousPageClass) {
 	    javascriptClick(previousPageButton);
+	    //not the cleanest solution, but one that makes most sense
+	    //the javascript action can get queued up too fast after page load and get to negative page numbers (and then it loops...)
+	    try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return PageFactory.initElements(driver, previousPageClass);
 	}
 
@@ -210,6 +217,12 @@ public abstract class PortalFormPage extends BasePageObject {
 		scrollToFooter();
 		while (previousPageButton.isDisplayed()) {
 		    javascriptClick(previousPageButton);
+		    try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			scrollToFooter(3);
 		}
 	}

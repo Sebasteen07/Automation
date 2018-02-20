@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -17,10 +19,10 @@ public class JalapenoAppointmentRequestV2Step1 extends BasePageObject {
 	@FindBy(how = How.ID, using = "history_button")
 	private WebElement previousAppoitmentRequestsButton;
 
-	@FindBy(how = How.ID, using = "provsearch")
+	@FindBy(how = How.XPATH, using = "//*[@id=\'frame\']/div[3]/div[3]/div[1]/div/mf-providers-locations/div/div[1]/span")
 	private WebElement providerSearchInput;
 
-	@FindBy(how = How.ID, using = "provsearch_button")
+	@FindBy(how = How.ID, using = "showall")
 	private WebElement providerSearchButton;
 
 	@FindBy(how = How.ID, using = "showall")
@@ -68,7 +70,7 @@ public class JalapenoAppointmentRequestV2Step1 extends BasePageObject {
 
 	public JalapenoAppointmentRequestV2HistoryPage goToHistory(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		previousAppoitmentRequestsButton.click();
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(previousAppoitmentRequestsButton)).click();
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2HistoryPage.class);
 	}
 

@@ -53,6 +53,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 	}
 
 	public void goToUpcomingAppointments() {
+		IHGUtil.waitForElement(driver, 90, upcomingAppointmentsButton);
 		if (upcomingAppointmentsButton.isDisplayed()) {
 			log("Going to upcoming appointments page");
 			upcomingAppointmentsButton.click();
@@ -62,6 +63,7 @@ public class JalapenoAppointmentsPage extends BasePageObject {
 	}
 
 	public void goToPastAppointments() {
+		IHGUtil.waitForElement(driver, 120, pastAppointmentsButton);
 		if (pastAppointmentsButton.isDisplayed()) {
 			log("Going to past appointments page");
 			pastAppointmentsButton.click();

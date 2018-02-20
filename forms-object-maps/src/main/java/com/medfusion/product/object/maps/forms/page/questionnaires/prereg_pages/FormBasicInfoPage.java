@@ -16,7 +16,6 @@ public class FormBasicInfoPage extends PortalFormPage {
 
 	public FormBasicInfoPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 	@FindBy(id = "streetaddr1")
@@ -184,13 +183,11 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 */
 	public void setSex(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		Select selector = new Select(gender);
-		selector.selectByVisibleText(type);
+		focusSelectAndSelectByValue(gender,type);
 	}
 	public void setSex_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		Select selector = new Select(gender);
-		selector.selectByVisibleText(type);
+		PortalUtil.PrintMethodName();		
+		focusSelectAndSelectByValue(gender,type);
 	}
 	/**
 	 * @Description:Set Marital Status

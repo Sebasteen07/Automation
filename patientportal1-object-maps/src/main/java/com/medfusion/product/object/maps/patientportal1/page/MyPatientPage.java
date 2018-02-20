@@ -170,7 +170,7 @@ public class MyPatientPage extends BasePageObject {
 			// DEBUG
 			driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 			scrollAndWait(0, 0, 0);
-			logout.click();
+			javascriptClick(logout);
 		} else {
 			// Look in frame.
 			PortalUtil.setPortalFrame(driver);
@@ -178,7 +178,7 @@ public class MyPatientPage extends BasePageObject {
 				System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
 				// DEBUG
 				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
-				logout.click();
+				javascriptClick(logout);
 			}
 			System.out.println("### WARNING: LOGOUT ELEMENT NOT FOUND.");
 		}

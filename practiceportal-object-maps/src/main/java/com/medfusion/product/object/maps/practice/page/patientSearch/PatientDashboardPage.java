@@ -28,7 +28,7 @@ public class PatientDashboardPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
 
-	@FindBy(xpath = ".//table[@class='demographics']/tbody/tr[5]/td[2]/a")
+	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td/a")
 	private WebElement editPatientID;
 
 	@FindBy(xpath = ".//*[@id='content']/form/table/tbody/tr[5]/td[2]")
@@ -261,7 +261,7 @@ public class PatientDashboardPage extends BasePageObject {
 	 */
 	public String readExternalPatientID() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 30, externalID);
+		IHGUtil.waitForElement(driver, 120, externalID);
 		patientID = externalID.getAttribute("value").toString();
 		return patientID;
 	}

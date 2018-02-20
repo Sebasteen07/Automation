@@ -85,7 +85,7 @@ public class SitegenConstants {
 	// Import Staff and Export Staff
 	public final static String IMPORTSTAFFFILENAME = "FileImportStaff.csv";
 	public final static String FILEIMPORTSTATUS = "Finished";
-	public final static String FILEPATH = "testfiles/FileImportStaff.csv";
+	public final static String FILEPATH = "target/test-classes/testfiles/FileImportStaff.csv";
 
 	// Custom Forms item types
 	public final static String CUSTOMFORM_ITEM_TYPE1 = "Question";
