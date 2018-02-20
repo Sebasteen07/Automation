@@ -148,7 +148,7 @@ public class OldCustomFormPages extends BasePageObject {
 			}
 		}
 
-
+		dateOfCancer.clear();
 		dateOfCancer.sendKeys("10/15/2013");
 
 		Select selectstate5 = new Select(feelings);
@@ -161,8 +161,8 @@ public class OldCustomFormPages extends BasePageObject {
 	 * @throws InterruptedException
 	 */
 	public void submitInsuranceHealthForm() throws InterruptedException {
-		btnSubmit.click();
-		Thread.sleep(1000);
+		javascriptClick(btnSubmit);
+		Thread.sleep(5000);
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class AChecker extends BasePageObject {
 		super(driver);
 		driver.manage().deleteAllCookies();
 		driver.get(ACECKER_URL);
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
 
