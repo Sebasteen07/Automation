@@ -552,7 +552,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		String pdfContent = apptRequestHistoryDetail.clickViewAsPdfLink();
 		// apptRequestHistoryDetail.clickViewAsPdfLink();
 		log(pdfContent, "DEBUG");
-		assertTrue(pdfContent.contains("pdf"), "There is an error an with the Appt Request History Detail PDF content");
+		assertTrue(pdfContent.contains("pdfView"), "There is an error an with the Appt Request History Detail PDF content");
 	}
 
 	/**
