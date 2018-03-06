@@ -10,7 +10,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -29,7 +31,7 @@ public class PatientMessagingPage extends BasePageObject {
 	@FindBy(xpath = "//table[@class='searchForm']//input[@name='subject']")
 	private WebElement subject;
 
-	@FindBy(xpath = "//input[@id='msgattachment_1_1']")
+	@FindBy(id = "msgattachment_1_1")
 	private WebElement messageAttachment;
 
 	@FindBy(xpath = "//table[@class='searchForm']//select[@name='recipienttype']")
@@ -247,6 +249,15 @@ public class PatientMessagingPage extends BasePageObject {
 		setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName, subjectText);
 	}
 
+	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(testData.getDocumentsPatientFirstName(), testData.getDocumentsPatientLastName(), "", templateName, subjectText);
+
+	}
+	
 	public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
 		setMessageFields(templateName, subjectText);
@@ -269,7 +280,6 @@ public class PatientMessagingPage extends BasePageObject {
 
 	public void setRecipient(String firstName, String lastName, String email) {
 		IHGUtil.PrintMethodName();
-
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
@@ -313,4 +323,6 @@ public class PatientMessagingPage extends BasePageObject {
 		log("Message from patient not found");
 		return false;
 	}
+
+
 }

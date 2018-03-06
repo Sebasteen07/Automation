@@ -11,13 +11,14 @@ import org.openqa.selenium.support.PageFactory;
 
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 
-public class JalapenoMessagesPage extends MedfusionPage {
+public class JalapenoMessagesPage extends JalapenoMenu {
 
 	/*
 	 * @FindBy(how = How.ID, using = "askatitle_link") private WebElement askAQuestionButton;

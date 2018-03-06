@@ -104,8 +104,6 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		webElementsList.add(downloadButton);
 		webElementsList.add(firstVisibleCCDCheckbox);
 		webElementsList.add(firstVisibleCCDDate);
-		webElementsList.add(secondVisibleCCDDate);
-		webElementsList.add(thirdVisibleCCDDate);
 
 		return assessPageElements(webElementsList);
 	}

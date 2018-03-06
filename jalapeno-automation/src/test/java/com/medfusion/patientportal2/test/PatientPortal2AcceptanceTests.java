@@ -2,9 +2,11 @@ package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -70,6 +72,7 @@ import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
@@ -414,6 +417,51 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 	}
 
+	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthRecordsDocuments() throws Exception {
+	
+		String messageSubject = "Document " + System.currentTimeMillis();
+
+		logStep("Login physician");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		
+		log("Getting the document to upload from filepath");
+		PracticeUtil pUtil = new PracticeUtil(driver);
+		String value = pUtil.getFilepath(PortalConstants.fileDirectory).concat(PortalConstants.HealthRecordsSendPdfFileName);
+		
+		log("Change name of the file");
+		File originalDocument = new File(value);
+		
+		File tmpDocument = File.createTempFile("Document", ".pdf");
+		tmpDocument.deleteOnExit();
+		FileUtils.copyFile(originalDocument, tmpDocument);
+		
+		
+		
+		logStep("Send a new secure message with attachment to static patient");
+		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject, tmpDocument.toString());
+		
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getDocumentsPatientUserId(), testData.getPassword());
+	
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		logStep("Waiting for message from practice portal");
+		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
+		
+		logStep("Go to Documents tab");
+		MedicalRecordSummariesPage healthRecordsPage = messagesPage.goToHealthRecordsPage();
+		DocumentsPage documentsPage = healthRecordsPage.gotoOtherDocumentTab();
+		
+		logStep("Check if doccument from received message is displayed on Documents page");
+		assertTrue(documentsPage.checkLastImportedFileName(tmpDocument.getName()));
+		
+	}
+		
 	@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 
