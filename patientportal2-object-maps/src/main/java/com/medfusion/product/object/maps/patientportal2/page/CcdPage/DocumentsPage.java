@@ -63,12 +63,7 @@ public class DocumentsPage extends MedfusionPage {
 
 	public boolean checkLastImportedFileName(String name) {
 		
-		String foundName = fileName.getText();
-		if(foundName.equals(name)) {
-			return true;
-		}
-		
-		return false;
+		return name.equals(fileName.getText());
 	}
 	
 

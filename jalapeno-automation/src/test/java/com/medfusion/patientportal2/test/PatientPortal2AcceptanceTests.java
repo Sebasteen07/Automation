@@ -428,7 +428,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Getting the document to upload from filepath");
 		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value = pUtil.getFilepath(PortalConstants.fileDirectory).concat(PortalConstants.HealthRecordsSendPdfFileName);
+		String value = pUtil.getFilepath(testData.getFileDirectory()).concat(testData.getHealthRecordsSendPdfFileName());
 		
 		log("Change name of the file");
 		File originalDocument = new File(value);

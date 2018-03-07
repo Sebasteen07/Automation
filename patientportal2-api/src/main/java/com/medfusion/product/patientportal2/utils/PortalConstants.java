@@ -39,8 +39,6 @@ public class PortalConstants {
 	public final static String MyPatientPage = "My Patient Page";
 
 	public final static String Subject = "Subject";
-	public final static String HealthRecordsSendPdfFileName = "QuickSend.pdf";
-	public final static String fileDirectory = "documents";
 
 	// Added variables for Prescription test in Integration Platform
 	public final static String Quantity = "3";
