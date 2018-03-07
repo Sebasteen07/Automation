@@ -428,7 +428,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Getting the document to upload from filepath");
 		PracticeUtil pUtil = new PracticeUtil(driver);
-		String value = pUtil.getFilepath(testData.getFileDirectory()).concat(testData.getHealthRecordsSendPdfFileName());
+		String value = pUtil.getFilepath(testData.getProperty("fileDirectory")).concat(testData.getProperty("healthRecordsSendPdfFileName"));
 		
 		log("Change name of the file");
 		File originalDocument = new File(value);
@@ -445,7 +445,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getDocumentsPatientUserId(), testData.getPassword());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("documentsPatientUserId"), testData.getPassword());
 	
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
