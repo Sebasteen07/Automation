@@ -293,7 +293,7 @@ public class PatientMessagingPage extends BasePageObject {
 	public void publishMessage() {
 		IHGUtil.PrintMethodName();
 
-		publishMessage.click();
+		javascriptClick(publishMessage);
 		IHGUtil.exists(driver, 30, messagePublishedSuccessfully);
 	}
 
