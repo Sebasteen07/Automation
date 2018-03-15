@@ -278,7 +278,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 15: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
 		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(9000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("Step 16: Find message in Inbox");
@@ -349,10 +349,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
 		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
 		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(6000);
 		log("Step 3: Click Ask A Staff");
 		AskAStaffStep1Page askStaff1 = myPatientPage.clickAskAStaffLink();
-
+		Thread.sleep(8000);
 		log("Step 4: Complete Step 1 of Ask A Staff");
 		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the AMDCAskQuestion automation test case.");
 
@@ -376,7 +376,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 9: Get AMDC Rest call");
 		// get only messages from last day in epoch time to avoid transferring
 		// lot of data
-		Long since = askStaff1.getCreatedTimeStamp() / 1000L - 60 * 60 * 24;
+		Long since = askStaff1.getCreatedTimeStamp() / 1000L;
 
 		log("Getting messages since timestamp: " + since);
 
@@ -446,7 +446,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
 		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(9000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("Step 8: Find message in Inbox");
@@ -498,7 +498,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(9000);
 		log("Step 3: Click on myaccountLink on MyPatientPage");
 		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 
@@ -508,7 +508,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String secondLine = "Street " + random.nextInt(1000);
 
 		log("Address 1: " + firstLine + "\nAddress 2: " + secondLine);
-
+		Thread.sleep(9000);
 		log("Step 5: Modify address line 1 and 2 on MyAccountPage");
 		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
 
@@ -617,7 +617,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// Filing the User credentials
 		MyPatientPage myPatientPage =
 				pCreateAccountPage.fillPatientActivaion(zip, email, testData.getNewPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer());
-
+		Thread.sleep(9000);
 		log("Step 8: Assert Webelements in MyPatientPage");
 		assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
 
@@ -759,12 +759,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 16:Click on View health data");
 		phrDocuments.clickViewHealthInformation();
-
+		Thread.sleep(15000);
 		log("step 17:click Close Viewer");
 		phrDocuments.closeViewer();
 
 		log("step 18:Click Logout");
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		phrDocuments.clickLogout();
 		
 	}
@@ -797,7 +797,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: LogIn");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
 		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(9000);
 		log("Step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
 		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
@@ -886,6 +886,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 14: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
 		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
+		Thread.sleep(9000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		// String rxSMSubject="Prescription Renewal Approved1411738963818";
@@ -1047,8 +1048,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: LogIn to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getURL());
+		Thread.sleep(7000);
 		MyPatientPage pMyPatientPage = portalloginpage.login(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(9000);
 		log("Step 5: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
@@ -1057,7 +1059,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		MessagePage pMessage = inboxPage.clickFirstMessageRow();
 
 		log("Step 7: Validate message subject and send date");
-		Thread.sleep(8000);
+		Thread.sleep(9000);
 		log("######  Message Date :: " + IHGUtil.getEstTiming());
 		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
 		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
@@ -1066,14 +1068,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
-
+		Thread.sleep(15000);
 		log("Step 9: Click on PDF download Link");
 		pMessage.clickOnPDF();
 
 		log("Step 10: Click on Send Information link");
 		String Email = testData.getEmail();
 		pMessage.generateTransmitEvent(Email);
-		Thread.sleep(2000);
+		Thread.sleep(9000);
 		log("Step 11: Verify if CCD Viewer is loaded and click Close Viewer");
 		pMessage.verifyCCDViewerAndClose();
 
@@ -1110,7 +1112,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		phrDocuments.closeViewer();
 
 		log("step 20:Click Logout");
-		Thread.sleep(3000);
+		Thread.sleep(9000);
 		phrDocuments.clickLogout();
 
 	}
@@ -1152,7 +1154,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			String firstName = createNewPatientPage.FName;
 			String lastName = createNewPatientPage.LName;
-
+			Thread.sleep(9000);
 			log("Step 4: Assert Webelements in MyPatientPage");
 			assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 
@@ -1194,14 +1196,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			log("Step 13: Login to Patient Portal for submitting 'Patient Registration' Discrete Form");
 			PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
 			MyPatientPage myPatientPage = loginPage.login(email, testData.getPassword());
-
+			Thread.sleep(9000);
 			log("Step 14: Verify for My Patient Page ");
 			PortalUtil.setPortalFrame(driver);
 			verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 			log("Step 15: Click on Registration button ");
 			FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-
+			Thread.sleep(9000);
 			log("Step 16: Click on Continue button ");
 			FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickSaveContinue(FormBasicInfoPage.class);
 
@@ -1292,7 +1294,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: LogIn");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, testcasesData.getUrl());
 		MyPatientPage myPatientPage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
-
+		Thread.sleep(12000);
 		log("Step 3: Verify for My Patient Page ");
 		PortalUtil.setPortalFrame(driver);
 		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
@@ -1347,7 +1349,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
+		Thread.sleep(3000);
 		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testcasesData.getUserName(), testcasesData.getPassword());
+		Thread.sleep(9000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		MessagePage msg = inboxPage.openMessageInInbox(reply_Subject);
@@ -1389,7 +1393,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 21: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
-
+		Thread.sleep(6000);
 		log("Step 22: Click On Online BillPayment Tab in Practice Portal");
 		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
 
@@ -1426,10 +1430,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 1: Open no login payment page");
 		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
-
+		Thread.sleep(3000);
 		log("Step 2: Fill in payment info and submit");
 		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
-
+		Thread.sleep(9000);
 		log("Step 3: Verify payment OK");
 		assertTrue(driver.getPageSource().contains("Thank You for your payment"));
 
@@ -1514,7 +1518,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 1: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
-
+		Thread.sleep(9000);
 		log("Step 2: Click on Virtual Card Swiper Tab ");
 		VirtualCardSwiperPage vcsPage = practiceHome.clickVirtualCardSwiperTab();
 
@@ -1564,7 +1568,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 11: Login to Practice Portal to search record");
 		practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
-
+		Thread.sleep(9000);
 		log("Step 12: Click on Virtual Card Swiper Tab ");
 		vcsPage = practiceHome.clickVirtualCardSwiperTab();
 
@@ -1643,8 +1647,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
+		Thread.sleep(9000);
 		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-
+		Thread.sleep(12000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
 		log("Step 8: Find message in Inbox");
@@ -1706,7 +1711,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
-
+		Thread.sleep(12000);
 		log("Step 8: Search for above patient with first name & last name");
 		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
 		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());

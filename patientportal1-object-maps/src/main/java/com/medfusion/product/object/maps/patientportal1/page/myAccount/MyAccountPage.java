@@ -506,6 +506,11 @@ public class MyAccountPage extends BasePageObject {
 
 	public void submit() {
 		javascriptClick(btnSubmit);
+		try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 

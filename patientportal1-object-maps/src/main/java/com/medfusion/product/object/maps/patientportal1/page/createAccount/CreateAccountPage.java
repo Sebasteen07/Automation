@@ -403,6 +403,7 @@ public class CreateAccountPage extends BasePageObject {
 		selectLocationIfNeeded();
 		checkPrivacyInformation.click();
 		checkIntuitTerms.click();
+		IHGUtil.waitForElement(driver, 60, btnSubmit);
 		btnSubmit.click();
 
 		return PageFactory.initElements(driver, MyPatientPage.class);
