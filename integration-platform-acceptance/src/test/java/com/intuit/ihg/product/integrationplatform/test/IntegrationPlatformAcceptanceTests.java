@@ -361,6 +361,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
 		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
+		Thread.sleep(7000);
 		verifyTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())),
 				"Expected to see a subject containing " + askStaff1.getCreatedTimeStamp() + " on the Ask A Staff History page. None were found.");
 
@@ -726,7 +727,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Click on link View health data");
 		pMessage.clickBtnReviewHealthInformation();
-
+		Thread.sleep(9000);
 		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
 		pMessage.verifyCCDViewerAndClose();
 
@@ -1349,7 +1350,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
-		Thread.sleep(3000);
+		Thread.sleep(9000);
 		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testcasesData.getUserName(), testcasesData.getPassword());
 		Thread.sleep(9000);
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
