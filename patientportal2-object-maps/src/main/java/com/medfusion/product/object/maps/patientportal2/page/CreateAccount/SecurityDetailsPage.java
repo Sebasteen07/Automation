@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -44,10 +43,10 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement selectPhoneType;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/div[1]/span/span[1]")
+	@FindBy(how = How.XPATH, using = "/html/body/div[4]/div/div[2]/div[3]/div[1]/div/div/div/div/div/div/div/div/div/div[4]/div/form/div[1]/div[3]/mf-locations/div/div/div[1]/span")
 	private WebElement primaryLocationElement;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='ui-select-choices-row-1-0']/span/div")
+	@FindBy(how = How.XPATH, using = "/html/body/div[5]/ul/li/div[3]/span/div")
 	private WebElement setLocation;
 
 	@FindBy(how = How.ID, using = "prevStep")
@@ -127,6 +126,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		if (IHGUtil.exists(driver, 1, primaryLocationElement)) {
 			primaryLocationElement.click();
+			IHGUtil.waitForElement(driver, 120, setLocation);
 			setLocation.click();
 		}
 	}
@@ -136,7 +136,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 		if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
 			log("Statement delivery preference lightbox is displayed");
 
-			new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(okButton));
+			new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
 			if (deliveryPref == 1) {
 				paperPaymentPreference.click();
 			} else if (deliveryPref == 2) {
