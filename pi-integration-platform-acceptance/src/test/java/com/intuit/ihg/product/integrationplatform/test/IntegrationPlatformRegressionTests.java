@@ -10,6 +10,7 @@ import java.util.Arrays;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -921,27 +922,43 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
 				Assert.assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
 				MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
+				String UIPDF = System.getProperty("user.dir");
+				String home = System.getProperty("user.home");
+				String fileName = "bulk1";
+				
 				if (driver instanceof FirefoxDriver) {
 					Robot rb = new Robot();
 					Thread.sleep(2000);
 					rb.keyPress(KeyEvent.VK_ENTER);
 					Thread.sleep(100);
 					rb.keyRelease(KeyEvent.VK_ENTER);
-					Thread.sleep(2000);
-				}
-				Thread.sleep(6000);
-				String UIPDF = System.getProperty("user.dir");
-				String downloadFile = UIPDF + testData.downloadLocation;
-				File f = new File(downloadFile);
-				ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-				String pdfFileLocation = downloadFile + names.get(0);
-				String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
-				String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
-				String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
 
-				Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
-				log("Is PDF Match "+pdfMatch);
-				Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+					log("Wait for file to be downloaded");
+					Thread.sleep(24000);
+					
+					String downloadFile = UIPDF + testData.downloadLocation;
+					File f = new File(downloadFile);
+					ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+					String pdfFileLocation = downloadFile + names.get(0);
+					String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
+					String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+					String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
+					Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
+					log("Is PDF Match "+pdfMatch);
+					Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+				} if (driver instanceof ChromeDriver) {
+					File file = new File(home+"/Downloads/" + fileName + ".pdf");
+					String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+					
+					String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
+					String downloadedFile = ExternalFileReader.readFromFile(workingDir);
+					Thread.sleep(800);
+					Boolean pdfMatch = RestUtils.matchBase64String(downloadedFile, attachmentInPayload);
+					log("Is PDF Match "+pdfMatch);
+					RestUtils.deleteFile(file.getPath());
+				}
+				
+				
 			}
 			homePage.clickOnLogout();
 		}
@@ -952,7 +969,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testBulkSecureMessage();
 		}
 	}
-
+	
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectorySearch() throws Exception {
 		DirectorySearchUtils DirectorySearchUtilsObj = new DirectorySearchUtils();

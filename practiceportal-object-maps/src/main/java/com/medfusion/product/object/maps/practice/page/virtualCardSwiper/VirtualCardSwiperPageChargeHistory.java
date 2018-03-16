@@ -63,7 +63,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	public void SearchPayment(int value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver, 20, practicePayment);
+		IHGUtil.waitForElement(driver, 60, practicePayment);
 
 
 		Select endMonthSelect = new Select(endMonth);
@@ -96,7 +96,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 			}
 		}
 
-		IHGUtil.waitForElement(driver, 20, btnSubmit);
+		IHGUtil.waitForElement(driver, 90, btnSubmit);
 		btnSubmit.click();
 	}
 
@@ -112,6 +112,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	 */
 	public String getBillDetails(String amont) throws Exception {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(8000);
 		PracticeUtil.setPracticeFrame(driver);
 
 		try {

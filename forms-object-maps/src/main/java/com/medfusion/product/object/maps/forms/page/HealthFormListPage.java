@@ -87,6 +87,7 @@ public class HealthFormListPage extends BasePageObject {
 		log("Clicking On General Registration and Health History ");
 		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
 		healthFormsRegistrationLink.click();
+		Thread.sleep(7000);
 		formValueNew=healthFormsRegistrationLink.getText();
 		//WebDriverWait wait = new WebDriverWait(driver,50);
 		driver.switchTo().frame(iframeforms);
