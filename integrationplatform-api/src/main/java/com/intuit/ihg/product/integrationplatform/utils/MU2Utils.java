@@ -262,9 +262,9 @@ public class MU2Utils {
 		//Log4jUtil.log("zone set to : "+zone);
 		TimeZone estTime = TimeZone.getTimeZone(zone);
 		gmtFormat.setTimeZone(estTime);
-		String data[] = gmtFormat.format(date).split(" ");
-		String joinedDate = new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
-		return joinedDate;
+		//String data[] = gmtFormat.format(date).split(" ");
+		//String joinedDate = new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
+		return gmtFormat.format(date);
 	}
 	
 	public static String ExtractString(String findStringBetween, String SearchStringFrom) {
