@@ -45,7 +45,7 @@
 						<configuration>
 							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
-							<outputFolder>./report</outputFolder>
+							<outputFolder>target/surefire-reports/</outputFolder>
 							<exportwAll>true</exportwAll>
 							<printReport>true</printReport>
 							<environment>${environment}</environment>
