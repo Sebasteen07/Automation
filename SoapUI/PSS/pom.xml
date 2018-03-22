@@ -43,6 +43,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
+							<reportName>SoapUI report</reportName>
 							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
 							<outputFolder>./report</outputFolder>
@@ -50,7 +51,9 @@
 							<printReport>true</printReport>
 							<environment>${environment}</environment>
 							<testSuite>${test_suite_name}</testSuite>
-							<testSuite>${test_suite_name1}</testSuite>
+							<projectProperties>
+								<projectProperty>PracticeId=${PracticeId}</projectProperty>
+							</projectProperties>
 							<!--testCase>${testCaseName}</testCase-->							
 						</configuration>
 					</execution>
