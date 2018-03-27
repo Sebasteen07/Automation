@@ -77,11 +77,24 @@ public class ApptRequestSearchPage extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 
 		boolean result = false;
-		try {
-			result = provider.isDisplayed();
-		} catch (Exception e) {
-			// Catch any element not found errors
-		}
+		
+		
+		for(int i = 0; i < 4; i++){
+			   try {
+			    PracticeUtil.setPracticeFrame(driver);
+			    result = provider.isDisplayed();
+			    break;    
+			   } catch (Exception e) {
+			    log("search page loaded? failed attempt:" + (i+1) + " out of 4");
+			    // Catch any element not found errors
+			   }
+			   try {
+			    Thread.sleep(3000);
+			   } catch (InterruptedException e) {
+			    // TODO Auto-generated catch block
+			    e.printStackTrace();
+			   }
+			  }
 
 		return result;
 	}
