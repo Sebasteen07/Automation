@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.intuit.ihg</groupId>
+	<groupId>com.medfusion</groupId>
 	<artifactId>MF-Identity-SoapUI</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -10,21 +10,31 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>SmartBearPluginRepository</id>
-			<url>http://www.soapui.org/repository/maven2/</url>
+			<url>http://smartbearsoftware.com/repository/maven2/</url>
 		</pluginRepository>
 	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.github.redfish4ktc.soapui</groupId>
-				<artifactId>maven-soapui-extension-plugin</artifactId>
-				<version>4.6.4.2</version>
+				<groupId>com.smartbear</groupId>
+				<artifactId>ready-api-maven-plugin</artifactId>
+				<version>2.2.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.poi</groupId>
 						<artifactId>poi</artifactId>
 						<version>3.9</version>
 					</dependency>
+					<dependency>
+<groupId>com.jgoodies</groupId>
+<artifactId>forms</artifactId>
+<version>1.2.1</version>
+</dependency>
+					<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>9.4-1200-jdbc41</version>
+</dependency>
 				</dependencies>
 				<executions>
 					<execution>
@@ -33,12 +43,15 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<projectFile>MF-Identity-readyapi-project.xml</projectFile>
+							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
-							<outputFolder>./report</outputFolder>
+							<outputFolder>target/surefire-reports/</outputFolder>
 							<exportwAll>true</exportwAll>
 							<printReport>true</printReport>
 							<environment>${environment}</environment>
+							<testSuite>${test_suite_name1}</testSuite>
+							<testSuite>${test_suite_name2}</testSuite>							
+							<!--testCase>${testCaseName}</testCase-->							
 						</configuration>
 					</execution>
 				</executions>
@@ -46,7 +59,7 @@
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.4.1</version>
-				<configuration>
+				<configuration>				
 					<filesets>
 						<fileset>
 							<directory>.</directory>
@@ -59,7 +72,25 @@
 						</fileset>
 					</filesets>
 				</configuration>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+						<version>3.5</version>
+							<configuration>
+					<locales>en,fr</locales>
+				</configuration>
+			</plugin>			 
 		</plugins>
+		
 	</build>	
+	<reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.19.1</version>
+         </plugin>
+      </plugins>
+   </reporting>
 </project>
