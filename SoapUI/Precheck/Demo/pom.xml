@@ -16,9 +16,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.smartbear.soapui</groupId>
-				<artifactId>soapui-maven-plugin</artifactId>
-				<version>5.3.0</version>
+				<groupId>com.smartbear</groupId>
+				<artifactId>ready-api-maven-plugin</artifactId>
+				<version>2.2.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.poi</groupId>
