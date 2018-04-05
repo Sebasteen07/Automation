@@ -4275,8 +4275,9 @@ if( conn.responseCode == 200 ) {
 	 int counter =0
 	 for(status in statusCheck) {
 	 	if(counter==1) {
-	 		assert status == "COMPLETED"
+	 		assert status == "ERROR"
 	 	} 
+	 	log.info status
 	 	counter++
 	 }
 	 def patientexternalid = context.expand( '${#Project#patientexternalid}' )
@@ -4287,7 +4288,7 @@ if( conn.responseCode == 200 ) {
 } else {
   log.info "Error while processing URL."
   log.info "${conn.responseCode}: ${conn.responseMessage}" 
-}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/77c69a53-262a-4489-9b2c-1b4d4e8dd28c]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>4601c057-9eaf-4222-95d9-4ffd98fcbfaf</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="031c292e-cb2a-4205-bed7-e7890eead6d5" name="postappointmentdata"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="bdcad95d-167a-4f5d-ae62-55537148d4d4" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="postpostappointmentdatatodeactivatepatient" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="randomno" id="015e2bfd-4dc8-41a9-a295-4df4cc24c509"><con:settings/><con:config><script>int randomID = Math.abs(new Random().nextInt() % 100000000000) + 1
+}</script></con:config></con:testStep><con:properties><con:property><con:name>Value</con:name><con:value>[http://dev3vip-events-core-svc.qhg.local/events/v1/practice/6400c743-3e23-4501-9e0f-483a0a254819/processingStatus/444c241a-ab50-416f-881e-0d9284896ed1]</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>4601c057-9eaf-4222-95d9-4ffd98fcbfaf</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="031c292e-cb2a-4205-bed7-e7890eead6d5" name="postappointmentdata"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="bdcad95d-167a-4f5d-ae62-55537148d4d4" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="postpostappointmentdatatodeactivatepatient" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="randomno" id="015e2bfd-4dc8-41a9-a295-4df4cc24c509"><con:settings/><con:config><script>int randomID = Math.abs(new Random().nextInt() % 100000000000) + 1
 def messageid= Integer.toString(randomID)</script></con:config></con:testStep><con:testStep type="restrequest" name="postappointmentdata" id="0adc1b39-d7c2-402e-9187-56f7f645c7c9"><con:settings/><con:config service="appointmentdata" resourcePath="/${#Project#urlaptdata}" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="postappointmentdata" id="d0350c42-7b79-46b2-bca8-a1f59ab1269e" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#accesstoken}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?><ns2:AppointmentData xmlns:ns2="http://schema.medfusion.com/appointmentsdata/v1">
 <AppointmentMessageHeader>
 <Sender DeviceLocalTime="2017-02-03T12:45:12-04:00" DeviceName="Some Device" DeviceVersion="8.2" VendorName="Some Medical"/>
