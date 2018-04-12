@@ -50,7 +50,7 @@
 							<printReport>true</printReport>
 							<environment>${environment}</environment>
 							<testSuite>${test_suite_name}</testSuite>							
-							<!--testCase>${testCaseName}</testCase-->							
+							<testCase>${testCaseName}</testCase>							
 						</configuration>
 					</execution>
 				</executions>
