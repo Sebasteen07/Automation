@@ -49,7 +49,7 @@ public class ApptRequestHistoryDetailPage extends BasePageObject {
 			String popupHandle = ite.next().toString();
 			if (!popupHandle.contains(mainWindowHandle)) {
 				driver.switchTo().window(popupHandle);
-				str = driver.getTitle();
+				str = driver.getPageSource();
 				System.out.println("Window name after clicking View as pdf link:" + str);
 
 			}
