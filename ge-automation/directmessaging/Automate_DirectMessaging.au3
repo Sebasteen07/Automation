@@ -13,13 +13,40 @@ $logPath = $commonStepsDir & "\ProcessLog_DirectMessaging_" & $time & ".txt"
 Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of order creation")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+$docTypeEmailMessage = Call("readConfig","New Document (Email Message)")
+
+$orderCategory1 =  Call("readConfig","Order Category1")
+$orderCategory2 =  Call("readConfig","Order Category2")
+$orderAuthPvdr =  Call("readConfig","Authorizing Provider for TOC Flow (Lastname,Firstname)")
+$orderRefPvdr =  Call("readConfig","Referring provider for TOC flow (Lastname,Firstname)")
+$orderInstructions =  Call("readConfig","Instructions for ToC")
+$orderReferalReason =  Call("readConfig","Reason for referal")
+$orderPatientLetterSubject =  Call("readConfig","Letter to Patient Subject (TOC)")
+$orderPatientLetter =  Call("readConfig","Letter to Patient(TOC)")
+$orderToAddress =  Call("readConfig","Receiving ToC (to address)")
+$orderFromAddress =  Call("readConfig","Sending/Receiving ToC (from address)")
+$orderDownloadLocation =  Call("readConfig","ToC Download Location")
+
 ;Update servicesettings for TOC flow
 		FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR DIRECT MESSAGING FLOW" & @CRLF)
-			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns
 			ConsoleWrite("Executing Query: " & $arrQuery[26] & @CRLF)
@@ -55,7 +82,7 @@ $arrEvent = Call("openEventFile")
 
 			_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
 	Exit
@@ -66,13 +93,13 @@ Else
 	FileWriteLine($hFileOpen, @CRLF & " STEP 2 -- LOGIN TO CPS" & @CRLF)
 	ConsoleWrite("Start the CPS client" &@CRLF )
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Start the CPS client" &@CRLF)
-	Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+	Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 
 	WinActivate("Centricity Practice Solution")
 	If(WinActive("Centricity Practice Solution")) Then
 		FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- OPEN PATIENT CHART" & @CRLF)
 		ConsoleWrite("Open Patient Chart" &@CRLF )
-		Call("openPatientChart",$arrConfig[15],$arrConfig[16])
+		Call("openPatientChart",$patientFirstName,$patientLastName)
 		Sleep(8000)
 		WinWaitActive("Chart - NOT FOR PATIENT USE")
 
@@ -80,25 +107,25 @@ Else
 		If(WinActive("Chart - NOT FOR PATIENT USE")) Then
 			$counter = 0
 			Do
-				If($arrConfig[9]=="Data Generation") Then
-					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $arrConfig[41] & " orders"& @CRLF)
-					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $arrConfig[41] & " orders" & @CRLF)
+				If($runFlag=="Data Generation") Then
+					ConsoleWrite("Creating Order #" & $counter+1 & " of " & $dataGenerationCounter & " orders"& @CRLF)
+					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" & $counter+1 & " of " & $dataGenerationCounter & " orders" & @CRLF)
 				Else
 					ConsoleWrite("Creating Order #" &$counter+1 & @CRLF)
 					FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Order #" &$counter+1 & @CRLF)
 				EndIf
 
-				Call("createNewDocument",$arrConfig[17],$arrConfig[15],$arrConfig[16])
+				Call("createNewDocument",$docTypeEmailMessage,$patientFirstName,$patientLastName)
 				If (Mod($counter,2) = 0) Then
-					Call("createOrder",$arrConfig[43],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$orderCategory2,$orderAuthPvdr,$orderRefPvdr,$patientFirstName,$patientLastName,$orderPatientLetter,$orderInstructions,$orderReferalReason)
 
 				Else
-					Call("createOrder",$arrConfig[19],$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16],$arrConfig[25])
+					Call("createOrder",$orderCategory1,$orderAuthPvdr,$orderRefPvdr,$patientFirstName,$patientLastName,$orderPatientLetter,$orderInstructions,$orderReferalReason)
 				EndIf
 
-				If($arrConfig[9]=="Data Generation") Then
+				If($runFlag=="Data Generation") Then
 					$counter +=1
-					If($counter = $arrConfig[41]) Then
+					If($counter = $dataGenerationCounter) Then
 						ConsoleWrite("Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Direct Messaging Flow...." & @CRLF)
 						Exit
@@ -108,20 +135,20 @@ Else
 					Sleep(60000)
 
 				Else
-					$counter = $arrConfig[41]
+					$counter = $dataGenerationCounter
 				EndIf
 			Sleep(1000)
-			Until $counter = $arrConfig[41]
+			Until $counter = $dataGenerationCounter
 
 			Sleep(5000)
 
 			FileWriteLine($hFileOpen, @CRLF & " STEP 5 -- VERIFY EVENT 4 FOR ORDER CREATION" & @CRLF)
 
-			Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 
 			Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 		;Get PatientProfileId,PID
-			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $arrConfig[15] & "' and Last = '" & $arrConfig[16] & "'")
+			$newQuery = StringReplace($arrQuery[6],"PatientProfileId =","First = '" & $patientFirstName & "' and Last = '" & $patientLastName & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -141,7 +168,7 @@ Else
 			EndIf
 
 		;Get loginname, PVID of authorizing provider
-			$temp = StringSplit($arrConfig[20], ', ', 1)
+			$temp = StringSplit($orderAuthPvdr, ', ', 1)
 			$newQuery = StringReplace($arrQuery[23],"LNAME","'" & $temp[1] & "'")
 			$newQuery = StringReplace($newQuery,"FNAME","'" & $temp[2] & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
@@ -163,7 +190,7 @@ Else
 			EndIf
 
 		;Get pvid of order creating provider
-			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $arrConfig[2] & "'")
+			$newQuery = StringReplace($arrQuery[23],"LASTNAME = LNAME and FIRSTNAME = FNAME","LOGINNAME = '" & $CPSLogin & "'")
 			ConsoleWrite("Executing Query: " & $newQuery & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $newQuery & @CRLF)
 			$iRval = _SQL_GetTable2D(-1,$newQuery & ";",$aData,$iRows,$iColumns)
@@ -296,7 +323,7 @@ Else
 					$temp[3] = $temp[3] & " " &$temp[$i]
 				Next
 
-				Call("assertData", $arrConfig[20], $temp[3] &", " & $temp[1])
+				Call("assertData", $orderAuthPvdr, $temp[3] &", " & $temp[1])
 
 			;Authorizing Provider email
 			$authPvdrEmail = $aData[1][1]
@@ -310,7 +337,7 @@ Else
 					$temp[2] = $temp[2] & " " &$temp[$i]
 				Next
 
-				Call("assertData", $arrConfig[21], $temp[2] &", " & $temp[1])
+				Call("assertData", $orderRefPvdr, $temp[2] &", " & $temp[1])
 
 			;Referring Provider email
 			$redPvdrEmail = $aData[1][3]
@@ -390,7 +417,7 @@ Else
 			;Message Subject in portal
 				ConsoleWrite("Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Message Subject in cusMedfusionCommOutgoing table" & @CRLF)
-				Call("assertData", $arrConfig[26], $aData[1][2])
+				Call("assertData", $orderPatientLetterSubject, $aData[1][2])
 
 			;Created by User
 				ConsoleWrite("Verifying user creating the communication in cusMedfusionCommOutgoing table" & @CRLF)
@@ -442,7 +469,7 @@ Else
 			;EventId
 				ConsoleWrite("Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
-				Call("assertData", "TOC_" & $outgoingTocId, $aData[2][0])
+				Call("assertData", "TOC_" & $outgoingTocId & "_" & $sdid, $aData[2][0])
 
 			;Evnet Type
 				ConsoleWrite("Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
@@ -459,7 +486,7 @@ Else
 			;EventId
 				ConsoleWrite("Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying EventId in cusMedfusionMUEvents table" & @CRLF)
-				Call("assertData", "PI_" & $commOutgoingId, $aData[1][0])
+				Call("assertData", "PI_" & $commOutgoingId & "_" & $sdid, $aData[1][0])
 
 			;Evnet Type
 				ConsoleWrite("Verifying Event Type in cusMedfusionMUEvents table" & @CRLF)
@@ -531,7 +558,7 @@ Else
 		FileWriteLine($hFileOpen, @CRLF & " STEP 15-- VERIFY ORDER DETAILS IN DIRECT MESSAGING OUTBOX" & @CRLF)
 			Call("openMFDashboard")
 			Call("openMessageLink","Direct Messaging")
-			Call("verifyOrderInUI",$orderNum,$arrConfig[20],$arrConfig[21],$arrConfig[15],$arrConfig[16])
+			Call("verifyOrderInUI",$orderNum,$orderAuthPvdr,$orderRefPvdr,$patientFirstName,$patientLastName,$orderFromAddress)
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 16-- VERIFY ORDER DETAILS IN SES INBOX" & @CRLF)
 			$SESjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\sesInbox.jar"
@@ -550,12 +577,12 @@ Else
 				EndIf
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 17-- VERIFY PATIENT LETTER IN PATIENT PORTAL" & @CRLF)
-			ConsoleWrite("Message Subject " & $arrConfig[26] & @CRLF)
-			$messageSubject = StringReplace($arrConfig[26]," ","")
+			ConsoleWrite("Message Subject " & $orderPatientLetterSubject & @CRLF)
+			$messageSubject = StringReplace($orderPatientLetterSubject," ","")
 			ConsoleWrite("New Message Subject " & $messageSubject & @CRLF)
 
-			ConsoleWrite("Message Body " & $arrConfig[25] & @CRLF)
-			$messageBody = StringReplace($arrConfig[25]," ","")
+			ConsoleWrite("Message Body " & $orderPatientLetter & @CRLF)
+			$messageBody = StringReplace($orderPatientLetter," ","")
 			ConsoleWrite("New Message Body " & $messageBody & @CRLF)
 
 			$TOCjar = StringReplace($currentDir, "directmessaging", "jarfiles")  & "\TOCLetterToPatient.jar"

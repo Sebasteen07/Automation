@@ -233,6 +233,8 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(driver.getPageSource().contains("Female question"));
 		oldCustomForm.submitInsuranceHealthForm();
 		Utils.checkIfPDFCanBeDownloaded("Ivan Insurance Health Form ( Testing)", driver);
+		log("step 2: Go back to forms list (refresh page)");
+		driver.navigate().refresh();
 		Utils.verifyFormsDatePatientPortal(pHealthForm, "Ivan Insurance Health Form ( Testing)", driver);
 		log("step 3: Login to Practice Portal");
 		// Load up practice test data

@@ -74,8 +74,17 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "visa")
 	private WebElement visaCard;
 	
-	@FindBy(how = How.ID, using = "viewStatementDetail")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[2]/a")
 	private WebElement statementDetails;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")
+	private WebElement balanceDue;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[5]/span")
+	private WebElement outstandingInsuranceBalance;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
+	private WebElement balanceDueDate;
 	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 		super(driver);
@@ -243,5 +252,21 @@ public class JalapenoPayBillsMakePaymentPage extends BasePageObject {
 	
 	public void gotoStatementDetail() {
 		statementDetails.click();
+	}
+	
+	public String getAccountNumber() {
+		return accountNumber.getAttribute("value");
+	}
+	
+	public String getBalanceDue() {
+		return balanceDue.getText();
+	}
+	
+	public String getOutstandingInsuranceBalance() {
+		return outstandingInsuranceBalance.getText();
+	}
+	
+	public String getBalanceDueDate() {
+		return balanceDueDate.getText();
 	}
 }

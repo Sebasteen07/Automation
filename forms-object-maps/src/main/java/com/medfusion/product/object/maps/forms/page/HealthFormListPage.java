@@ -88,9 +88,10 @@ public class HealthFormListPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
 		healthFormsRegistrationLink.click();
 		formValueNew=healthFormsRegistrationLink.getText();
-		WebDriverWait wait = new WebDriverWait(driver,50);
+		//WebDriverWait wait = new WebDriverWait(driver,50);
 		driver.switchTo().frame(iframeforms);
-		wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
+		//wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
+		IHGUtil.waitForElement(driver, 80, Continuebutton1);
 		Continuebutton1.click();
 	}
 	public String getFormName()

@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 
 public interface iEHDCSendCCD {
-	ArrayList<String> sendCCDToPractice(String restUrl, String from, String integrationPracticeID, String practicePatientId, String ccdXMLPath, String externalSystemId)
+	ArrayList<String> sendCCDToPractice(String restUrl, String from, String integrationPracticeID, String practicePatientId, String ccdXMLPath, String externalSystemId,String token)
 			throws Exception;
 }

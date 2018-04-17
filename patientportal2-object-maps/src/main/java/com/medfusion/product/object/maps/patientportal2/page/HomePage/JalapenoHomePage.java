@@ -78,6 +78,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span[3]")
+	private WebElement outstandingPatientBalance;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -272,5 +275,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		viewDifferentPatientButton.click();
 		listBadgeDropdownButton.click();
+	}
+	
+	public String getOutstandingPatientBalance() {
+		return outstandingPatientBalance.getText();
 	}
 }

@@ -5,8 +5,12 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +19,7 @@ import java.util.Scanner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -51,10 +56,7 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class FormsExportUtils {
 	public List<String> list;
-	public void ccdExchangeFormsImport(WebDriver driver, int testType) throws Exception {
-		PatientFormsExportInfo testData = new PatientFormsExportInfo();	
-		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
-		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
+	public void ccdExchangeFormsImport(WebDriver driver, int testType,PatientFormsExportInfo testData) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.patientfilepath_FE;
@@ -154,8 +156,8 @@ public class FormsExportUtils {
 			Log4jUtil.log("Step 11: Login to Patient Portal for submitting 'Patient Registration' Discrete Form");
 			new PortalLoginPage(driver, testData.url_FE);
 			loginPage.login(username, testData.patientPassword1_FE);
-			Thread.sleep(5000);
-            jalapenoHomePage.clickOnMenuHealthForms();
+			Thread.sleep(5000);	
+			jalapenoHomePage.clickOnMenuHealthForms();
 			
             Log4jUtil.log("Step 12: Click on Registration button ");
 			HealthFormListPage healthListpage= new HealthFormListPage(driver);
@@ -166,7 +168,9 @@ public class FormsExportUtils {
 		
 			String FormName = healthListpage.getFormName();
 			Log4jUtil.log("Form name is "+FormName);
-			
+			DateFormat dfDate = new SimpleDateFormat("MMddyyyy");
+	        Date today = Calendar.getInstance().getTime();
+	        String currentDate = dfDate.format(today);
 			fillForm(driver, testData, firstName, false);
 			
 			Thread.sleep(8000);
@@ -175,7 +179,7 @@ public class FormsExportUtils {
 			{
 				PortalUtil.setPortalFrame(driver);
 				Log4jUtil.log("Step for patient with External ID: Downloading PDf file from Application");
-				Thread.sleep(4000);
+				Thread.sleep(6000);
 				healthListpage.getPDF();
 				if( driver instanceof FirefoxDriver) {
 					Robot rb = new Robot(); 
@@ -183,17 +187,24 @@ public class FormsExportUtils {
 					rb.keyPress(KeyEvent.VK_ENTER);
 					rb.keyRelease(KeyEvent.VK_ENTER);
 					Thread.sleep(2000);
+					Thread.sleep(6000);
+					String UIPDF=System.getProperty("user.dir");
+					String downloadFile = UIPDF+testData.downloadFileLocation;
+					File f = new File(downloadFile);
+					ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+				    Log4jUtil.log("downloadFileLocation : "+downloadFile);
+				    Log4jUtil.log("FileName is: "+names.get(0));
+				    pdfFileLocation =downloadFile+names.get(0);
+				    Log4jUtil.log("File location is "+pdfFileLocation);
 				}
-				Thread.sleep(6000);
-				String UIPDF=System.getProperty("user.dir");
-				String downloadFile = UIPDF+testData.downloadFileLocation;
-				File f = new File(downloadFile);
-				ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-			   
-			   Log4jUtil.log("downloadFileLocation : "+downloadFile);
-			   Log4jUtil.log("FileName is: "+names.get(0));
-			   pdfFileLocation =downloadFile+names.get(0);
-			   Log4jUtil.log("File location is "+pdfFileLocation);
+				if(driver instanceof ChromeDriver) {
+					testData.responsePDF_FE = "./true/CCDExchangePdfBatch.pdf";
+					String home = System.getProperty("user.home");
+					String fileName = externalPatientID+"_General_Registration_and_Health_History_"+currentDate;
+					File file = new File(home+"/Downloads/" + fileName + ".pdf");
+					Log4jUtil.log("downloadFileLocation : "+file.getPath());
+					pdfFileLocation = file.getPath();	
+				}
 			}
 		
 			Log4jUtil.log("Step 28: Wait 120 seconds, so the message can be processed");
@@ -251,7 +262,7 @@ public class FormsExportUtils {
 				
 				Log4jUtil.log("Step 33: Save PDF file returned as response from RESTAPI " + since + " using ccdExchange API");
 				
-				RestUtils.setupHttpGetRequestExceptoAuthforPDF(GetPatientPDfURL + "?since=" + since + ",0", testData.responsePDF_FE);
+				RestUtils.setupHttpGetRequestForPDF(GetPatientPDfURL , testData.responsePDF_FE);
 				Thread.sleep(4000);
 				
 				long timeStamp204 = System.currentTimeMillis();
@@ -262,6 +273,8 @@ public class FormsExportUtils {
 				
 				RestUtils.verifyPDFBatchDetails(testData.responsePath_CCD1_FE,externalPatientID,patientID);
 				Thread.sleep(2000);
+				Log4jUtil.log("portal pdf location "+pdfFileLocation);
+				Log4jUtil.log("ccdExhchangePdf api location "+testData.responsePDF_FE);
 				RestUtils.comparePDFfiles(pdfFileLocation, testData.responsePDF_FE);
 			}
 				
@@ -283,7 +296,13 @@ public class FormsExportUtils {
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
+			
 		}
+		
+		Log4jUtil.log("Step 35: Deleting downloaded file");
+		deleteFile(pdfFileLocation);
+		deleteFile(testData.responsePDF_FE);
+		
 	}
 	
 	public void fillForm(WebDriver driver,PatientFormsExportInfo testData,String firstName,Boolean isFormTypePreCheck) throws Exception {
@@ -294,6 +313,7 @@ public class FormsExportUtils {
 		if(!isFormTypePreCheck) {
 			PortalUtil.setPortalFrame(driver);
 		}
+		Thread.sleep(14000);
 		pFormBasicInfoPage.setBasicInfoFromFields_20(testData.state1,testData.phonetype1,testData.sex,isFormTypePreCheck);
 
 		Log4jUtil.log("Step 15: Fill in Emergency Contact info ");
@@ -315,13 +335,15 @@ public class FormsExportUtils {
 
 		Log4jUtil.log("Step 18: Set Providers Details");
 		FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);
+		Thread.sleep(6000);
 		pFormOtherProvidersPage.setProvidername(testData.NameofDoctorSpeciality);
 		Save.click();
 
 		Log4jUtil.log("Step 19:Fill in CurrentSymptomspage Info ");
 		FormCurrentSymptomsPage pFormCurrentSymptomsPage=PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
-		pFormCurrentSymptomsPage.setBasicSymptoms();
 		Thread.sleep(5000);
+		pFormCurrentSymptomsPage.setBasicSymptoms();
+		Thread.sleep(3000);
 		Save.click();
 
 		Log4jUtil.log("Step 20: Fill in Medications Info");
@@ -334,32 +356,39 @@ public class FormsExportUtils {
 			PortalUtil.setPortalFrame(driver);
 		}
 		FormAllergiesPage pFormAllergiesPage=PageFactory.initElements(driver, FormAllergiesPage.class);
+		Thread.sleep(5000);
 		pFormAllergiesPage.setAllergies(isFormTypePreCheck);
 
 		Log4jUtil.log("Step 22: Fill in Vaccines");
 		FormVaccinePage pFormVaccinePage =PageFactory.initElements(driver, FormVaccinePage.class);
+		Thread.sleep(5000);
 		pFormVaccinePage.SetVaccines(testData.tetanus1,testData.HPV1,testData.Influenza1,testData.Pneumonia1);
 
 		Log4jUtil.log("Step 23: Fill in surgeries & Hospitalizations");
 		FormSurgeriesHospitalizationsPage pFormSurgeriesHospitalizationsPage=PageFactory.initElements(driver, FormSurgeriesHospitalizationsPage.class);
+		Thread.sleep(5000);
 		pFormSurgeriesHospitalizationsPage.fillSurgiesForm(testData.SurgeryName,testData.SurgeryTimeFrame,testData.HospitalizationReason,testData.HospitalizationTimeFrame);
 
 		Log4jUtil.log("Step 24:Fill in Test Details");
 		FormPreviousExamsPage pFormPreviousExamsPage=PageFactory.initElements(driver, FormPreviousExamsPage.class);
+		Thread.sleep(5000);
 		pFormPreviousExamsPage.fillTestDetails(testData.Test,testData.TestTimeFrame);
 		Thread.sleep(6000);
 		Log4jUtil.log("Step 25: Fill in Past Medical History");
 		FormPastMedicalHistoryPage pFormPastMedicalHistoryPage=PageFactory.initElements(driver, FormPastMedicalHistoryPage.class);
+		Thread.sleep(5000);
 		pFormPastMedicalHistoryPage.checkMononucleosis_20();
 		Thread.sleep(4000);
 		Log4jUtil.log("Step 26: Fill in Family History Details");
 		FormFamilyHistoryPage pFormFamilyHistoryPage=PageFactory.initElements(driver, FormFamilyHistoryPage.class);
+		Thread.sleep(5000);
 		pFormFamilyHistoryPage.setFamilyHistory(testData.OtherMedicalhistory, testData.FamilyMember);
 
 		Log4jUtil.log("Step 27: Fill in Social History Details");
 		FormSocialHistoryPage pFormSocialHistoryPage=PageFactory.initElements(driver, FormSocialHistoryPage.class);
+		Thread.sleep(9000);
 		pFormSocialHistoryPage.fillExerciseDetails(testData.exercise,testData.day);
-
+		Thread.sleep(9000);
 	}
 	
 	public void setFormsTestData(String workingDir,PatientFormsExportInfo testData) throws FileNotFoundException {
@@ -458,4 +487,22 @@ public class FormsExportUtils {
 		changeValue = option.getText();
 		return changeValue;
 	}
+	
+	public Boolean deleteFile(String fileName)
+    {
+		Boolean isFileDeleted = false;
+    	try{
+    		File file = new File(fileName);
+    		if(file.delete()){
+    			Log4jUtil.log(file.getName() + " is deleted!");
+    			isFileDeleted = true;
+    		}else{
+    			Log4jUtil.log("Delete operation is failed.");
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return isFileDeleted;
+    }
+	
 }

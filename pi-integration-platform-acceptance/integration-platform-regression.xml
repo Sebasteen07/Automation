@@ -10,7 +10,9 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
-				<include name="testE2EPreCheckUpdatesAllInsuranceImageCards" />
+				<include name="testE2EBalancePresentmentAndStatement"/>
+				<include name="testE2EBalancePresentmentOnDemand"/>
+				<include name="testE2EPreCheckUpdatesAllInsuranceImageCards"/>
 				<include name="testPatientEGQUpdatesFromForms"/>
 	    		<include name="testE2EPreCheckUpdates1stDemo2ndALLINS"/>
 	    		<include name="testE2EPreCheckUpdates1stPrimaryINS2ndDemo"/>

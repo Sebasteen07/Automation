@@ -433,9 +433,9 @@ public class MU2Utils {
 		JalapenoAccountPage accountPage= homePage.clickOnAccount();
 		Thread.sleep(15000);
 		JalapenoMyAccountProfilePage accountProfilePage= accountPage.clickOnEdiDependentAccount();
-		Thread.sleep(9000);
+		Thread.sleep(12000);
 		accountProfilePage.goToActivityTab(driver);
-		Thread.sleep(25000);
+		Thread.sleep(30000);
 					
 		Log4jUtil.log("portalTime Direct transmit "+generateDate(messageTimeStampList.get(0)));
 		Log4jUtil.log("portalTime Standard transmit "+generateDate(messageTimeStampList.get(1)));

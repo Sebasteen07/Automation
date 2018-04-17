@@ -3,6 +3,7 @@
 #include <Array.au3>
 #include <File.au3>
 #include <Date.au3>
+#include <DateTimeConstants.au3>
 #include <AutoItConstants.au3>
 #include <FileConstants.au3>
 #include <WinAPIFiles.au3>
@@ -194,6 +195,63 @@ Func setConfig()
 
 					Case "rx request pharmacy phone"
 						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication frequency"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication frequency type(day/week/month/year)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form allergy(peanuts / eggs / seafood)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form medication name obs term"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "discrete form allergies obs term"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "number of health forms to be filled"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "receiving toc (to address)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "sending/receiving toc (from address)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "toc download location"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "instructions for toc"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "reason for referal"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck facility name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck resource name"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment date(mm/dd/yyyy)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck responsible provider"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment start time"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
+
+					Case "precheck appointment stop time(as per slot)"
+						_ArrayAdd($arrConfig,$arrConfigRead[$row][1])
 				EndSwitch
 			Next
 
@@ -366,6 +424,12 @@ Func openDoctypeFile()
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "append"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "external other"
+					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
+
+					Case "clinical summary"
 					    _ArrayAdd($arrDoctype,$arrDoctypeRead[$row][1])
 
 					Case "lab report"
@@ -765,7 +829,9 @@ EndFunc
 ;-----Input parameters - $Fname = Patient's First Name
 ;-----Input parameters - $Lname = Patient's Last Name
 ;-----Input parameters - $letterToPatient - Text for patient letter
-Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
+;-----Input parameters - $instructions - Instructions to be added for order creation
+;-----Input parameters - $referalReason - Reason of referal for order
+Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient,$instructions,$referalReason)
 	ConsoleWrite("METHOD: createOrder() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
 	$hFileOpen = Call("openLogFile")
@@ -849,13 +915,13 @@ Func createOrder($orderCat,$authpvdr,$refpvdr,$Fname,$Lname,$letterToPatient)
 			ConsoleWrite("Enter instructions for referral order" &@CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter instructions for referral order" &@CRLF)
 			ControlFocus($orderWnd,"","[CLASS:Edit; INSTANCE:4]")
-			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:4]","Instructions for auto-generated TOC")
+			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:4]",$instructions)
 			Sleep(1000)
 
 			ConsoleWrite("Enter reason for referral order" &@CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter reason for referral order" &@CRLF)
 			ControlFocus($orderWnd,"","[CLASS:Edit; INSTANCE:12]")
-			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:12]","This is reason for auto-generated TOC")
+			ControlSetText($orderWnd,"","[CLASS:Edit; INSTANCE:12]",$referalReason)
 			Sleep(1000)
 
 			ConsoleWrite("Set referring provider (external) as " & $refpvdr &@CRLF)
@@ -979,25 +1045,25 @@ Func openMessageLink($MsgType)
 			Case "Mass Messaging"
 				ConsoleWrite("Opening Mass Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Mass Messaging UI" & @CRLF)
-				MouseClick("left",331,246)
-				WinWaitActive("Bulk Messaging")
+				ControlClick("Messaging","","[NAME:pbBMM]")
+				WinWaitActive("Mass Messaging")
 
 			Case "Automated Messaging"
 				ConsoleWrite("Opening Automated Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Automated Messaging UI" & @CRLF)
-				MouseClick("left",625,246)
+				ControlClick("Messaging","","[NAME:pbAM]")
 				WinWaitActive("Automated Messaging")
 
 			Case "Direct Messaging"
 				ConsoleWrite("Opening Direct Messaging UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging UI" & @CRLF)
-				MouseClick("left",945,246)
+				ControlClick("Messaging","","[NAME:PBPP]")
 				WinWaitActive("Direct Messaging")
 
 			Case "Template Editor"
 				ConsoleWrite("Opening Template Editor UI" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Template Editor UI" & @CRLF)
-				MouseClick("left",335,380)
+				ControlClick("Messaging","","[NAME:pbTempEdit]")
 				WinWaitActive("Templates")
 
 			Case Else
@@ -1017,24 +1083,51 @@ EndFunc
 
 
 ;-----Function to verify order in Direct Messages Outbox
-;-----Input parameter - orderid (ordernum), authorizing provider, referring provider, patient's first name & lastname
-Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName)
+;-----Input parameter - $orderid = Ordernum for the generated ToC
+;-----Input parameter - $authpvdr = Authorizing provider for generated ToC
+;-----Input parameter - $refpvdr = Referring  provider for generated ToC
+;-----Input parameter - $ptFName = Patient's first Name for whom ToC was generated
+;-----Input parameter - $ptLName = Patient's last Name for whom ToC was generated
+;-----Input parameter - $fromAddress = SES address of authorizing provider
+Func verifyOrderInUI($orderid, $authpvdr, $refpvdr,$ptFName, $ptLName, $fromAddress)
 	ConsoleWrite("METHOD: verifyOrderInUI() started" & @CRLF)
 	;$arrConfig = Call("setConfig")
 	$hFileOpen = Call("openLogFile")
 
 	WinActivate("Direct Messaging")
 	If(WinActive("Direct Messaging")) Then
-		ConsoleWrite("Opening Direct Messaging Outbox" & @CRLF)
-		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Outbox" & @CRLF)
-		ControlFocus("Direct Messaging","","[NAME:pbMessages]")
-		ControlClick("Direct Messaging","","[NAME:pbMessages]")
+		ConsoleWrite("Opening Direct Messaging Sent box" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Sent box" & @CRLF)
+		;Navigate to Direct Messaging -> Messages
+		ControlFocus("Direct Messaging","","[NAME:pbTOC]")
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+		Sleep(1000)
 
+		;Select SES address from drpdown
+		ConsoleWrite("Select SES address " & $fromAddress & " from dropdown" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select SES address " & $fromAddress & " from dropdown" & @CRLF)
+		ControlFocus("Direct Messaging","","[NAME:cbTOCEmailIds]")
+		While 1
+			$sentBoxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
+			If(StringCompare($sentBoxAddress,$fromAddress) = 0) Then
+				ExitLoop
+			Else
+				ControlSend("Direct Messaging","","[NAME:cbTOCEmailIds]",'{DOWN}')
+			EndIf
+		WEnd
+
+		;click Inbox
+		ControlClick("Direct Messaging","","[NAME:lblRTocSent]")
+		Sleep(1000)
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+
+		ConsoleWrite("Select the message from LHS list" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select the message from LHS list" & @CRLF)
 		Sleep(2000)
 		;ConsoleWrite("Oredr Id is " & ControlGetText("Direct Messaging","","[NAME:lblDorderid]") & @CRLF)
 		While(StringCompare($orderid,ControlGetText("Direct Messaging","","[NAME:lblDorderid]"))<> 0)
-			ControlFocus("Direct Messaging", "", "[NAME:pbDMPrev]")
-			ControlClick("Direct Messaging", "", "[NAME:pbDMPrev]")
+			ControlFocus("Direct Messaging", "", "[NAME:pbDMNext]")
+			ControlClick("Direct Messaging", "", "[NAME:pbDMNext]")
 			Sleep(500)
 		WEnd
 
@@ -1589,7 +1682,7 @@ Func createCVS()
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1712,7 +1805,7 @@ Func verifyDocumentInPatientChart($docTitle)
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1857,7 +1950,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 	EndIf
 
 	;Documents in left menu
-	MouseClick("left",$aCoord[0]+10,$aCoord[1]+60)
+	MouseClick("left",$aCoord[0]+10,$aCoord[1]+62)
 	Sleep(1000)
 
 	;Click first document in list
@@ -1909,6 +2002,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 					ControlSend("Append Document","","[CLASS:ComboLBox; INSTANCE:1]",'{Down}')
 				Next
 
+				Sleep(5000)
 				ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
 				;Signing permission popoup if appears
 				If(WinGetTitle("[ACTIVE]") == "Sign Document") Then
@@ -1920,7 +2014,7 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 				ConsoleWrite("Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify Prescription Renewal request details sent by patient in Rx Refill (right panel)" & @CRLF)
 				WinWaitActive("Rx Refill")
-				Sleep(8000)
+				Sleep(20000)
 
 				If((StringInStr($str,$pharmacyName)>0) And (StringInStr($str,$medName)>0) And (StringInStr($str,$medDosage)>0) And (StringInStr($str,"Refills: " & $medRefills)>0) And (StringInStr($str,"Rx #:" & $prescriptionNo)>0) And (StringInStr($str,"Quantity: " & $medQuantity)>0) And (StringInStr($str,"Note: " & $medNotes)>0)) Then
 					ConsoleWrite("Prescription Renewal Request details verified -- PASSED" & @CRLF)
@@ -1993,4 +2087,405 @@ Func replyRxAppend($Fname, $Lname, $medName, $medDosage, $medQuantity, $medRefil
 		Exit
 	EndIf
 	ConsoleWrite("METHOD: replyRxAppend() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to verify Incoming ToC in Direct Messaging Inbox
+;-----Input parameter - $dateReceived = Date on which direct message was received
+;-----Input parameter - $fromAddress = SES address from whom direct message was sent
+;-----Input parameter - $toAddress = SES address to whom direct message was sent
+;-----Input parameter - $msgSubject = Subject of direct message
+;-----Input parameter - $msgBody = Body of direct message
+;-----Input parameter - $attachmentName = Name of attachment sent along with direct message
+Func verifyIncomingToCInInbox($dateReceived, $fromAddress, $toAddress, $msgSubject, $msgBody, $attachmentName)
+	ConsoleWrite("METHOD: verifyIncomingToCInInbox() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	If(WinActive("Direct Messaging")) Then
+		ConsoleWrite("Opening Direct Messaging Inbox" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Opening Direct Messaging Inbox" & @CRLF)
+		;Navigate to Direct Messaging -> Messages
+		ControlFocus("Direct Messaging","","[NAME:pbTOC]")
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+		Sleep(1000)
+
+		;Select SES address from drpdown
+		ConsoleWrite("Select SES address " & $toAddress & " from dropdown" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select SES address " & $toAddress & " from dropdown" & @CRLF)
+		ControlFocus("Direct Messaging","","[NAME:cbTOCEmailIds]")
+		While 1
+			;ConsoleWrite("I am in While Loop")
+			$inboxAddress = ControlGetText("Direct Messaging","","[NAME:cbTOCEmailIds]")
+			;ConsoleWrite("Address is -->" & $inboxAddress & @CRLF)
+			If(StringCompare($inboxAddress,$toAddress) = 0) Then
+				ExitLoop
+			Else
+				ControlSend("Direct Messaging","","[NAME:cbTOCEmailIds]",'{DOWN}')
+			EndIf
+		WEnd
+		Sleep(1000)
+		;click Inbox
+		ControlClick("Direct Messaging","","[NAME:lblRTOCInbox]")
+		Sleep(1000)
+		ControlClick("Direct Messaging","","[NAME:pbTOC]")
+
+		ConsoleWrite("Select the message from LHS list" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Select the message from LHS list" & @CRLF)
+		While(StringCompare($dateReceived,ControlGetText("Direct Messaging","","[NAME:lblDInTOCSentOn]"))<> 0)
+			ControlFocus("Direct Messaging", "", "[NAME:pbTocInboxNext]")
+			ControlClick("Direct Messaging", "", "[NAME:pbTocInboxNext]")
+			Sleep(500)
+		WEnd
+
+		ConsoleWrite("Verify message details on RHS" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message details on RHS" & @CRLF)
+
+		ConsoleWrite("Verify sending provider address" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify sending provider address" & @CRLF)
+		Call("assertData",$fromAddress, ControlGetText("Direct Messaging","","[NAME:lblDInTOCFromAddress]"))
+
+		ConsoleWrite("Verify receiving provider address" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify receiving provider address" & @CRLF)
+		Call("assertData",$toAddress, ControlGetText("Direct Messaging","","[NAME:lblDInTOCToAddress]"))
+
+		ConsoleWrite("Verify sent date" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify sent date" & @CRLF)
+		Call("assertData",$dateReceived, ControlGetText("Direct Messaging","","[NAME:lblDInTOCSentOn]"))
+
+		ConsoleWrite("Verify message subject" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message subject" & @CRLF)
+		Call("assertData",$msgSubject, ControlGetText("Direct Messaging","","[NAME:lblDInTOCSubject]"))
+
+		ConsoleWrite("Verify message body" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message body" & @CRLF)
+		$str = WinGetText("Direct Messaging")
+		If(StringInStr($str,$msgBody)  > 0 ) Then
+			ConsoleWrite("Message Body verified -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Message Body verified -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Message Body did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Message Body did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+
+		ConsoleWrite("Verify message attachment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify message attachment" & @CRLF)
+		If(StringInStr($str,$attachmentName)  > 0 ) Then
+			ConsoleWrite("Attachment Name verified -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment Name verified -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Attachment Name did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment Name did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+
+	Else
+		ConsoleWrite("ERROR Opening Direct Messaging UI...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Opening Direct Messaging UI...." & @CRLF)
+	EndIf
+
+	ConsoleWrite("METHOD: verifyIncomingToCInInbox() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to format date
+;-----Input parameter - $Date = Input date to be formatted
+;-----Input parameter - $style = format to which date to be converted
+Func _DateFormat($Date, $style)
+    Local $hGui = GUICreate("My GUI get date", 200, 200, 800, 200)
+    Local $idDate = GUICtrlCreateDate($Date, 10, 10, 185, 20)
+    GUICtrlSendMsg($idDate, 0x1032, 0, $style)
+    Local $sReturn = GUICtrlRead($idDate)
+    GUIDelete($hGui)
+    Return $sReturn
+EndFunc
+
+
+
+;-----Function to import ToC in Patient Chart
+;-----Input parameter - $attachmentName = Name of attachment to be imported
+;-----Input parameter - $firstName = First name of patient to whose chart ToC is to be imported (preferred unique First Name)
+Func importToCToChart($attachmentName,$firstName)
+	ConsoleWrite("METHOD: importToCToChart() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	ControlFocus("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	ControlClick("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	Sleep(2000)
+
+	ConsoleWrite("Verify attachment name" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify attachment name" & @CRLF)
+	Call("assertData",$attachmentName, ControlGetText("Direct Messaging","","[NAME:lblMsgAttachment2]"))
+
+	ControlFocus("Direct Messaging","","[NAME:panAddtoChart]")
+	Sleep(2000)
+	ControlClick("Direct Messaging","","[NAME:panAddtoChart]")
+
+	ControlFocus("Direct Messaging","","[NAME:txtIncomingTOCMatPat]")
+	ConsoleWrite("First Name is -->" & $firstName & @CRLF)
+	ControlSend("Direct Messaging","","[NAME:txtIncomingTOCMatPat]",$firstName)
+	Sleep(3000)
+	ControlClick("Direct Messaging","","[NAME:dgvIncomingTOCMatPat]","left",1,83,30)
+	Sleep(2000)
+	WinWaitActive("Add to Chart")
+	ControlClick("Add to Chart","","[CLASS:Button; INSTANCE:1]")
+	Sleep(2000)
+	If(StringInStr(WinGetText("[ACTIVE]"),"Attachment imported for patient :"&$firstName) >0) Then
+		ConsoleWrite("Attachment imported successfully -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment imported successfully -- PASSED" & @CRLF)
+		WinKill("[ACTIVE]")
+
+	Else
+		ConsoleWrite("Attachment not imported -- FAILED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attachment not imported -- FAILED" & @CRLF)
+		Exit
+	EndIf
+
+	ConsoleWrite("METHOD: importToCToChart() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to download ToC
+;-----Input parameter - $attachmentName = Name of attachment to be downloaded
+;-----Input parameter - $location = path where attachment to be downloaded
+;-----Input parameter - $firstName = First Name of patient for whom ToC was generated
+;-----Input parameter - $lastName = Last Name of patient for whom ToC was generated
+;-----Input parameter - $referalReason = Reason for referral mentioned in ToC
+Func downloadToC($attachmentName,$location,$firstName,$lastName,$referalReason)
+	ConsoleWrite("METHOD: downloadToC() started" & @CRLF)
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate("Direct Messaging")
+	ControlFocus("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	ControlClick("Direct Messaging","","[NAME:lblMsgAttachment2]")
+	Sleep(2000)
+
+	ConsoleWrite("Verify attachment name" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify attachment name" & @CRLF)
+	Call("assertData",$attachmentName, ControlGetText("Direct Messaging","","[NAME:lblMsgAttachment2]"))
+
+	ControlFocus("Direct Messaging","","[NAME:panDownload]")
+	Sleep(2000)
+	ControlClick("Direct Messaging","","[NAME:panDownload]")
+
+	WinWaitActive("Save As")
+
+	ControlSend("Save As","", 1001,$location & "\" & $attachmentName,0)
+	ControlClick("Save As", "", "[CLASS:Button; INSTANCE:1]")
+	Sleep(2000)
+	If(StringInStr(WinGetText("[ACTIVE]"),"File Downloaded Successfully") >0) Then
+		ConsoleWrite("File downloaded successfully -- PASSED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- File downloaded successfully -- PASSED" & @CRLF)
+		WinKill("[ACTIVE]")
+
+	Else
+		ConsoleWrite("File not downloaded -- FAILED" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- File not downloaded -- FAILED" & @CRLF)
+		Exit
+	EndIf
+
+	ConsoleWrite("Verify the contents of downloaded file" & @CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Verify the contents of downloaded file" & @CRLF)
+
+	$fileHnd = FileOpen($location & "\" & $attachmentName, $FO_READ)
+	Local $sFileRead = FileRead($fileHnd)
+	FileClose($fileHnd)
+
+		If((StringInStr($sFileRead, $firstName)>0) And (StringInStr($sFileRead, $lastName)>0) And (StringInStr($sFileRead, $referalReason)>0))  Then
+			ConsoleWrite("Contents of ToC match -- PASSED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Contents of ToC match -- PASSED" & @CRLF)
+
+		Else
+			ConsoleWrite("Contents of ToC did not match -- FAILED" & @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Contents of ToC did not match -- FAILED" & @CRLF)
+			Exit
+		EndIf
+	ConsoleWrite("METHOD: downloadToC() ended" & @CRLF)
+EndFunc
+
+
+
+;-----Function to schedule appointment
+;-----Input parameter - $Fname = Patient's First Name
+;-----Input parameter - $Lname = Patient's Last Name
+;-----Input parameter - $facility = Facility to schedule appointment
+;-----Input parameter - $resource = Resource t oschedule appointment
+;-----Input parameter - $apptDt = Date for which appointment to be scheduled
+;-----Input parameter - $respPvdr = Patient's responsible provider
+;-----Input parameter - $apptStartTime = Start time for appointment to be scheduled
+;-----Input parameter - $apptStopTime = Stop (End) time for appointment to be scheduled
+Func scheduleAppointment($Fname,$Lname,$facility,$resource,$apptDt,$respPvdr,$apptStartTime,$apptStopTime)
+	ConsoleWrite("METHOD: scheduleAppointment() started" & @CRLF)
+	;$arrConfig = Call("setConfig")
+	$hFileOpen = Call("openLogFile")
+
+	WinActivate($title)
+	ConsoleWrite("Activate GE CPS window" &@CRLF )
+
+	Local $oIEEmbed =_IEAttach("Centricity Practice Solution","embedded",1)
+	Sleep(1000)
+	ConsoleWrite("Activating GE CPS App" &@CRLF)
+	FileWriteLine($hFileOpen, _NowCalc() & "  -- Activating GE CPS App" &@CRLF)
+	WinWaitActive("Centricity Practice Solution")
+
+	ConsoleWrite("Active Window is " & WinGetTitle("[ACTIVE]") & @CRLF)
+
+	If ( IsObj($oIEEmbed) ) Then
+		ConsoleWrite("Attached successfully to IE instance running under GE app" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Attached successfully to IE instance running under GE app" & @CRLF)
+
+		ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') : $oIEEmbed = ' & $oIEEmbed & @CRLF & '>Error code: ' & @error & '    Extended code: 0x' & Hex(@extended) & @CRLF) ;### Debug Console
+		ConsoleWrite("Embedded IE Url " &  _IEPropertyGet($oIEEmbed, "locationurl") &@CRLF )
+		Sleep(1000)
+
+		Local $oDoc = _IEBodyReadHTML($oIEEmbed)
+		Local $oLinkCollection = _IELinkGetCollection($oIEEmbed)
+
+		ConsoleWrite("Finding links collection" & @CRLF)
+		If ( IsObj($oLinkCollection) ) Then
+			$lCount = 0
+			For $oLink in $oLinkCollection
+				$lCount = $lCount + 1
+			Next
+		;_ArrayDisplay($oLinkCollection)
+		ConsoleWrite("Links found - " & $lCount & @CRLF)
+		EndIf
+
+		ConsoleWrite("Clicking SCHEDULING link of GE CPS App...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Clicking SCHEDULING link of GE CPS App" & @CRLF)
+		Sleep(5000)
+		_IELinkClickByIndex($oIEEmbed,1)
+
+		WinWaitActive("Open Schedule")
+		;Facility
+		ConsoleWrite("Enter Facility for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Facility for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:1]")
+		ControlClick("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:1]")
+		WinWaitActive("Find Facility")
+		ConsoleWrite("Search and Select Facility for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Facility for scheduling appointment" & @CRLF)
+		ControlSend("Find Facility","","[CLASS:Edit; INSTANCE:1]",$facility)
+		ControlClick("Find Facility","","[CLASS:Button; INSTANCE:3]")
+		Sleep(1000)
+		ControlClick("Find Facility","","[CLASS:ListBox; INSTANCE:2]","left",2)
+
+		WinWaitActive("Open Schedule")
+		;Resource
+		ConsoleWrite("Enter Resource for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Resource for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:2]")
+		ControlClick("Open Schedule","","[CLASS:AfxOleControl110; INSTANCE:2]")
+		WinWaitActive("Find Resource")
+		ConsoleWrite("Search and Select Resource for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Resource for scheduling appointment" & @CRLF)
+		ControlSend("Find Resource","","[CLASS:Edit; INSTANCE:1]",$resource)
+		ControlClick("Find Resource","","[CLASS:Button; INSTANCE:3]")
+		Sleep(1000)
+		ControlClick("Find Resource","","[CLASS:ListBox; INSTANCE:2]","left",2)
+
+		WinWaitActive("Open Schedule")
+		;Appointment Date
+		ConsoleWrite("Enter Date for scheduling appointment" & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter Date for scheduling appointment" & @CRLF)
+		ControlFocus("Open Schedule","","[CLASS:Edit; INSTANCE:3]")
+		Send("{DEL 8}")
+		ControlSend("Open Schedule","","[CLASS:Edit; INSTANCE:3]",$apptDt)
+		ControlClick("Open Schedule","","[CLASS:Button; INSTANCE:5]")
+
+		$scheduleApptWnd = "Schedule " & $facility & " - " & $apptDt & " (" & $resource & ")"
+		WinWaitActive($scheduleApptWnd)
+			;click new appointment
+			ControlClick($scheduleApptWnd,"","[CLASS:ToolbarWindow32; INSTANCE:3]","left",1,46,12)
+			Sleep(2000)
+
+			;handling popup
+			If((WinGetTitle("[ACTIVE]") = "Centricity Practice Solution") And (StringInStr(WinGetText("[ACTIVE]"),"Some portion of the time you are attempting to book is not available at this facility."))) Then
+				ControlClick("Centricity Practice Solution","Some portion of the time you are attempting to book is not available at this facility.","[CLASS:Button; INSTANCE:4]")
+			EndIf
+
+			WinWaitActive("Find Patient")
+
+			If(WinActive("Find Patient")) Then
+				ConsoleWrite("Find the patient for whom appointment to be scheduled" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Find the patient for whom appointment to be scheduled" & @CRLF)
+				ControlFocus("Find Patient","","[CLASS:Edit; INSTANCE:1]")
+				ControlSetText("Find Patient","","[CLASS:Edit; INSTANCE:1]",$Lname)
+				Sleep(1000)
+				ControlClick("Find Patient","","[CLASS:Button; INSTANCE:2]")
+				Sleep(2000)
+				ControlClick("Find Patient","","[CLASS:Button; INSTANCE:8]")
+
+				$newApptWnd = "New Appointment - " & $Lname & ", " & $Fname
+				WinWaitActive($newApptWnd)
+				;Responsible Provider
+				ConsoleWrite("Enter responsible provider for patient" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter responsible provider for patient" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:3]")
+				ControlClick($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:3]")
+				WinWaitActive("Find Provider")
+				ConsoleWrite("Search and Select Responsible provider for patient" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select Responsible provider for patient" & @CRLF)
+				ControlSend("Find Provider","","[CLASS:Edit; INSTANCE:1]",$respPvdr)
+				ControlClick("Find Provider","","[CLASS:Button; INSTANCE:3]")
+				Sleep(1000)
+				ControlClick("Find Provider","","[CLASS:Button; INSTANCE:9]")
+
+				WinWaitActive($newApptWnd)
+				;Appointment Type
+				ConsoleWrite("Enter appointment type" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment type" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:5]")
+				ControlClick($newApptWnd,"","[CLASS:AfxOleControl110; INSTANCE:5]")
+				WinWaitActive("Find Appointment Type")
+				ConsoleWrite("Search and Select appointment type" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Search and Select appointment type" & @CRLF)
+				ControlClick("Find Appointment Type","","[CLASS:Button; INSTANCE:3]")
+				Sleep(1000)
+				ControlClick("Find Appointment Type","","[CLASS:ListBox; INSTANCE:1]","left",2)
+
+				WinWaitActive($newApptWnd)
+				;Appt Start Time
+				ConsoleWrite("Enter appointment start time" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment start time" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:Edit; INSTANCE:14]")
+				Send("{DEL 6}")
+				ControlSend($newApptWnd,"","[CLASS:Edit; INSTANCE:14]",$apptStartTime)
+
+				;Appt Stop Time
+				ConsoleWrite("Enter appointment end time" & @CRLF)
+				FileWriteLine($hFileOpen, _NowCalc() & "  -- Enter appointment end time" & @CRLF)
+				ControlFocus($newApptWnd,"","[CLASS:Edit; INSTANCE:15]")
+				Send("{DEL 6}")
+				ControlSend($newApptWnd,"","[CLASS:Edit; INSTANCE:15]",$apptStopTime)
+				Sleep(2000)
+
+				ControlClick($newApptWnd,"","[CLASS:Button; INSTANCE:5]")
+				Sleep(2000)
+
+				;handling popup
+				If((WinGetTitle("[ACTIVE]") = "Centricity Practice Solution") And (StringInStr(WinGetText("[ACTIVE]"),"Some portion of the time you are attempting to book is not available at this facility. Would you like to create an overbooked appointment?"))) Then
+					ControlClick("Centricity Practice Solution","Some portion of the time you are attempting to book is not available at this facility. Would you like to create an overbooked appointment?","[CLASS:Button; INSTANCE:3]")
+				EndIf
+
+			Else
+				ConsoleWrite("ERROR Inactive Find Patient Window...." & @CRLF)
+ 				FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Inactive Find Patient Window...." & @CRLF)
+				Exit
+			EndIf
+
+	Else
+		ConsoleWrite("ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		FileWriteLine($hFileOpen, _NowCalc() & "  -- ERROR Attaching IE Process Within GE CPS App...." & @CRLF)
+		Exit
+	EndIf
+	ConsoleWrite("METHOD: scheduleAppointment() ended" & @CRLF)
 EndFunc

@@ -15,13 +15,27 @@ Call("setLogPath",$logpath)
 $hFileOpen = Call("openLogFile")
 $patientDetails = StringReplace($currentDir, "patientselfregistration", "commonsteps") & "\patientdetails.txt"
 
-$arrConfig = Call("setConfig")
+;$arrConfig = Call("setConfig")
 $arrQuery = Call("openQueryFile")
 $arrEvent = Call("openEventFile")
 
+$CPSURL = Call("readConfig","CPS URL")
+$CPSLogin = Call("readConfig","CPS Login UserName")
+$CPSPassword = Call("readConfig","CPS Login Password")
+$SQLServer = Call("readConfig","SQL Server IP")
+$CPSDb = Call("readConfig","Centricity DB")
+$centralDb = Call("readConfig","Central DB")
+$dbUser = Call("readConfig","SQL UserName")
+$dbPassword = Call("readConfig","SQL Password")
+$runFlag = Call("readConfig","Flag (Preconditions Check / Data Generation / Acceptance)")
+$dataGenerationCounter =  Call("readConfig","Number of selfregistered patients to be created")
+
+$patientFirstName =  Call("readConfig","Patient First Name (For Patient Chart)")
+$patientLastName =  Call("readConfig","Patient Last Name (For Patient Chart)")
+
 ;Pre-requisite: Verifying Database Flags. This is from GE Release - 17.3 onwards
 	FileWriteLine($hFileOpen, @CRLF & " STEP 1 -- UPDATE SERVICESETTINGS FOR PATIENT SELF REGISTRATION FLOW" & @CRLF)
-			Call("connectDatabase",$arrConfig[4],$arrConfig[6],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$centralDb,$dbUser,$dbPassword)
 			Local $aData,$iRows,$iColumns
 			ConsoleWrite("Executing Query: " & $arrQuery[27] & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Executing Query: " & $arrQuery[27] & @CRLF)
@@ -57,7 +71,7 @@ $arrEvent = Call("openEventFile")
 
 			_SQL_Close()
 
-If($arrConfig[9] == "Preconditions Check") Then
+If($runFlag == "Preconditions Check") Then
 	ConsoleWrite("Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
 	FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after checking pre-conditions for Direct Messaging Flow...." & @CRLF)
 	Exit
@@ -73,9 +87,9 @@ Else
 	ConsoleWrite($ptSelfRegjar & @CRLF)
 	$counter = 0
 	Do
-		If($arrConfig[9]=="Data Generation") Then
-			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients"& @CRLF)
-			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $arrConfig[45] & " patients" & @CRLF)
+		If($runFlag=="Data Generation") Then
+			ConsoleWrite("Creating Patient #" & $counter+1 & " of " & $dataGenerationCounter & " patients"& @CRLF)
+			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" & $counter+1 & " of " & $dataGenerationCounter & " patients" & @CRLF)
 		Else
 			ConsoleWrite("Creating Patient #" &$counter+1 & @CRLF)
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Creating Patient #" &$counter+1 & @CRLF)
@@ -95,9 +109,9 @@ Else
 				Exit
 			EndIf
 
-		If($arrConfig[9]=="Data Generation") Then
+		If($runFlag=="Data Generation") Then
 			$counter +=1
-			If($counter = $arrConfig[45]) Then
+			If($counter = $dataGenerationCounter) Then
 				ConsoleWrite("Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Exiting after data generation for Patient Self Registration Flow...." & @CRLF)
 				Exit
@@ -107,9 +121,9 @@ Else
 			Sleep(60000)
 
 		Else
-			$counter = $arrConfig[45]
+			$counter = $dataGenerationCounter
 		EndIf
-	Until $counter = $arrConfig[45]
+	Until $counter = $dataGenerationCounter
 	;Sleep(105000)
 	FileWriteLine($hFileOpen, _NowCalc()  &" -- Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF)
 	ConsoleWrite("Patient successfully created. Patient data stored in patientdetails.txt" &@CRLF )
@@ -131,7 +145,7 @@ Else
 	;Check for patient arrived in GE
 	FileWriteLine($hFileOpen, @CRLF & " STEP 3 -- FETCH PATIENT COUNT FROM MEDFUSION DASHBOARD" & @CRLF)
 
-		Call("startCPS",$arrConfig[1], $arrConfig[2], $arrConfig[3])
+		Call("startCPS",$CPSURL,$CPSLogin,$CPSPassword)
 		WinWaitActive("Centricity Practice Solution")
 
 	If(WinActive("Centricity Practice Solution")) Then
@@ -171,7 +185,7 @@ Else
 			FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying Patient Data in DB" & @CRLF)
 
 ;Verify Patient Data arrived from MF
-			Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+			Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 
 		    Local $aData,$iRows,$iColumns	;Variables to store the array data in to and the row count and the column count
 			ConsoleWrite("Executing Query: " & $arrQuery[4] & "'" & $arrPtDetails[1] & @CRLF)
@@ -316,7 +330,7 @@ Else
 
 ;---------------------------DB Checks - Additions in AC
 
-		Call("connectDatabase",$arrConfig[4],$arrConfig[5],$arrConfig[7],$arrConfig[8])
+		Call("connectDatabase",$SQLServer,$CPSDb,$dbUser,$dbPassword)
 
 		FileWriteLine($hFileOpen, @CRLF & " STEP 8 -- VERIFY MAPPING & STAFF IN CUSMEDFUSIONMEMBER TABLE" & @CRLF)
 		ConsoleWrite("Verifying in cusMedfusionMember table" & @CRLF)
@@ -346,7 +360,7 @@ Else
 		;Verify staff
 				ConsoleWrite("Verifying staff in cusMedfusionMemmber table" & @CRLF)
 				FileWriteLine($hFileOpen, _NowCalc() & "  -- Verifying staff in cusMedfusionMemmber table" & @CRLF)
-				Call("assertData", $arrConfig[2], $aData[1][1])
+				Call("assertData", $CPSLogin, $aData[1][1])
 
 			Else
 				ConsoleWrite("ERROR Querying Database...." & @CRLF)

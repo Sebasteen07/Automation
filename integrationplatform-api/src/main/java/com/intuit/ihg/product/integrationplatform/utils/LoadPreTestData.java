@@ -140,6 +140,7 @@ public class LoadPreTestData {
 		testData.patientUA_MU2_LastName=propertyData.getPatientUA_MU2_LastName();
 		testData.patientUA_MU2_LastName_Existing=propertyData.getPatientUA_MU2_LastName_Existing();		
 		testData.pdfFilePath=propertyData.getPdfFilePath();
+		testData.token=propertyData.getToken_MU();
 		
 		return testData;
 	}
@@ -303,6 +304,11 @@ public class LoadPreTestData {
 		testData.practiceUserName = propertyData.getPortalUserName_SE();
 		testData.practicePassword = propertyData.getPortalPassword_SE();
 		testData.emailSubject = propertyData.getStatementEmailSubject();
+		testData.balanceUrl = propertyData.getBalanceUrl();
+		testData.balanceIntegrationPracticeId = propertyData.getBalanceIntegrationPracticeId();
+		testData.newPassword = propertyData.getNewPassword();
+		testData.emailSubjectBalance = propertyData.getEmailSubjectBalance();
+		testData.emailLinkText = propertyData.getEmailLinkText();
 		return testData;
 	}
 	
@@ -426,7 +432,8 @@ public class LoadPreTestData {
 		testData.invalidEmailMessageHeaderURL=propertyData.getInvalidEmailMessageHeaderURL_SDM();
 		testData.invalidUID = propertyData.getInvalidUID_SDM();
 		testData.validPracticeID = propertyData.getValidPracticeID_SDM();
-		
+
+		testData.token = propertyData.getDeleteToken();
 		return testData;
 	}
 

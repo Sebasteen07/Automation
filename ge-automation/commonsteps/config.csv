@@ -1,59 +1,88 @@
-CPS URL:-http://172.18.81.237:9080/centricityps122demo/cps/
-CPS Login UserName:-mmanohar
-CPS Login Password:-Medfusion567
-SQL Server IP:-172.18.81.237
-Centricity DB:-centricityps122demo
-Central DB:-demo_central_db
-SQL UserName:-sa
-SQL Password:-*08oate
-Flag (Preconditions Check / Data Generation / Acceptance):-Acceptance
---------------Patient Registration:--------------
-Patient first Name to be appended with timestamp (For Patient Creation in CPS):-Patient
-Patient's email id to be appended with timestamp (For Patient Creation in CPS):-ge.demo.testing@mailinator.com
-Patient Count:-1
--------------Patient Portal Details:--------------
-Patient Portal url:-https://demo.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=857&muuid=2606
-Patient Portal Login:-SR_1513683855693
-Patient Portal Password:-Admin123#
-CCD Transmit Email:-tattempt@gmail.com
---------------Patient Chart:--------------
-Patient First Name (For Patient Chart):-SR_1513683855693
-Patient Last Name (For Patient Chart):-TestPatient_1513683855693
-New Document (Email Message):-* E-mail Message
-New Document (Asthma Visit):-Asthma Visit
---------------Direct Messaging:--------------
-Order Category1:-Neurology
-Authorizing Provider for TOC Flow (Lastname,Firstname):-Jain, Swati
-Referring provider for TOC flow (Lastname,Firstname):-Azhar MD, Elle
-SES Inbox URL:-https://service2.directaddress.net
-SES UserName:-pmemrqa
-SES Password:-Password123@!
-Letter to Patient(TOC):-This is auto generated letter to patient for TOC flow
-Letter to Patient Subject (TOC):-Referral Initiated
---------------Secure Messaging:--------------
-Email Message Subject:-Subject of test email
-Email Message Body:-This is body of test email
-Reply to Email Message:-This is response to test mail
---------------Ask A Staff:--------------
-AAS Subject:-Subject of AAS
-AAS Body:-This is body of AAS
-Reply to AAS:-This is response to AAS
---------------Prescription Renewal:--------------
-Rx Request Medication Name:-Bactrim
-Rx Request Dosage:-1bd
-Rx Request Quantity:-2
-Rx Request Refills:-3
-Rx Request Prescription Number:-456
-Rx Request Notes:-Auto-generated Additional Information for Rx
-Rx Request Pharmacy:-Gufic Pharmacy
-Rx Request Pharmacy Phone:-1521521523
---------------Data Generation:--------------
-Number of order creation:-2
-Number of TOC Creation:-3
-Order Category2:-Gastroenterology
-Number of visits to be created:-2
-Number of selfregistered patients to be created:-20
-Number of messages to be created:-2
-Number of appointments to be created:-5
-Number of AAS to be created:-4
-Number of Rx requests to be generated:-6
+CPS URL=http://172.18.81.237:9080/centricityps122demo/cps/
+CPS Login UserName=mmanohar
+CPS Login Password=Medfusion123
+SQL Server IP=172.18.81.237
+Centricity DB=centricityps122demo
+Central DB=demo_central_db
+SQL UserName=sa
+SQL Password=*08oate
+Flag (Preconditions Check / Data Generation / Acceptance)=Acceptance
+[------Patient Registration------]
+Patient first Name to be appended with timestamp (For Patient Creation in CPS)=Patient
+Patient's email id to be appended with timestamp (For Patient Creation in CPS)=ge.demo.testing@mailinator.com
+Patient Count=1
+[------Patient Portal Details------]
+Patient Portal url=https://demo.medfusion.net/secure/portal/index.cfm?fuseaction=home.login&dest=welcome&gid=857&muuid=2606
+Patient Portal Login=SR_1513685235839
+Patient Portal Password=Admin123#
+CCD Transmit Email=tattempt@gmail.com
+[------Patient Chart------]
+Patient First Name (For Patient Chart)=SR_1513685235839
+Patient Last Name (For Patient Chart)=TestPatient_1513685235839
+New Document (Email Message)=* E-mail Message
+New Document (Asthma Visit)=Asthma Visit
+[------Direct Messaging------]
+Order Category1=Neurology
+Order Category2=Gastroenterology
+Authorizing Provider for TOC Flow (Lastname,Firstname)=Jain, Swati
+Referring provider for TOC flow (Lastname,Firstname)=Azhar MD, Elle
+SES Inbox URL=https://service2.directaddress.net
+SES UserName=pmemrqa
+SES Password=Password123@!
+Letter to Patient(TOC)=Auto-generated Letter to patient
+Letter to Patient Subject (TOC)=Referral Initiated
+Instructions for ToC=Auto-generated Instructions for ToC
+Reason for referal=Auto-generated Reason for Referral
+Receiving ToC (to address)=medfusiontest2@service2.directaddress.net
+Sending/Receiving ToC (from address)=medfusiontest1@service2.directaddress.net
+ToC Download Location=C:\XASYST\ge-automation\ge-automation
+[------Secure Messaging------]
+Email Message Subject=Subject of test email
+Email Message Body=This is body of test email
+Reply to Email Message=This is response to test mail
+[------Ask A Staff------]
+AAS Subject=Subject of AAS
+AAS Body=This is body of AAS
+Reply to AAS=This is response to AAS
+[------Prescription Renewal------]
+Rx Request Medication Name=Bactrim
+Rx Request Dosage=1bd
+Rx Request Quantity=2
+Rx Request Refills=3
+Rx Request Prescription Number=456
+Rx Request Notes=Auto-generated Additional Information for Rx
+Rx Request Pharmacy=Gufic Pharmacy
+Rx Request Pharmacy Phone=1521521523
+[------Discrete Forms------]
+Discrete Form Name=Automation Discrete Form
+Discrete Form Medication Name=Abilify 10 mg Disintegrating Tablet
+Discrete Form Medication Frequency=2
+Discrete Form Medication Frequency Type(Day/Week/Month/Year)=month
+Discrete Form Allergy(Peanuts / Eggs / Seafood)=Seafood
+Discrete Form Medication Name OBS Term=30DYNUMBDAY
+Discrete Form Allergies OBS Term=30DY1STWAKNG
+[------Precheck Appointments------]
+Precheck Facility Name=Anesthesia Hospital
+Precheck Resource Name=Resource1
+Precheck Appointment Date(mm/dd/yyyy)=02/16/2018
+Precheck Responsible provider=Brown, Jennifer J.
+Precheck Appointment Start Time=11:43 AM
+Precheck Appointment Stop Time(As per slot)=11:53 AM
+Precheck Add Demographics=No
+Precheck Add Insurance Details=No
+Precheck Add Insurance Images=Yes
+Precheck Primary Insurance=Yes
+Precheck Secondary Insurance=Yes
+Precheck Tertiary Insurance=No
+Precheck Insurance Images Path=E:\Jar_Test\createjar\Images
+[------Data Generation------]
+Number of order creation=2
+Number of TOC Creation=3
+Number of visits to be created=2
+Number of selfregistered patients to be created=20
+Number of messages to be created=2
+Number of appointments to be created from Patient Portal=5
+Number of AAS to be created=4
+Number of Rx requests to be generated=6
+Number of Health Forms to be filled=2
+Number of appointments to be scheduled from CPS=5

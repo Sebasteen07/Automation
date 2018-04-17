@@ -37,4 +37,5 @@ public class SendDirectMessage {
 	public String invalidEmailMessageHeaderURL="";
 	public String invalidUID="";
 	public String validPracticeID="";
+	public String token="";
 }

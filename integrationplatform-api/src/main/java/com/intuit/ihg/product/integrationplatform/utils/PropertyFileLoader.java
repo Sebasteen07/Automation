@@ -1275,4 +1275,25 @@ public class PropertyFileLoader {
 	public String getPreCheckInsuranceImageType() {
 		return property.getProperty("preCheckImageInsuranceType");
 	}
+	public String getBalanceUrl() {
+		return property.getProperty("balanceUrl");
+	}
+	public String getBalanceIntegrationPracticeId() {
+		return property.getProperty("balanceIntegrationPracticeId");
+	}
+	public String getNewPassword() {
+		return property.getProperty("newPassword");
+	}
+	public String getEmailSubjectBalance() {
+		return property.getProperty("emailSubjectBalance");
+	}
+	public String getEmailLinkText() {
+		return property.getProperty("emailLinkText");
+	}
+	public String getToken_MU() {
+		return property.getProperty("token_MU");
+	}
+	public String getDeleteToken() {
+		return property.getProperty("token_p2p");
+	}
 }

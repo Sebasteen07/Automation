@@ -11,7 +11,7 @@ import com.intuit.ihg.product.integrationplatform.utils.sendPatientInvitePayload
 public class SendPatientInvite implements iPIDCSendPatientInvite {
 
 	@Override
-	public ArrayList<String> sendPatientInviteToPractice(String restUrl, String practiceId, String externalSystemID,String birthDay,String zipCode) throws Exception {
+	public ArrayList<String> sendPatientInviteToPractice(String restUrl, String practiceId, String externalSystemID,String birthDay,String zipCode,String token) throws Exception {
 		PIDCInfo testData = new PIDCInfo();
 		testData.setRestUrl(restUrl);
 		testData.setPracticeId(practiceId);
@@ -32,7 +32,7 @@ public class SendPatientInvite implements iPIDCSendPatientInvite {
 		String birthday = payloadObj.date;
 		String email = payloadObj.email;
 		
-		String response = RequestUtils.getStatus(testData.getRestUrl(), payload, externalSystemID);
+		String response = RequestUtils.getStatus(testData.getRestUrl(), payload, externalSystemID, token);
 		ArrayList<String> newPatientDetails = new ArrayList<String>();
 		newPatientDetails.add(firstName);
 		newPatientDetails.add(lastName);

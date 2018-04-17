@@ -4,7 +4,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>18.1.0</version>
+	  <version>18.2.0</version>
 </parent>
 
   <artifactId>integration-platform-automation</artifactId>
@@ -13,8 +13,8 @@
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>18.1.0</ihg.version>
-        <dcf-version>18.1.0</dcf-version>
+        <ihg.version>18.2.0</ihg.version>
+        <dcf-version>18.2.0</dcf-version>
   </properties>
   
   <repositories>
