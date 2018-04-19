@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ibm.icu.util.Calendar;
@@ -105,10 +108,19 @@ public class HealthFormListPage extends BasePageObject {
 	}
 
 	public void logout() throws InterruptedException, IOException {
-		IHGUtil.setDefaultFrame(driver);
-		scrollAndWait(0, 0, 500);
-		logout.click();
-		TimeUnit.SECONDS.sleep(3);
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class);
+		
+		wait.until(new Function<WebDriver, WebElement>() {
+			     public WebElement apply(WebDriver driver) {
+			    	IHGUtil.setFrame(driver, "iframebody");		
+			 		return driver.findElement(By.xpath("//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']"));
+			       }
+			     }
+				).click();						
 	}
 
 	/**

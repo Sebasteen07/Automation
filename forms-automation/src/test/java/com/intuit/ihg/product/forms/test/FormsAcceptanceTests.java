@@ -461,6 +461,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
 		testEGQEnabled(home.clickOnHealthForms());
 		log("verify that value in my account has been changed based on form answer");
+		home = PageFactory.initElements(driver, MyPatientPage.class);
 		MyAccountPage pMyAccountPage = home.clickMyAccountLink();
 		assertTrue(pMyAccountPage.getGender() == null);
 	}
@@ -510,7 +511,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(ccd.contains("None, I have never been pregnant"), "not found in ccd: " + ccd);
 		log("verify that there is nullFlavor UNK for gender in CCD");
 		assertTrue(Pattern.compile("<administrativeGenderCode[^>]+nullFlavor=\"UNK\"").matcher(ccd).find(), "not found in ccd: " + ccd);
-		formsList.goToHomePage();
+		formsList = PageFactory.initElements(driver, HealthFormListPage.class);
+		formsList.goToHomePage();		
 	}
 
 
