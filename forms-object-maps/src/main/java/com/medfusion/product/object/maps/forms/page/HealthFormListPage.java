@@ -114,13 +114,14 @@ public class HealthFormListPage extends BasePageObject {
 				.ignoring(NoSuchElementException.class)
 				.ignoring(NoSuchFrameException.class);
 		
-		wait.until(new Function<WebDriver, WebElement>() {
+		WebElement logout = wait.until(new Function<WebDriver, WebElement>() {
 			     public WebElement apply(WebDriver driver) {
 			    	IHGUtil.setFrame(driver, "iframebody");		
 			 		return driver.findElement(By.xpath("//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']"));
 			       }
 			     }
-				).click();						
+				);
+		javascriptClick(logout);
 	}
 
 	/**
