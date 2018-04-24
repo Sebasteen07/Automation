@@ -17,6 +17,10 @@ public class AskAStaffQuestionDetailStep4Page extends BasePageObject {
 
 	@FindBy(linkText = "Click here to view this patient's chart and print it.")
 	private WebElement viewPatientChart;
+	
+	@FindBy(xpath = "//*[@id=\'content\']/div[2]/p[1]/span")
+	private WebElement confirmMsg;
+	
 
 	public AskAStaffQuestionDetailStep4Page(WebDriver driver) {
 		super(driver);
@@ -37,4 +41,13 @@ public class AskAStaffQuestionDetailStep4Page extends BasePageObject {
 		return result;
 	}
 
+	public boolean isVovSubmitted() {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		
+		IHGUtil.waitForElement(driver, 20, confirmMsg);
+		
+		return  confirmMsg.getText().contains("Your prescription and communication have been posted and the visit has been closed.");
+	}
+	
 }

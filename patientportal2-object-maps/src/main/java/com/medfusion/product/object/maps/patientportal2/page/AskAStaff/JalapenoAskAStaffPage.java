@@ -107,7 +107,7 @@ public class JalapenoAskAStaffPage extends BasePageObject {
 	public boolean checkHistory(WebDriver driver) {
 		historyBut.click();
 		try {
-			new WebDriverWait(driver, 10)
+			new WebDriverWait(driver, 50)
 					.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '" + "Ola! " + this.getCreatedTimeStamp() + "')]")));
 		} catch (org.openqa.selenium.NoSuchElementException e2) {
 			log("Couldn't find Subject: Ola! " + this.getCreatedTimeStamp());

@@ -107,6 +107,7 @@ public class AskAStaffSearchPage extends BasePageObject {
 
 		for (WebElement complaint : searchResultComplaints) {
 			if (complaint.getText().contains(subjectSubString)) {
+				IHGUtil.waitForElement(driver, 15, complaint);
 				complaint.click();
 				return PageFactory.initElements(driver, AskAStaffQuestionDetailStep1Page.class);
 			}
