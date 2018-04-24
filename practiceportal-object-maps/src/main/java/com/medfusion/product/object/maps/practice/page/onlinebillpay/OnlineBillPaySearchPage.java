@@ -127,9 +127,10 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 
 		try {
+			IHGUtil.waitForElement(driver, 30, searchResults);
 			searchResults.isDisplayed();
 		} catch (Exception e) {
-			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
+			throw new Exception("Online Bill pay search result table is not found. Ensure a search was completed first.");
 		}
 		// Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
 		
