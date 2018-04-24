@@ -248,8 +248,15 @@ public class PatientMessagingPage extends BasePageObject {
 	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
 		setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName, subjectText);
 	}
-
-	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
+	
+	public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
+		IHGUtil.PrintMethodName();
+		setMessageFields(templateName, subjectText);
+		setRecipient(firstName, lastName, email);
+		publishMessage();
+	}
+	
+	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.frameName);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
@@ -258,11 +265,13 @@ public class PatientMessagingPage extends BasePageObject {
 
 	}
 	
-	public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
+	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName, String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
-		setMessageFields(templateName, subjectText);
-		setRecipient(firstName, lastName, email);
-		publishMessage();
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
+
 	}
 
 	public void setMessageFields(String templateName, String subjectText) {

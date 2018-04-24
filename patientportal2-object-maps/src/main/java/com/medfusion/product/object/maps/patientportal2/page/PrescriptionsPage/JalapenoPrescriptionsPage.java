@@ -81,6 +81,7 @@ public class JalapenoPrescriptionsPage extends BasePageObject {
 
 	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) {
 
+		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 
 		log("Insert medication info");
