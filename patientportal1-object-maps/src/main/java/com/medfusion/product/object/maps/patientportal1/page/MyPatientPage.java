@@ -166,7 +166,7 @@ public class MyPatientPage extends BasePageObject {
 	 */
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-<<<<<<< HEAD
+
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
