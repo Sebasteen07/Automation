@@ -30,7 +30,6 @@ import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.N
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
-
 /**
  *
  * @author bkrishnankutty
@@ -89,7 +88,6 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[@title='Prescription Renewal']")
 	private WebElement lnkPrescriptionRenewal;
 
-	
 	@FindBy(xpath = "//div[@id='iframecontent']/div/h2")
 	public WebElement txtMyPatientPage;
 
@@ -158,34 +156,10 @@ public class MyPatientPage extends BasePageObject {
 	 */
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-		
-		boolean result = false;
-		for(int i = 0; i < 4; i++){
-			   try {
-				PortalUtil.setPortalFrame(driver);
-			    result = btnViewallmessages.isDisplayed();
-			    break;    
-			   } catch (Exception e) {
-			    log("Home page loaded? failed attempt:" + (i+1) + " out of 4");
-			    // Catch any element not found errors
-			   }
-			   try {
-			    Thread.sleep(3000);
-			   } catch (InterruptedException e) {
-			    // TODO Auto-generated catch block
-			    e.printStackTrace();
-			   }
-			  }
-
-		return result;
-		
-	}
-
-	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
 		PortalUtil.setPortalFrame(driver);
-		return IHGUtil.waitForElement(driver, 15, logout);
+		return IHGUtil.waitForElement(driver, 15, btnViewallmessages);
 	}
-	
+
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();

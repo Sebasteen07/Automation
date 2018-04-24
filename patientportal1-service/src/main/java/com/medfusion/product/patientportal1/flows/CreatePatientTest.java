@@ -112,9 +112,8 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 	public MyPatientPage loginAsNewPatient(WebDriver driver, MyPatientPage pMyPatientPage) throws InterruptedException {
 
-		
-		log("step 4: Assert Webelements in Logout element present");
-		assertTrue(pMyPatientPage.isLogOutButtonPresent(driver),"Patient was not created successfuly." );
+		log("step 4: Assert Webelements in MyPatientPage");
+		assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
 
 		log("step 5: Logout");
 		pMyPatientPage.clickLogout(driver);
