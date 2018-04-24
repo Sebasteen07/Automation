@@ -35,6 +35,7 @@ import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.N
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
+
 /**
  *
  * @author bkrishnankutty
@@ -93,6 +94,7 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[@title='Prescription Renewal']")
 	private WebElement lnkPrescriptionRenewal;
 
+	
 	@FindBy(xpath = "//div[@id='iframecontent']/div/h2")
 	public WebElement txtMyPatientPage;
 
@@ -164,6 +166,7 @@ public class MyPatientPage extends BasePageObject {
 	 */
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
+<<<<<<< HEAD
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
