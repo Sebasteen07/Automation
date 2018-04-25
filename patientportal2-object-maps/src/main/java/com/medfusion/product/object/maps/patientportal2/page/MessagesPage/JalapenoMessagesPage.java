@@ -180,12 +180,4 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
 	}
 	
-    public DocumentsPage goToDocumentsPage() {
-        
-        log("Clicking on Health Record menu button");
-        healthRecordMenu.click();
-        
-        return PageFactory.initElements(driver, DocumentsPage.class);
-    }
-
 }
