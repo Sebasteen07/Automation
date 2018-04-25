@@ -16,6 +16,7 @@ import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
@@ -180,6 +181,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		healthRecordMenu.click();
 		
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
+	}
+	
+	public DocumentsPage goToDocumentsPage() {
+		
+		log("Clicking on Health Record menu button");
+		healthRecordMenu.click();
+		
+		return PageFactory.initElements(driver, DocumentsPage.class);
 	}
 	
 	public void menuHealthRecordClickOnly(){
