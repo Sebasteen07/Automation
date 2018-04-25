@@ -40,7 +40,7 @@ public class SendDirectMessageUtils {
 	 	Log4jUtil.log("postSecureMessage Step 2: Generate Payload");
 	 	SendDirectMessagePayload directMessagePayload = new SendDirectMessagePayload();
 	 	String payload = directMessagePayload.getSendDirectMessagePayload(testData);
-	 	Thread.sleep(4000);
+	 	Thread.sleep(10);
 	 	Log4jUtil.log("postSecureMessage Step 3: Setup Oauth client");
 	 	Log4jUtil.log("Message Subject  "+testData.Subject);
 	 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
@@ -59,7 +59,7 @@ public class SendDirectMessageUtils {
 		boolean completed = false;
 		for (int j = 0; j < 3; j++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
+			Thread.sleep(6000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
 			if (RestUtils.isSendDirectMessageProcessed(testData.ResponsePath)) {
 				completed = true;
@@ -68,7 +68,7 @@ public class SendDirectMessageUtils {
 		}
 		Assert.assertTrue(completed==true, "Message processing was not completed in time");
 		
-		Thread.sleep(4000);
+		Thread.sleep(800);
 		RestUtils.verifyDirectMessageGetStatus(testData.ResponsePath,mfMsgID,testData.FromEmalID,testData.ToEmalID);
 		
 		

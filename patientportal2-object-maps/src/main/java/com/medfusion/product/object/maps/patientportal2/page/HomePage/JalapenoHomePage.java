@@ -79,7 +79,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span")
 	private WebElement outstandingPatientBalance;
 
 	public JalapenoHomePage(WebDriver driver) {

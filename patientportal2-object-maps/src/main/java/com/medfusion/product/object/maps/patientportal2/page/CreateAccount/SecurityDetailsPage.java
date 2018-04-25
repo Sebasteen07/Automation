@@ -43,10 +43,10 @@ public class SecurityDetailsPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "phone_type")
 	private WebElement selectPhoneType;
 
-	@FindBy(how = How.XPATH, using = "/html/body/div[4]/div/div[2]/div[3]/div[1]/div/div/div/div/div/div/div/div/div/div[4]/div/form/div[1]/div[3]/mf-locations/div/div/div[1]/span")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"preferredLocationId_field\"]/mf-locations/div/div/div[1]/span")
 	private WebElement primaryLocationElement;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[5]/ul/li/div[3]/span/div")
+	@FindBy(how = How.XPATH, using = "//*[@class='ui-select-choices-row-inner']/div")
 	private WebElement setLocation;
 
 	@FindBy(how = How.ID, using = "prevStep")
@@ -126,7 +126,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		if (IHGUtil.exists(driver, 1, primaryLocationElement)) {
 			primaryLocationElement.click();
-			IHGUtil.waitForElement(driver, 120, setLocation);
+			IHGUtil.waitForElement(driver, 60, setLocation);
 			setLocation.click();
 		}
 	}
