@@ -183,6 +183,11 @@ public class MyPatientPage extends BasePageObject {
 		return result;
 	}
 
+ 	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
+ 		PortalUtil.setPortalFrame(driver);
+ 		return IHGUtil.waitForElement(driver, 15, logout);
+ 	}
+ 		
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();

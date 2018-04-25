@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
@@ -178,4 +179,13 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		statementLinkText.click();
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
 	}
+	
+    public DocumentsPage goToDocumentsPage() {
+        
+        log("Clicking on Health Record menu button");
+        healthRecordMenu.click();
+        
+        return PageFactory.initElements(driver, DocumentsPage.class);
+    }
+
 }
