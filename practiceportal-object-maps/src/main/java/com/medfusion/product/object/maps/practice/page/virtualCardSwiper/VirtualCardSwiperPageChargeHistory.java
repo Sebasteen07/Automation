@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 import java.util.List;
 
 import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -54,6 +55,9 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	@FindBy(xpath = ".//tbody/tr/td[4]/span")
 	private List<WebElement> amount;
 
+	@FindBy(xpath = "//*[@id=\'MfAjaxFallbackDefaultDataTable\']/tfoot/tr/td[4]/span")
+	private WebElement totalAmmount;
+	
 	public VirtualCardSwiperPageChargeHistory(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -102,6 +106,8 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 
 	public boolean VerifyAmount(String amount) {
 		PracticeUtil.setPracticeFrame(driver);
+		
+		IHGUtil.waitForElement(driver, 60, totalAmmount);
 		return driver.getPageSource().contains("$" + amount + ".00");
 	}
 

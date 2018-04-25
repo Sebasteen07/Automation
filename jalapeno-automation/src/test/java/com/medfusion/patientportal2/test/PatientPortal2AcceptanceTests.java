@@ -458,8 +458,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 		
 		logStep("Go to Documents tab");
-		MedicalRecordSummariesPage healthRecordsPage = messagesPage.goToHealthRecordsPage();
-		DocumentsPage documentsPage = healthRecordsPage.gotoOtherDocumentTab();
+		DocumentsPage documentsPage = messagesPage.goToDocumentsPage();
+		 
 		
 		logStep("Check if doccument from received message is displayed on Documents page");
 		assertTrue(documentsPage.checkLastImportedFileName(tmpDocument.getName()));
