@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
@@ -193,6 +195,13 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	
 	public void menuHealthRecordClickOnly(){
 		log("Clicking on Health Record menu button");
-		healthRecordMenu.click();
+		try{
+			healthRecordMenu.click();			
+		}
+		catch (NoSuchElementException e){
+			driver.navigate().refresh();
+			new WebDriverWait(driver,20).until(ExpectedConditions.visibilityOf(healthRecordMenu));
+			healthRecordMenu.click();
+		}
 	}
 }
