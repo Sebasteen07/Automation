@@ -29,8 +29,8 @@
 				<include name="testStatementEventForExistingPatient"/>
 				<include name="testSendDirectMessageXML"/>
 				<include name="testDirectorySearchSingleValue"/>
-				<include name="testUnseenMessageList"/>
-				<include name="testDeleteP2PMessage"/>
+				<exclude name="testUnseenMessageList"/>
+				<exclude name="testDeleteP2PMessage"/>
 				<include name="testE2EPreCheckUpdatesOnlyDemographics"/>
 				<include name="testE2EPreCheckUpdatesOnlyInsurance"/>
 				<include name="testE2EPreCheckUpdatesSingleInsuranceImageCard"/>
