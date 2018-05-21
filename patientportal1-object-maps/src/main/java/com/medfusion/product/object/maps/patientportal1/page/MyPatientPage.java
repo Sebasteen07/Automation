@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -171,7 +172,8 @@ public class MyPatientPage extends BasePageObject {
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class)
-				.ignoring(NoSuchFrameException.class);
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
 		
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
 			     public Boolean apply(WebDriver driver) {			    	

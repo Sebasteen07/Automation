@@ -1296,5 +1296,41 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 		assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 	}
+	
+	@Test(enabled = false, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBlinkBannerHiding() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.areBasicPageElementsPresent());
+
+		logStep("Fill in credentials and log in");
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Validate Blink banner present");
+		assertTrue(jalapenoHomePage.areMenuElementsPresent());
+		assertTrue(jalapenoHomePage.isBlinkBannerDisplayed());
+		
+		logStep("Hide Blink banner, verify that it hides");
+		jalapenoHomePage.clickBlinkBannerHide();		
+		Thread.sleep(3000);
+		assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());
+		
+		logStep("Refresh, verify Blink banner is still hidden");
+		driver.navigate().refresh();
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+		assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());		
+		
+		logStep("Log out");
+		loginPage = jalapenoHomePage.clickOnLogout();
+		assertTrue(loginPage.areBasicPageElementsPresent());
+		
+		logStep("Log in again");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Verify Blink banner is still hidden");
+		assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());
+	}
 
 }

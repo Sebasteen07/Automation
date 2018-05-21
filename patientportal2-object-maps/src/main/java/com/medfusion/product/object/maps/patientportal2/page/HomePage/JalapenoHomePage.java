@@ -81,6 +81,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span")
 	private WebElement outstandingPatientBalance;
+	
+	@FindBy(how = How.XPATH, using = "//mf-blink-banner//button/*[contains(text(),'×')]")
+	private WebElement blinkBannerHideButton;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -279,5 +282,24 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public String getOutstandingPatientBalance() {
 		return outstandingPatientBalance.getText();
+	}
+	
+	/**
+	 * checks if the BUTTON is visible, because the banner contracts to an empty element mf-blink-banner when hidden
+	 * @return
+	 */
+	public boolean isBlinkBannerDisplayed(){
+		boolean ret = false;
+		try {
+			ret = blinkBannerHideButton.isDisplayed();			
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public void clickBlinkBannerHide(){
+		javascriptClick(blinkBannerHideButton);
 	}
 }
