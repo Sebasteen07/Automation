@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -164,17 +165,23 @@ public class MyPatientPage extends BasePageObject {
 			   try {
 				PortalUtil.setPortalFrame(driver);
 			    result = btnViewallmessages.isDisplayed();
-			    break;    
+			    if (result) break;    
 			   } catch (Exception e) {
 			    log("Home page loaded? failed attempt:" + (i+1) + " out of 4");
 			    // Catch any element not found errors
 			   }
 			   try {
 			    Thread.sleep(3000);
-			   } catch (InterruptedException e) {
-			    // TODO Auto-generated catch block
-			    e.printStackTrace();
+			   } 
+			   catch (InterruptedException e) {
+				    // TODO Auto-generated catch block
+				    e.printStackTrace();
 			   }
+			   catch (WebDriverException e) {
+				    // TODO Auto-generated catch block
+				    e.printStackTrace();
+				  }
+			   
 			  }
 
 		return result;
