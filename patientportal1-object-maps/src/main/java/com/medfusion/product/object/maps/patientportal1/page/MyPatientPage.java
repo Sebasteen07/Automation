@@ -2,14 +2,18 @@ package com.medfusion.product.object.maps.patientportal1.page;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -159,33 +163,22 @@ public class MyPatientPage extends BasePageObject {
 	 */
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-		
-		boolean result = false;
-		for(int i = 0; i < 4; i++){
-			   try {
-				PortalUtil.setPortalFrame(driver);
-			    result = btnViewallmessages.isDisplayed();
-			    if (result) break;    
-			   } catch (Exception e) {
-			    log("Home page loaded? failed attempt:" + (i+1) + " out of 4");
-			    // Catch any element not found errors
-			   }
-			   try {
-			    Thread.sleep(3000);
-			   } 
-			   catch (InterruptedException e) {
-				    // TODO Auto-generated catch block
-				    e.printStackTrace();
-			   }
-			   catch (WebDriverException e) {
-				    // TODO Auto-generated catch block
-				    e.printStackTrace();
-				  }
-			   
-			  }
 
-		return result;
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
 		
+		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			     public Boolean apply(WebDriver driver) {			    	
+			 		PortalUtil.setPortalFrame(driver);		
+			 		return driver.findElement(By.linkText("View all messages")).isDisplayed();
+			       }
+			     }
+				);
+		return result;
 	}
 
 	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
