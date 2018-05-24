@@ -1,15 +1,16 @@
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
 import static org.testng.AssertJUnit.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.MFDateUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
 
@@ -109,14 +111,22 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	public void sendCCDIfNewestIsOlderThan(int days) {
-		if (System.currentTimeMillis() >= getTimeStampOfDate(firstVisibleCCDDate) + (days * 86400000)) {
-			//log("The test will send newer CCD to a patient.");
+		ZonedDateTime ccdDateUTC = MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText());		
+		ZonedDateTime weekAgoDateUTC = MFDateUtil.getCurrentTimeUTC().minus(days, ChronoUnit.DAYS);
+		
+		log("CCD Date found:" + firstVisibleCCDDate.getText()+ " parsed from local to utc as: " + ccdDateUTC.toString());
+		log("Today - 7 days found and parsed from local to utc as: " + weekAgoDateUTC.toString());
+				
+		if (MFDateUtil.compareDatesFromZonedDateTime(weekAgoDateUTC, ccdDateUTC) > 0) {
+			log("CCD Date found was older than 7 days, parsed from local to utc as: " + ccdDateUTC.toString());
+			//TODO send a new CCD to patient;			
+			
 			
 		} else {
+			log("CCD Date found is younger than 7 days, parsed from local to utc as: " + ccdDateUTC.toString());
 			// log("The newest CCD isn't older than " + days + " days.");
 		}
-	}
-
+	}	
 	public void setFilterToThirdCCDDate() {
 		setFilterToElementsDate(thirdVisibleCCDDate);
 	}
@@ -148,8 +158,9 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 
 	public void sendFirstVisibleCCDUsingDirectProtocol(String directEmailAddress) {
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(emailButton));
 		emailButton.click();
-		assertTrue(areEmailLightboxElementsPresent());
+		assertTrue(areEmailLightboxElementsPresent());		
 		selectDirectProtocol();
 		emailAddressInput.sendKeys(directEmailAddress);
 		transmitButton.click();
@@ -157,7 +168,8 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		new WebDriverWait(driver, 60).until(ExpectedConditions.textToBePresentInElement(successNotificationMessage, "Your health data has been successfully sent"));
 	}
 
-	public void sendFirstVisibleCCDUsingStandardEmail(String directEmailAddress) {
+	public void sendFirstVisibleCCDUsingStandardEmail(String directEmailAddress) {	
+		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(emailButton));
 		emailButton.click();
 		assertTrue(areEmailLightboxElementsPresent());
 		selectStandardEmail();
@@ -169,7 +181,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	public void setFilterToDefaultPositionAndCheckElements() {
-		filterCCDs(getOnlyDateFromElement(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
+		filterCCDs(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant(), Instant.now());
 		assertTrue(areBasicPageElementsPresent());
 	}
 
@@ -186,25 +198,12 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		return assessPageElements(webElementsList);
 	}
 
-	private void setFilterToElementsDate(WebElement element) {
-		String date = getOnlyDateFromElement(element);
-		filterCCDs(date, date);
+	private void setFilterToElementsDate(WebElement element) {		
+		Instant inst = MFDateUtil.parseDateToUTCZonedTime(element.getText()).toInstant().truncatedTo(ChronoUnit.DAYS);
+		filterCCDs(inst, inst);
 		new WebDriverWait(driver, 30).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")));
-		assertEquals("Something went wrong when filtering CCDs.", date, getOnlyDateFromElement(firstVisibleCCDDate));
-	}
-
-	private long getTimeStampOfDate(WebElement element) {
-		Pattern p = Pattern.compile("\\w+\\s\\d+,\\s\\d+");
-		Matcher m = p.matcher(element.getText());
-		m.find();
-		SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
-		try {
-			Date convertedDate = (Date) formatter.parse(m.group(0));
-			long timeStamp = convertedDate.getTime();
-			return timeStamp;
-		} catch (ParseException e) {
-			throw new IllegalArgumentException("Couln't parse given date.", e);
-		}
+		assertTrue("The first element in the list does not satisfy the filter!", MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().truncatedTo(ChronoUnit.DAYS).equals(inst));
+		
 	}
 
 	private String getDateFromTimeStamp(long timeStamp) {
@@ -214,13 +213,29 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		return convertedDate;
 	}
 
-	private String getOnlyDateFromElement(WebElement element) {
-		return element.getText().substring(0, element.getText().length() - 6);
-	}
-
 	private void filterCCDs(String fromDate, String toDate) {
 		updateWebElement(this.fromDate, fromDate);
 		updateWebElement(this.toDate, toDate);
+	}
+	
+	private void filterCCDs(Instant from, Instant to) {		
+		String fromString = MFDateUtil.getShortUSDateLocal(from);
+		String toString = MFDateUtil.getShortUSDateLocal(to);
+		
+		log("Instant TO ISO:" + from.toString() + " parsed to:" + fromString.toString());
+		log("Instant FROM ISO:" + to.toString() + " parsed to:" + toString.toString());
+		
+		updateWebElement(this.fromDate, fromString);
+		fromDate.sendKeys(Keys.ENTER);
+		// I'm afraid it's vital to wait a little bit here, to allow update after the first element is set
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		updateWebElement(this.toDate, toString);
+		toDate.sendKeys(Keys.ENTER);
 	}
 
 	public void selectDownload() {
@@ -250,7 +265,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 
 	public DocumentsPage gotoOtherDocumentTab() {
 		IHGUtil.waitForElement(driver, 60, otherDocument);
-		otherDocument.click();
+		javascriptClick(otherDocument);
 		return PageFactory.initElements(driver, DocumentsPage.class);
 	}
 
