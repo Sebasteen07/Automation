@@ -1297,7 +1297,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 	}
 	
-	@Test(enabled = false, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBlinkBannerHiding() throws Exception {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
