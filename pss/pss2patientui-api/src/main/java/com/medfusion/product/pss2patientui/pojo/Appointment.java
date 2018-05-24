@@ -5,30 +5,34 @@ import java.util.ArrayList;
 import com.medfusion.product.pss2patientui.utils.PatientMatch;
 
 public class Appointment {
+	private String dob;
+	private String city;
+	private String email;
+	private String gender;
+	private String street;
+	private String urlIPD;
+	private String zipCode;
 	private String provider;
 	private String username;
 	private String password;
 	private String location;
 	private String datetime;
-	private String appointmenttype;
-	private String speciality;
-	private String urlLoginLess;
-	private String urlIPD;
-	private String appointmentFlow;
-	private String firstTimeUser;
-	private String firstName;
 	private String lastName;
-	private String dob;
-	private String email;
-	private String gender;
-	private String zipCode;
-	private String primaryNumber;
-	private String city;
+	private String firstName;
+	private String speciality;
 	private String icsFilePath;
-	private String street;
-	private String isExistingPatient;
+	private String urlLoginLess;
+	private String firstTimeUser;
+	private String primaryNumber;
 	private String patientUserName;
 	private String patientPassword;
+	private String appointmenttype;
+	private String appointmentFlow;
+	private String patientPortalURL;
+	private String isExistingPatient;
+	private String patientPortalUserName;
+	private String patientPortalPassword;
+
 	private ArrayList<PatientMatch> patientMatchList = new ArrayList<PatientMatch>();
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
@@ -230,6 +234,30 @@ public class Appointment {
 
 	public void setPatientMatchList(ArrayList<PatientMatch> patientMatchList) {
 		this.patientMatchList = patientMatchList;
+	}
+
+	public String getPatientPortalURL() {
+		return patientPortalURL;
+	}
+
+	public void setPatientPortalURL(String patientPortalURL) {
+		this.patientPortalURL = patientPortalURL;
+	}
+
+	public String getPatientPortalUserName() {
+		return patientPortalUserName;
+	}
+
+	public void setPatientPortalUserName(String patientPortalUserName) {
+		this.patientPortalUserName = patientPortalUserName;
+	}
+
+	public String getPatientPortalPassword() {
+		return patientPortalPassword;
+	}
+
+	public void setPatientPortalPassword(String patientPortalPassword) {
+		this.patientPortalPassword = patientPortalPassword;
 	}
 
 }

@@ -11,19 +11,19 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class PrivacyPolicy extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div/div[3]/form/div[3]/input")
+	@FindBy(how = How.ID, using = "existingCheckbox")
 	public WebElement checkBoxAccept;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div/div[3]/form/div[4]/div[1]/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"existingPrivacyCancelButton\"]/span")
 	public WebElement buttonCancel;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div/div[3]/form/div[4]/div[2]/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"existingPrivacyPreviousButton\"]/span")
 	public WebElement buttonPrevious;
 	
-	@FindBy(how = How.CLASS_NAME, using = "custombuttonsubmitprivacy buttontop privacysubmitdata")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"existingPrivacySubmitButton\"]/span")
 	public WebElement buttonSubmit;
 	
-	@FindBy(how = How.CLASS_NAME, using = "dismissbuttonsprivacy")
+	@FindBy(how = How.CLASS_NAME, using = "dismissbuttons")
 	public WebElement buttonClosePopUp;
 
 	public PrivacyPolicy(WebDriver driver) {
@@ -39,5 +39,13 @@ public class PrivacyPolicy extends PSS2MainPage {
 		webElementsList.add(buttonPrevious);
 		webElementsList.add(buttonSubmit);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
+
+	public void closePopup() {
+		buttonClosePopUp.click();
+	}
+
+	public void submitPrivacyPage() {
+		buttonSubmit.click();
 	}
 }

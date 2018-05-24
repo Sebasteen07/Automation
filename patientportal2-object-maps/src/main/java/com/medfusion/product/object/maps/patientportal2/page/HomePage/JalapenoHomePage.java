@@ -85,6 +85,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//mf-blink-banner//button/*[contains(text(),'×')]")
 	private WebElement blinkBannerHideButton;
 
+	@FindBy(how = How.ID, using = "actionButton")
+	private WebElement buttonContinue;
+
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -301,5 +304,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public void clickBlinkBannerHide(){
 		javascriptClick(blinkBannerHideButton);
+	}
+
+	public void clickFeaturedAppointmentsReq() {
+		javascriptClick(appointments);
+		IHGUtil.waitForElement(driver, 80, buttonContinue);
+		javascriptClick(buttonContinue);
 	}
 }

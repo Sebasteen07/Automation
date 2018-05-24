@@ -43,6 +43,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setStreet(property.getProperty("streetGW"));
 		appointValues.setPatientUserName(property.getProperty("patientusernameGW"));
 		appointValues.setPatientPassword(property.getProperty("patientpasswordGW"));
+		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGW"));
+		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGW"));
+		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -59,6 +62,7 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("adminpasswordGE"));
 		adminuser.setPracticeId(property.getProperty("practiceIdGE"));
 		adminuser.setRule(property.getProperty("rule"));
+		adminuser.setPracticeId(property.getProperty("practiceIdGE"));
 	}
 
 	public void setAdminNG(AdminUser adminuser) {
@@ -67,6 +71,7 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("adminpasswordNG"));
 		adminuser.setPracticeId(property.getProperty("practiceIdNG"));
 		adminuser.setRule(property.getProperty("rule"));
+		adminuser.setPracticeId(property.getProperty("practiceIdNG"));
 	}
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
@@ -93,5 +98,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setStreet(property.getProperty("streetGE"));
 		appointValues.setPatientUserName(property.getProperty("patientusernameGE"));
 		appointValues.setPatientPassword(property.getProperty("patientpasswordGE"));
+		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGE"));
+		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGE"));
+		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGE"));
 	}
 }

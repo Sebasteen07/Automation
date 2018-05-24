@@ -25,10 +25,14 @@ public class PSSConstants {
 	public final static String BTL = "B,T,L";
 	public final static String TBL = "T,B,L";
 	public final static String TLB = "T,L,B";
-	public final static String CTLB = "C,T,L,B";
-	public final static String CLTB = "C,L,T,B";
+	public final static String STLB = "S,T,L,B";
+	public final static String SLTB = "S,L,T,B";
 	
 	public final static String LOGINLESS = "loginless";
 	public final static String IDP = "idp";
+
+	public final static String GW = "GW";
+	public final static String GE = "GE";
+	public final static String NG = "NG";
 
 }

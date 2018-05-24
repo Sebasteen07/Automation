@@ -1,5 +1,7 @@
 package com.medfusion.product.pss2patientui.utils;
 
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -73,4 +75,20 @@ public class PSSAdminUtils {
 		// driver.navigate().refresh();
 		// Thread.sleep(26000);
 	}
+
+	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		AdminUser adminuser = new AdminUser();
+		if (staffPracitceName.equalsIgnoreCase(PSSConstants.GW)) {
+			propertyData.setAdminGW(adminuser);
+		}
+		if (staffPracitceName.equalsIgnoreCase(PSSConstants.GE)) {
+			propertyData.setAdminGE(adminuser);
+		}
+		if (staffPracitceName.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAdminNG(adminuser);
+		}
+		return adminuser;
+	}
+
 }

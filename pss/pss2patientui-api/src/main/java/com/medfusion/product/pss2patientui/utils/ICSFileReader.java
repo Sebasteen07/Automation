@@ -14,7 +14,6 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class ICSFileReader {
 
-
 	public void ICSFile(String path) throws IOException, ParserException {
 		FileInputStream fin = new FileInputStream(path);
 		CalendarBuilder builder = new CalendarBuilder();
