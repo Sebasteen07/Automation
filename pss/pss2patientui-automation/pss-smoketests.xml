@@ -10,11 +10,7 @@
 	<classes>
 		<class name = "com.medfusion.psspatientportal2.test.PSS2PatientPortalAcceptanceTests" />
 		<methods>
-	    		<include name="testE2ELoginlessForExistingPatientGW" />
-	    		<include name="testE2ELoginlessForNewPatientGW" />
-	    		<include name="testE2EIDPForExistingPatientGW" />
-	    		<include name="testE2EIDPForNewPatientGW" />
-	    		<include name="testE2ELoginlessForNewPatientGE" />        		
+	    		<include name="testSSOFlowGW" />        		
      	</methods>
 	</classes>
 </test>
