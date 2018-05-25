@@ -638,6 +638,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 			// a couple of things to wait for here - popup opening, loading content, triggering OS print action...
 			Thread.sleep(3000);
 			IHGUtil.hadlePrintDialog();
+			log(driver.getWindowHandles().toString());
 
 			log("step 10: switch to active window");
 			for (String windowHandle : driver.getWindowHandles()) {
