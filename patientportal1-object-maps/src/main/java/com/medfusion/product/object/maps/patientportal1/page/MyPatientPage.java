@@ -37,6 +37,7 @@ import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 
+
 /**
  *
  * @author bkrishnankutty
@@ -65,7 +66,7 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(@href,'pre-reg')]")
 	private WebElement registrationForm;
 
-	@FindBy(css = "a[href*='exit.cfm']")
+	@FindBy(linkText = "Log Out")
 	private WebElement logout;
 
 	@FindBy(css = ".newmailmessage.launch_questionnaire > small>a")
@@ -186,7 +187,24 @@ public class MyPatientPage extends BasePageObject {
 	}
 
  	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
- 		PortalUtil.setPortalFrame(driver);
+ 		
+ 		
+ 		for(int i = 0; i < 4; i++){
+			   try {
+				PortalUtil.setPortalFrame(driver);
+				logout.isDisplayed();
+			    break;    
+			   } catch (Exception e) {
+			    log("search page loaded? failed attempt:" + (i+1) + " out of 4");
+			    // Catch any element not found errors
+			   }
+			   try {
+			    Thread.sleep(3000);
+			   } catch (InterruptedException e) {
+			    // TODO Auto-generated catch block
+			    e.printStackTrace();
+			   }
+			  }
  		return IHGUtil.waitForElement(driver, 15, logout);
  	}
  		
