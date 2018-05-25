@@ -31,7 +31,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 	private WebElement prefTime;
 
 	@FindBy(how = How.NAME, using = "reasonWrapper:_body:reason")
-	private WebElement appointmentReason;
+	private WebElement appointmentReasonText;
 
 	@FindBy(how = How.NAME, using = "preferenceWrapper:_body:preference")
 	private WebElement preference;
@@ -67,7 +67,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
-	public boolean fillAndSendTheAppointmentRequest(WebDriver driver) {
+	public boolean fillAndSendTheAppointmentRequest(WebDriver driver, String appointmentReason) {
 		IHGUtil.setFrame(driver, "iframebody");
 		log("Filling the appointment form");
 		//unfortunately the most stable way to wait for styles and full display of the appointment iframe is to wait out the first two seconds...
@@ -83,7 +83,7 @@ public class JalapenoAppointmentRequestPage extends BasePageObject {
 		dropdown.selectByVisibleText("Monday");
 
 		prefTime.sendKeys("Morning");
-		appointmentReason.sendKeys("Illness");
+		appointmentReasonText.sendKeys(appointmentReason);
 
 		dropdown = new Select(preference);
 		dropdown.selectByVisibleText("Specific Provider");

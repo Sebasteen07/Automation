@@ -551,6 +551,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequest() throws Exception {
 
+		String appointmentReason = "Illness" + System.currentTimeMillis();
+		
 		logStep("Load login page and login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
@@ -558,7 +560,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Create an appointment request");
 		JalapenoAppointmentRequestPage appointmentRequestPage = homePage.clickOnAppointment(driver);
 		appointmentRequestPage.clickOnContinueButton(driver);
-		assertTrue(appointmentRequestPage.fillAndSendTheAppointmentRequest(driver));
+		assertTrue(appointmentRequestPage.fillAndSendTheAppointmentRequest(driver, appointmentReason));
 
 		logStep("Logout from Patient Portal");
 		homePage = appointmentRequestPage.returnToHomePage(driver);
@@ -567,7 +569,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Proceed in Practice Portal");
 		AppoitmentRequest practicePortal = new AppoitmentRequest();
 		long tsPracticePortal =
-				practicePortal.ProceedAppoitmentRequest(driver, false, "Illness", testData.getPortalUrl(), testData.getDoctorLogin(), testData.getDoctorPassword());
+				practicePortal.ProceedAppoitmentRequest(driver, false, appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin(), testData.getDoctorPassword());
 
 		logStep("Continue in Portal Inspired");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
