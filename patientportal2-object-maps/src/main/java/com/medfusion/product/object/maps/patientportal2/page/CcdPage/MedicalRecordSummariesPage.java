@@ -199,7 +199,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 	}
 
 	private void setFilterToElementsDate(WebElement element) {		
-		Instant inst = MFDateUtil.parseDateToUTCZonedTime(element.getText()).toInstant().truncatedTo(ChronoUnit.DAYS);
+		Instant inst = MFDateUtil.parseDateToUTCZonedTime(element.getText()).toInstant();
 		filterCCDs(inst, inst);
 		new WebDriverWait(driver, 30).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")));
 		assertTrue("The first element in the list does not satisfy the filter!", MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().truncatedTo(ChronoUnit.DAYS).equals(inst));
