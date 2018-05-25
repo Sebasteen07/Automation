@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -33,9 +32,7 @@ import com.medfusion.product.object.maps.patientportal1.page.solutions.apptReque
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.virtualofficevisit.VirtualOfficeVisitProviderPage;
 import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.NewSymptomAssessmentPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
-
 
 
 /**
@@ -66,7 +63,7 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(@href,'pre-reg')]")
 	private WebElement registrationForm;
 
-	@FindBy(linkText = "Log Out")
+	@FindBy(css = "a[href*='exit.cfm']")
 	private WebElement logout;
 
 	@FindBy(css = ".newmailmessage.launch_questionnaire > small>a")
@@ -187,25 +184,21 @@ public class MyPatientPage extends BasePageObject {
 	}
 
  	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
- 		
- 		
- 		for(int i = 0; i < 4; i++){
-			   try {
-				PortalUtil.setPortalFrame(driver);
-				logout.isDisplayed();
-			    break;    
-			   } catch (Exception e) {
-			    log("search page loaded? failed attempt:" + (i+1) + " out of 4");
-			    // Catch any element not found errors
-			   }
-			   try {
-			    Thread.sleep(3000);
-			   } catch (InterruptedException e) {
-			    // TODO Auto-generated catch block
-			    e.printStackTrace();
-			   }
-			  }
- 		return IHGUtil.waitForElement(driver, 15, logout);
+ 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
+		
+		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			     public Boolean apply(WebDriver driver) {			    	
+			 		PortalUtil.setPortalFrame(driver);		
+			 		return logout.isDisplayed();
+			       }
+			     }
+				);
+		return result;
  	}
  		
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
