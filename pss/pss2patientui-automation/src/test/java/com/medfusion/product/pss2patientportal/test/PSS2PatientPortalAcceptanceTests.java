@@ -260,7 +260,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(9000);
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver);
-		onlineappointmentschedulingPage.areBasicPageElementsPresent();
+		assertTrue(onlineappointmentschedulingPage.areBasicPageElementsPresent());
 	}
 
 

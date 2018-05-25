@@ -19,6 +19,9 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 public class HomePage extends PSS2MainPage {
 
+	PSSPatientHeader patientheader;
+	PSSPatientFooter patientfooter;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[2]/div[3]/div/div[2]/div/a[1]")
 	public WebElement buttonSpeciality1;
 
@@ -57,8 +60,8 @@ public class HomePage extends PSS2MainPage {
 
 	public HomePage(WebDriver driver) {
 		super(driver);
-		PageFactory.initElements(driver, PSSPatientHeader.class);
-		PageFactory.initElements(driver, PSSPatientFooter.class);
+		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
+		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
 	}
 
 	@Override
@@ -107,5 +110,9 @@ public class HomePage extends PSS2MainPage {
 			}
 		}
 		return null;
+	}
+
+	public void logout() {
+		patientheader.logout();
 	}
 }

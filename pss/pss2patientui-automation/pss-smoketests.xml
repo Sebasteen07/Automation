@@ -8,9 +8,13 @@
  	
 <test name = "pss2patientui-automation" >
 	<classes>
-		<class name = "com.medfusion.psspatientportal2.test.PSS2PatientPortalAcceptanceTests" />
+		<class name = "com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
 		<methods>
-	    		<include name="testSSOFlowGW" />        		
+	    		<include name="testSSOFlowGW" />       
+     	</methods>
+        <class name = "com.medfusion.product.pss2adminportal.test.PSS2AdminPortalAcceptanceTests" />
+		<methods>
+	    		<include name="testAdminLoginForExistingStaffAndPractice" />       	 		
      	</methods>
 	</classes>
 </test>

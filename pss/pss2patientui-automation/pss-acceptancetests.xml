@@ -8,7 +8,7 @@
  	
 <test name = "pss2patientui-automation" >
 	<classes>
-		<class name = "com.medfusion.psspatientportal2.test.PSS2PatientPortalAcceptanceTests" />
+		<class name = "com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
 		<methods>
 	    		<include name="testE2ELoginlessForExistingPatientGW" />
 	    		<include name="testE2ELoginlessForNewPatientGW" />

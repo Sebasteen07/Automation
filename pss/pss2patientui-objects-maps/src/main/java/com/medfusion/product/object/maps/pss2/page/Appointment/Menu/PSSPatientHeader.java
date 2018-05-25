@@ -12,14 +12,20 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class PSSPatientHeader extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[2]/a/img")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"headerlogo2\"]/img")
 	private WebElement companyLogo;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[1]/div/div/div/span[1]/img")
+	@FindBy(how = How.XPATH, using = "//*[@class=\"country-flag\"]/img")
 	private WebElement flagImage;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[1]/div/div/div/span[1]/span")
+	@FindBy(how = How.CLASS_NAME, using = "country-label")
 	private WebElement languageText;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"headerlogo2\"]/img")
+	private WebElement nameSettings;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"logoutbutton\"]/ul/li/a/span")
+	private WebElement logout;
 
 	public PSSPatientHeader(WebDriver driver) {
 		super(driver);
@@ -33,6 +39,12 @@ public class PSSPatientHeader extends PSS2MainPage {
 		webElementsList.add(flagImage);
 		webElementsList.add(languageText);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
+
+	public void logout() {
+		nameSettings.click();
+		IHGUtil.waitForElement(driver, 60, logout);
+		logout.click();
 	}
 
 }
