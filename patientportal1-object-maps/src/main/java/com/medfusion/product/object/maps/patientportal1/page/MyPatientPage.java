@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -33,7 +32,6 @@ import com.medfusion.product.object.maps.patientportal1.page.solutions.apptReque
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.virtualofficevisit.VirtualOfficeVisitProviderPage;
 import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.NewSymptomAssessmentPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 
@@ -186,8 +184,21 @@ public class MyPatientPage extends BasePageObject {
 	}
 
  	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
- 		PortalUtil.setPortalFrame(driver);
- 		return IHGUtil.waitForElement(driver, 15, logout);
+ 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
+		
+		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			     public Boolean apply(WebDriver driver) {			    	
+			 		PortalUtil.setPortalFrame(driver);		
+			 		return logout.isDisplayed();
+			       }
+			     }
+				);
+		return result;
  	}
  		
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
