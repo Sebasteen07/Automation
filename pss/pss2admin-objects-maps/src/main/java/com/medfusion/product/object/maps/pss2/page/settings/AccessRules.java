@@ -25,9 +25,6 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "checkbox4")
 	private WebElement checkLoginlessExistingPatient;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[2]/div[2]/div/div[1]/a")
-	private WebElement loginlessPatientURL;
-
 	@FindBy(how = How.ID, using = "radio0")
 	private WebElement selectIDPPatientSchedulingIdentity;
 
@@ -43,12 +40,6 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"par\"]/div[2]/div/div[2]/div/button")
 	private WebElement buttonSaveLoginLess;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"par\"]/div[3]/div/div[3]/div/button")
-	private WebElement buttonSaveIDP;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"par\"]/div[3]/div/div[1]/div[2]/div/a")
-	private WebElement idpUrl;
-
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
 	public List<WebElement> buttonList;
 
@@ -62,7 +53,7 @@ public class AccessRules extends SettingsTab {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(loginlessPatientURL);
+		webElementsList.add(urlList.get(0));
 		// webElementsList.add(selectIDPMedfusionSSO);
 		// webElementsList.add(buttonSaveLoginLess);
 		// webElementsList.add(buttonSaveIDP);

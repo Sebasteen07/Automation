@@ -58,8 +58,6 @@ public class AppointmentPage extends PSS2MainPage {
 			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
 				javascriptClick(appointmentTypeList.get(i));
 				return PageFactory.initElements(driver, Provider.class);
-			} else {
-				//
 			}
 		}
 		log("no matching appointment found ");
@@ -72,8 +70,6 @@ public class AppointmentPage extends PSS2MainPage {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
 				javascriptClick(appointmentTypeList.get(i));
 				return PageFactory.initElements(driver, Location.class);
-			} else {
-				//
 			}
 		}
 		log("no matching appointment found ");

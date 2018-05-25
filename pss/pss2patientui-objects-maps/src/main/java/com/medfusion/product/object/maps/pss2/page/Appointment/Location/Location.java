@@ -28,13 +28,10 @@ public class Location extends PSS2MainPage {
 	public AppointmentPage selectAppointment(String locationName) {
 		log("location " + locationName);
 		for (int i = 0; i < locationList.size(); i++) {
-			// log("timeText.getText() " + locationList.get(i).getText());
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location of user found at " + locationList.get(i).getText());
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentPage.class);
-			} else {
-				//
 			}
 		}
 		return null;
@@ -46,8 +43,6 @@ public class Location extends PSS2MainPage {
 			if (locationList.get(i).getText().contains(locationName)) {
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, Provider.class);
-			} else {
-				//
 			}
 		}
 		return null;
@@ -59,7 +54,7 @@ public class Location extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(locationList.get(0));
+		webElementsList.add(locationList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 
 	}

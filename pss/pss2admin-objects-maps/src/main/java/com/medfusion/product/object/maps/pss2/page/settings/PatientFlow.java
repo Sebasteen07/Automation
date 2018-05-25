@@ -31,9 +31,6 @@ public class PatientFlow extends SettingsTab {
 
 	@FindAll({@FindBy(xpath = ".//select[@name=\"profile\"]/option")})
 	public List<WebElement> ruleList;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/fieldset/div/div/button")
-	private WebElement buttonSave;
 	
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr")})
 	public List<WebElement> ruleLength;
@@ -56,10 +53,6 @@ public class PatientFlow extends SettingsTab {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(specialityRule);
 		return assessPageElements(webElementsList);
-	}
-
-	public void removeRules() {
-
 	}
 
 	public void addNewRules(String[] ruleNameValue, String[] ruleNameType) {

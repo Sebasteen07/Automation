@@ -19,9 +19,6 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindAll({@FindBy(css = ".value-class")})
 	private List<WebElement> appointmentScheduledDetails;
 
-	@FindAll({@FindBy(css = ".value-wizard")})
-	private List<WebElement> flowWizardList;
-
 	@FindBy(how = How.ID, using = "everythingiscorrectbutton")
 	private WebElement buttonAllGood;
 

@@ -18,5 +18,9 @@ public class AdminPatientMatching extends SettingsTab {
 	public boolean areBasicPageElementsPresent() {
 		return false;
 	}
+	
+	public void getClientTimeZone() {
+		clientTimeZone.getText();
+	}
 
 }

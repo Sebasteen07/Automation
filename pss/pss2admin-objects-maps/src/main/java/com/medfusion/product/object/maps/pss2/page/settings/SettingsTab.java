@@ -69,4 +69,9 @@ public class SettingsTab extends PSS2MenuPage {
 		appointmentTab.click();
 		return PageFactory.initElements(driver, AdminAppointment.class);
 	}
+	
+	public PSS2PracticeConfiguration gotoPracticeConfigTab() {
+		practiceConfigTab.click();
+		return PageFactory.initElements(driver, PSS2PracticeConfiguration.class);
+	}
 }

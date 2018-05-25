@@ -11,10 +11,6 @@ public class PSS2AdminDashboard extends PSS2MainPage {
 		super(driver);
 	}
 
-	public PSS2AdminDashboard(WebDriver driver, String url) {
-		super(driver);
-	}
-
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		return true;

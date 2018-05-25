@@ -14,8 +14,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class ScheduledAppointment extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"appointmentconfirmationtop\"]/div/div/img")
-	private WebElement appointmentConfirmation;
 	
 	@FindBy(how = How.ID, using = "gotodashboard")
 	private WebElement buttonBackToAppointmentList;
