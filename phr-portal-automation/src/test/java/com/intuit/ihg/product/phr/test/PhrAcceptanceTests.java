@@ -635,9 +635,12 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("step 8: accept alert");
 			driver.switchTo().alert().accept();
-			// a couple of things to wait for here - popup opening, loading content, triggering OS print action...
+			// we can't wait for the print dialog precisely through webdriver
 			Thread.sleep(3000);
+			// jawa.awt.robot sends an escape keypress to the print dialog
 			IHGUtil.hadlePrintDialog();
+			// and another small wait until the system print dialog closes, the handle refreshes afterwards and that can race-break the following loop
+			Thread.sleep(3000);
 			log(driver.getWindowHandles().toString());
 
 			log("step 10: switch to active window");
