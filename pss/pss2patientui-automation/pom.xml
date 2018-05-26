@@ -51,9 +51,10 @@
                 <version>2.9</version>
                 <executions>
                     <execution>
-                        <phase>acceptance-test</phase>
+                        <phase>integration-test</phase>
                         <configuration>
                             <failBuild>false</failBuild>
+                             <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                             <!--<groups>${testGroups}</groups> -->
                             <suiteXmlFiles>
                                 <suiteXmlFile>${suite.xml}</suiteXmlFile>
@@ -70,7 +71,7 @@
                             </properties>
                         </configuration>
                         <goals>
-                            <goal>acceptance-test</goal>
+                            <goal>integration-test</goal>
                         </goals>
                     </execution>
                 </executions>
