@@ -10,9 +10,10 @@
     <entry key="oauth.token.access.userpass.url">http://q1-pp-aapp03.dev.medfusion.net:8080/identity/services/v1/oauth2/token</entry>
         
     <entry key="ihg.host.patient">http://q1-pp-aapp07.dev.medfusion.net:8080/rwsdk</entry>
-    <entry key="ihg.host.amdc">http://q1-pp-aapp08.dev.medfusion.net:8080/am</entry>
-    <entry key="ihg.host.events">http://q1-pp-aapp05.dev.medfusion.net:8080</entry>
-    <entry key="ihg.host.ccd">http://q1-pp-aapp08.dev.medfusion.net:8080</entry>
-    <entry key="ihg.host.geccd">http://q1-pp-aapp08.dev.medfusion.net:8080</entry>
+    <entry key="ihg.host.amdc">http://q1-pp-aapp07.dev.medfusion.net:8080/am</entry>
+    <entry key="ihg.host.events">http://q1-pp-aapp05.dev.medfusion.net:8080/events</entry>
+    <entry key="ihg.host.ccd">http://q1-pp-aapp07.dev.medfusion.net:8080/eh</entry>
+    <entry key="ihg.host.geccd">http://q1-pp-aapp08.dev.medfusion.net:8080/geehr</entry>
+	<entry key="ihg.host.appointments">http://q1-pp-aapp01.dev.medfusion.net:8080</entry>
 	
 </properties>

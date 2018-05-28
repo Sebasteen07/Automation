@@ -185,13 +185,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
 	
-	public DocumentsPage goToDocumentsPage() {
-		
-		log("Clicking on Health Record menu button");
-		healthRecordMenu.click();
-		
-		return PageFactory.initElements(driver, DocumentsPage.class);
-	}
+    public DocumentsPage goToDocumentsPage() {
+        
+        log("Clicking on Health Record menu button");
+        healthRecordMenu.click();
+        
+        return PageFactory.initElements(driver, DocumentsPage.class);
+    }
+
 	
 	public void menuHealthRecordClickOnly(){
 		log("Clicking on Health Record menu button");

@@ -24,7 +24,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.ID, using = "statementPreference")
 	private WebElement statementPreference;
 
-	@FindBy(how = How.ID, using = "patientMessagingOptOut")
+	@FindBy(how = How.ID, using = "MessagingOptOut")
 	private WebElement patientMessagingOptOut;
 
 	@FindBy(how = How.ID, using = "apptRemindersOptOut")

@@ -1,5 +1,5 @@
 firstName,lastName,organizationName,nationalProviderId,specialtyType,specialtyClassification,specialtySpecialization,street,city,state,zipcode,directAddress,type
-Andrew,Cookson, , , , , , , ,VA,20194, ,PROVIDER
+ , , , , , , , , ,VA,20194, ,PROVIDER
  , , , , , , , , ,VA,20190, ,ORGANIZATION
 CHRIS,ABATELLI, , , , , , ,WYANDANCH,NY,11798, ,PROVIDER
  , , , , , , , , , ,20194, ,PROVIDER

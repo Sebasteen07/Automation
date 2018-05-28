@@ -1,6 +1,8 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -8,19 +10,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import static org.testng.Assert.*;
 
 import com.ibm.icu.util.Calendar;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10;
 import com.intuit.ihg.product.integrationplatform.utils.Oauth10TestData;
 import com.intuit.ihg.product.integrationplatform.utils.OauthUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
+import com.medfusion.common.utils.IHGUtil;
 
 
 
@@ -309,7 +308,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 
 	}
 	
-	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetDirectMessageStatus() throws Exception {
 
 		Log4jUtil.log("TestGetDirectMessageStatus covers DirectMessageStatus API with OAuth 1.0");
@@ -321,7 +320,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		OauthUtils.setupHttpGetRequest(testData.getDirectMessageStatus() , testData.getCommonPath() + "/response.xml");
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostStatement() throws Exception {
 
 		Log4jUtil.log("TestPostStatement covers Post of statements API with OAuth 1.0");
@@ -391,7 +390,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		
 	}
 	
-	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectMessage() throws Exception {
 
 		Log4jUtil.log("TestDirectMessage covers Post of p2p message with OAuth 1.0");

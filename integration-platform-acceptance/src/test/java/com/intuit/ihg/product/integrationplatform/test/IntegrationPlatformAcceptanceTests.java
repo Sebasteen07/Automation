@@ -620,7 +620,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				pCreateAccountPage.fillPatientActivaion(zip, email, testData.getNewPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer());
 		Thread.sleep(9000);
 		log("Step 8: Assert Webelements in MyPatientPage");
-		assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
+		//assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
 
 		log("Step 9: Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);

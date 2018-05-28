@@ -136,8 +136,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		ViewAccountActivityPage viewAccountActivity = pMyAccountPage.addAccountActivityLink();
 		viewAccountActivity.clickOnViewAccountActivity();
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Activity Log']")));
-		Thread.sleep(9000);
+		driver.switchTo().frame(driver.findElement(By.cssSelector("#lightbox > iframe:nth-child(1)")));
+		Thread.sleep(18000);
 		List<Object> viewList = IHGUtil.searchResultsSubstring(driver, "//table[@id='activityTable']/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED, portalTime.get(0))));
 		if (!viewList.isEmpty()) {

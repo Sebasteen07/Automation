@@ -16,6 +16,8 @@
 				<include name="testErrorCasesUnseenMessageList"/>
 				<include name="testUnseenMessageList"/>
 	    		<exclude name="testUnseenMessageListAll"/>
+				<include name="testDirectorySearchSingleValue"/>
+				<include name="testSendDirectMessage"/>
 				<exclude name="testDirectorySearch"/>
 	    		<exclude name="testSendDirectMessageAll"/>
       	</methods>
