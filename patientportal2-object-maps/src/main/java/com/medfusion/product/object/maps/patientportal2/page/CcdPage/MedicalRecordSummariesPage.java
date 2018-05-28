@@ -117,7 +117,7 @@ public class MedicalRecordSummariesPage extends MedfusionPage {
 		log("CCD Date found:" + firstVisibleCCDDate.getText()+ " parsed from local to utc as: " + ccdDateUTC.toString());
 		log("Today - 7 days found and parsed from local to utc as: " + weekAgoDateUTC.toString());
 				
-		if (MFDateUtil.compareDatesFromZonedDateTime(weekAgoDateUTC, ccdDateUTC) > 0) {
+		if (MFDateUtil.compareDates(weekAgoDateUTC, ccdDateUTC) > 0) {
 			log("CCD Date found was older than 7 days, parsed from local to utc as: " + ccdDateUTC.toString());
 			//TODO send a new CCD to patient;			
 			
