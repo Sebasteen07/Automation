@@ -1,5 +1,9 @@
 package com.intuit.ihg.common.utils.ccd;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -11,11 +15,13 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 import org.openhealthtools.mdht.uml.cda.ClinicalDocument;
 import org.openhealthtools.mdht.uml.cda.util.CDADiagnostic;
 import org.openhealthtools.mdht.uml.cda.util.CDAUtil;
 import org.openhealthtools.mdht.uml.cda.util.ValidationResult;
+import org.testng.Assert;
 
 import com.intuit.ihg.rest.RestUtils;
 
@@ -86,5 +92,51 @@ public class CCDTest {
 		xml = StringEscapeUtils.unescapeXml(xml);
 
 		return xml;
+	}
+	/**
+	 *  Calls the specified oauth endpoing to get a token, using password grant type, to then use for ccd sends 
+	 *  
+	 * @param url environment specific oauth get endpoint
+	 * @param clientId clientId for the oauth calls, per external system token
+	 * @param clientSecret clientSecret for the oauth calls, per external system token
+	 * @param username practice specific externalSystem username
+	 * @param password practice specific externalSystem password
+	 * @return the accessToken xml attribute returned if the call was successful
+	 * @throws Exception if unsuccessful
+	 */
+	public static String getAccessTokenForSystem(String url, String clientId, String clientSecret, String username, String password) throws Exception{		
+		String urlForm = "grant_type=password&username=" + username + "&password=" + password;
+		byte[] postData = urlForm.getBytes( StandardCharsets.UTF_8 );
+				
+		ClientRequest request = new ClientRequest(url);		
+		request.header("Content-Type", "application/x-www-form-urlencoded");
+		request.header("Authorization", "Basic " + clientId + ":" + clientSecret);
+		request.body(MediaType.APPLICATION_FORM_URLENCODED_TYPE , postData);		
+		ClientResponse<String> response = request.post(String.class);		
+	
+		Assert.assertEquals(response.getStatus(), 200, "HTTP Status not what expected");
+		
+		//loop through response to print it and find a match on the accessToken xml node (it's expected to be in a single response line)
+		BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));		
+		Pattern pattern = Pattern.compile("<accessToken>(.*?)</accessToken>");
+		Matcher matcher;
+		boolean found = false;
+		
+		String output, token = null;
+		System.out.println("### TOKEN CALL RESPONSE: \n");
+		while ((output = br.readLine()) != null) {
+			System.out.println(output);			
+			if (!found) {
+				matcher = pattern.matcher(output);
+				if (matcher.find())
+				{
+					found = true;
+				    token = matcher.group(1);
+				}
+			}
+		}
+		System.out.println("\n");
+		
+		return token;
 	}
 }

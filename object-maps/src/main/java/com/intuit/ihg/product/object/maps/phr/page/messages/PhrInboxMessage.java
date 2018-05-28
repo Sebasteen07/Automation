@@ -15,6 +15,9 @@ public class PhrInboxMessage extends BasePageObject {
 	@FindBy(xpath = ".//*[@class='msg4']")
 	private WebElement practiceResponseSubject;
 
+	@FindBy(xpath = ".//*[@class='msg3']")
+	private WebElement messageDateTime;
+	
 	@FindBy(xpath = "//a[contains(text(),'View health data')]")
 	private WebElement btnReviewHealthInformation;
 
@@ -38,15 +41,18 @@ public class PhrInboxMessage extends BasePageObject {
 	public String getPhrMessageSubject() {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		// driver.switchTo().frame("externalframe");
 		return practiceResponseSubject.getText().toString().trim();
 	}
+	
+	public String getPhrMessageDateTime(){
+		IHGUtil.PrintMethodName();
+		driver.switchTo().defaultContent();
+		return messageDateTime.getText().toString().trim();		
+	}	
 
 	public PhrDocumentsPage clickBtnReviewHealthInformationPhr() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
-		// driver.switchTo().frame("externalframe");
-		// PortalUtil.setConsolidatedInboxFramePhr(driver);
 		btnReviewHealthInformation.click();
 		Thread.sleep(2000);
 		return PageFactory.initElements(driver, PhrDocumentsPage.class);
