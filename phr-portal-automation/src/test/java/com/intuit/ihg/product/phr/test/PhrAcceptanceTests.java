@@ -70,26 +70,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testX() throws Exception {
-		driver.manage().deleteAllCookies();
-
-		log("step 1: Get Data from Excel");
-		Phr phr = new Phr();
-		PhrTestcasesData testcasesData = new PhrTestcasesData(phr);
-
-		log("URL: " + testcasesData.geturl());
-		log("USER NAME: " + testcasesData.getUsername());
-		log("Password: " + testcasesData.getPassword());				
-		String token = CCDTest.getAccessTokenForSystem("https://integration.medfusion.net/v1/oauth2/token",
-				"lQqXz_ZsL1FAffLijnDoADzHR6ca", "6o_Sd2ceOjH85FDN7dSsNM3NPRQa",
-				"79IHGQAAutomationElektaIntegrated24167", "meSYO0MgkW0EVlaZf2bs");
-		log(token);
-		Assert.assertTrue(false);
-		
-				
-	}
+	
 	/**
 	 * @Author:- bkrishnankutty
 	 * @Date:-
