@@ -88,6 +88,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "actionButton")
 	private WebElement buttonContinue;
 
+	@FindBy(how = How.CSS, using = ".modal-title.ng-binding")
+	private WebElement appointmentNotScheduled;
+
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -309,6 +312,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(appointments);
 		IHGUtil.waitForElement(driver, 80, buttonContinue);
+		javascriptClick(buttonContinue);
+	}
+
+	public String appointmentNotScheduled() {
+		javascriptClick(appointments);
+		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
+		return appointmentNotScheduled.getText();
+	}
+
+	public void closeModalPopUp() {
 		javascriptClick(buttonContinue);
 	}
 }
