@@ -30,10 +30,10 @@ public class PatientFlow extends SettingsTab {
 	private WebElement addRuleInOrder;
 
 	@FindAll({@FindBy(xpath = ".//select[@name=\"profile\"]/option")})
-	public List<WebElement> ruleList;
+	private List<WebElement> ruleList;
 	
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr")})
-	public List<WebElement> ruleLength;
+	private List<WebElement> ruleLength;
 
 
 	public PatientFlow(WebDriver driver) {

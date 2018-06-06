@@ -18,43 +18,43 @@ import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 public class LoginlessPatientInformation extends PSS2MainPage {
 
 	@FindBy(how = How.NAME, using = "firstname")
-	public WebElement inputFirstName;
+	private WebElement inputFirstName;
 
 	@FindBy(how = How.ID, using = "lastname")
-	public WebElement inputLastName;
+	private WebElement inputLastName;
 
-	@FindBy(how = How.XPATH, using = "/html/body/div/div/div/div/div/div[1]/div[3]/form/div[2]/div[1]/div/div/div/span/span")
-	public WebElement datePicker;
+	@FindBy(how = How.XPATH, using = "//*[@class=\"input-group date\"]/span/span")
+	private WebElement datePicker;
 
 	@FindBy(how = How.ID, using = "email")
-	public WebElement inputEmail;
+	private WebElement inputEmail;
 
 	@FindBy(how = How.ID, using = "gender")
-	public WebElement selectGender;
+	private WebElement selectGender;
 
 	@FindBy(how = How.ID, using = "zip")
-	public WebElement inputZipCode;
+	private WebElement inputZipCode;
 
 	@FindBy(how = How.ID, using = "phone")
-	public WebElement inputPrimaryPhoneNumber;
+	private WebElement inputPrimaryPhoneNumber;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexistnext")
-	public WebElement buttonNext;
+	private WebElement buttonNext;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexist")
-	public WebElement buttonCancel;
+	private WebElement buttonCancel;
 
 	@FindBy(how = How.ID, using = "city")
-	public WebElement inputCity;
+	private WebElement inputCity;
 
 	@FindBy(how = How.ID, using = "state")
-	public WebElement selectState;
+	private WebElement selectState;
 
 	@FindBy(how = How.ID, using = "zip")
-	public WebElement inputZip;
+	private WebElement inputZip;
 
 	@FindBy(how = How.ID, using = "street")
-	public WebElement inputStreet;
+	private WebElement inputStreet;
 
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);

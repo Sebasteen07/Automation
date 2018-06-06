@@ -14,13 +14,13 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 public class ExistingPatientIDP extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "loginUsername")
-	public WebElement inputLoginUsername;
+	private WebElement inputLoginUsername;
 
 	@FindBy(how = How.ID, using = "loginPassword")
-	public WebElement inputLoginPassword;
+	private WebElement inputLoginPassword;
 
 	@FindBy(how = How.XPATH, using = "/html/body/div[3]/div[1]/div[1]/form/a/span")
-	public WebElement buttonSignIn;
+	private WebElement buttonSignIn;
 
 	public ExistingPatientIDP(WebDriver driver) {
 		super(driver);

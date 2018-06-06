@@ -39,4 +39,8 @@ public class ConfirmationPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
+	public List<WebElement> getAppointmentDetails() {
+		return appointmentScheduledDetails;
+	}
+
 }

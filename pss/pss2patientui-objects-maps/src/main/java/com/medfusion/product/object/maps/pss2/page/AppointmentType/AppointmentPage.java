@@ -27,8 +27,8 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.CSS, using = ".pull-right.gotobutton")
 	private WebElement gotoNextStep;
 
-	@FindAll({@FindBy(xpath = ".//a[@class='btn appointmentType-btn ']/span")})
-	public List<WebElement> appointmentTypeList;
+	@FindAll({@FindBy(css = ".btn")})
+	private List<WebElement> appointmentTypeList;
 
 	public AppointmentPage(WebDriver driver) {
 		super(driver);
@@ -45,23 +45,18 @@ public class AppointmentPage extends PSS2MainPage {
 		searchAppointment.sendKeys(appointmentType);
 		IHGUtil.waitForElement(driver, 30, selectAppointment);
 		javascriptClick(selectAppointment);
-		IHGUtil.waitForElement(driver, 30, gotoNextStep);
-		if (isPopUpSelected) {
-			gotoNextStep.click();
-		}
+		selectNextStep(isPopUpSelected);
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
 	public Provider selectTypeOfProvider(String providerConfig, Boolean isPopUpSelected) {
+		log("appointmentTypeList "+appointmentTypeList.size());
+		searchAppointment.sendKeys(providerConfig);
+		IHGUtil.waitForElement(driver, 30, selectAppointment);
+		javascriptClick(selectAppointment);
 
-		for (int i = 0; i < appointmentTypeList.size(); i++) {
-			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
-				javascriptClick(appointmentTypeList.get(i));
-				return PageFactory.initElements(driver, Provider.class);
-			}
-		}
-		log("no matching appointment found ");
-		return null;
+		selectNextStep(isPopUpSelected);
+		return PageFactory.initElements(driver, Provider.class);
 	}
 
 	public Location selectTypeOfLocation(String locationConfig, Boolean isPopUpSelected) {
@@ -69,10 +64,18 @@ public class AppointmentPage extends PSS2MainPage {
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
 				javascriptClick(appointmentTypeList.get(i));
+				selectNextStep(isPopUpSelected);
 				return PageFactory.initElements(driver, Location.class);
 			}
 		}
 		log("no matching appointment found ");
 		return null;
+	}
+
+	public void selectNextStep(Boolean isPopUpSelected) {
+		if (isPopUpSelected) {
+			IHGUtil.waitForElement(driver, 30, gotoNextStep);
+			gotoNextStep.click();
+		}
 	}
 }

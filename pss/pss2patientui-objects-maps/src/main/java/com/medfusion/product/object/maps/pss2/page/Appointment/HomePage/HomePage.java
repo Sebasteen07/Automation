@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
@@ -43,7 +44,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[3]/button/span")
 	public WebElement buttonRevertCancelAppointment;
 
-	@FindAll({@FindBy(css = "a[class='btn startingpoint-btn']")})
+	@FindAll({@FindBy(css = ".btn.startingpoint-btn")})
 	public List<WebElement> selectSpecialityList;
 
 	@FindAll({@FindBy(css = "a[class='btn specialtybtndashboard handle-text-Overflow ']")})
@@ -58,8 +59,17 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	public WebElement noPastText;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=\"myModalsssloginpopup\"]/div/div/div[3]/button")
+	public WebElement dismissButtons;
+	
 	public HomePage(WebDriver driver) {
 		super(driver);
+		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
+		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
+	}
+
+	public HomePage(WebDriver driver, String currentUrl) {
+		super(driver, currentUrl);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
 		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
 	}
@@ -67,12 +77,12 @@ public class HomePage extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(buttonNameCircle);
 		webElementsList.add(labelPatientName);
 		return assessPageElements(webElementsList);
 	}
 
 	public StartAppointmentInOrder selectSpeciality(String specialityText) {
+		log(selectSpecialityList.size() + " specialityText " + specialityText);
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
 				selectSpecialityList.get(i).click();
@@ -83,6 +93,8 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public Location selectLocation(String specialityText) {
+		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size()-1)));
+
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
 				selectSpecialityList.get(i).click();
@@ -103,6 +115,7 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public AppointmentPage selectAppointment(String specialityText) {
+		log(" selectSpecialityList " + selectSpecialityList.size());
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
 				selectSpecialityList.get(i).click();
@@ -114,5 +127,13 @@ public class HomePage extends PSS2MainPage {
 
 	public void logout() {
 		patientheader.logout();
+	}
+	
+	public Boolean isPopUP() {
+		return dismissButtons.isDisplayed();
+	}
+	
+	public void popUPClick() {
+		dismissButtons.click();;
 	}
 }

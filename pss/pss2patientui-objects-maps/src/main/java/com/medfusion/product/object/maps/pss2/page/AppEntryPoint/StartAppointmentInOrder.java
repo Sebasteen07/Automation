@@ -34,7 +34,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 	public Provider selectFirstProvider(String selectOrderWith) {
 		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div[2]/div/div[" + (i + 1) + "]/a/span"));
+			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
 			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
 				startingPoint.click();
 				return PageFactory.initElements(driver, Provider.class);
@@ -46,7 +46,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 	public AppointmentPage selectFirstAppointment(String selectOrderWith) {
 		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div[2]/div/div[" + (i + 1) + "]/a/span"));
+			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
 			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
 				startingPoint.click();
 				return PageFactory.initElements(driver, AppointmentPage.class);
@@ -60,7 +60,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 		log("startingWith length " + startingWith.size());
 		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div[2]/div/div[" + (i + 1) + "]/a/span"));
+			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
 			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
 				startingPoint.click();
 				return PageFactory.initElements(driver, Location.class);

@@ -8,22 +8,22 @@ import org.openqa.selenium.support.How;
 public class NewPatientIDP extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "loginUsername")
-	public WebElement inputLoginUsername;
+	private WebElement inputLoginUsername;
 
 	@FindBy(how = How.ID, using = "loginPassword")
-	public WebElement inputLoginPassword;
+	private WebElement inputLoginPassword;
 
 	@FindBy(how = How.XPATH, using = "/html/body/div[3]/div[1]/div[1]/form/a/span")
-	public WebElement buttonSignIn;
+	private WebElement buttonSignIn;
 
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "Create a new account")
-	public WebElement createNewAccount;
+	private WebElement createNewAccount;
 
 	@FindBy(how = How.LINK_TEXT, using = "Forgot username")
-	public WebElement forgotUserName;
+	private WebElement forgotUserName;
 
 	@FindBy(how = How.LINK_TEXT, using = "Forgot password")
-	public WebElement forgotPassword;
+	private WebElement forgotPassword;
 
 	public NewPatientIDP(WebDriver driver) {
 		super(driver);
