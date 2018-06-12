@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.common.utils.WebPoster;
 import com.medfusion.pojos.CcdType;
 
@@ -160,6 +161,28 @@ public class PhrUtil extends IHGUtil {
 
 
 	}
+	/**
+	 * rework of the original method, now using a PropertyFileLoader - EHDCAdapterURL, elektaSystemId
+	 * @param testData
+	 * @param token
+	 * @throws Exception
+	 */
+	public static void ccdImportFromElekta(PropertyFileLoader testData, String token) throws Exception {
+
+		IHGUtil.PrintMethodName();		
+		
+		WebPoster poster = new WebPoster();
+
+		Assert.assertNotNull("### Test property PHR_EHDC_ADAPTER_URL not defined", testData.getProperty("EHDCAdapterURL"));
+		poster.setServiceUrl(testData.getProperty("EHDCAdapterURL"));
+		poster.setContentType("application/xml;");
+		poster.setExpectedStatusCode(202); // HTTP Status Code
+		poster.addHeader("ExternalSystemId", testData.getProperty("elektaSystemId"));
+		poster.addHeader("Authorization", "bearer " + token);		
+		poster.postFromResourceFile("testfiles/" + IHGUtil.getEnvironmentType().toString() + "/ccd/Elekta-ccd.xml");
+		System.out.println("sleep(10000) :- Need time to let system process CCD #####");
+		Thread.sleep(10000);
+	}
 
 	/**
 	 * @author bbinisha
@@ -219,7 +242,7 @@ public class PhrUtil extends IHGUtil {
 	public String[] getExeArg() {
 		return exeArg;
 	}
-
+ 
 
 
 }

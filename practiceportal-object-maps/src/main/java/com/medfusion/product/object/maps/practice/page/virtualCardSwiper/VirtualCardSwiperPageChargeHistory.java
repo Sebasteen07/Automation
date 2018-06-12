@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 import java.util.List;
 
 import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -54,6 +55,9 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	@FindBy(xpath = ".//tbody/tr/td[4]/span")
 	private List<WebElement> amount;
 
+	@FindBy(xpath = "//*[@id=\'MfAjaxFallbackDefaultDataTable\']/tfoot/tr/td[4]/span")
+	private WebElement totalAmmount;
+	
 	public VirtualCardSwiperPageChargeHistory(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -63,7 +67,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	public void SearchPayment(int value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver, 20, practicePayment);
+		IHGUtil.waitForElement(driver, 60, practicePayment);
 
 
 		Select endMonthSelect = new Select(endMonth);
@@ -96,12 +100,14 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 			}
 		}
 
-		IHGUtil.waitForElement(driver, 20, btnSubmit);
+		IHGUtil.waitForElement(driver, 90, btnSubmit);
 		btnSubmit.click();
 	}
 
 	public boolean VerifyAmount(String amount) {
 		PracticeUtil.setPracticeFrame(driver);
+		
+		IHGUtil.waitForElement(driver, 60, totalAmmount);
 		return driver.getPageSource().contains("$" + amount + ".00");
 	}
 
@@ -112,6 +118,7 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 	 */
 	public String getBillDetails(String amont) throws Exception {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(8000);
 		PracticeUtil.setPracticeFrame(driver);
 
 		try {

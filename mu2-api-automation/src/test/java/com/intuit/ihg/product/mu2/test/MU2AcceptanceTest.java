@@ -61,11 +61,11 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("Practice URL: " + testData.getPortalURL());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
-
+		Thread.sleep(9000);
 		log("Step 2: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
+		Thread.sleep(9000);
 		log("Step 3: Find message in Inbox");
 		MessagePage pMessageCenterInboxPage = inboxPage.openMessageInInbox(IntegrationConstants.CCD_MESSAGE_SUBJECT);
 
@@ -77,7 +77,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 
 		log("Step 5: Click on link ReviewHealthInformation");
 		pMessageCenterInboxPage.clickBtnReviewHealthInformation();
-
+		Thread.sleep(9000);
 		log("Step 6: Click on PDF download Link");
 		pMessageCenterInboxPage.clickOnPDF();
 
@@ -136,8 +136,8 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		ViewAccountActivityPage viewAccountActivity = pMyAccountPage.addAccountActivityLink();
 		viewAccountActivity.clickOnViewAccountActivity();
 		driver.switchTo().defaultContent();
-		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Activity Log']")));
-
+		driver.switchTo().frame(driver.findElement(By.cssSelector("#lightbox > iframe:nth-child(1)")));
+		Thread.sleep(18000);
 		List<Object> viewList = IHGUtil.searchResultsSubstring(driver, "//table[@id='activityTable']/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED, portalTime.get(0))));
 		if (!viewList.isEmpty()) {
@@ -192,7 +192,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("Practice URL: " + testData.getPortalURL());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
-
+		Thread.sleep(9000);
 		log("====== Appointment related events generation Started ======");
 
 		log("Step 2: Click on Appointment Button on My Patient Page");
@@ -226,7 +226,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 
 		log("Step 10: Verify RxRenewal Confirmation Message");
 		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
+		IHGUtil.waitForElement(driver, 25, newRxRenewalPage.renewalConfirmationmessage);
 		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
 
 		log("====== Rx Renewal event generated successfully ======");
@@ -364,7 +364,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("Practice URL: " + testData.getPortalURL());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName(), testData.getPortalPassword());
-
+		Thread.sleep(9000);
 		log("Step 2: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
@@ -439,7 +439,7 @@ public class MU2AcceptanceTest extends BaseTestNGWebDriver {
 		log("Practice URL: " + testData.getPortalURL());
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
 		MyPatientPage pMyPatientPage = loginpage.login(testData.getPortalUserName2(), testData.getPortalPassword());
-
+		Thread.sleep(9000);
 		log("Step 2: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
 		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");

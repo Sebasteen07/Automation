@@ -2,13 +2,18 @@ package com.medfusion.product.object.maps.patientportal1.page;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -27,8 +32,8 @@ import com.medfusion.product.object.maps.patientportal1.page.solutions.apptReque
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.virtualofficevisit.VirtualOfficeVisitProviderPage;
 import com.medfusion.product.object.maps.patientportal1.page.symptomAssessment.NewSymptomAssessmentPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
+
 
 /**
  *
@@ -88,6 +93,7 @@ public class MyPatientPage extends BasePageObject {
 	@FindBy(xpath = "//a[@title='Prescription Renewal']")
 	private WebElement lnkPrescriptionRenewal;
 
+	
 	@FindBy(xpath = "//div[@id='iframecontent']/div/h2")
 	public WebElement txtMyPatientPage;
 
@@ -105,7 +111,10 @@ public class MyPatientPage extends BasePageObject {
 
 	@FindBy(linkText = "My Messages")
 	private WebElement Mymessages;
-
+	
+	@FindBy(linkText = "View all messages")
+	private WebElement viewAllMessagesButton;
+	
 	@FindBy(id = "touAck")
 	private WebElement touAck;
 
@@ -156,10 +165,42 @@ public class MyPatientPage extends BasePageObject {
 	 */
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-		PortalUtil.setPortalFrame(driver);
-		return IHGUtil.waitForElement(driver, 15, btnViewallmessages);
+
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
+		
+		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			     public Boolean apply(WebDriver driver) {			    	
+			 		PortalUtil.setPortalFrame(driver);		
+			 		return driver.findElement(By.linkText("View all messages")).isDisplayed();
+			       }
+			     }
+				);
+		return result;
 	}
 
+ 	public boolean isLogOutButtonPresent(WebDriver driver) throws InterruptedException {
+ 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
+		
+		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			     public Boolean apply(WebDriver driver) {			    	
+			 		PortalUtil.setPortalFrame(driver);		
+			 		return logout.isDisplayed();
+			       }
+			     }
+				);
+		return result;
+ 	}
+ 		
 	public PortalLoginPage clickLogout(WebDriver driver) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
@@ -167,17 +208,12 @@ public class MyPatientPage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		if (pPortalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
 			System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
-			// DEBUG
-			driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
-			scrollAndWait(0, 0, 0);
 			javascriptClick(logout);
 		} else {
 			// Look in frame.
 			PortalUtil.setPortalFrame(driver);
 			if (pPortalUtil.isFoundBasedOnCssSelector("a[href*='exit.cfm']", driver)) {
 				System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
-				// DEBUG
-				driver.manage().timeouts().implicitlyWait(PortalConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 				javascriptClick(logout);
 			}
 			System.out.println("### WARNING: LOGOUT ELEMENT NOT FOUND.");
@@ -359,4 +395,5 @@ public class MyPatientPage extends BasePageObject {
 
 		return this;
 	}
+	
 }

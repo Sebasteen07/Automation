@@ -29,6 +29,7 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
+		IHGUtil.waitForElement(driver, 20, btnProcessApptRequest);
 		boolean result = false;
 		try {
 			result = btnProcessApptRequest.isDisplayed();
@@ -49,6 +50,7 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
+		IHGUtil.waitForElement(driver, 20, btnProcessApptRequest);
 		btnProcessApptRequest.click();
 		return PageFactory.initElements(driver, ApptRequestSearchPage.class);
 	}

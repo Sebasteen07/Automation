@@ -2,12 +2,17 @@ package com.medfusion.product.object.maps.patientportal1.page.myAccount;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
@@ -506,6 +511,11 @@ public class MyAccountPage extends BasePageObject {
 
 	public void submit() {
 		javascriptClick(btnSubmit);
+		try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		Assert.assertTrue(driver.getPageSource().contains("Your Profile has been updated"), "New values didnt get updated");
 	}
 
@@ -514,7 +524,19 @@ public class MyAccountPage extends BasePageObject {
 	 * @return proper gender or null if not specified
 	 */
 	public Gender getGender() {
-		PortalUtil.setPortalFrame(driver);
+		  FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+		    .withTimeout(30, TimeUnit.SECONDS)
+		    .pollingEvery(3, TimeUnit.SECONDS)
+		    .ignoring(NoSuchElementException.class)
+		    .ignoring(NoSuchFrameException.class);
+		  
+		  wait.until(new Function<WebDriver, WebElement>() {
+		        public WebElement apply(WebDriver driver) {			        
+			        IHGUtil.setFrame(driver, "iframebody");  
+			        return driver.findElement(By.xpath("//span[@fieldid='gender']//input[./following-sibling::label[text()='Male']]"));
+		          }
+		        }
+		    );      			 
 		if (genderMaleRadio.isSelected())
 			return Gender.MALE;
 		if (genderFemaleRadio.isSelected())

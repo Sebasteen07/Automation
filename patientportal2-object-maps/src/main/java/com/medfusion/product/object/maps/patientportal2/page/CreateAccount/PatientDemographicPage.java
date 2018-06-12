@@ -100,7 +100,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	}
 
 	public void fillInPatientData(String firstName, String lastName, String emailAddress, String dobMonth, String dobDay, String dobYear, Gender gender,
-			String zipCode) throws IOException {
+			String zipCode) throws NullPointerException, Exception {
 		PropertyFileLoader fileLoader = new PropertyFileLoader();
 		JalapenoPatient patient = new JalapenoPatient(fileLoader);
 		fillInPatientData(firstName, lastName, emailAddress, dobMonth, dobDay, dobYear, gender, zipCode, patient.getAddress1(), patient.getAddress2(),

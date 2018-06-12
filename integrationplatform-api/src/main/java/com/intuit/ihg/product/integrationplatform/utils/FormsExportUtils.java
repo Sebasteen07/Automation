@@ -156,13 +156,13 @@ public class FormsExportUtils {
 			Log4jUtil.log("Step 11: Login to Patient Portal for submitting 'Patient Registration' Discrete Form");
 			new PortalLoginPage(driver, testData.url_FE);
 			loginPage.login(username, testData.patientPassword1_FE);
-			Thread.sleep(5000);	
+			Thread.sleep(9000);	
 			jalapenoHomePage.clickOnMenuHealthForms();
 			
             Log4jUtil.log("Step 12: Click on Registration button ");
 			HealthFormListPage healthListpage= new HealthFormListPage(driver);
 			
-			Thread.sleep(6000);
+			Thread.sleep(9000);
 			Log4jUtil.log("Step 13 : Navigate to HealthForms");
 			healthListpage.clickOnHealthFormsRegistrationLink();
 		

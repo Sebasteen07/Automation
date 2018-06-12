@@ -262,9 +262,9 @@ public class MU2Utils {
 		//Log4jUtil.log("zone set to : "+zone);
 		TimeZone estTime = TimeZone.getTimeZone(zone);
 		gmtFormat.setTimeZone(estTime);
-		String data[] = gmtFormat.format(date).split(" ");
-		String joinedDate = new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
-		return joinedDate;
+		//String data[] = gmtFormat.format(date).split(" ");
+		//String joinedDate = new StringBuilder(data[0]).append(" at ").append(data[1]).toString();
+		return gmtFormat.format(date);
 	}
 	
 	public static String ExtractString(String findStringBetween, String SearchStringFrom) {
@@ -344,6 +344,7 @@ public class MU2Utils {
 		JalapenoHomePage homePage = loginPage.login(username, testData.PatientPassword);
 		ccdMessageList.add(testData.CCDMessageID1);
 		Log4jUtil.log("Detecting if Home Page is opened");
+		Thread.sleep(7000);
 		Assert.assertTrue(homePage.isHomeButtonPresent(driver));
 		if(existingGuardian) {
 			homePage.faChangePatient();
@@ -363,7 +364,7 @@ public class MU2Utils {
 	
 			Log4jUtil.log("mu2GetEventGuardian Step 4: Click on link View health data");
 			JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
-			
+			Thread.sleep(7000);
 			Log4jUtil.log("mu2GetEventGuardian Step 5: Verify if CCD Viewer is loaded and click Close Viewer");
 			Assert.assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 			

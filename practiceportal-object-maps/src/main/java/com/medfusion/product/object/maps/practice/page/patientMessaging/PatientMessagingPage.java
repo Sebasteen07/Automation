@@ -10,7 +10,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -29,7 +31,7 @@ public class PatientMessagingPage extends BasePageObject {
 	@FindBy(xpath = "//table[@class='searchForm']//input[@name='subject']")
 	private WebElement subject;
 
-	@FindBy(xpath = "//input[@id='msgattachment_1_1']")
+	@FindBy(id = "msgattachment_1_1")
 	private WebElement messageAttachment;
 
 	@FindBy(xpath = "//table[@class='searchForm']//select[@name='recipienttype']")
@@ -246,12 +248,30 @@ public class PatientMessagingPage extends BasePageObject {
 	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
 		setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName, subjectText);
 	}
-
+	
 	public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
 		setMessageFields(templateName, subjectText);
 		setRecipient(firstName, lastName, email);
 		publishMessage();
+	}
+	
+	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"), testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
+
+	}
+	
+	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName, String subjectText, String filePath) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
+
 	}
 
 	public void setMessageFields(String templateName, String subjectText) {
@@ -269,7 +289,6 @@ public class PatientMessagingPage extends BasePageObject {
 
 	public void setRecipient(String firstName, String lastName, String email) {
 		IHGUtil.PrintMethodName();
-
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
@@ -283,7 +302,7 @@ public class PatientMessagingPage extends BasePageObject {
 	public void publishMessage() {
 		IHGUtil.PrintMethodName();
 
-		publishMessage.click();
+		javascriptClick(publishMessage);
 		IHGUtil.exists(driver, 30, messagePublishedSuccessfully);
 	}
 
@@ -313,4 +332,6 @@ public class PatientMessagingPage extends BasePageObject {
 		log("Message from patient not found");
 		return false;
 	}
+
+
 }

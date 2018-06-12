@@ -65,6 +65,7 @@ public class AskAStaffQuestionDetailStep3Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
+		IHGUtil.waitForElement(driver, 20, btnConfirm);
 		btnConfirm.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep4Page.class);
 	}

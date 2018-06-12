@@ -76,7 +76,7 @@ public class AskAStaffStep2Page extends BasePageObject {
 	public AskAStaffStep3Page submitUnpaidQuestion() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-
+		IHGUtil.waitForElement(driver, 120, btnSubmit);
 		btnSubmit.click();
 		return PageFactory.initElements(driver, AskAStaffStep3Page.class);
 	}

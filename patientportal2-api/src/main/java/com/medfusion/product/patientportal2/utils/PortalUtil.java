@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.intuit.ihg.common.utils.WebPoster;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PortalUtil extends IHGUtil {
@@ -124,4 +126,22 @@ public class PortalUtil extends IHGUtil {
 			System.out.println("Stale element exception caught as expected. Frame should be correctly switched");
 		}
 	}
+	
+	/**
+	 * An exception thrown means the format was wrong, mfss-user is down, or other unrecoverable issue
+	 * @param username
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean checkUsernameEmailIsUnique(String username, String url) throws Exception{
+		IHGUtil.PrintMethodName();
+		WebPoster poster = new WebPoster();
+		System.out.println("Calling patient matcher for username =\"" + username + "\", url= \"" + url + "\"");				
+		poster.setServiceUrl(url);
+		poster.setContentType("application/json;");			
+		poster.setExpectedStatusCode(200);
+		return poster.postFromString("{\"emailOrUserName\":\"" + username + "\"}").contains("NO_MATCH");			
+	}
+
 }

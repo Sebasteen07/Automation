@@ -45,12 +45,12 @@
 						<configuration>
 							<projectFile>${suite.xml}</projectFile>
 							<junitReport>true</junitReport>
-							<outputFolder>./report</outputFolder>
+							<outputFolder>target/surefire-reports/</outputFolder>
 							<exportwAll>true</exportwAll>
 							<printReport>true</printReport>
 							<environment>${environment}</environment>
 							<testSuite>${test_suite_name}</testSuite>							
-							<!--testCase>${testCaseName}</testCase-->							
+							<testCase>${testCaseName}</testCase>							
 						</configuration>
 					</execution>
 				</executions>

@@ -21,7 +21,9 @@ public class DocumentsPage extends MedfusionPage {
 	private WebElement dateFrom;
 	@FindBy(how = How.ID, using = "downloadBtn0")
 	private WebElement downloadBtn;
-
+	@FindBy(how = How.XPATH, using = "//*[@id=\'documentsTable\']/tbody[1]/tr/td[1]")
+	private WebElement fileName;
+	
 	
 	
 	public DocumentsPage(WebDriver driver) {
@@ -59,7 +61,11 @@ public class DocumentsPage extends MedfusionPage {
         return true;
 	}
 
-	 
+	public boolean checkLastImportedFileName(String name) {
+		
+		return name.equals(fileName.getText());
+	}
+	
 
 
 }

@@ -19,6 +19,9 @@ public class AskAStaffStep3Page extends BasePageObject {
 
 	@FindBy(xpath = ".//a[contains(@href, 'AskaReqHistory')]")
 	private WebElement lnkHistory;
+	
+	@FindBy(xpath = "//*[@id=\'pageContent\']/div/table/tbody/tr/td/div/p[1]")
+	private WebElement comfirmMessage;
 
 	public AskAStaffStep3Page(WebDriver driver) {
 		super(driver);
@@ -46,9 +49,17 @@ public class AskAStaffStep3Page extends BasePageObject {
 	public AskAStaffHistoryPage clickAskAStaffHistory() {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
-
+		
 		lnkHistory.click();
 		return PageFactory.initElements(driver, AskAStaffHistoryPage.class);
+	}
+	
+	public boolean askaConfirmationDisplayed() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		IHGUtil.waitForElement(driver, 15, comfirmMessage);
+				
+		return comfirmMessage.getText().contains("Thank you for submitting your question");
 	}
 
 }

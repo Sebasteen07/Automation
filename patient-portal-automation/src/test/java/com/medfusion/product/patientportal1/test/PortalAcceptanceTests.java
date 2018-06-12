@@ -4,6 +4,8 @@ import static org.testng.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
 import org.testng.ITestResult;
@@ -84,6 +86,16 @@ import com.medfusion.product.practice.tests.BillPaymentTest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 import com.medfusion.product.practice.tests.PatientActivationTest;
 import com.medfusion.product.practice.tests.RecivePayNowTest;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
 
 @Test
 public class PortalAcceptanceTests extends BaseTestNGWebDriver {
@@ -595,6 +607,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 5: Complete step 2 of Ask A Staff");
 		AskAStaffStep3Page askStaff3 = askStaff2.submitQuestion();
 		PerformanceReporter.getPageLoadDuration(driver, AskAStaffStep3Page.PAGE_NAME);
+		assertTrue(askStaff3.askaConfirmationDisplayed(), "Confirmation message not received");
 
 		log("step 6: Validate entry is on Ask A Staff History page");
 		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
@@ -866,9 +879,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(vovConfirm.isQuestionDetailPageLoaded(), "Confirm page failed to load");
 
 		log("step 16: confirm and submit");
-		vovConfirm.confirmProcessedQuestion();
-		assertTrue(verifyTextPresent(driver, "Your prescription and communication have been posted and the visit has been closed."));
-
+		AskAStaffQuestionDetailStep4Page vovSubmitted = vovConfirm.confirmProcessedQuestion();
+		assertTrue(vovSubmitted.isVovSubmitted(), "Your prescriptiom was now submitted successfuly.");
+				
 		log("step 17: logout of practice portal");
 		practiceHome.logOut();
 
@@ -1445,13 +1458,29 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
 
 		log("Step 3: Verify payment OK");
-		assertTrue(driver.getPageSource().contains("Thank You for your payment"));
+		
+        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                .withTimeout(30, TimeUnit.SECONDS)
+                .pollingEvery(3, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(NoSuchFrameException.class);
+        
+        String confirm = wait.until(new Function<WebDriver, WebElement>() {
+                 public WebElement apply(WebDriver driver) {
+                       
+                     return driver.findElement(By.xpath("//*[@id=\'payReciept\']/table[2]/tbody/tr[1]/td[2]/span/div"));
+                   }
+                 }
+                ).getText();                     
+
+		
+		assertTrue(confirm.contains("Thank You for your payment"));
 
 		log("Step 3: Verify account set to N/A");
-		verifyTrue(driver.getPageSource().contains("Account N/A."));
+		assertTrue(driver.getPageSource().contains("Account N/A."));
 
 		log("Step 4: Verify the prize format.");
-		verifyTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
+		assertTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
 
 		log("Step 5: Search the payment in Practice portal");
 		RecivePayNowTest recievePayNowTest = new RecivePayNowTest();

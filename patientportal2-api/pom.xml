@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.intuit.ihg</groupId>
     <artifactId>ihg-depot-qa-parent-pom</artifactId>
-    <version>18.2.0</version>
+    <version>18.3.0</version>
   </parent>
   
   <artifactId>patientportal2-api</artifactId>
@@ -22,7 +22,7 @@
     
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>18.2.0</ihg.version>
+		<ihg.version>18.3.0</ihg.version>
 	</properties>
   
 	<dependencies>

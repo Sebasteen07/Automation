@@ -3259,4 +3259,21 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Log4jUtil.log("Does insurance image card Matched : "+base64FileMatch);
 		Assert.assertTrue(base64FileMatch, "Image uploaded Did not Matched with image in the insurance detail api call.");
 	}
+	
+	public static Boolean deleteFile(String fileName)
+    {
+		Boolean isFileDeleted = false;
+    	try{
+    		File file = new File(fileName);
+    		if(file.delete()){
+    			Log4jUtil.log(file.getName() + " is deleted!");
+    			isFileDeleted = true;
+    		}else{
+    			Log4jUtil.log("Delete operation is failed please delete the file manually.");
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return isFileDeleted;
+    }
 }
