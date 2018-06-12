@@ -1,16 +1,23 @@
 package com.intuit.ihg.product.phr.test;
 
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.MFDateUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
+import com.intuit.ihg.common.utils.ccd.CCDTest;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrEmergencyAccessPage;
@@ -19,6 +26,8 @@ import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrLoginPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrManagePermissionsPage;
 import com.intuit.ihg.product.object.maps.phr.page.PhrSharingPage;
+import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
+import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.phr.page.portaltophr.IntuitAcceptPrivacyPolicy;
 import com.intuit.ihg.product.object.maps.phr.page.profile.PhrProfilePage;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
@@ -30,18 +39,38 @@ import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.Ne
 import com.medfusion.product.object.maps.patientportal1.page.portaltophr.AcceptPhrTermsandConditions;
 import com.intuit.ihg.product.phr.utils.Phr;
 import com.intuit.ihg.product.phr.utils.PhrTestcasesData;
+import com.intuit.ihg.product.phr.utils.PhrUtil;
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 public class PhrAcceptanceTests extends BaseTestNGWebDriver {
+	
+	PropertyFileLoader testData;
+	int stepCounter;
 
+	@Override
+	@BeforeMethod(alwaysRun = true)
+	public void setUp() throws Exception {
+		super.setUp();
+
+		log(this.getClass().getName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Getting text properties Data");
+		testData = new PropertyFileLoader();
+
+		log("Resetting step counter");
+		stepCounter = 0;
+	}
+	
 	@AfterMethod
 	public void logTestStatus(ITestResult result) {
 		TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 	}
-
+	
 	/**
 	 * @Author:- bkrishnankutty
 	 * @Date:-
@@ -51,10 +80,6 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPhrLoginLogout() throws Exception {
-		log("Test Case: TestPhrLoginLogout");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		driver.manage().deleteAllCookies();
 
 		log("step 1: Get Data from Excel");
@@ -68,11 +93,11 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:LogIn");
 		PhrLoginPage loginpage = new PhrLoginPage(driver, testcasesData.geturl());
 		PhrHomePage pPhrHomePage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 3:Logout");
 		loginpage = pPhrHomePage.clickLogout();
-		verifyTrue(loginpage.isSearchPageLoaded(), "Expected the PhrLoginPage to be loaded, but it was not.");
+		Assert.assertTrue(loginpage.isSearchPageLoaded(), "Expected the PhrLoginPage to be loaded, but it was not.");
 		assertTrue(loginpage.waitforTXTPassword(driver, 60), "There was an issue reloading the login page upon logout");
 	}
 
@@ -88,10 +113,6 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPhrBlueButtonDownloadPdf() throws Exception {
-		log("testPhrBlueButtonDownloadPdf");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 1: Get Data from Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData testcasesData = new PhrTestcasesData(phr);
@@ -103,7 +124,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:LogIn");
 		PhrLoginPage loginpage = new PhrLoginPage(driver, testcasesData.geturl());
 		PhrHomePage pPhrHomePage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 
 		log("step 3: Download PDF version of Blue Button download -- validate HTTP Status Code");
@@ -124,10 +145,6 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPhrBlueButtonDownloadtext() throws Exception {
-		log("testPhrBlueButtonDownloadtext");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 1: Get Data from Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData testcasesData = new PhrTestcasesData(phr);
@@ -139,7 +156,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2:LogIn");
 		PhrLoginPage loginpage = new PhrLoginPage(driver, testcasesData.geturl());
 		PhrHomePage pPhrHomePage = loginpage.login(testcasesData.getUsername(), testcasesData.getPassword());
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 3: Download PDF version of Blue Button download -- validate HTTP Status Code");
 		assertEquals(pPhrHomePage.clickBlueButtonDownloadtext(), 200, "Download of Blue Button PDF returned unexpected HTTP status code");
@@ -159,11 +176,6 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void newPatientSignUpSsoToPhr() throws Exception {
-
-		log("Test Case: newPatientSignUpSsoToPhr");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 1: Get Data from Excel");
 
 		Portal portal = new Portal();
@@ -203,12 +215,12 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		// this thread.sleep is purposeful otherwise script can fail here
 		pPhrHomePage = pIntuitAcceptPrivacyPolicy.acceptIntuitTermsAndCondition();
 		log("step 12:Assert profile link on PHR HOme page");
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 		assertTrue(pPhrHomePage.waitforbtnProfile(driver, 6), "PhrHomePage doesn't loaded properly :Assertion failed");
 
 		log("step 13:Logout");
 		PhrLoginPage pPhrLoginPage = pPhrHomePage.clickLogout();
-		verifyTrue(pPhrLoginPage.isSearchPageLoaded(), "Expected the PhrLoginPage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrLoginPage.isSearchPageLoaded(), "Expected the PhrLoginPage to be loaded, but it was not.");
 		assertTrue(pPhrLoginPage.waitforTXTPassword(driver, 6), "There was an issue reloading the login page upon logout");
 
 	}
@@ -236,9 +248,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		// zip = IHGUtil.createRandomZip();
 		String phoneNumber = IHGUtil.createRandomNumericString(10);
 
-		log("step 1: Get Data from  Excel");
-
-		log("step A: Get Data from  PHR Excel");
+		log("step 1: Get Data from  PHR Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData phrTestData = new PhrTestcasesData(phr);
 		Portal portal = new Portal();
@@ -308,11 +318,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		// zip = IHGUtil.createRandomZip();
 		String phoneNumber = IHGUtil.createRandomNumericString(10);
 
-
-
-		log("step 1: Get Data from  Excel");
-
-		log("step A: Get Data from  PHR Excel");
+		log("step 1: Get Data from  PHR Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData phrTestData = new PhrTestcasesData(phr);
 		Portal portal = new Portal();
@@ -321,7 +327,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		log("step 2: LogIn to PHR Portal");
 		PhrLoginPage phrloginpage = new PhrLoginPage(driver, phrTestData.geturl());
 		PhrHomePage pPhrHomePage = phrloginpage.login(phrTestData.getsecondaryUser(), phrTestData.getsecondaryUserPwd());
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 		pPhrHomePage.waitforbtnProfile(driver, 6);
 
 		log("step 3:Click on Profile Button in PHR HOME PAGE");
@@ -383,13 +389,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 	// Note testcase is not working on prod because step 13 :- css :- Identifer for View All message has a small diiference ['>a' not there]
 
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDImportThroughEHDC() throws Exception {
-
-		log("Test Case: testCCDImportThroughEHDC");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 2: Get Data from Excel");
 
 		Phr phr = new Phr();
@@ -407,7 +408,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		pPhrHomePage.postCCdRequest(phrtestcasesData.getallScriptAdapterURL());
 
 		log("step :Wait for page to be loaded completely");
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 5:Click on Document link");
 		PhrDocumentsPage pPhrDocumentsPage = pPhrHomePage.clickDocuments();
@@ -470,13 +471,8 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    Click On Close AfterSharingTheHealthInformation Click on Close Viewer =============================================================
 	 * @throws Exception
 	 */
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, retryAnalyzer = RetryAnalyzer.class)
 	public void testNonCCDImportThroughEHDC() throws Exception {
-
-		log("Test Case: testNonCCDImportThroughEHDC");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 2: Get Data from Excel");
 
 		Phr phr = new Phr();
@@ -494,7 +490,7 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 		pPhrHomePage.postNonCCdRequest(phrtestcasesData.getallScriptAdapterURL());
 
 		log("step :Wait for page to be loaded completely");
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
 
 		log("step 5:Click on Document link");
 		PhrDocumentsPage pPhrDocumentsPage = pPhrHomePage.clickDocuments();
@@ -549,55 +545,69 @@ public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testMedSyncToPortal() throws Exception {
-
-		log("Test Case: testMedSyncToPortal");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("step 2: Get Data from Excel");
-
+	public void testMedSyncToPortal() throws Exception {						
+		log("step 1: Get Data from Excel");
 		Phr phr = new Phr();
 		PhrTestcasesData phrtestcasesData = new PhrTestcasesData(phr);
 
 		log("URL: " + phrtestcasesData.geturl());
 		log("USER NAME: " + phrtestcasesData.getElektaUser());
 		log("Password: " + phrtestcasesData.getElektaPassword());
+		
+		// trunctated and minus one minute to work around phr not returning seconds 
+		log("step 2: Get current time in UTC minus one minute");
+		ZonedDateTime start = MFDateUtil.getCurrentTimeUTC().truncatedTo(ChronoUnit.MINUTES).minus(1,ChronoUnit.MINUTES);
+		log("Expected message should arrive after: " + start);
+		
+		log("step 3: get a bearer token for the CCD send"); 
+		String token = CCDTest.getAccessTokenForSystem(testData.getProperty("oauthTokenURL"),
+				testData.getProperty("elektaClientId"), testData.getProperty("elektaClientSecret"),
+				testData.getProperty("elektaPracticeSystemUsername"), testData.getProperty("elektaPracticeSystemPassword"));
+		Assert.assertNotNull(token);
 
-		log("step 3:LogIn to phr");
+		log("step 4:Post ELEKTA_CCD request to " + testData.getProperty("EHDCAdapterURL"));			
+		PhrUtil.ccdImportFromElekta(testData, token);
+
+		log("step 5:LogIn to phr");
 		PhrLoginPage loginpage = new PhrLoginPage(driver, phrtestcasesData.geturl());
 		PhrHomePage pPhrHomePage = loginpage.login(phrtestcasesData.getElektaUser(), phrtestcasesData.getElektaPassword());
-		log("step 4:Post ELEKTA_CCD request to " + phrtestcasesData.getElektaRestURL());
+		
 
-		pPhrHomePage.postElektaCCdRequest(phrtestcasesData.getElektaRestURL());
+		log("step 6:Wait for page to be loaded completely");
+		Assert.assertTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		
+		log("step 7: Click on Messages");
+		PhrMessagesPage messagesPage = pPhrHomePage.clickOnMyMessages();
+			
 
-		log("step :Wait for page to be loaded completely");
-		verifyTrue(pPhrHomePage.isSearchPageLoaded(), "Expected the PhrHomePage to be loaded, but it was not.");
+		log("step 8: Check if the first message arrived after the test started ");
+		PhrInboxMessage messagePage = messagesPage.clickOnFirstMessage();
+		Assert.assertEquals(messagePage.getPhrMessageSubject(), "You have a new health data summary", "The message subject was NOT: \"You have a new health data summary\"");
+		Assert.assertNotNull("Couldn't find date/time in the message page", messagePage.getPhrMessageDateTime());
+		ZonedDateTime timeFound = MFDateUtil.parseDateToUTCZonedTime(messagePage.getPhrMessageDateTime(),ZoneId.of("America/New_York"));
+		log("Datetime found:" + messagePage.getPhrMessageDateTime() + " parsed as:" + timeFound);
+		
+		Assert.assertTrue(MFDateUtil.compareDates(start, timeFound) < 0," The newest message arrived before the test started");		
 
-		log("step 5:LogIn to Patient Portal ");
+		log("step 8:LogIn to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver, phrtestcasesData.getElektaPracticeURL());
 		MyPatientPage pMyPatientPage = portalloginpage.login(phrtestcasesData.getElektaUser(), phrtestcasesData.getElektaPassword());
 
-		log("step 6: Go to Prescription Renewal");
+		log("step 9: Go to Prescription Renewal");
 		NewRxRenewalPage newRxRenewalPage = pMyPatientPage.clickPrescriptionRenewal();
 
-		log("step 7: Check for medications");
+		log("step 10: Check for medications");
 		newRxRenewalPage.checkMedication();
 		Assert.assertEquals(newRxRenewalPage.medicineName0.getText(), PortalConstants.MedicineNameOne);
 		Assert.assertEquals(newRxRenewalPage.medicineName1.getText(), PortalConstants.MedicineNameTwo);
 
 
-		log("step 8: Logout of Patient Portal");
+		log("step 11: Logout of Patient Portal");
 		pMyPatientPage.logout(driver);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testEmergencyAccess() throws Exception {
-
-		log("Test Case: testEmergencyAccess");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("step 2: Get Data from Excel");
 
 		Phr phr = new Phr();
