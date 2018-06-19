@@ -137,4 +137,37 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		buttonNext.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
+
+
+	public HomePage fillNewPatientFormToActivate(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
+			String phoneNumber,
+			String city, String street) {
+		log("phoneNumber= " + phoneNumber);
+		inputFirstName.sendKeys(firstName);
+		inputLastName.sendKeys(lastName);
+		datePicker.click();
+
+		DateMatcher dateMatcher = new DateMatcher();
+		dateMatcher.selectDate(dob, driver);
+
+		selectGender.click();
+		Select selectGenderType = new Select(selectGender);
+		selectGenderType.selectByValue(gender);
+		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+
+		inputEmail.sendKeys(email);
+		inputStreet.sendKeys(street);
+		inputCity.sendKeys(city);
+		Select selectStateValue = new Select(selectState);
+		selectStateValue.selectByValue("AZ");
+		inputZip.sendKeys(zipCodeValue);
+		log("formfilled ...");
+		buttonNext.click();
+		return PageFactory.initElements(driver, HomePage.class);
+	}
+
+
+	public void isPageLoaded() {
+		IHGUtil.waitForElement(driver, 80, this.buttonNext);
+	}
 }

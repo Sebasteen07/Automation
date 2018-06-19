@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 public class NewPatientIDP extends PSS2MainPage {
 
@@ -34,7 +35,8 @@ public class NewPatientIDP extends PSS2MainPage {
 		return true;
 	}
 
-	public void createNewAccount() {
+	public CreateNewAccountIDP createNewAccount() {
 		createNewAccount.click();
+		return PageFactory.initElements(driver, CreateNewAccountIDP.class);
 	}
 }

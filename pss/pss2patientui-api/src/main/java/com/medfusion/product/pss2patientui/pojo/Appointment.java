@@ -32,6 +32,9 @@ public class Appointment {
 	private String isExistingPatient;
 	private String patientPortalUserName;
 	private String patientPortalPassword;
+	private String emaiSubject;
+	private String findInEmail;
+	private String retries;
 
 	private ArrayList<PatientMatch> patientMatchList = new ArrayList<PatientMatch>();
 
@@ -258,6 +261,30 @@ public class Appointment {
 
 	public void setPatientPortalPassword(String patientPortalPassword) {
 		this.patientPortalPassword = patientPortalPassword;
+	}
+
+	public String getEmaiSubject() {
+		return emaiSubject;
+	}
+
+	public void setEmaiSubject(String emaiSubject) {
+		this.emaiSubject = emaiSubject;
+	}
+
+	public String getFindInEmail() {
+		return findInEmail;
+	}
+
+	public void setFindInEmail(String findInEmail) {
+		this.findInEmail = findInEmail;
+	}
+
+	public String getRetries() {
+		return retries;
+	}
+
+	public void setRetries(String retries) {
+		this.retries = retries;
 	}
 
 }
