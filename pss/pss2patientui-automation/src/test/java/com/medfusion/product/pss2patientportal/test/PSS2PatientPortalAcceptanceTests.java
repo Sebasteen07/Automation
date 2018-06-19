@@ -501,7 +501,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					loginlesspatientinformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 							testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), testData.getCity(), testData.getStreet());
 		}
-
+		Thread.sleep(9000);
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
@@ -542,6 +542,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					existingpatient.login(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 							testData.getZipCode());
 		}
+		Thread.sleep(7000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
 		log("Step 4: Verify if homepage is loaded");
 		assertTrue(homepage.areBasicPageElementsPresent());
 	}
@@ -566,16 +570,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Fill Patient Details");
 		loginlesspatientinformation.isPageLoaded();
-		Boolean insuranceSelected = true;
 
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		psspatientutils.fillPatientDetails(insuranceSelected, testData, loginlesspatientinformation);
+		loginlesspatientinformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), testData.getCity(), testData.getStreet());
 
-		Thread.sleep(9000);
-		log("Step 5: Verify if Privacy Page is loaded.");
-		psspatientutils.dismissPopupExistingPatient(driver);
+		Thread.sleep(15000);
+		log("Step 5: Close the PopUp");
+		loginlesspatientinformation.closePopUp();
 
-		Thread.sleep(9000);
+		Thread.sleep(5000);
 		log("Step 6: Verify if online appointment scheduling Page is loaded.");
 		assertTrue(onlineappointmentschedulingPage.areBasicPageElementsPresent());
 	}
