@@ -28,6 +28,9 @@ public class ScheduledAppointment extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//h1[@class=\"schedule\"]/text()")
 	private WebElement appointmentID;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=\"appointmentconfirmationtop\"]/div/div[7]/div")
+	private WebElement confirmationNumber;
+
 	public ScheduledAppointment(WebDriver driver) {
 		super(driver);
 	}
@@ -51,6 +54,6 @@ public class ScheduledAppointment extends PSS2MainPage {
 	}
 
 	public String getAppointmentID() {
-		return flowWizardList.get(flowWizardList.size()).getText();
+		return confirmationNumber.getText();
 	}
 }

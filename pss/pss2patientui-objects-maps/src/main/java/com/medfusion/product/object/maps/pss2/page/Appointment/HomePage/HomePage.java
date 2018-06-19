@@ -47,21 +47,36 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({@FindBy(css = ".btn.startingpoint-btn")})
 	public List<WebElement> selectSpecialityList;
 
-	@FindAll({@FindBy(css = "a[class='btn specialtybtndashboard handle-text-Overflow ']")})
+	@FindAll({@FindBy(css = ".btn-link")})
+	public List<WebElement> cancelAppointmentList;
+
+	@FindAll({@FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div")})
 	public List<WebElement> selectUpcomingApptList;
 
-	@FindAll({@FindBy(css = "a[class='btn specialtybtndashboard handle-text-Overflow ']")})
+	@FindAll({@FindBy(xpath = "//*[@id=\"pastappointmentevent\"]/div/div")})
 	public List<WebElement> selectPastApptList;
 
 	@FindBy(how = How.XPATH, using = ".//*[@id='upcomingevents']/p/span")
 	public WebElement noUpcomingText;
 
+	@FindBy(how = How.ID, using = "searchspecialtydashboard")
+	public WebElement specialitySearch;
+
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	public WebElement noPastText;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"myModalsssloginpopup\"]/div/div/div[3]/button")
-	public WebElement dismissButtons;
-	
+	@FindAll({@FindBy(css = ".dismissbuttons")})
+	public List<WebElement> dismissButtons;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"myModalsss\"]/div/div/div[3]/button/span")
+	public WebElement dismissIDPPopUp;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingappoitment\"]/div[1]/div/div[3]/div[2]/div/div/div/div[3]/div[2]/button/span")
+	public WebElement cancelModalPopup;
+
+	@FindBy(how = How.CLASS_NAME, using = "okbuttons")
+	public WebElement cancelAppointmentConfirmed;
+
 	public HomePage(WebDriver driver) {
 		super(driver);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
@@ -72,12 +87,16 @@ public class HomePage extends PSS2MainPage {
 		super(driver, currentUrl);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
 		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
+		PageFactory.initElements(driver, this);
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+		if (selectSpecialityList.size() != 0) {
+			IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
+		}
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(labelPatientName);
+		webElementsList.add(specialitySearch);
 		return assessPageElements(webElementsList);
 	}
 
@@ -130,10 +149,51 @@ public class HomePage extends PSS2MainPage {
 	}
 	
 	public Boolean isPopUP() {
-		return dismissButtons.isDisplayed();
+		for (int i = 0; i < dismissButtons.size(); i++) {
+			if (dismissButtons.get(i).isDisplayed() == true) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void popUPClick() {
-		dismissButtons.click();;
+		for (int j = 0; j < dismissButtons.size(); j++) {
+			if (dismissButtons.get(j).isDisplayed() == true) {
+			dismissButtons.get(j).click();
+			}
+		}
+	}
+
+	public Boolean isIDPPopUp() {
+		return dismissIDPPopUp.isDisplayed();
+	}
+
+	public void popUPIDPClick() {
+		dismissIDPPopUp.click();;
+	}
+
+	public int getFutureAppointmentListSize() {
+		return selectUpcomingApptList.size();
+	}
+
+	public int getPastAppointmentListSize() {
+		return selectPastApptList.size();
+	}
+
+	public void cancelAppointment() {
+		if (cancelAppointmentList.size() > 0) {
+			cancelAppointmentList.get(0).click();
+			IHGUtil.waitForElement(driver, 60, cancelModalPopup);
+			cancelModalPopup.click();
+			IHGUtil.waitForElement(driver, 60, cancelAppointmentConfirmed);
+			cancelAppointmentConfirmed.click();
+		} else {
+			log("No Appointments found to cancel.");
+		}
+	}
+
+	public void waitForPageToLoad() {
+		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
 	}
 }

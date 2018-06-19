@@ -46,6 +46,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGW"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGW"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGW"));
+		appointValues.setEmaiSubject("emaiSubject");
+		appointValues.setFindInEmail("findInEmail");
+		appointValues.setRetries("retries");
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -101,5 +104,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGE"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGE"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGE"));
+		appointValues.setEmaiSubject("emaiSubject");
+		appointValues.setFindInEmail("findInEmail");
+		appointValues.setRetries("retries");
 	}
 }
