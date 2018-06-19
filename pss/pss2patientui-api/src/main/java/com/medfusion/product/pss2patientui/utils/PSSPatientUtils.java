@@ -169,14 +169,11 @@ public class PSSPatientUtils {
 			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
 		}
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		//assertTrue(appointment.areBasicPageElementsPresent());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), true);
 		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		//assertTrue(location.areBasicPageElementsPresent());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
-		//assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate();
 		bookAppointment(true, aptDateTime, testData);
 	}
@@ -188,14 +185,13 @@ public class PSSPatientUtils {
 			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
 		}
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		//assertTrue(appointment.areBasicPageElementsPresent());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), true);
 		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		//assertTrue(location.areBasicPageElementsPresent());
+		Log4jUtil.log("Location Page loaded ? " + location.areBasicPageElementsPresent());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
-		//assertTrue(aptDateTime.areBasicPageElementsPresent());
+		Log4jUtil.log("aptDateTime Page loaded ? " + aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate();
 		bookAppointment(true, aptDateTime, testData);
 	}
@@ -264,18 +260,15 @@ public class PSSPatientUtils {
 		Thread.sleep(1500);
 		readICSFile(filePath());
 
-		// Mailinator email = new Mailinator();
-		// email.getLinkFromEmail(testData.getEmail(), testData.getEmaiSubject(), testData.getFindInEmail(), Integer.parseInt(testData.getRetries()));
-
 		HomePage homePage = scheduledappointment.backtoHomePage();
-		// assertTrue(homePage.areBasicPageElementsPresent());
+		Log4jUtil.log("home page loaded ? " + homePage.areBasicPageElementsPresent());
 		Log4jUtil.log("Step 14: Logout from PSS 2.0 Patient UI ");
 		Thread.sleep(8000);
 		homePage.logout();
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
-		//checkPrivacyPage(driver);
+
 		Log4jUtil.log("is pop up" + homepage.isPopUP());
 		if(homepage.isPopUP()) {
 			homepage.popUPClick();
@@ -302,7 +295,6 @@ public class PSSPatientUtils {
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData,AppointmentPage appointment) throws Exception {
-		//checkPrivacyPage(driver);
 		
 		if(homepage.isPopUP()) {
 			homepage.popUPClick();
@@ -319,9 +311,6 @@ public class PSSPatientUtils {
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
 			BTLFlow(homepage, testData, "false");
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.TLB)) {
-			//TLBFlow(homepage, testData, "false",appointment);
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
 			TBLFlow(homepage, testData, "false",appointment);
@@ -345,19 +334,15 @@ public class PSSPatientUtils {
 
 	public String switchtabs(WebDriver driver) {
 		ArrayList<String> browserTabs = new ArrayList<String> (driver.getWindowHandles());
-		
 		/* @not sure about closing patient portal*/
 		driver.close();
 		driver.switchTo().window(browserTabs.get(1));
 		System.setProperty("current.window.handle", browserTabs.get(1));
-	    String pssPatientUrl = driver.getCurrentUrl();
-	    
-	    /* @ code only for dev3 */
-	    pssPatientUrl = pssPatientUrl.replaceAll("https","http");	
-	    //driver.get(pssPatientUrl);
-	    Log4jUtil.log("Url = "+driver.getCurrentUrl());
-	    
-	    return pssPatientUrl;
+		String pssPatientUrl = driver.getCurrentUrl();
+		/* @ code only for dev3 */
+		pssPatientUrl = pssPatientUrl.replaceAll("https", "http");
+		Log4jUtil.log("Url = " + driver.getCurrentUrl());
+		return pssPatientUrl;
 	}
 	
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData, LoginlessPatientInformation loginlesspatientinformation) {

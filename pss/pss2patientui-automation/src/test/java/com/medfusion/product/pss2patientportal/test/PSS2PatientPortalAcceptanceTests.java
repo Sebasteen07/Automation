@@ -669,10 +669,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String url = mailinator.getLinkFromEmail(testData.getEmail(), "Email Verification", "Confirm email address", 5);
 		log("url in email " + url);
 		Thread.sleep(12000);
-		// Boolean insuranceSelected = false;
+
 		ExistingPatientIDP existingpatientidp = new ExistingPatientIDP(driver, url);
 		existingpatientidp.patientSignIn(testData.getEmail(), testData.getPassword());
-		// assertTrue(existingpatientidp.areBasicPageElementsPresent());
+		log("existingpatientidp page " + existingpatientidp.areBasicPageElementsPresent());
 	}
 
 }
