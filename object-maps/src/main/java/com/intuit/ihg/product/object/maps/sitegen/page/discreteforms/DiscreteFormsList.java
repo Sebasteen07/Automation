@@ -105,8 +105,8 @@ public class DiscreteFormsList extends BasePageObject {
 	private WebElement lastCreatedFormLink; // the most upper in the unpublished
 	// table
 
-	private final int waitingSeconds = 8;
-	private final int waitingPeriodMS = 1000;
+	private final int waitingSeconds = 30;
+	private final int waitingPeriodMS = 500;
 
 	private String welcomeMessage = "Welcome to our wonderful testing form. If you are not an automated test, something is wrong";
 
@@ -369,8 +369,7 @@ public class DiscreteFormsList extends BasePageObject {
 
 	public void initializePracticeForNewForm(String newFormName) throws Exception {
 		// name for the new form
-
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		Thread.sleep(4000);
 		unpublishForms(newFormName);
 		deleteUnpublishedForms(newFormName);
 		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);

@@ -117,6 +117,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		PatientData p = new PatientData();
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
 		testFormPdfCcd(home.clickOnHealthForms());
+		driver.switchTo().defaultContent();
+		home.clickOnLogout();
 		log("Step 6: Test if the DOB has not been changed");
 		JalapenoHomePage jhp = Utils.loginPI(driver, p.getEmail(), p.getPassword());
 		assertTrue(jhp.areMenuElementsPresent());
@@ -128,7 +130,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);		
-		testFormPdfCcd(home.clickOnHealthForms());
+		testFormPdfCcd(home.clickOnHealthForms());		
+		driver.switchTo().defaultContent();
+		home.logout(driver);
 		log("Step 6: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();
 		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
@@ -157,8 +161,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Test if the submission date is correct");
 		formsPage.clickOnHealthForms();
-		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);
-		formsPage.logout();
+		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);	
 	}
 
 	@Test(groups = {"Forms"})
@@ -482,12 +485,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		basicInfo.setGenderIdentity("Additional gender category or other, please specify");
 		basicInfo.setGenderIdentityDetails("GI custom text");
 		FormCurrentSymptomsPage symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
-		log("verify that only male-specific questions are displayed to male");
+		log("verify that both male and female categories are displayed (user is EGQ, sex does not match gender identity)");
 		assertTrue(symptoms.areMaleQuestionsDisplayed());
-		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		assertTrue(symptoms.areFemaleQuestionsDisplayed());
 		symptoms.setNoMaleSymptoms();
 		FormPastMedicalHistoryPage medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
-		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		assertTrue(symptoms.areFemaleQuestionsDisplayed());
 		symptoms = medHistory.goBack(FormCurrentSymptomsPage.class);
 		basicInfo = medHistory.goBack(FormBasicInfoPage.class);
 		log("choose declined to answer");
