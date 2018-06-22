@@ -64,7 +64,7 @@ public class CreateAccountPage extends BasePageObject {
 	@FindBy(name = "npp")
 	private WebElement checkPrivacyInformation;
 
-	@FindBy(name = "tou")
+	@FindBy(name = "touWrapper:touack")
 	private WebElement checkIntuitTerms;
 
 	@FindBy(name = "addOption")
