@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGConstants;
+import com.medfusion.portal.utils.PortalUtil;
 
 public class FormWelcomePage extends PortalFormPage {
 
@@ -26,10 +27,22 @@ public class FormWelcomePage extends PortalFormPage {
 
 	public String getMessageText() {
 		try {
-			return welcomeMessage.getText();
+			PortalUtil.setquestionnarieFrame(driver);
+			return welcomeMessage.getText().trim();
 		} catch (WebDriverException e) {
-			return welcomeMessage.getText();
+			log("exception caught, retrying");
+			try {
+				PortalUtil.setquestionnarieFrame(driver);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return welcomeMessage.getText().trim();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/**

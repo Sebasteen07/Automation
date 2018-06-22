@@ -123,10 +123,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, discreteFormName)));
 	}
 
-	private WebElement getPublishedFormsOption(String formName) {
-		return driver.findElement(By.xpath(String.format(FORM_OPTIONS_XPATH, formName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
-	}
-
 	private List<WebElement> getPublishedFormsOptions(String formName) {
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		List<WebElement> opt = driver.findElements(By.xpath(String.format(FORM_OPTIONS_XPATH, formName) + PUBLISHED_FORM_OPTIONS_SELECTOR));
@@ -443,7 +439,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	public FormWelcomePage openCalculatedFormPreview() {
-		calculatedFormPreview.click();
+		calculatedFormPreview.click();		
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 

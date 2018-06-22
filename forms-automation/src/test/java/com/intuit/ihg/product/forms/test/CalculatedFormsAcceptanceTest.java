@@ -13,7 +13,6 @@ import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.CalculatedFormPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
@@ -82,7 +81,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		formsConfigPage.unpublishForms(SitegenConstants.CALCULATED_ADHD_FORM).editFormsWelcomePage(SitegenConstants.CALCULATED_ADHD_FORM, newWelcomeMessage)
 				.publishForm(SitegenConstants.CALCULATED_ADHD_FORM);
 		FormWelcomePage previewWelcomePage = formsConfigPage.openCalculatedFormPreview();
-		PortalUtil.setquestionnarieFrame(driver);
 		assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
 	}
 

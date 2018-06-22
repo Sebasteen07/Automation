@@ -81,7 +81,8 @@ public class CCDTest {
 				errorCode = Integer.parseInt(matcher.group());
 
 				if (errorCode == 204) { // CCD may not have yet been generated
-					TimeUnit.SECONDS.sleep(10);
+					System.out.println("No CCD found on first attempt, sleeping for 30 seconds before trying again");
+					TimeUnit.SECONDS.sleep(30);
 					xml = RestUtils.get(restUrl, String.class, MediaType.APPLICATION_XML, headers);
 				} else {
 					throw requestException;

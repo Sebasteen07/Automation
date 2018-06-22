@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -225,10 +226,13 @@ public class CreateAccountPage extends BasePageObject {
 		/*
 		 * Note that after changes, selecting a provider is currently disabled on testpractices across all environments by default chooseProvider();
 		 */
-		if (chkAgreePatientPrivacyInfo.isDisplayed()) {
-		    javascriptClick(chkAgreePatientPrivacyInfo);
+		try {
+			if (chkAgreePatientPrivacyInfo.isDisplayed()) {
+			    javascriptClick(chkAgreePatientPrivacyInfo);
+			}
+		} catch (NoSuchElementException e) {
+			//
 		}
-
 		javascriptClick(chkAgreeIntuitTAndC);
 		javascriptClick(btnSubmit);
 
