@@ -32,15 +32,19 @@ public class FormWelcomePage extends PortalFormPage {
 		} catch (WebDriverException e) {
 			log("exception caught, retrying");
 			try {
+				PortalUtil.setPortalFrame(driver);				
+			} catch (Exception e1) {				
+				driver.switchTo().defaultContent();
+			}
+			try {
 				PortalUtil.setquestionnarieFrame(driver);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (Exception e2) {
+				//nothing to do at this point				
 			}
 			return welcomeMessage.getText().trim();
-		} catch (Exception e) {
+		} catch (Exception e3) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e3.printStackTrace();
 		}
 		return null;
 	}
