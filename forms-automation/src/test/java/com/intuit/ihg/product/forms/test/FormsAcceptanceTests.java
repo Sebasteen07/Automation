@@ -249,10 +249,10 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		// if there is only one reg. form
 		if (welcomePage.isPageLoaded())
-			assertEquals(welcomePage.getMessageText(), welcomeMessage);
+			assertEquals(welcomePage.getMessageTextPI(), welcomeMessage);
 		// if there are more reg. forms
 		else
-			assertEquals(PageFactory.initElements(driver, HealthFormListPage.class).openDiscreteForm(newFormName).getMessageText(), welcomeMessage);
+			assertEquals(PageFactory.initElements(driver, HealthFormListPage.class).openDiscreteForm(newFormName).getMessageTextPI(), welcomeMessage);
 	}
 
 	@Test(groups = {"Forms"})

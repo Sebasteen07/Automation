@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.forms.page.questionnaires;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
@@ -26,26 +27,51 @@ public class FormWelcomePage extends PortalFormPage {
 	public FormWelcomePage(WebDriver driver) {
 		super(driver);
 	}
-
+/**
+ * Use this method for Portal 1!
+ * @return
+ */
 	public String getMessageText() {		
 		
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(NoSuchFrameException.class);
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(NoSuchElementException.class);
+				
 		
-		WebElement welcome = wait.until(new Function<WebDriver, WebElement>() {
-			     public WebElement apply(WebDriver driver) {
-			    	 driver.switchTo().defaultContent();
+		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
+			     public WebElement apply(WebDriver driver) {				    	
 			    	 PortalUtil.setPortalFrame(driver);	
 			    	 try {
+			    		log("try and set questionnaire frame (this will fail in PI)");
 						PortalUtil.setquestionnarieFrame(driver);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (NoSuchElementException e) {
+						log("questionnaire frame not found and exception caught");
 					}
 			    	 return welcomeMessage;
+			       }
+			     }
+				);	
+		return welcome.getText().trim();
+	}
+	/**
+	 * Use this method for Portal 2!
+	 * @return
+	 */
+	public String getMessageTextPI() {		
+		
+		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(NoSuchElementException.class);
+				
+		
+		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
+			     public WebElement apply(WebDriver driver) {				    	
+			    	 PortalUtil.setPortalFrame(driver);				    	 
+			    	 return driver.findElement(By.xpath("//section[@class='content indented']/p[1]"));
 			       }
 			     }
 				);	
