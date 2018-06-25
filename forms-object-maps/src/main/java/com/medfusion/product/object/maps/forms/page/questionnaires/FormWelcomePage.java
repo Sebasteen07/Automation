@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,26 +29,30 @@ public class FormWelcomePage extends PortalFormPage {
 		super(driver);
 	}
 	public String getMessageText() {		
-		
+
 		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchFrameException.class)
 				.ignoring(NoSuchElementException.class);
-				
-		
+
+
 		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
-			     public WebElement apply(WebDriver driver) {				    				    	 
-			    	 try {
-			    		PortalUtil.setPortalFrame(driver);	
-						PortalUtil.setquestionnarieFrame(driver);
-					} catch (NoSuchElementException e) {
-						driver.switchTo().defaultContent();
-						log("questionnaire frame not found and exception caught");
-					}
-			    	 return driver.findElement(By.xpath("//section[@class='content indented']/p[1]"));
-			       }
-			     }
+			public WebElement apply(WebDriver driver) {
+				try {
+					PortalUtil.setPortalFrame(driver);
+				} catch (TimeoutException e) {					
+					log("portal frame not found and exception caught");
+				}
+				try {					
+					PortalUtil.setquestionnarieFrame(driver);
+				} catch (NoSuchElementException e) {
+					driver.switchTo().defaultContent();
+					log("questionnaire frame not found and exception caught");
+				}			    	 
+				return driver.findElement(By.xpath("//section[@class='content indented']/p[1]"));
+			}
+		}
 				);	
 		return welcome.getText().trim();
 	}

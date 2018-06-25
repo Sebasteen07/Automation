@@ -278,7 +278,7 @@ public class MyPatientPage extends BasePageObject {
 	public HealthFormListPage clickOnHealthForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
-		healthFormsLink.click();
+		javascriptClick(healthFormsLink);
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
