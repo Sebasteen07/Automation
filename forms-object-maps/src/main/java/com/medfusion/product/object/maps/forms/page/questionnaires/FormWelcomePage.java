@@ -1,13 +1,15 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.portal.utils.PortalUtil;
@@ -25,28 +27,29 @@ public class FormWelcomePage extends PortalFormPage {
 		super(driver);
 	}
 
-	public String getMessageText() {
-		try {
-			PortalUtil.setquestionnarieFrame(driver);
-			return welcomeMessage.getText().trim();
-		} catch (WebDriverException e) {
-			log("exception caught, retrying");
-			try {
-				PortalUtil.setPortalFrame(driver);				
-			} catch (Exception e1) {				
-				driver.switchTo().defaultContent();
-			}
-			try {
-				PortalUtil.setquestionnarieFrame(driver);
-			} catch (Exception e2) {
-				//nothing to do at this point				
-			}
-			return welcomeMessage.getText().trim();
-		} catch (Exception e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
-		return null;
+	public String getMessageText() {		
+		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class);
+		
+		WebElement welcome = wait.until(new Function<WebDriver, WebElement>() {
+			     public WebElement apply(WebDriver driver) {
+			    	 driver.switchTo().defaultContent();
+			    	 PortalUtil.setPortalFrame(driver);	
+			    	 try {
+						PortalUtil.setquestionnarieFrame(driver);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    	 return welcomeMessage;
+			       }
+			     }
+				);	
+		return welcome.getText().trim();
 	}
 
 	/**
