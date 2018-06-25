@@ -64,7 +64,8 @@ public class HealthFormListPage extends BasePageObject {
 	private static String formValueNew;
 	
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		log("Waiting up to 50 seconds for forms to display");
+		WebDriverWait wait = new WebDriverWait(driver, 50);
 		javascriptClick(wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))));
 		Thread.sleep(3000);
 		if (!IHGUtil.exists(driver, newFormIframe)) {

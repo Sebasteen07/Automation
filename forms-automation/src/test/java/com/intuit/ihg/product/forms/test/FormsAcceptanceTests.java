@@ -117,6 +117,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		PatientData p = new PatientData();
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
 		testFormPdfCcd(home.clickOnHealthForms());
+		driver.switchTo().defaultContent();
+		home.clickOnLogout();
 		log("Step 6: Test if the DOB has not been changed");
 		JalapenoHomePage jhp = Utils.loginPI(driver, p.getEmail(), p.getPassword());
 		assertTrue(jhp.areMenuElementsPresent());
@@ -128,7 +130,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);		
-		testFormPdfCcd(home.clickOnHealthForms());
+		testFormPdfCcd(home.clickOnHealthForms());		
+		driver.switchTo().defaultContent();
+		home.logout(driver);
 		log("Step 6: Test if the DOB has not been changed");
 		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword()).clickMyAccountLink();
 		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
@@ -157,8 +161,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Test if the submission date is correct");
 		formsPage.clickOnHealthForms();
-		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);
-		formsPage.logout();
+		Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.PDF_CCD_FORM, driver);	
 	}
 
 	@Test(groups = {"Forms"})
@@ -450,6 +453,8 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
 		testEGQEnabled(home.clickOnHealthForms());
 		log("verify that value in my account has been changed based on form answer");
+		driver.switchTo().defaultContent();
+		home = PageFactory.initElements(driver, JalapenoHomePage.class);
 		JalapenoMyAccountProfilePage pMyAccountPage = home.clickOnAccount().clickOnEditMyAccount();
 		assertTrue(pMyAccountPage.getGender() == null);
 	}
@@ -460,7 +465,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		PatientData p = new PatientData();
 		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
 		testEGQEnabled(home.clickOnHealthForms());
-		log("verify that value in my account has been changed based on form answer");
+		log("verify that value in my account has been changed based on form answer");		
 		home = PageFactory.initElements(driver, MyPatientPage.class);
 		MyAccountPage pMyAccountPage = home.clickMyAccountLink();
 		assertTrue(pMyAccountPage.getGender() == null);
@@ -479,30 +484,32 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(basicInfo.isInputErrorMessageDisplayed());
 		basicInfo.setSex("Male");
 		basicInfo.setSexualOrientation("Don't know");
-		basicInfo.setGenderIdentity("Additional gender category or other, please specify");
-		basicInfo.setGenderIdentityDetails("GI custom text");
+		basicInfo.setGenderIdentity("Male");		
 		FormCurrentSymptomsPage symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
-		log("verify that only male-specific questions are displayed to male");
+		log("verify that only the male category is displayed, female category hidden");
 		assertTrue(symptoms.areMaleQuestionsDisplayed());
 		assertFalse(symptoms.areFemaleQuestionsDisplayed());
-		symptoms.setNoMaleSymptoms();
+		symptoms.setNoMaleSymptoms();		
 		FormPastMedicalHistoryPage medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
-		assertFalse(symptoms.areFemaleQuestionsDisplayed());
+		log("verify that save&continue was successful");
+		assertFalse(symptoms.areMaleQuestionsDisplayed());
 		symptoms = medHistory.goBack(FormCurrentSymptomsPage.class);
 		basicInfo = medHistory.goBack(FormBasicInfoPage.class);
 		log("choose declined to answer");
 		basicInfo.setSex("Declined to answer");
+		basicInfo.setGenderIdentity("Additional gender category or other, please specify");
+		basicInfo.setGenderIdentityDetails("GI custom text");
 		symptoms = basicInfo.clickSaveContinue(FormCurrentSymptomsPage.class);
-		log("verify that all questions are displayed to user who didn't answerd gender");
+		log("verify that all questions are displayed to user with gender not matching original birth certificate gender");
 		assertTrue(symptoms.areFemaleQuestionsDisplayed());
 		assertTrue(symptoms.areMaleQuestionsDisplayed());
 		symptoms.checkAnswer("Penile lesions");
-		symptoms.checkAnswer("Vaginal dryness");
+		symptoms.checkAnswer("Vaginal dryness");		
 		medHistory = symptoms.clickSaveContinue(FormPastMedicalHistoryPage.class);
 		medHistory.setCountOfPregnancies(0);
 		medHistory.clickSaveContinue();
 		log("submit form");
-		medHistory.submitForm();
+		medHistory.submitForm();		
 		log("calling CCD rest");
 		String ccd = CCDTest.getFormCCD(timestamp, new TestcasesData(new Portal()).getCCDRestUrlPrimary());
 		log("verify that answered questions are in CCD");

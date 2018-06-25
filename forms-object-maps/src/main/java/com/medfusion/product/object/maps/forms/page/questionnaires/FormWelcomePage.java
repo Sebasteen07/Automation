@@ -1,15 +1,20 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import com.medfusion.common.utils.IHGConstants;
+import com.medfusion.portal.utils.PortalUtil;
 
 public class FormWelcomePage extends PortalFormPage {
 
@@ -23,13 +28,33 @@ public class FormWelcomePage extends PortalFormPage {
 	public FormWelcomePage(WebDriver driver) {
 		super(driver);
 	}
+	public String getMessageText() {		
 
-	public String getMessageText() {
-		try {
-			return welcomeMessage.getText();
-		} catch (WebDriverException e) {
-			return welcomeMessage.getText();
+		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(NoSuchElementException.class);
+
+
+		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
+			public WebElement apply(WebDriver driver) {
+				try {
+					PortalUtil.setPortalFrame(driver);
+				} catch (TimeoutException e) {					
+					log("portal frame not found and exception caught");
+				}
+				try {					
+					PortalUtil.setquestionnarieFrame(driver);
+				} catch (NoSuchElementException e) {
+					driver.switchTo().defaultContent();
+					log("questionnaire frame not found and exception caught");
+				}			    	 
+				return driver.findElement(By.xpath("//section[@class='content indented']/p[1]"));
+			}
 		}
+				);	
+		return welcome.getText().trim();
 	}
 
 	/**

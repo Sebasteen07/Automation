@@ -29,6 +29,7 @@ import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.Jal
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.JalapenoSymptomAssessmentPage;
+
 public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='home']")
@@ -165,9 +166,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public void clickStartRegistrationButton() throws Exception {
 		log("Clicking on Start Registration button.");
-		startRegistrationButton.click();
-		log("Switch to the Forms iframe.");
-		IHGUtil.setFrame(driver, "iframe");
+		startRegistrationButton.click();		
 	}
 
 	public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) throws Exception {

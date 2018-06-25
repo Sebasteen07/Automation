@@ -22,6 +22,9 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 
 	@FindBy(id = "idonot_symptoms_malespecific")
 	WebElement noMaleSymptoms;
+	
+	@FindBy(id = "idonot_symptoms_femalespecific")
+	WebElement noFemaleSymptoms;
 
 	@FindBy(id = "chills_symptom_general")
 	WebElement checkChills;
@@ -73,6 +76,12 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 		PortalUtil.PrintMethodName();
 		scrollAndWait(0, 0, 500);
 		noMaleSymptoms.click();
+	}
+	
+	public void setNoFemaleSymptoms() throws Exception {
+		PortalUtil.PrintMethodName();
+		scrollAndWait(0, 0, 500);
+		noFemaleSymptoms.click();
 	}
 
 	/**
