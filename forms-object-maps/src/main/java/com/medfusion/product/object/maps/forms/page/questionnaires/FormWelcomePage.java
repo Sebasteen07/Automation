@@ -27,10 +27,6 @@ public class FormWelcomePage extends PortalFormPage {
 	public FormWelcomePage(WebDriver driver) {
 		super(driver);
 	}
-/**
- * Use this method for Portal 1!
- * @return
- */
 	public String getMessageText() {		
 		
 		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
@@ -41,36 +37,14 @@ public class FormWelcomePage extends PortalFormPage {
 				
 		
 		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
-			     public WebElement apply(WebDriver driver) {				    	
-			    	 PortalUtil.setPortalFrame(driver);	
+			     public WebElement apply(WebDriver driver) {				    				    	 
 			    	 try {
-			    		log("try and set questionnaire frame (this will fail in PI)");
+			    		PortalUtil.setPortalFrame(driver);	
 						PortalUtil.setquestionnarieFrame(driver);
 					} catch (NoSuchElementException e) {
+						driver.switchTo().defaultContent();
 						log("questionnaire frame not found and exception caught");
 					}
-			    	 return welcomeMessage;
-			       }
-			     }
-				);	
-		return welcome.getText().trim();
-	}
-	/**
-	 * Use this method for Portal 2!
-	 * @return
-	 */
-	public String getMessageTextPI() {		
-		
-		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchFrameException.class)
-				.ignoring(NoSuchElementException.class);
-				
-		
-		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
-			     public WebElement apply(WebDriver driver) {				    	
-			    	 PortalUtil.setPortalFrame(driver);				    	 
 			    	 return driver.findElement(By.xpath("//section[@class='content indented']/p[1]"));
 			       }
 			     }
