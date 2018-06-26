@@ -19,7 +19,11 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
-		Thread.sleep(2200);
+		Thread.sleep(4200);
+		Log4jUtil.log("New = " + accessrule.isLLNewPatientSelected());
+		Log4jUtil.log("Existing = " + accessrule.isLLExistingPatientSelected());
+		Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
+
 		Log4jUtil.log("isLLExistingPatientSelected " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
 			Log4jUtil.log("isLLInsurancePageSelected " + accessrule.isLLInsurancePageSelected());
@@ -76,9 +80,9 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(34000);
-		 driver.navigate().refresh();
-		 Thread.sleep(26000);
+		Thread.sleep(24000);
+		driver.navigate().refresh();
+		Thread.sleep(36000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -94,6 +98,14 @@ public class PSSAdminUtils {
 			propertyData.setAdminNG(adminuser);
 		}
 		return adminuser;
+	}
+
+	public void getAdminRule(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		patientflow.getRule();
+		Log4jUtil.log("Rule = " + patientflow.getRule());
+		patientflow.logout();
 	}
 
 }

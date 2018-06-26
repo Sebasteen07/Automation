@@ -16,9 +16,11 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePageSpeciality;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientInsuranceInfo;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
@@ -39,8 +41,8 @@ public class PSSPatientUtils {
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
-		assertTrue(latestFile.getAbsolutePath().contains("ics"), "ICS file not found.");
-
+		// assertTrue(latestFile.getAbsolutePath().contains("ics"), "ICS file not found.");
+		Log4jUtil.log("latestFile " + latestFile.getAbsolutePath());
 		return latestFile.getAbsolutePath();
 	}
 
@@ -64,7 +66,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		String date = aptDateTime.selectDate();
 		Log4jUtil.log("date- "+date);
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 
 	public void BLTFlow(HomePage homepage, Appointment testData, String startOrderOn) throws Exception {
@@ -83,9 +85,9 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), true);
+		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), false);
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime,testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn) throws Exception {
@@ -106,7 +108,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn) throws Exception {
@@ -130,7 +132,7 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn) throws Exception {
@@ -156,7 +158,7 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 	
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn) throws Exception {
@@ -175,7 +177,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment) throws Exception {
 		if (startOrderOn.equalsIgnoreCase("true")) {
@@ -193,7 +195,7 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		Log4jUtil.log("aptDateTime Page loaded ? " + aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate();
-		bookAppointment(true, aptDateTime, testData);
+		bookAppointment(false, aptDateTime, testData);
 	}
 
 	public Boolean deleteFile(String fileName) {
@@ -264,7 +266,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("home page loaded ? " + homePage.areBasicPageElementsPresent());
 		Log4jUtil.log("Step 14: Logout from PSS 2.0 Patient UI ");
 		Thread.sleep(8000);
-		homePage.logout();
+		OnlineAppointmentScheduling onlineappointmentscheduling = homePage.logout();
+		Log4jUtil.log("PSS 2.0 Main Page= " + onlineappointmentscheduling.areBasicPageElementsPresent());
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
@@ -361,4 +364,35 @@ public class PSSPatientUtils {
 		}
 	}
 
+	public void navigateFromHomePage(String ruleType, WebDriver driver, Appointment testData, String toSelect) {
+		if (!ruleType.equalsIgnoreCase(PSSConstants.SPECIALITY)) {
+			HomePage homepage = new HomePage(driver);
+			homepage.areBasicPageElementsPresent();
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_PROVIDER)) {
+				homepage.selectProvider(testData.getProvider());
+			}
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_APPOINTMENT)) {
+				homepage.selectAppointment(testData.getAppointmenttype());
+			}
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_LOCATION)) {
+				homepage.selectLocation(testData.getLocation());
+			}
+		} else {
+			HomePageSpeciality homepage = new HomePageSpeciality(driver);
+			homepage.areBasicPageElementsPresent();
+			StartAppointmentInOrder startappointmentinorder = homepage.selectSpeciality(testData.getSpeciality());
+			startappointmentinorder.areBasicPageElementsPresent();
+
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_APPOINTMENT)) {
+				startappointmentinorder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			}
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_PROVIDER)) {
+				startappointmentinorder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			}
+			if (toSelect.equalsIgnoreCase(PSSConstants.START_LOCATION)) {
+				startappointmentinorder.selectFirstLocation(PSSConstants.START_LOCATION);
+			}
+		}
+		
+	}
 }

@@ -48,6 +48,10 @@ public class PatientFlow extends SettingsTab {
 		return insuranceToggle.getAttribute("ng-reflect-model");
 	}
 
+	public Boolean isInsuranceToBeDisplayed() {
+		return insuranceToggle.isSelected();
+	}
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
