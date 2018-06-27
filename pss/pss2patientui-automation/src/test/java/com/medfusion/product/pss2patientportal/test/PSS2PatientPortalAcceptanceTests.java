@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -277,11 +276,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowGW() throws Exception {
 		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
-			log("SSO will not work for Demo exiting testcase");
-			driver.close();
-			System.exit(0);
-		}
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -330,11 +324,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowGE() throws Exception {
 		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal GE.");
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
-			log("SSO will not work for Demo exiting testcase");
-			driver.close();
-			System.exit(0);
-		}
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -367,11 +356,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNewPatientWithoutEMRIDGW() throws Exception {
 		log("Test To Verify if a newly created Patient without EMRID unable to loginto SSO Flow from Patient 2.0 portal.");
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
-			log("SSO will not work for Demo exiting testcase");
-			driver.close();
-			System.exit(0);
-		}
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -401,11 +385,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNewPatientWithoutEMRIDGE() throws Exception {
 		log("Test To Verify if a newly created Patient without EMRID unable to loginto SSO Flow from Patient 2.0 portal.");
-		if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
-			log("SSO will not work for Demo exiting testcase");
-			driver.close();
-			System.exit(0);
-		}
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -654,7 +633,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testIDPLoginWithExistingPatient_1_07(String partnerPractice) throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		log("Test To verify if existing IDP Patient can login to PSS 2.0 Patient portal for " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -687,7 +666,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testIDPLoginWithNewPatient_1_10(String partnerPractice) throws Exception {
-		log("Test To Verify if PSS 2.0 IDP New Patient is able to create account and login.");
+		log("Test To Verify if PSS 2.0 IDP New Patient is able to create account and login. " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -728,7 +707,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateIDPPatientWithExistingCredentials(String partnerPractice) throws Exception {
-		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials.");
+		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials for " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -764,7 +743,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateIDPPatientWithInvalidCredentials(String partnerPractice) throws Exception {
 
-		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials.");
+		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
