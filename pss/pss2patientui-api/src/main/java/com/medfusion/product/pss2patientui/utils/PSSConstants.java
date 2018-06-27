@@ -37,4 +37,6 @@ public class PSSConstants {
 
 	public final static String NON_EXISTENCE_PATIENT_EMAIL = "mf.0611201888890@mailnator.com";
 	public final static String NON_EXISTENCE_FIRSTNAME = "mf.9876543210@mailnator.com";
+	public final static String INCORRECT_USERNAME = "!@#$%^";
+	public final static String IDP_INCORRECT_USERNAME_MESSAGE = "Username cannot contain a space or characters consisting of: ?|/#%^$*";
 }

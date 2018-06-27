@@ -10,10 +10,10 @@
 	<classes>
 		<class name = "com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
 		<methods>
-	    		<include name="testLoginlessForExistingPatient" />
-	    		<include name="testLoginWithWrongPatientDetails" />
-	    		<include name="testCreateLLAccountWithExistingPatientDetails" />
-	    		<include name="testLoginlessForNewPatient" />      		
+	    		<include name="testSSOFlowGE" />
+	    		<include name="testSSOFlowGW" />
+	    		<include name="testSSOFlowNewPatientWithoutEMRIDGE" />
+	    		<include name="testSSOFlowNewPatientWithoutEMRIDGW" />        		
      	</methods>
 	</classes>
 </test>

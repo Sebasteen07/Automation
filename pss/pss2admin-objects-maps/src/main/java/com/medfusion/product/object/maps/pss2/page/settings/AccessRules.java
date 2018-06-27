@@ -68,19 +68,21 @@ public class AccessRules extends SettingsTab {
 	}
 
 	public String isLLNewPatientSelected() {
-		return checkNewPatient.getAttribute("ng-reflect-model");
+		return checkNewPatient.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getCssValue("background-color"); //
+																														// .getAttribute("ng-reflect-model");
 	}
 
+
 	public String isLLInsurancePageSelected() {
-		return checkShowInsurancePage.getAttribute("ng-reflect-model");
+		return checkShowInsurancePage.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getAttribute("ng-reflect-model");
 	}
 
 	public String isLLPrivacyPolicySelected() {
-		return checkShowPrivacyPolicyPage.getAttribute("ng-reflect-model");
+		return checkShowPrivacyPolicyPage.getCssValue("backgroundColor"); // .getAttribute("ng-reflect-model");
 	}
 
 	public String isLLExistingPatientSelected() {
-		return checkLoginlessExistingPatient.getAttribute("ng-reflect-model");
+		return checkLoginlessExistingPatient.isSelected() ? "true" : "false"; // .getCssValue("backgroundColor"); // .getAttribute("ng-reflect-model");
 	}
 
 	public void selectLLNewPatient() {

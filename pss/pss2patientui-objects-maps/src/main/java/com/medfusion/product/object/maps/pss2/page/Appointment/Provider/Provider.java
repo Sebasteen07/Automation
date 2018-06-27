@@ -41,7 +41,7 @@ public class Provider extends PSS2MainPage {
 
 	public Location selectLocation(String providerName) {
 		log("in selectLocation providerList" + providerName);
-		for (int i = 0; i <= providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().contains(providerName)) {
 				providerList.get(i).click();
@@ -54,7 +54,7 @@ public class Provider extends PSS2MainPage {
 	public AppointmentPage selectAppointment(String providerName) {
 		log("size= " + providerList.size());
 		log("Text= " + providerList.get(0).getText());
-		for (int i = 0; i <= providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerName + " = " + providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().contains(providerName)) {
 				providerList.get(i).click();

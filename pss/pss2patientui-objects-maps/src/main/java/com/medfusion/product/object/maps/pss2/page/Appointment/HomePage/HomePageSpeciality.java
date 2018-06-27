@@ -1,6 +1,5 @@
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -19,16 +18,11 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientFo
 import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientHeader;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
-public class HomePage extends PSS2MainPage {
+
+public class HomePageSpeciality extends PSS2MainPage {
 
 	PSSPatientHeader patientheader;
 	PSSPatientFooter patientfooter;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[2]/div[3]/div/div[2]/div/a[1]")
-	public WebElement buttonSpeciality1;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[2]/div[3]/div/div[2]/div/a[2]")
-	public WebElement buttonSpeciality2;
 
 	@FindBy(how = How.CLASS_NAME, using = "topupcoming")
 	public WebElement topUpComingList;
@@ -45,11 +39,8 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[3]/button/span")
 	public WebElement buttonRevertCancelAppointment;
 
-	@FindAll({@FindBy(css = ".btn.startingpoint-btn")})
-	public List<WebElement> selectSpecialityList;
-
 	@FindAll({@FindBy(css = ".btn.specialtybtndashboard.handle-text-Overflow")})
-	public List<WebElement> selectSpecialityListC;
+	public List<WebElement> selectSpecialityList;
 
 	@FindAll({@FindBy(css = ".btn-link")})
 	public List<WebElement> cancelAppointmentList;
@@ -84,27 +75,18 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
 	public WebElement upCmgAptLabel;
 
-	public HomePage(WebDriver driver) {
+	public HomePageSpeciality(WebDriver driver) {
 		super(driver);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
 		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
+		PageFactory.initElements(driver, HomePageSpeciality.class);
 	}
 
-	public HomePage(WebDriver driver, String currentUrl) {
+	public HomePageSpeciality(WebDriver driver, String currentUrl) {
 		super(driver, currentUrl);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
 		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
 		PageFactory.initElements(driver, this);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		if (selectSpecialityList.size() != 0) {
-			IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
-		}
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(upCmgAptLabel);
-		return assessPageElements(webElementsList);
 	}
 
 	public StartAppointmentInOrder selectSpeciality(String specialityText) {
@@ -119,7 +101,7 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public Location selectLocation(String specialityText) {
-		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size()-1)));
+		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
 
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
@@ -155,7 +137,7 @@ public class HomePage extends PSS2MainPage {
 		patientheader.logout();
 		return PageFactory.initElements(driver, OnlineAppointmentScheduling.class);
 	}
-	
+
 	public Boolean isPopUP() {
 		for (int i = 0; i < dismissButtons.size(); i++) {
 			if (dismissButtons.get(i).isDisplayed() == true) {
@@ -164,11 +146,11 @@ public class HomePage extends PSS2MainPage {
 		}
 		return false;
 	}
-	
+
 	public void popUPClick() {
 		for (int j = 0; j < dismissButtons.size(); j++) {
 			if (dismissButtons.get(j).isDisplayed() == true) {
-			dismissButtons.get(j).click();
+				dismissButtons.get(j).click();
 			}
 		}
 	}
@@ -202,6 +184,11 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public void waitForPageToLoad() {
-		IHGUtil.waitForElement(driver, 120, upCmgAptLabel);
+		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
+	}
+
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		return false;
 	}
 }

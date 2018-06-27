@@ -13,7 +13,9 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.CreateNewAccountIDP;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.ExistingPatient;
@@ -22,6 +24,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientID
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientInsuranceInfo;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -66,7 +69,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Select Existing patient from the list");
 		ExistingPatient existingpatient = onlineappointmentschedulingPage.selectExistingPatient();
 		log("Step 6: Set the Patient criteria");
-		Boolean isPrivacyPageEnabled = true;
+		Boolean isPrivacyPageEnabled = false;
 		HomePage homepage = null;
 		if(isPrivacyPageEnabled) {
 			log("Privacy Enabled");
@@ -119,7 +122,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fill Patient criteria");
 		Thread.sleep(9000);
-		Boolean insuranceSelected = false;
+		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		HomePage homepage;
 		if (insuranceSelected) {
 
@@ -280,7 +283,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminGW(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.getAdminRule(driver, adminuser);
+
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
 
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
@@ -300,6 +312,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(12000);
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
+
+		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), false);
+		AppointmentDateTime appointmentdatetime = location.selectDatTime(testData.getLocation());
+		appointmentdatetime.selectDate();
+		psspatientutils.bookAppointment(false, appointmentdatetime, testData);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -612,15 +631,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(onlineappointmentschedulingPage.areBasicPageElementsPresent());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testIDPLoginWithExistingPatient_1_07() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testIDPLoginWithExistingPatient_1_07(String partnerPractice) throws Exception {
+		log("Test To verify if existing IDP Patient can login to PSS 2.0 Patient portal for " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		propertyData.setAppointmentResponseGW(testData);
-
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GW)) {
+			propertyData.setAppointmentResponseGW(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
+			propertyData.setAppointmentResponseGE(testData);
+		}
 		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
 
@@ -641,15 +664,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homepage.areBasicPageElementsPresent());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testIDPLoginWithNewPatient_1_10() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testIDPLoginWithNewPatient_1_10(String partnerPractice) throws Exception {
+		log("Test To Verify if PSS 2.0 IDP New Patient is able to create account and login. " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		propertyData.setAppointmentResponseGW(testData);
-
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GW)) {
+			propertyData.setAppointmentResponseGW(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
+			propertyData.setAppointmentResponseGE(testData);
+		}
 		PSSNewPatient pssnewpatient = new PSSNewPatient();
 		pssnewpatient.createPatientDetails(testData);
 
@@ -676,6 +703,77 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		ExistingPatientIDP existingpatientidp = new ExistingPatientIDP(driver, url);
 		existingpatientidp.patientSignIn(testData.getEmail(), testData.getPassword());
 		log("existingpatientidp page " + existingpatientidp.areBasicPageElementsPresent());
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateIDPPatientWithExistingCredentials(String partnerPractice) throws Exception {
+		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials for " + partnerPractice);
+		log("Step 1: set test data for existing patient ");
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GW)) {
+			propertyData.setAppointmentResponseGW(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
+			propertyData.setAppointmentResponseGE(testData);
+		}
+		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("IDP Url= " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+
+		log("Step 3: Verify that New and Existing Patient button is displayed");
+		assertTrue(onlineappointmentschedulingPage.areBasicPageElementsPresent());
+
+		log("Step 4: Select New patient");
+		NewPatientIDP newpatientidp = onlineappointmentschedulingPage.selectNewPatientIDP();
+
+		log("Step 5: Select New patient Account");
+		CreateNewAccountIDP createnewaccountidp = newpatientidp.createNewAccount();
+
+		log("Step 6: Enter Existing patient Details");
+		log("username=" + testData.getEmail() + "  password=" + testData.getPatientPassword());
+		createnewaccountidp.createNewAccount(testData.getEmail(), testData.getPatientPassword());
+
+		String emessage = "Username " + testData.getEmail() + " is already taken";
+		log("EWebMessage = " + createnewaccountidp.errorMessageText());
+		assertTrue(createnewaccountidp.errorMessageText().contains(emessage), "Error message did not showed up");
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateIDPPatientWithInvalidCredentials(String partnerPractice) throws Exception {
+
+		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials " + partnerPractice);
+		log("Step 1: set test data for existing patient ");
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GW)) {
+			propertyData.setAppointmentResponseGW(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
+			propertyData.setAppointmentResponseGE(testData);
+		}
+		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("IDP Url= " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+
+		log("Step 3: Verify that New and Existing Patient button is displayed");
+		assertTrue(onlineappointmentschedulingPage.areBasicPageElementsPresent());
+
+		log("Step 4: Select New patient");
+		NewPatientIDP newpatientidp = onlineappointmentschedulingPage.selectNewPatientIDP();
+
+		log("Step 5: Select New patient Account");
+		CreateNewAccountIDP createnewaccountidp = newpatientidp.createNewAccount();
+
+		log("Step 6: Enter Existing patient Details");
+		log("username=" + PSSConstants.INCORRECT_USERNAME + "  password=" + testData.getPassword());
+		createnewaccountidp.createNewAccount(PSSConstants.NON_EXISTENCE_PATIENT_EMAIL, PSSConstants.INCORRECT_USERNAME, testData.getPassword());
+
+		log("EWebMessage = " + createnewaccountidp.errorMessageText());
+		assertTrue(createnewaccountidp.errorMessageText().contains(PSSConstants.IDP_INCORRECT_USERNAME_MESSAGE), "Error message did not showed up");
+
 	}
 
 }

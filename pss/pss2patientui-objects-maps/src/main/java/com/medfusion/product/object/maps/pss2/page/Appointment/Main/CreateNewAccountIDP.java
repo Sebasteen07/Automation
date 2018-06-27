@@ -32,6 +32,9 @@ public class CreateNewAccountIDP extends PSS2MainPage {
 	@FindBy(how = How.LINK_TEXT, using = "Return to login")
 	public WebElement returnToLoginPage;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=\"createProfileError\"]")
+	public WebElement errorMessage;
+
 	public CreateNewAccountIDP(WebDriver driver) {
 		super(driver);
 	}
@@ -53,5 +56,18 @@ public class CreateNewAccountIDP extends PSS2MainPage {
 		inputPassword.sendKeys(password);
 		acceptTOC.click();
 		buttonCreateAccount.click();
+	}
+
+	public void createNewAccount(String email, String username, String password) {
+		inputEmail.sendKeys(email);
+		inputUsername.sendKeys(username);
+		inputPassword.sendKeys(password);
+		acceptTOC.click();
+		buttonCreateAccount.click();
+	}
+
+	public String errorMessageText() {
+		IHGUtil.waitForElement(driver, 80, errorMessage);
+		return errorMessage.getText();
 	}
 }

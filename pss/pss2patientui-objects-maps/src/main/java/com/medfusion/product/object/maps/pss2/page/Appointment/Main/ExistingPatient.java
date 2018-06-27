@@ -15,23 +15,23 @@ import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class ExistingPatient extends PSS2MainPage {
 
-	@FindBy(how = How.ID, using = "existingfirstname")
-	private WebElement inputfirstname;
+	@FindAll({@FindBy(id = "existingfirstname")})
+	private List<WebElement> inputfirstname;
 
-	@FindBy(how = How.ID, using = "existinglastname")
-	private WebElement inputlastName;
+	@FindAll({@FindBy(id = "existinglastname")})
+	private List<WebElement> inputlastName;
 
-	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/div/div/div/div[5]/div/div[2]/div[3]/div/div/div/span/span")
-	private WebElement dateOfBirth;
+	@FindAll({@FindBy(xpath = "/html/body/div[1]/div/div/div/div/div[5]/div/div[2]/div[3]/div/div/div/span/span")})
+	private List<WebElement> dateOfBirth;
 
-	@FindBy(how = How.CSS, using = "input[type='email']")
-	private WebElement inputEmail;
+	@FindAll({@FindBy(css = "input[type='email']")})
+	private List<WebElement> inputEmail;
 
-	@FindBy(how = How.CSS, using = "select[name='gender']")
-	private WebElement selectGender;
+	@FindAll({@FindBy(css = "select[name='gender']")})
+	private List<WebElement> selectGender;
 
-	@FindBy(how = How.ID, using = "existingZip")
-	private WebElement zipCode;
+	@FindAll({@FindBy(css = "existingZip")})
+	private List<WebElement> zipCode;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexistnext")
 	private WebElement buttonSubmit;
@@ -52,23 +52,23 @@ public class ExistingPatient extends PSS2MainPage {
 	}
 
 	public HomePage login(String userame, String lastname, String dob, String email, String gender, String zipCode) {
-		if (inputfirstname.isDisplayed()) {
-			inputfirstname.sendKeys(userame);
+		if (inputfirstname.size() > 0) {
+			inputfirstname.get(0).sendKeys(userame);
 		}
-		if (inputlastName.isDisplayed()) {
-			inputlastName.sendKeys(lastname);
+		if (inputlastName.size() > 0) {
+			inputlastName.get(0).sendKeys(lastname);
 		}
-		if (dateOfBirth.isDisplayed()) {
-			dateOfBirth.click();
+		if (dateOfBirth.size() > 0) {
+			dateOfBirth.get(0).click();
 			DateMatcher dateMatcher = new DateMatcher();
 			dateMatcher.selectDate(dob, driver);
 		}
-		if (inputEmail.isDisplayed()) {
-			inputEmail.sendKeys(email);
+		if (inputEmail.size() > 0) {
+			inputEmail.get(0).sendKeys(email);
 		}
-		if (selectGender.isDisplayed()) {
-			selectGender.click();
-			Select selectGenderType = new Select(selectGender);
+		if (selectGender.size() > 0) {
+			selectGender.get(0).click();
+			Select selectGenderType = new Select(selectGender.get(0));
 			selectGenderType.selectByValue(gender);
 		}
 
@@ -77,23 +77,23 @@ public class ExistingPatient extends PSS2MainPage {
 	}
 
 	public PrivacyPolicy loginPatient(String userame, String lastname, String dob, String email, String gender, String zipCode) {
-		if (inputfirstname.isDisplayed()) {
-			inputfirstname.sendKeys(userame);
+		if (inputfirstname.size() > 0) {
+			inputfirstname.get(0).sendKeys(userame);
 		}
-		if (inputlastName.isDisplayed()) {
-			inputlastName.sendKeys(lastname);
+		if (inputlastName.size() > 0) {
+			inputlastName.get(0).sendKeys(lastname);
 		}
-		if (dateOfBirth.isDisplayed()) {
-			dateOfBirth.click();
+		if (dateOfBirth.size() > 0) {
+			dateOfBirth.get(0).click();
 			DateMatcher dateMatcher = new DateMatcher();
 			dateMatcher.selectDate(dob, driver);
 		}
-		if (inputEmail.isDisplayed()) {
-			inputEmail.sendKeys(email);
+		if (inputEmail.size() > 0) {
+			inputEmail.get(0).sendKeys(email);
 		}
-		if (selectGender.isDisplayed()) {
-			selectGender.click();
-			Select selectGenderType = new Select(selectGender);
+		if (selectGender.size() > 0) {
+			selectGender.get(0).click();
+			Select selectGenderType = new Select(selectGender.get(0));
 			selectGenderType.selectByValue(gender);
 		}
 		buttonSubmit.click();
