@@ -1237,6 +1237,8 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
+		String accountNumber = IHGUtil.createRandomNumericString(8);
+		
 		log("step 1: Get Data from Excel");
 		Portal portal = new Portal();
 		TestcasesData testcasesData = new TestcasesData(portal);
@@ -1257,7 +1259,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
 
 		log("step 5: Set Make Payments Fields");
-		makePaymentPage.setMakePaymentFields(null);
+		makePaymentPage.setMakePaymentFields(accountNumber);
 
 		log("step 6: Logout of Patient Portal");
 		myPatientPage.logout(driver);
@@ -1271,7 +1273,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		PracticeTestData practiceTestData = new PracticeTestData(practice);
 
 		// Executing Test
-		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData, PortalConstants.PatientAccountNumber);
+		String uniquePracticeResponse = billPaymentTest.billPaymentTest(driver, practiceTestData, accountNumber);
 
 		log("step 8: Login to Patient Portal");
 		loginPage = new PortalLoginPage(driver, testcasesData.geturl());
