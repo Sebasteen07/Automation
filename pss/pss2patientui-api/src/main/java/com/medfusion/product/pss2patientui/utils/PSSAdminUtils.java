@@ -57,16 +57,18 @@ public class PSSAdminUtils {
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
-			adminuser.setIsInsuranceDisplayed(true);
+		// if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
+		// adminuser.setIsInsuranceDisplayed(false);
+		// }
+		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+			adminuser.setIsInsuranceDisplayed(false);
 		}
-		
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		adminpatientmatching.logout();
-		Thread.sleep(18000);
+		Thread.sleep(9000);
 	}
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
@@ -80,9 +82,9 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(24000);
+		Thread.sleep(6000);
 		driver.navigate().refresh();
-		Thread.sleep(36000);
+		Thread.sleep(24000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {

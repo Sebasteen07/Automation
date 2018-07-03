@@ -28,11 +28,12 @@ public class Location extends PSS2MainPage {
 	@FindAll({@FindBy(className = "locationlinkclick")})
 	private List<WebElement> locationList;
 
-	@FindAll({@FindBy(css = ".glyphicon.glyphicon-chevron-right")})
-	private List<WebElement> locationAddress;
+	// @FindAll({@FindBy(css = ".glyphicon.glyphicon-chevron-right")})
+	// private List<WebElement> locationAddress;
 
 	public Location(WebDriver driver) {
 		super(driver);
+		// PageFactory.initElements(driver, Location.class);
 	}
 
 	private String addressValue = null;
@@ -43,7 +44,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				getLocAddress(i + 1);
+				// getLocAddress(i + 1);
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
@@ -57,7 +58,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				javascriptClick(locationList.get(i));
-				getLocAddress(i);
+				// getLocAddress(i);
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -70,7 +71,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(dateTime)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				getLocAddress(i);
+				// getLocAddress(i);
 
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
@@ -107,21 +108,21 @@ public class Location extends PSS2MainPage {
 	}
 
 
-	public void getLocAddress(int indexValue) {
-		try {
-			Thread.sleep(9000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		log(indexValue + " = " + locationAddress.size());
-
-		for (int i = 0; i < locationAddress.size(); i++) {
-			if (i == indexValue) {
-				setAddressValue(locationAddress.get(i).getText());
-			}
-		}
-
-	}
+	// public void getLocAddress(int indexValue) {
+	// try {
+	// Thread.sleep(9000);
+	// } catch (InterruptedException e) {
+	// e.printStackTrace();
+	// }
+	// log(indexValue + " = " + locationAddress.size());
+	//
+	// for (int i = 0; i < locationAddress.size(); i++) {
+	// if (i == indexValue) {
+	// setAddressValue(locationAddress.get(i).getText());
+	// }
+	// }
+	//
+	// }
 
 
 	public String getAddressValue() {

@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -47,9 +48,6 @@ public class HomePage extends PSS2MainPage {
 
 	@FindAll({@FindBy(css = ".btn.startingpoint-btn")})
 	public List<WebElement> selectSpecialityList;
-
-	@FindAll({@FindBy(css = ".btn.specialtybtndashboard.handle-text-Overflow")})
-	public List<WebElement> selectSpecialityListC;
 
 	@FindAll({@FindBy(css = ".btn-link")})
 	public List<WebElement> cancelAppointmentList;
@@ -157,6 +155,7 @@ public class HomePage extends PSS2MainPage {
 	}
 	
 	public Boolean isPopUP() {
+		waitForPageToLoad();
 		for (int i = 0; i < dismissButtons.size(); i++) {
 			if (dismissButtons.get(i).isDisplayed() == true) {
 				return true;
@@ -189,19 +188,41 @@ public class HomePage extends PSS2MainPage {
 		return selectPastApptList.size();
 	}
 
-	public void cancelAppointment() {
+	public Boolean cancelAppointment(String popupTextMessage) {
 		if (cancelAppointmentList.size() > 0) {
 			cancelAppointmentList.get(0).click();
 			IHGUtil.waitForElement(driver, 60, cancelModalPopup);
+			log("Cancellation popup Text Matched as set by Admin "
+					+ popupTextMessage.equalsIgnoreCase(driver.findElement(By.xpath("//*[@id=\"myModal\"]/div/div/div[2]/div/div")).getText()));
 			cancelModalPopup.click();
 			IHGUtil.waitForElement(driver, 60, cancelAppointmentConfirmed);
 			cancelAppointmentConfirmed.click();
+			log("appointment cancelled...");
+			return true;
 		} else {
 			log("No Appointments found to cancel.");
+			return false;
 		}
 	}
 
+	public void verifyAppointmentScheduledInPMSystem(String dateTimeText) {
+		log("input text cancellationText " + dateTimeText);
+		List<WebElement> upcomingAptDateTime = driver.findElements(By.xpath("//*[@id=\"upcomingappoitment\"]/div/div/div[1]/div[1]"));
+		for (int i = 0; i < upcomingAptDateTime.size(); i++) {
+
+			if (dateTimeText.contains(upcomingAptDateTime.get(i).getText())) {
+				log("PM scheduled Text " + dateTimeText);
+				driver.findElements(By.xpath("//*[@id=\"upcomingappoitment\"]/div/div/div[3]/div[2]")).get(i).getText();
+			}
+		}
+	}
 	public void waitForPageToLoad() {
 		IHGUtil.waitForElement(driver, 120, upCmgAptLabel);
+	}
+
+	public void bookedAppointmentInUpcomingList(String aptFromPM) {
+		for(int i=0;i<selectUpcomingApptList.size();i++) {
+			log("upcomingListText  = " + selectUpcomingApptList.get(i).getText());
+		}
 	}
 }
