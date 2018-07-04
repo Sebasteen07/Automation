@@ -24,13 +24,14 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
+
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(buttonAllGood);
-		webElementsList.add(appointmentScheduledDetails.get(0));
+		// webElementsList.add(appointmentScheduledDetails.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 

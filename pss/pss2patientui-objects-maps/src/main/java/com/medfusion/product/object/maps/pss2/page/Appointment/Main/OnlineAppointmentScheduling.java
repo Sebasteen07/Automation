@@ -59,6 +59,7 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+		IHGUtil.waitForElement(driver, 80, buttonNewPatient);
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(buttonNewPatient);
 		webElementsList.add(buttonExistingPatient);

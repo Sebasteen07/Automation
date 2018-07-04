@@ -46,9 +46,12 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGW"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGW"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGW"));
-		appointValues.setEmaiSubject("emaiSubject");
-		appointValues.setFindInEmail("findInEmail");
-		appointValues.setRetries("retries");
+		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
+		appointValues.setFindInEmail(property.getProperty("findInEmail"));
+		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGW"));
+		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
+		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -104,8 +107,11 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGE"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGE"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGE"));
-		appointValues.setEmaiSubject("emaiSubject");
-		appointValues.setFindInEmail("findInEmail");
-		appointValues.setRetries("retries");
+		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
+		appointValues.setFindInEmail(property.getProperty("findInEmail"));
+		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGE"));
+		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGE"));
+		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGE"));
 	}
 }

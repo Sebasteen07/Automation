@@ -35,7 +35,10 @@ public class Appointment {
 	private String emaiSubject;
 	private String findInEmail;
 	private String retries;
-
+	private String isAppointmentPopup;
+	private Boolean isNextDayBooking = false;
+	private String appointmentScheduledFromPM;
+	private String cancellationPolicyText;
 	private ArrayList<PatientMatch> patientMatchList = new ArrayList<PatientMatch>();
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
@@ -285,6 +288,38 @@ public class Appointment {
 
 	public void setRetries(String retries) {
 		this.retries = retries;
+	}
+
+	public String getIsAppointmentPopup() {
+		return isAppointmentPopup;
+	}
+
+	public void setIsAppointmentPopup(String isAppointmentPopupGW) {
+		this.isAppointmentPopup = isAppointmentPopupGW;
+	}
+
+	public Boolean getIsNextDayBooking() {
+		return isNextDayBooking;
+	}
+
+	public void setIsNextDayBooking(Boolean isNextDayBooking) {
+		this.isNextDayBooking = isNextDayBooking;
+	}
+
+	public String getAppointmentScheduledFromPM() {
+		return appointmentScheduledFromPM;
+	}
+
+	public void setAppointmentScheduledFromPM(String appointmentScheduledFromPM) {
+		this.appointmentScheduledFromPM = appointmentScheduledFromPM;
+	}
+
+	public String getCancellationPolicyText() {
+		return cancellationPolicyText;
+	}
+
+	public void setCancellationPolicyText(String cancellationPolicyText) {
+		this.cancellationPolicyText = cancellationPolicyText;
 	}
 
 }

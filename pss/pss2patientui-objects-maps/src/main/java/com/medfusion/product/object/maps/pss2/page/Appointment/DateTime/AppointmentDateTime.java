@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.pss2.page.Appointment.DateTime;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,7 +31,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return true;
 	}
 
-	public String selectDate() {
+	public String selectDate(Boolean nextMonthBooking) {
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		for (int i = 0; i < appointmentList.size(); i++) {
 			if (appointmentList.get(i).isDisplayed()) {
@@ -56,8 +61,10 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return null;
 	}
 
-	public ConfirmationPage selectAppointmentDateTime() {
+	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
+
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
@@ -66,6 +73,18 @@ public class AppointmentDateTime extends PSS2MainPage {
 			}
 		}
 		return null;
+	}
+
+	public void selectAppointmentDateAndTime(WebDriver driver) {
+		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			if (appointmentTimeList.get(i).isDisplayed()) {
+				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
+				appointmentTimeList.get(i).click();
+
+			}
+		}
+
 	}
 
 	public String getTimeDifference() {
