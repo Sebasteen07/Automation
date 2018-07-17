@@ -1,11 +1,16 @@
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
+import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
+import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
@@ -82,9 +87,9 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(6000);
+		Thread.sleep(16000);
 		driver.navigate().refresh();
-		Thread.sleep(24000);
+		Thread.sleep(40000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -110,4 +115,59 @@ public class PSSAdminUtils {
 		patientflow.logout();
 	}
 
+	public void navigateTo(PSS2PracticeConfiguration psspracticeConfig) {
+		ManageLocation mlocation = psspracticeConfig.gotoLocation();
+		mlocation.showMoreLocation();
+		List<WebElement> lList = mlocation.getLocationNameList();
+
+		Log4jUtil.log("location Size = " + lList.size());
+		for (int i = 0; i < lList.size(); i++) {
+			Log4jUtil.log("location names = " + lList.get(i).getText());
+		}
+		ManageAppointmentType mappointmenttype = mlocation.gotoAppointment();
+		mappointmenttype.aptNameList();
+		Log4jUtil.log("apt Size = " + mappointmenttype.aptNameList().size());
+		for (int i = 0; i < mappointmenttype.aptNameList().size(); i++) {
+			Log4jUtil.log("appointment names = " + mappointmenttype.aptNameList().get(i).getText());
+		}
+		ManageResource mresource = mappointmenttype.gotoResource();
+		mresource.areBasicPageElementsPresent();
+	}
+
+	public void setRuleWithoutSpeciality(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
+		patientflow.removeAllRules();
+
+		Log4jUtil.log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Provider");
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+
+		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
+		patientflow.logout();
+	}
 }
+

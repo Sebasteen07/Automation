@@ -43,4 +43,12 @@ public class PSSConstants {
 	public final static String APT_URL = "AppointmentType";
 
 	public final static String INSURANCE = "Insurance";
+
+	public final static String RULE_SPECIALITY = "Speciality";
+	public final static String RULE_PROVIDER = "Resource";
+
+	public final static String RULE_SPECIALITY_VALUE = "3: Object";
+	public final static String RULE_PROVIDER_VALUE = "1: Object";
+	public final static String RULE_LOCATION_VALUE = "0: Object";
+	public final static String RULE_APPOINTMENT_VALUE = "2: Object";
 }
