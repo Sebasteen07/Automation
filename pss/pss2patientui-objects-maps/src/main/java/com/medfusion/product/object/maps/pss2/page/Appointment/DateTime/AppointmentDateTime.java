@@ -1,5 +1,8 @@
 package com.medfusion.product.object.maps.pss2.page.Appointment.DateTime;
 
+import static org.testng.Assert.assertTrue;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -8,19 +11,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 
 public class AppointmentDateTime extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = "a[class='rbc-event-content']")})
+	@FindAll({@FindBy(css = ".rbc-event-content")})
 	public List<WebElement> appointmentList;
 
 	@FindAll({@FindBy(css = ".time-btn")})
 	public List<WebElement> appointmentTimeList;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
+	private WebElement scrollBarCalander;
 
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
@@ -28,7 +36,12 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		return true;
+		if (appointmentList.size() != 0) {
+			IHGUtil.waitForElement(driver, 120, appointmentList.get((appointmentList.size() - 1)));
+		}
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(appointmentList.get(0));
+		return assessPageElements(webElementsList);
 	}
 
 	public String selectDate(Boolean nextMonthBooking) {
@@ -41,6 +54,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 			if (appointmentList.get(i).isDisplayed()) {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
+				appointmentTimeList.clear();
 				return appointmentList.get(i).getText();
 				
 			}
@@ -55,7 +69,8 @@ public class AppointmentDateTime extends PSS2MainPage {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
-					return PageFactory.initElements(driver, UpdateInsurancePage.class);
+				appointmentTimeList.clear();
+				return PageFactory.initElements(driver, UpdateInsurancePage.class);
 			}
 		}
 		return null;
@@ -72,6 +87,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 				return PageFactory.initElements(driver, ConfirmationPage.class);
 			}
 		}
+		appointmentTimeList.clear();
 		return null;
 	}
 
@@ -84,7 +100,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 			}
 		}
-
+		appointmentTimeList.clear();
 	}
 
 	public String getTimeDifference() {
@@ -94,5 +110,19 @@ public class AppointmentDateTime extends PSS2MainPage {
 		String min1 = slotTime.substring(slotTime.indexOf(":") + 1, slotTime.indexOf(" "));
 		int minutesDiff = Integer.parseInt(min2) - Integer.parseInt(min1);
 		return Integer.toString(minutesDiff);
+	}
+
+	public void getScrollBarDetails() {
+		Long clientHeight = Long.parseLong(scrollBarCalander.getAttribute("clientHeight"));
+		Long scrollHeight = Long.parseLong(scrollBarCalander.getAttribute("scrollHeight"));
+		log("clientHeight= " + clientHeight + " and scrollHeight = " + scrollHeight);
+		Boolean isScrollBarPresent = scrollHeight > clientHeight;
+		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+		log("Slot List size " + appointmentTimeList.size());
+		log("isScrollBarPresent " + isScrollBarPresent);
+		if (appointmentTimeList.size() > 10) {
+			assertTrue(isScrollBarPresent, "Scrollbar not found.");
+		}
+		appointmentTimeList.clear();
 	}
 }

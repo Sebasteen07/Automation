@@ -38,7 +38,6 @@ public class ScheduledAppointment extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(flowWizardList.get(0));
 		webElementsList.add(linkAddToCalander);
 		webElementsList.add(buttonBackToAppointmentList);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());

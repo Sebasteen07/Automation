@@ -1,11 +1,15 @@
 package com.medfusion.product.pss2patientui.utils;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 import net.fortuna.ical4j.data.ParserException;
 
@@ -247,7 +251,6 @@ public class PSSPatientUtils {
 
 	public void bookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		// Log4jUtil.log("Time difference is "+aptDateTime.getTimeDifference()+" minutes");
 		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(9000);
 		if (isInsuranceDisplated) {
@@ -272,6 +275,7 @@ public class PSSPatientUtils {
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
 		assertTrue(scheduledappointment.areBasicPageElementsPresent());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
@@ -285,8 +289,10 @@ public class PSSPatientUtils {
 
 		homePage.verifyAppointmentScheduledInPMSystem(testData.getAppointmentScheduledFromPM());
 
-		Log4jUtil.log("Cancel the appointment which was booked");
-		homePage.cancelAppointment(testData.getCancellationPolicyText());
+		if (testData.getIsCancelApt()) {
+			Log4jUtil.log("Cancel the appointment which was booked");
+			homePage.cancelAppointment(testData.getCancellationPolicyText());
+		}
 
 		Thread.sleep(8000);
 		Log4jUtil.log("Step 14: Logout from PSS 2.0 Patient UI ");
@@ -417,6 +423,185 @@ public class PSSPatientUtils {
 				startappointmentinorder.selectFirstLocation(PSSConstants.START_LOCATION);
 			}
 		}
-		
+	}
+
+	public void check_Provider_Apt_Loc_List(WebDriver driver, HomePage homepage, Appointment testData) throws Exception {
+
+		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+
+		Collection<String> partnerProviderC = Arrays.asList(testData.getProviderList().split(","));
+		Collection<String> pssProviderC = new ArrayList<String>();
+		Log4jUtil.log("In Provider page " + partnerProviderC.size());
+		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
+		for (int i = 0; i < provider.getProviderNames().size(); i++) {
+			Log4jUtil.log("Total Provider names = " + provider.getProviderNames().get(i).getText());
+			pssProviderC.add(provider.getProviderNames().get(i).getText());
+
+		}
+		Collection<String> similar = new HashSet<String>(partnerProviderC);
+		similar.retainAll(pssProviderC);
+		assertTrue(partnerProviderC.size() == pssProviderC.size(), "provider names did not matched.");
+		System.out.printf("partner:%s%npss:%s%nSimilar:%s%n", partnerProviderC, pssProviderC, similar);
+		Log4jUtil.log("similar provider size " + similar.size());
+		Log4jUtil.log("pssProviderC size " + pssProviderC.size());
+
+		homepage.companyLogoClick();
+		Thread.sleep(8000);
+
+
+		Collection<String> partnerLocationC = Arrays.asList(testData.getLocationList().split(","));
+		Collection<String> pssLocationC = new ArrayList<String>();
+		Location location = homepage.selectLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("In Location page ");
+		for (int i = 0; i < location.getLocationNames().size(); i++) {
+			Log4jUtil.log("Total Location names = " + location.getLocationNames().get(i).getText());
+			String locName = location.getLocationNames().get(i).getText();
+			locName = locName.substring(locName.indexOf(".") + 2, (locName.length()));
+			pssLocationC.add(locName);
+		}
+		Collection<String> similarL = new HashSet<String>(partnerLocationC);
+		similarL.retainAll(pssLocationC);
+
+		System.out.printf("partner:%s%npss:%s%nSimilarLoc:%s%n", partnerLocationC, pssLocationC, similarL);
+		Log4jUtil.log("similarL size " + similarL.size());
+		Log4jUtil.log("pssLocationC size " + pssLocationC.size());
+		assertTrue(partnerLocationC.size() == pssLocationC.size(), "Location names did not matched.");
+		homepage.companyLogoClick();
+		Thread.sleep(8000);
+
+		AppointmentPage appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
+
+		Collection<String> partnerappointmentC = Arrays.asList(testData.getAppointmentList().split(","));
+		Collection<String> pssappointmentC = new ArrayList<String>();
+
+		Log4jUtil.log("In Appointments page ");
+		for (int i = 0; i < appointment.getAppointmentNames().size(); i++) {
+			Log4jUtil.log("Total Appointment names = " + appointment.getAppointmentNames().get(i).getText());
+			pssappointmentC.add(appointment.getAppointmentNames().get(i).getText());
+		}
+
+		Collection<String> similarApt = new HashSet<String>(partnerappointmentC);
+		similarApt.retainAll(pssappointmentC);
+
+		System.out.printf("One:%s%nTwo:%s%nSimilar:%s%n", partnerappointmentC, pssappointmentC, similarApt);
+		Log4jUtil.log("similarApt size " + similarApt.size());
+		Log4jUtil.log("pssappointmentC size " + pssappointmentC.size());
+		assertTrue(partnerappointmentC.size() == pssappointmentC.size(), "Appointment type names did not matched.");
+
+		appointment.selectTypeOfLocation(testData.getAppointmenttype(), false);
+		location.searchProvider(testData.getLocation());
+		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Thread.sleep(9000);
+		aptDateTime.getScrollBarDetails();
+		aptDateTime.selectAppointmentTimeIns();
+
+		homepage.companyLogoClick();
+		Thread.sleep(8000);
+	}
+
+	public void ageRule(WebDriver driver, HomePage homepage, Appointment testData, Boolean isUnderAge, String rule) throws Exception {
+		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+
+		Log4jUtil.log("Select Provider page ");
+		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
+		Log4jUtil.log("Search for Provider with Age Rule Applied :" + provider.areBasicPageElementsPresent());
+		Thread.sleep(6000);
+		int providerSize = provider.searchForProviderFromList(testData.getProvider());
+		if (isUnderAge) {
+			assertEquals(providerSize, 0);
+			Log4jUtil.log("Unable to schedule appointment for UnderAge patient.");
+			homepage.logout();
+		} else {
+			assertEquals(providerSize, 1);
+			homepage.companyLogoClick();
+			testData.setIsCancelApt(false);
+			selectAFlow(driver, rule, homepage, testData);
+			Log4jUtil.log("Appointment scheduled for patient within Age criteria.");
+		}
+	}
+
+	public void verifyProviderAssociation(WebDriver driver, HomePage homepage, Appointment testData, String rule) throws Exception {
+		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+		closeHomePagePopUp(homepage);
+		selectFlowBasedOnProvider(testData, homepage);
+	}
+
+	public void selectFlowBasedOnProvider(Appointment testData, HomePage homepage) throws Exception {
+		Log4jUtil.log("In Provider page ");
+		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
+		Log4jUtil.log("Search for Provider with Age Rule Applied :" + provider.areBasicPageElementsPresent());
+		Thread.sleep(6000);
+
+		String[] providerType = testData.getAssociatedProvider1().split(",");
+		AppointmentPage appointment = provider.selectAppointment(providerType[0]);
+		String[] aptType = testData.getAssociatedApt1().split(",");
+		Log4jUtil.log("Apt to be selected. = " + aptType[0]);
+		Location location = appointment.selectTypeOfLocation(aptType[0], false);
+		String[] LocType = testData.getAssociatedLocation1().split(",");
+		Log4jUtil.log("Location to be selected. = " + LocType[0]);
+		AppointmentDateTime aptDateTime = location.selectDatTime(LocType[0]);
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Thread.sleep(9000);
+		aptDateTime.selectAppointmentTimeIns();
+		Log4jUtil.log("Appropriate Slots are Displayed.");
+
+		gotoHomePage(homepage);
+
+		String[] providerType2 = testData.getAssociatedProvider2().split(",");
+		provider.selectAppointment(providerType2[0]);
+		String[] aptType2 = testData.getAssociatedApt2().split(",");
+		Log4jUtil.log("Apt to be selected. = " + aptType2[0]);
+		appointment.selectTypeOfLocation(aptType2[0], false);
+		String[] LocType2 = testData.getAssociatedLocation2().split(",");
+		Log4jUtil.log("Location to be selected. = " + LocType2[0]);
+		location.selectDatTime(LocType2[0]);
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Thread.sleep(9000);
+		aptDateTime.selectAppointmentTimeIns();
+		Log4jUtil.log("Appropriate Slots are Displayed.");
+
+		gotoHomePage(homepage);
+
+		String[] providerType3 = testData.getAssociatedProvider3().split(",");
+		provider.selectAppointment(providerType3[0]);
+		String[] aptType3 = testData.getAssociatedApt3().split(",");
+		Log4jUtil.log("Apt to be selected. = " + aptType3[0]);
+		appointment.selectTypeOfLocation(aptType3[0], false);
+		String[] LocType3 = testData.getAssociatedLocation1().split(",");
+		Log4jUtil.log("Location to be selected. = " + LocType3[0]);
+		location.selectDatTime(LocType3[0]);
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Thread.sleep(9000);
+		aptDateTime.selectAppointmentTimeIns();
+		Log4jUtil.log("Appropriate Slots are Displayed.");
+
+	}
+
+	public void gotoHomePage(HomePage homepage) throws Exception {
+		homepage.companyLogoClick();
+		Thread.sleep(8000);
+	}
+
+	public void closeHomePagePopUp(HomePage homepage) throws Exception {
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
 	}
 }
