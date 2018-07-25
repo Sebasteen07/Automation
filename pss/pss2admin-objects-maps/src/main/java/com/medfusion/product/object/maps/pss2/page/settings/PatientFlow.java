@@ -3,11 +3,15 @@ package com.medfusion.product.object.maps.pss2.page.settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
+
+import com.medfusion.common.utils.IHGUtil;
 
 public class PatientFlow extends SettingsTab {
 
@@ -35,6 +39,23 @@ public class PatientFlow extends SettingsTab {
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr")})
 	private List<WebElement> ruleLength;
 
+	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr/td[3]/a")})
+	private List<WebElement> deleteAllRules;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a")
+	private WebElement addRuleLink;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[1]/div/input")
+	private WebElement ruleNameInput;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[2]/div/select")
+	private WebElement ruleTypeSelect;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[2]/div/a")
+	private WebElement ruleAddLink;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/fieldset/div/div/button")
+	private WebElement saveRuleButton;
 
 	public PatientFlow(WebDriver driver) {
 		super(driver);
@@ -81,5 +102,46 @@ public class PatientFlow extends SettingsTab {
 
 	public int ruleLength() {
 		return ruleLength.size();
+	}
+
+	public void removeAllRules() {
+		if (deleteAllRules.size() > 0) {
+			for (int i = 0; i < deleteAllRules.size(); i++) {
+				deleteAllRules.get(i).click();
+			}
+		} else {
+			log("No Rules are applied.");
+		}
+	}
+
+	public void addNewRulesButton() {
+		log("adding new rule...");
+		IHGUtil.waitForElement(driver, 60, addRuleLink);
+		log("is Rule link displayed.? " + addRuleLink.isDisplayed());
+		javascriptClick(addRuleLink);
+	}
+
+	public void selectRuleName(String ruleName) {
+		log("Rule Name Input is displayed ? " + ruleNameInput.isDisplayed());
+		ruleNameInput.sendKeys(Keys.CONTROL + "a");
+		ruleNameInput.sendKeys(Keys.BACK_SPACE);
+		ruleNameInput.sendKeys(ruleName);
+	}
+
+	public void addNewRules(String ruleValue) {
+
+		Select oSelect = new Select(ruleTypeSelect);
+		oSelect.selectByValue(ruleValue);
+		javascriptClick(ruleAddLink);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void saveRule() {
+		log("Saving above selected rule..");
+		javascriptClick(saveRuleButton);
 	}
 }

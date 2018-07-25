@@ -92,7 +92,7 @@ public class Location extends PSS2MainPage {
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
+.withTimeout(60, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class)
 				.ignoring(NoSuchFrameException.class)
@@ -134,4 +134,12 @@ public class Location extends PSS2MainPage {
 		this.addressValue = addressValue;
 	}
 	
+	public int getLocationListSize() {
+		return locationList.size();
+	}
+
+	public List<WebElement> getLocationNames() {
+		return locationList;
+	}
+
 }

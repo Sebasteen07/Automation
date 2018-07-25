@@ -40,6 +40,31 @@ public class Appointment {
 	private String appointmentScheduledFromPM;
 	private String cancellationPolicyText;
 	private ArrayList<PatientMatch> patientMatchList = new ArrayList<PatientMatch>();
+	private Boolean isAdminActive = false;
+	private String appointmentList;
+	private String providerList;
+	private String locationList;
+
+	private String associatedProvider1;
+	private String associatedLocation1;
+	private String associatedSpeciality1;
+	private String associatedApt1;
+	
+	private String associatedProvider2;
+	private String associatedLocation2;
+	private String associatedSpeciality2;
+	private String associatedApt2;
+
+	private String associatedProvider3;
+	private String associatedLocation3;
+	private String associatedSpeciality3;
+	private String associatedApt3;
+
+	private String isAgeRuleApplied;
+	private String underAgePatientUserName;
+	private String underAgePatientPassword;
+
+	private Boolean isCancelApt = true;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -320,6 +345,166 @@ public class Appointment {
 
 	public void setCancellationPolicyText(String cancellationPolicyText) {
 		this.cancellationPolicyText = cancellationPolicyText;
+	}
+
+	public Boolean getIsAdminActive() {
+		return isAdminActive;
+	}
+
+	public void setIsAdminActive(Boolean isAdminActive) {
+		this.isAdminActive = isAdminActive;
+	}
+
+	public String getAppointmentList() {
+		return appointmentList;
+	}
+
+	public void setAppointmentList(String appointmentList) {
+		this.appointmentList = appointmentList;
+	}
+
+	public String getProviderList() {
+		return providerList;
+	}
+
+	public void setProviderList(String providerList) {
+		this.providerList = providerList;
+	}
+
+	public String getLocationList() {
+		return locationList;
+	}
+
+	public void setLocationList(String locationList) {
+		this.locationList = locationList;
+	}
+
+	public String getAssociatedProvider1() {
+		return associatedProvider1;
+	}
+
+	public void setAssociatedProvider1(String associatedProvider1) {
+		this.associatedProvider1 = associatedProvider1;
+	}
+
+	public String getAssociatedLocation1() {
+		return associatedLocation1;
+	}
+
+	public void setAssociatedLocation1(String associatedLocation1) {
+		this.associatedLocation1 = associatedLocation1;
+	}
+
+	public String getAssociatedSpeciality1() {
+		return associatedSpeciality1;
+	}
+
+	public void setAssociatedSpeciality1(String associatedSpeciality1) {
+		this.associatedSpeciality1 = associatedSpeciality1;
+	}
+
+	public String getAssociatedApt1() {
+		return associatedApt1;
+	}
+
+	public void setAssociatedApt1(String associatedApt1) {
+		this.associatedApt1 = associatedApt1;
+	}
+
+	public String getAssociatedProvider2() {
+		return associatedProvider2;
+	}
+
+	public void setAssociatedProvider2(String associatedProvider2) {
+		this.associatedProvider2 = associatedProvider2;
+	}
+
+	public String getAssociatedLocation2() {
+		return associatedLocation2;
+	}
+
+	public void setAssociatedLocation2(String associatedLocation2) {
+		this.associatedLocation2 = associatedLocation2;
+	}
+
+	public String getAssociatedSpeciality2() {
+		return associatedSpeciality2;
+	}
+
+	public void setAssociatedSpeciality2(String associatedSpeciality2) {
+		this.associatedSpeciality2 = associatedSpeciality2;
+	}
+
+	public String getAssociatedApt2() {
+		return associatedApt2;
+	}
+
+	public void setAssociatedApt2(String associatedApt2) {
+		this.associatedApt2 = associatedApt2;
+	}
+
+	public String getAssociatedProvider3() {
+		return associatedProvider3;
+	}
+
+	public void setAssociatedProvider3(String associatedProvider3) {
+		this.associatedProvider3 = associatedProvider3;
+	}
+
+	public String getAssociatedLocation3() {
+		return associatedLocation3;
+	}
+
+	public void setAssociatedLocation3(String associatedLocation3) {
+		this.associatedLocation3 = associatedLocation3;
+	}
+
+	public String getAssociatedSpeciality3() {
+		return associatedSpeciality3;
+	}
+
+	public void setAssociatedSpeciality3(String associatedSpeciality3) {
+		this.associatedSpeciality3 = associatedSpeciality3;
+	}
+
+	public String getAssociatedApt3() {
+		return associatedApt3;
+	}
+
+	public void setAssociatedApt3(String associatedApt3) {
+		this.associatedApt3 = associatedApt3;
+	}
+
+	public String getIsAgeRuleApplied() {
+		return isAgeRuleApplied;
+	}
+
+	public void setIsAgeRuleApplied(String isAgeRuleApplied) {
+		this.isAgeRuleApplied = isAgeRuleApplied;
+	}
+
+	public String getUnderAgePatientUserName() {
+		return underAgePatientUserName;
+	}
+
+	public void setUnderAgePatientUserName(String underAgePatientUserName) {
+		this.underAgePatientUserName = underAgePatientUserName;
+	}
+
+	public String getUnderAgePatientPassword() {
+		return underAgePatientPassword;
+	}
+
+	public void setUnderAgePatientPassword(String underAgePatientPassword) {
+		this.underAgePatientPassword = underAgePatientPassword;
+	}
+
+	public Boolean getIsCancelApt() {
+		return isCancelApt;
+	}
+
+	public void setIsCancelApt(Boolean isCancelApt) {
+		this.isCancelApt = isCancelApt;
 	}
 
 }

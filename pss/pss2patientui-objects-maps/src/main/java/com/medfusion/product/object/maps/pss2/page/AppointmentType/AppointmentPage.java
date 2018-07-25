@@ -78,4 +78,12 @@ public class AppointmentPage extends PSS2MainPage {
 			gotoNextStep.click();
 		}
 	}
+
+	public int appointmentListSize() {
+		return appointmentTypeList.size();
+	}
+
+	public List<WebElement> getAppointmentNames() {
+		return appointmentTypeList;
+	}
 }

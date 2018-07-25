@@ -47,4 +47,7 @@ public class PSSPatientHeader extends PSS2MainPage {
 		logout.click();
 	}
 
+	public void backToHomePage() {
+		companyLogo.click();
+	}
 }
