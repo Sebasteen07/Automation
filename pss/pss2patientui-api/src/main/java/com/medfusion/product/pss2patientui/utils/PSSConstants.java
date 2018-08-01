@@ -26,6 +26,7 @@ public class PSSConstants {
 	public final static String TBL = "T,B,L";
 	public final static String TLB = "T,L,B";
 	public final static String STLB = "S,T,L,B";
+	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
 	
 	public final static String LOGINLESS = "loginless";
@@ -51,4 +52,10 @@ public class PSSConstants {
 	public final static String RULE_PROVIDER_VALUE = "1: Object";
 	public final static String RULE_LOCATION_VALUE = "0: Object";
 	public final static String RULE_APPOINTMENT_VALUE = "2: Object";
+
+	public final static String MAX_SLOTS_MONTHS = "1";
+	public final static String DISPLAY_SLOTS_COUNT = "2";
+	public final static String CANCEL_APT_UPTO_HRS = "06:00";
+	public final static String MAJOR_AGE = "50";
+	public final static String MAX_BLOCK_MONTHS = "1";
 }

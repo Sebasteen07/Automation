@@ -24,7 +24,7 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
-		Thread.sleep(4200);
+		Thread.sleep(4400);
 		Log4jUtil.log("New = " + accessrule.isLLNewPatientSelected());
 		Log4jUtil.log("Existing = " + accessrule.isLLExistingPatientSelected());
 		Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
@@ -59,6 +59,11 @@ public class PSSAdminUtils {
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
 		if (patientflow.ruleLength() > 0) {
+			if (patientflow.getRule().contains("S")) {
+				setRulesNoSpecialitySet1(patientflow);
+			}
+			Thread.sleep(9000);
+			Log4jUtil.log("Rule length : " + patientflow.getRule());
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
@@ -77,7 +82,8 @@ public class PSSAdminUtils {
 	}
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
-		Log4jUtil.log("adminSettings Step 1: Login to Admin portal ");
+		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username=" + adminuser.getUser() + " and password="
+				+ adminuser.getPassword());
 		PSS2AdminLogin pssadminlogin = new PSS2AdminLogin(driver, adminuser.getAdminUrl());
 		PSS2PracticeConfiguration psspracticeConfig = pssadminlogin.login(adminuser.getUser(), adminuser.getPassword());
 
@@ -89,7 +95,7 @@ public class PSSAdminUtils {
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
 		Thread.sleep(16000);
 		driver.navigate().refresh();
-		Thread.sleep(40000);
+		Thread.sleep(28000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -137,17 +143,24 @@ public class PSSAdminUtils {
 	public void setRuleWithoutSpeciality(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
-		patientflow.removeAllRules();
 
+		setRulesNoSpecialitySet1(patientflow);
+
+		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
+		patientflow.logout();
+	}
+
+	public void setRulesNoSpecialitySet1(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
 		Log4jUtil.log("-----------------------------------------------------------------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("AppointmentType");
 		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(8000);
-		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TLB TO BE ADDED--------------------------------");
 
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
@@ -156,7 +169,7 @@ public class PSSAdminUtils {
 		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(8000);
-		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+		Log4jUtil.log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Provider");
 		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
@@ -164,10 +177,40 @@ public class PSSAdminUtils {
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(8000);
-		Log4jUtil.log("--------------------------------WAIT FOR RULE TO BE ADDED--------------------------------");
+		Log4jUtil.log("--------------------------------WAIT FOR RULE BTL TO BE ADDED--------------------------------");
 
-		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
-		patientflow.logout();
+	}
+
+	public void setRulesNoSpecialitySet2(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
+		Log4jUtil.log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TBL TO BE ADDED--------------------------------");
+
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE LBT TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Provider");
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
 	}
 }
-

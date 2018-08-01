@@ -3,7 +3,6 @@ package com.medfusion.product.object.maps.pss2.page.AppEntryPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -34,9 +33,9 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 	public Provider selectFirstProvider(String selectOrderWith) {
 		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
-			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
-				startingPoint.click();
+
+			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -45,10 +44,12 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	}
 
 	public AppointmentPage selectFirstAppointment(String selectOrderWith) {
-		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
-			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
-				startingPoint.click();
+		log("size of list=" + startingWith.size());
+		log("selectOrderWith=" + selectOrderWith);
+		for (int i = 0; i < startingWith.size(); i++) {
+			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				log("selectOrderWith=" + selectOrderWith);
+				startingWith.get(i).click();
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
 		}
@@ -60,9 +61,8 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 		log("startingWith length " + startingWith.size());
 		for (int i = 1; i <= startingWith.size(); i++) {
-			WebElement startingPoint = driver.findElement(By.xpath("//*[@id=\"startingpointwizard\"]/div/div/a[" + (i + 1) + "]/span"));
-			if (startingPoint.getText().equalsIgnoreCase(selectOrderWith)) {
-				startingPoint.click();
+			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Location.class);
 			}
 		}

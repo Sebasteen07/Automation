@@ -14,6 +14,9 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 
 public class UpdateInsurancePage extends PSS2MainPage {
 
+	@FindBy(how = How.XPATH, using = "//div//div/div/span[@id=\"react-select-2--value\"]")
+	private WebElement selectInsuranceCarrier;
+
 	@FindBy(how = How.ID, using = "insurancecarrier")
 	private WebElement inputInsuranceCarrier;
 
@@ -26,7 +29,7 @@ public class UpdateInsurancePage extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "insurancePhone")
 	private WebElement inputInsurancePhone;
 
-	@FindBy(how = How.CLASS_NAME, using = "btn-ins")
+	@FindBy(how = How.ID, using = "donotupdate")
 	private WebElement buttonDontUpdateInsurance;
 
 	@FindBy(how = How.ID, using = "updateinfo")
@@ -51,6 +54,11 @@ public class UpdateInsurancePage extends PSS2MainPage {
 	public ConfirmationPage skipInsuranceUpdate() {
 		buttonDontUpdateInsurance.click();
 		return PageFactory.initElements(driver, ConfirmationPage.class);
+	}
+
+	public void skipInsuranceUpdateOnHomePage() {
+		log("don't update Insurance");
+		buttonDontUpdateInsurance.click();
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -19,7 +20,9 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientFooter;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientHeader;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 public class HomePage extends PSS2MainPage {
 
 	PSSPatientHeader patientheader;
@@ -193,13 +196,15 @@ public class HomePage extends PSS2MainPage {
 
 	public Boolean cancelAppointment(String popupTextMessage) {
 		if (cancelAppointmentList.size() > 0) {
+			log("cancelAppointmentList display =" + cancelAppointmentList.get(0).isDisplayed());
 			cancelAppointmentList.get(0).click();
 			IHGUtil.waitForElement(driver, 60, cancelModalPopup);
-			//log("Cancellation popup Text Matched as set by Admin "
-			// + popupTextMessage.equalsIgnoreCase(driver.findElement(By.xpath("//*[@id=\"myModal\"]/div/div/div[2]/div/div")).getText()));
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
+			jse.executeScript("window.scrollBy(0,400)", "");
 			cancelModalPopup.click();
-			IHGUtil.waitForElement(driver, 60, cancelAppointmentConfirmed);
-			cancelAppointmentConfirmed.click();
+			if (cancelAppointmentConfirmed.isDisplayed()) {
+				cancelAppointmentConfirmed.click();
+			}
 			log("appointment cancelled...");
 			return true;
 		} else {
@@ -227,5 +232,17 @@ public class HomePage extends PSS2MainPage {
 		for(int i=0;i<selectUpcomingApptList.size();i++) {
 			log("upcomingListText  = " + selectUpcomingApptList.get(i).getText());
 		}
+	}
+
+	public StartAppointmentInOrder skipInsurance(WebDriver driver) {
+		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateinsurancepage.skipInsuranceUpdateOnHomePage();
+		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
+	}
+
+	public Speciality skipInsuranceForSpeciality(WebDriver driver) {
+		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateinsurancepage.skipInsuranceUpdateOnHomePage();
+		return PageFactory.initElements(driver, Speciality.class);
 	}
 }
