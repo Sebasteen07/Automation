@@ -26,6 +26,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppoin
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
@@ -107,7 +108,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
 
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
@@ -162,7 +163,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.IDP);
+		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.IDP);
 
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
@@ -239,7 +240,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
 
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
@@ -816,6 +817,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		testData.setIsNextDayBooking(true);
 		log("Step 7: Select the flow as per the rule.");
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		rule = "S,T,B,L";
+		testData.setIsCancelApt(false);
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 	}
 
@@ -986,6 +989,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAdminNG(adminuser);
+			propertyData.setAppointmentResponseNG(testData);
+		}
 
 		testData.setIsAdminActive(true);
 		String rule = adminuser.getRule();
@@ -1050,4 +1057,488 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelAppointment(String partnerPractice) throws Exception {
+		log("Test to verify if Cancel Appointment button available only after given hours.");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.updateCancelAppointmentSettings(PSSConstants.CANCEL_APT_UPTO_HRS);
+		adminappointment.saveSlotSettings();
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(true);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+	}
+
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBlockPatients(String partnerPractice) throws Exception {
+		log("Test to verify if Block Patient are not allowed to book slots.");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.blockPatientsAsPerMonth(PSSConstants.MAX_BLOCK_MONTHS);
+
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getOldPatientUserName() + " and password=" + testData.getOldPatientPassword());
+		existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisplaySlotCount(String partnerPractice) throws Exception {
+		log("Test to verify if slots are displayed as per Display slot count mentioned in PSS2.0 Admin");
+
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.slotcountToBeDisplayed(PSSConstants.DISPLAY_SLOTS_COUNT);
+		// adminappointment.saveSlotSettings();
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+		log("Display slots count set in Admin =" + PSSConstants.DISPLAY_SLOTS_COUNT + " = display slot count in pss2.0 patient UI="
+				+ testData.getDisplaySlotCountLength());
+		assertEquals(Integer.parseInt(PSSConstants.DISPLAY_SLOTS_COUNT), testData.getDisplaySlotCountLength());
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxAppointments(String partnerPractice) throws Exception {
+		log("Test to verify if Max Appointment is available as per mentioned in PSS2.0 Admin");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.maxAppointments(PSSConstants.MAX_SLOTS_MONTHS);
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxCalendarMonthsForSlots(String partnerPractice) throws Exception {
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.maxSlotMonthsToBeDisplayed(PSSConstants.MAX_SLOTS_MONTHS);
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMajorAge(String partnerPractice) throws Exception {
+
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.majorAgeToSet(PSSConstants.MAJOR_AGE);
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+		log("Are Slots Displated for Patient outside Major age rule ?" + testData.getIsCalanderDateDisplayed());
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testShowProviderImages(String partnerPractice) throws Exception {
+
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.majorAgeToSet(PSSConstants.MAJOR_AGE);
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+		String responseCode = psspatientutils.getURLResponse(testData.getProviderImageAPI());
+		assertEquals("200", responseCode);
+
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAllowPCPBooking(String partnerPractice) throws Exception {
+		log("Verify that PCP is followed for patient on PSS2.0 patient UI");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.toggleAllowPCP();
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testShowSearchLocation(String partnerPractice) throws Exception {
+		log("Verify that search location  zip code and area raduis selection is displayed on PSS2.0 patient UI");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.toggleSearchLocation();
+
+		Thread.sleep(4000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 6: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+		log("Verify Search Location Zip code and select Radius isEnabled.");
+		assertTrue(testData.getIsSearchLocationDisplayed(), "Search Location is not displayed.");
+	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentWithoutSettingAnyConfiguration(String partnerPractice) throws Exception {
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		Thread.sleep(6000);
+		adminappointment.areBasicPageElementsPresent();
+		adminappointment.clearAll();
+
+		Thread.sleep(6000);
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		adminappointment.logout();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 2: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 3: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 4: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 5 : rule from admin=" + rule);
+		log("Step 6 : dont set Is Next Day Booking ");
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+
 }

@@ -125,4 +125,12 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		appointmentTimeList.clear();
 	}
+
+	public int getAppointmentTimeList() {
+		return appointmentTimeList.size();
+	}
+
+	public int getAppointmentDateList() {
+		return appointmentList.size();
+	}
 }

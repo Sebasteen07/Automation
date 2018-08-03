@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
@@ -28,8 +29,11 @@ public class Location extends PSS2MainPage {
 	@FindAll({@FindBy(className = "locationlinkclick")})
 	private List<WebElement> locationList;
 
-	// @FindAll({@FindBy(css = ".glyphicon.glyphicon-chevron-right")})
-	// private List<WebElement> locationAddress;
+	@FindBy(how = How.ID, using = "sel1")
+	private WebElement selectRadius;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"locationwizardlist\"]/div[3]/div[1]/div/div[1]/div/input")
+	private WebElement nearByZipCodeInput;
 
 	public Location(WebDriver driver) {
 		super(driver);
@@ -142,4 +146,12 @@ public class Location extends PSS2MainPage {
 		return locationList;
 	}
 
+	public Boolean isSearchLocationEnabled() {
+		// log("ZipSearch display =" + nearByZipCodeInput.isDisplayed() + " and Select Dropdown display=" + selectRadius.isDisplayed());
+		if (selectRadius.isDisplayed() && nearByZipCodeInput.isDisplayed()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

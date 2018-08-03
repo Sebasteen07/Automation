@@ -31,6 +31,9 @@ public class Provider extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
 
+	@FindAll({@FindBy(css = ".providerImage-width")})
+	private List<WebElement> providerImages;
+
 	public Provider(WebDriver driver) {
 		super(driver);
 	}
@@ -102,6 +105,10 @@ public class Provider extends PSS2MainPage {
 
 	public int providerListSize() {
 		return providerList.size();
+	}
+
+	public int providerImageSize() {
+		return providerImages.size();
 	}
 
 	public List<WebElement> getProviderNames() {

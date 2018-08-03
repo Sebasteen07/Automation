@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.medfusion.common.utils.IHGUtil;
+
 public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "cancelappointment")
@@ -14,7 +16,7 @@ public class AdminAppointment extends SettingsTab {
 	private WebElement blockPatientMonths;
 	
 	@FindBy(how = How.ID, using = "slotcount")
-	private WebElement slotcount;
+	private WebElement slotCount;
 	
 	@FindBy(how = How.ID, using = "maxappt")
 	private WebElement maxAppt;
@@ -22,6 +24,9 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "maxslotmonths")
 	private WebElement maxSlotMonths;
 	
+	@FindBy(how = How.ID, using = "majorage")
+	private WebElement majorAge;
+
 	@FindBy(how = How.ID, using = "showproviderimage")
 	private WebElement showProviderImage;
 	
@@ -54,7 +59,127 @@ public class AdminAppointment extends SettingsTab {
 	public boolean areBasicPageElementsPresent() {
 		return true;
 	}
-	//ng-reflect-value
 	
+	public void clearAll() {
+		// 01:00 1 1 5 1 18
+		cancelAppointment.clear();
+		cancelAppointment.sendKeys("01:00");
+		blockPatientMonths.clear();
+		blockPatientMonths.sendKeys("1");
+		slotCount.clear();
+		slotCount.sendKeys("5");
+		maxAppt.clear();
+		maxAppt.sendKeys("1");
+		maxSlotMonths.clear();
+		maxSlotMonths.sendKeys("1");
+
+		majorAge.clear();
+		majorAge.sendKeys("18");
+		log("----------------------------------------------------------------------------------");
+		log("showProviderImage =" + showProviderImage.isEnabled());
+		log("allowPCP =" + allowPCP.isEnabled());
+		log("searchLocation =" + searchLocation.isEnabled());
+		log("pastApptMonths text =" + pastApptMonths.getText());
+		log("----------------------------------------------------------------------------------");
+
+		if (showProviderImage.isEnabled() && showProviderImage.isDisplayed()) {
+			showProviderImage.click();
+		}
+		if (allowPCP.isEnabled() && allowPCP.isDisplayed()) {
+			allowPCP.click();
+		}
+		if (!searchLocation.isEnabled() && !searchLocation.isDisplayed()) {
+			searchLocation.click();
+		}
+		// if (!nextavailable.isEnabled()) {
+		// nextavailable.click();
+		// }
+		pastApptMonths.clear();
+
+		IHGUtil.waitForElement(driver, 60, buttonSave);
+		buttonSave.click();
+	}
+
+	public void updateCancelAppointmentSettings(String cancelHoursBefore) {
+		cancelAppointment.sendKeys(cancelHoursBefore);
+		buttonSave.click();
+	}
+
+	public void blockPatientsAsPerMonth(String lastSeenMonth) {
+		blockPatientMonths.clear();
+		blockPatientMonths.sendKeys(lastSeenMonth);
+		buttonSave.click();
+	}
+
+	public void slotcountToBeDisplayed(String NumberOfSlots) {
+		slotCount.click();
+		slotCount.clear();
+		slotCount.sendKeys(NumberOfSlots);
+		buttonSave.click();
+	}
+
+	public void maxAppointments(String maxAp) {
+		maxAppt.click();
+		maxAppt.clear();
+		maxAppt.sendKeys(maxAp);
+		buttonSave.click();
+	}
+
+	public void maxSlotMonthsToBeDisplayed(String maxMonths) {
+		maxSlotMonths.clear();
+		maxSlotMonths.sendKeys(maxMonths);
+		buttonSave.click();
+	}
+
+	public void majorAgeToSet(String majotAgeInYears) {
+		majorAge.clear();
+		majorAge.sendKeys(majotAgeInYears);
+		buttonSave.click();
+	}
+
+	public void displayProviderImages() {
+		showProviderImage.click();
+		buttonSave.click();
+	}
+
+	public void toggleAllowPCP() {
+		allowPCP.click();
+		buttonSave.click();
+	}
+
+	public void toggleSearchLocation() {
+		log("is search location Enabled" + searchLocation.isEnabled());
+		if (!searchLocation.isEnabled()) {
+			searchLocation.click();
+		}
+		buttonSave.click();
+	}
+
+	public void toggleNextavailable() {
+		nextavailable.click();
+		buttonSave.click();
+	}
+
+	public void togglePastApptMonths() {
+		pastApptMonths.click();
+		buttonSave.click();
+	}
+
+	public void selectAppointmentComments() {
+		if (radioOption0.isSelected() == false) {
+			radioOption0.click();
+			buttonSave.click();
+		}
+	}
+
+	public void selectChiefComplaint() {
+		if (radioOption1.isSelected() == false) {
+			radioOption1.click();
+			buttonSave.click();
+		}
+	}
 	
+	public void saveSlotSettings() {
+		javascriptClick(buttonSave);
+	}
 }

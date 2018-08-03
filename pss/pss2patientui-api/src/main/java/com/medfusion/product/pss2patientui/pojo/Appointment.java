@@ -65,6 +65,21 @@ public class Appointment {
 	private String underAgePatientPassword;
 
 	private Boolean isCancelApt = true;
+	private Boolean isInsuranceEnabled = false;
+
+	private String oldPatientUserName;
+	private String oldPatientPassword;
+
+	private Boolean isCancelButtonPresent;
+	private int displaySlotCountLength;
+	private Boolean isNextMonthSlotAvail;
+
+	private int calanderDaysAvaiable;
+	private Boolean isCalanderDateDisplayed;
+	private Boolean isProviderImageDisplayed;
+	private Boolean isSearchLocationDisplayed;
+
+	private String providerImageAPI;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -505,6 +520,94 @@ public class Appointment {
 
 	public void setIsCancelApt(Boolean isCancelApt) {
 		this.isCancelApt = isCancelApt;
+	}
+
+	public Boolean getIsInsuranceEnabled() {
+		return isInsuranceEnabled;
+	}
+
+	public void setIsInsuranceEnabled(Boolean isInsuranceEnabled) {
+		this.isInsuranceEnabled = isInsuranceEnabled;
+	}
+
+	public String getOldPatientUserName() {
+		return oldPatientUserName;
+	}
+
+	public void setOldPatientUserName(String oldPatientUserName) {
+		this.oldPatientUserName = oldPatientUserName;
+	}
+
+	public String getOldPatientPassword() {
+		return oldPatientPassword;
+	}
+
+	public void setOldPatientPassword(String oldPatientPassword) {
+		this.oldPatientPassword = oldPatientPassword;
+	}
+
+	public Boolean getIsCancelButtonPresent() {
+		return isCancelButtonPresent;
+	}
+
+	public void setIsCancelButtonPresent(Boolean isCancelButtonPresent) {
+		this.isCancelButtonPresent = isCancelButtonPresent;
+	}
+
+	public int getDisplaySlotCountLength() {
+		return displaySlotCountLength;
+	}
+
+	public void setDisplaySlotCountLength(int displaySlotCountLength) {
+		this.displaySlotCountLength = displaySlotCountLength;
+	}
+
+	public Boolean getIsNextMonthSlotAvail() {
+		return isNextMonthSlotAvail;
+	}
+
+	public void setIsNextMonthSlotAvail(Boolean isNextMonthSlotAvail) {
+		this.isNextMonthSlotAvail = isNextMonthSlotAvail;
+	}
+
+	public Boolean getIsCalanderDateDisplayed() {
+		return isCalanderDateDisplayed;
+	}
+
+	public void setIsCalanderDateDisplayed(Boolean isCalanderDateDisplayed) {
+		this.isCalanderDateDisplayed = isCalanderDateDisplayed;
+	}
+
+	public Boolean getIsProviderImageDisplayed() {
+		return isProviderImageDisplayed;
+	}
+
+	public void setIsProviderImageDisplayed(Boolean isProviderImageDisplayed) {
+		this.isProviderImageDisplayed = isProviderImageDisplayed;
+	}
+
+	public Boolean getIsSearchLocationDisplayed() {
+		return isSearchLocationDisplayed;
+	}
+
+	public void setIsSearchLocationDisplayed(Boolean isSearchLocationDisplayed) {
+		this.isSearchLocationDisplayed = isSearchLocationDisplayed;
+	}
+
+	public int getCalanderDaysAvaiable() {
+		return calanderDaysAvaiable;
+	}
+
+	public void setCalanderDaysAvaiable(int calanderDaysAvaiable) {
+		this.calanderDaysAvaiable = calanderDaysAvaiable;
+	}
+
+	public String getProviderImageAPI() {
+		return providerImageAPI;
+	}
+
+	public void setProviderImageAPI(String providerImageAPI) {
+		this.providerImageAPI = providerImageAPI;
 	}
 
 }
