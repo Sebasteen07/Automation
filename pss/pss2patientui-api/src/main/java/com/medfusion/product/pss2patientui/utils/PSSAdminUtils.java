@@ -59,7 +59,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
 		if (patientflow.ruleLength() > 0) {
-			if (patientflow.getRule().contains("S")) {
+			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
 				setRulesNoSpecialitySet1(patientflow);
 			}
 			Thread.sleep(9000);
