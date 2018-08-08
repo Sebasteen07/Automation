@@ -61,6 +61,10 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select location for appointment.");
 		Location location;
 		if (startOrderOn.equalsIgnoreCase("true")) {
+			Boolean insuranceEnabled = true;
+			if (insuranceEnabled) {
+				Thread.sleep(3500);
+			}
 			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		} else {
@@ -85,6 +89,10 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		if (startOrderOn.equalsIgnoreCase("true")) {
+			Boolean insuranceEnabled = true;
+			if (insuranceEnabled) {
+				Thread.sleep(3500);
+			}
 			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		} else {
@@ -107,6 +115,10 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		if (startOrderOn.equalsIgnoreCase("true")) {
+			Boolean insuranceEnabled = true;
+			if (insuranceEnabled) {
+				Thread.sleep(3500);
+			}
 			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		} else {
@@ -129,7 +141,11 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Location for appointment.");
 		Location location;
 		if (startOrderOn.equalsIgnoreCase("true")) {
-			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
+			Boolean insuranceEnabled = true;
+			if (insuranceEnabled) {
+				Thread.sleep(3500);
+			}
+			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		} else {
 			location = homepage.selectLocation(PSSConstants.START_LOCATION);
@@ -194,8 +210,10 @@ public class PSSPatientUtils {
 				Thread.sleep(3500);
 			}
 
-			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
-
+			// StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
+			StartAppointmentInOrder startappointmentInOrder =
+					homepage.updateInsuranceInfo(driver, PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+							PSSConstants.INSURANCE_PRIMARYPHONE);
 			Thread.sleep(1000);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		} else {
@@ -216,8 +234,9 @@ public class PSSPatientUtils {
 
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment, WebDriver driver) throws Exception {
 		if (startOrderOn.equalsIgnoreCase("true")) {
-			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
+			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
 		} else {
 			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
 		}
@@ -266,6 +285,42 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
+		bookAppointment(false, aptDateTime, testData, driver);
+	}
+
+	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+		Log4jUtil.log("--------Flow Starts---------------");
+		AppointmentPage appointment;
+		if (startOrderOn.equalsIgnoreCase("true")) {
+			Boolean insuranceEnabled = true;
+			if (insuranceEnabled) {
+				Thread.sleep(3500);
+			}
+			Speciality speciality = homepage.skipInsuranceForSpeciality(driver);
+			StartAppointmentInOrder startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
+
+			Thread.sleep(1000);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		} else {
+			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
+		}
+		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Log4jUtil.log(">>>>>>>>>> Is Location Search Enabled? " + location.isSearchLocationEnabled());
+		assertTrue(location.areBasicPageElementsPresent());
+		Provider provider = location.searchProvider(testData.getLocation());
+		Log4jUtil.log("address = " + location.getAddressValue());
+		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Log4jUtil.log(">>>>>>>>>> provider image present " + provider.providerImageSize());
+
+		assertTrue(provider.areBasicPageElementsPresent());
+		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Thread.sleep(6000);
 		bookAppointment(false, aptDateTime, testData, driver);
 	}
 
@@ -398,7 +453,9 @@ public class PSSPatientUtils {
 		if (rule.equalsIgnoreCase(PSSConstants.STBL)) {
 			STBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
-
+		if (rule.equalsIgnoreCase(PSSConstants.STBL)) {
+			STLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData,AppointmentPage appointment) throws Exception {

@@ -9,7 +9,7 @@ public class PSSConstants {
 	public final static String START_LOCATION = "Location";
 	public final static String START_PROVIDER = "Provider";
 
-	public final static String INSURANCE_CARRIER = "Aviva";
+	public final static String INSURANCE_CARRIER = "Cigna";
 	public final static String INSURANCE_MEMBERID = "002";
 	public final static String INSURANCE_GROUPID = "005";
 	public final static String INSURANCE_PRIMARYPHONE = "1234567890";

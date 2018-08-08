@@ -108,7 +108,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
 
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
@@ -163,7 +163,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.IDP);
+		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.IDP);
 
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
@@ -240,7 +240,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		// adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
 
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
@@ -498,7 +498,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
-
+		log("URL >>>>>> " + testData.getUrlLoginLess());
 		log("Step 1: Create New patient details");
 		PSSNewPatient pssnewpatient = new PSSNewPatient();
 		pssnewpatient.createPatientDetails(testData);
@@ -524,6 +524,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					loginlesspatientinformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 							testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), testData.getCity(), testData.getStreet());
 		}
+		log(testData.getFirstName());
+		log(testData.getLastName());
+		log(testData.getEmail());
+		log(testData.getPrimaryNumber());
+		log(testData.getGender());
+		log(testData.getDob());
 		Thread.sleep(9000);
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
@@ -1498,6 +1504,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentWithoutSettingAnyConfiguration(String partnerPractice) throws Exception {
+		log("Verify slots booking from pss2.0 patient ui when no configuration is set.");
 		log("Step 1: Load test Data from External Property file.");
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -1541,4 +1548,37 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceCarrierFlow(String partnerPractice) throws Exception {
+		log("Verify when Insurance carrier is set at begining of homepage.");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
+		log("Step 2: Login to Admin portal and set insurance.");
+		pssadminutils.setInsuranceState(driver, adminuser);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		testData.setIsInsuranceEnabled(true);
+		log("Step 3: PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlIPD());
+		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
+		log("Select Existing patient button");
+		ExistingPatientIDP existingpatient = onlineappointmentschedulingPage.selectExistingPatientIDP();
+		log("Step 4: Fill Existing Patient username=" + testData.getPatientUserName() + " and password=" + testData.getPatientPassword());
+		HomePage homepage = existingpatient.patientSignIn(testData.getPatientUserName(), testData.getPatientPassword());
+		log("Step 5: Verify if home page is loaded.");
+		homepage.areBasicPageElementsPresent();
+		log("Step 6 : dont set Is Next Day Booking ");
+		testData.setIsNextDayBooking(false);
+		log("Step 7: Select the flow as per the rule." + rule);
+		testData.setIsCancelApt(false);
+		testData.setIsNextDayBooking(false);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
 }

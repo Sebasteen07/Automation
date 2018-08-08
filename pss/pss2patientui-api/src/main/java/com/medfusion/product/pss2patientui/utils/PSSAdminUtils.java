@@ -13,6 +13,7 @@ import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
+import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -212,5 +213,20 @@ public class PSSAdminUtils {
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
+	}
+
+	public void setInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		if (!patientflow.isInsuranceToBeDisplayed()) {
+			patientflow.selectInsurance();
+		}
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		Log4jUtil.log("Patient Flow page Show Insurance= " + patientflow.isInsuranceToBeDisplayed());
+		InsuranceCarrier insurancecarrier = patientflow.gotoInsuranceCarrierTab();
+		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
+		insurancecarrier.enableshowInsuranceAtStart();
+		insurancecarrier.logout();
 	}
 }

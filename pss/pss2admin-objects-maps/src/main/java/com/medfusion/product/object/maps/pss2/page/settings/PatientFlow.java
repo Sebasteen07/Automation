@@ -73,6 +73,10 @@ public class PatientFlow extends SettingsTab {
 		return insuranceToggle.isSelected();
 	}
 
+	public void selectInsurance() {
+		insuranceToggle.click();
+	}
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

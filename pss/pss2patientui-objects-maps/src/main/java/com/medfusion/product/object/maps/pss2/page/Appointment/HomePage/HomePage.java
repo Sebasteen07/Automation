@@ -245,4 +245,18 @@ public class HomePage extends PSS2MainPage {
 		updateinsurancepage.skipInsuranceUpdateOnHomePage();
 		return PageFactory.initElements(driver, Speciality.class);
 	}
+
+	public StartAppointmentInOrder updateInsuranceInfo(WebDriver driver, String insuranceName, String memberID, String groupID, String phone) {
+		log("In updateInsuranceInfo of HomePage.");
+		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
+		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
+	}
+
+	public Speciality updateInsuranceForSpeciality(WebDriver driver, String insuranceName, String memberID, String groupID, String phone) {
+		log("In updateInsuranceForSpeciality of HomePage.");
+		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
+		return PageFactory.initElements(driver, Speciality.class);
+	}
 }
