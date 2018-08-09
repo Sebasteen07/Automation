@@ -59,7 +59,7 @@ public class PSSPatientUtils {
 
 	public void LBTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select location for appointment.");
-		Location location;
+		Location location = null;
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			Boolean insuranceEnabled = true;
 			if (insuranceEnabled) {
@@ -139,7 +139,7 @@ public class PSSPatientUtils {
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Location for appointment.");
-		Location location;
+		Location location = null;
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			Boolean insuranceEnabled = true;
 			if (insuranceEnabled) {
@@ -291,7 +291,7 @@ public class PSSPatientUtils {
 	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		Log4jUtil.log("--------Flow Starts---------------");
-		AppointmentPage appointment;
+		AppointmentPage appointment = null;
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			Boolean insuranceEnabled = true;
 			if (insuranceEnabled) {

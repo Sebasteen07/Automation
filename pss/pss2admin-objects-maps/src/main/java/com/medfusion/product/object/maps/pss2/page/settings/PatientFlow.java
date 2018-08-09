@@ -18,7 +18,7 @@ public class PatientFlow extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-	@FindBy(how = How.ID, using = "showinsurance")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[1]/div/div/div/label/input")
 	private WebElement insuranceToggle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
@@ -74,6 +74,7 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public void selectInsurance() {
+		log("insuranceToggle = " + insuranceToggle);
 		insuranceToggle.click();
 	}
 

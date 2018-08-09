@@ -482,7 +482,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {
-		Object[][] obj = new Object[][] {{"GW"}};
+		Object[][] obj = new Object[][] { {"GW"}, {"GE"}, {"NG"}};
 		return obj;
 	}
 
@@ -497,6 +497,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
 		}
 		log("URL >>>>>> " + testData.getUrlLoginLess());
 		log("Step 1: Create New patient details");
@@ -551,6 +554,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 
 		log("Step 2: Enter PSS2.0 Patient UI");
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlLoginLess());
@@ -591,7 +597,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
-
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		log("Step 2: Load PSS 2.0 patient UI");
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlLoginLess());
 		log("Step 3: Select New Patient");
@@ -624,6 +632,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlLoginLess());
 
@@ -654,7 +665,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("url =" + testData.getUrlIPD());
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
 
 		log("Step 3: Verify that New and Existing Patient button is displayed");
@@ -687,6 +702,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		PSSNewPatient pssnewpatient = new PSSNewPatient();
 		pssnewpatient.createPatientDetails(testData);
 
@@ -713,6 +731,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		ExistingPatientIDP existingpatientidp = new ExistingPatientIDP(driver, url);
 		existingpatientidp.patientSignIn(testData.getEmail(), testData.getPassword());
 		log("existingpatientidp page " + existingpatientidp.areBasicPageElementsPresent());
+		Thread.sleep(6000);
 	}
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -727,6 +746,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
 		}
 		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
 		log("IDP Url= " + testData.getUrlIPD());
@@ -764,6 +786,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		log("Step 2: Move to PSS patient Portal 2.0 to book an Appointment");
 		log("IDP Url= " + testData.getUrlIPD());
 		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlIPD());
@@ -800,6 +825,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
 		}
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
@@ -843,6 +871,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
@@ -881,6 +912,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
 		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
+		}
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
@@ -917,6 +951,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
 		}
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
@@ -955,6 +992,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		if (partnerPractice.equalsIgnoreCase(PSSConstants.GE)) {
 			propertyData.setAdminGE(adminuser);
 			propertyData.setAppointmentResponseGE(testData);
+		}
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.NG)) {
+			propertyData.setAppointmentResponseNG(testData);
 		}
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
