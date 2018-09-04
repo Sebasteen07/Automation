@@ -3,6 +3,9 @@ package com.medfusion.patientportal2.test;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +83,8 @@ import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
+import com.medfusion.qa.mailinator.Email;
+import com.medfusion.qa.mailinator.Mailer;
 
 @Test
 public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
@@ -97,11 +102,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
 	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
+	private static final String INVITE_LINK_FRAGMENT = "invite";
 	
 	PropertyFileLoader testData;
 
 	// TODO move stuff around stepCounter to BaseTestNGWebDriver
 	int stepCounter;
+	Instant testStart;
 
 	@Override
 	@BeforeMethod(alwaysRun = true)
@@ -117,10 +124,42 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Resetting step counter");
 		stepCounter = 0;
+		testStart = Instant.now();
 	}
 
 	private void logStep(String logText) {
 		log("STEP " + ++stepCounter + ": " + logText);
+	}
+	private long testSecondsTaken() {
+		return testStart.until(Instant.now(), ChronoUnit.SECONDS);
+	}
+	
+	private String getRedirectUrl(String originUrl) {
+		log("Navigating to input URL and checking redirection for 10 seconds");
+		driver.get(originUrl);
+		for(int i = 0; i < 10; i++){
+			if (driver.getCurrentUrl() != originUrl) {
+				log("Found redirected URL: " + driver.getCurrentUrl());
+				return driver.getCurrentUrl();
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return "";
+		
+	}
+	/**
+	 * verifies if the invite url contains a specific keyword(INVITE_LINK_FRAGMENT), if not, it is a redirect url (e.g.from sendinblue)
+	 * @return
+	 */
+	private boolean isInviteLinkFinal(String url){
+		boolean ret = url.contains(INVITE_LINK_FRAGMENT);
+		if (ret) log("The retrieved link is a redirect URL : " + url);
+		return ret;
 	}
 
 	@AfterMethod
@@ -880,13 +919,20 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 
-		logStep("Logging into Mailinator and getting Guardian Activation url");
-		String emailSubject = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();		
-		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubject, INVITE_EMAIL_BUTTON_TEXT, 15);
-		assertNotNull(guardianUrlEmail, "Error: Activation link not found.");
-		logStep("Retrieved activation link is " + guardianUrlEmail);
-		logStep("Comparing with link from PrP " + guardianUrl);
-		assertTrue(guardianUrl.equals(guardianUrlEmail));
+		logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");		
+		
+		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();			
+		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+		assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);		
+		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
+		assertNotNull(guardianUrlEmail, "Error: No matching link found in guardian invite email!");	
+		//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
+		if (!isInviteLinkFinal(guardianUrlEmail)){
+			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
+		}
+		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
+		logStep("Comparing with dependents link from PrP " + guardianUrl);
+		assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
 	}
 
 	@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
@@ -954,20 +1000,35 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.faChangePatient();
 		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
 
-		logStep("Logging into Mailinator and getting Patient and Guardian Activation url");		
-		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();		
-
-		String patientUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 30);
-		assertNotNull(patientUrlEmail, "Error: Activation patients link not found.");
+		logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");		
+		
+		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();			
+		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+		assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);		
+		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
+		assertNotNull(guardianUrlEmail, "Error: No matching link found in guardian invite email!");	
+		//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
+		if (!isInviteLinkFinal(guardianUrlEmail)){
+			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
+		}
+		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
+		logStep("Comparing with dependents link from PrP " + guardianUrl);
+		assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
+		
+		String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
+		Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken());
+		assertNotNull(emailPatient, "Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);		
+		String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
+		assertNotNull(patientUrlEmail, "Error: No matching link found in dependent invite email!");	
+		//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
+		if (!isInviteLinkFinal(patientUrlEmail)){
+			patientUrlEmail = getRedirectUrl(patientUrlEmail);
+		}
 		logStep("Retrieved patients activation link is " + patientUrl);
 		logStep("Comparing with patients link from PrP " + patientUrlEmail);
 		assertEquals(patientUrl, patientUrlEmail, "Practice portal and email unlock links for dependent are not equal!");
 
-		String guardianUrlEmail = new Mailinator().getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT, 30);
-		assertNotNull(guardianUrlEmail, "Error: Activation dependents link not found.");
-		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
-		logStep("Comparing with dependents link from PrP " + guardianUrl);
-		assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
+
 	}
 
 	// This test uses under-age patients created at tests
