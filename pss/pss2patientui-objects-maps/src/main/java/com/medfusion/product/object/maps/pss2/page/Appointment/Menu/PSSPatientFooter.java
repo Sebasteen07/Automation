@@ -12,15 +12,15 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class PSSPatientFooter extends PSS2MainPage {
 
-	public PSSPatientFooter(WebDriver driver) {
-		super(driver);
-	}
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[2]/footer/div[1]/object")
 	private WebElement imagePartner;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[2]/footer/div[2]/p")
 	private WebElement copyRightText;
+
+	public PSSPatientFooter(WebDriver driver) {
+		super(driver);
+	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {

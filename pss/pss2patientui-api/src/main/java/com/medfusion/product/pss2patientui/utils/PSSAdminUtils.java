@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -55,8 +56,12 @@ public class PSSAdminUtils {
 		if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
 			adminuser.setIsInsuranceDisplayed(true);
 		}
+		
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		
+		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
-		patientflow.logout();
+		adminpatientmatching.logout();
 		Thread.sleep(18000);
 	}
 
@@ -71,9 +76,9 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(28000);
-		// driver.navigate().refresh();
-		// Thread.sleep(26000);
+		Thread.sleep(34000);
+		 driver.navigate().refresh();
+		 Thread.sleep(26000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {

@@ -14,31 +14,31 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 public class NewPatientInsuranceInfo extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "InsuranceCarrier")
-	public WebElement inputInsuranceCarrier;
+	private WebElement inputInsuranceCarrier;
 
 	@FindBy(how = How.ID, using = "memberID")
-	public WebElement inputMemberID;
+	private WebElement inputMemberID;
 
 	@FindBy(how = How.ID, using = "groupID")
-	public WebElement inputGroupID;
+	private WebElement inputGroupID;
 
 	@FindBy(how = How.ID, using = "insurancePhone")
-	public WebElement inputInsurancePhone;
+	private WebElement inputInsurancePhone;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttoncancelins")
-	public WebElement buttonCancel;
+	private WebElement buttonCancel;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonprevins")
-	public WebElement buttonPrevious;
+	private WebElement buttonPrevious;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonsubmitins")
-	public WebElement buttonSubmit;
+	private WebElement buttonSubmit;
 
 	@FindBy(how = How.XPATH, using = ".//div[@class='activewizard']/span/span")
-	public WebElement insuranceInformation;
+	private WebElement insuranceInformation;
 
 	@FindBy(how = How.XPATH, using = ".//a[@class='wizard-link']")
-	public WebElement patientInfoLink;
+	private WebElement patientInfoLink;
 
 
 	public NewPatientInsuranceInfo(WebDriver driver) {

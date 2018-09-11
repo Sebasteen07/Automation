@@ -15,22 +15,22 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 public class UpdateInsurancePage extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "insurancecarrier")
-	public WebElement inputInsuranceCarrier;
+	private WebElement inputInsuranceCarrier;
 
 	@FindBy(how = How.ID, using = "memberID")
-	public WebElement inputMemberID;
+	private WebElement inputMemberID;
 
 	@FindBy(how = How.ID, using = "groupID")
-	public WebElement inputGroupID;
+	private WebElement inputGroupID;
 
 	@FindBy(how = How.ID, using = "insurancePhone")
-	public WebElement inputInsurancePhone;
+	private WebElement inputInsurancePhone;
 
 	@FindBy(how = How.CLASS_NAME, using = "btn-ins")
-	public WebElement buttonDontUpdateInsurance;
+	private WebElement buttonDontUpdateInsurance;
 
 	@FindBy(how = How.ID, using = "updateinfo")
-	public WebElement buttonUpdateInsuranceInfo;
+	private WebElement buttonUpdateInsuranceInfo;
 
 	public UpdateInsurancePage(WebDriver driver) {
 		super(driver);

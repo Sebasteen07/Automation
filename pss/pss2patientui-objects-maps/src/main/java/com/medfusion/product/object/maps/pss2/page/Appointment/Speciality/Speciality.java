@@ -11,12 +11,12 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class Speciality extends PSS2MainPage {
 
+	@FindAll({@FindBy(className = "btn specialtybtndashboard handle-text-Overflow")})
+	private List<WebElement> selectSpecialityList;
+
 	public Speciality(WebDriver driver) {
 		super(driver);
 	}
-
-	@FindAll({@FindBy(className = "btn specialtybtndashboard handle-text-Overflow")})
-	public List<WebElement> selectSpecialityList;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {

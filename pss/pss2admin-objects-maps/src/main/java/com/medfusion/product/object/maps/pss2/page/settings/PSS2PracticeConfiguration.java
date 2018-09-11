@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 public class PSS2PracticeConfiguration extends SettingsTab {
 
@@ -20,11 +21,17 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	private WebElement practiceText;
 
 	@FindAll({@FindBy(css = ".nav-chang-color")})
-	public List<WebElement> colorType;
+	private List<WebElement> colorType;
 
 	@FindBy(how = How.NAME, using = "zone")
 	private WebElement clientTimeZone;
 
+	@FindBy(how = How.ID, using = "simple-select")
+	private WebElement partnerName;
+	
+	@FindAll({@FindBy(xpath = "//*[@id=\"simple-select\"]/option")})
+	private List<WebElement> partnerOptionValue;
+	
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
 	}
@@ -49,6 +56,10 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	public String clientTimeZone() {
 		return clientTimeZone.getAttribute("ng-reflect-model");
 	}
+	
+	public String getPartnerValue() {
+		return partnerName.getAttribute("ng-reflect-model");
+	}
 
 	public String getSelectedColor() {
 		log("color length : " + colorType.size());
@@ -58,6 +69,15 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 			}
 		}
 		log("active color not found.");
+		return null;
+	}
+	
+	public String matchPartnerName() {
+		for(int i=0;i<partnerOptionValue.size();i++) {
+			if(partnerOptionValue.get(i).getAttribute("ng-reflect-ng-value").equalsIgnoreCase(getPartnerValue())) {
+				return partnerOptionValue.get(i).getText();
+			}
+		}
 		return null;
 	}
 }

@@ -29,6 +29,7 @@ import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.Jal
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.JalapenoSymptomAssessmentPage;
+
 public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='home']")
@@ -87,6 +88,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "actionButton")
 	private WebElement buttonContinue;
+
+	@FindBy(how = How.CSS, using = ".modal-title.ng-binding")
+	private WebElement appointmentNotScheduled;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -162,9 +166,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public void clickStartRegistrationButton() throws Exception {
 		log("Clicking on Start Registration button.");
-		startRegistrationButton.click();
-		log("Switch to the Forms iframe.");
-		IHGUtil.setFrame(driver, "iframe");
+		startRegistrationButton.click();		
 	}
 
 	public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) throws Exception {
@@ -309,6 +311,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(appointments);
 		IHGUtil.waitForElement(driver, 80, buttonContinue);
+		javascriptClick(buttonContinue);
+	}
+
+	public String appointmentNotScheduled() {
+		javascriptClick(appointments);
+		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
+		return appointmentNotScheduled.getText();
+	}
+
+	public void closeModalPopUp() {
 		javascriptClick(buttonContinue);
 	}
 }

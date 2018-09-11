@@ -18,7 +18,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindAll({@FindBy(css = "a[class='rbc-event-content']")})
 	public List<WebElement> appointmentList;
 
-	@FindAll({@FindBy(css = "a[class='time-btn slotTime-btn']")})
+	@FindAll({@FindBy(css = ".time-btn")})
 	public List<WebElement> appointmentTimeList;
 
 	public AppointmentDateTime(WebDriver driver) {
@@ -30,15 +30,17 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return true;
 	}
 
-	public void selectDate() {
+	public String selectDate() {
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		for (int i = 0; i < appointmentList.size(); i++) {
 			if (appointmentList.get(i).isDisplayed()) {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
-				break;
+				return appointmentList.get(i).getText();
+				
 			}
 		}
+		return null;
 	}
 
 	public UpdateInsurancePage selectAppointmentTimeIns() {
@@ -64,5 +66,14 @@ public class AppointmentDateTime extends PSS2MainPage {
 			}
 		}
 		return null;
+	}
+
+	public String getTimeDifference() {
+		String slotTimePlusOne = appointmentTimeList.get(1).getText();
+		String slotTime = appointmentTimeList.get(0).getText();
+		String min2 = slotTimePlusOne.substring(slotTimePlusOne.indexOf(":") + 1, slotTimePlusOne.indexOf(" "));
+		String min1 = slotTime.substring(slotTime.indexOf(":") + 1, slotTime.indexOf(" "));
+		int minutesDiff = Integer.parseInt(min2) - Integer.parseInt(min1);
+		return Integer.toString(minutesDiff);
 	}
 }

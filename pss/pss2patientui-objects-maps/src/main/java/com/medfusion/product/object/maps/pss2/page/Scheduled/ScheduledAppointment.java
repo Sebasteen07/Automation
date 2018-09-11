@@ -8,21 +8,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class ScheduledAppointment extends PSS2MainPage {
-
 	
 	@FindBy(how = How.ID, using = "gotodashboard")
 	private WebElement buttonBackToAppointmentList;
 
-	@FindBy(how = How.CSS, using = ".btn-link")
+	@FindBy(how = How.CSS, using = ".btn-link.addCalendar")
 	private WebElement linkAddToCalander;
 
 	@FindAll({@FindBy(css = "value-classschedule")})
 	public List<WebElement> flowWizardList;
+
+	@FindBy(how = How.XPATH, using = "//h1[@class=\"schedule\"]/text()")
+	private WebElement appointmentID;
 
 	public ScheduledAppointment(WebDriver driver) {
 		super(driver);
@@ -41,4 +45,12 @@ public class ScheduledAppointment extends PSS2MainPage {
 		linkAddToCalander.click();
 	}
 
+	public HomePage backtoHomePage() {
+		buttonBackToAppointmentList.click();
+		return PageFactory.initElements(driver, HomePage.class);
+	}
+
+	public String getAppointmentID() {
+		return flowWizardList.get(flowWizardList.size()).getText();
+	}
 }

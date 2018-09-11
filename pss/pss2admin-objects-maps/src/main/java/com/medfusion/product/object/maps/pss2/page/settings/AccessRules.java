@@ -41,10 +41,13 @@ public class AccessRules extends SettingsTab {
 	private WebElement buttonSaveLoginLess;
 
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
-	public List<WebElement> buttonList;
+	private List<WebElement> buttonList;
 
 	@FindAll({@FindBy(xpath = ".//*[@class=\"col-md-12\"]/a")})
-	public List<WebElement> urlList;
+	private List<WebElement> urlList;
+	
+	@FindBy(how = How.ID, using = "enableloginless")
+	private WebElement enableLoginless;
 	
 	public AccessRules(WebDriver driver) {
 		super(driver);
@@ -123,5 +126,9 @@ public class AccessRules extends SettingsTab {
 
 	public WebElement getIDPUrlElement() {
 		return urlList.get(1);
+	}
+	
+	public String isLoginlessTrue() {
+		return enableLoginless.getAttribute("ng-reflect-model");
 	}
 }
