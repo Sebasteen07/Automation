@@ -98,5 +98,42 @@ public class PatientActivation implements IPatientActivation {
         patientInfo.practicePatientId = patientInfo.firstName;
         return patientInfo;
     }
+	@Override
+	public PatientInfo editPatientSetPrimaryId(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo, String emrid)
+            throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
+        System.out.println("Starting flow to set primary external id for patient, emrid: " + emrid);        
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portalUrl"));
+        PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+        System.out.println("Click on Patient Search Link");
+        PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+        System.out.println("Set Patient Search Fields");
+        pPatientSearchPage.searchForPatientInPatientSearch(patientInfo.firstName, patientInfo.lastName);
+
+        System.out.println("Open Patient Dashboard");
+        PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(patientInfo.firstName, patientInfo.lastName);
+
+        // save email
+        System.out.println("@@@@@@@@@@@@@@@@@ " + patientInfo.email);
+
+        System.out.println("Click Edit ID");
+        List<WebElement> editButtons = driver.findElements(By.linkText("Edit"));
+        editButtons.get(3).click();
+
+        // read memberid and update MRN ( = external memberid)
+        System.out.println("Update ID");
+        String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
+        System.out.println("Found memberId: " + memberId);
+        patientInfo.memberId = memberId;
+        WebElement emridBox = driver.findElement(By.name("emrid"));
+        emridBox.sendKeys(emrid);
+        driver.findElement(By.name("submitted")).click();
+        if (pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated") != true)
+            throw new RuntimeException("ID Update failed!");        
+        patientInfo.billingAccountNumber = -1;
+        patientInfo.practicePatientId = emrid;
+        return patientInfo;
+    }
 
 }

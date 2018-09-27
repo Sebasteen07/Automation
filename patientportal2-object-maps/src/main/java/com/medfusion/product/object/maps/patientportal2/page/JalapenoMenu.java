@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -189,7 +190,16 @@ public abstract class JalapenoMenu extends MedfusionPage {
         
         log("Clicking on Health Record menu button");
         healthRecordMenu.click();
-        
+        try {
+	        WebElement otherDocumentsButton = new WebDriverWait(driver, 30)
+					.until(ExpectedConditions.visibilityOf(
+							driver.findElement(By.linkText("Other documents"))
+							)
+						);
+	        otherDocumentsButton.click();
+        } catch (NoSuchElementException e) {
+        	log("Other documents button not found within 30 seconds, are you on the correct page?");
+        }
         return PageFactory.initElements(driver, DocumentsPage.class);
     }
 

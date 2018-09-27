@@ -283,7 +283,7 @@ public class PatientMessagingPage extends BasePageObject {
 		Select sel2 = new Select(template);
 		sel2.selectByVisibleText(templateName);
 		setSubject(subjectText);
-		patientCanReplyButton.click();
+		javascriptClick(patientCanReplyButton);
 		setRecipientType();
 	}
 
