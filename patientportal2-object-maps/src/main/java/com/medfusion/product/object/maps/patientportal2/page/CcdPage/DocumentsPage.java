@@ -34,7 +34,6 @@ public class DocumentsPage extends MedfusionPage {
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(dateFrom);
-		webElementsList.add(downloadBtn);
 		
 		
 		log("Checking all elements on " + this.getClass().getSimpleName());
@@ -47,7 +46,7 @@ public class DocumentsPage extends MedfusionPage {
                     log("Element " + w.toString() + " : is displayed", Level.DEBUG);
                     attempt = 3;
                 } catch (StaleElementReferenceException ex) {
-                    log("StaleElementReferenceException was catched, attempt: " + attempt++);
+                    log("StaleElementReferenceException was caught, attempt: " + attempt++);
                 } catch (TimeoutException ex) {
                     log(ex.getMessage());
                     return false;
