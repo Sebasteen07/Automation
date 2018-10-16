@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -23,6 +24,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -270,6 +272,17 @@ public class JalapenoHomePage extends JalapenoMenu {
 		askAQuestion.click();
 
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	public JalapenoAskAStaffV2Page1 openSpecificAskaV2(String askaName) {
+		IHGUtil.PrintMethodName();
+		askAQuestion.click();
+		try {
+			driver.findElement(By.linkText(askaName)).click();
+		} catch (NoSuchElementException e){
+			log("No question with the specified link text found! name: " + askaName);
+			e.printStackTrace();
+		}
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
 	}
 	
 	public JalapenoSymptomAssessmentPage clickOnSymptomAssessment(WebDriver driver) {
