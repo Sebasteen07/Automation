@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
@@ -27,9 +28,14 @@ public class Provider extends PSS2MainPage {
 	@FindAll({@FindBy(css = ".btn")})
 	private List<WebElement> providerList;
 
+	@FindBy(how = How.ID, using = "providerserach")
+	private WebElement searchForProvider;
+
+	@FindAll({@FindBy(css = ".providerImage-width")})
+	private List<WebElement> providerImages;
+
 	public Provider(WebDriver driver) {
 		super(driver);
-		log("Provider called...");
 	}
 
 	@Override
@@ -41,7 +47,7 @@ public class Provider extends PSS2MainPage {
 
 	public Location selectLocation(String providerName) {
 		log("in selectLocation providerList" + providerName);
-		for (int i = 0; i <= providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().contains(providerName)) {
 				providerList.get(i).click();
@@ -54,7 +60,7 @@ public class Provider extends PSS2MainPage {
 	public AppointmentPage selectAppointment(String providerName) {
 		log("size= " + providerList.size());
 		log("Text= " + providerList.get(0).getText());
-		for (int i = 0; i <= providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerName + " = " + providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().contains(providerName)) {
 				providerList.get(i).click();
@@ -95,5 +101,23 @@ public class Provider extends PSS2MainPage {
 			     }
 				);
 		return result;
+	}
+
+	public int providerListSize() {
+		return providerList.size();
+	}
+
+	public int providerImageSize() {
+		return providerImages.size();
+	}
+
+	public List<WebElement> getProviderNames() {
+		return providerList;
+	}
+
+	public int searchForProviderFromList(String providerName) {
+		searchForProvider.sendKeys(providerName);
+		log("providerList = " + providerList.size());
+		return providerList.size();
 	}
 }

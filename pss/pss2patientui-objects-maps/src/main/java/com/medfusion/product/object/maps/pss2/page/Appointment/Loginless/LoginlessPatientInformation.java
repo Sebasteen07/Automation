@@ -1,9 +1,11 @@
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -55,6 +57,9 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "street")
 	private WebElement inputStreet;
+
+	@FindAll({@FindBy(css = ".dismissbuttons")})
+	public List<WebElement> dismissPopUpButton;
 
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);
@@ -136,5 +141,46 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		log("formfilled ...");
 		buttonNext.click();
 		return PageFactory.initElements(driver, HomePage.class);
+	}
+
+
+	public HomePage fillNewPatientFormToActivate(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
+			String phoneNumber,
+			String city, String street) {
+		log("phoneNumber= " + phoneNumber);
+		inputFirstName.sendKeys(firstName);
+		inputLastName.sendKeys(lastName);
+		datePicker.click();
+
+		DateMatcher dateMatcher = new DateMatcher();
+		dateMatcher.selectDate(dob, driver);
+
+		selectGender.click();
+		Select selectGenderType = new Select(selectGender);
+		selectGenderType.selectByValue(gender);
+		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+
+		inputEmail.sendKeys(email);
+		inputStreet.sendKeys(street);
+		inputCity.sendKeys(city);
+		Select selectStateValue = new Select(selectState);
+		selectStateValue.selectByValue("AZ");
+		inputZip.sendKeys(zipCodeValue);
+		log("formfilled ...");
+		buttonNext.click();
+		return PageFactory.initElements(driver, HomePage.class);
+	}
+
+
+	public void isPageLoaded() {
+		IHGUtil.waitForElement(driver, 80, this.buttonNext);
+	}
+
+	public void closePopUp() {
+		for (int i = 0; i < dismissPopUpButton.size(); i++) {
+			if (dismissPopUpButton.get(i).isDisplayed()) {
+				dismissPopUpButton.get(i).click();
+			}
+		}
 	}
 }

@@ -9,11 +9,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.common.utils.IHGUtil;
 
 public class SecureExchangeEmailPage {
 	WebDriver driver;
@@ -112,13 +111,13 @@ public class SecureExchangeEmailPage {
 		Log4jUtil.log("Searching for Email with subject "+subject);
 		try{
 			WebElement secureSendEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
-//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(secureSendEmail));
+			IHGUtil.waitForElement(driver, 80, secureSendEmail);
 			Log4jUtil.log("Verify Subject if matched actual "+secureSendEmail.getText()+" expected "+subject);
 			Assert.assertEquals(secureSendEmail.getText(),subject);
 			secureSendEmail.click();
 			JavascriptExecutor jse = (JavascriptExecutor)driver;
-			jse.executeScript("window.scrollBy(0,400)", "");	
-//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(deleteMessage));
+			jse.executeScript("window.scrollBy(0,400)", "");
+			IHGUtil.waitForElement(driver, 80, deleteMessage);
 			deleteMessage.click();
 			WebElement deleteConf = driver.findElement(By.xpath("//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div/div"));
 			

@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
@@ -28,11 +29,15 @@ public class Location extends PSS2MainPage {
 	@FindAll({@FindBy(className = "locationlinkclick")})
 	private List<WebElement> locationList;
 
-	@FindAll({@FindBy(css = ".glyphicon.glyphicon-chevron-right")})
-	private List<WebElement> locationAddress;
+	@FindBy(how = How.ID, using = "sel1")
+	private WebElement selectRadius;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"locationwizardlist\"]/div[3]/div[1]/div/div[1]/div/input")
+	private WebElement nearByZipCodeInput;
 
 	public Location(WebDriver driver) {
 		super(driver);
+		// PageFactory.initElements(driver, Location.class);
 	}
 
 	private String addressValue = null;
@@ -43,7 +48,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				getLocAddress(i + 1);
+				// getLocAddress(i + 1);
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
@@ -57,7 +62,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				javascriptClick(locationList.get(i));
-				getLocAddress(i);
+				// getLocAddress(i);
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -70,7 +75,7 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(dateTime)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				getLocAddress(i);
+				// getLocAddress(i);
 
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
@@ -91,7 +96,7 @@ public class Location extends PSS2MainPage {
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
+.withTimeout(60, TimeUnit.SECONDS)
 				.pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class)
 				.ignoring(NoSuchFrameException.class)
@@ -107,21 +112,21 @@ public class Location extends PSS2MainPage {
 	}
 
 
-	public void getLocAddress(int indexValue) {
-		try {
-			Thread.sleep(9000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		log(indexValue + " = " + locationAddress.size());
-
-		for (int i = 0; i < locationAddress.size(); i++) {
-			if (i == indexValue) {
-				setAddressValue(locationAddress.get(i).getText());
-			}
-		}
-
-	}
+	// public void getLocAddress(int indexValue) {
+	// try {
+	// Thread.sleep(9000);
+	// } catch (InterruptedException e) {
+	// e.printStackTrace();
+	// }
+	// log(indexValue + " = " + locationAddress.size());
+	//
+	// for (int i = 0; i < locationAddress.size(); i++) {
+	// if (i == indexValue) {
+	// setAddressValue(locationAddress.get(i).getText());
+	// }
+	// }
+	//
+	// }
 
 
 	public String getAddressValue() {
@@ -133,4 +138,20 @@ public class Location extends PSS2MainPage {
 		this.addressValue = addressValue;
 	}
 	
+	public int getLocationListSize() {
+		return locationList.size();
+	}
+
+	public List<WebElement> getLocationNames() {
+		return locationList;
+	}
+
+	public Boolean isSearchLocationEnabled() {
+		// log("ZipSearch display =" + nearByZipCodeInput.isDisplayed() + " and Select Dropdown display=" + selectRadius.isDisplayed());
+		if (selectRadius.isDisplayed() && nearByZipCodeInput.isDisplayed()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

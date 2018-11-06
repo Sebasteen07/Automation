@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "pss2patientui-automation" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "pss2patientui-automation" >
+	<classes>
+		<class name = "com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
+		<methods>
+	    		<include name="testLoginlessForExistingPatient" />
+	    		<include name="testLoginWithWrongPatientDetails" />
+	    		<include name="testCreateLLAccountWithExistingPatientDetails" />
+	    		<include name="testLoginlessForNewPatient" />      		
+     	</methods>
+	</classes>
+</test>
+</suite>

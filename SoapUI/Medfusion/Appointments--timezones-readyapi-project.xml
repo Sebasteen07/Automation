@@ -1,0 +1,1471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="2f67af14-5cc9-4462-bfcd-7f5901ceea7c" created="2.3.0" activeEnvironment="Default environment" name="Appointments- timezones" resourceRoot="" updated="2.3.0 2018-03-06T16:28:42Z" encryptionMode="Not encrypted" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="aaacad3d-c497-4e8e-a06d-7a9b8b518783" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://d1-prechk01.ops.medfusion.net:8085" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint></con:endpoints><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:resource name="{practiceId}" path="/appointments/services/v4/appointments/practice/{practiceId}" id="920033d3-6ad1-4900-a623-2a25cda38221"><con:settings/><con:parameters><con:parameter><con:name>practiceId</con:name><con:value>practiceId</con:value><con:style>TEMPLATE</con:style><con:default>practiceId</con:default></con:parameter><con:parameter><con:name>startDate</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>endDate</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>searchBy</con:name><con:value/><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:boolean</con:type><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:resource name="{integrationId}" path="integration/{integrationId}" id="237fde37-ef09-4422-9290-75f8ad3c681d"><con:settings/><con:parameters><con:parameter><con:name>integrationId</con:name><con:value>integrationId</con:value><con:style>TEMPLATE</con:style><con:default>integrationId</con:default></con:parameter></con:parameters><con:method name="Get appointments by integrationId" id="ecbda3c7-ad3a-4deb-a258-36e150fc247e" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Get appointments by integrationId" id="460072f7-c84b-4cc6-bbdf-a7e4cc2b9018" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d1-prechk01.ops.medfusion.net:8081</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource><con:resource name="{emrId}" path="integration/{integrationId}/emr/{emrId}" id="196b1f42-530b-4f38-aa47-65cd58136fc6"><con:settings/><con:parameters><con:parameter><con:name>integrationId</con:name><con:value>integrationId</con:value><con:style>TEMPLATE</con:style><con:default>integrationId</con:default></con:parameter><con:parameter><con:name>emrId</con:name><con:value>emrId</con:value><con:style>TEMPLATE</con:style><con:default>emrId</con:default></con:parameter></con:parameters><con:method name="Get appointments for patient" id="11e76f56-ca8e-4fbf-8d0d-110504ab24d7" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Get appointments for patient" id="510bd176-0aa3-45f6-9517-e783529487d2" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d1-prechk01.ops.medfusion.net:8081</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:method name="Create appointment" id="e8d79813-a71c-4027-8a7c-6831ff5faaa3" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:ns="http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301">ns:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>202</con:status><con:params/><con:element xmlns:ns="http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301">ns:Response</con:element></con:representation><con:request name="Create appointment" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource><con:resource name="{appointmentId}" path="integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" id="0f05292b-9c8c-4cc5-94c5-069a0dabba37"><con:settings/><con:parameters><con:parameter><con:name>integrationId</con:name><con:value>integrationId</con:value><con:style>TEMPLATE</con:style><con:default>integrationId</con:default></con:parameter><con:parameter><con:name>emrId</con:name><con:value>emrId</con:value><con:style>TEMPLATE</con:style><con:default>emrId</con:default></con:parameter><con:parameter><con:name>appointmentId</con:name><con:value>appointmentId</con:value><con:style>TEMPLATE</con:style><con:default>appointmentId</con:default></con:parameter></con:parameters><con:method name="Get single appointment" id="36e770ee-315c-43b2-ba4b-6d421b64c9cd" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json</con:mediaType><con:status>404</con:status><con:params/><con:element xmlns:ns="http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22">ns:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22">ns:Response</con:element></con:representation><con:request name="Get single appointment" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d1-prechk01.ops.medfusion.net:8081</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:method name="Update appointment" id="7c407335-1c7e-4e3d-b4f0-00d3ba47ab84" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>202</con:status><con:params/><con:element xmlns:ns="http://d3-prechk01.dev.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/04271992">ns:Response</con:element></con:representation><con:request name="Update appointment" id="12e3cef5-98bc-481d-a8f4-3198d1f69785" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource><con:method name="Get list of appointments" id="890b2e38-7df4-4b5f-95a6-1599b88eda35" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624">ns:Response</con:element></con:representation><con:request name="Get list of appointments" id="5b256c51-9975-4a49-8e81-3d562713c188" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:parameterOrder><con:entry>practiceId</con:entry><con:entry>startDate</con:entry><con:entry>endDate</con:entry><con:entry>searchBy</con:entry></con:parameterOrder><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource></con:interface><con:testSuite id="177c4530-1c8f-4d6d-aa32-74ab7f9625d7" name="Copy of DEV 3 PRECHECK ENDPOINTS"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="729773d6-c764-4af1-a95b-c4d739cfa571" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Copy of POST appointments to appointment service" searchProperties="true" maxResults="0"><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">true</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="1a734c0a-c1f1-45a5-9e8c-f8cfa075ee8e"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>practiceId</con:name><con:value>20624</con:value></con:property><con:property><con:name>integrationId</con:name><con:value>9</con:value></con:property><con:property><con:name>emrId</con:name><con:value>2016052301</con:value></con:property><con:property><con:name>time</con:name><con:value>1530531897521</con:value></con:property><con:property><con:name>locationName</con:name><con:value>"Appointment location"</con:value></con:property><con:property><con:name>pmAppointmentId</con:name><con:value>"8922orr94x4x"</con:value></con:property><con:property><con:name>providerName</con:name><con:value>"Lydia williams"</con:value></con:property><con:property><con:name>cancellationReason</con:name><con:value>"test reason mfis"</con:value></con:property><con:property><con:name>pmExternalId</con:name><con:value>373546</con:value></con:property><con:property><con:name>Authorization</con:name><con:value>Basic RHBhdHRlcnNvbjk6cGFzc3dvcmQy</con:value></con:property><con:property><con:name>displayName</con:name><con:value>"Jakub's Practice"</con:value></con:property><con:property><con:name>systemAuthorization</con:name><con:value>Bearer b7efe86ab2a0769e562083cdbcf87c1b</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="badc3cd8-8de6-4095-a14f-e7c3d499564d"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmentid = generator( (('1'..'9')+('a'..'z')+('1'..'9')+('1'..'9')).join(), 12 )
+log.info appointmentid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmAppointmentId",'"'+appointmentid+'"' )
+
+
+
+
+
+def generator2 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+patientid = generator2( (('1'..'9')+('1'..'9')+('1'..'9')).join(), 6 )
+log.info patientid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmExternalId",patientid )
+
+
+import groovy.time.TimeCategory
+now = new Date()
+use(TimeCategory) {
+ def futuretime = now + 5.days 
+ def timeinmillis = futuretime.getTime().toString()
+ log.info timeinmillis
+ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("time",timeinmillis )
+
+}</script></con:config></con:testStep><con:testStep type="httprequest" name="POST CONFIGS for staff-enable everything" id="9506b7fe-ddc9-4a71-b3a4-731d531d47ba"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="20e48a78-19a1-42d9-a45e-de0e50acc136" name="POST CONFIGS for staff-enable everything" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8081/precheck/services/practices/me/configs</con:endpoint><con:request>{
+   "merchantId": 2560789797,
+   "practiceId": 20624,
+   "displayName": ${Properties#displayName},
+   "disableDemographics": false,
+   "disableInsurance": false,
+   "disableCopay": false,
+   "disableBalance": false,
+   "minBalanceAmount": 5,
+   "minBalancePercent":0 ,
+   "minBalanceThreshold": 0,
+   "enablePatientMode": false,
+   "patientModeCompletionMessage": "",
+   "appointmentTimeZone": "America/New_York",
+   "disableAppointmentReminders": false,
+   "phoneNumber": 8111881019,
+   "appointmentReminderFromEmail": "appointments@medfusion.com"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="a81da7df-e585-44ce-ad90-91d80a5d60fb" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="9343eec7-34f1-40b7-a74f-df0ff1f1d3f9" name="Match content of [disableDemographics]"><con:configuration><path>$.disableDemographics</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="233f3b6f-4037-4e98-9bf9-2c6e4014cc85" name="Match content of [disableInsurance]"><con:configuration><path>$.disableInsurance</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="ffbb2e84-cff5-4d73-a685-f9a881eac7a3" name="Match content of [disableCopay]"><con:configuration><path>$.disableCopay</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="257298be-3291-462d-8b52-dd27859a6fab" name="Match content of [disableBalance]"><con:configuration><path>$.disableBalance</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="beb90e96-5dbf-4009-b407-dbc2d6b72c11" name="Match content of [disableAppointmentReminders]"><con:configuration><path>$.disableAppointmentReminders</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${Properties#Authorization}</con:value><con:style>HEADER</con:style><con:default>${Properties#Authorization}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment without insurance" id="bc1826aa-b2e1-42dd-b165-fcfa151af7af"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment without insurance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${Properties#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27513",
+    "lastName": "Daniels",
+    "address": "1225, parktop drive",
+    "address2": "Weston parkside",
+    "city": "cary",
+    "firstName": "John",
+    "phone": 9194554883,
+    "dob": "1990-05-01",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "33734",
+    "address": "1256, Avance clinic",
+    "address2": "McCrimon parkway",
+    "city": "Morrisville",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "12345",
+  "timezone": "America/Anchorage"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="92085f42-131d-4a87-93a8-1aab1065da47" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="37b4368a-02a3-4724-a945-ef5626a39578" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="b45641e7-f12a-49dd-b878-0dd582124104" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="85f8c202-7f0b-4057-8800-b3bcb4de3e95" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment with primary, secondary &amp; tertiary insurance +selenium test" id="ca5419f6-1e08-42bb-b0bf-ed8079301117"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment with primary, secondary &amp; tertiary insurance +selenium test" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>{
+  "insurance": {
+ "primaryInsuranceInfo": 
+{ "name": "Medicare", "groupNumber": "GROUP2874","memberId": "M8924", "groupName": "G93840989", "dateIssued": "2017-05-31T00:00:00Z"
+},
+"secondaryInsuranceInfo": {
+      "name": "",
+      "groupNumber": "Gnumber2",
+      "groupName": "Random group",
+      "memberId": "M34878id",
+      "dateIssued": ""
+    },
+    "tertiaryInsuranceInfo": {
+      "name": "",
+      "groupNumber": "Gnumber3",
+      "groupName": "",
+      "memberId": "M34878id",
+      "dateIssued": ""
+    }
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${Properties#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27513",
+    "lastName": "Daniels",
+    "address": "1225, parktop drive",
+    "address2": "Weston parkside",
+    "city": "cary",
+    "firstName": "John",
+    "phone": 9194554883,
+    "dob": "1990-05-01",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "33734",
+    "address": "1256, Avance clinic",
+    "address2": "McCrimon parkway",
+    "city": "Morrisville",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+    "locationId": "12345",
+  "timezone": "America/Phoenix"
+}
+
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment with primary and secondary insurance +selenium test" id="f388c76a-cd25-4e5a-9edd-56e6c002d5dc"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment with primary and secondary insurance +selenium test" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>	{
+	  "insurance": {
+	 "primaryInsuranceInfo": 
+	{ "name": "Medicare", "groupNumber": "GROUP2874","memberId": "M8924", "groupName": "G93840989", "dateIssued": "2017-05-31T00:00:00Z"
+	},
+	"secondaryInsuranceInfo": {
+	      "name": "",
+	      "groupNumber": "Gnumber2",
+	      "groupName": "Random group",
+	      "memberId": "M34878id",
+	      "dateIssued": ""
+	    }
+	    },
+	  "locationName": ${Properties#locationName},
+	  "pmAppointmentId": ${Properties#pmAppointmentId},
+	  "cancellationReason": ${Properties#cancellationReason},
+	  "practiceDemographics": {
+	    "zip": "27513",
+	    "lastName": "Daniels",
+	    "address": "1225, parktop drive",
+	    "address2": "Weston parkside",
+	    "city": "cary",
+	    "firstName": "John",
+	    "phone": "9194554883",
+	    "dob": "",
+	    "pmExternalId": ${Properties#pmExternalId},
+	    "middleName": "",
+	    "state": "NC",
+	    "email": "kgladtest@gmail.com"
+	  },
+	  "practiceId": ${Properties#practiceId},
+	  "type": "cardio",
+	  "coPayment": {
+	    "amount": 56
+	  },
+	 "balance": {
+	    "amount": 30,
+	    "status":"INCOMPLETE"
+	
+	  },
+	  "appointmentId": "",
+	  "time": ${Properties#time},
+	  "appointmentAddress": {
+	    "zip": "33734",
+	    "address": "1256, Avance clinic",
+	    "address2": "McCrimon parkway",
+	    "city": "Morrisville",
+	    "state": "NC"
+	  },
+	  "providerName": ${Properties#providerName},
+    "locationId": "12345",
+  "timezone": "America/Chicago"
+}
+	}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment with primary insurance +selenium test" id="51ddc916-1703-47f8-b5f4-c82f3339fb2e"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment with primary insurance +selenium test" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>{
+  "insurance": {
+ "primaryInsuranceInfo": 
+{ "name": "Medicare", "groupNumber": "GROUP2874","memberId": "M8924", "groupName": "G93840989", "dateIssued": "2017-05-31T00:00:00Z"
+}
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${Properties#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27513",
+    "lastName": "Daniels",
+    "address": "1225, parktop drive",
+    "address2": "Weston parkside",
+    "city": "cary",
+    "firstName": "John",
+    "phone": 9194554883,
+    "dob": "1990-05-01",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "33734",
+    "address": "1256, Avance clinic",
+    "address2": "McCrimon parkway",
+    "city": "Morrisville",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+      "locationId": "12345",
+  "timezone": "America/Denver"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment with primary insurance +selenium test 2" id="d87530a2-a6cf-4eb4-9d9e-52780bebc088"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment with primary insurance +selenium test 2" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>{
+  "insurance": {
+ "primaryInsuranceInfo": 
+{ "name": "Medicare insurance", "groupNumber": "GROUP2874","memberId": "M8924", "groupName": "G93840989", "dateIssued": ""
+}
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${Properties#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27513",
+    "lastName": "Daniels",
+    "address": "1225, parktop drive",
+    "address2": "Weston parkside",
+    "city": "cary",
+    "firstName": "John",
+    "phone": 9194554883,
+    "dob": "1990-05-01",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "automationtest123@mailinator.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "33734",
+    "address": "1256, Avance clinic",
+    "address2": "McCrimon parkway",
+    "city": "Morrisville",  
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+      "locationId": "12345",
+  "timezone": "America/Los_Angeles"
+
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="POST single Appointment  with secondary &amp; tertiary insurance" id="74692c4b-0646-4151-a2a4-b37e9684e6a7"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="2907f1fc-751d-4495-913f-a9cc3cd4c4d0" name="POST single Appointment  with secondary &amp; tertiary insurance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.settings.CommonSettings@entitizeProperties">false</con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085/appointments/services/v4/appointments/practice/${Properties#practiceId}/integration/${Properties#integrationId}/emr/${Properties#emrId}</con:endpoint><con:request>{
+  "insurance": {
+
+"secondaryInsuranceInfo": {
+      "name": "",
+      "groupNumber": "Gnumber2",
+      "groupName": "Random group",
+      "memberId": "M34878id",
+      "dateIssued": ""
+    },
+    "tertiaryInsuranceInfo": {
+      "name": "",
+      "groupNumber": "Gnumber3",
+      "groupName": "",
+      "memberId": "M34878id",
+      "dateIssued": ""
+    }
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${Properties#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27513",
+    "lastName": "Daniels",
+    "address": "1225, parktop drive",
+    "address2": "Weston parkside",
+    "city": "cary",
+    "firstName": "John",
+    "phone": 9194554883,
+    "dob": "1990-05-01",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "jane.rasika@medfusion.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "33734",
+    "address": "1256, Avance clinic",
+    "address2": "McCrimon parkway",
+    "city": "Morrisville",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+      "locationId": "12345",
+  "timezone": "America/New_York"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6fa6e069-794c-4d17-a838-dc47ecc1a750" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200,202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cd483741-1d45-414e-90c4-32ca8b105527" name="Match content of [resourceType]"><con:configuration><path>$.contained[0].resourceType</path><content>Location</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cc47d166-75df-4537-a63c-37cce45a9343" name="Match content of [status]"><con:configuration><path>$.status</path><content>booked</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="httprequest" name="v4 precheck endpoint to send appointments to reminder service" id="f655e2a9-e4e6-48b7-8915-f0d8b4285529"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="55001180-9c42-4b54-a409-90e3f469e709" name="v4 precheck endpoint to send appointments to reminder service" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8081/precheck/services/v4/appointments/reminders</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="806ecffe-b090-4ba3-aa19-d187bc2146cc" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="8343e986-70d9-41ff-a530-abbd7620f372" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${Properties#systemAuthorization}</con:value><con:style>HEADER</con:style><con:default>${Properties#systemAuthorization}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>daysOut[]</con:name><con:value>5</con:value><con:style>QUERY</con:style><con:default>5</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script assertion" id="d9098056-5664-4988-9912-70336448907a"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+
+
+
+
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["v4 precheck endpoint to send appointments to reminder service"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper !=null
+def ids= jsonSlurper.pmAppointmentId
+def pmAppointmentId = context.expand( '${Properties#pmAppointmentId}' )
+
+for(int i=0; i&lt;ids.size();i++){
+	def apptids=ids[i]
+	log.info apptids
+	if(jsonSlurper.pmAppointmentId.equals(pmAppointmentId).toString()){
+		log.info "Appointment created from appointment service is also present in precheck "
+		assert jsonSlurper.pmAppointmentId.equals(pmAppointmentId).toString()
+		break
+	}
+}
+	if(ids.contains(pmAppointmentId).toString()){
+	assert ids.contains(pmAppointmentId).toString()
+	}</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>5b65c2e0-325f-4211-a007-dc9f9ab2e35b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>24b73c27-7314-482f-b574-7207be6e8db7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f4948d2c-d349-49e0-9bae-975721f9a5b3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9d67f73f-3def-4ad4-8d1d-bb73be8ecf59</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5050f2ee-ae41-4e32-afd1-77c8319780f4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9faff9e3-79a1-4f75-b428-4c6bcbac3b75</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e4bffe85-e5fb-4d5b-b242-8e9ef19f1f8d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9f4d7d4f-b2a1-4d73-b4da-e8d6f6c1a31d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f57bcf2e-1ea8-43bc-b41d-819e7b4b0516</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>23e23e00-92ca-4ebd-8af2-fb36266757bb</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6afc0141-3898-4731-86cc-e7c2369c963b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:testSuite id="aea1cdca-5837-4b78-bf3e-52c982fcb814" name="Appointments-timezones"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="19088650-b6e2-49fa-bb46-79097d1bd51c" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TestCase 1" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datagen" name="DataGen" id="29b30d3b-1269-4ddf-ae18-c4a5cb3c1250"><con:settings/><con:config xsi:type="con:DataGeneratorStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:property type="Script"><con:configuration><script>def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd")
+return sdf.format( new Date())</script></con:configuration><con:name>Date</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId2</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId3</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId4</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property></con:config></con:testStep><con:testStep type="properties" name="Properties" id="53653a03-4f1d-4b50-bc94-2bf740a83b0a"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>practiceId</con:name><con:value>20624</con:value></con:property><con:property><con:name>integrationId</con:name><con:value>9</con:value></con:property><con:property><con:name>emrId</con:name><con:value>2016052301</con:value></con:property><con:property><con:name>time</con:name><con:value>1530531897521</con:value></con:property><con:property><con:name>locationName</con:name><con:value>"Kelsey's office"</con:value></con:property><con:property><con:name>pmAppointmentId</con:name><con:value>"${DataGen#pmAppointmentId}"</con:value></con:property><con:property><con:name>providerName</con:name><con:value>"William Beach"</con:value></con:property><con:property><con:name>cancellationReason</con:name><con:value>"I was scared of the doctor"</con:value></con:property><con:property><con:name>pmExternalId</con:name><con:value>316989</con:value></con:property><con:property><con:name>Authorization</con:name><con:value>Basic RHBhdHRlcnNvbjk6cGFzc3dvcmQy</con:value></con:property><con:property><con:name>displayName</con:name><con:value>"Jakub's Practice"</con:value></con:property><con:property><con:name>systemAuthorization</con:name><con:value>Bearer b7efe86ab2a0769e562083cdbcf87c1b</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment" id="f8a74d50-5310-4e4c-a392-a74370141df8"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey1",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName}
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get single appointment for patient" id="4e2b0296-3c19-4036-8af8-c300330698a2"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Get single appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get single appointment for patient" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="738536b7-b954-466f-80ea-8eec6f68e463" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- locationId" id="0e2a39e7-2388-4943-9d22-db67eb5f3469"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- locationId" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId2},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey2",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+  <con:entry key="startDate" value="${DataGen#Date}T00:00:00Z"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get single appointment for patient- locationId" id="c8908953-b49d-43ef-a331-7c93785070f5"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Get single appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get single appointment for patient- locationId" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="738536b7-b954-466f-80ea-8eec6f68e463" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="05ad8021-d27e-450b-a803-d4bddeb34f45" name="Check for existence of [url]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="179670aa-db45-4c92-a4ca-c711ceb70ab3" name="Check for existence of [valueString]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment- locationId#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- timezone" id="e6f69f95-b602-4c7f-b663-03681e21a777"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- timezone" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId3},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey3",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "timezoneId": "America/New_York"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+  <con:entry key="startDate" value="${DataGen#Date}T00:00:00Z"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get single appointment for patient- timezone" id="08364c48-20d6-4c17-bedf-4cdec34d5fd6"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Get single appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get single appointment for patient- timezone" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="738536b7-b954-466f-80ea-8eec6f68e463" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="05ad8021-d27e-450b-a803-d4bddeb34f45" name="Check for existence of [url]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="179670aa-db45-4c92-a4ca-c711ceb70ab3" name="Check for existence of [valueString]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment- timezone#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- locationId and timezone" id="4a8b873c-c47b-4106-8a16-99ea2a5d87fd"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- locationId and timezone" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId4},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey4",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/New_York"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get single appointment for patient- locationId and timezone" id="c185b50a-d8c8-43d4-983c-2af86b948d29"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Get single appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get single appointment for patient- locationId and timezone" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="738536b7-b954-466f-80ea-8eec6f68e463" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="05ad8021-d27e-450b-a803-d4bddeb34f45" name="Check for existence of [url]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="261c0d1e-aaa7-467f-9151-2fa20eb98219" name="Check for existence of [url]"><con:configuration><path>$['entry'][0]['resource']['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="179670aa-db45-4c92-a4ca-c711ceb70ab3" name="Check for existence of [valueString]"><con:configuration><path>$['entry'][0]['resource']['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="b46aec87-bd25-49b9-ade4-126436b65346" name="Check for existence of [valueString]"><con:configuration><path>$['entry'][0]['resource']['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment- locationId and timezone#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get list of appointments for patient" id="1ef6c3d4-6d28-4eeb-b972-71b8655ae1e1"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Get appointments for patient" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get list of appointments for patient" id="510bd176-0aa3-45f6-9517-e783529487d2" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="3f87c6be-38cb-4834-94c5-c3cfae8b9d25" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+  <con:entry key="startDate" value="${DataGen#Date}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get list of appointments" id="e4e2be5f-bf6e-40dc-9d7a-4a0455589733"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}" methodName="Get list of appointments" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get list of appointments" id="5b256c51-9975-4a49-8e81-3d562713c188" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="bfbecdfe-9503-4a16-92d9-1253c1501ddd" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="endDate" value="2019-05-24T00:00:00Z"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="startDate" value="${DataGen#Date}T00:00:00Z"/>
+</con:parameters><con:parameterOrder><con:entry>practiceId</con:entry><con:entry>startDate</con:entry><con:entry>endDate</con:entry><con:entry>searchBy</con:entry></con:parameterOrder><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Update appointment" id="531b597c-6af7-4f63-91a5-f3d954e396a1"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Update appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Update appointment" id="12e3cef5-98bc-481d-a8f4-3198d1f69785" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d3-prechk01.dev.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/04271992</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="10cc825d-5564-4bc0-b574-8ab7173fefd3" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="8a2cc1da-b480-45f9-80b4-b9c63c9638fa" name="Match content of [status]"><con:configuration><path>$['status']</path><content>cancelled</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment- locationId and timezone#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get single appointment- canceled" id="f97f5920-007b-4787-97a3-96c87e6aa512"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}/appointment/{appointmentId}" methodName="Get single appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get single appointment- canceled" id="f0da0aef-34a0-41e7-a442-5e58fc01bfe1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/appointments/services/v4/appointments/practice/20624/integration/9/emr/2016052301/appointment/%2204271992%22</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="738536b7-b954-466f-80ea-8eec6f68e463" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="25fea563-be2e-4984-99ea-1fed32b2f37d" name="Match content of [status]"><con:configuration><path>$['entry'][0]['resource']['status']</path><content>cancelled</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="appointmentId" value="${Create appointment- locationId and timezone#Response#$['identifier'][0]['value']}"/>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>53653a03-4f1d-4b50-bc94-2bf740a83b0a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>29b30d3b-1269-4ddf-ae18-c4a5cb3c1250</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4a8b873c-c47b-4106-8a16-99ea2a5d87fd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c185b50a-d8c8-43d4-983c-2af86b948d29</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1ef6c3d4-6d28-4eeb-b972-71b8655ae1e1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>0e2a39e7-2388-4943-9d22-db67eb5f3469</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e6f69f95-b602-4c7f-b663-03681e21a777</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f8a74d50-5310-4e4c-a392-a74370141df8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4e2b0296-3c19-4036-8af8-c300330698a2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c8908953-b49d-43ef-a331-7c93785070f5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>08364c48-20d6-4c17-bedf-4cdec34d5fd6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="84ca1bed-3c75-4409-ad5e-23b04ec4d2c5" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TestCase 2 - Jakub's practice" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datagen" name="DataGen" id="209ce433-1b20-441d-b57a-b67adacb8216"><con:settings/><con:config xsi:type="con:DataGeneratorStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:property type="Script"><con:configuration><script>def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd")
+return sdf.format( new Date())</script></con:configuration><con:name>Date</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId2</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId3</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId4</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId5</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId6</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId7</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>1000000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId8</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId9</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property></con:config></con:testStep><con:testStep type="properties" name="Properties" id="4b0a4fe3-ab10-475f-9f34-89244aeb11bd"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>practiceId</con:name><con:value>20624</con:value></con:property><con:property><con:name>integrationId</con:name><con:value>9</con:value></con:property><con:property><con:name>emrId</con:name><con:value>2016052301</con:value></con:property><con:property><con:name>time</con:name><con:value>1530712042068</con:value></con:property><con:property><con:name>locationName</con:name><con:value>"Kelsey's office2"</con:value></con:property><con:property><con:name>pmAppointmentId</con:name><con:value>"z2kcx7fhd737"</con:value></con:property><con:property><con:name>providerName</con:name><con:value>"William Beach"</con:value></con:property><con:property><con:name>cancellationReason</con:name><con:value>"I was scared of the doctor"</con:value></con:property><con:property><con:name>pmExternalId</con:name><con:value>356961</con:value></con:property><con:property><con:name>Authorization</con:name><con:value>Basic RHBhdHRlcnNvbjk6cGFzc3dvcmQy</con:value></con:property><con:property><con:name>displayName</con:name><con:value>"Jakub's Practice"</con:value></con:property><con:property><con:name>systemAuthorization</con:name><con:value>Bearer b7efe86ab2a0769e562083cdbcf87c1b</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="668d5779-53f1-46bf-b5a2-028e90259893"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmentid = generator( (('1'..'9')+('a'..'z')+('1'..'9')+('1'..'9')).join(), 12 )
+log.info appointmentid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmAppointmentId",'"'+appointmentid+'"' )
+
+
+
+
+
+def generator2 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+patientid = generator2( (('1'..'9')+('1'..'9')+('1'..'9')).join(), 6 )
+log.info patientid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmExternalId",patientid )
+
+
+import groovy.time.TimeCategory
+now = new Date()
+use(TimeCategory) {
+ def futuretime = now + 5.days 
+ def timeinmillis = futuretime.getTime().toString()
+ log.info timeinmillis
+ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("time",timeinmillis )
+
+}</script></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Anchorage" id="e8e1d9ed-e3c8-4635-b7a1-a5c06228b36e"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Anchorage" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/A",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AA@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 40
+  },
+ "balance": {
+    "amount": 40,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/Anchorage"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Phoenix" id="2d4cc9e7-c295-4dc7-920f-3acd205a0ecc"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Phoenix" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId2},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/P",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AP@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/Phoenix"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Chicago" id="f7e0d121-8c21-4674-bf1d-755b25dfc1b9"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Chicago" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId3},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "William - A/C",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AC@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": ${Properties#pmExternalId}
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/Chicago"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Denver" id="6577077e-796f-476e-9a9d-7807ac0ad7e1"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Denver" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId4},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - AD",
+    "phone": 4193457402,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AD@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 30
+  },
+ "balance": {
+    "amount": 300,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/Denver"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Los_Angeles" id="0e8ed7b1-4b65-487e-b9c9-fc61889f751e"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Los_Angeles" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId5},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/LA",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+ALA@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/Los_Angeles"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/New_York" id="5691dad8-a4ea-44d9-b6da-ec99825418a0"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/New_York" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId6},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/NY",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+ANY@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/New_York"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Guam" id="d3c0d0d9-bd15-4598-b29e-44ff3ef1ac39"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Guam" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId7},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/G",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PG@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "Pacific/Guam"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Honolulu" id="62222abb-464b-4675-ab4c-e112073cbc40"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Honolulu" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId8},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/H",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PH@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "Pacific/Honolulu"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Midway" id="fe878115-c5af-4f27-b579-5bbedd483b84"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Midway" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId9},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/M",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PM@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "Pacific/Midway"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="httprequest" name="v4 precheck endpoint to send appointments to reminder service" id="c36a8529-0a0d-4348-84e8-1b2ff9e87012"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="55001180-9c42-4b54-a409-90e3f469e709" name="v4 precheck endpoint to send appointments to reminder service" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8081/precheck/services/v4/appointments/reminders</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="806ecffe-b090-4ba3-aa19-d187bc2146cc" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="8343e986-70d9-41ff-a530-abbd7620f372" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${Properties#systemAuthorization}</con:value><con:style>HEADER</con:style><con:default>${Properties#systemAuthorization}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>daysOut[]</con:name><con:value>1</con:value><con:style>QUERY</con:style><con:default>1</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>e8e1d9ed-e3c8-4635-b7a1-a5c06228b36e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4b0a4fe3-ab10-475f-9f34-89244aeb11bd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>209ce433-1b20-441d-b57a-b67adacb8216</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5691dad8-a4ea-44d9-b6da-ec99825418a0</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>668d5779-53f1-46bf-b5a2-028e90259893</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:testCase id="cf8e3cda-b2fe-46e7-b578-67bcd80fbbf5" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TestCase 3 - Madhu's practice" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="46810906-9788-4085-890c-c5d7fe03e6d4"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>practiceId</con:name><con:value>24170</con:value></con:property><con:property><con:name>integrationId</con:name><con:value>9</con:value></con:property><con:property><con:name>emrId</con:name><con:value>2016052301</con:value></con:property><con:property><con:name>time</con:name><con:value>1529089200000</con:value></con:property><con:property><con:name>locationName</con:name><con:value>"Kelsey's office2"</con:value></con:property><con:property><con:name>pmAppointmentId</con:name><con:value>"${DataGen#pmAppointmentId}"</con:value></con:property><con:property><con:name>providerName</con:name><con:value>"William Beach"</con:value></con:property><con:property><con:name>cancellationReason</con:name><con:value>"I was scared of the doctor"</con:value></con:property><con:property><con:name>pmExternalId</con:name><con:value>5302018</con:value></con:property><con:property><con:name>Authorization</con:name><con:value>Basic bWJ1c2g3OndlbGNvbWUy</con:value></con:property><con:property><con:name>displayName</con:name><con:value>"Madhu's Practice"</con:value></con:property><con:property><con:name>systemAuthorization</con:name><con:value>Bearer b7efe86ab2a0769e562083cdbcf87c1b</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="cd15f159-b05f-452b-9dee-8aa7c246b6e7"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmentid = generator( (('1'..'9')+('a'..'z')+('1'..'9')+('1'..'9')).join(), 12 )
+log.info appointmentid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmAppointmentId",'"'+appointmentid+'"' )
+
+
+
+
+
+def generator2 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+patientid = generator2( (('1'..'9')+('1'..'9')+('1'..'9')).join(), 6 )
+log.info patientid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmExternalId",patientid )
+
+
+import groovy.time.TimeCategory
+now = new Date()
+use(TimeCategory) {
+ def futuretime = now + 5.days 
+ def timeinmillis = futuretime.getTime().toString()
+ log.info timeinmillis
+ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("time",timeinmillis )
+
+}</script></con:config></con:testStep><con:testStep type="datagen" name="DataGen" id="169512fb-b074-40fc-adcc-7b55ab6f524f"><con:settings/><con:config xsi:type="con:DataGeneratorStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:property type="Script"><con:configuration><script>def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd")
+return sdf.format( new Date())</script></con:configuration><con:name>Date</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId2</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId3</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId4</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId5</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId6</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId7</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>1000000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId8</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property><con:property type="Number"><con:configuration><start>1</start><end>100000</end><step>1</step><pattern>1</pattern><random>true</random><persist>false</persist></con:configuration><con:name>pmAppointmentId9</con:name><con:mode>STEP</con:mode><con:shared>false</con:shared></con:property></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Anchorage" id="3247be08-cf9e-4cbd-a220-cdf87882111e"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Anchorage" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/A",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AA@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "timezoneId": "America/Anchorage"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Phoenix" id="ab1fdefb-bfc5-40da-8ad3-3a1527499750"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Phoenix" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId2},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/P",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AP@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "timezoneId": "America/Phoenix"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Chicago" id="a9c9305a-94eb-4d6a-a6cd-3016c7c09ac0"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Chicago" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId3},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/C",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AC@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 40
+  },
+ "balance": {
+    "amount": 20,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "27518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "timezoneId": "America/Chicago"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Denver" id="f4085483-7e81-4ef1-99b6-a49ec4f52d50"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Denver" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId4},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/D",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+AD@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "timezoneId": "America/Denver"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/Los_Angeles" id="6b81231b-0819-4977-86a9-9cf3c6a64759"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/Los_Angeles" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request/><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- America/New_York" id="8495d23e-4a68-42a6-884e-8bef8617ea06"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- America/New_York" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId6},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - A/NY",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+ANY@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": 1527882600000,
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "America/New_York"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Guam" id="031e3169-3080-47be-998d-505a7762b951"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Guam" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId7},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/G",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PG@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "3457",
+  "timezoneId": "Pacific/Guam"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Honolulu" id="fb4ef3a5-adde-4ee9-83a9-77497bc2ff43"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Honolulu" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId8},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/H",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PH@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "Pacific/Honolulu"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Create appointment- Pacific/Midway" id="e15f5514-32db-41df-a76e-1b7d63cd9abe"><con:settings/><con:config service="http://d1-prechk01.ops.medfusion.net:8085" resourcePath="/appointments/services/v4/appointments/practice/{practiceId}/integration/{integrationId}/emr/{emrId}" methodName="Create appointment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Create appointment- Pacific/Midway" id="94a3d13d-5a82-4975-be5f-dab00b44ac42" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8085</con:endpoint><con:request>{
+  "insurance": {
+
+    },
+  "locationName": ${Properties#locationName},
+  "pmAppointmentId": ${DataGen#pmAppointmentId9},
+  "cancellationReason": ${Properties#cancellationReason},
+  "practiceDemographics": {
+    "zip": "27603",
+    "lastName": "Test",
+    "address": "927 W. Morgan St.",
+    "address2": "Apt. 236",
+    "city": "Raleigh",
+    "firstName": "Kelsey - P/M",
+    "phone": 5555555555,
+    "dob": "1992-04-27",
+    "pmExternalId": ${Properties#pmExternalId},
+    "middleName": "",
+    "state": "NC",
+    "email": "kgladtest+PM@gmail.com"
+  },
+  "practiceId": ${Properties#practiceId},
+  "type": "cardio",
+  "coPayment": {
+    "amount": 56
+  },
+ "balance": {
+    "amount": 30,
+    "status":"INCOMPLETE"
+
+  },
+  "appointmentId": "",
+  "time": ${Properties#time},
+  "appointmentAddress": {
+    "zip": "57518",
+    "address": "5501 Dillard Drive",
+    "address2": "",
+    "city": "Cary",
+    "state": "NC"
+  },
+  "providerName": ${Properties#providerName},
+  "locationId": "1234",
+  "timezoneId": "Pacific/Midway"
+}</con:request><con:originalUri>http://d1-prechk01.ops.medfusion.net/v4/appointments/practice/20624/integration/9/emr/2016052301</con:originalUri><con:assertion type="Valid HTTP Status Codes" id="0cfb47bd-7e78-44cc-81e1-1e3728e69fe0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200, 202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="1e2cb549-faf3-4b2a-9068-f5c5800b42b5" name="Check for existence of [url]"><con:configuration><path>$['extension'][2]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="59a55c31-5d19-44fb-9969-a0cb3ef4136a" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][2]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f8ed7cd3-4fdf-4896-8ddd-8ba180fc83db" name="Check for existence of [url]"><con:configuration><path>$['extension'][3]['url']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f77c350f-c0dd-4559-a4f0-aba5a33cb4cd" name="Check for existence of [valueString]"><con:configuration><path>$['extension'][3]['valueString']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters>
+  <con:entry key="emrId" value="${Properties#emrId}"/>
+  <con:entry key="practiceId" value="${Properties#practiceId}"/>
+  <con:entry key="integrationId" value="${Properties#integrationId}"/>
+</con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:restRequest></con:config></con:testStep><con:testStep type="httprequest" name="v4 precheck endpoint to send appointments to reminder service" id="a0c1c5bf-c2bb-4b50-aa5e-3a7d3d14f419"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="55001180-9c42-4b54-a409-90e3f469e709" name="v4 precheck endpoint to send appointments to reminder service" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-prechk01.dev.medfusion.net:8081/precheck/services/v4/appointments/reminders</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="806ecffe-b090-4ba3-aa19-d187bc2146cc" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="8343e986-70d9-41ff-a530-abbd7620f372" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${Properties#systemAuthorization}</con:value><con:style>HEADER</con:style><con:default>${Properties#systemAuthorization}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>daysOut[]</con:name><con:value>1</con:value><con:style>QUERY</con:style><con:default>1</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>e8e1d9ed-e3c8-4635-b7a1-a5c06228b36e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4b0a4fe3-ab10-475f-9f34-89244aeb11bd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>209ce433-1b20-441d-b57a-b67adacb8216</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5691dad8-a4ea-44d9-b6da-ec99825418a0</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>cd15f159-b05f-452b-9dee-8aa7c246b6e7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:requirements/><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:xmlTemplates/><con:parameters/></con:reporting><con:environment id="76f8e0ca-3ae2-44f9-974d-868eab327e6d" name="DEV"><con:service type="REST" name="http://d1-prechk01.ops.medfusion.net:8085"><con:endpoint authProfile="No Authorization" proxyHost="" proxyPort="" proxyUsername="" proxyPassword="">http://d3-prechk01.dev.medfusion.net:8085</con:endpoint></con:service><con:databaseConnectionContainer/><con:jmsConnectionContainer/></con:environment><con:environment id="08eb259b-f699-4e33-9498-66e9b17f34f7" name="PROD"><con:service type="REST" name="http://d1-prechk01.ops.medfusion.net:8085"><con:endpoint authProfile="No Authorization" proxyHost="" proxyPort="" proxyUsername="" proxyPassword="">http://pr-prechk01.npub.medfusion.net:8085</con:endpoint></con:service><con:databaseConnectionContainer/><con:jmsConnectionContainer/></con:environment><con:authRepository/><con:environmentSpec><con:entry environmentId="76f8e0ca-3ae2-44f9-974d-868eab327e6d"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="08eb259b-f699-4e33-9498-66e9b17f34f7"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec><con:tags/></con:soapui-project>

@@ -28,11 +28,7 @@ public class AdminPatientMatching extends SettingsTab {
 			WebElement toSelect = driver.findElement(By.xpath("//*[@id=\"patientmatch\"]/div[1]/div/table/tbody/tr["+ (i+1) +"]/td[1]/div/input"));
 			WebElement label = driver.findElement(By.xpath("//*[@id=\"patientmatch\"]/div[1]/div/table/tbody/tr["+ (i+1) +"]/td[2]/span/a"));
 			WebElement matchingCriteria = driver.findElement(By.xpath("//*[@id=\"patientmatch\"]/div[1]/div/table/tbody/tr["+ (i+1) +"]/td[3]/div/input"));
-			log("--------------------------------------------------------");
-			log(toSelect.getAttribute("ng-reflect-model"));
-			log(label.getText());
-			log(matchingCriteria.getAttribute("ng-reflect-model"));
-			log("--------------------------------------------------------");
+			log(toSelect.getText() + "" + label.getText() + "" + matchingCriteria.getText());
 		}
 	}
 }

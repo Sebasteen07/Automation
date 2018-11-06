@@ -26,6 +26,11 @@ public class ExistingPatientIDP extends PSS2MainPage {
 		super(driver);
 	}
 
+	public ExistingPatientIDP(WebDriver driver, String url) {
+		super(driver, url);
+		PageFactory.initElements(driver, this);
+	}
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

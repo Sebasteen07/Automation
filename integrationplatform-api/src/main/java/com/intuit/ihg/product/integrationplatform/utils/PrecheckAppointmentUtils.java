@@ -27,7 +27,7 @@ public class PrecheckAppointmentUtils {
 		Long appointmentTime = System.currentTimeMillis();
 		appointmentTime = appointmentTime+180000L;
 		Log4jUtil.log("Step 2: Get appointmentDate displayed");
-		String tzid = "America/New_York";
+		String tzid = "US/Pacific";
 		TimeZone tz = TimeZone.getTimeZone(tzid);
 	    Date appointmentDate = new Date(appointmentTime);
 	    DateFormat dAppointmentFormat = new SimpleDateFormat("E M/d h:mm a zzz");

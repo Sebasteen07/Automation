@@ -6,9 +6,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
+import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
+import com.medfusion.product.object.maps.pss2.page.Lockout.ManageLockoutRules;
+import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
+import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
@@ -18,22 +24,22 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/ul/li/a/i")
 	private WebElement logout;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[6]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/settings\"]")
 	private WebElement linkSettings;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[5]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/lockout\"]")
 	private WebElement linkLockout;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[4]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/specialty\"]")
 	private WebElement linkSpecialty;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[3]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/appointmenttype\"]")
 	private WebElement linkAppointmenttype;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[2]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
 	private WebElement linkResource;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[1]/div/div[1]/ul/li[1]/a/span/i")
+	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
 	private WebElement linkLocation;
 
 	public PSS2MenuPage(WebDriver driver) {
@@ -52,11 +58,32 @@ public class PSS2MenuPage extends PSS2MainPage {
 	}
 
 	public void gotoSettings() {
-		linkSettings.click();
+		javascriptClick(linkSettings);
 	}
 
-	public void gotoLocation() {
-		linkLocation.click();
+	public ManageLocation gotoLocation() {
+		javascriptClick(linkLocation);
+		return PageFactory.initElements(driver, ManageLocation.class);
+	}
+
+	public ManageLockoutRules gotoLockOut() {
+		javascriptClick(linkLockout);
+		return PageFactory.initElements(driver, ManageLockoutRules.class);
+	}
+
+	public ManageSpecialty gotoSpeciality() {
+		javascriptClick(linkSpecialty);
+		return PageFactory.initElements(driver, ManageSpecialty.class);
+	}
+
+	public ManageAppointmentType gotoAppointment() {
+		javascriptClick(linkAppointmenttype);
+		return PageFactory.initElements(driver, ManageAppointmentType.class);
+	}
+
+	public ManageResource gotoResource() {
+		javascriptClick(linkResource);
+		return PageFactory.initElements(driver, ManageResource.class);
 	}
 
 	public void logout() {

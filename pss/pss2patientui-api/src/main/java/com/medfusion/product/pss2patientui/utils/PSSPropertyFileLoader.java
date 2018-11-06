@@ -46,6 +46,39 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGW"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGW"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGW"));
+		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
+		appointValues.setFindInEmail(property.getProperty("findInEmail"));
+		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGW"));
+		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
+		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
+		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
+		appointValues.setLocationList(property.getProperty("locationListGW"));
+		appointValues.setProviderList(property.getProperty("providerListGW"));
+
+		appointValues.setIsAgeRuleApplied(property.getProperty("isAgeRuleAppliedGW"));
+		appointValues.setUnderAgePatientUserName(property.getProperty("underAgePatientUNGW"));
+		appointValues.setUnderAgePatientPassword(property.getProperty("underAgePatientPasswordGW"));
+
+		appointValues.setAssociatedProvider1(property.getProperty("associatedProvider1GW"));
+		appointValues.setAssociatedLocation1(property.getProperty("associatedLocation1GW"));
+		appointValues.setAssociatedSpeciality1(property.getProperty("associatedSpeciality1GW"));
+		appointValues.setAssociatedApt1(property.getProperty("associatedApt1GW"));
+
+		appointValues.setAssociatedProvider2(property.getProperty("associatedProvider2GW"));
+		appointValues.setAssociatedLocation2(property.getProperty("associatedLocation2GW"));
+		appointValues.setAssociatedSpeciality2(property.getProperty("associatedSpeciality2GW"));
+		appointValues.setAssociatedApt2(property.getProperty("associatedApt2GW"));
+
+		appointValues.setAssociatedProvider3(property.getProperty("associatedProvider3GW"));
+		appointValues.setAssociatedLocation3(property.getProperty("associatedLocation3GW"));
+		appointValues.setAssociatedSpeciality3(property.getProperty("associatedSpeciality3GW"));
+		appointValues.setAssociatedApt3(property.getProperty("associatedApt3GW"));
+
+		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGW"));
+		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
+		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
+
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -101,5 +134,98 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGE"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGE"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGE"));
+		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
+		appointValues.setFindInEmail(property.getProperty("findInEmail"));
+		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGE"));
+		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGE"));
+		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGE"));
+		appointValues.setAppointmentList(property.getProperty("appointmentListGE"));
+		appointValues.setLocationList(property.getProperty("locationListGE"));
+		appointValues.setProviderList(property.getProperty("providerListGE"));
+
+		appointValues.setIsAgeRuleApplied(property.getProperty("isAgeRuleAppliedGE"));
+		appointValues.setUnderAgePatientUserName(property.getProperty("underAgePatientUNGE"));
+		appointValues.setUnderAgePatientPassword(property.getProperty("underAgePatientPasswordGE"));
+
+		appointValues.setAssociatedProvider1(property.getProperty("associatedProvider1GE"));
+		appointValues.setAssociatedLocation1(property.getProperty("associatedLocation1GE"));
+		appointValues.setAssociatedSpeciality1(property.getProperty("associatedSpeciality1GE"));
+		appointValues.setAssociatedApt1(property.getProperty("associatedApt1GE"));
+
+		appointValues.setAssociatedProvider2(property.getProperty("associatedProvider2GE"));
+		appointValues.setAssociatedLocation2(property.getProperty("associatedLocation2GE"));
+		appointValues.setAssociatedSpeciality2(property.getProperty("associatedSpeciality2GE"));
+		appointValues.setAssociatedApt2(property.getProperty("associatedApt2GE"));
+
+		appointValues.setAssociatedProvider3(property.getProperty("associatedProvider3GE"));
+		appointValues.setAssociatedLocation3(property.getProperty("associatedLocation3GE"));
+		appointValues.setAssociatedSpeciality3(property.getProperty("associatedSpeciality3GE"));
+		appointValues.setAssociatedApt3(property.getProperty("associatedApt3GE"));
+
+		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGE"));
+		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGE"));
+		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
+	}
+
+	public void setAppointmentResponseNG(Appointment appointValues) {
+		Log4jUtil.log("Loading data for Next Gen appointment related cases..");
+		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
+		appointValues.setDatetime(property.getProperty("datetimeNG"));
+		appointValues.setLocation(property.getProperty("locationNG"));
+		appointValues.setPassword(property.getProperty("passwordNG"));
+		appointValues.setProvider(property.getProperty("providerNG"));
+		appointValues.setSpeciality(property.getProperty("specialityNG"));
+		appointValues.setUsername(property.getProperty("usernameNG"));
+		appointValues.setUrlLoginLess(property.getProperty("urlLoginLessNG"));
+		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowNG"));
+		appointValues.setFirstTimeUser(property.getProperty("isFirstTimeUserNG"));
+		appointValues.setFirstName(property.getProperty("firstNameNG"));
+		appointValues.setLastName(property.getProperty("lastNameNG"));
+		appointValues.setEmail(property.getProperty("emailNG"));
+		appointValues.setDob(property.getProperty("dobNG"));
+		appointValues.setGender(property.getProperty("genderNG"));
+		appointValues.setZipCode(property.getProperty("zipCodeNG"));
+		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
+		appointValues.setUrlIPD(property.getProperty("urlIDPNG"));
+		appointValues.setCity(property.getProperty("cityNG"));
+		appointValues.setStreet(property.getProperty("streetNG"));
+		appointValues.setPatientUserName(property.getProperty("patientusernameNG"));
+		appointValues.setPatientPassword(property.getProperty("patientpasswordNG"));
+		appointValues.setPatientPortalURL(property.getProperty("patientportalurlNG"));
+		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameNG"));
+		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordNG"));
+		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
+		appointValues.setFindInEmail(property.getProperty("findInEmail"));
+		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupNG"));
+		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMNG"));
+		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextNG"));
+		appointValues.setAppointmentList(property.getProperty("appointmentListNG"));
+		appointValues.setLocationList(property.getProperty("locationListNG"));
+		appointValues.setProviderList(property.getProperty("providerListNG"));
+
+		appointValues.setIsAgeRuleApplied(property.getProperty("isAgeRuleAppliedNG"));
+		appointValues.setUnderAgePatientUserName(property.getProperty("underAgePatientUNNG"));
+		appointValues.setUnderAgePatientPassword(property.getProperty("underAgePatientPasswordNG"));
+
+		appointValues.setAssociatedProvider1(property.getProperty("associatedProvider1NG"));
+		appointValues.setAssociatedLocation1(property.getProperty("associatedLocation1NG"));
+		appointValues.setAssociatedSpeciality1(property.getProperty("associatedSpeciality1NG"));
+		appointValues.setAssociatedApt1(property.getProperty("associatedApt1NG"));
+
+		appointValues.setAssociatedProvider2(property.getProperty("associatedProvider2NG"));
+		appointValues.setAssociatedLocation2(property.getProperty("associatedLocation2NG"));
+		appointValues.setAssociatedSpeciality2(property.getProperty("associatedSpeciality2NG"));
+		appointValues.setAssociatedApt2(property.getProperty("associatedApt2NG"));
+
+		appointValues.setAssociatedProvider3(property.getProperty("associatedProvider3NG"));
+		appointValues.setAssociatedLocation3(property.getProperty("associatedLocation3NG"));
+		appointValues.setAssociatedSpeciality3(property.getProperty("associatedSpeciality3NG"));
+		appointValues.setAssociatedApt3(property.getProperty("associatedApt3NG"));
+
+		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameNG"));
+		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordNG"));
+		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 	}
 }

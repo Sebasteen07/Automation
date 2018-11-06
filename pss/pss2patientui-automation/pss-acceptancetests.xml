@@ -10,11 +10,14 @@
 	<classes>
 		<class name = "com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
 		<methods>
-	    		<include name="testE2ELoginlessForExistingPatientGW" />
-	    		<include name="testE2ELoginlessForNewPatientGW" />
-	    		<include name="testE2EIDPForExistingPatientGW" />
-	    		<include name="testE2EIDPForNewPatientGW" />
-	    		<include name="testE2ELoginlessForNewPatientGE" />        		
+				<include name="testCancelAppointment" />
+				<include name="testDisplaySlotCount" />
+				<include name="testMaxAppointments" />
+	    		<include name="testMaxCalendarMonthsForSlots" />
+	    		<include name="testMajorAge" />
+	    		<include name="testShowProviderImages" />
+	    		<include name="testShowSearchLocation" />
+	    		<include name="testAppointmentWithoutSettingAnyConfiguration" />        		
      	</methods>
 	</classes>
 </test>

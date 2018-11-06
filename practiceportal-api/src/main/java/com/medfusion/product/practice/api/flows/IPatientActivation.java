@@ -18,4 +18,7 @@ public interface IPatientActivation {
     public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,
             String externalSystemId)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException;
+
+	PatientInfo editPatientSetPrimaryId(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo, String emrid)
+			throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException;
 }
