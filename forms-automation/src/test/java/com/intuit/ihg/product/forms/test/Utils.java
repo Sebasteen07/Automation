@@ -48,42 +48,36 @@ public class Utils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver) throws Exception {
-		return loginPI(driver).clickOnHealthForms();
+	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PropertyFileLoader testData) throws Exception {
+		return loginPI(driver, testData).clickOnHealthForms();
 	}
 
-	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver) throws Exception {
-		return loginPortal1(driver).clickOnHealthForms();
+	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PropertyFileLoader testData) throws Exception {
+		return loginPortal1(driver, testData).clickOnHealthForms();
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver) throws Exception {
-		TestcasesData portalData = new TestcasesData(new Portal());
-		String url = portalData.getFormsPIUrlPrimary();
+	public static JalapenoHomePage loginPI(WebDriver driver, PropertyFileLoader testData) throws Exception {				
 		log("Login to PI");
-		logLogin(url, portalData.getUsername(), portalData.getPassword());
-		return new JalapenoLoginPage(driver, url).login(portalData.getUsername(), portalData.getPassword());
+		logLogin(testData.getProperty("portal2Url1"), testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		return new JalapenoLoginPage(driver, testData.getProperty("portal2Url1")).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver) throws Exception {
-		TestcasesData portalData = new TestcasesData(new Portal());
-		String url = portalData.getFormsPortal1UrlPrimary();
+	public static MyPatientPage loginPortal1(WebDriver driver, PropertyFileLoader testData) throws Exception {				
 		log("Login to Portal 1");
-		logLogin(url, portalData.getUsername(), portalData.getPassword());
-		return new PortalLoginPage(driver, url).login(portalData.getUsername(), portalData.getPassword());
+		logLogin(testData.getProperty("portal1Url1"), testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		return new PortalLoginPage(driver, testData.getProperty("portal1Url1")).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver, String userName, String password) throws Exception {
-		String url = new TestcasesData(new Portal()).getFormsPIUrlPrimary();
+	public static JalapenoHomePage loginPI(WebDriver driver, String userName, String password, PropertyFileLoader testData) throws Exception {		
 		log("Login to PI");
-		logLogin(url, userName, password);
-		return new JalapenoLoginPage(driver, url).login(userName, password);
+		logLogin(testData.getProperty("portal2Url1"), userName, password);
+		return new JalapenoLoginPage(driver, testData.getProperty("portal2Url1")).login(userName, password);
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, String userName, String password) throws Exception {
-		String url = new TestcasesData(new Portal()).getFormsPortal1UrlPrimary();
+	public static MyPatientPage loginPortal1(WebDriver driver, String userName, String password, PropertyFileLoader testData) throws Exception {		
 		log("Login to Portal 1");
-		logLogin(url, userName, password);
-		return new PortalLoginPage(driver, url).login(userName, password);
+		logLogin(testData.getProperty("portal1Url1"), userName, password);
+		return new PortalLoginPage(driver, testData.getProperty("portal1Url1")).login(userName, password);
 	}
 
 	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PatientData p) throws Exception {
@@ -95,7 +89,8 @@ public class Utils {
 	}
 
 	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
-		String url = getPortalURL(practiceType, false);
+	    PropertyFileLoader testData = new PropertyFileLoader();
+		String url = getPortalURL(practiceType, false, testData);
 		CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
 		MyPatientPage home = patientCreation.createPatient(driver, new com.medfusion.product.patientportal1.utils.TestcasesData(new com.medfusion.product.patientportal1.pojo.Portal()));
 		logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
@@ -111,7 +106,7 @@ public class Utils {
 	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		JalapenoPatient jp = new JalapenoPatient(testData);
-		String url = getPortalURL(practiceType, true);
+		String url = getPortalURL(practiceType, true, testData);
 		jp.setUrl(url);
 		jp.setDOBYear(newPatientDOBYear);
 		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver, url);
@@ -211,17 +206,16 @@ public class Utils {
 		log("password: " + password);
 	}
 
-	private static String getPortalURL(PracticeType practiceType, boolean PI) throws Exception {
-		TestcasesData data = new TestcasesData(new Portal());
+	private static String getPortalURL(PracticeType practiceType, boolean PI, PropertyFileLoader testData) throws Exception {		
 		switch (practiceType) {
 			case PRIMARY:
 				if (PI)
-					return data.getFormsPIUrlPrimary();
-				return data.getFormsPortal1UrlPrimary();
+					return testData.getProperty("portal2Url1");
+				return testData.getProperty("portal1Url1");
 			case SECONDARY:
 				if (PI)
-					return data.getFormsPIUrlSecondary();
-				return data.getFormsPortal1UrlSecondary();
+					return testData.getProperty("portal2Url2");
+				return testData.getProperty("portal1Url2");
 			default:
 				throw new IllegalArgumentException("ïnvalid practiceType");
 		}
