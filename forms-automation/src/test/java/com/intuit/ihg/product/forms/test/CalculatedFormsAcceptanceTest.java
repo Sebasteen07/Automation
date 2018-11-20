@@ -102,12 +102,12 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormPortal1() throws Exception {
-		testCalculatedForm(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testCalculatedForm(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormPI() throws Exception {
-		testCalculatedForm(Utils.loginPIAndOpenFormsList(driver, testData));
+		testCalculatedForm(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testCalculatedForm(HealthFormListPage formsPage) throws Exception {
@@ -135,12 +135,12 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {
-		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormValidationPI() throws Exception {
-		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver, testData));
+		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testCalculatedFormValidation(HealthFormListPage healthFormsList) throws Exception {

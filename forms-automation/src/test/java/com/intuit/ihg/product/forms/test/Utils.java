@@ -48,45 +48,78 @@ public class Utils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PropertyFileLoader testData) throws Exception {
-		return loginPI(driver, testData).clickOnHealthForms();
+	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
+		return loginPI(driver, practiceType, testData).clickOnHealthForms();
 	}
 
-	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PropertyFileLoader testData) throws Exception {
-		return loginPortal1(driver, testData).clickOnHealthForms();
+	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
+		return loginPortal1(driver, practiceType, testData).clickOnHealthForms();
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver, PropertyFileLoader testData) throws Exception {				
+	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {				
 		log("Login to PI");
-		logLogin(testData.getProperty("portal2Url1"), testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-		return new JalapenoLoginPage(driver, testData.getProperty("portal2Url1")).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		String url = "";
+		switch (practiceType){
+		    case PRIMARY:
+		        url = testData.getProperty("portal2Url1");
+		        break;
+		    case SECONDARY:
+		        url = testData.getProperty("portal2Url2");
+		        break;
+		    default: throw new IllegalArgumentException("Invalid practice type");
+		}
+		logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		return new JalapenoLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, PropertyFileLoader testData) throws Exception {				
+	public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {				
 		log("Login to Portal 1");
-		logLogin(testData.getProperty("portal1Url1"), testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-		return new PortalLoginPage(driver, testData.getProperty("portal1Url1")).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		String url = "";
+        switch (practiceType){
+            case PRIMARY:
+                url = testData.getProperty("portal1Url1");
+                break;
+            case SECONDARY:
+                url = testData.getProperty("portal1Url2");
+                break;
+            default: throw new IllegalArgumentException("Invalid practice type");
+        }
+		logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		return new PortalLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
 	}
 
-	public static JalapenoHomePage loginPI(WebDriver driver, String userName, String password, PropertyFileLoader testData) throws Exception {		
+	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, String userName, String password, PropertyFileLoader testData) throws Exception {		
 		log("Login to PI");
-		logLogin(testData.getProperty("portal2Url1"), userName, password);
-		return new JalapenoLoginPage(driver, testData.getProperty("portal2Url1")).login(userName, password);
+		String url = "";
+        switch (practiceType){
+            case PRIMARY:
+                url = testData.getProperty("portal2Url1");
+                break;
+            case SECONDARY:
+                url = testData.getProperty("portal2Url2");
+                break;
+            default: throw new IllegalArgumentException("Invalid practice type");
+        }
+		logLogin(url, userName, password);
+		return new JalapenoLoginPage(driver, url).login(userName, password);
 	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, String userName, String password, PropertyFileLoader testData) throws Exception {		
+	public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, String userName, String password, PropertyFileLoader testData) throws Exception {		
 		log("Login to Portal 1");
-		logLogin(testData.getProperty("portal1Url1"), userName, password);
-		return new PortalLoginPage(driver, testData.getProperty("portal1Url1")).login(userName, password);
+		String url = "";
+        switch (practiceType){
+            case PRIMARY:
+                url = testData.getProperty("portal1Url1");
+                break;
+            case SECONDARY:
+                url = testData.getProperty("portal1Url2");
+                break;
+            default: throw new IllegalArgumentException("Invalid practice type");
+        }
+		logLogin(url, userName, password);
+		return new PortalLoginPage(driver, url).login(userName, password);
 	}
 
-	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PatientData p) throws Exception {
-		return createAndLoginPatientPI(driver, PracticeType.PRIMARY, p);
-	}
-
-	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PatientData p) throws Exception {
-		return createAndLoginPatientPortal1(driver, PracticeType.PRIMARY, p);
-	}
 
 	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
 	    PropertyFileLoader testData = new PropertyFileLoader();

@@ -16,9 +16,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.customforms.ManageYourFor
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
-import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
@@ -27,9 +25,6 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsPage;
 import com.medfusion.product.object.maps.practice.page.customform.SearchPatientFormsResultPage;
-import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
     
@@ -171,7 +166,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		String winHandlePatientPortal = driver.getWindowHandle();
 		log("step 12.1:Login to patient portal");
 		log("URL: " + pSiteGenPracticeHomePage.getPatientPortalUrl());
-		HealthFormListPage pHealthForm = Utils.loginPIAndOpenFormsList(driver, testData);
+		HealthFormListPage pHealthForm = Utils.loginPIAndOpenFormsList(driver, PracticeType.PRIMARY, testData);
 
 		log("step 12.3: Open Form");
 		OldCustomFormPages oldCustomForm = pHealthForm.openOldCustomForm(customFormTitle);
@@ -234,7 +229,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"OldCustomForms"})
 	public void testCustomFormsPI() throws Exception {
-		testCustomForms(Utils.loginPIAndOpenFormsList(driver, testData));
+		testCustomForms(Utils.loginPIAndOpenFormsList(driver, PracticeType.PRIMARY, testData));
 	}
 	// PROD uses Portal 1 template on which Selenium doesn't see Health Form link after submitting custom form
 	// @Test(groups = "OldPortalForms")
@@ -256,15 +251,15 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		// Load up practice test data
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practiceUrl"));
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername1"), testData.getProperty("practicePassword1"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername2"), testData.getProperty("practicePassword2"));
 
 		log("step 4: On Practice Portal Home page Click CustomFormTab");
 		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();
 		assertTrue(pSearchPatientFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + "failed to load.");
 
 		log("step 5: Search for PatientForms With Status Open");		
-		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(testData.getFirstName(),
-		        testData.getLastName(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
+		SearchPatientFormsResultPage pSearchPatientFormsResultPage = pSearchPatientFormsPage.SearchPatientFormsWithOpenStatus(testData.getProperty("patientFirstname"),
+		        testData.getProperty("patientLastname"), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
 
 		log("step 6: View the Result");
 		pSearchPatientFormsResultPage.clickViewLink();

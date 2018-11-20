@@ -97,12 +97,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testQuotationMarksInFormPI() throws Exception {
-		testQuotationMarksInForm(Utils.loginPIAndOpenFormsList(driver, testData));
+		testQuotationMarksInForm(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testQuotationMarksInFormPortal1() throws Exception {
-		testQuotationMarksInForm(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testQuotationMarksInForm(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testQuotationMarksInForm(HealthFormListPage formsPage) throws Exception {
@@ -128,12 +128,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testFormPdfCcdPI() throws Exception {
 		PatientData p = new PatientData();
-		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 		testFormPdfCcd(home.clickOnHealthForms());
 		driver.switchTo().defaultContent();
 		home.clickOnLogout();
 		log("Step 6: Test if the DOB has not been changed");
-		JalapenoHomePage jhp = Utils.loginPI(driver, p.getEmail(), p.getPassword(), testData);
+		JalapenoHomePage jhp = Utils.loginPI(driver, PracticeType.SECONDARY, p.getEmail(), p.getPassword(), testData);
 		assertTrue(jhp.areMenuElementsPresent());
 		JalapenoMyAccountProfilePage pMyAccountPage = jhp.clickOnAccount().clickOnEditMyAccount();
 		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
@@ -142,12 +142,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = "OldPortalForms")
 	public void testFormPdfCcdPortal1() throws Exception {
 		PatientData p = new PatientData();
-		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);		
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);		
 		testFormPdfCcd(home.clickOnHealthForms());		
 		driver.switchTo().defaultContent();
 		home.logout(driver);
 		log("Step 6: Test if the DOB has not been changed");
-		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, p.getEmail(), p.getPassword(), testData).clickMyAccountLink();
+		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, PracticeType.PRIMARY, p.getEmail(), p.getPassword(), testData).clickMyAccountLink();
 		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
 	}
 
@@ -169,7 +169,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		Utils.checkIfPDFCanBeDownloaded(SitegenConstants.PDF_CCD_FORM, driver);
 		log("Step 4: Test if CCD is produced");
 		log("Calling rest");
-		xml = CCDTest.getFormCCD(timestamp, testData.getProperty("getCCDUrl1"));
+		xml = CCDTest.getFormCCD(timestamp, testData.getProperty("getCCDUrl2"));
 		assertTrue(xml.contains(easyBruisingString), "Symptom not found in the CCD, printing the CCD:\n" + xml);
 
 		log("Step 5: Test if the submission date is correct");
@@ -179,12 +179,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testFormPracticePortalPI() throws Exception {
-		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver, testData));
+		testFormPracticePortal(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPracticePortalPortal1() throws Exception {
-		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testFormPracticePortal(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testFormPracticePortal(HealthFormListPage formsPage) throws Exception {
@@ -216,12 +216,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(groups = {"Forms"})
 	public void testPartiallyCompletedFormPI() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver, testData));
+		testPartiallyCompletedForm(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testPartiallyCompletedFormPortal1() throws Exception {
-		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testPartiallyCompletedForm(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testPartiallyCompletedForm(HealthFormListPage formsPage) throws Exception {
@@ -255,13 +255,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("step 7: create patient and Log in to PI");
 		PatientData p = new PatientData();
-		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.PRIMARY, p);
 
 		log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
 		home.clickStartRegistrationButton();
 		FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
 		// if there is only one reg. form
-		if (welcomePage.isPageLoaded())
+		IHGUtil.setFrame(driver, "iframebody");
+		if (welcomePage.getMessageText() != null)
 			assertEquals(welcomePage.getMessageText(), welcomeMessage);
 		// if there are more reg. forms
 		else
@@ -271,14 +272,14 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(groups = {"Forms"})
 	public void testFormPatientDashboardPI() throws Exception {
 		PatientData p = new PatientData();
-		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testFormPatientDashboardPortal1() throws Exception {
 		PatientData p = new PatientData();
-		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);
 		testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 	}
 
@@ -386,12 +387,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = {"Forms"})
 	public void testCustomFormWithFUPsPI() throws Exception {
-		testCustomFormWithFUPs(Utils.loginPIAndOpenFormsList(driver, testData));
+		testCustomFormWithFUPs(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	@Test(groups = "OldPortalForms")
 	public void testCustomFormWithFUPsPortal1() throws Exception {
-		testCustomFormWithFUPs(Utils.loginPortal1AndOpenFormsList(driver, testData));
+		testCustomFormWithFUPs(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 	}
 
 	private void testCustomFormWithFUPs(HealthFormListPage healthFormPage) throws Exception {
@@ -461,7 +462,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testEGQEnabledPI() throws Exception {
 		log("create patient and login to PI");
 		PatientData p = new PatientData();
-		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, p);
+		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 		testEGQEnabled(home.clickOnHealthForms());
 		log("verify that value in my account has been changed based on form answer");
 		driver.switchTo().defaultContent();
@@ -474,7 +475,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 	public void testEGQEnabledPortal1() throws Exception {
 		log("create patient and login to Portal 1");
 		PatientData p = new PatientData();
-		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, p);
+		MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);
 		testEGQEnabled(home.clickOnHealthForms());
 		log("verify that value in my account has been changed based on form answer");		
 		home = PageFactory.initElements(driver, MyPatientPage.class);
@@ -522,7 +523,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		log("submit form");
 		medHistory.submitForm();		
 		log("calling CCD rest");
-		String ccd = CCDTest.getFormCCD(timestamp, testData.getProperty("getCCDUrl1"));
+		String ccd = CCDTest.getFormCCD(timestamp, testData.getProperty("getCCDUrl2"));
 		log("verify that answered questions are in CCD");
 		assertTrue(ccd.contains("Penile lesions"), "not found in ccd: " + ccd);
 		assertTrue(ccd.contains("Vaginal dryness"), "not found in ccd: " + ccd);
@@ -695,12 +696,12 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 	protected PracticeHomePage loginToPracticePortal() throws Exception {		
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practiceUrl"));
-		return practiceLogin.login(testData.getProperty("practiceUsername1"), testData.getProperty("practicePassword1"));
+		return practiceLogin.login(testData.getProperty("practiceUsername2"), testData.getProperty("practicePassword2"));
 	}
 
 	protected SearchPatientFormsPage getPracticePortalSearchFormsPage() throws Exception {		
 	    PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practiceUrl"));
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername1"), testData.getProperty("practicePassword1"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername2"), testData.getProperty("practicePassword2"));
 
 		log("Click CustomFormTab");
 		SearchPatientFormsPage searchFormsPage = practiceHome.clickCustomFormTab();
@@ -709,7 +710,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		// at this point
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		if (!searchFormsPage.isPageLoaded() && practiceLogin.isLoginPageLoaded()) {
-			searchFormsPage = practiceLogin.login(testData.getProperty("practiceUsername1"), testData.getProperty("practicePassword1")).clickCustomFormTab();
+			searchFormsPage = practiceLogin.login(testData.getProperty("practiceUsername2"), testData.getProperty("practicePassword2")).clickCustomFormTab();
 		}
 		driver.manage().timeouts().implicitlyWait(SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
