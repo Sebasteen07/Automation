@@ -92,7 +92,7 @@ public class Utils {
 	    PropertyFileLoader testData = new PropertyFileLoader();
 		String url = getPortalURL(practiceType, false, testData);
 		CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
-		MyPatientPage home = patientCreation.createPatient(driver, new com.medfusion.product.patientportal1.utils.TestcasesData(new com.medfusion.product.patientportal1.pojo.Portal()));
+		MyPatientPage home = patientCreation.createPatient(driver, testData);
 		logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
 		p.setDob(patientCreation.getDob());
 		p.setEmail(patientCreation.getEmail());
