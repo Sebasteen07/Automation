@@ -17,6 +17,8 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.CalculatedFormPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
     
@@ -102,12 +104,18 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormPortal1() throws Exception {
-		testCalculatedForm(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
+	    log("create patient and login to Portal 1");
+        PatientData p = new PatientData();
+        MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);        
+		testCalculatedForm(home.clickOnHealthForms());
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormPI() throws Exception {
-		testCalculatedForm(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
+	    log("create patient and login to PI");
+        PatientData p = new PatientData();
+        JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);        
+		testCalculatedForm(home.clickOnHealthForms());
 	}
 
 	private void testCalculatedForm(HealthFormListPage formsPage) throws Exception {
@@ -135,12 +143,12 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {
-		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver, PracticeType.SECONDARY, testData));
+		testCalculatedFormValidation(Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormValidationPI() throws Exception {
-		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
+		testCalculatedFormValidation(Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
 	}
 
 	private void testCalculatedFormValidation(HealthFormListPage healthFormsList) throws Exception {
@@ -152,6 +160,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		CalculatedFormPage calculatedFormPage = welcomePage.initToFirstPage(CalculatedFormPage.class);
 		assertFalse(calculatedFormPage.isValidationErrorDisplayed());
 		calculatedFormPage.clickSaveContinue();
+		Thread.sleep(3000);
 		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
 
 		log("Step 2: Try to Save and continue with one answer missing.");

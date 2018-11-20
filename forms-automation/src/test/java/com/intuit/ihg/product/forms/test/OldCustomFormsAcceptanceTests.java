@@ -251,7 +251,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 		// Load up practice test data
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practiceUrl"));
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername2"), testData.getProperty("practicePassword2"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("practiceUsername1"), testData.getProperty("practicePassword1"));
 
 		log("step 4: On Practice Portal Home page Click CustomFormTab");
 		SearchPatientFormsPage pSearchPatientFormsPage = practiceHome.clickCustomFormTab();

@@ -147,8 +147,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		driver.switchTo().defaultContent();
 		home.logout(driver);
 		log("Step 6: Test if the DOB has not been changed");
-		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, PracticeType.PRIMARY, p.getEmail(), p.getPassword(), testData).clickMyAccountLink();
-		assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
+		MyAccountPage pMyAccountPage = Utils.loginPortal1(driver, PracticeType.SECONDARY, p.getEmail(), p.getPassword(), testData).clickMyAccountLink();
+		//pMyAccountPage.getDOB() can get leading zeroes on months < 10
+		assertEquals(pMyAccountPage.getDOB().replaceFirst ("^0*", ""), p.getDob());
 	}
 
 	private void testFormPdfCcd(HealthFormListPage formsPage) throws Exception {
