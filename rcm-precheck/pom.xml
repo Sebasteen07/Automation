@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>19.1.0-SNAPSHOT</version>
+        <version>18.6.0</version>
     </parent>
 	
 	<artifactId>rcm-precheck</artifactId>
@@ -23,7 +23,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>19.1.0-SNAPSHOT</ihg.version>
+		<ihg.version>18.6.0</ihg.version>
 	</properties>
 	
 	<dependencies>
