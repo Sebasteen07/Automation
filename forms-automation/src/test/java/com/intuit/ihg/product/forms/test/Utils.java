@@ -38,7 +38,7 @@ import com.medfusion.product.patientportal2.tests.CommonSteps;
 
 public class Utils {
 
-	public static String newPatientDOBYear = "1900";
+	public static String newPatientDOBYear = "1930";
 
 	/**
 	 * 
