@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="942934c1-65d7-40c2-946d-ba4fb9d2692e" activeEnvironment="dev3" name="PrecheckRestTests.xml" lastOpened="2019-01-07T10:35:30.528-05:00" resourceRoot="" soapui-version="6.0.0" encryptionMode="Not encrypted" updated="2.4.0-m-SNAPSHOT 2018-09-07T11:53:26Z" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project id="942934c1-65d7-40c2-946d-ba4fb9d2692e" activeEnvironment="dev3" name="PrecheckRestTests.xml" lastOpened="2019-01-07T10:35:30.528-05:00" resourceRoot="" soapui-version="6.0.0" encryptionMode="Not encrypted" updated="2.5.0 2018-09-14T14:45:07Z" xmlns:con="http://eviware.com/soapui/config">
   <con:settings>
     <con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.ProTestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
   <con:entry key="Report Format(s)" value=""/>
@@ -85,8 +85,8 @@
   </con:settings>
   <con:interface xsi:type="con:RestService" id="e014625a-3eb4-4401-9faf-7d2ac3eba6df" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://d1-prechk01.ops.medfusion.net:8081" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:settings/>
-    <con:definitionCache type="TEXT" rootPart=""/>
-    <con:endpoints>
+    
+    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
       <con:endpoint>http://d1-prechk01.ops.medfusion.net:8081</con:endpoint>
     </con:endpoints>
     <con:environmentSpec>
@@ -33554,7 +33554,7 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>dayStart</con:name>
-              <con:value>1548547200000</con:value>
+              <con:value>1549515600000</con:value>
             </con:property>
             <con:property>
               <con:name>integrationId</con:name>
@@ -33562,11 +33562,11 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>emrId</con:name>
-              <con:value>547334</con:value>
+              <con:value>288716</con:value>
             </con:property>
             <con:property>
               <con:name>time</con:name>
-              <con:value>1548597719377</con:value>
+              <con:value>1549568550729</con:value>
             </con:property>
             <con:property>
               <con:name>locationName</con:name>
@@ -33578,7 +33578,7 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>pmAppointmentId</con:name>
-              <con:value>"gi6ho5k5u7z3"</con:value>
+              <con:value>"m935397957c2"</con:value>
             </con:property>
             <con:property>
               <con:name>cancellationReason</con:name>
@@ -33586,7 +33586,7 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>pmExternalId</con:name>
-              <con:value>547334</con:value>
+              <con:value>288716</con:value>
             </con:property>
             <con:property>
               <con:name>systemAuthorization</con:name>
@@ -33602,7 +33602,7 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>appointmentId</con:name>
-              <con:value>gi6ho5k5u7z3</con:value>
+              <con:value>m935397957c2</con:value>
             </con:property>
             <con:property>
               <con:name>invalidAuthorization</con:name>
@@ -33614,19 +33614,19 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>guestAuthorization</con:name>
-              <con:value>Guest WfXiUp8jdhRd3PIIZM2Dmsrs8kK4bIgWDrI4pWI/Ah6dETU6h1on7rgSyvevr8GRnNwOlkYE13sgln5I2UH5n9A9N4vWNHZU44NGdsiLMTuL8FeXqUcev/1/XQCyQoWLh0cwrGQ1aPQq8Xft8rq1KXZ//zQencEcDPneY9v1O6NHWBvrS1zI5JDeQLjuSxC+</con:value>
+              <con:value>Guest k6V5Wj9DYo9oIs0zgxds+VvzMVp7jVrbKqRS3hNBzcPyr3NxE56A8RaNwtE+M/pKSH8jgpfW4NfNlZQPP77j2EJaTmgW3SX4tkPYSmrtRy2s9UbOooS7usWXppd8KgL86eMO80Q4c7hGqW0ce4M8CkxaDpZKTs4RQojmc1eKx5hLJVOUOwAVSumdXYKZwt9X</con:value>
             </con:property>
             <con:property>
               <con:name>newpmAppointmentId</con:name>
-              <con:value>"h79m5cn71a5k"</con:value>
+              <con:value>"bz4r95v8412e"</con:value>
             </con:property>
             <con:property>
               <con:name>newappointmentId</con:name>
-              <con:value>h79m5cn71a5k</con:value>
+              <con:value>bz4r95v8412e</con:value>
             </con:property>
             <con:property>
               <con:name>newtime</con:name>
-              <con:value>1548770521805</con:value>
+              <con:value>1549741351788</con:value>
             </con:property>
             <con:property>
               <con:name>adAuthorization</con:name>
@@ -33634,11 +33634,11 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>timenow</con:name>
-              <con:value>1548338521805</con:value>
+              <con:value>1549309351789</con:value>
             </con:property>
             <con:property>
               <con:name>guestAuthorizationsecond</con:name>
-              <con:value>Guest 9kC0xCz14tq3FxeyHp+doUm+gIm6r6HKu0EeAwMF9ySrFGx2AmALlgQGpxQ/3+OsHD68tFKZ3MWK4XjF4HQRIsIEP3KTqS3R4CMix8WXbsLMAQBEUdUKCn67hY7zXibzYFLSUsjfxiByvipiLBg2ZfhxqnaL9T5VRSa36klayyeBqo0ILNNc3VvK7bf5yjAH</con:value>
+              <con:value>Guest EIXCcYCTGSKN8bhfD4+Afre15zzEoyv82hAuxXA4ENV7H/eJ02H/ABzHiP5LQnNBfEi+ZJ+QSA3snZ7ukUARF7kRlKV2K2qKB3+7UOM7S/SfHoj/y8jTPqdfAH9dq/ebcrihYvlmPRfzi8BH9ITMHVkcgw3f7OJXiyfiC8fDFYCj6CkYD0r8BC84HXWUR7+B</con:value>
             </con:property>
             <con:property>
               <con:name>zip</con:name>
@@ -33646,11 +33646,11 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("pmPatien
             </con:property>
             <con:property>
               <con:name>appointmentIdentifier</con:name>
-              <con:value>njWfdPVRvgQ41OMKTbiid2TksFORRMgKnHZqyV3+hZNhOlQcv4IqlA==</con:value>
+              <con:value>T2Z5hfK6rT8KsDA6BDupfS66TajlTmkGaeQut5U0li7zIhgEwb/PiQ==</con:value>
             </con:property>
             <con:property>
               <con:name>newappointmentIdentifier</con:name>
-              <con:value>9ft0vdXhQ5fpxkOZ7JY4N903jGzW+Nri5Hk1EHjTDVVUQJo9lwqBgg==</con:value>
+              <con:value>pC1n+4s8r3yKEVM5O6OytMrRPBmfdBCmdxOtH+weybTxcXx0+d3Wqw==</con:value>
             </con:property>
           </con:properties>
         </con:config>
@@ -33674,8 +33674,7 @@ use(TimeCategory) {
       </con:testStep>
       <con:testStep type="groovy" name="Groovy Script 2" id="29f092cb-5397-4073-a40a-5451bbbf7d80">
         <con:settings/>
-        <con:config>
-          <script>def generator = { String alphabet, int n ->
+        <con:config><script>def generator = { String alphabet, int n ->
   new Random().with {
     (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
   }
@@ -33705,9 +33704,10 @@ use(TimeCategory) {
  def timeinmillis = futuretime.getTime().toString()
  log.info timeinmillis
  testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("time",timeinmillis )
+}
 
-}</script>
-        </con:config>
+
+</script></con:config>
       </con:testStep>
       <con:testStep type="httprequest" name="POST to get token 1" id="c56265cf-64e9-4716-803f-196cbd843fd5">
         <con:settings/>
