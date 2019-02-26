@@ -45,7 +45,7 @@ public class JalapenoPatient {
 			username = testData.getUserId() + generatedTS;
 		}		
 		
-		email = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		email = username + "@mailinator.com";
         firstName = testData.getFirstName() + PortalUtil.createRandomNumber();
         lastName = testData.getLastName();        
         password = testData.getPassword();

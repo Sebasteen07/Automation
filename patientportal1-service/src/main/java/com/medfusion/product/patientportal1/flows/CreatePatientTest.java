@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
@@ -70,6 +71,44 @@ public class CreatePatientTest extends BaseTestNGWebDriver {
 
 	public CreatePatientTest() {
 		super();
+	}
+	
+	public MyPatientPage createPatient(WebDriver driver, PropertyFileLoader testData) throws Exception {
+
+		log("Test Case: testCreatePatient");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		/*
+		 * Not very elegant way of changing URL the method uses If someone sets the URL in the object before calling this method then the set URL is be used
+		 * otherwise (the default way) the URL from testcasesData.geturl() is used
+		 */
+		if (url.isEmpty()) {
+			url = testData.getProperty("url");
+		}
+
+		log("step 1: Get Data from Excel");
+		log("URL: " + url);
+
+		log("step 2: Click Create An Account");
+		PortalLoginPage loginpage = new PortalLoginPage(driver, url);
+		CreateAccountPage pCreateAccountPage = loginpage.signUp();
+
+		log("step 3: Fill details in Create Account Page");
+		// Setting the variables for user in other tests
+		email = PortalUtil.createRandomEmailAddress(testData.getProperty("email"));
+		firstName = testData.getProperty("FirstName") + PortalUtil.createRandomNumber();
+		lastName = testData.getProperty("LastName") + PortalUtil.createRandomNumber();		
+		setDob(testData.getDOBMonth()+ "/" + testData.getDOBDay() + "/" + testData.getDOBYear());
+		password = testData.getProperty("password");
+		log("email:-" + email);
+		MyPatientPage pMyPatientPage = pCreateAccountPage.createAccountPage(firstName, lastName, email, testData.getProperty("phoneNumber"), testData.getProperty("ZipCode"),
+				testData.getProperty("address1"), testData.getProperty("password"), testData.getProperty("SecretQuestion"), testData.getProperty("SecretAnswer"), testData.getProperty("state"),
+				testData.getProperty("city"));
+
+
+
+		return this.loginAsNewPatient(driver, pMyPatientPage);
 	}
 
 	public MyPatientPage createPatient(WebDriver driver, TestcasesData testcasesData) throws Exception {

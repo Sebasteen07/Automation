@@ -124,6 +124,7 @@ public class OldCustomFormPages extends BasePageObject {
 		selectstate1.selectByVisibleText("Bisexual");
 		Select selectstate2 = new Select(genderIdentity);
 		selectstate2.selectByVisibleText("Additional gender category/(or other), please specify");
+		genderSpecify.clear();
 		genderSpecify.sendKeys("something");
 		
 		Select selectstate3 = new Select(maritalStatus);

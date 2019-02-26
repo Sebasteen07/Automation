@@ -1,23 +1,41 @@
 package com.intuit.ihg.product.forms.test;
 
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
-import com.intuit.ihg.product.sitegen.utils.Sitegen;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.CalculatedFormPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
+import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
+    
+    PropertyFileLoader testData;
+    
+    @Override
+    @BeforeMethod(alwaysRun = true)
+    public void setUp() throws Exception {
+        super.setUp();
+
+        log(this.getClass().getName());
+        log("Execution Environment: " + IHGUtil.getEnvironmentType());
+        log("Execution Browser: " + TestConfig.getBrowserType());
+
+        log("Getting Test Data");
+        testData = new PropertyFileLoader();        
+    }
 
 	/**
 	 * Tect Case in TestLink: MF-1265
@@ -31,10 +49,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	@Test
 	public void testCalculatedFormAddRemove() throws Exception {
 		Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
-		log("step 1: login to SG as superuser - THIS REQUIRES MANUAL INPUT");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl()).clickOnLoginAsInternalEmployee();
+		log("step 1: login to SG as superuser - THIS REQUIRES MANUAL INPUT");		
+		SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
 		log("step 2: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
 		pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(String.valueOf(Utils.getAutomationPracticeID()));
@@ -70,11 +86,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormSGEdit() throws Exception {
 		Utils.logTestEnvironmentInfo("testCalculatedFormSGEdit");
-		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
-
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testData = new SitegenTestData(sitegen);
-		SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps().logInUserToSG(driver, testData.getFormPrimaryUser(), testData.getFormPrimaryPassword());
+		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();		
+		SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps().logInUserToSG(driver, testData.getProperty("sitegenUsername1"), testData.getProperty("sitegenPassword1"));
 
 		DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
 		driver.manage().window().maximize();
@@ -91,12 +104,18 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormPortal1() throws Exception {
-		testCalculatedForm(Utils.loginPortal1AndOpenFormsList(driver));
+	    log("create patient and login to Portal 1");
+        PatientData p = new PatientData();
+        MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);        
+		testCalculatedForm(home.clickOnHealthForms());
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormPI() throws Exception {
-		testCalculatedForm(Utils.loginPIAndOpenFormsList(driver));
+	    log("create patient and login to PI");
+        PatientData p = new PatientData();
+        JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);        
+		testCalculatedForm(home.clickOnHealthForms());
 	}
 
 	private void testCalculatedForm(HealthFormListPage formsPage) throws Exception {
@@ -124,12 +143,12 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	 */
 	@Test(groups = "OldPortalForms")
 	public void testCalculatedFormValidationPortal1() throws Exception {
-		testCalculatedFormValidation(Utils.loginPortal1AndOpenFormsList(driver));
+		testCalculatedFormValidation(Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
 	}
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormValidationPI() throws Exception {
-		testCalculatedFormValidation(Utils.loginPIAndOpenFormsList(driver));
+		testCalculatedFormValidation(Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
 	}
 
 	private void testCalculatedFormValidation(HealthFormListPage healthFormsList) throws Exception {
@@ -141,6 +160,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		CalculatedFormPage calculatedFormPage = welcomePage.initToFirstPage(CalculatedFormPage.class);
 		assertFalse(calculatedFormPage.isValidationErrorDisplayed());
 		calculatedFormPage.clickSaveContinue();
+		Thread.sleep(3000);
 		assertTrue(calculatedFormPage.isValidationErrorDisplayed());
 
 		log("Step 2: Try to Save and continue with one answer missing.");

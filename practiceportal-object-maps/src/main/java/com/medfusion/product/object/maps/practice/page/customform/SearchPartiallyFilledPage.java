@@ -2,8 +2,7 @@ package com.medfusion.product.object.maps.practice.page.customform;
 
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,9 +26,8 @@ public class SearchPartiallyFilledPage extends BasePageObject {
 	}
 
 	public ViewPatientFormPage selectPatientsFirstForm() throws Exception {
-		Portal portal = new Portal();
-		TestcasesData testData = new TestcasesData(portal);
-		String patientsName = testData.getFirstName() + ' ' + testData.getLastName();
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String patientsName = testData.getProperty("patientFirstname") + ' ' + testData.getProperty("patientLastname");
 
 		driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]")).click();
 		return PageFactory.initElements(driver, ViewPatientFormPage.class);

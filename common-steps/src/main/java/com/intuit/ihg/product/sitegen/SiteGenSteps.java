@@ -5,31 +5,26 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
-import com.intuit.ihg.product.sitegen.utils.Sitegen;
-import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
+import com.medfusion.common.utils.PropertyFileLoader;
 
 import org.openqa.selenium.WebDriver;
 
 public class SiteGenSteps extends BaseTestNGWebDriver {
 
-	public static void logSGLoginInfo(SitegenTestData testData) {
-		Log4jUtil.log("URL: " + testData.getSiteGenUrl());
-		Log4jUtil.log("Username: " + testData.getAutomationUser());
-		Log4jUtil.log("Password: " + testData.getAutomationUserPassword());
+	public static void logSGLoginInfo(PropertyFileLoader testData) {
+		Log4jUtil.log("URL: " + testData.getProperty("sitegenUrl"));		
 	}
 
 	public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password) throws Exception {
 		return logInUserToSG(driver, login, password, "");
 	}
-
+	//TODO breadcrumb check if this is in any use other than the local-run tests that require manual credentials, rewrite to only use test class propertyFileLoader
 	public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password, String practiceName) throws Exception {
 		log("step 1: Get Data from Excel ##########");
-		Sitegen sitegen = new Sitegen();
-		SitegenTestData testcasesData = new SitegenTestData(sitegen);
-		logSGLoginInfo(testcasesData);
-
+		PropertyFileLoader testData = new PropertyFileLoader();		
+		
 		log("Step 2: Opening sitegen home page");
-		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testcasesData.getSiteGenUrl());
+		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 		SiteGenHomePage sHomePage = sloginPage.login(login, password);
 
 		log("step 3: navigate to SiteGen PracticeHomePage ##########");
