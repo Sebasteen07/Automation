@@ -113,12 +113,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	// TODO move stuff around stepCounter to BaseTestNGWebDriver
 	int stepCounter;
 	Instant testStart;
-
-	@Override
+	
 	@BeforeMethod(alwaysRun = true)
-	public void setUp() throws Exception {
-		super.setUp();
-
+	public void setUpPortal2Test() throws Exception {	    
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
