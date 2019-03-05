@@ -139,7 +139,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		log("Navigating to input URL and checking redirection for 10 seconds");
 		driver.get(originUrl);
 		for(int i = 0; i < 10; i++){
-			if (driver.getCurrentUrl() != originUrl) {
+			if (!driver.getCurrentUrl().equals(originUrl)) {
 				log("Found redirected URL: " + driver.getCurrentUrl());
 				return driver.getCurrentUrl();
 			}
