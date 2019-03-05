@@ -66,6 +66,8 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
 	
+	@FindBy(how = How.XPATH, using = "//p[@data-ng-show = 'createAccountStep1_form.$error.inactiveAccount'][contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
+    private WebElement inactiveAccountExistsError;
 
 	public PatientDemographicPage(WebDriver driver) {
 		super(driver);
@@ -157,4 +159,13 @@ public class PatientDemographicPage extends MedfusionPage {
 	    setState.click();
 	}
 	
+	public boolean isInactiveAccountExistsErrorDisplayed(){	   
+        try {
+            log("Looking for inactive account already exists error on PatientDemographicsPage");
+            return inactiveAccountExistsError.isDisplayed();
+        }
+        catch (Exception e) {           
+        }
+        return false;	    
+	}
 }

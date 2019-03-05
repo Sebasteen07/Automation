@@ -66,7 +66,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 	
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
-
+	
+	@FindBy(how = How.XPATH, using = "//span[@id = 'userid_error_invalid'][contains(text(),'The user name you entered is already taken. Enter another user name.')]")
+    private WebElement usernameTakenError;	
 
 	public SecurityDetailsPage(WebDriver driver) {
 		super(driver);
@@ -151,6 +153,16 @@ public class SecurityDetailsPage extends MedfusionPage {
 			 */
 		}
 
+	}
+	
+	public boolean isUsernameTakenErrorDisplayed(){
+	    try {
+            log("Looking for username taken error on SecurityDetailsPage");
+            return usernameTakenError.isDisplayed();
+        }
+        catch (Exception e) {           
+        }
+        return false;
 	}
 
 }

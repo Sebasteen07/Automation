@@ -42,7 +42,10 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
-
+	
+	@FindBy(how = How.XPATH, using = "//span[@data-ng-show = 'notice.existingaccount_same']")
+    private WebElement healthKeyMatchError;
+	
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
 	}
@@ -112,5 +115,15 @@ public class JalapenoLoginPage extends MedfusionPage {
 			electronicPaymentPreference.click();
 			okButton.click();
 		}
+	}
+	
+	public boolean isExistingAccountErrorDisplayed() {
+	    try {
+	        log("Looking for account already exists error on loginPage");
+	        return healthKeyMatchError.isDisplayed();
+	    }
+	    catch (Exception e) {	        
+	    }
+	    return false;
 	}
 }
