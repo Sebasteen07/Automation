@@ -1455,42 +1455,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 1: Open no login payment page");
 		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.geturl());
-		log("Step 2: Fill in payment info and submit");
+		log("Step 2: Verify Payment Page");
 
-		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
+	assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
 
-		log("Step 3: Verify payment OK");
-		
-        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(30, TimeUnit.SECONDS)
-                .pollingEvery(3, TimeUnit.SECONDS)
-                .ignoring(NoSuchElementException.class)
-                .ignoring(NoSuchFrameException.class);
-        
-        String confirm = wait.until(new Function<WebDriver, WebElement>() {
-                 public WebElement apply(WebDriver driver) {
-                       
-                     return driver.findElement(By.xpath("//*[@id=\'payReciept\']/table[2]/tbody/tr[1]/td[2]/span/div"));
-                   }
-                 }
-                ).getText();                     
 
-		
-		assertTrue(confirm.contains("Thank You for your payment"));
-
-		log("Step 3: Verify account set to N/A");
-		assertTrue(driver.getPageSource().contains("Account N/A."));
-
-		log("Step 4: Verify the prize format.");
-		assertTrue(driver.getPageSource().contains("$" + pNoLoginPaymentPage.GetAmountPrize() + ".00"));
-
-		log("Step 5: Search the payment in Practice portal");
-		RecivePayNowTest recievePayNowTest = new RecivePayNowTest();
-
-		Practice practice = new Practice();
-		PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-		recievePayNowTest.PayNowVerify(driver, practiceTestData, pNoLoginPaymentPage.GetAmountPrize());
 	}
 
 	/**

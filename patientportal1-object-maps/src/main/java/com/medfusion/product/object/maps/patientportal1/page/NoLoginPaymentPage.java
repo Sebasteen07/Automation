@@ -59,6 +59,9 @@ public class NoLoginPaymentPage extends BasePageObject {
 	@FindBy(xpath = ".//td[@class='table_text']/span")
 	private WebElement txtConfirmationNumber;
 
+	@FindBy(xpath = "//*[@id='payForm']/div[16]/div/div/div/iframe")
+	private WebElement reCaptchaFrame;
+
 	private String amountPrize;
 
 	public NoLoginPaymentPage(WebDriver driver, String baseURL) {
@@ -72,7 +75,7 @@ public class NoLoginPaymentPage extends BasePageObject {
 	}
 
 
-	public void FillNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email) {
+	public boolean validateNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email) {
 		IHGUtil.PrintMethodName();
 		PortalUtil.setPortalFrame(driver);
 		IHGUtil.waitForElement(driver, 10, nameOnCard);
@@ -105,7 +108,7 @@ public class NoLoginPaymentPage extends BasePageObject {
 		emailField.sendKeys(email);
 		btnsubmit.click();
 
-
+		return reCaptchaFrame.isDisplayed();
 	}
 
 	public String GetAmountPrize() {
