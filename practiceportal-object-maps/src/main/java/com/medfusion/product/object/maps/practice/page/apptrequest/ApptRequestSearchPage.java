@@ -91,7 +91,6 @@ public class ApptRequestSearchPage extends BasePageObject {
 			   try {
 			    Thread.sleep(3000);
 			   } catch (InterruptedException e) {
-			    // TODO Auto-generated catch block
 			    e.printStackTrace();
 			   }
 			  }
@@ -180,11 +179,17 @@ public class ApptRequestSearchPage extends BasePageObject {
 				IHGUtil.waitForElement(driver, 6, startDateDropDwn);
 				Select startDate = new Select(startDateDropDwn);
 				startDate.selectByValue(date);
-				i = 3;
-			} catch (StaleElementReferenceException e) {
-				log(e.getCause().toString());
-				log(i + ". try");
-				i++;
+				break;
+			} catch ( Exception e) {				
+				if (e instanceof StaleElementReferenceException) {
+					e.printStackTrace();
+					log("Stale element encountered, attempt #" + i + " out of 3");
+					i++;
+					continue;
+				}
+				log("Unexpected exception caught and test failed, printing and rethrowing.");
+				e.printStackTrace();
+				throw new InterruptedException("Unexpected exception interrupted test on appointment start date search filter");
 			}
 		} while (i < 3);
 
