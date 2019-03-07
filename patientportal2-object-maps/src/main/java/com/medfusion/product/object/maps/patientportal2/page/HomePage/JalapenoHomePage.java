@@ -40,7 +40,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
 
-	@FindBy(how = How.ID, using = "feature_appointment_request")
+	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
 	private WebElement appointments;
 
 	@FindBy(how = How.ID, using = "feature_ask_a_practitioner")
