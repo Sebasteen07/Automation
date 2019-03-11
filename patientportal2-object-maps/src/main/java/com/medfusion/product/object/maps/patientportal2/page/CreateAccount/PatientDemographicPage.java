@@ -34,6 +34,8 @@ public class PatientDemographicPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "gender_female") private WebElement femaleGender;
 
+		//TODO declined gender
+
 		@FindBy(how = How.ID, using = "address1") private WebElement inputAddress1;
 
 		@FindBy(how = How.ID, using = "address2") private WebElement inputAddress2;
@@ -79,18 +81,23 @@ public class PatientDemographicPage extends MedfusionPage {
 				return assessPageElements(webElementsList);
 		}
 
+		private String convertDOBMonthToText(String monthNumber) {
+				String monthText = Month.of(Integer.parseInt(monthNumber)).name();
+				monthText = monthText.substring(0, 1).toUpperCase() + monthText.substring(1).toLowerCase();
+				return monthText;
+		}
+
 		public void fillInPatientData(Patient patient) {
-				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), Month.of(Integer.parseInt(patient.getDOBMonth())).name(),
-						patient.getDOBDay(), patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(),
-						patient.getCity(), patient.getState());
+				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), convertDOBMonthToText(patient.getDOBMonth()), patient.getDOBDay(),
+						patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
+						patient.getState());
 		}
 
 		public void fillInPatientData(String firstName, String lastName, String emailAddress, String dobMonth, String dobDay, String dobYear,
 				Patient.GenderExtended gender, String zipCode) throws NullPointerException, Exception {
-				PropertyFileLoader fileLoader = new PropertyFileLoader();
-				Patient patient = new Patient(fileLoader);
-				fillInPatientData(firstName, lastName, emailAddress, dobMonth, dobDay, dobYear, gender, zipCode, patient.getAddress1(), patient.getAddress2(),
-						patient.getCity(), patient.getState());
+				PropertyFileLoader testData = new PropertyFileLoader();
+				fillInPatientData(firstName, lastName, emailAddress, dobMonth, dobDay, dobYear, gender, zipCode, testData.getProperty("Address1"),
+						testData.getProperty("Address2"), testData.getProperty("City"), testData.getProperty("State"));
 		}
 
 		public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay, String dobYear,
