@@ -11,7 +11,11 @@ import org.openqa.selenium.WebDriver;
 
 public class CreatePatient implements ICreatePatient {
 		@Override public Patient selfRegisterPatient(WebDriver driver, PropertyFileLoader testData, Patient patient) {
-				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+				return selfRegisterPatient(driver, testData, patient, testData.getUrl());
+		}
+
+		@Override public Patient selfRegisterPatient(WebDriver driver, PropertyFileLoader testData, Patient patient, String url) {
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 				PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 				patientDemographicPage.fillInPatientData(patient);
 				SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
