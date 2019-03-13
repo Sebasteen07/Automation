@@ -72,13 +72,10 @@ import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
-		PropertyFileLoader testData;
+		private PropertyFileLoader testData;
 
-		@Override
 		@BeforeMethod(alwaysRun = true)
-		public void setUp() throws Exception {
-				super.setUp();
-
+		public void setUpFormsTest() throws Exception {
 				log(this.getClass().getName());
 				log("Execution Environment: " + IHGUtil.getEnvironmentType());
 				log("Execution Browser: " + TestConfig.getBrowserType());
@@ -483,7 +480,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				log("verify that value in my account has been changed based on form answer");
 				home = PageFactory.initElements(driver, MyPatientPage.class);
 				MyAccountPage pMyAccountPage = home.clickMyAccountLink();
-				assertTrue(pMyAccountPage.getGender() == Patient.GenderExtended.DECLINED);
+				assertTrue(pMyAccountPage.getGender() == Patient.GenderExtended.DECLINED); //TODO fix pMyAccountPage.getGender
 		}
 
 		private void testEGQEnabled(HealthFormListPage formsList) throws Exception {
