@@ -36,71 +36,101 @@ public class MyAccountPage extends BasePageObject {
 
 		public static final String PAGE_NAME = "My Account Page";
 
-		@FindBy(xpath = "//a[contains(@href, 'home.cpanel')]") private WebElement lnkPreferences;
+		@FindBy(xpath = "//a[contains(@href, 'home.cpanel')]")
+		private WebElement lnkPreferences;
 
-		@FindBy(xpath = "//a[contains(@href, 'home.family')]") private WebElement lnkFamily;
+		@FindBy(xpath = "//a[contains(@href, 'home.family')]")
+		private WebElement lnkFamily;
 
-		@FindBy(xpath = "//a[contains(@href, 'home.wallet')]") private WebElement lnkWallet;
+		@FindBy(xpath = "//a[contains(@href, 'home.wallet')]")
+		private WebElement lnkWallet;
 
-		@FindBy(linkText = "Manage Health Information") private WebElement lnkManageHealthInfo;
+		@FindBy(linkText = "Manage Health Information")
+		private WebElement lnkManageHealthInfo;
 
-		@FindBy(linkText = "My Patient Page") private WebElement lnkMyPatientPage;
+		@FindBy(linkText = "My Patient Page")
+		private WebElement lnkMyPatientPage;
 
-		@FindBy(xpath = "//a[contains(@href, 'ins.details')]") private WebElement insuranceLink;
+		@FindBy(xpath = "//a[contains(@href, 'ins.details')]")
+		private WebElement insuranceLink;
 
-		@FindBy(name = "inputs:10:input:input") private WebElement txtZipCode;
+		@FindBy(name = "inputs:10:input:input")
+		private WebElement txtZipCode;
 
-		@FindBy(name = "inputs:11:input:input") private WebElement txtHomePhone;
+		@FindBy(name = "inputs:11:input:input")
+		private WebElement txtHomePhone;
 
-		@FindBy(name = "buttons:submit") private WebElement btnSubmit;
+		@FindBy(name = "buttons:submit")
+		private WebElement btnSubmit;
 
-		@FindBy(css = "a[href*='exit.cfm']") private WebElement logout;
+		@FindBy(css = "a[href*='exit.cfm']")
+		private WebElement logout;
 
-		@FindBy(name = "inputs:8:input:input") private WebElement txtCity;
+		@FindBy(name = "inputs:8:input:input")
+		private WebElement txtCity;
 
-		@FindBy(name = "inputs:6:input:input") private WebElement txtAddress1;
+		@FindBy(name = "inputs:6:input:input")
+		private WebElement txtAddress1;
 
-		@FindBy(name = "inputs:7:input:input") private WebElement txtAddress2;
+		@FindBy(name = "inputs:7:input:input")
+		private WebElement txtAddress2;
 
-		@FindBy(linkText = "Account Activity") private WebElement lnkAccountActivity;
+		@FindBy(linkText = "Account Activity")
+		private WebElement lnkAccountActivity;
 
 
 		// @FindBy (xpath = ".//form[@id='editForm']/table/tbody/tr[20]/td[2]/select[@name='inputs:19:input:input']/option")
 		// private WebElement preferredCommunicationMethod;
 
-		@FindBy(xpath = "//select[@name='inputs:23:input:input']") private WebElement chooseCommunicationDropDrown;
+		@FindBy(xpath = "//select[@name='inputs:23:input:input']")
+		private WebElement chooseCommunicationDropDrown;
 
-		@FindBy(xpath = "//select[@name='inputs:16:input:input']") private WebElement chooseGenderIdentityDropDown;
+		@FindBy(xpath = "//select[@name='inputs:16:input:input']")
+		private WebElement chooseGenderIdentityDropDown;
 
-		@FindBy(xpath = "//select[@name='inputs:18:input:input']") private WebElement chooseSexualOrientationDropDown;
+		@FindBy(xpath = "//select[@name='inputs:18:input:input']")
+		private WebElement chooseSexualOrientationDropDown;
 
-		@FindBy(name = "inputs:2:input:input") private WebElement txtFirstName;
+		@FindBy(name = "inputs:2:input:input")
+		private WebElement txtFirstName;
 
-		@FindBy(name = "inputs:3:input:input") private WebElement txtMiddleName;
+		@FindBy(name = "inputs:3:input:input")
+		private WebElement txtMiddleName;
 
-		@FindBy(name = "inputs:4:input:input") private WebElement txtLastName;
+		@FindBy(name = "inputs:4:input:input")
+		private WebElement txtLastName;
 
-		@FindBy(name = "inputs:5:input:input") private WebElement preferredLanguageDropDown;
+		@FindBy(name = "inputs:5:input:input")
+		private WebElement preferredLanguageDropDown;
 
-		@FindBy(name = "inputs:9:input:input") private WebElement stateDropDown;
+		@FindBy(name = "inputs:9:input:input")
+		private WebElement stateDropDown;
 
-		@FindBy(name = "inputs:12:input:input") private WebElement txtMobilePhone;
+		@FindBy(name = "inputs:12:input:input")
+		private WebElement txtMobilePhone;
 
-		@FindBy(name = "inputs:13:input:input") private WebElement txtWorkPhone;
+		@FindBy(name = "inputs:13:input:input")
+		private WebElement txtWorkPhone;
 
-		@FindBy(name = "inputs:14:input:input") private WebElement dateOfBirth;
+		@FindBy(name = "inputs:14:input:input")
+		private WebElement dateOfBirth;
 
-		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Male']]") private WebElement genderMaleRadio;
+		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Male']]")
+		private WebElement genderMaleRadio;
 
-		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Female']]") private WebElement genderFemaleRadio;
+		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Female']]")
+		private WebElement genderFemaleRadio;
 
 		//TODO Decline to answer radiobtn
 
-		@FindBy(name = "inputs:20:input:input") private WebElement raceDropDown;
+		@FindBy(name = "inputs:20:input:input")
+		private WebElement raceDropDown;
 
-		@FindBy(name = "inputs:21:input:input") private WebElement ethnicityDropDown;
+		@FindBy(name = "inputs:21:input:input")
+		private WebElement ethnicityDropDown;
 
-		@FindBy(name = "inputs:22:input:input") private WebElement maritalStatusDropDown;
+		@FindBy(name = "inputs:22:input:input")
+		private WebElement maritalStatusDropDown;
 
 		public MyAccountPage(WebDriver driver) {
 				super(driver);
@@ -504,6 +534,7 @@ public class MyAccountPage extends BasePageObject {
 						return Patient.GenderExtended.MALE;
 				if (genderFemaleRadio.isSelected())
 						return Patient.GenderExtended.FEMALE;
+				//TODO add declined
 				return null;
 		}
 }
