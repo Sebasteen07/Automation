@@ -5,6 +5,7 @@ import java.time.Month;
 import java.util.ArrayList;
 
 import com.medfusion.pojos.Patient;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,39 +19,55 @@ public class PatientDemographicPage extends MedfusionPage {
 
 		public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
 
-		@FindBy(how = How.ID, using = "firstName") private WebElement inputPatientFirstName;
+		@FindBy(how = How.ID, using = "firstName")
+		private WebElement inputPatientFirstName;
 
-		@FindBy(how = How.ID, using = "lastName") private WebElement inputPatientLastName;
+		@FindBy(how = How.ID, using = "lastName")
+		private WebElement inputPatientLastName;
 
-		@FindBy(how = How.ID, using = "email") private WebElement inputEmailAddresss;
+		@FindBy(how = How.ID, using = "email")
+		private WebElement inputEmailAddresss;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_month']") private WebElement inputDateOfBirthMonth;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_month']")
+		private WebElement inputDateOfBirthMonth;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_day']") private WebElement inputDateOfBirthDay;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_day']")
+		private WebElement inputDateOfBirthDay;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']") private WebElement inputDateOfBirthYear;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']")
+		private WebElement inputDateOfBirthYear;
 
-		@FindBy(how = How.ID, using = "gender_male") private WebElement maleGender;
+		@FindBy(how = How.ID, using = "gender_male")
+		private WebElement maleGender;
 
-		@FindBy(how = How.ID, using = "gender_female") private WebElement femaleGender;
+		@FindBy(how = How.ID, using = "gender_female")
+		private WebElement femaleGender;
 
 		//TODO declined gender
 
-		@FindBy(how = How.ID, using = "address1") private WebElement inputAddress1;
+		@FindBy(how = How.ID, using = "address1")
+		private WebElement inputAddress1;
 
-		@FindBy(how = How.ID, using = "address2") private WebElement inputAddress2;
+		@FindBy(how = How.ID, using = "address2")
+		private WebElement inputAddress2;
 
-		@FindBy(how = How.ID, using = "city") private WebElement inputCity;
+		@FindBy(how = How.ID, using = "city")
+		private WebElement inputCity;
 
-		@FindBy(how = How.XPATH, using = "//*[@placeholder='State'][1]") private WebElement inputState;
+		@FindBy(how = How.XPATH, using = "//*[@placeholder='State'][1]")
+		private WebElement inputState;
 
-		@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div") private WebElement setState;
+		@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
+		private WebElement setState;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']") private WebElement inputZipCode;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
+		private WebElement inputZipCode;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='cancelStep']") private WebElement buttonCancel;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='cancelStep']")
+		private WebElement buttonCancel;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']") private WebElement buttonContinue;
+		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
+		private WebElement buttonContinue;
 
 		@FindBy(how = How.XPATH, using = "//p[@data-ng-show = 'createAccountStep1_form.$error.inactiveAccount'][contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 		private WebElement inactiveAccountExistsError;
@@ -85,6 +102,13 @@ public class PatientDemographicPage extends MedfusionPage {
 				String monthText = Month.of(Integer.parseInt(monthNumber)).name();
 				monthText = monthText.substring(0, 1).toUpperCase() + monthText.substring(1).toLowerCase();
 				return monthText;
+		}
+
+		public void fillInPatientData(JalapenoPatient patient) {
+				//TODO remove
+				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), patient.getDOBMonthText(), patient.getDOBDay(),
+						patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
+						patient.getState());
 		}
 
 		public void fillInPatientData(Patient patient) {
