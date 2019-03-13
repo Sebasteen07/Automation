@@ -128,7 +128,7 @@ public class PortalUtil extends IHGUtil {
 				}
 		}
 
-		private static String generateUniqueUsername(String username, PropertyFileLoader testData) throws Exception {
+		public static String generateUniqueUsername(String username, PropertyFileLoader testData) throws Exception {
 				long generatedTS = System.currentTimeMillis();
 				username = testData.getUserId() + generatedTS;
 				int i = 0;
