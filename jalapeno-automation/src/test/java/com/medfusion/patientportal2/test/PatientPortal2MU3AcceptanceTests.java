@@ -38,7 +38,8 @@ import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
-@Test public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
+@Test
+public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		private PropertyFileLoader testData;
 		private LevelOfWCAG level = LevelOfWCAG.AAA;
@@ -46,11 +47,8 @@ import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 		// TODO move stuff around stepCounter to BaseTestNGWebDriver
 		private int stepCounter;
 
-		@Override
 		@BeforeMethod(alwaysRun = true)
-		public void setUp() throws Exception {
-				super.setUp();
-
+		public void setUpPortal2Test() throws Exception {
 				log(this.getClass().getName());
 				log("Execution Environment: " + IHGUtil.getEnvironmentType());
 				log("Execution Browser: " + TestConfig.getBrowserType());
