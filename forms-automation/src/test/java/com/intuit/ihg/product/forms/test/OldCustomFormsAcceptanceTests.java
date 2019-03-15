@@ -28,13 +28,10 @@ import com.medfusion.product.object.maps.practice.page.customform.SearchPatientF
 
 public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
     
-    PropertyFileLoader testData;
+    private PropertyFileLoader testData;
     
-    @Override
     @BeforeMethod(alwaysRun = true)
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpOldCustomFormsTest() throws Exception {
         log(this.getClass().getName());
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());

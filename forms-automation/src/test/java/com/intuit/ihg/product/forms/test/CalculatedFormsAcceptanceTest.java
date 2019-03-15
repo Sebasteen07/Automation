@@ -22,13 +22,10 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
     
-    PropertyFileLoader testData;
+    private PropertyFileLoader testData;
     
-    @Override
     @BeforeMethod(alwaysRun = true)
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpCalculatedFormsTest() throws Exception {
         log(this.getClass().getName());
         log("Execution Environment: " + IHGUtil.getEnvironmentType());
         log("Execution Browser: " + TestConfig.getBrowserType());
