@@ -121,7 +121,8 @@ public class MyAccountPage extends BasePageObject {
 		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Female']]")
 		private WebElement genderFemaleRadio;
 
-		//TODO Decline to answer radiobtn
+		@FindBy(xpath = "//span[@fieldid='gender']//input[./following-sibling::label[text()='Declined to answer']]")
+		private WebElement genderDeclinedRadio;
 
 		@FindBy(name = "inputs:20:input:input")
 		private WebElement raceDropDown;
@@ -534,7 +535,8 @@ public class MyAccountPage extends BasePageObject {
 						return Patient.GenderExtended.MALE;
 				if (genderFemaleRadio.isSelected())
 						return Patient.GenderExtended.FEMALE;
-				//TODO add declined
+				if (genderDeclinedRadio.isSelected())
+						return Patient.GenderExtended.DECLINED;
 				return null;
 		}
 }
