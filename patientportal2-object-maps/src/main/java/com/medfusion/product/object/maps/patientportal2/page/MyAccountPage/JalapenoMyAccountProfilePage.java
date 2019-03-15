@@ -1,10 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.medfusion.pojos.Patient;
 import org.apache.commons.lang.StringUtils;
@@ -25,48 +21,72 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
+		public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays
+				.asList("Male", "Female", "Transgender female/Trans woman/Male-to-female (MTF)", "Transgender male/Trans man/Female-to-male (FTM)",
+						"Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)")); //existuje i moznost "Decline to answer"
 
-		@FindBy(how = How.XPATH, using = "//input[@id='address1']") private WebElement address1Textbox;
+		@FindBy(how = How.XPATH, using = "//input[@id='address1']")
+		private WebElement address1Textbox;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='address2']") private WebElement address2Textbox;
+		@FindBy(how = How.XPATH, using = "//input[@id='address2']")
+		private WebElement address2Textbox;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='city']") private WebElement cityTextbox;
+		@FindBy(how = How.XPATH, using = "//input[@id='city']")
+		private WebElement cityTextbox;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='postalCode']") private WebElement zipCodeTextbox;
+		@FindBy(how = How.XPATH, using = "//input[@id='postalCode']")
+		private WebElement zipCodeTextbox;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='gender_male']") private WebElement maleRadioButton;
+		@FindBy(how = How.XPATH, using = "//input[@id='gender_male']")
+		private WebElement maleRadioButton;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='gender_female']") private WebElement femaleRadioButton;
+		@FindBy(how = How.XPATH, using = "//input[@id='gender_female']")
+		private WebElement femaleRadioButton;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='gender_unknown']") private WebElement declineToAnswerRadioButton;
+		@FindBy(how = How.XPATH, using = "//input[@id='gender_unknown']")
+		private WebElement declineToAnswerRadioButton;
 
-		@FindBy(how = How.ID, using = "birthDate_year") private WebElement DOByear;
+		@FindBy(how = How.ID, using = "birthDate_year")
+		private WebElement DOByear;
 
-		@FindBy(how = How.ID, using = "birthDate_month") private WebElement DOBmonth;
+		@FindBy(how = How.ID, using = "birthDate_month")
+		private WebElement DOBmonth;
 
-		@FindBy(how = How.ID, using = "birthDate_day") private WebElement DOBday;
+		@FindBy(how = How.ID, using = "birthDate_day")
+		private WebElement DOBday;
 
-		@FindBy(how = How.ID, using = "state") private WebElement stateSelect;
+		@FindBy(how = How.ID, using = "state")
+		private WebElement stateSelect;
 
-		@FindBy(how = How.XPATH, using = "//select[@id='genderIdentitySelect']") private WebElement genderQuestion;
+		@FindBy(how = How.XPATH, using = "//select[@id='genderIdentitySelect']")
+		private WebElement genderQuestion;
 
-		@FindBy(how = How.XPATH, using = "//button[@id='saveAccountChanges']") private WebElement saveMyChanges;
+		@FindBy(how = How.XPATH, using = "//button[@id='saveAccountChanges']")
+		private WebElement saveMyChanges;
 
-		@FindBy(how = How.XPATH, using = "//select[@id='race']") private WebElement race;
+		@FindBy(how = How.XPATH, using = "//select[@id='race']")
+		private WebElement race;
 
-		@FindBy(how = How.XPATH, using = "//select[@id='ethnicity']") private WebElement ethnicity;
+		@FindBy(how = How.XPATH, using = "//select[@id='ethnicity']")
+		private WebElement ethnicity;
 
-		@FindBy(how = How.XPATH, using = "//select[@id='sexualOrientationSelect']") private WebElement sexualOrientation;
+		@FindBy(how = How.XPATH, using = "//select[@id='sexualOrientationSelect']")
+		private WebElement sexualOrientation;
 
-		@FindBy(how = How.ID, using = "firstName") private WebElement firstName;
+		@FindBy(how = How.ID, using = "firstName")
+		private WebElement firstName;
 
-		@FindBy(how = How.ID, using = "lastName") private WebElement lastName;
+		@FindBy(how = How.ID, using = "lastName")
+		private WebElement lastName;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='phone4']") private WebElement phone4;
+		@FindBy(how = How.XPATH, using = "//input[@id='phone4']")
+		private WebElement phone4;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='phone5']") private WebElement phone5;
+		@FindBy(how = How.XPATH, using = "//input[@id='phone5']")
+		private WebElement phone5;
 
-		@FindBy(how = How.XPATH, using = "//input[@id='phone6']") private WebElement phone6;
+		@FindBy(how = How.XPATH, using = "//input[@id='phone6']")
+		private WebElement phone6;
 
 		public JalapenoMyAccountProfilePage(WebDriver driver) throws InterruptedException {
 				super(driver);
@@ -97,19 +117,15 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 				new Select(race).selectByIndex(1);
 
 				if (!declineToAnswerRadioButton.isDisplayed()) {
-						log("Cheking Decline to answer radio button");
+						log("Checking Decline to answer radio button");
 						return false;
 				}
 
-				List<String> list1 = Arrays
-						.asList("Male", "Female", "Transgender female/Trans woman/Male-to-female (MTF)", "Transgender male/Trans man/Female-to-male (FTM)",
-								"Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)");
-
-				for (String genderValue : list1) {
-
+				for (String genderValue : GENDER_IDENTITY_LIST) {
+						Select genderQuestionSelect = new Select(genderQuestion);
 						try {
 								log("Checking gender value: " + genderValue);
-								new Select(genderQuestion).selectByVisibleText(genderValue);
+								genderQuestionSelect.selectByVisibleText(genderValue);
 								log("Value " + genderValue + " is verified.");
 								javascriptClick(saveMyChanges);
 								IHGUtil.waitForElement(driver, 30, genderQuestion);
@@ -118,8 +134,12 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 								return false;
 						}
 						try {
-								genderQuestion.equals(genderValue);
-								log("Gender is saved properly.");
+								if (genderQuestionSelect.getFirstSelectedOption().getText().equals(genderValue)) {
+										log("Gender is saved properly.");
+								} else {
+										log("Gender has not been saved.");
+										return false;
+								}
 						} catch (NoSuchElementException e) {
 								log("Gender has not been saved.");
 								return false;
@@ -222,7 +242,8 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 
 
-		@Override public boolean areBasicPageElementsPresent() {
+		@Override
+		public boolean areBasicPageElementsPresent() {
 
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
