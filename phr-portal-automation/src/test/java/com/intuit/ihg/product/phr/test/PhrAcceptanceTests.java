@@ -47,14 +47,11 @@ import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 public class PhrAcceptanceTests extends BaseTestNGWebDriver {
 	
-	PropertyFileLoader testData;
-	int stepCounter;
+	private PropertyFileLoader testData;
+	private int stepCounter;
 
-	@Override
 	@BeforeMethod(alwaysRun = true)
-	public void setUp() throws Exception {
-		super.setUp();
-
+	public void setUpPhrTest() throws Exception {
 		log(this.getClass().getName());
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
