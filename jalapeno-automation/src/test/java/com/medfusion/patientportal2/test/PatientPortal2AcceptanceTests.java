@@ -881,7 +881,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				practiceHome.logOut();
 
 				logStep("Login patient");
-				loginPage = new JalapenoLoginPage(driver, testData.getProperty("url2"));
+				loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
 				homePage = loginPage.login(testData.getProperty("askAV2User"), testData.getProperty("askAV2Password"));
 
 				logStep("Go to messages");
