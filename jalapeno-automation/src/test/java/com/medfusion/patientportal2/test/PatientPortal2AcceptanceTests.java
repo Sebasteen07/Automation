@@ -107,6 +107,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"You're invited to create a Portal account to be a trusted representative of a patient at ";
 		private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 		private static final String INVITE_LINK_FRAGMENT = "invite";
+		private static final String ACTIVATE_LINK_FRAGMENT = "activate";
+		
 
 		private PropertyFileLoader testData;
 		private Patient patient = null;
@@ -159,18 +161,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 								e.printStackTrace();
 						}
 				}
-				return "";
+				return originUrl;
 
 		}
 
 		/**
-		 * verifies if the invite url contains a specific keyword(INVITE_LINK_FRAGMENT), if not, it is a redirect url (e.g.from sendinblue)
+		 * verifies if the invite url contains a specific keyword(INVITE_LINK_FRAGMENT or ACTIVATE_LINK_FRAGMENT), if not, it is a redirect url (e.g.from sendinblue)
 		 *
 		 * @return
 		 */
 		private boolean isInviteLinkFinal(String url) {
-				boolean ret = url.contains(INVITE_LINK_FRAGMENT);
-				if (ret)
+				boolean ret = url.contains(INVITE_LINK_FRAGMENT) || url.contains(ACTIVATE_LINK_FRAGMENT);
+				if (!ret)
 						log("The retrieved link is a redirect URL : " + url);
 				return ret;
 		}
@@ -1051,11 +1053,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
-				assertNotNull(guardianUrlEmail, "Error: No matching link found in guardian invite email!");
+				
+				assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
+				
 				//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
 				if (!isInviteLinkFinal(guardianUrlEmail)) {
 						guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
 				}
+				
 				logStep("Retrieved dependents activation link is " + guardianUrlEmail);
 				logStep("Comparing with dependents link from PrP " + guardianUrl);
 				assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
@@ -1064,7 +1069,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken());
 				assertNotNull(emailPatient, "Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
 				String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
-				assertNotNull(patientUrlEmail, "Error: No matching link found in dependent invite email!");
+				assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
+				
 				//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
 				if (!isInviteLinkFinal(patientUrlEmail)) {
 						patientUrlEmail = getRedirectUrl(patientUrlEmail);
@@ -1072,8 +1078,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Retrieved patients activation link is " + patientUrl);
 				logStep("Comparing with patients link from PrP " + patientUrlEmail);
 				assertEquals(patientUrl, patientUrlEmail, "Practice portal and email unlock links for dependent are not equal!");
-
-
 		}
 
 		// This test uses under-age patients created at tests
