@@ -14,6 +14,7 @@ import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -632,8 +633,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		// TODO: after Appointment Request v1 is not used - delete test above and
-		// set up this test to
-		// Jalapeno Automation
+		// set up this test for main Jalapeno Automation practice, remove multiple solutions workaround
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAppointmentRequestV2() throws Exception {
 
@@ -645,11 +645,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Click appointment request");
 				homePage.clickOnAppointmentV2(driver);
-				driver.findElement(By.id("appointmentSolutionBtn")).click();
+				
+				//workaround for extra appointments list when multiple appointments solutions are on
+				try {
+				    driver.findElement(By.id("appointmentSolutionBtn")).click();				    
+				}
+				catch (WebDriverException e) {
+				    //go on assuming we didn't find the extra page and button
+				}
+				
 				JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
-
 				logStep("Assess Elements and choose provider");
-				//assertTrue(appointmentRequestStep1.assessElements());
 				appointmentRequestStep1.chooseFirstProvider();
 
 				logStep("Continue to step 2.: click continue and assess elements");
@@ -1354,7 +1360,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				homePage.clickOnLogout();
 		}
 
-		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = false, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSymptomAssessmentSafe() throws Exception {
 
 				logStep("Load login page");
