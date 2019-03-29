@@ -37,16 +37,7 @@ public class JalapenoPatient {
 		public JalapenoPatient(PropertyFileLoader testData) throws NullPointerException, Exception {
 				IHGUtil.PrintMethodName();
 
-				long generatedTS = System.currentTimeMillis();
-				username = testData.getUserId() + generatedTS;
-				int i = 0;
-				while (!PortalUtil.checkUsernameEmailIsUnique(username, testData.getProperty("credentialsMatcherUrl"))) {
-						if (i++ > 9)
-								throw new RuntimeException("Username was not unique after 10 attempts");
-						generatedTS = System.currentTimeMillis();
-						username = testData.getUserId() + generatedTS;
-				}
-
+				username = PortalUtil.generateUniqueUsername(testData.getUserId(),testData);
 				email = username + "@mailinator.com";
 				firstName = testData.getFirstName() + PortalUtil.createRandomNumber();
 				lastName = testData.getLastName();
