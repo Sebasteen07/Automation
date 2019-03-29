@@ -3,6 +3,7 @@ package com.medfusion.patientportal2.test;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -20,9 +21,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -110,7 +109,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		private static final String INVITE_LINK_FRAGMENT = "invite";
 		private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 
-
 		private PropertyFileLoader testData;
 		private Patient patient = null;
 
@@ -118,26 +116,31 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		private int stepCounter;
 		private Instant testStart;
 
-		@BeforeMethod(alwaysRun = true)
-		public void setUpPortal2Test() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
+		@BeforeClass(alwaysRun = true)
+		public void prepareTestData() throws IOException {
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
+		}
 
+		@BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
+		public void createCommonPatient() throws Exception {
 				if (patient == null) {
 						String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
 						patient = PatientFactory.createJalapenoPatient(username, testData);
 						patient = new CreatePatient().selfRegisterPatient(driver, testData, patient);
 				}
+		}
+
+		@BeforeMethod(alwaysRun = true)
+		public void setUpPortal2Test() {
+				log(this.getClass().getName());
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
 
 				log("Resetting step counter");
 				stepCounter = 0;
 				testStart = Instant.now();
 		}
-
 
 		private void logStep(String logText) {
 				log("STEP " + ++stepCounter + ": " + logText);
@@ -163,7 +166,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						}
 				}
 				return originUrl;
-
 		}
 
 		/**
@@ -184,14 +186,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
-		public void testAssessLoginPageElements() throws Exception {
+		public void testAssessLoginPageElements() {
 				log("Load login page");
 				JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testLoginValidCredentialsAndValidateMenuElements() throws Exception {
+		public void testLoginValidCredentialsAndValidateMenuElements() {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				assertTrue(loginPage.areBasicPageElementsPresent());
@@ -245,8 +247,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 		}
 
-		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatient() throws Exception {
+		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testCreatePatient() {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -265,7 +267,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientActivation() throws Exception {
-
 				logStep("Getting Test Data");
 				Practice practice = new Practice();
 				PracticeTestData practiceTestData = new PracticeTestData(practice);
@@ -316,7 +317,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 		}
 
-		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testForgotPassword() throws Exception {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -354,7 +355,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testMessaging() throws Exception {
-
 				String messageSubject = "Namaste " + System.currentTimeMillis();
 
 				logStep("Login physician");
@@ -385,8 +385,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				patientMessagingPage = practiceHome.clickPatientMessagingTab();
 				assertTrue(patientMessagingPage.findMyMessage(messageSubject));
-				// TODO: Edit navigation on portal and search by date to search exact
-				// day
+				// TODO: Edit navigation on portal and search by date to search exact day
 		}
 
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
@@ -441,7 +440,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testHealthRecords() throws Exception {
+		public void testHealthRecords() {
 				logStep("Load login page");
 				JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -513,8 +512,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		}
 
-		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
+		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testCreatePatientHealthKey6outOf6SamePractice() {
 				logStep("Load login page and login");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -538,8 +537,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Username match was found");
 		}
 
-		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
+		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testCreatePatientHealthKey6outOf6DifferentPractice() {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -632,7 +631,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// set up this test for main Jalapeno Automation practice, remove multiple solutions workaround
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAppointmentRequestV2() throws Exception {
-
 				String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
 				logStep("Load login page and login");
@@ -691,7 +689,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
 		}
 
-		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = true, groups = {"acceptance-solutions", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPrescriptionRenewal() throws Exception {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -750,7 +748,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPayBills() throws Exception {
-
 				logStep("Initiate payment data");
 				String accountNumber = IHGUtil.createRandomNumericString(8);
 				String amount = IHGUtil.createRandomNumericString(3);
@@ -1230,8 +1227,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		/**
 		 * Creates patient, modifies My Account setting and validates result
 		 */
-		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testMyAccount() throws Exception {
+		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testMyAccount() {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -1299,7 +1296,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(new Mailinator().areAllMessagesInInbox(mails, 15));
 		}
 
-		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = true, groups = {"acceptance-linkedaccounts", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateTrustedRepresentativeOnly() throws Exception {
 				Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData), testData);
 
