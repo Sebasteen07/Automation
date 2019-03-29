@@ -109,7 +109,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 		private static final String INVITE_LINK_FRAGMENT = "invite";
 		private static final String ACTIVATE_LINK_FRAGMENT = "activate";
-		
+
 
 		private PropertyFileLoader testData;
 		private Patient patient = null;
@@ -191,8 +191,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testLoginValidCredentialsAndValidateMenuElements()
-				throws Exception {
+		public void testLoginValidCredentialsAndValidateMenuElements() throws Exception {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				assertTrue(loginPage.areBasicPageElementsPresent());
@@ -515,8 +514,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6SamePractice()
-				throws Exception {
+		public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 				logStep("Load login page and login");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -541,8 +539,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6DifferentPractice()
-				throws Exception {
+		public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -565,8 +562,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6Inactive()
-				throws Exception {
+		public void testCreatePatientHealthKey6outOf6Inactive() throws Exception {
 
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
@@ -645,15 +641,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Click appointment request");
 				homePage.clickOnAppointmentV2(driver);
-				
+
 				//workaround for extra appointments list when multiple appointments solutions are on
 				try {
-				    driver.findElement(By.id("appointmentSolutionBtn")).click();				    
+						driver.findElement(By.id("appointmentSolutionBtn")).click();
+				} catch (WebDriverException e) {
+						//go on assuming we didn't find the extra page and button
 				}
-				catch (WebDriverException e) {
-				    //go on assuming we didn't find the extra page and button
-				}
-				
+
 				JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
 				logStep("Assess Elements and choose provider");
 				appointmentRequestStep1.chooseFirstProvider();
@@ -987,8 +982,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testLACreateDependentAndGuardian()
-				throws Exception {
+		public void testLACreateDependentAndGuardian() throws Exception {
 
 				long generatedTS = System.currentTimeMillis();
 				String patientLogin = "login" + generatedTS; // guardian login
@@ -1059,14 +1053,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
-				
+
 				assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
-				
+
 				//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
 				if (!isInviteLinkFinal(guardianUrlEmail)) {
 						guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
 				}
-				
+
 				logStep("Retrieved dependents activation link is " + guardianUrlEmail);
 				logStep("Comparing with dependents link from PrP " + guardianUrl);
 				assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
@@ -1076,7 +1070,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertNotNull(emailPatient, "Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
 				String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
 				assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
-				
+
 				//SendInBlue workaround, go through the redirect and save the actual URL if the invite link does not contain a specific string
 				if (!isInviteLinkFinal(patientUrlEmail)) {
 						patientUrlEmail = getRedirectUrl(patientUrlEmail);
@@ -1250,6 +1244,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testMyAccountSecurityTab() throws Exception {
+				logStep("Creating new patient");
+				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+				Patient localpatient = PatientFactory.createJalapenoPatient(username, testData);
+				localpatient = new CreatePatient().selfRegisterPatient(driver, testData, localpatient);
+
 				List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
 
 				long generatedTS = System.currentTimeMillis();
@@ -1259,8 +1258,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-
+				JalapenoHomePage homePage = loginPage.login(localpatient.getUsername(), localpatient.getPassword());
 
 				logStep("Go to security tab on my account page");
 				JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -1270,26 +1268,31 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Change email");
 				myAccountSecurityPage.goToChangeEmailAndAssessElements();
-				myAccountSecurityPage.changeEmailAndVerify(patient.getPassword(), newEmail);
+				myAccountSecurityPage.changeEmailAndVerify(localpatient.getPassword(), newEmail);
 				mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT));
-				mails.add(new ExpectedEmail(patient.getEmail(), accountChangeNotificationSubject, EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+				mails.add(new ExpectedEmail(localpatient.getEmail(), accountChangeNotificationSubject, EMAIL_ADDRESS_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+				localpatient.setEmail(newEmail);
 
 				logStep("Change username");
 				myAccountSecurityPage.goToChangeUserNameAndAssessElements();
-				myAccountSecurityPage.changeUserNameAndVerify(patient.getPassword(), newUserName);
+				myAccountSecurityPage.changeUserNameAndVerify(localpatient.getPassword(), newUserName);
 				mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, USERNAME_CHANGE_NOTIFICATION_EMAIL_CONTENT));
+				localpatient.setUsername(newUserName);
 
 				logStep("Change security question");
 				myAccountSecurityPage.goToChangeSecurityQuestionAndAssessElements();
 				myAccountSecurityPage
-						.changeSecurityQuestionAndVerify(patient.getPassword(), NAME_OF_FIRST_PET_SECURITY_QUESTION, NAME_OF_FIRST_PET_SECURITY_QUESTION_ANSWER);
+						.changeSecurityQuestionAndVerify(localpatient.getPassword(), NAME_OF_FIRST_PET_SECURITY_QUESTION, NAME_OF_FIRST_PET_SECURITY_QUESTION_ANSWER);
+				localpatient.setSecurityQuestion(NAME_OF_FIRST_PET_SECURITY_QUESTION);
+				localpatient.setSecurityQuestionAnswer(NAME_OF_FIRST_PET_SECURITY_QUESTION_ANSWER);
 
 				logStep("Change password");
 				myAccountSecurityPage.goToChangePasswordAndAssessElements();
-				myAccountSecurityPage.changePassword(patient.getPassword(), NEW_PASSWORD);
+				myAccountSecurityPage.changePassword(localpatient.getPassword(), NEW_PASSWORD);
+				localpatient.setPassword(NEW_PASSWORD);
 				logStep("Try new password");
 				loginPage = homePage.clickOnLogout();
-				loginPage.login(newUserName, NEW_PASSWORD);
+				loginPage.login(localpatient.getUsername(), localpatient.getPassword());
 				mails.add(new ExpectedEmail(newEmail, accountChangeNotificationSubject, PASSWORD_CHANGE_NOTIFICATION_EMAIL_CONTENT));
 
 				logStep("Check notification emails");
@@ -1297,8 +1300,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testLACreateTrustedRepresentativeOnly()
-				throws Exception {
+		public void testLACreateTrustedRepresentativeOnly() throws Exception {
 				Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData), testData);
 
 				logStep("Load login page");
@@ -1318,8 +1320,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
 
 				logStep("Identify patient");
-				AuthUserLinkAccountPage linkAccountPage = patientVerificationPage
-						.fillDependentInfoAndContinue(patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+				AuthUserLinkAccountPage linkAccountPage =
+						patientVerificationPage.fillDependentInfoAndContinue(patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 
 				logStep("Continue registration - check dependent info and fill trusted representative name");
 				linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
