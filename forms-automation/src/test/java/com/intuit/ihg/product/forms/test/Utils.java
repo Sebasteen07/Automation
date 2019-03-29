@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.medfusion.pojos.Patient;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -136,22 +137,23 @@ public class Utils {
 		return home;
 	}
 
-	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
-		PropertyFileLoader testData = new PropertyFileLoader();
-		JalapenoPatient jp = new JalapenoPatient(testData);
-		String url = getPortalURL(practiceType, true, testData);
-		jp.setUrl(url);
-		jp.setDOBYear(newPatientDOBYear);
-		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver, url);
-		String patientDOB = jp.getDOBMonthText() + "/" + jp.getDOBDay() + "/" + jp.getDOBYear();
-		logLogin(jp.getUrl(), jp.getEmail(), jp.getPassword());
-		p.setDob(patientDOB);
-		p.setEmail(jp.getEmail());
-		p.setFirstName(jp.getFirstName());
-		p.setLastName(jp.getLastName());
-		p.setPassword(jp.getPassword());
-		p.setUrl(jp.getUrl());
-		return home;
+		public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PracticeType practiceType, Patient p) throws Exception {
+				PropertyFileLoader testData = new PropertyFileLoader();
+				JalapenoPatient jp = new JalapenoPatient(testData);
+				String url = getPortalURL(practiceType, true, testData);
+				jp.setUrl(url);
+				jp.setDOBYear(newPatientDOBYear); //????
+				JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver, url);
+				logLogin(jp.getUrl(), jp.getEmail(), jp.getPassword());
+
+				p.setDOBYear(jp.getDOBYear());
+				p.setDOBMonth(jp.getDOBMonth());
+				p.setDOBDay(jp.getDOBDay());
+				p.setEmail(jp.getEmail());
+				p.setFirstName(jp.getFirstName());
+				p.setLastName(jp.getLastName());
+				p.setPassword(jp.getPassword());
+				return home;
 	}
 
 	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {	    

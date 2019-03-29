@@ -126,7 +126,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(groups = {"Forms"})
 		public void testFormPdfCcdPI() throws Exception {
-				PatientData p = new PatientData();
+				Patient p = new Patient();
 				JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 				testFormPdfCcd(home.clickOnHealthForms());
 				driver.switchTo().defaultContent();
@@ -135,7 +135,9 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				JalapenoHomePage jhp = Utils.loginPI(driver, PracticeType.SECONDARY, p.getEmail(), p.getPassword(), testData);
 				assertTrue(jhp.areMenuElementsPresent());
 				JalapenoMyAccountProfilePage pMyAccountPage = jhp.clickOnAccount().clickOnEditMyAccount();
-				assertEquals(IHGUtil.convertDate(pMyAccountPage.getDOB(), "MM/dd/yyyy", "MMMMM/dd/yyyy"), p.getDob());
+				assertEquals(pMyAccountPage.getDOByear(),Integer.valueOf(p.getDOBYear()));
+				assertEquals(pMyAccountPage.getDOBmonth(),Integer.valueOf(p.getDOBMonth()));
+				assertEquals(pMyAccountPage.getDOBday(),Integer.valueOf(p.getDOBDay()));
 		}
 
 		@Test(groups = "OldPortalForms")
@@ -254,7 +256,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				String welcomeMessage = createFormSG(newFormName);
 
 				log("step 7: create patient and Log in to PI");
-				PatientData p = new PatientData();
+				Patient p = new Patient();
 				JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.PRIMARY, p);
 
 				log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
@@ -271,7 +273,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(groups = {"Forms"})
 		public void testFormPatientDashboardPI() throws Exception {
-				PatientData p = new PatientData();
+				Patient p = new Patient();
 				JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 				testFormPatientDashboard(home.clickOnHealthForms(), p.getEmail(), p.getFirstName(), p.getLastName());
 		}
@@ -461,7 +463,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(groups = {"Forms"})
 		public void testEGQEnabledPI() throws Exception {
 				log("create patient and login to PI");
-				PatientData p = new PatientData();
+				Patient p = new Patient();
 				JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);
 				testEGQEnabled(home.clickOnHealthForms());
 				log("verify that value in my account has been changed based on form answer");
@@ -628,7 +630,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		private HealthFormListPage testEGQEnabledPIFlow(WebDriver driver) throws Exception {
 				log("create patient, login to PI and open form");
-				PatientData p = new PatientData();
+				Patient p = new Patient();
 				HealthFormListPage formsList = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p).clickOnHealthForms();
 				FormBasicInfoPage basicInfo = formsList.openDiscreteForm(SitegenConstants.FORM_EGQ_NAME).clickSaveContinue(FormBasicInfoPage.class);
 				log("check 'decline to answer' and submit form");

@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.forms.test;
 
+import com.medfusion.pojos.Patient;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -110,7 +111,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormPI() throws Exception {
 	    log("create patient and login to PI");
-        PatientData p = new PatientData();
+        Patient p = new Patient();
         JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, p);        
 		testCalculatedForm(home.clickOnHealthForms());
 	}
@@ -145,7 +146,8 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 	@Test(groups = "CalculatedForms")
 	public void testCalculatedFormValidationPI() throws Exception {
-		testCalculatedFormValidation(Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
+			Patient patient = new Patient();
+		testCalculatedFormValidation(Utils.createAndLoginPatientPI(driver, PracticeType.SECONDARY, patient).clickOnHealthForms());
 	}
 
 	private void testCalculatedFormValidation(HealthFormListPage healthFormsList) throws Exception {
