@@ -130,14 +130,14 @@ public class PortalUtil extends IHGUtil {
 
 		public static String generateUniqueUsername(String username, PropertyFileLoader testData) throws Exception {
 				long generatedTS = System.currentTimeMillis();
-				username = testData.getUserId() + generatedTS;
+				username = username + generatedTS;
 				int i = 0;
 
 				while (!PortalUtil.checkUsernameEmailIsUnique(username, testData.getProperty("credentialsMatcherUrl"))) {
 						if (i++ > 9)
 								throw new RuntimeException("Username was not unique after 10 attempts");
 						generatedTS = System.currentTimeMillis();
-						username = testData.getUserId() + generatedTS;
+						username = username + generatedTS;
 				}
 				return username;
 		}
