@@ -908,18 +908,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// guardian email
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateGuardianOnly() throws Exception {
-
-				long generatedTS = System.currentTimeMillis();
-				String patientLogin = "login" + generatedTS; // guardian's login
-
-				int i = 0;
-				while (!PortalUtil.checkUsernameEmailIsUnique(patientLogin, testData.getProperty("credentialsMatcherUrl"))) {
-						assertTrue(i++ < 10, "Username was not unique after 10 attempts");
-						generatedTS = System.currentTimeMillis();
-						patientLogin = "login" + generatedTS;
-				}
-				String patientLastName = "last" + generatedTS; //lastname for both
-				String patientEmail = "mail" + generatedTS + "@mailinator.com"; //email for both
+				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian's login
+				String patientLastName = patientLogin.replace("login", "last"); //lastname for both
+				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com"; ///email for both
 
 				logStep("Login to Practice Portal");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -980,19 +971,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateDependentAndGuardian() throws Exception {
-
-				long generatedTS = System.currentTimeMillis();
-				String patientLogin = "login" + generatedTS; // guardian login
-
-				int i = 0;
-				while (!PortalUtil.checkUsernameEmailIsUnique(patientLogin, testData.getProperty("credentialsMatcherUrl"))) {
-						assertTrue(i++ < 10, "Username was not unique after 10 attempts");
-						generatedTS = System.currentTimeMillis();
-						patientLogin = "login" + generatedTS;
-				}
-
-				String patientLastName = "last" + generatedTS;
-				String patientEmail = "mail" + generatedTS + "@mailinator.com";
+				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
+				String patientLastName = patientLogin.replace("login", "last");
+				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
 
 				logStep("Login to Practice Portal");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -1133,18 +1114,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLADocumentsAccess() throws Exception {
-
-				long generatedTS = System.currentTimeMillis();
-				String patientLogin = "login" + generatedTS; // guardian's login
-
-				int i = 0;
-				while (!PortalUtil.checkUsernameEmailIsUnique(patientLogin, testData.getProperty("credentialsMatcherUrl"))) {
-						assertTrue(i++ < 10, "Username was not unique after 10 attempts");
-						generatedTS = System.currentTimeMillis();
-						patientLogin = "login" + generatedTS;
-				}
-				String patientLastName = "last" + generatedTS; //lastname for both
-				String patientEmail = "mail" + generatedTS + "@mailinator.com"; //email for both
+				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian's login
+				String patientLastName = patientLogin.replace("login", "last"); //lastname for both
+				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com"; //email for both
 
 				logStep("Login to Practice Portal");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
