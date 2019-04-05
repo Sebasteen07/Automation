@@ -127,7 +127,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				if (patient == null) {
 						String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
 						patient = PatientFactory.createJalapenoPatient(username, testData);
-						patient = new CreatePatient().selfRegisterPatient(driver, testData, patient);
+						patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 				}
 		}
 
@@ -1216,7 +1216,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Creating new patient");
 				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
 				Patient localpatient = PatientFactory.createJalapenoPatient(username, testData);
-				localpatient = new CreatePatient().selfRegisterPatient(driver, testData, localpatient);
+				localpatient = new CreatePatient().selfRegisterPatient(driver, localpatient, testData.getUrl());
 
 				List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
 
@@ -1318,7 +1318,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Creating new patient");
 				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
 				Patient localpatient = PatientFactory.createJalapenoPatient(username, testData);
-				localpatient = new CreatePatient().selfRegisterPatient(driver, testData, localpatient, testData.getProperty("url2"));
+				localpatient = new CreatePatient().selfRegisterPatient(driver, localpatient, testData.getProperty("url2"));
 
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url2"));
