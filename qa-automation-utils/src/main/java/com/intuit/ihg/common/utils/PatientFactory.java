@@ -24,6 +24,7 @@ public class PatientFactory {
 				patient.setState(testData.getProperty("State"));
 				patient.setSecurityQuestion(testData.getProperty("SecretQuestion"));
 				patient.setSecurityQuestionAnswer(testData.getProperty("SecretAnswer"));
+				patient.setPhoneMobile(testData.getProperty("phoneNumber")); //TODO
 				return patient;
 		}
 
