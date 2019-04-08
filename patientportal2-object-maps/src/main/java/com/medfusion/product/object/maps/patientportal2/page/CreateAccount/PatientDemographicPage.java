@@ -43,7 +43,8 @@ public class PatientDemographicPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "gender_female")
 		private WebElement femaleGender;
 
-		//TODO declined gender
+		@FindBy(how = How.ID, using = "gender_decline")
+		private WebElement declinedGender;
 
 		@FindBy(how = How.ID, using = "address1")
 		private WebElement inputAddress1;
@@ -106,7 +107,6 @@ public class PatientDemographicPage extends MedfusionPage {
 		}
 
 		public void fillInPatientData(JalapenoPatient patient) {
-				//TODO remove
 				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), patient.getDOBMonthText(), patient.getDOBDay(),
 						patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
 						patient.getState());
@@ -154,8 +154,8 @@ public class PatientDemographicPage extends MedfusionPage {
 						maleGender.click();
 				} else if (gender == Patient.GenderExtended.FEMALE) {
 						femaleGender.click();
-				} else {
-						//TODO declined/error
+				} else if (gender == Patient.GenderExtended.DECLINED) {
+						declinedGender.click();
 				}
 		}
 
