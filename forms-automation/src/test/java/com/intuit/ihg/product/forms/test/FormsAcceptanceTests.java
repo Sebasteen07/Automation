@@ -505,7 +505,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				log("verify that value in my account has been changed based on form answer");
 				home = PageFactory.initElements(driver, MyPatientPage.class);
 				MyAccountPage pMyAccountPage = home.clickMyAccountLink();
-				assertTrue(pMyAccountPage.getGender() == Patient.GenderExtended.DECLINED); //TODO fix pMyAccountPage.getGender
+				assertTrue(pMyAccountPage.getGender() == Patient.GenderExtended.DECLINED);
 		}
 
 		private void testEGQEnabled(HealthFormListPage formsList) throws Exception {

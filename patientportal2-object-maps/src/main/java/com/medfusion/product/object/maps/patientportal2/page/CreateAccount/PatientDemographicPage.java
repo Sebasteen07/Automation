@@ -76,7 +76,8 @@ public class PatientDemographicPage extends MedfusionPage {
 				super(driver);
 		}
 
-		@Override public boolean areBasicPageElementsPresent() {
+		@Override
+		public boolean areBasicPageElementsPresent() {
 
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(inputPatientFirstName);
