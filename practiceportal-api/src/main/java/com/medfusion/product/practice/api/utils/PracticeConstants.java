@@ -96,11 +96,6 @@ public class PracticeConstants {
 	public final static String chngMailFName = "Change";
 	public final static String chngMailLName = "Email";
 
-	// reminder user ID
-	public final static String frgtFName = "Forgot";
-	public final static String frgtLName = "UserID";
-
-
 	// OnlineBillpay Process
 	public final static String ProcessCardHolderName = "batchopen";
 	public final static String processCardNum = "4111111111111111";
