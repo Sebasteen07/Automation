@@ -49,15 +49,15 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 
 		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
 		if (swipeString.isEmpty()) {
-			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth,
-					PracticeConstants.expYear, amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.patientAccount, PracticeConstants.patientName,
-					PracticeConstants.comment);
+			virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+					PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, PracticeConstants.PATIENT_ACCOUNT, PracticeConstants.PATIENT_NAME,
+					PracticeConstants.COMMENT);
 		} else {
-			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster,
-					PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
+			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD,
+					PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD);
 		}
 		log("Verify whether the payment is completed successfully.");
-		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg), true,
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 				"The payment is completed properly.");
 
 
@@ -95,15 +95,15 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 
 		log(" Step 5 : Add card info and click on 'Click Here To Charge Card' button.  ");
 		if (swipeString.isEmpty()) {
-			virtualCardSwiper.addCreditCardInfo(PracticeConstants.ccName, PracticeConstants.ccNum, PracticeConstants.cardType, PracticeConstants.expMonth,
-					PracticeConstants.expYear, amount, PracticeConstants.cvv, PracticeConstants.zip, PracticeConstants.patientAccount, PracticeConstants.patientName,
-					PracticeConstants.comment);
+			virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+					PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, PracticeConstants.PATIENT_ACCOUNT, PracticeConstants.PATIENT_NAME,
+					PracticeConstants.COMMENT);
 		} else {
-			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.ccName, PracticeConstants.ccNumMasterCard, PracticeConstants.cardTypeMaster,
-					PracticeConstants.expMonth, PracticeConstants.expYear, amount, PracticeConstants.zip, PracticeConstants.swipeStringMaster);
+			virtualCardSwiper.addCreditCardMandatoryInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD,
+					PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD);
 		}
 		log("Verify whether the payment is completed successfully.");
-		verifyEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.paymentCompletedSuccessMsg), true,
+		verifyEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 				"The payment is completed properly.");
 		return IHGUtil.formatNumber(Integer.parseInt(amount) * 100);
 

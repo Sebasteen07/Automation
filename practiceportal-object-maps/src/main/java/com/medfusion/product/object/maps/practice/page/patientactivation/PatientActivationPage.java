@@ -169,7 +169,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
-		zip.sendKeys(PracticeConstants.Zipcode);
+		zip.sendKeys(PracticeConstants.ZIP_CODE);
 
 		clickRegPatient();
 		clickVerify();

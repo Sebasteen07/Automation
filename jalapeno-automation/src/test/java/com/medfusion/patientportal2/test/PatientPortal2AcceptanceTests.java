@@ -280,7 +280,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Finishing of patient activation: step 1 - verifying identity");
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
 				SecurityDetailsPage accountDetailsPage = patientVerificationPage
-						.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 								PortalConstants.DateOfBirthYear);
 
 				logStep("Finishing of patient activation: step 2 - filling patient data");
@@ -293,7 +293,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Checking if address in My Account is filled");
 				JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
 				JalapenoMyAccountProfilePage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
-				assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
+				assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.ZIP_CODE));
 
 				logStep("Logging out");
 				JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
@@ -586,7 +586,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Creating patient with the same data as in practice portal");
 				patientDemographicPage.fillInPatientData(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString(),
 						patientActivationSearchTest.getEmailAddressString(), PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
-						PortalConstants.DateOfBirthYear, Patient.GenderExtended.MALE, PracticeConstants.Zipcode);
+						PortalConstants.DateOfBirthYear, Patient.GenderExtended.MALE, PracticeConstants.ZIP_CODE); //TODO use only one constant file
 				patientDemographicPage.tryToContinueToSecurityPage();
 
 				logStep("Checking that I am still on create account page due to healthKey check won't let me create patient with the same data");
@@ -796,7 +796,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Logout of Practice Portal");
 				practiceHome.logOut();
 
-				String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BillPaymentSubject;
+				String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BILL_PAYMENT_SUBJECT;
 
 				loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				homePage = loginPage.login(testData.getUserId(), testData.getPassword());

@@ -4,8 +4,6 @@ import static org.testng.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
 import org.testng.ITestResult;
@@ -85,15 +83,6 @@ import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.BillPaymentTest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 import com.medfusion.product.practice.tests.PatientActivationTest;
-import com.medfusion.product.practice.tests.RecivePayNowTest;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
@@ -1210,7 +1199,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
 		PerformanceReporter.getPageLoadDuration(driver, MessageCenterInboxPage.PAGE_NAME);
 
-		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs()) + PracticeConstants.SubjectMessage;
+		String uniquePracticeResponse = Long.toString(rxRenewalSearchPage.getCreatedTs()) + PracticeConstants.MESSAGE_SUBJECT;
 
 		log("step 13: Find message in Inbox And Validate Message Subject");
 		MessagePage message = inboxPage.openMessageInInbox(uniquePracticeResponse);
@@ -1432,9 +1421,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Go to the Practice Portal and register the patient.");
 		String unlockLink = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, email, null, null, null);
 
-		activatePatient(unlockLink, PracticeConstants.Zipcode, email, testcasesData);
-
-
+		activatePatient(unlockLink, PracticeConstants.ZIP_CODE, email, testcasesData);
 	}
 
 	/**

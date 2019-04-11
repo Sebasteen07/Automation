@@ -1,108 +1,83 @@
 package com.medfusion.product.practice.api.utils;
 
 public class PracticeConstants {
+		public final static String MESSAGE_SUBJECT = "RxRenewalSubject";
+		public final static String MEDICATION_NAME = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";
+		public final static String DRUG = "21";
+		public final static String QUANTITY = "10";
+		public final static String FREQUENCY = "DAILY";
+		public final static String MESSAGE_BODY = "RxRenewalSubjectBody";
 
-	public final static String SubjectMessage = "RxRenewalSubject";
-	public final static String MedicationName = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";
-	public final static String Drug = "21";
-	public final static String Quantity = "10";
-	public final static String Frequency = "DAILY";
-	public final static String BodyMessage = "RxRenewalSubjectBody";
+		public final static String PROCESSING_COMPLETED_TEXT = "You have completed processing this request.";
+		public final static String BILL_PAYMENT_SUBJECT = "BillPaymentSubject";
+		public final static String BILL_PAYMENT_BODY = "BillPaymentBody";
 
-	public final static String ProcessingCompletedText = "You have completed processing this request.";
-	public final static String BillPaymentSubject = "BillPaymentSubject";
-	public final static String BillPaymentBody = "BillPaymentBody";
+		// Document Upload via doc management
+		public final static String PATIENT_NAME_FOR_DOC_UPLOAD = "Sample, tester1"; //never used
+		public final static String FILENAME = "fileUploadTest"; //never used
+		public final static String FILE_DIRECTORY = "documents";
+		public final static String TEXT_FILE_PATH = "documents/fileUploadTest.txt"; //never used
 
-	// Document Upload via doc management
-	public final static String patientNameForDocUpload = "Sample, tester1";
-	public final static String filename = "fileUploadTest";
-	public final static String fileDirectory = "documents";
-	public final static String textFilePath = "documents/fileUploadTest.txt";
+		// Add treatment Plan
+		public final static String TREATMENT_PLAN_SUCCESS_MSG = "You have successfully created a treatment plan";
+		public final static String TREATMENT_PLAN_TITLE = "test";
+		public final static String TREATMENT_PLAN_SUBJECT = "test";
+		public final static String TREATMENT_PLAN_BODY = "test";
 
-	// Add a new Patient
-	public final static String firstName = "test";
-	public final static String lastName = "auto";
-	public final static String value = "1";
-	public final static String email = "ihgqa@none.com";
-	public final static String patientID = "ihgqa";
-	public final static String zipCode = "560038";
-	public final static String year = "1988";
-	public final static String docUploadSuccessMsg = "New Document Uploaded";
-	public final static String Email = "Test@gmail.com";
-	public final static String Zipcode = "94043";
-	public final static String DOB = "12/31/1980";
-	public final static String Email_patient_aut_sub = "EMAIL_PATIENT_ACTIVATION_SUBJECT";
-	public final static String Betaportaltitle = "BETA_PORTAL_TITLE";
+		public final static String CARD_TYPE_MASTERCARD = "MasterCard";
+		public final static String CARD_TYPE_VISA = "Visa";
 
-	// Add treatment Plan
-	public final static String treatmentPlanSuccessMsg = "You have successfully created a treatment plan";
-	public final static String treatmentPlanTitle = "test";
-	public final static String treatmentPlanSubject = "test";
-	public final static String treatmentPlanBody = "test";
+		public final static String CARD_NUMBER = "4111111111111111";
+		public final static String CVV = "111";
 
-	// card payment
-	public final static String paymentCompletedSuccessMsg = "Payment completed";
-	public final static String ccName = "Test";
-	public final static String ccNum = "4111111111111111";
-	public final static String cardType = "Visa";
-	public final static String expMonth = "12";
-	public final static String expYear = "2022";
-	public final static String cvv = "111";
-	public final static String zip = "12345";
-	public final static String patientAccount = "MF12345";
-	public final static String patientName = "Test Patient";
-	public final static String comment = "Testing card Payment.";
+		// card payment
+		public final static String PAYMENT_COMPLETED_SUCCESS_MSG = "Payment completed";
+		public final static String CARD_NAME = "Test";
+		public final static String EXP_MONTH = "12";
+		public final static String EXP_YEAR = "2022";
+		public final static String ZIP = "12345";
+		public final static String PATIENT_ACCOUNT = "MF12345";
+		public final static String PATIENT_NAME = "Test Patient";
+		public final static String COMMENT = "Testing card Payment.";
 
-	// card PayPal MasterCard payment
-	public final static String ccNumMasterCard = "5105105105105100";
-	public final static String cardTypeMaster = "MasterCard";
-	public final static String swipeStringMaster = ";5105105105105100=22121011000012345678?";
+		// card PayPal MasterCard payment
+		public final static String CARD_NUM_MASTERCARD = "5105105105105100";
+		public final static String SWIPE_STRING_MASTERCARD = ";5105105105105100=22121011000012345678?";
 
+		// Patient Search //TODO remove, the usage is really strange
+		public final static String PATIENT_FIRST_NAME = "ihgqa";
+		public final static String PATIENT_LAST_NAME = "automation";
+		public final static String PATIENT_EMAIL = "ihgqa.dev3@gmail.com";
 
-	// Patient Search
-	public final static String PatientFirstName = "ihgqa";
-	public final static String PatientLastName = "automation";
-	public final static String PatientEmail = "ihgqa.dev3@gmail.com";
-
-	// Quick Send
-	public final static String pdfname = "QuickSend";
-	public final static String RecipientType = "Individual Patient(s)";
-	public final static String Subject = "Quick Send";
-	public final static String Template1 = "AR";
-	public final static String Template2 = "Appointment Reminder";
-	public final static String MessageType = "Appointment Reminder";
-	public final static String DeliveryMode = "E-mail";
-	public final static String QuickSendPdfFilePath = "documents/QuickSend.pdf";
+		// Quick Send //TODO check usage of this strings
+		public final static String PDF_NAME = "QuickSend";
+		public final static String RECIPIENT_TYPE = "Individual Patient(s)";
+		public final static String SUBJECT = "Quick Send";
+		public final static String TEMPLATE1 = "AR";
+		public final static String TEMPLATE2 = "Appointment Reminder";
+		public final static String MESSAGE_TYPE = "Appointment Reminder";
+		public final static String DELIVERY_MODE = "E-mail";
+		public final static String QUICK_SEND_PDF_FILE_PATH = "documents/QuickSend.pdf";
 
 
-	// MakePayment
-	public final static String frameName = "iframebody";
-	public final static String Location = "Automation-Location-1";
-	public final static String CardHolderName = "DevThree";
-	public final static String CardNumber = "4111111111111111";
-	public final static String CardType = "Visa";
-	public final static String ExpirationMonth = "December";
-	public final static String ExpirationYear = "2019";
-	public final static String CCVCode = "111";
-	public final static String ZipCode = "94043";
-	public final static String Provider = "Geisel";
-	public final static String PaymentComment = "Test Comment";
-	public final static String PaymentSuccessfullText = "A payment was made for ihgqa automation";
-	public final static String Location2 = "Location: Automation-Location-1";
+		// MakePayment
+		public final static String FRAME_NAME = "iframebody";
+		public final static String LOCATION = "Automation-Location-1";
+		public final static String LOCATION2 = "Location: Automation-Location-1";
+
+		public final static String CARD_HOLDER_NAME = "DevThree";
+		public final static String EXPIRATION_MONTH = "December";
+		public final static String EXPIRATION_YEAR = "2019";
+		public final static String ZIP_CODE = "94043";
+		public final static String PROVIDER = "Geisel";
+		public final static String PAYMENT_COMMENT = "Test Comment";
+		public final static String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ihgqa automation";
 
 
-
-	// change email for Patient
-	public final static String chngMailFName = "Change";
-	public final static String chngMailLName = "Email";
-
-	// OnlineBillpay Process
-	public final static String ProcessCardHolderName = "batchopen";
-	public final static String processCardNum = "4111111111111111";
-	public final static String processCardType = "Visa";
-	public final static String voidComment = "Testing void";
-	public final static String refundComment = "Testing Refund";
-	public final static String errorForVoidPayment =
-			"An error occurred while attempting to void this transaction. It is possible that the transaction can no longer be voided.Please try your payment again or contact support for more assistance";
-
+		// OnlineBillpay Process
+		public final static String PROCESS_CARD_HOLDER_NAME = "batchopen";
+		public final static String VOID_COMMENT = "Testing void";
+		public final static String REFUND_COMMENT = "Testing Refund";
+		public final static String ERROR_FOR_VOID_PAYMENT =
+				"An error occurred while attempting to void this transaction. It is possible that the transaction can no longer be voided.Please try your payment again or contact support for more assistance";
 }

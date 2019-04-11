@@ -353,7 +353,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber,
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
 					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 			checkAlert(driver);
 
@@ -370,7 +370,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber,
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
 					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");

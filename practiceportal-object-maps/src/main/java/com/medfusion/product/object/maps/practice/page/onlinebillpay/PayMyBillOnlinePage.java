@@ -125,9 +125,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		firstName.clear();
-		firstName.sendKeys(PracticeConstants.PatientFirstName);
+		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
 	/**
@@ -135,9 +135,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setLastName() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		lastName.clear();
-		lastName.sendKeys(PracticeConstants.PatientLastName);
+		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
 	/**
@@ -145,19 +145,19 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setLocation() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(location);
 		try {
-			sel.selectByVisibleText(PracticeConstants.Location);
+			sel.selectByVisibleText(PracticeConstants.LOCATION);
 		} catch (Exception e) {
-			sel.selectByVisibleText(PracticeConstants.Location2);
+			sel.selectByVisibleText(PracticeConstants.LOCATION2);
 		}
 
 	}
 
 	public void setLocation(String name) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(location);
 		try {
 			sel.selectByVisibleText(name);
@@ -176,7 +176,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void chooseProvider(String pProvider) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 20, provider);
 		String providerXpath = "//option//text()[contains(.,'" + pProvider + "')]/..";
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -190,7 +190,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setPatientAccountNumber(String accountNumber) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		patientAccountNumber.clear();
 		patientAccountNumber.sendKeys(accountNumber);
 	}
@@ -201,7 +201,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setPaymentAmount(String amount) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
 	}
@@ -212,7 +212,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setPaymentComment(String comment) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		paymentComment.clear();
 		paymentComment.sendKeys(comment);
 	}
@@ -223,7 +223,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void clickDonotSaveTransaction() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 30, donotSaveTransaction);
 		donotSaveTransaction.click();
 		Thread.sleep(4000);
@@ -235,10 +235,10 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setCardholderName() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 30, cardHolder);
 		cardHolder.clear();
-		cardHolder.sendKeys(PracticeConstants.CardHolderName);
+		cardHolder.sendKeys(PracticeConstants.CARD_HOLDER_NAME);
 		Thread.sleep(4000);
 
 	}
@@ -249,10 +249,10 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setCardNumber() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 30, cardNumber);
 		cardNumber.clear();
-		cardNumber.sendKeys(PracticeConstants.CardNumber);
+		cardNumber.sendKeys(PracticeConstants.CARD_NUMBER);
 		Thread.sleep(4000);
 
 	}
@@ -262,9 +262,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setCardType() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(cardType);
-		sel.selectByVisibleText(PracticeConstants.CardType);
+		sel.selectByVisibleText(PracticeConstants.CARD_TYPE_VISA);
 
 
 	}
@@ -274,11 +274,11 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setExpirationDate() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(expirationMonth);
-		sel.selectByVisibleText(PracticeConstants.ExpirationMonth);
+		sel.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
 		Select sele = new Select(expirationYear);
-		sele.selectByVisibleText(PracticeConstants.ExpirationYear);
+		sele.selectByVisibleText(PracticeConstants.EXPIRATION_YEAR);
 
 	}
 
@@ -287,9 +287,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setCCVCode() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		cvvCode.clear();
-		cvvCode.sendKeys(PracticeConstants.CCVCode);
+		cvvCode.sendKeys(PracticeConstants.CVV);
 
 	}
 
@@ -298,9 +298,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	 */
 	public void setZipCode() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		zipCode.clear();
-		zipCode.sendKeys(PracticeConstants.ZipCode);
+		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
 
 	}
 
@@ -330,7 +330,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		setPatientAccountNumber(IHGUtil.createRandomNumericString().substring(0, 5));
 		setPaymentAmount(IHGUtil.createRandomNumericString().substring(0, 2));
 		try {
-			setPaymentComment(PracticeConstants.PaymentComment.concat(IHGUtil.createRandomNumericString()));
+			setPaymentComment(PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString()));
 		} catch (Exception e) {
 			log("Payment Comment Field is not displayed");
 		}
@@ -348,17 +348,17 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		} catch (Exception e) {
 			log("Card details is already added");
 		}
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
-		chooseProvider(PracticeConstants.Provider);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		chooseProvider(PracticeConstants.PROVIDER);
 		payBillButton.click();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
 
 	}
 
 	public void searchForPatient(String fName, String lName) throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		firstName.clear();
 		firstName.sendKeys(fName);
 		lastName.clear();
@@ -381,14 +381,14 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		setPaymentAmount(amount);
 
 		try {
-			setPaymentComment(PracticeConstants.PaymentComment.concat(IHGUtil.createRandomNumericString()));
+			setPaymentComment(PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString()));
 		} catch (Exception e) {
 			log("Payment Comment Field is not displayed");
 		}
 
 		clickDonotSaveTransaction();
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 30, cardHolder);
 		cardHolder.clear();
 		cardHolder.sendKeys(cardHolderName);
@@ -399,26 +399,26 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		cardNumber.sendKeys(cardNum);
 		Thread.sleep(4000);
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(cardType);
 		sel.selectByVisibleText(cardTyp);
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select selexp = new Select(expirationMonth);
-		selexp.selectByVisibleText(PracticeConstants.ExpirationMonth);
+		selexp.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
 		Select sele = new Select(expirationYear);
-		sele.selectByVisibleText(PracticeConstants.ExpirationYear);
+		sele.selectByVisibleText(PracticeConstants.EXPIRATION_YEAR);
 
 		cvvCode.clear();
-		cvvCode.sendKeys(PracticeConstants.CCVCode);
+		cvvCode.sendKeys(PracticeConstants.CVV);
 
 		zipCode.clear();
-		zipCode.sendKeys(PracticeConstants.ZipCode);
+		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		chooseProvider(provider);
 		payBillButton.click();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
 		Thread.sleep(5000);
 

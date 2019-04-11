@@ -26,8 +26,6 @@ import com.medfusion.product.practice.api.utils.ReadFilePath;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -38,7 +36,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		private int stepCounter;
 
 		public PracticePortalAcceptanceTests() throws Exception {
-				path.getFilepath("documents");
+				path.getFilepath(PracticeConstants.FILE_DIRECTORY);
 		}
 
 		@BeforeClass(alwaysRun = true)
@@ -112,10 +110,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Add treatment plan info and create treatment plan.");
 				treatmentPlan
-						.createTreatmentPlanInfo(PracticeConstants.treatmentPlanTitle, PracticeConstants.treatmentPlanSubject, PracticeConstants.treatmentPlanBody);
+						.createTreatmentPlanInfo(PracticeConstants.TREATMENT_PLAN_TITLE, PracticeConstants.TREATMENT_PLAN_SUBJECT, PracticeConstants.TREATMENT_PLAN_BODY);
 
 				logStep("Verify whether the treatmentPlan is added Successfully.");
-				assertEquals(treatmentPlan.checkTreatmentPlanSuccessMsg().contains(PracticeConstants.treatmentPlanSuccessMsg), true,
+				assertEquals(treatmentPlan.checkTreatmentPlanSuccessMsg().contains(PracticeConstants.TREATMENT_PLAN_SUCCESS_MSG), true,
 						"Treatment plan is not added properly.");
 		}
 
@@ -159,7 +157,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				PracticeTestData practiceTestData = new PracticeTestData(practice);
 
 				// Executing Test
-				virtualCardSwiperTest.setSwipeString(PracticeConstants.swipeStringMaster);
+				virtualCardSwiperTest.setSwipeString(PracticeConstants.SWIPE_STRING_MASTERCARD);
 				virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "MasterCard");
 		}
 
@@ -182,11 +180,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Search for patient in Patient Search");
 				// pPatientSearchPage.setPatientSearchFields();
-				pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+				pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 
 				logStep("Verify the Search Result");
 				IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
-				assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
+				assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PATIENT_FIRST_NAME));
 
 		}
 
@@ -308,13 +306,13 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Getting the document to upload from filepath");
 				PracticeUtil pUtil = new PracticeUtil(driver);
-				String value = pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.pdfname);
+				String value = pUtil.getFilepath(PracticeConstants.FILE_DIRECTORY).concat(PracticeConstants.PDF_NAME);
 
 				logStep("Set Quick Send Fields");
 				pPatientMessagingPage.setFieldsAndPublishMessage(value);
 
 				logStep("Verify the Published Message Succesfully text");
-				IHGUtil.setFrame(driver, PracticeConstants.frameName);
+				IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 				IHGUtil.waitForElement(driver, 20, pPatientMessagingPage.publishedSuccessfullyMessage);
 				assertEquals(pPatientMessagingPage.publishedSuccessfullyMessage.getText(), "Message Published Successfully");
 		}
@@ -344,9 +342,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				pPayMyBillOnlinePage.setPatientTransactionFields();
 
 				logStep("Verify the Payment Confirmation text");
-				IHGUtil.setFrame(driver, PracticeConstants.frameName);
+				IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 				IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
-				assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+				assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PAYMENT_SUCCESSFULL_TEXT));
 		}
 
 		/**
@@ -377,35 +375,35 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Set all the transaction details");
 				pPayMyBillOnlinePage
-						.setTransactionsForOnlineBillPayProcess(PracticeConstants.Location, PracticeConstants.Provider, PracticeConstants.processCardNum, amount,
-								PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum, PracticeConstants.processCardType);
+						.setTransactionsForOnlineBillPayProcess(PracticeConstants.LOCATION, PracticeConstants.PROVIDER, PracticeConstants.CARD_NUMBER, amount,
+								PracticeConstants.PROCESS_CARD_HOLDER_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA);
 
 				logStep("Verify the Payment Confirmation text");
-				IHGUtil.setFrame(driver, PracticeConstants.frameName);
+				IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 				IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
-				assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
+				assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PAYMENT_SUCCESSFULL_TEXT));
 
 				logStep("Navigate to Patient Search Page.");
 				OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
 				PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
 
 				logStep("Search the patient in Patient Search page.");
-				patientsearchPage.searchPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+				patientsearchPage.searchPatient(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 
 				logStep("Verify whether the transaction is present.");
-				assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName));
+				assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME));
 
 				logStep("Select the particular Transaction from the Search Result.");
-				patientsearchPage.selectTheTransaction(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+				patientsearchPage.selectTheTransaction(amount, PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 				assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
 				logStep("Click on Void Payment Link and void the transaction.");
-				pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
+				pPayMyBillOnlinePage.voidPayment(PracticeConstants.VOID_COMMENT);
 				assertTrue(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
 				/*
 				 * This needs to be checked if it can work after QB is working again log("Step 13 : Click on Refund Payment and give comments and amount to refund");
-				 * pPayMyBillOnlinePage.refundPayment(amount, PracticeConstants.refundComment);
+				 * pPayMyBillOnlinePage.refundPayment(amount, PracticeConstants.REFUND_COMMENT);
 				 */
 
 				// Checking email needs to be completed

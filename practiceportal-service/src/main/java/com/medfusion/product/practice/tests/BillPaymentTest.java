@@ -43,7 +43,7 @@ public class BillPaymentTest extends BaseTestNGWebDriver {
 		log("Logout of Practice Portal");
 		practiceHome.logOut();
 
-		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BillPaymentSubject;
+		String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BILL_PAYMENT_SUBJECT;
 		return uniquePracticeResponse;
 
 

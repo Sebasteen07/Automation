@@ -138,7 +138,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
 				StringSelection sourceVerificationPage = patientVerificationPage.getHtmlSource();
 				SecurityDetailsPage securityDetailPage = patientVerificationPage
-						.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 								PortalConstants.DateOfBirthYear);
 
 				logStep("Copy source of Account Details Page and validate");
