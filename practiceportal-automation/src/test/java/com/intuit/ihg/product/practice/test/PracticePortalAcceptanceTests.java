@@ -1,5 +1,7 @@
 package com.intuit.ihg.product.practice.test;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -23,12 +25,40 @@ import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
-		ReadFilePath path = new ReadFilePath();
+		private ReadFilePath path = new ReadFilePath();
+		private PropertyFileLoader testData;
+
+		// TODO move stuff around stepCounter to BaseTestNGWebDriver
+		private int stepCounter;
 
 		public PracticePortalAcceptanceTests() throws Exception {
 				path.getFilepath("documents");
+		}
+
+		@BeforeClass(alwaysRun = true)
+		public void prepareTestData() throws IOException {
+				log("Getting Test Data");
+				testData = new PropertyFileLoader();
+		}
+
+		@BeforeMethod(alwaysRun = true)
+		public void setUpPracticePortalTest() {
+				log(this.getClass().getName());
+				log("Execution Environment: " + IHGUtil.getEnvironmentType());
+				log("Execution Browser: " + TestConfig.getBrowserType());
+
+				log("Resetting step counter");
+				stepCounter = 0;
+		}
+
+		private void logStep(String logText) {
+				log("STEP " + ++stepCounter + ": " + logText);
 		}
 
 		/**
@@ -42,31 +72,19 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLoginLogout() throws Exception {
-
-				log("Test Case: TestLoginLogout");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Get Data from Excel");
-
-				// Load up practice test data
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				log("step 2: Navigate to Login page");
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
+				logStep("Navigate to Practice portal login page");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
 				PerformanceReporter.getPageLoadDuration(driver, PracticeLoginPage.PAGE_NAME);
 
-				log("step 3: Enter credentials and login");
-				PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+				logStep("Login to Practice Portal");
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 				PerformanceReporter.getPageLoadDuration(driver, PracticeHomePage.PAGE_NAME);
 				assertTrue(practiceHome.isHomePageLoaded(), "Expected to see 'Recent Activity' on home page, but it was not found");
 
-				log("step 4: Click sign out");
+				logStep("Click sign out");
 				practiceLogin = practiceHome.logOut();
 				assertTrue(practiceLogin.isLoginPageLoaded(), "Expected to see login page");
 		}
-
 
 		/**
 		 * @throws Exception
@@ -78,41 +96,27 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testCreateTreatmentPlan() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: TestLoginLogout");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Get Data from Excel");
-
-				// Load up practice test data
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				log("step 2: Navigate to Login page");
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-				log("step 3: Enter credentials and login");
-				PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("Step 4 : Navigate to Manage TreatmentPlan page.");
+				logStep("Navigate to Manage TreatmentPlan page.");
 				TreatmentPlansPage treatmentPlan = practiceHome.clickOnManageTreatmentPlan();
 
-				log("Verify the Treatment plan page is displayed properly.");
+				logStep("Verify the Treatment plan page is displayed properly.");
 				treatmentPlan.checkTreatmentPlanPage();
 
-				log(" Step 5 : Click on submit button.");
+				logStep("Click on submit button.");
 				treatmentPlan.selectAppointmentRequest();
 				treatmentPlan.clickOnSubmitButton();
 
-				log(" Step 6 : Add treatment plan info and create treatment plan.");
+				logStep("Add treatment plan info and create treatment plan.");
 				treatmentPlan
 						.createTreatmentPlanInfo(PracticeConstants.treatmentPlanTitle, PracticeConstants.treatmentPlanSubject, PracticeConstants.treatmentPlanBody);
 
-				log("Verify whether the treatmentPlan is added Successfully.");
-				verifyEquals(treatmentPlan.checkTreatmentPlanSuccessMsg().contains(PracticeConstants.treatmentPlanSuccessMsg), true,
+				logStep("Verify whether the treatmentPlan is added Successfully.");
+				assertEquals(treatmentPlan.checkTreatmentPlanSuccessMsg().contains(PracticeConstants.treatmentPlanSuccessMsg), true,
 						"Treatment plan is not added properly.");
-
 		}
 
 		/**
@@ -125,8 +129,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testVirtualCardSwiper() throws Exception {
-
-
 				// Instancing virtualCardSwiperTest
 				VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
 
@@ -136,7 +138,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 				// Executing Test
 				virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "Visa");
-
 		}
 
 		/**
@@ -160,7 +161,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				// Executing Test
 				virtualCardSwiperTest.setSwipeString(PracticeConstants.swipeStringMaster);
 				virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "MasterCard");
-
 		}
 
 		/**
@@ -173,29 +173,20 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientSearchLink() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testPatientSearchLink");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Login to Practice Portal");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Now start login with practice data
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2: Click on Patient Search Link");
+				logStep("Click on Patient Search Link");
 				PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
-				log("step 3:Set Patient Search Fields");
+				logStep("Search for patient in Patient Search");
 				// pPatientSearchPage.setPatientSearchFields();
 				pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
-				log("step 4:Verify the Search Result");
+				logStep("Verify the Search Result");
 				IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
-				verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
+				assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PatientFirstName));
 
 		}
 
@@ -209,34 +200,26 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testChangePatientEmail() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testPatientSearchLink");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Login to Practice Portal");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2: Click on Patient Search Link");
+				logStep("Click on Patient Search Link");
 				PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
-				log("step 3: Set Patient Search Fields");
-				pPatientSearchPage.searchForPatientInPatientSearch(PracticeConstants.chngMailFName, PracticeConstants.chngMailLName);
+				logStep("Set Patient Search Fields");
+				pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("changeEmailFirstName"), testData.getProperty("changeEmailLastName"));
 
-				log("step 4: Open Patient Dashboard");
-				PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(PracticeConstants.chngMailFName, PracticeConstants.chngMailLName);
+				logStep("Open Patient Dashboard");
+				PatientDashboardPage pPatientDashboardPage =
+						pPatientSearchPage.clickOnPatient(testData.getProperty("changeEmailFirstName"), testData.getProperty("changeEmailLastName"));
 
-				log("step 5: Click Edit email");
+				logStep("Click Edit email");
 				pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
 
-				log("step 6: Update email");
-				pPatientDashboardPage = pPatientSearchPage.changeEmail(practiceTestData.getPatientEmail());
-				verifyEquals(true, pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
-
+				log("Update email");
+				pPatientDashboardPage = pPatientSearchPage.changeEmail(testData.getProperty("changeEmailNewEmail"));
+				assertEquals(true, pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
 		}
 
 		/**
@@ -248,41 +231,29 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSendUserIdEmail() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testPatientSearchLink");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-				log("Getting Test Data");
-				PropertyFileLoader testData = new PropertyFileLoader();
-
-				Mailinator mailinator = new Mailinator();
-
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				log("step 1: Login to Practice Portal");
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2: Click on Patient Search Link");
+				logStep("Click on Patient Search Link");
 				PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
-				log("step 3: Set Patient Search Fields");
+				logStep("Set Patient Search Fields");
 				pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgotUsernameFirstName"), testData.getProperty("forgotUsernameLastName"));
 				PatientDashboardPage pPatientDashboardPage =
 						pPatientSearchPage.clickOnPatient(testData.getProperty("forgotUsernameFirstName"), testData.getProperty("forgotUsernameLastName"));
 
-				log("step 4: Send Email reminder with User ID");
+				logStep("Send Email reminder with User ID");
 				pPatientSearchPage = pPatientDashboardPage.sendEmailUserID();
 
-				log("step 5: Click Send Email");
+				logStep("Click Send Email");
 				pPatientDashboardPage = pPatientSearchPage.sendUserNameEmail();
 				assertTrue(pPatientDashboardPage.getFeedback().contains("Username email sent to patient"), "No success message on send!");
-				log("step 6: Access Mailinator and check for received email");
+				logStep("Access Mailinator and check for received email");
+				Mailinator mailinator = new Mailinator();
 				assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgotUsernameMail"), testData.getProperty("forgotUsernameMailSubject"),
 						testData.getProperty("forgotUsernameLogin"), 10), "Mail not received after max retries");
 		}
-
 
 		/**
 		 * @throws Exception
@@ -297,35 +268,25 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"SmokeTest"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testClickOnTabs() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testClickOnTabs:- SmokeTest");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Login to Practice Portal");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Now start login with practice data
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2: Click on Patientactivationtab");
+				logStep("Click on Patient Activation Tab");
 				practiceHome.clickPatientactivationTab();
 				Thread.sleep(2000);
 
-				log("step 3: Click on VirtualCardSwiperTab");
+				logStep("Click on Virtual Card Swiper Tab");
 				practiceHome.clickVirtualCardSwiperTab();
 				Thread.sleep(2000);
 
-				log("step 4: Click on Patient Messaging Tab");
+				logStep("Click on Patient Messaging Tab");
 				practiceHome.clickOnlineBillPayTab();
 				Thread.sleep(2000);
 
-				log("step 5: Click on Logout");
+				logStep("Click on Logout");
 				practiceHome.logOut();
 		}
-
 
 
 		/**
@@ -338,35 +299,24 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testQuickSendPatientPDF() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testQuickSendPatientPDF");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Login to Practice Portal");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Now start login with practice data
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2: Click on Patient Search Link");
+				logStep("Click on Patient Search Link");
 				PatientMessagingPage pPatientMessagingPage = pPracticeHomePage.clickPatientMessagingTab();
 
-				log("Step 3: Getting the document to upload from filepath");
+				logStep("Getting the document to upload from filepath");
 				PracticeUtil pUtil = new PracticeUtil(driver);
 				String value = pUtil.getFilepath(PracticeConstants.fileDirectory).concat(PracticeConstants.pdfname);
 
-				log("Step 4:Set Quick Send Fields");
+				logStep("Set Quick Send Fields");
 				pPatientMessagingPage.setFieldsAndPublishMessage(value);
 
-				log("step 5:Verify the Published Message Succesfully text");
+				logStep("Verify the Published Message Succesfully text");
 				IHGUtil.setFrame(driver, PracticeConstants.frameName);
 				IHGUtil.waitForElement(driver, 20, pPatientMessagingPage.publishedSuccessfullyMessage);
-				verifyEquals(pPatientMessagingPage.publishedSuccessfullyMessage.getText(), "Message Published Successfully");
-
-				log("step 6:Verify the Published Message Succesfully text");
+				assertEquals(pPatientMessagingPage.publishedSuccessfullyMessage.getText(), "Message Published Successfully");
 		}
 
 
@@ -380,34 +330,24 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testMakePaymentForPatient() throws Exception {
+				logStep("" + "Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: testMakePaymentForPatient");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Login to Practice Portal");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Now start login with practice data
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage pPracticeHomePage = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log("step 2:Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
+				logStep("Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
 				PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
 
-				log("step 3:Search For Patient");
+				logStep("Search For Patient");
 				pPayMyBillOnlinePage.searchForPatient();
 
-				log("step 4:Set Patient Transaction Fields");
+				logStep("Set Patient Transaction Fields");
 				pPayMyBillOnlinePage.setPatientTransactionFields();
 
-				log("step 5:Verify the Payment Confirmation text");
+				logStep("Verify the Payment Confirmation text");
 				IHGUtil.setFrame(driver, PracticeConstants.frameName);
 				IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
 				assertTrue(pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 		}
-
 
 		/**
 		 * @throws Exception
@@ -422,57 +362,44 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testOnlineBillPayProcess() throws Exception {
+				logStep("Login to Practice Portal");
+				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-				log("Test Case: TestLoginLogout");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("step 1: Get Data from Excel");
-
-				// Load up practice test data
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				log("step 2: Navigate to Login page");
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-
-				log("step 3: Enter credentials and login");
-				PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
-
-				log(" Step 4 : Click on Make Payment link.");
+				logStep("Click on Make Payment link.");
 				PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
-				log("Step 5 : Search For Patient");
-				pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
+				logStep("Search For Patient");
+				pPayMyBillOnlinePage.searchForPatient(testData.getProperty("onlineBillPayFirstName"), testData.getProperty("onlineBillPayLastName"));
 
 				String amount = IHGUtil.createRandomNumericStringInRange(5, 500);
-				log("Amount: " + amount);
+				log("Random generated amount: " + amount);
 
-				log("Step 6 : Set all the transaction details");
+				logStep("Set all the transaction details");
 				pPayMyBillOnlinePage
 						.setTransactionsForOnlineBillPayProcess(PracticeConstants.Location, PracticeConstants.Provider, PracticeConstants.processCardNum, amount,
 								PracticeConstants.ProcessCardHolderName, PracticeConstants.processCardNum, PracticeConstants.processCardType);
 
-				log("Step 7: Verify the Payment Confirmation text");
+				logStep("Verify the Payment Confirmation text");
 				IHGUtil.setFrame(driver, PracticeConstants.frameName);
 				IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
 				assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PracticeConstants.PaymentSuccessfullText));
 
-				log("Step 7 : Navigate to Patient Search Page.");
+				logStep("Navigate to Patient Search Page.");
 				OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
 				PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
 
-				log(" Step 8 : Search the patient in Patient Search page.");
+				logStep("Search the patient in Patient Search page.");
 				patientsearchPage.searchPatient(PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 
-				log(" Step 9 :Verify whether the transaction is present.");
+				logStep("Verify whether the transaction is present.");
 				assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName));
 
-				log("Step 10 : Select the particular Transaction from the Search Result.");
+				logStep("Select the particular Transaction from the Search Result.");
 				patientsearchPage.selectTheTransaction(amount, PracticeConstants.PatientFirstName, PracticeConstants.PatientLastName);
 				assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
-				log("Step 11 : Click on Void Payment Link and void the transaction.");
+				logStep("Click on Void Payment Link and void the transaction.");
 				pPayMyBillOnlinePage.voidPayment(PracticeConstants.voidComment);
 				assertTrue(pPayMyBillOnlinePage.isVoidTransactionPresent());
 
