@@ -18,8 +18,6 @@ import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientM
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
@@ -127,15 +125,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testVirtualCardSwiper() throws Exception {
-				// Instancing virtualCardSwiperTest
 				VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
 
-				// Setting data provider
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Executing Test
-				virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "Visa");
+				virtualCardSwiperTest.virtualCardSwipeTest(driver, testData, PracticeConstants.CARD_TYPE_VISA);
 		}
 
 		/**
@@ -148,17 +140,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testVirtualCardSwiperPayPal() throws Exception {
-
-				// Instancing virtualCardSwiperTest
 				VirtualCardSwiperTest virtualCardSwiperTest = new VirtualCardSwiperTest();
 
-				// Setting data provider
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				// Executing Test
 				virtualCardSwiperTest.setSwipeString(PracticeConstants.SWIPE_STRING_MASTERCARD);
-				virtualCardSwiperTest.virtualCardSwipeTest(driver, practiceTestData, "MasterCard");
+				virtualCardSwiperTest.virtualCardSwipeTest(driver, testData, PracticeConstants.CARD_TYPE_MASTERCARD);
 		}
 
 		/**
@@ -185,7 +170,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Verify the Search Result");
 				IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
 				assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PATIENT_FIRST_NAME));
-
 		}
 
 		/**
@@ -215,7 +199,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Click Edit email");
 				pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
 
-				log("Update email");
+				logStep("Update email");
 				pPatientDashboardPage = pPatientSearchPage.changeEmail(testData.getProperty("changeEmailNewEmail"));
 				assertEquals(true, pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
 		}
