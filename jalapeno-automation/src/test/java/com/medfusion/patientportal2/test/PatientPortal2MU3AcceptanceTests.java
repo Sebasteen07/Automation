@@ -33,8 +33,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
@@ -124,15 +122,11 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientActivationPages() throws Exception {
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Copy source of Patient Verification Page and continue");
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);

@@ -80,8 +80,6 @@ import com.medfusion.product.object.maps.practice.page.symptomassessment.Symptom
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
@@ -267,15 +265,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientActivation() throws Exception {
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Finishing of patient activation: step 1 - verifying identity");
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
@@ -284,8 +278,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 								PortalConstants.DateOfBirthYear);
 
 				logStep("Finishing of patient activation: step 2 - filling patient data");
-				JalapenoHomePage jalapenoHomePage = accountDetailsPage
-						.fillAccountDetailsAndContinue(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(), testDataFromProp);
+				JalapenoHomePage jalapenoHomePage =
+						accountDetailsPage.fillAccountDetailsAndContinue(patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
 
 				logStep("Detecting if Home Page is opened");
 				assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
@@ -299,8 +293,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 				assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 
-				logStep("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testDataFromProp.getPassword());
-				jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword());
+				logStep("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testData.getPassword());
+				jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
 
 				assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 				logStep("Logging out");
@@ -310,7 +304,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Logging into Mailinator and getting Patient Activation url");
 				String unlockLinkEmail =
-						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testDataFromProp.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
+						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
 				assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 				logStep("Retrieved activation link is " + unlockLinkEmail);
 				logStep("Comparing with portal unlock link " + unlockLinkPortal);
@@ -565,18 +559,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
-				patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Going to PI login page");
-				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				assertTrue(loginPage.areBasicPageElementsPresent());
 
 				logStep("Going to create account page");
