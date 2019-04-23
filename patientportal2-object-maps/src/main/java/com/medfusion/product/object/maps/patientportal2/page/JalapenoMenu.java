@@ -32,7 +32,7 @@ import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.J
 public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='home']/a/span")
-	private WebElement homeMenu;
+    protected WebElement homeMenu;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='messages_lhn']/a/span")
 	private WebElement messagesMenu;
@@ -66,7 +66,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	private WebElement signoutDropdownButton;
 
 	@FindBy(how = How.ID, using = "signout")
-	private WebElement signoutButton;
+    protected WebElement signoutButton;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='ccdList_lhn']/a/span")
 	private WebElement healthRecordMenu;	

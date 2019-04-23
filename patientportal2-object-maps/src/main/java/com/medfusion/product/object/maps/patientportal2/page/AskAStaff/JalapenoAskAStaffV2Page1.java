@@ -6,7 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
@@ -70,4 +69,10 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		//provider, location, and card info are all optional
 		return subjectBox.isDisplayed() && questionBox.isDisplayed() && historyButton.isDisplayed() && continueButton.isDisplayed();
 	}
+	
+	public JalapenoAskAStaffV2HistoryListPage clickOnHistory() {
+        log("Clicking on Ask a Question menu button");
+        historyButton.click();
+        return PageFactory.initElements(driver, JalapenoAskAStaffV2HistoryListPage.class);
+    }
 }
