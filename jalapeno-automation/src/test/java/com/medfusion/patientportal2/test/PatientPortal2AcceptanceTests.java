@@ -122,7 +122,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData = new PropertyFileLoader();
 		}
 
-		@BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
+		//TODO uncomment and remove call from all associated tests after testng 7.0.0 is released
+		//@BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
 		public void createCommonPatient() throws Exception {
 				if (patient == null) {
 						String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
@@ -248,7 +249,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatient() {
+		public void testCreatePatient() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -319,6 +321,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testForgotPassword() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -513,7 +516,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6SamePractice() {
+		public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page and login");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -538,7 +542,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testCreatePatientHealthKey6outOf6DifferentPractice() {
+		public void testCreatePatientHealthKey6outOf6DifferentPractice() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -691,6 +696,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-solutions", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPrescriptionRenewal() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -1198,9 +1204,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		/**
 		 * Creates patient, modifies My Account setting and validates result
+		 * @throws Exception 
 		 */
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testMyAccount() {
+		public void testMyAccount() throws Exception {
+		        createCommonPatient();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -1270,6 +1278,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateTrustedRepresentativeOnly() throws Exception {
+		        createCommonPatient();
 				Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData), testData);
 
 				logStep("Load login page");
