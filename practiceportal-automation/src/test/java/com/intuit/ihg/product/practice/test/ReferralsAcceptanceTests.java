@@ -1,12 +1,8 @@
 package com.intuit.ihg.product.practice.test;
 
 import com.medfusion.product.practice.api.utils.PracticeConstants;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
@@ -17,25 +13,9 @@ public class ReferralsAcceptanceTests extends BaseTestNGWebDriver {
 		private ReadFilePath path = new ReadFilePath();
 		private PropertyFileLoader testReferralsData = new PropertyFileLoader();
 
-		// TODO move stuff around stepCounter to BaseTestNGWebDriver
-		private int stepCounter;
 
 		public ReferralsAcceptanceTests() throws Exception {
 				path.getFilepath(PracticeConstants.FILE_DIRECTORY);
-		}
-
-		@BeforeMethod(alwaysRun = true)
-		public void setUpReferralsTest() {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("Resetting step counter");
-				stepCounter = 0;
-		}
-
-		private void logStep(String logText) {
-				log("STEP " + ++stepCounter + ": " + logText);
 		}
 
 		/**

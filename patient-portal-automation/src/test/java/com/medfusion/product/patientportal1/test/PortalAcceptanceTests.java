@@ -6,15 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.tools.ant.types.selectors.DifferentSelector;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
@@ -89,11 +85,6 @@ import com.medfusion.product.practice.tests.PatientActivationTest;
 @Test
 public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
-		@AfterMethod
-		public void logTestStatus(ITestResult result) {
-				TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
-		}
-
 		/**
 		 * @throws Exception
 		 * @Author:- bkrishnankutty
@@ -104,18 +95,13 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * required fields: Statement Delivery Preference: Electronic statement Email Format Preference: HTML Check Preferences saved successfully
 		 * is displayed Remove provider by finding Remove link next to provider that was added in previous steps Click Update Your Preferences
 		 * Check Preferences saved successfully is displayed Check that the provider name that was removed is not shown
-		 * ========================================== ===================
 		 * @AreaImpacted :- If a practice requires the user to select a preferred provider at login, that Provider will already be listed above the select box when
 		 * this screen is pulled up. We would want to ensure when we remove a provider that we are removing the one that was added, not the existing
 		 * provider
 		 */
 
 		private void activatePatient(String unlockLink, String zip, String email, TestcasesData testcasesData) throws Exception {
-
-
 				// email = IHGUtil.createRandomEmailAddress(testcasesData.getEmail(), '.');
-
-
 
 				log("Go to the url from the Practice Portal to activate the patient.");
 				CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(unlockLink);
@@ -133,11 +119,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAddandRemovePreferences() throws Exception {
-
-				log("Test Case: testAddandRemovePreferences");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 
 				Portal portal = new Portal();
@@ -193,10 +174,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLoginLogout() throws Exception {
-				log("Test Case: TestLoginLogout");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 
 				Portal portal = new Portal();
@@ -245,15 +222,9 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date:-2/6/2013
 		 * @User Story ID in Rally
 		 * @StepsToReproduce: Login to Patient Portal Click on My Account Click Wallet Link Add credit Card Remove added Credit Card
-		 * ================================================ =============
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAddandChangeCreditCard() throws Exception {
-
-				log("Test Case: testAddandChangeCreditCard");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 2: Get Data from Excel");
 
 				Portal portal = new Portal();
@@ -297,8 +268,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date:-2/6/2013
 		 * @User Story ID in Rally
 		 * @StepsToReproduce: Click Sign-UP Create a new account Logout from patient portal Again Login to patient Portal with the newly created patient Log out
-		 * ================== =========================================== Note :- //need to include a piece of code here for deleting cookies so
-		 * that script works in IE works
+		 * Note :- //need to include a piece of code here for deleting cookies so that script works in IE works
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -323,16 +293,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * Request Step2 Page Complete Appointment Request Step3 Page Complete Appointment Request Step4 Page Navigate to Appt Request History Page
 		 * Logout from Patient Portal Login to Practice Portal Click Appt Request tab Search for appt requests Choose process option and respond to
 		 * patient Confirm response details to patient Logout of Practice Portal Login to Patient Portal Go to Inbox Find message in Inbox Validate
-		 * message loads and is the right message ============== ===============================================
+		 * message loads and is the right message
 		 * @AreaImpacted :
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAppointmentRequestEnd2End() throws Exception {
-				log("Test Case: testAppointmentRequestEnd2End");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -423,16 +389,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: rperkinsjr
 		 * @Date: 4/15/2013
 		 * @StepsToReproduce: Login to Patient Portal Click on My Account Click Manage Health Information Simulate click of 'Download My Data' (PDF) Check that the
-		 * HTTP Status Code == 200 ======================================== =====================
-		 * @AreaImpacted :
+		 * HTTP Status Code 200
+		 * @AreaImpacted:
 		 */
 
 		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testBlueButtonDownloadPdf() throws Exception {
-				log("testBlueButtonDownloadPdf");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -462,16 +424,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: rperkinsjr
 		 * @Date: 4/15/2013
 		 * @StepsToReproduce: Login to Patient Portal Click on My Account Click Manage Health Information Simulate click of 'Download My Data' (PDF) Check that the
-		 * HTTP Status Code == 200 ======================================== =====================
+		 * HTTP Status Code 200
 		 * @AreaImpacted :
 		 */
 
 		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testBlueButtonDownloadText() throws Exception {
-				log("Test Case: testBlueButtonDownloadText");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -500,16 +458,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date: 4/15/2013
 		 * @StepsToReproduce: Login to Patient Portal Click on Appt Request Fill out Appt Request details Submit Appt Request Navigate back to My Patient Page Click
 		 * on Appt Request History Select 1st Appt Request History item Click on 'View As PDF' link Get contents of embedded PDF Validate contents
-		 * ====================== =======================================
 		 * @AreaImpacted :
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testViewAsPdf() throws Exception {
-
-				log("Test Case: testViewAsPdf");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -562,15 +514,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @StepsToReproduce: Login to Patient Portal Click on Ask A Staff/Doctor Fill out Ask A Staff details Submit Ask A Staff Go to Ask A Staff History page
 		 * Validate submitted question is listed on History page Logout of Patient Portal Login to Practice Portal Search Ask A Questions Access
 		 * details for submitted question Respond to question Logout of Practice Portal Login to Patient Portal Access Patient Inbox Validate Ask A
-		 * Staff response is listed ========================== ===================================
+		 * Staff response is listed
 		 * @AreaImpacted :
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAskAStaffEnd2End() throws Exception {
-				log("Test Case: testAskAStaff");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -665,15 +613,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: rperkinsjr : refactored by Prokop Rehacek
 		 * @Date: 4/22/2013 : refacterd 4/1/2014
 		 * @StepsToReproduce: Access Patient Portal Login page Click Forgot ID link Enter email address and continue Answer security question and continue Access
-		 * personal email inbox to check for email Validate email contents: subject, user id, site link ==============
-		 * ===============================================
+		 * personal email inbox to check for email Validate email contents: subject, user id, site link
 		 * @AreaImpacted :
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientForgotUserId() throws Exception {
-
-				log("Test Case: testCreatePatientOnBetaSite");
-
 				// Instancing CreatePatientTest
 				ForgotUserIdTest forgotUserIdTest = new ForgotUserIdTest();
 
@@ -690,15 +634,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: Prokop Rehacek
 		 * @Date: 4/1/2014
 		 * @StepsToReproduce: Access Patient Portal Login page Click Forgot ID link Enter email address with different case and continue Answer security question and
-		 * continue Access personal email inbox to check for email Validate email contents: subject, user id, site link ==============
-		 * ===============================================
+		 * continue Access personal email inbox to check for email Validate email contents: subject, user id, site link
 		 * @AreaImpacted :
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
-
-				log("Test Case: testCreatePatientOnBetaSite");
-
 				// Instancing CreatePatientTest
 				ForgotUserIdTest forgotUserIdTest = new ForgotUserIdTest();
 
@@ -719,15 +659,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date:-4/April/2013
 		 * @User Story ID in Rally
 		 * @StepsToReproduce: Login to Patient Portal Click on myaccountLink on MyPatientPage Click on insuranceLink on MyAccountPage Add Insurance Assert it Remove
-		 * Insurance ========================================== ===================
+		 * Insurance
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAddInsurance() throws Exception {
-				log("Test Case: testAddInsurance");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 2: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -773,15 +709,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @User Story ID in Rally
 		 * @StepsToReproduce: Login to Patient Portal Initiate new Virtual Office Vist Complete virtual office visit View Virtual Office Visit history Ensure item is
 		 * listed in history Navigate to Practice Portal and login Go to Virtual Office Visit search page Initiate search Click on specific item
-		 * process the item Logout of practice portal login to patient portal go to inbox find secure message open secure message ============
+		 * process the item Logout of practice portal login to patient portal go to inbox find secure message open secure message
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testVirtualOfficeVisitEnd2End() throws Exception {
-				log("Test Case: testVirtualOfficeVisitEnd2End");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Retrieving test case data");
 				Portal portal = new Portal();
 				TestcasesData patientData = new TestcasesData(portal);
@@ -926,16 +858,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date:-April/4/2013
 		 * @User Story ID in Rally
 		 * @StepsToReproduce: Click on Forgot Password Link on LogIn Page On the Reset Password Page Give UserId and other details Verify Gmail Click on Gmail link
-		 * and confirm the password ============================================ =================
+		 * and confirm the password
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testForgotPassword() throws Exception {
-
-				log("**INFO:: TestForgotPassword");
-				log("**INFO:: Environment on which Testcase is Running:-" + IHGUtil.getEnvironmentType());
-				log("**INFO:: Browser on which Testcase is Running :-" + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -963,16 +890,10 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date:-4/23/2014
 		 * @User Story ID in Rally US7907
 		 * @StepsToReproduce: Click on Forgot Password Link on LogIn Page On the Reset Password Page Give UserId Write wrong answer twice and verify that is shown
-		 * page That want you to contact practice password ============================================ =================
-		 */
+		 * page That want you to contact practice password 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testForgotPasswordFailToAnswerSQ() throws Exception {
-
-				log("**INFO:: TestForgotPasswordFailToAnswerSQ");
-				log("**INFO:: Environment on which Testcase is Running:-" + IHGUtil.getEnvironmentType());
-				log("**INFO:: Browser on which Testcase is Running :-" + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -997,16 +918,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @StepsToReproduce: Patient login Click on SymptomAssessment and Select your doctor Give Your Symptom and submit Answer all the Question in coming up in the
 		 * further pages?? Assert Text after completing Symptom Assessment Logout of Patient Portal Login to Practice Portal and Click on
 		 * SymptomAssessmentTab Verify the information on SymptomAssessmentDetailsPage and Sent Message to Patient Logout from the Practice Portal
-		 * Login to Patient Portal Go to Inbox and Find message Validate message ============================ =================================
+		 * Login to Patient Portal Go to Inbox and Find message Validate message
 		 * @AreaImpacted :
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSymptomAssessment() throws Exception {
-
-				log("Test Case: testSymptomAssessment");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Retrieving test case data");
 				Portal portal = new Portal();
 				TestcasesData patientData = new TestcasesData(portal);
@@ -1100,16 +1016,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @StepsToReproduce: Patient login Click on RxRenewal and Select your Provider Give Prescription Details Submit RxRenewal Details Assert Text after
 		 * completing RxRenewal Assessment Logout of Patient Portal Login to Practice Portal and Click on RxRenewalTab Verify the information on
 		 * RxRenewalDetailsPage and Sent Message to Patient Logout from the Practice Portal Login to Patient Portal Go to Inbox and Find message
-		 * Validate message ============================ =================================
-		 * @AreaImpacted :
+		 * Validate message
+		 * * @AreaImpacted:
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testRxRenewalEnd2End() throws Exception {
-
-				log("Test Case: testRxRenewalEnd2End");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -1207,17 +1118,12 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Date: 07/10/2013
 		 * @StepsToReproduce: Patient login Click on Make Payment Give Payment Details Submit Payment Details Logout of Patient Portal Login to Practice Portal and
 		 * Click on Online Bill Payment Set Details in PaymentCommunicationDetails and Sent Message to Patient Logout from the Practice Portal
-		 * Login to Patient Portal Go to Inbox and Find message Validate message ==================================== =========================
+		 * Login to Patient Portal Go to Inbox and Find message Validate message
 		 * @AreaImpacted :
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testBillPaymentEnd2End() throws Exception {
-
-				log("Test Case: testAppointmentRequest");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				String accountNumber = IHGUtil.createRandomNumericString(8);
 
 				log("step 1: Get Data from Excel");
@@ -1280,11 +1186,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testMyMessagesRefreshButton() throws Exception {
-
-				log("Test Case: testAppointmentRequest");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -1312,17 +1213,11 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: Kiran_GT
 		 * @Date: 07/30/2013
 		 * @StepsToReproduce: Patient login Click on PHR Link Page will redirected to PHR by accepting terms and conditions Verify for PHR page and Logout form PHR
-		 * ==================================== =========================
 		 * @AreaImpacted :
 		 */
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPhrPortalSSO() throws Exception {
-
-				log("Test Case: testPhrPortalSSO");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -1357,8 +1252,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @Author: Jakub Calabek
 		 * @Date: 08/12/2013
 		 * @StepsToReproduce: Doctor inviting patient from the Practice Portal site. Specifying all necessary data. Then withdrawing link to patient activation. User
-		 * is finishing registration by email which is send to patient patient gmail. account. ====================================
-		 * =========================
+		 * is finishing registration by email which is send to patient patient gmail. account.
 		 * @AreaImpacted :
 		 */
 
@@ -1388,7 +1282,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * @StepsToReproduce: Doctor inviting patient from the Practice Portal site. Specifying all necessary data. Then withdrawing link to patient activation. User
 		 * is finishing registration by email which is send to patient patient gmail. Very similar flow to the previous test. Only different thing
 		 * is on the Practice site when the patient activation is provided via {@link DifferentSelector} flow. account.
-		 * ==================================== =========================
 		 * @AreaImpacted :
 		 */
 
@@ -1419,11 +1312,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPayNow() throws Exception {
-
-				log("Test Case: testPayNow - No login payment");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 				Portal portal = new Portal();
 				TestcasesData testcasesData = new TestcasesData(portal);
@@ -1546,10 +1434,6 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSecureMessageNotification() throws Exception {
-				log("Test Case: TestSecureMessageNotification");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("step 1: Get Data from Excel");
 
 				Portal portal = new Portal();

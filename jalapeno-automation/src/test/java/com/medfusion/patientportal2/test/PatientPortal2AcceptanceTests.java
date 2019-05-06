@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
@@ -20,15 +21,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -110,10 +107,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		private PropertyFileLoader testData;
 		private Patient patient = null;
 
-		// TODO move stuff around stepCounter to BaseTestNGWebDriver
-		private int stepCounter;
-		private Instant testStart;
-
 		@BeforeClass(alwaysRun = true)
 		public void prepareTestData() throws IOException {
 				log("Getting Test Data");
@@ -127,25 +120,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						patient = PatientFactory.createJalapenoPatient(username, testData);
 						patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 				}
-		}
-
-		@BeforeMethod(alwaysRun = true)
-		public void setUpPortal2Test() {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("Resetting step counter");
-				stepCounter = 0;
-				testStart = Instant.now();
-		}
-
-		private void logStep(String logText) {
-				log("STEP " + ++stepCounter + ": " + logText);
-		}
-
-		private long testSecondsTaken() {
-				return testStart.until(Instant.now(), ChronoUnit.SECONDS);
 		}
 
 		private String getRedirectUrl(String originUrl) {
@@ -176,11 +150,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				if (!ret)
 						log("The retrieved link is a redirect URL : " + url);
 				return ret;
-		}
-
-		@AfterMethod
-		public void logTestStatus(ITestResult result) {
-				TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 		}
 
 		@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
@@ -897,6 +866,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// guardian email
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateGuardianOnly() throws Exception {
+				Instant testStart = Instant.now();
 				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian's login
 				String patientLastName = patientLogin.replace("login", "last"); //lastname for both
 				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com"; ///email for both
@@ -945,7 +915,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 
 				String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
-				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken(testStart));
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
 				assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
@@ -960,6 +930,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateDependentAndGuardian() throws Exception {
+				Instant testStart = Instant.now();
 				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
 				String patientLastName = patientLogin.replace("login", "last");
 				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
@@ -1017,7 +988,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 
 				String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
-				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken(testStart));
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
 
@@ -1033,7 +1004,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
 
 				String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
-				Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken());
+				Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken(testStart));
 				assertNotNull(emailPatient, "Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
 				String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
 				assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
@@ -1045,6 +1016,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Retrieved patients activation link is " + patientUrl);
 				logStep("Comparing with patients link from PrP " + patientUrlEmail);
 				assertEquals(patientUrl, patientUrlEmail, "Practice portal and email unlock links for dependent are not equal!");
+		}
+
+		private long testSecondsTaken(Instant testStart) {
+				return testStart.until(Instant.now(), ChronoUnit.SECONDS);
 		}
 
 		// This test uses under-age patients created at tests
@@ -1415,5 +1390,4 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Verify Blink banner is still hidden");
 				assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());
 		}
-
 }

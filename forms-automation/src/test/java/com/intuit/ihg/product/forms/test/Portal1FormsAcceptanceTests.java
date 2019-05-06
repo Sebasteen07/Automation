@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.forms.test;
 
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
@@ -15,14 +13,9 @@ public class Portal1FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 
 		@BeforeMethod(alwaysRun = true)
 		public void setUpFormsTest() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
 		}
-
 
 		@Test(groups = "OldPortalForms")
 		public void testQuotationMarksInFormPortal1() throws Exception {

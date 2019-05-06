@@ -59,8 +59,7 @@ public class FormsAcceptanceTestsUtils extends BaseTestNGWebDriver {
 		void testFormPdfCcd(HealthFormListPage formsPage, String ccdUrl) throws Exception {
 				long timestamp = System.currentTimeMillis() / 1000L;
 				String xml;
-				// easy bruising is mapped to following term in Forms Configurator in
-				// SiteGen
+				// easy bruising is mapped to following term in Forms Configurator in SiteGen
 				String easyBruisingString = "ABO donor$$$easy";
 				String diacriticString = "¿¡eñÑeŘ\"";
 
@@ -278,8 +277,6 @@ public class FormsAcceptanceTestsUtils extends BaseTestNGWebDriver {
 		}
 
 		String createFormSG(String usernameSG, String passwordSG, String newFormName) throws Exception {
-
-				Utils.logTestEnvironmentInfo("testDiscreteFormDeleteCreatePublish");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver, usernameSG, passwordSG);
 				// Get the current window handle before opening new window
 				String parentHandle = driver.getWindowHandle();

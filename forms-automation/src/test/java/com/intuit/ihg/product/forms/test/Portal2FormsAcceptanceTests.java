@@ -1,6 +1,5 @@
 package com.intuit.ihg.product.forms.test;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
@@ -43,10 +42,6 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 
 		@BeforeMethod(alwaysRun = true)
 		public void setUpFormsTest() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
 		}
@@ -97,9 +92,8 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 
 		/**
 		 * User Story ID in Rally: US544 - TA30648 StepsToReproduce: Log in to SG Go to Forms Config Unpublish all forms Delete all forms Create a new form and
-		 * configure it Create a custom section and test saving it without name and questions Save the form Publish it Test viewing the form on Patient Portal ===
-		 * Prerequisite for the test case to run========= Practice configured Practices configured on: DEV3, DEMO, PROD
-		 * ============================================================
+		 * configure it Create a custom section and test saving it without name and questions Save the form Publish it Test viewing the form on Patient Portal
+		 * Prerequisite for the test case to run Practice configured Practices configured on: DEV3, DEMO, PROD
 		 *
 		 * @throws Exception
 		 */
@@ -162,7 +156,6 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		@Test(groups = {"Forms"})
 		public void testSitegenFUPInteraction() throws Exception {
 				JavascriptExecutor jse = (JavascriptExecutor) driver;
-				Utils.logTestEnvironmentInfo("testCreateFormWithFUPs");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage =
 						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("sitegenUsername2"), testData.getProperty("sitegenPassword2"));
 
