@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -39,7 +40,6 @@ import com.intuit.ihg.product.phr.utils.PhrTestcasesData;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
 public class PhrAcceptanceTests extends BaseTestNGWebDriver {

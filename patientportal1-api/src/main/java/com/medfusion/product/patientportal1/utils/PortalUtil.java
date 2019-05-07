@@ -1,5 +1,6 @@
 package com.medfusion.product.patientportal1.utils;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
@@ -20,8 +21,6 @@ public class PortalUtil extends IHGUtil {
 	Dimension halfWidthscreenResolution = new Dimension((int) toolkit.getScreenSize().getWidth() / 2, (int) toolkit.getScreenSize().getHeight());
 
 	protected WebDriver driver;
-
-	// PortalConstants pPortalConstants;
 
 	public PortalUtil(WebDriver driver) {
 		super(driver);

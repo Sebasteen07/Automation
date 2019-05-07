@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -30,7 +31,6 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Secur
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.flows.IPatientActivation;
 import com.medfusion.product.practice.api.pojo.PatientInfo;
 import com.medfusion.product.practice.api.utils.PracticeConstants;

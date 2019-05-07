@@ -5,6 +5,7 @@ import static org.testng.Assert.assertNotNull;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.apache.tools.ant.types.selectors.DifferentSelector;
 import org.testng.annotations.Test;
 
@@ -70,7 +71,6 @@ import com.medfusion.product.patientportal1.flows.FamilyAccountTest;
 import com.medfusion.product.patientportal1.flows.ForgotUserIdTest;
 import com.medfusion.product.patientportal1.flows.HealthKeyMatchTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 import com.medfusion.product.practice.api.pojo.Practice;

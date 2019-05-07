@@ -5,6 +5,7 @@ import java.awt.datatransfer.StringSelection;
 
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
+import com.medfusion.portal.utils.PortalConstants;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -28,7 +29,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
