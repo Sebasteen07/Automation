@@ -1,176 +1,177 @@
 package com.medfusion.product.patientportal2.utils;
 
 import java.net.URL;
+
 import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.patientportal2.pojo.Portal;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.patientportal2.pojo.PortalBasic;
 
-
+//TODO: never used? to delete?
 public class TestcasesData {
 
-	Portal portalobj = null;
-	ExcelSheetReader excelReader = null;
+		PortalBasic portalobj = null;
+		ExcelSheetReader excelReader = null;
 
-	public TestcasesData(Portal portal) throws Exception {
-		String temp = IHGUtil.getEnvironmentType().toString();// which enviroment data need to picked
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls"); // file name
-		excelReader = new ExcelSheetReader(url.getFile());// reading the entire file
-		portalobj = (Portal) excelReader.getSingleExcelRow(portal, temp);// filtering the entire file
-	}
+		public TestcasesData(PortalBasic portal) throws Exception {
+				String temp = IHGUtil.getEnvironmentType().toString();// which enviroment data need to picked
+				URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls"); // file name
+				excelReader = new ExcelSheetReader(url.getFile());// reading the entire file
+				portalobj = (PortalBasic) excelReader.getSingleExcelRow(portal, temp);// filtering the entire file
+		}
 
-	public String getTitle() {
-		return portalobj.title;
-	}
+		public String getTitle() {
+				return portalobj.title;
+		}
 
-	public String geturl() {
+		public String geturl() {
 
-		return portalobj.url;
-	}
-
-
-	public String getUsername() {
-		return portalobj.username;
-	}
+				return portalobj.url;
+		}
 
 
-	public String getPassword() {
-		return portalobj.password;
-	}
-
-	public String getPreferredProvider() {
-		return portalobj.preferredprovider;
-	}
+		public String getUsername() {
+				return portalobj.username;
+		}
 
 
-	public String getFirstName() {
-		return portalobj.patientFirstName;
-	}
+		public String getPassword() {
+				return portalobj.password;
+		}
+
+		public String getPreferredProvider() {
+				return portalobj.preferredprovider;
+		}
 
 
-	public String getLastName() {
-		return portalobj.patientLastName;
-	}
+		public String getFirstName() {
+				return portalobj.patientFirstName;
+		}
 
 
-	public String getEmail() {
-		return portalobj.patientEmail;
-	}
+		public String getLastName() {
+				return portalobj.patientLastName;
+		}
 
 
-	public String getPhoneNumber() {
-		return portalobj.patientPhoneNumber;
-	}
-
-	public String getPhoneType() {
-		return portalobj.patientPhoneType;
-	}
+		public String getEmail() {
+				return portalobj.patientEmail;
+		}
 
 
-	public String getDob_Month() {
-		return portalobj.patientDob_Month;
-	}
+		public String getPhoneNumber() {
+				return portalobj.patientPhoneNumber;
+		}
+
+		public String getPhoneType() {
+				return portalobj.patientPhoneType;
+		}
 
 
-	public String getDob_Day() {
-		return portalobj.patientDob_Day;
-	}
-
-	public String getDob_Year() {
-		return portalobj.patientDob_Year;
-	}
-
-	public String getDOB() {
-		return portalobj.patientDob_Month + "/" + portalobj.patientDob_Day + "/" + portalobj.patientDob_Year;
-	}
-
-	public String getZip() {
-		return portalobj.patientZip;
-	}
+		public String getDob_Month() {
+				return portalobj.patientDob_Month;
+		}
 
 
-	public String getSSN() {
-		return portalobj.patientSSN;
-	}
+		public String getDob_Day() {
+				return portalobj.patientDob_Day;
+		}
+
+		public String getDob_Year() {
+				return portalobj.patientDob_Year;
+		}
+
+		public String getDOB() {
+				return portalobj.patientDob_Month + "/" + portalobj.patientDob_Day + "/" + portalobj.patientDob_Year;
+		}
+
+		public String getZip() {
+				return portalobj.patientZip;
+		}
 
 
-	public String getSecretQuestion() {
-		return portalobj.patientSecretQuestion;
-	}
+		public String getSSN() {
+				return portalobj.patientSSN;
+		}
 
-	public String getAnswer() {
-		return portalobj.patientAnswer;
-	}
 
-	public String getPreferredLocation() {
-		return portalobj.patientPreferredLocation;
-	}
+		public String getSecretQuestion() {
+				return portalobj.patientSecretQuestion;
+		}
 
-	public String getPreferredDoctor() {
-		Log4jUtil.log("Patient Preferred Provider: " + portalobj.patientPreferredDoctor);
-		return portalobj.patientPreferredDoctor;
-	}
+		public String getAnswer() {
+				return portalobj.patientAnswer;
+		}
 
-	public String getAddress() {
-		return portalobj.address;
-	}
+		public String getPreferredLocation() {
+				return portalobj.patientPreferredLocation;
+		}
 
-	public String getAddressCity() {
-		return portalobj.city;
-	}
+		public String getPreferredDoctor() {
+				Log4jUtil.log("Patient Preferred Provider: " + portalobj.patientPreferredDoctor);
+				return portalobj.patientPreferredDoctor;
+		}
 
-	public String getAddressState() {
-		return portalobj.state;
-	}
+		public String getAddress() {
+				return portalobj.address;
+		}
 
-	public String getFamilyUN() {
-		return portalobj.Family_Account_User_Name;
-	}
+		public String getAddressCity() {
+				return portalobj.city;
+		}
 
-	public String getFamilyPW() {
-		return portalobj.Family_Password;
-	}
+		public String getAddressState() {
+				return portalobj.state;
+		}
 
-	public String getRelationship() {
-		return portalobj.Relationship;
-	}
+		public String getFamilyUN() {
+				return portalobj.Family_Account_User_Name;
+		}
 
-	public String getHealthKeyPracticeUrl() {
-		return portalobj.healthKeyPracticeUrl;
-	}
+		public String getFamilyPW() {
+				return portalobj.Family_Password;
+		}
 
-	public String getFormsUrl() {
-		return portalobj.formsUrl;
-	}
+		public String getRelationship() {
+				return portalobj.Relationship;
+		}
 
-	public String getPIFormsUrl() {
-		return portalobj.formsPIUrl;
-	}
+		public String getHealthKeyPracticeUrl() {
+				return portalobj.healthKeyPracticeUrl;
+		}
 
-	public String getPIFormsAltUrl() {
+		public String getFormsUrl() {
+				return portalobj.formsUrl;
+		}
 
-		return portalobj.formsAltPIUrl;
-	}
+		public String getPIFormsUrl() {
+				return portalobj.formsPIUrl;
+		}
 
-	public String getPreferredLocationBeta() {
-		return portalobj.preferredLocationBeta;
-	}
+		public String getPIFormsAltUrl() {
 
-	public String getFormsAltUrl() {
-		return portalobj.formsAltUrl;
-	}
+				return portalobj.formsAltPIUrl;
+		}
 
-	public String getRestUrl() {
-		return portalobj.restUrl;
-	}
+		public String getPreferredLocationBeta() {
+				return portalobj.preferredLocationBeta;
+		}
 
-	public String getSecureNotificationUser() {
-		return portalobj.secureMessageNotificationUserEmail;
-	}
+		public String getFormsAltUrl() {
+				return portalobj.formsAltUrl;
+		}
 
-	public String getSecureNotificationUserPassword() {
-		return portalobj.secureMessageNotificationUserPassword;
-	}
+		public String getRestUrl() {
+				return portalobj.restUrl;
+		}
+
+		public String getSecureNotificationUser() {
+				return portalobj.secureMessageNotificationUserEmail;
+		}
+
+		public String getSecureNotificationUserPassword() {
+				return portalobj.secureMessageNotificationUserPassword;
+		}
 
 
 }

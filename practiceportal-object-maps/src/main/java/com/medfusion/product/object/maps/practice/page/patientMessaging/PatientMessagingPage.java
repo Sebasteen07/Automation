@@ -91,9 +91,9 @@ public class PatientMessagingPage extends BasePageObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(deliveryMode);
-		sel.selectByVisibleText(PracticeConstants.DeliveryMode);
+		sel.selectByVisibleText(PracticeConstants.DELIVERY_MODE);
 
 	}
 
@@ -102,9 +102,9 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setMessageType() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(messageType);
-		sel.selectByVisibleText(PracticeConstants.MessageType);
+		sel.selectByVisibleText(PracticeConstants.MESSAGE_TYPE);
 
 	}
 
@@ -114,12 +114,12 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setTemplate() throws Exception {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(template);
 		try {
-			sel.selectByVisibleText(PracticeConstants.Template1);
+			sel.selectByVisibleText(PracticeConstants.TEMPLATE1);
 		} catch (Exception e) {
-			sel.selectByVisibleText(PracticeConstants.Template2);
+			sel.selectByVisibleText(PracticeConstants.TEMPLATE2);
 		}
 		Thread.sleep(5000);
 
@@ -129,12 +129,12 @@ public class PatientMessagingPage extends BasePageObject {
 	 * @Description:Set Subject
 	 */
 	public void setSubject() {
-		this.setSubject(PracticeConstants.Subject);
+		this.setSubject(PracticeConstants.SUBJECT);
 	}
 
 	public void setSubject(String subjectText) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		subject.clear();
 		subject.sendKeys(subjectText);
 	}
@@ -144,10 +144,10 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setRecipientType() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 10, recipientType);
 		Select sel = new Select(recipientType);
-		sel.selectByVisibleText(PracticeConstants.RecipientType);
+		sel.selectByVisibleText(PracticeConstants.RECIPIENT_TYPE);
 
 	}
 
@@ -156,9 +156,9 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		firstName.clear();
-		firstName.sendKeys(PracticeConstants.PatientFirstName);
+		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setFirstName(String fname) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		firstName.clear();
 		firstName.sendKeys(fname);
 	}
@@ -176,9 +176,9 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setLastName() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		lastName.clear();
-		lastName.sendKeys(PracticeConstants.PatientLastName);
+		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setLastName(String lname) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		lastName.clear();
 		lastName.sendKeys(lname);
 	}
@@ -196,14 +196,14 @@ public class PatientMessagingPage extends BasePageObject {
 	 */
 	public void setEmail() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		email.clear();
-		email.sendKeys(PracticeConstants.PatientEmail);
+		email.sendKeys(PracticeConstants.PATIENT_EMAIL);
 	}
 
 	public void setEmail(String email) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		this.email.clear();
 		this.email.sendKeys(email);
 	}
@@ -221,7 +221,7 @@ public class PatientMessagingPage extends BasePageObject {
 		setTemplate();
 		setSubject();
 
-		URL QuickSendPDFUrl = ClassLoader.getSystemResource(PracticeConstants.QuickSendPdfFilePath);
+		URL QuickSendPDFUrl = ClassLoader.getSystemResource(PracticeConstants.QUICK_SEND_PDF_FILE_PATH);
 		messageAttachment.sendKeys(QuickSendPDFUrl.getPath());
 
 		Thread.sleep(2000);
@@ -230,11 +230,11 @@ public class PatientMessagingPage extends BasePageObject {
 		setLastName();
 		searchForPatients.click();
 		Thread.sleep(5000);
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 60, searchResult);
 		searchResult.click();
 		Thread.sleep(12000);
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		email.click();
 		publishMessage.click();
 		Thread.sleep(3000);
@@ -258,7 +258,7 @@ public class PatientMessagingPage extends BasePageObject {
 	
 	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
 		messageAttachment.sendKeys(filePath);
 		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"), testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
@@ -267,7 +267,7 @@ public class PatientMessagingPage extends BasePageObject {
 	
 	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName, String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
 		messageAttachment.sendKeys(filePath);
 		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
@@ -277,7 +277,7 @@ public class PatientMessagingPage extends BasePageObject {
 	public void setMessageFields(String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(messageType);
 		sel.selectByVisibleText("Other");
 		Select sel2 = new Select(template);
@@ -294,7 +294,7 @@ public class PatientMessagingPage extends BasePageObject {
 		setEmail(email);
 
 		searchForPatients.click();
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 60, searchResult);
 		searchResult.click();
 	}
@@ -312,7 +312,7 @@ public class PatientMessagingPage extends BasePageObject {
 
 		myMessages.click();
 
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 
 		log("Searching message with subject: " + subject);
 

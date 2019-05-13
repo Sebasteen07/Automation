@@ -157,11 +157,11 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 
 		IHGUtil.waitForElement(driver, 20, drugName);
-		drugName.sendKeys(PracticeConstants.MedicationName);
+		drugName.sendKeys(PracticeConstants.MEDICATION_NAME);
 		dosage.sendKeys(PortalConstants.Dosage);
-		quantity.sendKeys(PracticeConstants.Quantity);
+		quantity.sendKeys(PracticeConstants.QUANTITY);
 		Select selFrequency = new Select(frequency);
-		selFrequency.selectByVisibleText(PracticeConstants.Frequency);
+		selFrequency.selectByVisibleText(PracticeConstants.FREQUENCY);
 		if (IHGUtil.exists(driver, 10, pharmacy)) {
 			Select selPharmacy = new Select(pharmacy);
 			selPharmacy.selectByIndex(1);

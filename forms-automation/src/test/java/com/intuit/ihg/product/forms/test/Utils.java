@@ -42,8 +42,6 @@ public class Utils {
 
 		/**
 		 * @param driver
-		 * @param persistentFormsPractice False for tests which do sitegen management, true otherwise. Tests which do sitegen management operates on own practice
-		 *                                because they can damage forms.
 		 * @return
 		 * @throws Exception
 		 */
