@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Charsets;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
@@ -24,17 +23,12 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 
-
 public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		private PropertyFileLoader testData;
 
 		@BeforeMethod(alwaysRun = true)
 		public void setUpFormsTest() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
 		}
@@ -42,8 +36,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(groups = {"smokeTest"})
 		public void formsConfigSmokeTest() throws Exception {
 				SiteGenSteps sgSteps = new SiteGenSteps();
-
-				Utils.logTestEnvironmentInfo("formsConfigSmokeTest");
 				DiscreteFormsList formsPage =
 						sgSteps.logInUserToSG(driver, testData.getProperty("sitegenUsername1"), testData.getProperty("sitegenPassword1")).clickLnkDiscreteForms();
 				assertTrue(formsPage.isPageLoaded());
@@ -54,7 +46,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				driver.close();
 				driver = Utils.getFirefoxDriverForDownloading();
 
-				Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
 				log("step 1: login to SG as superuser");
 				String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID());
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
@@ -91,7 +82,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test
 		public void testEGQEnablingSG() throws Exception {
-				Utils.logTestEnvironmentInfo("Test exporting and importing of patient form");
 				log("step 1: login to SG as superuser");
 				String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(PracticeType.SECONDARY));
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();

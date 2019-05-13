@@ -173,12 +173,6 @@ public class Utils {
 				return driver;
 		}
 
-		public static void logTestEnvironmentInfo(String testName) {
-				log("Test name: " + testName);
-				log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
-				log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
-		}
-
 		public static int getAutomationPracticeID() throws Exception {
 				return getAutomationPracticeID(PracticeType.PRIMARY);
 		}

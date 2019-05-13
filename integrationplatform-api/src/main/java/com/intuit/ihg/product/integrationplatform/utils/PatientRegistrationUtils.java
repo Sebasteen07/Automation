@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.xml.sax.SAXException;
@@ -24,7 +25,6 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthU
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.common.utils.Mailinator;
 
 public class PatientRegistrationUtils {
