@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -149,8 +148,8 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 	public void setPaymentCommunicationDetails() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		setSubject.sendKeys(createdTs + PracticeConstants.BillPaymentSubject);
-		setSubjectBody.sendKeys(PracticeConstants.BillPaymentBody);
+		setSubject.sendKeys(createdTs + PracticeConstants.BILL_PAYMENT_SUBJECT);
+		setSubjectBody.sendKeys(PracticeConstants.BILL_PAYMENT_BODY);
 		sendCommunicationbtn.click();
 	}
 

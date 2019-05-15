@@ -169,12 +169,12 @@ public class RxRenewalSearchPage extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 		IHGUtil.waitForElement(driver, 40, setQuantity);
 		setQuantity.clear();
-		setQuantity.sendKeys(PracticeConstants.Quantity);
+		setQuantity.sendKeys(PracticeConstants.QUANTITY);
 		Select startDaySelect = new Select(setFrequency);
-		startDaySelect.selectByVisibleText(PracticeConstants.Frequency);
-		subject = createdTs + PracticeConstants.SubjectMessage;
+		startDaySelect.selectByVisibleText(PracticeConstants.FREQUENCY);
+		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT;
 		setSubject.sendKeys(subject);
-		setSubjectBody.sendKeys(PracticeConstants.BodyMessage);
+		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
 
 
 	}
@@ -195,11 +195,11 @@ public class RxRenewalSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		IHGUtil.waitForElement(driver, 20, mediactionName);
-		BaseTestSoftAssert.verifyEquals(drug.getText(), PracticeConstants.Drug);
-		BaseTestSoftAssert.verifyEquals(quantity.getText(), PracticeConstants.Quantity);
-		BaseTestSoftAssert.verifyEquals(frequency.getText(), PracticeConstants.Frequency);
+		BaseTestSoftAssert.verifyEquals(drug.getText(), PracticeConstants.DRUG);
+		BaseTestSoftAssert.verifyEquals(quantity.getText(), PracticeConstants.QUANTITY);
+		BaseTestSoftAssert.verifyEquals(frequency.getText(), PracticeConstants.FREQUENCY);
 		BaseTestSoftAssert.verifyEquals(subjectMessage.getText(), subject);
-		BaseTestSoftAssert.verifyEquals(bodyMessage.getText(), PracticeConstants.BodyMessage);
+		BaseTestSoftAssert.verifyEquals(bodyMessage.getText(), PracticeConstants.MESSAGE_BODY);
 
 	}
 
@@ -220,7 +220,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void verifyProcessCompleted() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		BaseTestSoftAssert.verifyEquals(processingCompletedtxt.getText(), PracticeConstants.ProcessingCompletedText);
+		BaseTestSoftAssert.verifyEquals(processingCompletedtxt.getText(), PracticeConstants.PROCESSING_COMPLETED_TEXT);
 	}
 
 	/**

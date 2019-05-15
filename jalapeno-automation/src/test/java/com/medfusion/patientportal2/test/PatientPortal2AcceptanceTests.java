@@ -9,8 +9,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 import org.apache.commons.io.FileUtils;
@@ -20,15 +22,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -79,9 +77,6 @@ import com.medfusion.product.object.maps.practice.page.symptomassessment.Symptom
 import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
@@ -112,10 +107,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		private PropertyFileLoader testData;
 		private Patient patient = null;
 
-		// TODO move stuff around stepCounter to BaseTestNGWebDriver
-		private int stepCounter;
-		private Instant testStart;
-
 		@BeforeClass(alwaysRun = true)
 		public void prepareTestData() throws IOException {
 				log("Getting Test Data");
@@ -130,25 +121,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						patient = PatientFactory.createJalapenoPatient(username, testData);
 						patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 				}
-		}
-
-		@BeforeMethod(alwaysRun = true)
-		public void setUpPortal2Test() {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
-				log("Resetting step counter");
-				stepCounter = 0;
-				testStart = Instant.now();
-		}
-
-		private void logStep(String logText) {
-				log("STEP " + ++stepCounter + ": " + logText);
-		}
-
-		private long testSecondsTaken() {
-				return testStart.until(Instant.now(), ChronoUnit.SECONDS);
 		}
 
 		private String getRedirectUrl(String originUrl) {
@@ -179,11 +151,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				if (!ret)
 						log("The retrieved link is a redirect URL : " + url);
 				return ret;
-		}
-
-		@AfterMethod
-		public void logTestStatus(ITestResult result) {
-				TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
 		}
 
 		@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
@@ -269,25 +236,21 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientActivation() throws Exception {
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Finishing of patient activation: step 1 - verifying identity");
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
 				SecurityDetailsPage accountDetailsPage = patientVerificationPage
-						.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 								PortalConstants.DateOfBirthYear);
 
 				logStep("Finishing of patient activation: step 2 - filling patient data");
-				JalapenoHomePage jalapenoHomePage = accountDetailsPage
-						.fillAccountDetailsAndContinue(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword(), testDataFromProp);
+				JalapenoHomePage jalapenoHomePage =
+						accountDetailsPage.fillAccountDetailsAndContinue(patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
 
 				logStep("Detecting if Home Page is opened");
 				assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
@@ -295,14 +258,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Checking if address in My Account is filled");
 				JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
 				JalapenoMyAccountProfilePage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
-				assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.Zipcode));
+				assertTrue(jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.ZIP_CODE));
 
 				logStep("Logging out");
 				JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 				assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 
-				logStep("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testDataFromProp.getPassword());
-				jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(), testDataFromProp.getPassword());
+				logStep("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testData.getPassword());
+				jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
 
 				assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 				logStep("Logging out");
@@ -312,7 +275,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Logging into Mailinator and getting Patient Activation url");
 				String unlockLinkEmail =
-						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testDataFromProp.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
+						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
 				assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 				logStep("Retrieved activation link is " + unlockLinkEmail);
 				logStep("Comparing with portal unlock link " + unlockLinkPortal);
@@ -570,18 +533,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
-				patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Going to PI login page");
-				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testDataFromProp.getUrl());
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				assertTrue(loginPage.areBasicPageElementsPresent());
 
 				logStep("Going to create account page");
@@ -591,7 +549,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Creating patient with the same data as in practice portal");
 				patientDemographicPage.fillInPatientData(patientActivationSearchTest.getFirstNameString(), patientActivationSearchTest.getLastNameString(),
 						patientActivationSearchTest.getEmailAddressString(), PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay,
-						PortalConstants.DateOfBirthYear, Patient.GenderExtended.MALE, PracticeConstants.Zipcode);
+						PortalConstants.DateOfBirthYear, Patient.GenderExtended.MALE, PracticeConstants.ZIP_CODE); //TODO use only one constant file
 				patientDemographicPage.tryToContinueToSecurityPage();
 
 				logStep("Checking that I am still on create account page due to healthKey check won't let me create patient with the same data");
@@ -802,7 +760,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Logout of Practice Portal");
 				practiceHome.logOut();
 
-				String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BillPaymentSubject;
+				String uniquePracticeResponse = Long.toString(onlineBillPaySearchPage.getCreatedTs()) + PracticeConstants.BILL_PAYMENT_SUBJECT;
 
 				loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				homePage = loginPage.login(testData.getUserId(), testData.getPassword());
@@ -914,6 +872,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// guardian email
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateGuardianOnly() throws Exception {
+				Instant testStart = Instant.now();
 				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian's login
 				String patientLastName = patientLogin.replace("login", "last"); //lastname for both
 				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com"; ///email for both
@@ -962,7 +921,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 
 				String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
-				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken(testStart));
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
 				assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
@@ -977,6 +936,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLACreateDependentAndGuardian() throws Exception {
+				Instant testStart = Instant.now();
 				String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
 				String patientLastName = patientLogin.replace("login", "last");
 				String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
@@ -1034,7 +994,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 
 				String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at " + testData.getPracticeName();
-				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken());
+				Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30, testSecondsTaken(testStart));
 				assertNotNull(emailGuardian, "Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 				String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
 
@@ -1050,7 +1010,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertEquals(guardianUrl, guardianUrlEmail, "Practice portal and email unlock links for guardian are not equal!");
 
 				String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
-				Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken());
+				Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30, testSecondsTaken(testStart));
 				assertNotNull(emailPatient, "Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
 				String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
 				assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
@@ -1062,6 +1022,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Retrieved patients activation link is " + patientUrl);
 				logStep("Comparing with patients link from PrP " + patientUrlEmail);
 				assertEquals(patientUrl, patientUrlEmail, "Practice portal and email unlock links for dependent are not equal!");
+		}
+
+		private long testSecondsTaken(Instant testStart) {
+				return testStart.until(Instant.now(), ChronoUnit.SECONDS);
 		}
 
 		// This test uses under-age patients created at tests
@@ -1435,5 +1399,4 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Verify Blink banner is still hidden");
 				assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());
 		}
-
 }

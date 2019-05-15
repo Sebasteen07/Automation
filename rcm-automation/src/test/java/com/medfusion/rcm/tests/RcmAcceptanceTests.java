@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -30,7 +31,6 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Secur
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.flows.IPatientActivation;
 import com.medfusion.product.practice.api.pojo.PatientInfo;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -353,7 +353,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber,
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
 					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 			checkAlert(driver);
 
@@ -370,7 +370,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber,
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
 					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
 
 			log("Finishing of patient activation: step 2 - filling patient data");

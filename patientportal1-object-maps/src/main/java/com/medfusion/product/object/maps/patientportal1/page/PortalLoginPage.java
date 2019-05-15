@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.patientportal1.page;
 
 import java.util.concurrent.TimeUnit;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,6 @@ import com.medfusion.product.object.maps.patientportal1.page.createAccount.Creat
 import com.medfusion.product.object.maps.patientportal1.page.forgotPassword.ResetYourPasswordPage;
 import com.medfusion.product.object.maps.patientportal1.page.forgotuserid.ForgotUserIdEnterEmailPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 /**

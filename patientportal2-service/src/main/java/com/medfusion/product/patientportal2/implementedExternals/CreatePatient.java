@@ -17,6 +17,7 @@ public class CreatePatient implements ICreatePatient {
 				SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 				JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient);
 				homePage.clickOnLogout();
+				patient.setWasSelfRegistered(true);
 				return patient;
 		}
 

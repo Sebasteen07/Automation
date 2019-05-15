@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -85,7 +86,6 @@ import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsur
 import com.medfusion.product.object.maps.precheck.page.myInsuranceImage.InsuranceImagePage;
 import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 /**

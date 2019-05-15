@@ -5,7 +5,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
@@ -28,10 +27,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 		@BeforeMethod(alwaysRun = true)
 		public void setUpCalculatedFormsTest() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
 		}
@@ -42,12 +37,11 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		 * @throws Exception
 		 * @author phajek
 		 * @Date: 13/02/2015 StepsToReproduce: Log in to SG as SU Go to Forms Config Unpublish all forms Delete all forms Search and add a new Calculated form Test if
-		 * it is displayed in Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms directory === Prerequisite for the test
-		 * case to run========= Practices configured on: DEV3, MANUAL login to the SG as superuser ============================================================
+		 * it is displayed in Calculated Forms directory Delete the Form Test if it is displayed in Calculated Forms directory Prerequisite for the test
+		 * case to run Practices configured on: DEV3, MANUAL login to the SG as superuser
 		 */
 		@Test
 		public void testCalculatedFormAddRemove() throws Exception {
-				Utils.logTestEnvironmentInfo("Test Adding and removing of Calculated Form");
 				log("step 1: login to SG as superuser - THIS REQUIRES MANUAL INPUT");
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
 				log("step 2: navigate to SiteGen PracticeHomePage");
@@ -84,7 +78,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 		 */
 		@Test(groups = "CalculatedForms")
 		public void testCalculatedFormSGEdit() throws Exception {
-				Utils.logTestEnvironmentInfo("testCalculatedFormSGEdit");
 				String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
 				SiteGenPracticeHomePage SGPracticePage =
 						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("sitegenUsername1"), testData.getProperty("sitegenPassword1"));

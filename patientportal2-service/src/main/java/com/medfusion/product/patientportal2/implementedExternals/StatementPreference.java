@@ -1,5 +1,6 @@
 package com.medfusion.product.patientportal2.implementedExternals;
 
+import com.medfusion.product.patientportal2.pojo.PortalBasic;
 import org.openqa.selenium.WebDriver;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -8,23 +9,22 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.patientportal2.flows.IStatementPreference;
-import com.medfusion.product.patientportal2.pojo.Jalapeno;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 public class StatementPreference implements IStatementPreference {
 
-	@Override
-	public boolean updateStatementPreferenceFromMyAccount(WebDriver driver, Jalapeno portal, StatementPreferenceType statementPreferenceType) {
-		JalapenoMyAccountPreferencesPage preferencesPage = logInAndGoToMyPreferencesPage(driver, portal.url, portal.username, portal.password);
-		return preferencesPage.checkAndSetStatementPreference(driver, statementPreferenceType);
-	}
+		@Override
+		public boolean updateStatementPreferenceFromMyAccount(WebDriver driver, PortalBasic portal, StatementPreferenceType statementPreferenceType) {
+				JalapenoMyAccountPreferencesPage preferencesPage = logInAndGoToMyPreferencesPage(driver, portal.url, portal.username, portal.password);
+				return preferencesPage.checkAndSetStatementPreference(driver, statementPreferenceType);
+		}
 
-	private JalapenoMyAccountPreferencesPage logInAndGoToMyPreferencesPage(WebDriver driver, String portalURL, String username, String password) {
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
-		JalapenoHomePage homePage = loginPage.login(username, password);
-		JalapenoAccountPage accountPage = homePage.clickOnAccount();
-		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		private JalapenoMyAccountPreferencesPage logInAndGoToMyPreferencesPage(WebDriver driver, String portalURL, String username, String password) {
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, portalURL);
+				JalapenoHomePage homePage = loginPage.login(username, password);
+				JalapenoAccountPage accountPage = homePage.clickOnAccount();
+				JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
 
-		return myAccountPage.goToPreferencesTab(driver);
-	}
+				return myAccountPage.goToPreferencesTab(driver);
+		}
 }

@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal1.page.createAccount;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class CreateAccountPage extends BasePageObject {

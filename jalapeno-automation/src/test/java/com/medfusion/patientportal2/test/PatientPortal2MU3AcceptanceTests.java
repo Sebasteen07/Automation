@@ -5,15 +5,12 @@ import java.awt.datatransfer.StringSelection;
 
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
+import com.medfusion.portal.utils.PortalConstants;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal1.page.AChecker;
@@ -32,9 +29,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
-import com.medfusion.product.patientportal2.utils.PortalConstants;
-import com.medfusion.product.practice.api.pojo.Practice;
-import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
@@ -44,34 +38,14 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		private PropertyFileLoader testData;
 		private LevelOfWCAG level = LevelOfWCAG.AAA;
 
-		// TODO move stuff around stepCounter to BaseTestNGWebDriver
-		private int stepCounter;
-
 		@BeforeMethod(alwaysRun = true)
 		public void setUpPortal2Test() throws Exception {
-				log(this.getClass().getName());
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
-
 				log("Getting Test Data");
 				testData = new PropertyFileLoader();
-
-				log("Resetting step counter");
-				stepCounter = 0;
 		}
-
-		private void logStep(String logText) {
-				log("STEP " + ++stepCounter + ": " + logText);
-		}
-
-		@AfterMethod
-		public void logTestStatus(ITestResult result) {
-				TestStatusReporter.logTestStatus(result.getName(), result.getStatus());
-		}
-
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testLoginAndDashboardPages() throws Exception {
+		public void testLoginAndDashboardPages() {
 				logStep("Load login page and copy source");
 				JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				StringSelection sourceLoginPage = jalapenoLoginPage.getHtmlSource();
@@ -124,21 +98,17 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPatientActivationPages() throws Exception {
-				logStep("Getting Test Data");
-				Practice practice = new Practice();
-				PracticeTestData practiceTestData = new PracticeTestData(practice);
-				PropertyFileLoader testDataFromProp = new PropertyFileLoader();
-				String patientsEmail = IHGUtil.createRandomEmailAddress(testDataFromProp.getEmail(), '.');
+				String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
 				logStep("Patient Activation on Practice Portal");
 				PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, practiceTestData, patientsEmail, testDataFromProp);
+				String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
 				logStep("Copy source of Patient Verification Page and continue");
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
 				StringSelection sourceVerificationPage = patientVerificationPage.getHtmlSource();
 				SecurityDetailsPage securityDetailPage = patientVerificationPage
-						.fillPatientInfoAndContinue(PracticeConstants.Zipcode, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
 								PortalConstants.DateOfBirthYear);
 
 				logStep("Copy source of Account Details Page and validate");
@@ -149,8 +119,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testPatientAccountPages() throws Exception {
-
+		public void testPatientAccountPages() {
 				logStep("Login patient");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(testData.getProperty("userMu3AcountPage"), testData.getPassword());
@@ -185,8 +154,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		}
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testHealthRecordPage() throws Exception {
-
+		public void testHealthRecordPage() {
 				logStep("Login patient");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 				JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
@@ -198,7 +166,6 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Copy source of Health Record Page and validate");
 				copySourceNavigateToACheckerAndValidate(healthRecordPage);
 		}
-
 
 		@Test(enabled = true, groups = {"acceptance-MU3"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testCcdViewerPage() throws Exception {

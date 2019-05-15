@@ -42,8 +42,6 @@ public class Utils {
 
 		/**
 		 * @param driver
-		 * @param persistentFormsPractice False for tests which do sitegen management, true otherwise. Tests which do sitegen management operates on own practice
-		 *                                because they can damage forms.
 		 * @return
 		 * @throws Exception
 		 */
@@ -173,12 +171,6 @@ public class Utils {
 				FirefoxDriver driver = new FirefoxDriver(fxProfile);
 				driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 				return driver;
-		}
-
-		public static void logTestEnvironmentInfo(String testName) {
-				log("Test name: " + testName);
-				log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
-				log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
 		}
 
 		public static int getAutomationPracticeID() throws Exception {

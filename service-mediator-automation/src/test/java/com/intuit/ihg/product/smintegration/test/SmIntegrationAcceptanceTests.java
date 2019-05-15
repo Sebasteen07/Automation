@@ -3,6 +3,7 @@ package com.intuit.ihg.product.smintegration.test;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
@@ -23,7 +24,6 @@ import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentReqtStep
 import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentReqtStep3Page;
 import com.intuit.ihg.product.object.maps.smintegration.page.AppointmentRequestFirstPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.intuit.ihg.product.smintegration.utils.SmIntegration;
 import com.intuit.ihg.product.smintegration.utils.SmIntegrationConstants;

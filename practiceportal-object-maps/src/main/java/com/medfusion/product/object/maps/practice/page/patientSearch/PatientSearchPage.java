@@ -72,7 +72,7 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, firstName);
 		firstName.clear();
-		firstName.sendKeys(PracticeConstants.PatientFirstName);
+		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, lastName);
 		lastName.clear();
-		lastName.sendKeys(PracticeConstants.PatientLastName);
+		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, email);
 		email.clear();
-		email.sendKeys(PracticeConstants.PatientEmail);
+		email.sendKeys(PracticeConstants.PATIENT_EMAIL);
 	}
 
 
