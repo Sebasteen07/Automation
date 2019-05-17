@@ -11,17 +11,11 @@ import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.Virtual
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 
 public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
-		// TODO move stuff around stepCounter to BaseTestNGWebDriver
-		private int stepCounter = 0;
 
 		private String swipeString = "";
 
 		public void setSwipeString(String swipe) {
 				swipeString = swipe;
-		}
-
-		private void logStep(String logText) {
-				log("STEP " + ++stepCounter + ": " + logText);
 		}
 
 		public void virtualCardSwipeTest(WebDriver driver, PropertyFileLoader testData, String cardType) throws InterruptedException {
@@ -59,7 +53,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 						"The payment is completed properly.");
 
-				stepCounter = 0; //TODO
+				//stepCounter = 0; //TODO
 		}
 
 		/**
@@ -99,7 +93,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 						"The payment is completed properly.");
 
-				stepCounter = 0; //TODO
+				//stepCounter = 0; //TODO
 				return IHGUtil.formatNumber(Integer.parseInt(amount) * 100);
 		}
 }
