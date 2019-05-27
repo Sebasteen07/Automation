@@ -168,7 +168,7 @@ public class HealthFormListPage extends BasePageObject {
 
 	public void goToHomePage() {
 		IHGUtil.setDefaultFrame(driver);
-		homeLink.click();
+		javascriptClick(homeLink);
 	}
 	
 	public void getPDF() {
