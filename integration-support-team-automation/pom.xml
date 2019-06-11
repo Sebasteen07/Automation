@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>19.3.0rc-SNAPSHOT</version>
+		<version>19.4.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>integration-support-team-automation</artifactId>
 	<name>integration-support-team-automation</name>
@@ -21,8 +21,8 @@
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--<qa-automation-utils.version>19.3.0rc-SNAPSHOT</qa-automation-utils.version> -->
-		<ihg.version>19.3.0rc-SNAPSHOT</ihg.version>
+		<!--<qa-automation-utils.version>19.4.0-SNAPSHOT</qa-automation-utils.version> -->
+		<ihg.version>19.4.0-SNAPSHOT</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>
