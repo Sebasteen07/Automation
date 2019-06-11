@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.Test;
 
@@ -46,7 +47,6 @@ import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSe
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;

@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.intuit.ihg.common.utils.PatientFactory;
+import com.medfusion.pojos.Patient;
+import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
+import com.medfusion.product.patientportal2.utils.PortalUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -33,225 +37,183 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
-import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
-import com.medfusion.product.patientportal2.tests.CommonSteps;
 
 public class Utils {
 
-	public static String newPatientDOBYear = "1930";
-
-	/**
-	 * 
-	 * @param driver
-	 * @param persistentFormsPractice False for tests which do sitegen management, true otherwise. Tests which do sitegen management operates on own practice
-	 *        because they can damage forms.
-	 * @return
-	 * @throws Exception
-	 */
-	public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
-		return loginPI(driver, practiceType, testData).clickOnHealthForms();
-	}
-
-	public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
-		return loginPortal1(driver, practiceType, testData).clickOnHealthForms();
-	}
-
-	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {				
-		log("Login to PI");
-		String url = "";
-		switch (practiceType){
-		    case PRIMARY:
-		        url = testData.getProperty("portal2Url1");
-		        break;
-		    case SECONDARY:
-		        url = testData.getProperty("portal2Url2");
-		        break;
-		    default: throw new IllegalArgumentException("Invalid practice type");
+		/**
+		 * @param driver
+		 * @return
+		 * @throws Exception
+		 */
+		public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
+				return loginPI(driver, practiceType, testData).clickOnHealthForms();
 		}
-		logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-		return new JalapenoLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-	}
 
-	public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {				
-		log("Login to Portal 1");
-		String url = "";
-        switch (practiceType){
-            case PRIMARY:
-                url = testData.getProperty("portal1Url1");
-                break;
-            case SECONDARY:
-                url = testData.getProperty("portal1Url2");
-                break;
-            default: throw new IllegalArgumentException("Invalid practice type");
-        }
-		logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-		return new PortalLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-	}
-
-	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, String userName, String password, PropertyFileLoader testData) throws Exception {		
-		log("Login to PI");
-		String url = "";
-        switch (practiceType){
-            case PRIMARY:
-                url = testData.getProperty("portal2Url1");
-                break;
-            case SECONDARY:
-                url = testData.getProperty("portal2Url2");
-                break;
-            default: throw new IllegalArgumentException("Invalid practice type");
-        }
-		logLogin(url, userName, password);
-		return new JalapenoLoginPage(driver, url).login(userName, password);
-	}
-
-	public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, String userName, String password, PropertyFileLoader testData) throws Exception {		
-		log("Login to Portal 1");
-		String url = "";
-        switch (practiceType){
-            case PRIMARY:
-                url = testData.getProperty("portal1Url1");
-                break;
-            case SECONDARY:
-                url = testData.getProperty("portal1Url2");
-                break;
-            default: throw new IllegalArgumentException("Invalid practice type");
-        }
-		logLogin(url, userName, password);
-		return new PortalLoginPage(driver, url).login(userName, password);
-	}
-
-
-	public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
-	    PropertyFileLoader testData = new PropertyFileLoader();
-		String url = getPortalURL(practiceType, false, testData);
-		CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
-		MyPatientPage home = patientCreation.createPatient(driver, testData);
-		logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
-		p.setDob(patientCreation.getDob());
-		p.setEmail(patientCreation.getEmail());
-		p.setFirstName(patientCreation.getFirstName());
-		p.setLastName(patientCreation.getLastName());
-		p.setPassword(patientCreation.getPassword());
-		p.setUrl(patientCreation.getUrl());
-		return home;
-	}
-
-	public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
-		PropertyFileLoader testData = new PropertyFileLoader();
-		JalapenoPatient jp = new JalapenoPatient(testData);
-		String url = getPortalURL(practiceType, true, testData);
-		jp.setUrl(url);
-		jp.setDOBYear(newPatientDOBYear);
-		JalapenoHomePage home = CommonSteps.createAndLogInPatient(jp, testData, driver, url);
-		String patientDOB = jp.getDOBMonthText() + "/" + jp.getDOBDay() + "/" + jp.getDOBYear();
-		logLogin(jp.getUrl(), jp.getEmail(), jp.getPassword());
-		p.setDob(patientDOB);
-		p.setEmail(jp.getEmail());
-		p.setFirstName(jp.getFirstName());
-		p.setLastName(jp.getLastName());
-		p.setPassword(jp.getPassword());
-		p.setUrl(jp.getUrl());
-		return home;
-	}
-
-	public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {	    
-		IHGUtil.setFrame(driver, "iframe");
-		Thread.sleep(8000);
-		Date now = getCurrentESTTime();
-		Date submittedDate = formsPage.getSubmittedDate(formName);
-		log("Date from web: " + submittedDate);
-		log("Current US date: " + now);
-		// date on web is max. 5 min after submit date
-		Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
-	}
-
-	public static Date getCurrentESTTime() throws ParseException {
-		SimpleDateFormat ESTdate = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
-		ESTdate.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
-		SimpleDateFormat parser = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
-		return parser.parse(ESTdate.format(new Date()));
-	}
-
-	public static void checkIfPDFCanBeDownloaded(String linkText, WebDriver driver) throws Exception {
-		URLStatusChecker status = new URLStatusChecker(driver);
-		String pdfLink;
-		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
-		try {
-			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
-		} catch (StaleElementReferenceException e) {
-			pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
-		} catch (NoSuchElementException f) {
-			log("PDF not found!");
-			throw f;
+		public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
+				return loginPortal1(driver, practiceType, testData).clickOnHealthForms();
 		}
-		Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
-	}
 
-	/**
-	 * Initializes and returns Firefox specific driver which allows downloading All downloaded files will be present directly in working directory (usually the
-	 * root directory of project).
-	 * 
-	 * @return Firefox specific driver which allows downloading
-	 */
-	public static WebDriver getFirefoxDriverForDownloading() {
-		FirefoxProfile fxProfile = new FirefoxProfile();
-		fxProfile.setPreference("browser.download.folderList", 2);
-		fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
-		fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
-		fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
-		FirefoxDriver driver = new FirefoxDriver(fxProfile);
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		return driver;
-	}
-
-	public static void logTestEnvironmentInfo(String testName) {
-		log("Test name: " + testName);
-		log("Environment on which Testcase is Running: " + IHGUtil.getEnvironmentType());
-		log("Browser on which Testcase is Running: " + TestConfig.getBrowserType());
-	}
-
-	public static int getAutomationPracticeID() throws Exception {
-		return getAutomationPracticeID(PracticeType.PRIMARY);
-	}
-
-	public static int getAutomationPracticeID(PracticeType practiceType) throws Exception {
-		TestcasesData data = new TestcasesData(new Portal());
-		switch(practiceType){
-			case PRIMARY:
-				return getPracticeIDFromPIUrl(data.getFormsPIUrlPrimary());
-			case SECONDARY:
-				return getPracticeIDFromPIUrl(data.getFormsPIUrlSecondary());
-			default:
-				throw new IllegalArgumentException("unknown practice type");
+		public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, Patient patient, PropertyFileLoader testData) {
+				return loginPI(driver, practiceType, patient.getUsername(), patient.getPassword(), testData);
 		}
-	}
 
-	public static int getPracticeIDFromPIUrl(String PIurl) {
-		Pattern p = Pattern.compile(".+-(\\d+)/portal.+");
-		Matcher m = p.matcher(PIurl);
-		m.find();
-		return Integer.parseInt(m.group(1));
-	}
-
-	public static void logLogin(String url, String username, String password) {
-		log("URL: " + url);
-		log("username: " + username);
-		log("password: " + password);
-	}
-
-	private static String getPortalURL(PracticeType practiceType, boolean PI, PropertyFileLoader testData) throws Exception {		
-		switch (practiceType) {
-			case PRIMARY:
-				if (PI)
-					return testData.getProperty("portal2Url1");
-				return testData.getProperty("portal1Url1");
-			case SECONDARY:
-				if (PI)
-					return testData.getProperty("portal2Url2");
-				return testData.getProperty("portal1Url2");
-			default:
-				throw new IllegalArgumentException("ïnvalid practiceType");
+		public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) {
+				String url = getPortalURL(practiceType, true, testData);
+				return loginPI(driver, url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
 		}
-	}
 
+		public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, String username, String password, PropertyFileLoader testData) {
+				String url = getPortalURL(practiceType, true, testData);
+				return new JalapenoLoginPage(driver, url).login(username, password);
+		}
+
+		public static JalapenoHomePage loginPI(WebDriver driver, String url, String username, String password) {
+				log("Login to PI");
+				logLogin(url, username, password);
+				return new JalapenoLoginPage(driver, url).login(username, password);
+		}
+
+		public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
+				log("Login to Portal 1");
+				String url = getPortalURL(practiceType, false, testData);
+				logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+				return new PortalLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
+		}
+
+		public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, String username, String password, PropertyFileLoader testData)
+				throws Exception {
+				log("Login to Portal 1");
+				String url = getPortalURL(practiceType, false, testData);
+				logLogin(url, username, password);
+				return new PortalLoginPage(driver, url).login(username, password);
+		}
+
+		public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
+				PropertyFileLoader testData = new PropertyFileLoader();
+				String url = getPortalURL(practiceType, false, testData);
+				CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
+				MyPatientPage home = patientCreation.createPatient(driver, testData);
+				logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
+				p.setDob(patientCreation.getDob());
+				p.setEmail(patientCreation.getEmail());
+				p.setFirstName(patientCreation.getFirstName());
+				p.setLastName(patientCreation.getLastName());
+				p.setPassword(patientCreation.getPassword());
+				p.setUrl(patientCreation.getUrl());
+				return home;
+		}
+
+		public static Patient createPatientPI(WebDriver driver, String username, String url, PropertyFileLoader testData) throws Exception {
+				Patient patient = PatientFactory.createJalapenoPatient(username, testData);
+				patient = new CreatePatient().selfRegisterPatient(driver, patient, url);
+				return patient;
+		}
+
+		public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PropertyFileLoader testData, PracticeType practiceType) throws Exception {
+				String url = getPortalURL(practiceType, true, testData);
+				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+
+				log("Create patient");
+				Patient patient = createPatientPI(driver, username, url, testData);
+				logLogin(url, patient.getUsername(), patient.getPassword());
+
+				log("Login");
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+				JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+				return homePage;
+		}
+
+		public static void verifyFormsDatePatientPortal(HealthFormListPage formsPage, String formName, WebDriver driver) throws Exception {
+				IHGUtil.setFrame(driver, "iframe");
+				Thread.sleep(8000);
+				Date now = getCurrentESTTime();
+				Date submittedDate = formsPage.getSubmittedDate(formName);
+				log("Date from web: " + submittedDate);
+				log("Current US date: " + now);
+				// date on web is max. 5 min after submit date
+				Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
+		}
+
+		public static Date getCurrentESTTime() throws ParseException {
+				SimpleDateFormat ESTdate = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+				ESTdate.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
+				SimpleDateFormat parser = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+				return parser.parse(ESTdate.format(new Date()));
+		}
+
+		public static void checkIfPDFCanBeDownloaded(String linkText, WebDriver driver) throws Exception {
+				URLStatusChecker status = new URLStatusChecker(driver);
+				String pdfLink;
+				WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
+				try {
+						pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
+				} catch (StaleElementReferenceException e) {
+						pdfLink = wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(linkText))).getAttribute("href");
+				} catch (NoSuchElementException f) {
+						log("PDF not found!");
+						throw f;
+				}
+				Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
+		}
+
+		/**
+		 * Initializes and returns Firefox specific driver which allows downloading All downloaded files will be present directly in working directory (usually the
+		 * root directory of project).
+		 *
+		 * @return Firefox specific driver which allows downloading
+		 */
+		public static WebDriver getFirefoxDriverForDownloading() {
+				FirefoxProfile fxProfile = new FirefoxProfile();
+				fxProfile.setPreference("browser.download.folderList", 2);
+				fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
+				fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
+				fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
+				FirefoxDriver driver = new FirefoxDriver(fxProfile);
+				driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+				return driver;
+		}
+
+		public static int getAutomationPracticeID() throws Exception {
+				return getAutomationPracticeID(PracticeType.PRIMARY);
+		}
+
+		public static int getAutomationPracticeID(PracticeType practiceType) throws Exception {
+				TestcasesData data = new TestcasesData(new Portal());
+				switch (practiceType) {
+						case PRIMARY:
+								return getPracticeIDFromPIUrl(data.getFormsPIUrlPrimary());
+						case SECONDARY:
+								return getPracticeIDFromPIUrl(data.getFormsPIUrlSecondary());
+						default:
+								throw new IllegalArgumentException("unknown practice type");
+				}
+		}
+
+		public static int getPracticeIDFromPIUrl(String PIurl) {
+				Pattern p = Pattern.compile(".+-(\\d+)/portal.+");
+				Matcher m = p.matcher(PIurl);
+				m.find();
+				return Integer.parseInt(m.group(1));
+		}
+
+		public static void logLogin(String url, String username, String password) {
+				log("URL: " + url);
+				log("username: " + username);
+				log("password: " + password);
+		}
+
+		public static String getPortalURL(PracticeType practiceType, boolean PI, PropertyFileLoader testData) {
+				switch (practiceType) {
+						case PRIMARY:
+								if (PI)
+										return testData.getProperty("portal2Url1");
+								return testData.getProperty("portal1Url1");
+						case SECONDARY:
+								if (PI)
+										return testData.getProperty("portal2Url2");
+								return testData.getProperty("portal1Url2");
+						default:
+								throw new IllegalArgumentException("Invalid practiceType");
+				}
+		}
 }

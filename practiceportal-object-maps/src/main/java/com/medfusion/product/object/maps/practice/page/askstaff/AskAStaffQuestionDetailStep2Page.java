@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.practice.page.askstaff;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +9,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.practice.api.utils.PortalConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 
@@ -157,11 +157,11 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 
 		IHGUtil.waitForElement(driver, 20, drugName);
-		drugName.sendKeys(PracticeConstants.MedicationName);
+		drugName.sendKeys(PracticeConstants.MEDICATION_NAME);
 		dosage.sendKeys(PortalConstants.Dosage);
-		quantity.sendKeys(PracticeConstants.Quantity);
+		quantity.sendKeys(PracticeConstants.QUANTITY);
 		Select selFrequency = new Select(frequency);
-		selFrequency.selectByVisibleText(PracticeConstants.Frequency);
+		selFrequency.selectByVisibleText(PracticeConstants.FREQUENCY);
 		if (IHGUtil.exists(driver, 10, pharmacy)) {
 			Select selPharmacy = new Select(pharmacy);
 			selPharmacy.selectByIndex(1);

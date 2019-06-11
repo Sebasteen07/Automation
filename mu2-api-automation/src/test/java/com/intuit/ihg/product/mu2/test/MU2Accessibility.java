@@ -27,7 +27,7 @@ public class MU2Accessibility extends BaseTestNGWebDriver {
 	LevelOfWCAG level = LevelOfWCAG.AA;
   
 	@BeforeMethod(alwaysRun = true)
-	public void Setup() throws Exception {
+	public void setUpMU2Accessibility() throws Exception {
 		log("Setting up MU2 Test data for " + IHGUtil.getEnvironmentType());
 		APITestData apitestData = new APITestData();
 		testData = new APIData(apitestData);

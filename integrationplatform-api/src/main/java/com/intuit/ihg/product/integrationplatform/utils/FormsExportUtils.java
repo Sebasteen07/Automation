@@ -27,6 +27,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.Gender;
+import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormAllergiesPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -115,7 +116,7 @@ public class FormsExportUtils {
 			String firstName=testData.patientFirstName_FE+randomString;
 			String username=testData.patientuserid_FE+randomString;
 			String lastName=testData.patientLastName_FE+randomString;
-			patientDemographicPage.fillInPatientData(firstName,lastName,email,testData.patientDOBMonthtext_FE,testData.patientDOBDay1_FE,testData.patientDOBYear_FE,Gender.FEMALE,Zipcode ,testData.patientAddress1_FE, testData.patientAddress2_FE, testData.patientCity_FE, testData.patientState_FE);
+			patientDemographicPage.fillInPatientData(firstName,lastName,email,testData.patientDOBMonthtext_FE,testData.patientDOBDay1_FE,testData.patientDOBYear_FE,Patient.GenderExtended.FEMALE,Zipcode ,testData.patientAddress1_FE, testData.patientAddress2_FE, testData.patientCity_FE, testData.patientState_FE);
 			SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(username,testData.patientPassword1_FE,testData.patientSecretQuestion_FE,testData.patientSecretAnswer_FE,testData.patientHomePhoneNo_FE,3);
 			Thread.sleep(10000);

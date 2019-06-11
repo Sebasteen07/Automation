@@ -5,6 +5,7 @@ import static org.testng.Assert.assertNotNull;
 import java.util.List;
 import java.util.Random;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
@@ -79,7 +80,6 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSear
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 /**
@@ -1418,7 +1418,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayNow() throws Exception {
 
 		log("Test Case: testPayNow - No login payment");
@@ -1433,11 +1433,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
 		Thread.sleep(3000);
 		log("Step 2: Fill in payment info and submit");
-		pNoLoginPaymentPage.FillNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail());
-		Thread.sleep(9000);
+		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
+		
 		log("Step 3: Verify payment OK");
-		assertTrue(driver.getPageSource().contains("Thank You for your payment"));
-
+		
 		log("Step 4: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A."));
 

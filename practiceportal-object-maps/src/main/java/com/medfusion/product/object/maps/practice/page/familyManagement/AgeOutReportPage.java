@@ -21,7 +21,7 @@ public class AgeOutReportPage extends BasePageObject {
 	public AgeOutReportPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 	}
 
 	@FindBy(xpath = "//input[@value='DEPENDENTS_ONLY']")
@@ -102,7 +102,7 @@ public class AgeOutReportPage extends BasePageObject {
 		iFrameOkButton.click();
 
 		log("Switch back");
-		IHGUtil.setFrame(driver, PracticeConstants.frameName);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 
 		log("Check info message");
 		assertTrue(IHGUtil.exists(driver, 30, infoMessageAgedOut));

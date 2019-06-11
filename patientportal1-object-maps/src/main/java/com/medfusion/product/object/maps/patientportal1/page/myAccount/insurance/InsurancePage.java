@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.patientportal1.page.myAccount.insuranc
 
 import java.util.List;
 
+import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.patientportal1.utils.PortalConstants;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
