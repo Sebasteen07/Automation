@@ -114,7 +114,43 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 				Mailinator mail = new Mailinator();
 				String unlockLinkFromMail =
 						mail.getLinkFromEmail(email, PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 10);
+				if (!isInviteLinkFinal(unlockLinkFromMail)) {
+						unlockLinkFromMail = getRedirectUrl(unlockLinkFromMail);
+				}
 				assertEquals(unlockLinkFromMail, unlockLink, "The link in the email is not the same as the in the Portal");
+		}
+
+		//TODO move to Utils
+		private String getRedirectUrl(String originUrl) {
+				log("Navigating to input URL and checking redirection for 10 seconds");
+				driver.get(originUrl);
+				for (int i = 0; i < 10; i++) {
+						if (!driver.getCurrentUrl().equals(originUrl)) {
+								log("Found redirected URL: " + driver.getCurrentUrl());
+								return driver.getCurrentUrl();
+						}
+						try {
+								Thread.sleep(1000);
+						} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+						}
+				}
+				return originUrl;
+		}
+
+		/**
+		 * verifies if the invite url contains a specific keyword(INVITE_LINK_FRAGMENT or ACTIVATE_LINK_FRAGMENT), if not, it is a redirect url (e.g.from sendinblue)
+		 *
+		 * @return
+		 */
+		private boolean isInviteLinkFinal(String url) {
+				String INVITE_LINK_FRAGMENT = "invite";
+				String ACTIVATE_LINK_FRAGMENT = "activate";
+				boolean isFinalUrl = url.contains(INVITE_LINK_FRAGMENT) || url.contains(ACTIVATE_LINK_FRAGMENT);
+				if (!isFinalUrl)
+						log("The retrieved link is a redirect URL : " + url);
+				return isFinalUrl;
 		}
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
