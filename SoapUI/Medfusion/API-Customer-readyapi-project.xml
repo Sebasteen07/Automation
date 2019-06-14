@@ -1,0 +1,1289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="a2d9c247-61ed-4a89-a721-8409420ff80d" created="2.7.0" activeEnvironment="Default environment" name="API Customer" resourceRoot="" updated="2.7.0 2019-05-30T13:25:24Z" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="678d2775-79c6-431f-87ca-622796672537" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://d3-pt-aws01.dev.medfusion.net:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache/>
+    <con:endpoints>
+      <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+    </con:endpoints>
+    <con:resource name="Swagger-ui.html" path="/api-customer/services/swagger-ui.html" id="d2069af1-c204-4d37-b553-07ee1a17e487">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="Swagger-ui.html" id="437877e5-1fc1-49e5-837c-bd84f4959f31" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:request name="Request 1" id="d85f5151-b1d4-44e2-bd23-0c1c9cd6806b" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="18e4aa4e-137f-40ff-8ad0-e2f6b8338e59" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 1" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers" path="/api-customer/services/v1/customers" id="089a4e21-e653-419f-94ef-2882cd4b2aaf">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="POST" id="b0d536f0-013d-43dd-83b0-45177af5315d" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>500 400</con:status>
+          <con:params/>
+          <con:element xmlns:cus="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers">cus:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:cus="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers">cus:Response</con:element>
+        </con:representation>
+        <con:request name="POST Request" id="88094ee9-c0ec-492b-a369-463cf4a40b2e" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="bd0f91d1-85be-400a-b209-dbb8a91a8268" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 2" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}" path="/api-customer/services/v1/customers/{customerUuid}" id="1e9b618a-aae7-4f76-840c-0ec65abeb6bc">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="GET" id="910d96ad-8bda-4f22-8505-b75a311f8092" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:a20="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f">a20:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:a20="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f">a20:Fault</con:element>
+        </con:representation>
+        <con:request name="GET Request" id="e7d27ecb-4049-4c4d-b585-90cfe1f8781f" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="5382d708-4d6f-432b-a4e7-3746e5b4f0ab" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 3" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}" path="/api-customer/services/v1/customers/{customerUuid}" id="e262c473-76bb-4a90-9e38-9a4f8919b8d6">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="PUT" id="6d5f99fa-a45f-4fa0-882c-3bb5ee94285a" method="PUT">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:a20="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f">a20:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:a20="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f">a20:Fault</con:element>
+        </con:representation>
+        <con:request name="PUT Request" id="6c89b308-e4a0-43bf-b9d6-dca21f8f61e5" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="6d10f74c-4185-4179-b9ea-0aa2833e87df" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 4" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}" path="/api-customer/services/v1/customers/{customerUuid}" id="39d22f9d-68f6-4981-8cdd-529dca7f6cf2">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="DELETE" id="a959919b-3558-4407-a4ff-07ae1bb1a23f" method="DELETE">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:a20="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f">a20:Fault</con:element>
+        </con:representation>
+        <con:request name="DELETE Request" id="ecc7a718-2a44-4552-bad2-3401941dd2f9" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="69540631-e79a-4a79-86ab-7ff7e13dc4ff" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 5" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/clientId/{clientId}" path="/api-customer/services/v1/customers/clientId/{clientId}" id="cabd1c54-dc83-4e12-afc1-ab6764edca8d">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="GET" id="cf53b5d8-1a48-4479-a429-fdc35529cc95" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>clientId</con:name>
+            <con:value>clientId</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>clientId</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+          <con:element xmlns:test="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/clientId/test">test:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:request name="GET Request" id="a037b999-63ca-470a-bf47-bc768f02b98e" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="bca2dadc-f4f4-44bb-b15a-b94cca2d4d0c" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 6" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}/affiliates" path="/api-customer/services/v1/customers/{customerUuid}/affiliates" id="bf9095cc-9b8a-4b86-9e75-177cd45c2aa3">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="GET" id="bb218226-4229-41dd-a84e-9a22d1d03bb9" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:aff="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates">aff:Fault</con:element>
+        </con:representation>
+        <con:request name="GET Request" id="82281064-071c-4071-be8e-7a8fb7360687" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="47652ac9-52d9-46e8-8ef3-2cd35b2972b7" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 7" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}/affiliates" path="/api-customer/services/v1/customers/{customerUuid}/affiliates" id="bad1bd71-552e-4fd0-ac4f-d4b19e30fcc4">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="POST" id="9699b01d-c206-4747-bf4c-c1bd6b4823d6" method="POST">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:aff="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates">aff:Response</con:element>
+        </con:representation>
+        <con:request name="POST Request" id="2102d504-cef8-4003-91da-6eecc664eaf2" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="aeaddcec-a59c-4429-9ad7-724be0c8832e" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 8" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" path="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" id="35357a16-1d62-4501-8a42-5b3f47e0dc77">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="GET" id="281ad4a7-5a8e-4505-973e-0f9278e23644" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+          <con:parameter required="true">
+            <con:name>affiliateUuid</con:name>
+            <con:value>affiliateUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>affiliateUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=ISO-8859-1</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+          <con:element>Fault</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400 404</con:status>
+          <con:params/>
+          <con:element xmlns:d1f="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/85953f6f-06ab-4788-ad34-a160bc586b0a/affiliates/d1fe81f0-b057-493f-b320-0c681726aad4">d1f:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:d1f="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/85953f6f-06ab-4788-ad34-a160bc586b0a/affiliates/d1fe81f0-b057-493f-b320-0c681726aad4">d1f:Response</con:element>
+        </con:representation>
+        <con:request name="GET Request" id="83778f74-7442-403e-a2c3-eff68c98d30b" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="06946748-f07d-44e4-9e47-3b0c73a38d43" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 9" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" path="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" id="37b2a38b-7993-4317-9172-252c91ef51ab">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="PUT" id="44febb19-d355-4c7f-be5d-b1abd7c2e3d3" method="PUT">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+          <con:parameter required="true">
+            <con:name>affiliateUuid</con:name>
+            <con:value>affiliateUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>affiliateUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:e88="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b">e88:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+          <con:element xmlns:e88="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b">e88:Fault</con:element>
+        </con:representation>
+        <con:request name="PUT Request" id="038bce11-808c-43c6-8cbf-bd89aa708c85" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="4d10335a-d7e1-4e09-ab3c-716de6c8126f" wadlVersion="http://wadl.dev.java.net/2009/02" name="REST Service 10" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints/>
+    <con:resource name="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" path="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" id="e8423f3c-b895-4ae3-8d5a-dac868faf7a3">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="DELETE" id="2a31ea91-3402-41c2-83e5-f0a66e259c4d" method="DELETE">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>customerUuid</con:name>
+            <con:value>customerUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>customerUuid</con:default>
+          </con:parameter>
+          <con:parameter required="true">
+            <con:name>affiliateUuid</con:name>
+            <con:value>affiliateUuid</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:default>affiliateUuid</con:default>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400 404</con:status>
+          <con:params/>
+          <con:element xmlns:e88="http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b">e88:Fault</con:element>
+        </con:representation>
+        <con:request name="DELETE Request" id="1d0e1ecc-cfec-47f3-ab7c-eb9f19473084" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:testSuite id="56d0b506-70ef-440f-a151-4ebe3d43bddd" name="POST customers">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="d4936ad3-66e2-4f7c-b659-be7e2b23a71d" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customers" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify new customer" id="fc2734d4-455f-42e0-af70-13014d848b50">
+        <con:settings/>
+        <con:config service="REST Service 1" resourcePath="/api-customer/services/v1/customers" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify new customer" id="88094ee9-c0ec-492b-a369-463cf4a40b2e" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"amazonApiKey": "testing",
+"clientId": "1342545",
+"customerName": "test"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="ca2b0a76-fc5d-4d80-9803-7fb27bfbef43" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify new customer without customerName" id="55e9d302-4808-42ee-a520-2f020d919261">
+        <con:settings/>
+        <con:config service="REST Service 1" resourcePath="/api-customer/services/v1/customers" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify new customer without customerName" id="88094ee9-c0ec-492b-a369-463cf4a40b2e" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"amazonApiKey": "testing",
+"clientId": "1342541"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="ca2b0a76-fc5d-4d80-9803-7fb27bfbef43" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify new customer without amazonApiKey" id="03c639bd-3276-493c-b4ff-a8a5b9a87502">
+        <con:settings/>
+        <con:config service="REST Service 1" resourcePath="/api-customer/services/v1/customers" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify new customer without amazonApiKey" id="88094ee9-c0ec-492b-a369-463cf4a40b2e" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"customerName": "test",
+"clientId": "1342541"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="ca2b0a76-fc5d-4d80-9803-7fb27bfbef43" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="5bd6e205-d4c4-4a7c-9dd2-61926abfee73" name="GET customers">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="638fe47d-d61d-4363-8528-d76b22bf25e3" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customers" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify a customer with id" id="c55cccba-052f-4d5b-93a3-8db49f9539a5">
+        <con:settings/>
+        <con:config service="REST Service 2" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify a customer with id" id="e7d27ecb-4049-4c4d-b585-90cfe1f8781f" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="4ace15d5-f6d2-464f-aeaa-8390bd3c9edf" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="a20b76b5-db48-4f3d-af73-a638190dbe8f" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify a customer with invalid customerUuid" id="4fe14a3e-2fa7-4c8f-9caf-a4243d9988ba">
+        <con:settings/>
+        <con:config service="REST Service 2" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify a customer with invalid customerUuid" id="e7d27ecb-4049-4c4d-b585-90cfe1f8781f" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="4ace15d5-f6d2-464f-aeaa-8390bd3c9edf" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="123214" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="2aab57c1-f01c-43be-97c5-e7c7bb523ae1" name="PUT customers">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="cba3def9-4845-49a0-b184-b46bf0da0d0b" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customers" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify updating customerUuID" id="157127b4-9869-4a3b-a64b-b911124da17e">
+        <con:settings/>
+        <con:config service="REST Service 3" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify updating customerUuID" id="6c89b308-e4a0-43bf-b9d6-dca21f8f61e5" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"amazonApiKey": "test",
+"clientId": "75235421431",
+"customerName": "testing"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="8c147d91-5003-480f-ba48-07bc83d3308a" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="a20b76b5-db48-4f3d-af73-a638190dbe8f" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify updating customerUuID without customerName" id="0282b7d6-4d6a-497a-9209-140026813235">
+        <con:settings/>
+        <con:config service="REST Service 3" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify updating customerUuID without customerName" id="6c89b308-e4a0-43bf-b9d6-dca21f8f61e5" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"amazonApiKey": "test",
+"clientId": "75235421431"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="8c147d91-5003-480f-ba48-07bc83d3308a" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="a20b76b5-db48-4f3d-af73-a638190dbe8f" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify updating with invalid customerUuID" id="fc516612-d5d9-480b-80e2-cc10f55f2d36">
+        <con:settings/>
+        <con:config service="REST Service 3" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify updating with invalid customerUuID" id="6c89b308-e4a0-43bf-b9d6-dca21f8f61e5" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"amazonApiKey": "test",
+"clientId": "75235421431"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="8c147d91-5003-480f-ba48-07bc83d3308a" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="51345431-43-1431223" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="634c16b7-ebac-4214-b632-7a2a94ba88ea" name="DELETE customers">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="519f5197-d8df-4acb-82b0-72e8d571715c" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customers" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify deleting a customer" id="268d57dd-325c-427f-a3b5-d332e3203001">
+        <con:settings/>
+        <con:config service="REST Service 4" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify deleting a customer" id="ecc7a718-2a44-4552-bad2-3401941dd2f9" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="f03fe0cf-da7f-4dff-a9a2-efd5fc4c0d7f" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="d54513bc-a9c1-4c0b-818e-670d5d56c960" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify deleting an invalid customerUuID" id="9a68cd9b-5a68-44f4-83fd-efeed9d41e78">
+        <con:settings/>
+        <con:config service="REST Service 4" resourcePath="/api-customer/services/v1/customers/{customerUuid}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify deleting an invalid customerUuID" id="ecc7a718-2a44-4552-bad2-3401941dd2f9" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/a20b76b5-db48-4f3d-af73-a638190dbe8f</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="f03fe0cf-da7f-4dff-a9a2-efd5fc4c0d7f" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="d54513bc-a9c1-4c0b-818e-670d5d56c960" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="93cc7fbd-b5ab-4301-9bb2-f43d254dd62c" name="GET clientId">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="0d4a8286-373f-4576-8ee1-ae31d2ca444b" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="clientId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify getting a customer by valid clientId" id="648ccb1d-4bc0-4e04-a5f8-64c185a14ca5">
+        <con:settings/>
+        <con:config service="REST Service 5" resourcePath="/api-customer/services/v1/customers/clientId/{clientId}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify getting a customer by valid clientId" id="a037b999-63ca-470a-bf47-bc768f02b98e" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/clientId/test</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="5b43f88e-b58e-4937-855a-13f782bee065" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="clientId" value="test" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify getting a customer by invalid clientId" id="e0626739-56dc-4cc0-8f03-9c6a9d08d0d8">
+        <con:settings/>
+        <con:config service="REST Service 5" resourcePath="/api-customer/services/v1/customers/clientId/{clientId}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify getting a customer by invalid clientId" id="a037b999-63ca-470a-bf47-bc768f02b98e" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/clientId/test</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="5b43f88e-b58e-4937-855a-13f782bee065" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="clientId" value="invalid test" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="80e45159-9674-4239-a4f8-e3f6c85b96e0" name="GET customer affiliates">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="92b2aa29-80cf-45ef-95b0-445db0a9a227" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customer affiliates" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify getting all affiliates for a customerUuid." id="91e1c1fc-66f9-4836-a0b2-d25a3222b8d7">
+        <con:settings/>
+        <con:config service="REST Service 6" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify getting all affiliates for a customerUuid." id="82281064-071c-4071-be8e-7a8fb7360687" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="f9086dfe-82ab-4afe-9728-7220a6ec5da4" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify getting all affiliates for an invalid customerUuid." id="323d6b82-aef7-4f10-ad3e-9738af30b429">
+        <con:settings/>
+        <con:config service="REST Service 6" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify getting all affiliates for an invalid customerUuid." id="82281064-071c-4071-be8e-7a8fb7360687" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="f9086dfe-82ab-4afe-9728-7220a6ec5da4" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="d1fe81f0-b057-test" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="229705f9-365b-4277-914c-bee80bfcf8ea" name="POST customer affiliates">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="4f810b54-0cf0-4af7-8fd7-567b62145510" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customer affiliates" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Create a new affiliate for a customerUuid" id="8a692532-f303-4643-9856-0a157bc17d2f">
+        <con:settings/>
+        <con:config service="REST Service 7" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Create a new affiliate for a customerUuid" id="2102d504-cef8-4003-91da-6eecc664eaf2" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"attributes": {
+"customerContactEmailAddress": "test",
+"privacyPolicyUrl": "test",
+"termsOfServiceUrl": "test"
+},
+"language": "en",
+"name": "Automation Test",
+"shortName": "AUTOTEST",
+"status": "NEW"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="e1abecba-4f2f-484a-9766-4df47b6fa1c4" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="b2bb3234-60c0-4f72-8375-edc51fc1b321" name="GET customer affiliateUuid">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="34de4688-9a35-4ad0-899b-b2a15ebcb42e" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customer affiliateUuid" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify an affiliate by a valid affiliateUuid" id="3f7246e3-5c52-4cca-83b6-58e46fbe8b56">
+        <con:settings/>
+        <con:config service="REST Service 8" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify an affiliate by a valid affiliateUuid" id="83778f74-7442-403e-a2c3-eff68c98d30b" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/85953f6f-06ab-4788-ad34-a160bc586b0a/affiliates/d1fe81f0-b057-493f-b320-0c681726aad4</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="c5898d13-fb51-4e8d-9d3a-58f5fb470f32" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="e88a8d1b-1c1d-4204-90d9-1c09799c7b4b"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify an affiliate by an invalid affiliateUuid" id="d46fecf1-637a-4dff-8f9d-75aa72d12272">
+        <con:settings/>
+        <con:config service="REST Service 8" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify an affiliate by an invalid affiliateUuid" id="83778f74-7442-403e-a2c3-eff68c98d30b" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/85953f6f-06ab-4788-ad34-a160bc586b0a/affiliates/d1fe81f0-b057-493f-b320-0c681726aad4</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="c5898d13-fb51-4e8d-9d3a-58f5fb470f32" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="c1c86418-0a3c-437b-94b9-130348f"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify an affiliate by an invalid customer" id="c2130c41-4c1f-4cc0-b45c-88417dcc6e9a">
+        <con:settings/>
+        <con:config service="REST Service 8" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify an affiliate by an invalid customer" id="83778f74-7442-403e-a2c3-eff68c98d30b" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/85953f6f-06ab-4788-ad34-a160bc586b0a/affiliates/d1fe81f0-b057-493f-b320-0c681726aad4</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="c5898d13-fb51-4e8d-9d3a-58f5fb470f32" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>400</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726"/>
+              <con:entry key="affiliateUuid" value="e88a8d1b-1c1d-4204-90d9-1c09799c7b4b"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="d7b1ebcb-3e7f-4a7e-8003-23e3839812f2" name="PUT customer affilateUuid">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="4bd46140-12d0-40a5-9bb9-42da5930146e" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="customer affiliateUuid" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify updating an affiliate" id="8a10bab0-1c73-4795-a585-297c19042956">
+        <con:settings/>
+        <con:config service="REST Service 9" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify updating an affiliate" id="038bce11-808c-43c6-8cbf-bd89aa708c85" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"attributes": {
+"customerContactEmailAddress": "test",
+"privacyPolicyUrl": "test",
+"termsOfServiceUrl": "test"
+},
+"language": "fr",
+"name": "Automation Test 2",
+"shortName": "AUTOTEST",
+"status": "NEW"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="ed564a19-96af-4699-9020-8fd1c44cdde2" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="e88a8d1b-1c1d-4204-90d9-1c09799c7b4b"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify updating an affiliate with an invalid affiliateUuid" id="3d384a54-c284-4116-bfcb-2eef22f01408">
+        <con:settings/>
+        <con:config service="REST Service 9" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="PUT" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify updating an affiliate with an invalid affiliateUuid" id="038bce11-808c-43c6-8cbf-bd89aa708c85" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request>{
+"attributes": {
+"customerContactEmailAddress": "test",
+"privacyPolicyUrl": "test",
+"termsOfServiceUrl": "test"
+},
+"language": "fr",
+"name": "Automation Test 2",
+"shortName": "AUTOTEST",
+"status": "NEW"
+}</con:request>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="ed564a19-96af-4699-9020-8fd1c44cdde2" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="19541039-3401234"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="6cce02cd-ccc4-48f6-b72e-40951fa7f900" name="DELETE customer affiliateUuid">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="0be505ec-4699-4748-9653-31b17f9a6426" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="delete customer affiliateUuid" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="Verify deleting an affiliate" id="729374a7-6f8b-4714-8a71-1c259ae6e292">
+        <con:settings/>
+        <con:config service="REST Service 10" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify deleting an affiliate" id="1d0e1ecc-cfec-47f3-ab7c-eb9f19473084" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="91134e5d-cac2-482f-a81f-c87cf3e0f188" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="e88a8d1b-1c1d-4204-90d9-1c09799c7b4b"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Verify deleting an affiliate with an invalid affiiateUuid" id="5dc5d3ad-9cc6-4587-a521-bdd69cff12b4">
+        <con:settings/>
+        <con:config service="REST Service 10" resourcePath="/api-customer/services/v1/customers/{customerUuid}/affiliates/{affiliateUuid}" methodName="DELETE" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Verify deleting an affiliate with an invalid affiiateUuid" id="1d0e1ecc-cfec-47f3-ab7c-eb9f19473084" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-pt-aws01.dev.medfusion.net/api-customer/services/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/affiliates/e88a8d1b-1c1d-4204-90d9-1c09799c7b4b</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="91134e5d-cac2-482f-a81f-c87cf3e0f188" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customerUuid" value="d1fe81f0-b057-493f-b320-0c681726aad4"/>
+              <con:entry key="affiliateUuid" value="513450319-3401301"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:databaseConnectionContainer/>
+  <con:jmsConnectionContainer/>
+  <con:oAuth2ProfileContainer>
+    <con:oAuth2Profile>
+      <con:name>Valid</con:name>
+      <con:type>OAuth 2.0</con:type>
+      <con:accessTokenURI>https://d1-ping-01.dev.medfusion.net:9031/as/token.oauth2</con:accessTokenURI>
+      <con:accessToken>eyJhbGciOiJIUzI1NiIsImtpZCI6InN5c3RlbUp3dCJ9.eyJjbGllbnRfaWQiOiJTeXN0ZW1Kd3RWYWxpZGF0aW9uQ2xpZW50VjEiLCJleHAiOjE1NjA1MzczOTYsInNjb3BlIjpbXX0.-M7DTsU2szKLNeVMAHaZT-Yajg4hmPCd70zUwTpi1wA</con:accessToken>
+      <con:accessTokenPosition>HEADER</con:accessTokenPosition>
+      <con:accessTokenStatus>RETRIEVED_FROM_SERVER</con:accessTokenStatus>
+      <con:accessTokenStartingStatus>RETRIEVED_FROM_SERVER</con:accessTokenStartingStatus>
+      <con:accessTokenIssuedTime>1560530196</con:accessTokenIssuedTime>
+      <con:clientID>SystemJwtValidationClientV1</con:clientID>
+      <con:clientSecret>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:clientSecret>
+      <con:oAuth2Flow>CLIENT_CREDENTIALS_GRANT</con:oAuth2Flow>
+      <con:refreshAccessTokenMethod>AUTOMATIC</con:refreshAccessTokenMethod>
+      <con:accessTokenExpirationTime>7199</con:accessTokenExpirationTime>
+      <con:jwtConfiguration/>
+      <con:responseType>id_token</con:responseType>
+    </con:oAuth2Profile>
+  </con:oAuth2ProfileContainer>
+  <con:oAuth1ProfileContainer/>
+  <con:reporting>
+    <con:xmlTemplates/>
+    <con:parameters/>
+  </con:reporting>
+  <con:eventHandlers type="RequestFilter.filterRequest" name="RequestFilter.filterRequest">
+    <con:script>// Sample event script to add custom HTTP header to all outgoing REST, SOAP and HTTP(S) calls
+// This code is often used for adding custom authentication to SoapUI Pro tests
+
+// If hardcoding the token, uncomment and change line 5
+// def token = '4567'
+
+// If your token is parameterized in Project level custom property, uncomment line 8
+// def token = request.parent.testCase.testSuite.project.getProperty('auth_token').getValue()
+
+// To modify all outgoing calls, remove comments from lines 11 to 16
+// def headers = request.requestHeaders
+// if (headers.containsKey('auth_token2') == false) {
+//   headers.put('auth_token2', token)
+//   request.requestHeaders = headers
+// }</con:script>
+  </con:eventHandlers>
+  <con:eventHandlers type="TestRunListener.afterStep" name="TestRunListener.afterStep">
+    <con:script>// Save all test step results into files
+// Change the directory path in line 5 to a location where you want to store details
+// then uncomment lines 5 to 10
+
+// filePath = 'C:\\tempOutputDirectory\\'
+// fos = new FileOutputStream(filePath + testStepResult.testStep.label + '.txt', true)
+// pw = new PrintWriter(fos)
+// testStepResult.writeTo(pw)
+// pw.close()
+// fos.close()</con:script>
+  </con:eventHandlers>
+  <con:authRepository>
+    <con:oAuth20AuthEntry>
+      <con:name>Valid</con:name>
+      <con:type>OAuth 2.0</con:type>
+      <con:accessTokenURI>https://d1-ping-01.dev.medfusion.net:9031/as/token.oauth2</con:accessTokenURI>
+      <con:accessToken>eyJhbGciOiJIUzI1NiIsImtpZCI6InN5c3RlbUp3dCJ9.eyJjbGllbnRfaWQiOiJTeXN0ZW1Kd3RWYWxpZGF0aW9uQ2xpZW50VjEiLCJleHAiOjE1NjA1MzczOTYsInNjb3BlIjpbXX0.-M7DTsU2szKLNeVMAHaZT-Yajg4hmPCd70zUwTpi1wA</con:accessToken>
+      <con:accessTokenPosition>HEADER</con:accessTokenPosition>
+      <con:accessTokenStatus>RETRIEVED_FROM_SERVER</con:accessTokenStatus>
+      <con:accessTokenStartingStatus>RETRIEVED_FROM_SERVER</con:accessTokenStartingStatus>
+      <con:accessTokenIssuedTime>1560530196</con:accessTokenIssuedTime>
+      <con:clientID>SystemJwtValidationClientV1</con:clientID>
+      <con:clientSecret>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:clientSecret>
+      <con:oAuth2Flow>CLIENT_CREDENTIALS_GRANT</con:oAuth2Flow>
+      <con:refreshAccessTokenMethod>AUTOMATIC</con:refreshAccessTokenMethod>
+      <con:accessTokenExpirationTime>7199</con:accessTokenExpirationTime>
+      <con:jwtConfiguration/>
+      <con:responseType>id_token</con:responseType>
+    </con:oAuth20AuthEntry>
+  </con:authRepository>
+  <con:tags/>
+</con:soapui-project>
