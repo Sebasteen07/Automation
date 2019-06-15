@@ -60,6 +60,6 @@ public class ReferralsAcceptanceTests extends BaseTestNGWebDriver {
 				practiceHome.clickOnReferrals();
 
 				logStep("Check if referral arrived");
-				referralsPage.checkReferalArrived(patientFirstName, patientLastName);
+				referralsPage.checkReferralArrived(patientFirstName, patientLastName);
 		}
 }
