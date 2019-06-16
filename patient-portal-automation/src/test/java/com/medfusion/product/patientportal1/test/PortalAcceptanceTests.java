@@ -957,7 +957,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * Login to Patient Portal Go to Inbox and Find message Validate message
 		 * @AreaImpacted :
 		 */
-		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSymptomAssessment() throws Exception {
 				log("Retrieving test case data");
 				Portal portal = new Portal();
