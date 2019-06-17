@@ -712,7 +712,7 @@ public class PortalAcceptanceTests extends BaseTestNGWebDriver {
 		 * process the item Logout of practice portal login to patient portal go to inbox find secure message open secure message
 		 */
 
-		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testVirtualOfficeVisitEnd2End() throws Exception {
 				log("Retrieving test case data");
 				Portal portal = new Portal();
