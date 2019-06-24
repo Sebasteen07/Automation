@@ -47,7 +47,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 				driver = Utils.getFirefoxDriverForDownloading();
 
 				log("step 1: login to SG as superuser");
-				String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID());
+				String automationPracticeID = String.valueOf(Utils.getPracticeIDFromPIUrl(testData.getProperty("portal2Url1")));
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
 				// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 				log("step 2: navigate to SiteGen PracticeHomePage, practice with ID: " + automationPracticeID);
