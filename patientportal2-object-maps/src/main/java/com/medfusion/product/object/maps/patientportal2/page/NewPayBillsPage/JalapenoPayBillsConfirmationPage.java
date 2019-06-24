@@ -1,58 +1,70 @@
 package com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage;
 
 import java.util.ArrayList;
+
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
-public class JalapenoPayBillsConfirmationPage extends BasePageObject {
+public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 
-	@FindBy(how = How.ID, using = "comment")
-	private WebElement comment;
+		@FindBy(how = How.ID, using = "comment")
+		private WebElement comment;
 
-	@FindBy(how = How.ID, using = "makepayment")
-	private WebElement submitPayment;
+		@FindBy(how = How.ID, using = "makepayment")
+		private WebElement submitPayment;
 
-	@FindBy(how = How.ID, using = "confirmationBack")
-	private WebElement backButton;
+		@FindBy(how = How.ID, using = "confirmationBack")
+		private WebElement backButton;
 
-	@FindBy(how = How.ID, using = "cardEnding")
-	private WebElement cardEnding;
+		@FindBy(how = How.ID, using = "cardEnding")
+		private WebElement cardEnding;
 
-	public JalapenoPayBillsConfirmationPage(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		driver.manage().window().maximize();
-		PageFactory.initElements(driver, this);
-	}
+		public JalapenoPayBillsConfirmationPage(WebDriver driver) {
+				super(driver);
+				IHGUtil.PrintMethodName();
+				driver.manage().window().maximize();
+				PageFactory.initElements(driver, this);
+		}
 
-	public JalapenoHomePage commentAndSubmitPayment(String commentString) {
-		log("Insert optional comment");
-		comment.sendKeys(commentString);
+		@Override
+		public boolean areBasicPageElementsPresent() {
+				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-		log("Click on Submit Payment button");
-		javascriptClick(submitPayment);
+				webElementsList.add(comment);
+				webElementsList.add(submitPayment);
+				webElementsList.add(backButton);
+				return assessPageElements(webElementsList);
+		}
 
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
+		public JalapenoHomePage commentAndSubmitPayment(String commentString) {
+				log("Insert optional comment");
+				comment.sendKeys(commentString);
 
-	public boolean assessPayBillsConfirmationPageElements() {
+				log("Click on Submit Payment button");
+				javascriptClick(submitPayment);
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+				return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
 
-		webElementsList.add(comment);
-		webElementsList.add(submitPayment);
-		webElementsList.add(backButton);
+		@Deprecated //same functionality as areBasicElementsPresent(), this method is used by integrations
+		public boolean assessPayBillsConfirmationPageElements() {
 
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
+				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-	public String getCreditCardEnding() {
-		return cardEnding.getText().substring(cardEnding.getText().length() - 4);
-	}
+				webElementsList.add(comment);
+				webElementsList.add(submitPayment);
+				webElementsList.add(backButton);
+
+				return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+		}
+
+		public String getCreditCardEnding() {
+				return cardEnding.getText().substring(cardEnding.getText().length() - 4);
+		}
 }

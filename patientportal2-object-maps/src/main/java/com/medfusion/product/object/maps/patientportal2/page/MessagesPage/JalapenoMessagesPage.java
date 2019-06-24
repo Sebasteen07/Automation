@@ -12,8 +12,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
-import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
@@ -21,163 +19,163 @@ import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPa
 
 public class JalapenoMessagesPage extends JalapenoMenu {
 
-	/*
-	 * @FindBy(how = How.ID, using = "askatitle_link") private WebElement askAQuestionButton;
-	 */
+		/*
+		 * @FindBy(how = How.ID, using = "askatitle_link") private WebElement askAQuestionButton;
+		 */
 
-	@FindBy(how = How.ID, using = "inboxFolder")
-	private WebElement inboxFolder;
+		@FindBy(how = How.ID, using = "inboxFolder")
+		private WebElement inboxFolder;
 
-	@FindBy(how = How.ID, using = "sentFolder")
-	private WebElement sentFolder;
+		@FindBy(how = How.ID, using = "sentFolder")
+		private WebElement sentFolder;
 
-	@FindBy(how = How.ID, using = "archiveFolder")
-	private WebElement archiveFolder;
+		@FindBy(how = How.ID, using = "archiveFolder")
+		private WebElement archiveFolder;
 
-	@FindBy(how = How.ID, using = "replyButton")
-	private WebElement replyButton;
+		@FindBy(how = How.ID, using = "replyButton")
+		private WebElement replyButton;
 
-	@FindBy(how = How.ID, using = "replyBody")
-	private WebElement replyBody;
+		@FindBy(how = How.ID, using = "replyBody")
+		private WebElement replyBody;
 
-	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Send')]")
-	private WebElement sendButton;
+		@FindBy(how = How.XPATH, using = "//button[contains(text(),'Send')]")
+		private WebElement sendButton;
 
-	@FindBy(how = How.XPATH, using = "//a[.='View health data']")
-	private WebElement ccdDocument;
+		@FindBy(how = How.XPATH, using = "//a[.='View health data']")
+		private WebElement ccdDocument;
 
-	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
-	private WebElement archiveMessageButton;
+		@FindBy(how = How.XPATH, using = "//button[.='Archive']")
+		private WebElement archiveMessageButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
-	private WebElement lableSent;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
-	private WebElement statementLinkText;
-	
-	private static final int maxCount = 15;
-	
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
+		private WebElement lableSent;
 
-		webElementsList.add(inboxFolder);
-		webElementsList.add(sentFolder);
-		webElementsList.add(archiveFolder);
+		@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
+		private WebElement statementLinkText;
 
-		return assessPageElements(webElementsList);
-	}
+		private static final int maxCount = 15;
 
-	public JalapenoMessagesPage(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		driver.manage().window().maximize();
-		PageFactory.initElements(driver, this);
-	}
+		@Override
+		public boolean areBasicPageElementsPresent() {
+				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-	public boolean isMessageDisplayed(WebDriver driver, String subject) {
-		IHGUtil.PrintMethodName();
-		WebElement element;
+				webElementsList.add(inboxFolder);
+				webElementsList.add(sentFolder);
+				webElementsList.add(archiveFolder);
 
-		for (int count = 1; count <= maxCount; count++) {
-			try {
-				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
-				log("Message with subject \"" + subject + "\" arrived.");
-				return element.isDisplayed();
-			} catch (Exception ex) {
-				log("Message with subject \"" + subject + "\" didn't arrive. Attempt " + count + "/" + maxCount + ". Refreshing page.");
-				driver.navigate().refresh();
-			}
+				return assessPageElements(webElementsList);
 		}
 
-		log("Message with subject \"" + subject + "\" didn't arrive at all.");
-		return false;
-	}
-
-	public boolean isMessageFromEstatementsDisplayed(WebDriver driver) throws InterruptedException {
-		IHGUtil.PrintMethodName();
-		int count = 1;
-		int maxCount = 10;
-		WebElement element;
-
-		while (count <= maxCount) {
-			try {
-				element = driver.findElement(By.partialLinkText("Click here to view your statement"));
-				log("Message from eStatement found");
-				return element.isDisplayed();
-			} catch (Exception ex) {
-				log("Not found: " + count + "/" + maxCount + "| Refreshing page");
-				driver.navigate().refresh();
-				Thread.sleep(1000);
-				count++;
-			}
+		public JalapenoMessagesPage(WebDriver driver) {
+				super(driver);
+				IHGUtil.PrintMethodName();
+				driver.manage().window().maximize();
+				PageFactory.initElements(driver, this);
 		}
-		log("Couldn't find eStatement secure message!");
-		log(driver.getPageSource());
-		return false;
-	}
 
-	public boolean replyToMessage(WebDriver driver) {
-		IHGUtil.PrintMethodName();
+		public boolean isMessageDisplayed(WebDriver driver, String subject) {
+				IHGUtil.PrintMethodName();
+				WebElement element;
 
-		log("Write a message");
-		replyButton.click();
-		replyBody.sendKeys("This is response to doctor's message");
+				for (int count = 1; count <= maxCount; count++) {
+						try {
+								element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+								log("Message with subject \"" + subject + "\" arrived.");
+								return element.isDisplayed();
+						} catch (Exception ex) {
+								log("Message with subject \"" + subject + "\" didn't arrive. Attempt " + count + "/" + maxCount + ". Refreshing page.");
+								driver.navigate().refresh();
+						}
+				}
 
-		sendButton.click();
-
-		try {
-			IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 20);
-			log("Message sent");
-			return true;
-		} catch (Exception e) {
-			log(e.getCause().toString());
-			return false;
+				log("Message with subject \"" + subject + "\" didn't arrive at all.");
+				return false;
 		}
-	}
 
-	public JalapenoCcdViewerPage findCcdMessage(WebDriver driver) {
-		IHGUtil.PrintMethodName();
+		public boolean isMessageFromEstatementsDisplayed(WebDriver driver) throws InterruptedException {
+				IHGUtil.PrintMethodName();
+				int count = 1;
+				int maxCount = 10;
+				WebElement element;
 
-		ccdDocument.click();
+				while (count <= maxCount) {
+						try {
+								element = driver.findElement(By.partialLinkText("Click here to view your statement"));
+								log("Message from eStatement found");
+								return element.isDisplayed();
+						} catch (Exception ex) {
+								log("Not found: " + count + "/" + maxCount + "| Refreshing page");
+								driver.navigate().refresh();
+								Thread.sleep(1000);
+								count++;
+						}
+				}
+				log("Couldn't find eStatement secure message!");
+				log(driver.getPageSource());
+				return false;
+		}
 
-		return PageFactory.initElements(driver, JalapenoCcdViewerPage.class);
-	}
+		public boolean replyToMessage(WebDriver driver) {
+				IHGUtil.PrintMethodName();
 
-	public JalapenoHomePage backToHomePage(WebDriver driver) {
-		log("Get back to Home Page");
+				log("Write a message");
+				replyButton.click();
+				replyBody.sendKeys("This is response to doctor's message");
 
-		driver.findElement(By.id("home")).click();
+				sendButton.click();
 
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
+				try {
+						IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 20);
+						log("Message sent");
+						return true;
+				} catch (Exception e) {
+						log(e.getCause().toString());
+						return false;
+				}
+		}
 
-	public JalapenoPayBillsStatementPage goToPayBillsPage(WebDriver driver) {
-		log("Go to Pay Bills page");
+		public JalapenoCcdViewerPage findCcdMessage(WebDriver driver) {
+				IHGUtil.PrintMethodName();
 
-		driver.findElement(By.xpath("//li[@id='payments_lhn']/a")).click();
+				ccdDocument.click();
 
-		return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
-	}
+				return PageFactory.initElements(driver, JalapenoCcdViewerPage.class);
+		}
+
+		public JalapenoHomePage backToHomePage(WebDriver driver) {
+				log("Get back to Home Page");
+
+				driver.findElement(By.id("home")).click();
+
+				return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
+
+		public JalapenoPayBillsStatementPage goToPayBillsPage(WebDriver driver) {
+				log("Go to Pay Bills page");
+
+				driver.findElement(By.xpath("//li[@id='payments_lhn']/a")).click();
+
+				return PageFactory.initElements(driver, JalapenoPayBillsStatementPage.class);
+		}
 
 
-	public void archiveOpenMessage() {
-		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
-		archiveMessageButton.click();
+		public void archiveOpenMessage() {
+				log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
+				archiveMessageButton.click();
 
-	}
+		}
 
-	public String returnMessageSentDate() {
-		IHGUtil.PrintMethodName();
-		// PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 60, lableSent);
-		return lableSent.getText().toString();
-	}
-	
-	public JalapenoPayBillsStatementPdfPage openPDFStatement() {
-		log("Statement: "+statementLinkText.getText());
-		statementLinkText.click();
-		return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
-	}
-	
+		public String returnMessageSentDate() {
+				IHGUtil.PrintMethodName();
+				// PortalUtil.setPortalFrame(driver);
+				IHGUtil.waitForElement(driver, 60, lableSent);
+				return lableSent.getText().toString();
+		}
+
+		public JalapenoPayBillsStatementPdfPage openPDFStatement() {
+				log("Statement: " + statementLinkText.getText());
+				statementLinkText.click();
+				return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
+		}
+
 }
