@@ -2,7 +2,10 @@ package com.intuit.ihg.product.sitegen.test;
 
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 
+import java.io.IOException;
+
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
@@ -32,18 +35,18 @@ import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhys
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ihg.product.sitegen.utils.Sitegen;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-import com.intuit.ihg.product.sitegen.utils.SitegenTestData;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
-		private void logSGLoginInfo(SitegenTestData testData) {
-				log("URL: " + testData.getSiteGenUrl());
-				log("Username: " + testData.getAutomationUser());
-				log("Password: " + testData.getAutomationUserPassword());
-		}
-
-
+	 private PropertyFileLoader testData;
+	
+	@BeforeClass(alwaysRun = true)
+	public void prepareTestData() throws IOException {
+			log("Getting Test Data");
+			testData = new PropertyFileLoader();
+	}
+	
 		/**
 		 * @throws Exception
 		 * @Author:-bkrishnankutty
@@ -52,19 +55,15 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		 * @StepsToReproduce: List steps here
 		 * @AreaImpacted :- Description
 		 */
+		
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSiteGenLoginLogout() throws Exception {
 				log("step 1: Get Data from Excel ##########");
-
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+				
 				log("step 2:LogIn ##########");
-				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getSiteGenUrl());
-				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getAutomationUser(), testData.getAutomationUserPassword());
+				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("siteGenUrl"));
+				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				IHGUtil util = new IHGUtil(driver);
 				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
@@ -95,14 +94,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLocation() throws Exception {
 				log("step 1: Get Data from Excel ##########");
-
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+								
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-						new SiteGenSteps().logInUserToSG(driver, testData.getAutomationUser(), testData.getAutomationUserPassword());
+						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				log("step 5: navigate to ManageYour Locations Page ##########");
 				ManageYourLocationsPage pManageYourLocationsPage = pSiteGenPracticeHomePage.clickLnkLocations();
@@ -140,22 +134,18 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		private void testPhysicianBoth(boolean su) throws Exception {
 				log("step 1: Get Data from Excel ##########");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+				
 				log("step 2:LogIn ##########");
-				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getSiteGenUrl());
+				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("siteGenUrl"));
 				SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
 				if (su) {
-						pSiteGenHomePage = loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
+						pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 						assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
 						log("step 3: navigate to SiteGen PracticeHomePage ##########");
-						pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
+						pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
 				} else {
-						pSiteGenHomePage = loginpage.login(testData.getAutomationUser(), testData.getAutomationUserPassword());
+						pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 						log("step 3: navigate to SiteGen PracticeHomePage ##########");
 						pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 				}
@@ -263,13 +253,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				log("@@@@@@ Also do check the status of ISSUES DE1178,DE1179 ######");
 
 				log("step 1: Get Data from Excel ##########");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+								
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-						new SiteGenSteps().logInUserToSG(driver, testData.getAutomationUser(), testData.getAutomationUserPassword());
+						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				log("step 4: Click on Link Permissions and Personnel Types");
 				ManageYourGroupPersonnelTypesPage pManageYourGroupPersonnelTypesPage = pSiteGenPracticeHomePage.clickLnkPermissions();
@@ -296,7 +282,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 				// Now start login with practice data
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-				PracticeHomePage practiceHome = practiceLogin.login(testData.getpersonnelTypeUserName(), testData.getpersonnelTypePswd());
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("personnelTypeUserName"), testData.getProperty("personnelTypePswd"));
 
 				log("step 8: verify AptRequest Tab in Practice Portal");
 				assertTrue(practiceHome.verifyAptRequestTab(), "Appointment tab not displayed");
@@ -330,13 +316,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testIntegrationEngAndInterfaceSetUp() throws Exception {
 				log("step 1: Get Data from Excel ##########");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+							
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-						new SiteGenSteps().logInUserToSG(driver, testData.getAutomationUser(), testData.getAutomationUserPassword());
+						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				log("step 4: Click on Interface set up link ##########");
 				InterfaceAdministrationPage pInterfaceAdministrationPage = pSiteGenPracticeHomePage.clickLnkInterfaceSetup();
@@ -393,13 +375,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testMerchantAccountSetUpViaPaypal() throws Exception {
 				log("Step1 :- Getting data from excel.");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testCaseData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testCaseData);
-
+				
 				SiteGenPracticeHomePage practiseHome =
-						new SiteGenSteps().logInUserToSG(driver, testCaseData.getAutomationUser(), testCaseData.getAutomationUserPassword());
+						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				MerchantAccountPage merchantAcctPage = practiseHome.clickOnMerchantAccountLink();
 
@@ -443,13 +421,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testImportAndExportStaff() throws Exception {
 				log("step 1: Get Data from Excel ##########");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+											
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage =
-						new SiteGenSteps().logInUserToSG(driver, testData.getAutomationUser(), testData.getAutomationUserPassword());
+						new SiteGenSteps().logInUserToSG(driver, testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 
 				log("step 4: Click on Link Permissions and Personnel Types ###########");
 				ManageYourPersonnelPage pManageYourPersonnelPage = pSiteGenPracticeHomePage.clickLnkPersonnelNonPhysicians();
@@ -496,18 +470,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		@Test(enabled = true, groups = {"AcceptanceTests"})
 		public void testMerchantAccountSetUpViaQBMS() throws Exception {
 				log("step 1: Get Data from Excel ##########");
-				Sitegen sitegen = new Sitegen();
-				SitegenTestData testData = new SitegenTestData(sitegen);
-
-				logSGLoginInfo(testData);
-
+								
 				log("step 2:LogIn ##########");
-				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getSiteGenUrl());
+				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("siteGenUrl"));
 				SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
-				pSiteGenHomePage = loginpage.login(testData.getAdminUser(), testData.getAdminPassword());
+				pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
 				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
 				log("step 3: navigate to SiteGen PracticeHomePage ##########");
-				SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getAutomationPracticeName());
+				SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
 
 				log("Step 6 :- Navigating to the Merchant Account List page.");
 				MerchantAccountPage merchantAcctPage = practiceHome.clickOnMerchantAccountLink();
