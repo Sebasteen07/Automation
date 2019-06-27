@@ -263,7 +263,7 @@ public class OldCustomFormsAcceptanceTests extends BaseTestNGWebDriver {
 				String actualPatientName = oldCustomForm.Patientname.getText().trim();
 
 				log("Displayed patient name is :" + actualPatientName);
-				assertEquals(oldCustomForm.Patientname.getText().trim().contains("Patient Name : Ihgqa"), true);
+				assertEquals(oldCustomForm.Patientname.getText().trim().contains("Patient Name : "+ testData.getProperty("patientFirstname")), true);
 				assertTrue(verifyTextPresent(driver, "Patient DOB : 01/11/1987"));
 		}
 
