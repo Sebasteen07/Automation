@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.medfusion.pojos.Patient;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,34 +14,49 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
-public class JalapenoAccountPage extends BasePageObject {
+public class JalapenoAccountPage extends JalapenoMenu {
 
 		// won't work if linked accounts are disabled
-		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button") private WebElement editMyAccountButton;
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
+		private WebElement editMyAccountButton;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/ul/li/div/div[3]/button") private WebElement editDependentAccountButton;
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/ul/li/div/div[3]/button")
+		private WebElement editDependentAccountButton;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\'frame\']/div[3]/div/button") private WebElement inviteNewButton;
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/button")
+		private WebElement inviteNewButton;
 
-		@FindBy(how = How.ID, using = "trustedRepFirstName") private WebElement trustedRepFirstNameInput;
+		@FindBy(how = How.ID, using = "trustedRepFirstName")
+		private WebElement trustedRepFirstNameInput;
 
-		@FindBy(how = How.ID, using = "trustedRepLastName") private WebElement trustedRepLastNameInput;
+		@FindBy(how = How.ID, using = "trustedRepLastName")
+		private WebElement trustedRepLastNameInput;
 
-		@FindBy(how = How.ID, using = "trustedRepEmail") private WebElement trustedRepEmailInput;
+		@FindBy(how = How.ID, using = "trustedRepEmail")
+		private WebElement trustedRepEmailInput;
 
-		@FindBy(how = How.ID, using = "trustedRepRelationship") private WebElement trustedRepRelationshipSelect;
+		@FindBy(how = How.ID, using = "trustedRepRelationship")
+		private WebElement trustedRepRelationshipSelect;
 
-		@FindBy(how = How.XPATH, using = "//*[@class='button primary ladda-button ng-binding inviteBtn pull-right']") private WebElement sendInvitationButton;
+		@FindBy(how = How.XPATH, using = "//*[@class='button primary ladda-button ng-binding inviteBtn pull-right']")
+		private WebElement sendInvitationButton;
 
 		public JalapenoAccountPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
 				driver.manage().window().maximize();
 				PageFactory.initElements(driver, this);
+		}
+
+		@Override
+		public boolean areBasicPageElementsPresent() {
+				ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
+				webElementList.add(editMyAccountButton);
+				webElementList.add(inviteNewButton);
+				return assessPageElements(webElementList);
 		}
 
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {

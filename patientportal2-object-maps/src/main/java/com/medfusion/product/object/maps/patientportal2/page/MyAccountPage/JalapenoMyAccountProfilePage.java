@@ -240,13 +240,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 		}
 
-
-
 		@Override
 		public boolean areBasicPageElementsPresent() {
-
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
 				webElementsList.add(profileTab);
 				//webElementsList.add(securityTab);
 				webElementsList.add(preferencesTab);
@@ -254,8 +250,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 				webElementsList.add(cityTextbox);
 				webElementsList.add(zipCodeTextbox);
 				webElementsList.add(maleRadioButton);
+				webElementsList.add(saveMyChanges);
 
-				return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+				return assessPageElements(webElementsList);
 		}
 
 		public boolean modifyAndValidatePageContent() {
@@ -345,7 +342,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 						case 'M':
 								changeValue = "Male";
 								new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(maleRadioButton));
-								if (maleRadioButton.isSelected() != true)
+								if (!maleRadioButton.isSelected())
 										maleRadioButton.click();
 
 								break;

@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,104 +9,110 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
-public class JalapenoPrescriptionsPage extends BasePageObject {
+public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
-	@FindBy(how = How.XPATH, using = "//input[@value=\'Continue\']")
-	private WebElement continueButton;
+		@FindBy(how = How.XPATH, using = "//input[@value='Continue']")
+		private WebElement continueButton;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[1]/div/div[2]/input")
-	private WebElement medicationName;
+		@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[1]/div/div[2]/input")
+		private WebElement medicationName;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[2]/div/div[2]/input")
-	private WebElement dosage;
+		@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[2]/div/div[2]/input")
+		private WebElement dosage;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[3]/div/div[2]/input")
-	private WebElement quantity;
+		@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[3]/div/div[2]/input")
+		private WebElement quantity;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='new-pharmacy-container']/div[1]/div/div[2]/input")
-	private WebElement pharmacyName;
+		@FindBy(how = How.XPATH, using = "//div[@class='new-pharmacy-container']/div[1]/div/div[2]/input")
+		private WebElement pharmacyName;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='new-pharmacy-container']/div[2]/div/div[2]/input")
-	private WebElement pharmacyPhone;
+		@FindBy(how = How.XPATH, using = "//div[@class='new-pharmacy-container']/div[2]/div/div[2]/input")
+		private WebElement pharmacyPhone;
 
-	@FindBy(how = How.XPATH, using = "//input[@value='Submit Request']")
-	private WebElement submitButton;
+		@FindBy(how = How.XPATH, using = "//input[@value='Submit Request']")
+		private WebElement submitButton;
 
-	@FindBy(how = How.XPATH, using = "//input[@type='radio']")
-	private WebElement radioButton;
+		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
+		private WebElement radioButton;
 
-	@FindBy(how = How.LINK_TEXT, using = "Home")
-	private WebElement homeButton;
+		@FindBy(how = How.LINK_TEXT, using = "Home")
+		private WebElement homeButton; //this is not home button in Jalapeno Menu
 
-	@FindBy(how = How.XPATH, using = "//select[@name='locationContainer:locationDD']")
-	private WebElement locationDropdown;
+		@FindBy(how = How.XPATH, using = "//select[@name='locationContainer:locationDD']")
+		private WebElement locationDropdown;
 
-	@FindBy(how = How.XPATH, using = "//select[@name='providerContainer:providerDD']")
-	private WebElement providerDropdown;
+		@FindBy(how = How.XPATH, using = "//select[@name='providerContainer:providerDD']")
+		private WebElement providerDropdown;
 
-	public JalapenoPrescriptionsPage(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		driver.manage().window().maximize();
-		PageFactory.initElements(driver, this);
-	}
-
-	public void clickContinueButton(WebDriver driver) {
-		driver.switchTo().frame("iframebody");
-
-		log("Checking if there're location options");
-		if (IHGUtil.exists(driver, 2, locationDropdown)) {
-			log("Selecting location");
-			Select locationSelect = new Select(locationDropdown);
-			locationSelect.selectByIndex(1);
-
-			log("Selecting provider");
-			try {
-				Select providerSelect = new Select(providerDropdown);
-				providerSelect.selectByIndex(1);
-			} catch (StaleElementReferenceException ex) {
-				log("Dont know what's going on here");
-			}
-			// continueButton.click();
+		public JalapenoPrescriptionsPage(WebDriver driver) {
+				super(driver);
+				IHGUtil.PrintMethodName();
+				driver.manage().window().maximize();
+				PageFactory.initElements(driver, this);
 		}
 
-		log("Clicking on continue button");
-		javascriptClick(continueButton);
+		@Override
+		public boolean areBasicPageElementsPresent() {
+				//TODO
+				log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
+				return true;
+		}
 
-		driver.switchTo().defaultContent();
-	}
+		public void clickContinueButton(WebDriver driver) {
+				driver.switchTo().frame("iframebody");
 
-	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) {
+				log("Checking if there're location options");
+				if (IHGUtil.exists(driver, 2, locationDropdown)) {
+						log("Selecting location");
+						Select locationSelect = new Select(locationDropdown);
+						locationSelect.selectByIndex(1);
 
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("iframebody");
+						log("Selecting provider");
+						try {
+								Select providerSelect = new Select(providerDropdown);
+								providerSelect.selectByIndex(1);
+						} catch (StaleElementReferenceException ex) {
+								log("Dont know what's going on here");
+						}
+						// continueButton.click();
+				}
 
-		log("Insert medication info");
-		this.medicationName.sendKeys(medication);
-		this.dosage.sendKeys(dosage);
-		this.quantity.sendKeys(Integer.toString(quantity));
+				log("Clicking on continue button");
+				javascriptClick(continueButton);
 
-		log("Insert pharmacy information");
-		pharmacyName.sendKeys("PharmacyName");
-		pharmacyPhone.sendKeys("3216549870");
-		radioButton.click();
+				driver.switchTo().defaultContent();
+		}
 
-		log("Click on Continue button");
-		continueButton.click();
+		public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) {
 
-		log("Click on Submit button");
-		submitButton.click();
+				driver.switchTo().defaultContent();
+				driver.switchTo().frame("iframebody");
 
-		log("Return to Home Dashboard");
-		homeButton.click();
+				log("Insert medication info");
+				this.medicationName.sendKeys(medication);
+				this.dosage.sendKeys(dosage);
+				this.quantity.sendKeys(Integer.toString(quantity));
 
-		driver.switchTo().defaultContent();
+				log("Insert pharmacy information");
+				pharmacyName.sendKeys("PharmacyName");
+				pharmacyPhone.sendKeys("3216549870");
+				radioButton.click();
 
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
+				log("Click on Continue button");
+				continueButton.click();
+
+				log("Click on Submit button");
+				submitButton.click();
+
+				log("Return to Home Dashboard");
+				homeButton.click();
+
+				driver.switchTo().defaultContent();
+
+				return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
 
 }
