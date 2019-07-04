@@ -18,8 +18,6 @@ public class JalapenoMyAccountActivityPage extends JalapenoMyAccountPage {
 		public JalapenoMyAccountActivityPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		@Override

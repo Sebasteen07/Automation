@@ -47,8 +47,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		public JalapenoAccountPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		@Override

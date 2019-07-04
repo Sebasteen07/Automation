@@ -56,8 +56,6 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		public JalapenoAskAStaffPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 				createdTS = System.currentTimeMillis();
 		}
 

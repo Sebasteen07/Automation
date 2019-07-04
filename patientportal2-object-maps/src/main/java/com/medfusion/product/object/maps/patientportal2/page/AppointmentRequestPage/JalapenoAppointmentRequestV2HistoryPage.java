@@ -8,12 +8,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
@@ -39,8 +37,6 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 		public JalapenoAppointmentRequestV2HistoryPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		@Override

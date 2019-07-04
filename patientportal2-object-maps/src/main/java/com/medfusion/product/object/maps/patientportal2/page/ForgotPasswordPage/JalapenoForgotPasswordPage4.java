@@ -33,7 +33,6 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 				super(driver);
 				IHGUtil.PrintMethodName();
 				log("Loading ForgotPasswordPage4");
-				driver.manage().window().maximize();
 		}
 
 		@Override

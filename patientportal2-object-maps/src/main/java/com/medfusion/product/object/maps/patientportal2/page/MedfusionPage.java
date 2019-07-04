@@ -223,7 +223,7 @@ public abstract class MedfusionPage extends BasePageObject {
 						log("Searching for element: " + element.toString(), Level.DEBUG);
 						try {
 								new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
-								log(elementToString(element) + " : is displayed.", Level.INFO);
+								log(elementToString(element) + " is displayed.", Level.INFO);
 						} catch (StaleElementReferenceException ex) {
 								log("StaleElementReferenceException was caught." + ex.toString(), Level.ERROR);
 								return false;

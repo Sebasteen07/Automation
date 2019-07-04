@@ -88,11 +88,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		@FindBy(how = How.XPATH, using = "//input[@id='phone6']")
 		private WebElement phone6;
 
-		public JalapenoMyAccountProfilePage(WebDriver driver) throws InterruptedException {
+		public JalapenoMyAccountProfilePage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		public int getDOBday() {
