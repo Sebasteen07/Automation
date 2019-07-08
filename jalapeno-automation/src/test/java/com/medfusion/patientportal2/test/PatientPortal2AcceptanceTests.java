@@ -278,6 +278,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
 				assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 				logStep("Retrieved activation link is " + unlockLinkEmail);
+				if (!isInviteLinkFinal(unlockLinkEmail)) {
+						unlockLinkEmail = getRedirectUrl(unlockLinkEmail);
+						log("Retrieved link was redirect link. Final link is " + unlockLinkEmail);
+				}
 				logStep("Comparing with portal unlock link " + unlockLinkPortal);
 				assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 		}
