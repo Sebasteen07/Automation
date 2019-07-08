@@ -24,13 +24,7 @@ public class JalapenoForgotPasswordPage3 extends MedfusionPage {
 
 		public JalapenoForgotPasswordPage3(WebDriver driver, String url) {
 				super(driver);
-				IHGUtil.PrintMethodName();
-				log("Loading ForgotPasswordPage3");
-				String sanitizedUrl = url.trim();
-				log("URL: " + sanitizedUrl);
-				driver.get(sanitizedUrl);
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
+				IHGUtil.PrintMethodName();;
 		}
 
 		@Override

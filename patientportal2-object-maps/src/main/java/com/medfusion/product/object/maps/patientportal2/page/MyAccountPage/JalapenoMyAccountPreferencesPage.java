@@ -24,7 +24,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.ID, using = "statementPreference")
 		private WebElement statementPreference;
 
-		@FindBy(how = How.ID, using = "MessagingOptOut")
+		@FindBy(how = How.ID, using = "messagingOptOut")
 		private WebElement patientMessagingOptOut;
 
 		@FindBy(how = How.ID, using = "apptRemindersOptOut")
@@ -40,8 +40,6 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		public JalapenoMyAccountPreferencesPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		public boolean checkAndSetStatementPreference(WebDriver driver, StatementPreferenceType statementPreferenceType) {

@@ -20,8 +20,6 @@ public class JalapenoForgotPasswordPage2 extends MedfusionPage {
 		public JalapenoForgotPasswordPage2(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				log("Loading ForgotPasswordPage2");
-				driver.manage().window().maximize();
 		}
 
 		@Override

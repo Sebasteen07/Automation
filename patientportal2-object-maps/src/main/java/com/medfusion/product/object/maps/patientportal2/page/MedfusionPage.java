@@ -217,27 +217,23 @@ public abstract class MedfusionPage extends BasePageObject {
 
 
 		public boolean assessPageElements(ArrayList<WebElement> allElements) {
-				log("Checking page elements");
+				log("Checking page elements", Level.DEBUG);
 
 				for (WebElement element : allElements) {
-						int attempt = 1;
-						while (attempt < 3) {
-								log("Searching for element: " + element.toString(), Level.DEBUG);
-								try {
-										new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
-										log(elementToString(element) + " : is displayed", Level.DEBUG);
-										attempt = 3;
-								} catch (StaleElementReferenceException ex) {
-										log("StaleElementReferenceException was caught, attempt: " + attempt++, Level.DEBUG);
-								} catch (TimeoutException ex) {
-										log(ex.getMessage());
-										log(elementToString(element) + " was not assessed successfully due to TimeoutException", Level.ERROR);
-										return false;
-								} catch (Exception ex) {
-										ex.printStackTrace();
-										log(elementToString(element) + " was not assessed successfully due to some Exception", Level.ERROR);
-										return false;
-								}
+						log("Searching for element: " + element.toString(), Level.DEBUG);
+						try {
+								new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
+								log(elementToString(element) + " is displayed.", Level.INFO);
+						} catch (StaleElementReferenceException ex) {
+								log("StaleElementReferenceException was caught." + ex.toString(), Level.ERROR);
+								return false;
+						} catch (TimeoutException ex) {
+								log("TimeoutException was caught." + ex.toString(), Level.ERROR);
+								return false;
+						} catch (Exception ex) {
+								log("Exception was caught." + ex.toString(), Level.ERROR);
+								ex.printStackTrace();
+								return false;
 						}
 				}
 				return true;

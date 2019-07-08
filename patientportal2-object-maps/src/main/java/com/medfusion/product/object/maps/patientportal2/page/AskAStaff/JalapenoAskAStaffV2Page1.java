@@ -40,8 +40,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		public JalapenoAskAStaffV2Page1(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 				createdTS = System.currentTimeMillis();
 		}
 

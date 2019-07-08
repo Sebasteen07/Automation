@@ -28,8 +28,6 @@ public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 		public JalapenoPayBillsConfirmationPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		@Override

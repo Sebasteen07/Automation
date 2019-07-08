@@ -69,8 +69,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		public JalapenoMessagesPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		public boolean isMessageDisplayed(WebDriver driver, String subject) {

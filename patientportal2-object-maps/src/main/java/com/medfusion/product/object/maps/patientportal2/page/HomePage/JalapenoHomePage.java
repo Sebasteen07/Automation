@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -90,12 +91,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 		public JalapenoHomePage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
-		public JalapenoMessagesPage showMessages(WebDriver driver) throws Exception {
-
+		public JalapenoMessagesPage showMessages(WebDriver driver) {
 				IHGUtil.PrintMethodName();
 				messages.click();
 				return PageFactory.initElements(driver, JalapenoMessagesPage.class);
@@ -215,11 +213,21 @@ public class JalapenoHomePage extends JalapenoMenu {
 		@Override
 		//Checks elements located every time on PI Dashboard
 		public boolean areBasicPageElementsPresent() {
-				if(!areMenuElementsPresent())
-						return false;
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(messages);
-				return assessPageElements(webElementsList);
+
+				for (int i = 0; i < 3; i++) {
+						int attempt = i + 1;
+						log("Checking page elements, attempt: " + attempt, Level.INFO);
+						if (areMenuElementsPresent() && assessPageElements(webElementsList)) {
+								log("All basic elements are present", Level.INFO);
+								return true;
+						} else {
+								log("Attempt " + attempt + " failed: Some elements are missing, reloading page", Level.INFO);
+								driver.navigate().refresh();
+						}
+				}
+				return false;
 		}
 
 		public boolean assessFamilyAccountElements(boolean button) {

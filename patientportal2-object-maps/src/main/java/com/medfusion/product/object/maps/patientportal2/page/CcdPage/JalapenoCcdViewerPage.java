@@ -106,9 +106,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 
 		public JalapenoCcdViewerPage(WebDriver driver) {
 				super(driver);
-				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
+				IHGUtil.PrintMethodName();;
 		}
 
 		public JalapenoMessagesPage closeCcd(WebDriver driver) {
@@ -148,7 +146,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 
 				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessageUnsecure));
 				log("Result: " + resultMessageUnsecure.getText());
-				Assert.assertTrue(resultMessageUnsecure.getText().equals("E-mail address fields must match."));
+				Assert.assertEquals(resultMessageUnsecure.getText(), "E-mail address fields must match.");
 
 				log("Input the unsecure email address: " + emailAddress + " and correct confirmation e-mail");
 				unsecureAddressBox.clear();

@@ -20,8 +20,6 @@ public class JalapenoAskAStaffV2HistoryListPage extends JalapenoMenu {
     public JalapenoAskAStaffV2HistoryListPage(WebDriver driver) {
         super(driver);
         IHGUtil.PrintMethodName();
-        driver.manage().window().maximize();
-        PageFactory.initElements(driver, this);
     }
 
     @Override
