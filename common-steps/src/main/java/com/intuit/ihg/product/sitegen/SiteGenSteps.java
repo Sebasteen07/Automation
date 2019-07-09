@@ -20,14 +20,14 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
 	}
 	//TODO breadcrumb check if this is in any use other than the local-run tests that require manual credentials, rewrite to only use test class propertyFileLoader
 	public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password, String practiceName) throws Exception {
-		log("step 1: Get Data from Excel ##########");
+		log("step 1: Get Data from PropertyFile");
 		PropertyFileLoader testData = new PropertyFileLoader();		
 		
 		log("Step 2: Opening sitegen home page");
 		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 		SiteGenHomePage sHomePage = sloginPage.login(login, password);
 
-		log("step 3: navigate to SiteGen PracticeHomePage ##########");
+		log("step 3: navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
 		if (practiceName.isEmpty()) {
 			// log in as normal user
