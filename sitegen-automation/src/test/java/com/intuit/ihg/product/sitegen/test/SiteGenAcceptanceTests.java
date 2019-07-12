@@ -1,7 +1,5 @@
 package com.intuit.ihg.product.sitegen.test;
 
-import com.intuit.ihg.product.sitegen.SiteGenSteps;
-
 import java.io.IOException;
 
 import org.openqa.selenium.support.PageFactory;
@@ -56,10 +54,10 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testSiteGenLoginLogout() throws Exception {
-				log("step 2:LogIn");
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
-
 				IHGUtil util = new IHGUtil(driver);
 				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
 				assertTrue(util.isRendered((pSiteGenHomePage.lnkHome)), "lnk Home not displayed");
@@ -88,32 +86,35 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testLocation() throws Exception {
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				logStep("Navigate to SiteGen PracticeHomePage");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 							
-				log("step 5: navigate to ManageYour Locations Page");
+				logStep("Navigate to ManageYour Locations Page");
 				ManageYourLocationsPage pManageYourLocationsPage = pSiteGenPracticeHomePage.clickLnkLocations();
-				// assertTrue(pManageYourLocationsPage.isSearchPageLoaded(), "Expected the SiteGen Manage location Page to be loaded, but it was not.");
+				assertTrue(pManageYourLocationsPage.isSearchPageLoaded(), "Expected the SiteGen Manage location Page to be loaded, but it was not.");
 
 				log("Check if the data is clean or not");
 				pManageYourLocationsPage.cleaningTestdata(SitegenConstants.PRACTICENAME, SitegenConstants.STATE);
 
-				log("step 6: navigate to AddLocationPage");
+				logStep("Navigate to AddLocationPage");
 				AddLocationPage pAddLocationPage = pManageYourLocationsPage.clicklnkAddLocation();
 				assertTrue(pAddLocationPage.isSearchPageLoaded(), "Expected the SiteGen Add location Page  to be loaded, but it was not.");
 
-				log("step 7: Add Location");
+				logStep("Add Location");
 				pManageYourLocationsPage = pAddLocationPage
 						.addLocation(SitegenConstants.PRACTICENAME, SitegenConstants.ADDRESS, SitegenConstants.CITY, SitegenConstants.STATE, SitegenConstants.COUNTRY,
 								SitegenConstants.ZIPCODE, SitegenConstants.TELEPHONE, SitegenConstants.CONTACT, SitegenConstants.EMAIL);
 
-				log("step 8: Assert if the Location got added");
+				logStep("Assert if the Location got added");
 				assertTrue(pManageYourLocationsPage.isSearchPageLoaded(), "Expected the SiteGen Manage your location Page  to be loaded, but it was not.");
 				assertTrue(verifyTextPresent(driver, SitegenConstants.STATE));
 				assertTrue(verifyTextPresent(driver, SitegenConstants.PRACTICENAME));
 
-				log("step 9:Test case Passed, Now Cleaning Test Data");
+				logStep("Test case Passed, Now Cleaning Test Data");
 				pManageYourLocationsPage.cleaningTestdata(SitegenConstants.PRACTICENAME, SitegenConstants.STATE);
 		}
 
@@ -127,30 +128,30 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		 * added or not
 		 */
 		private void testPhysicianBoth(boolean su) throws Exception {
-				log("step 2:LogIn");
+				logStep("login to SG as superuser - THIS REQUIRES MANUAL INPUT");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage; 
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
 				if (su) {
-						pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+						pSiteGenHomePage = loginpage.clickOnLoginAsInternalEmployee();
+						logStep("navigate to SiteGen PracticeHomePage");
 						assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
-						log("step 3: navigate to SiteGen PracticeHomePage");
 						pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
 				} else {
 						pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
-						log("step 3: navigate to SiteGen PracticeHomePage");
+						logStep("navigate to SiteGen PracticeHomePage");
 						pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 				}
 				assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-				log("step 4: click Link Physicians and navigate to Manage Your Physicians Page");
+				logStep("click Link Physicians and navigate to Manage Your Physicians Page");
 				ManageYourPhysiciansPage pManageYourPhysiciansPage = pSiteGenPracticeHomePage.clickLnkPhysicians();
 				assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
 				log("CHECK IF TESTDATA IS CLEAN");
 				pManageYourPhysiciansPage.cleanTestPhysiciansData();
 
-				log("step 5: click Link Add Physicians and navigate to Add Physicians Page");
+				logStep("click Link Add Physicians and navigate to Add Physicians Page");
 				AddPhysicianPage pAddPhysicianPage = pManageYourPhysiciansPage.clicklnkAddPhysician();
 				assertTrue(pAddPhysicianPage.isSearchPageLoaded(), "Expected the Add Physician Page to be loaded, but it was not.");
 
@@ -158,7 +159,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				String lastName = SitegenConstants.LASTNAME + IHGUtil.createRandomNumber();
 				String email = IHGUtil.createRandomEmailAddress(SitegenConstants.EMAIL);
 
-				log("step 6: Add Physicians details");
+				logStep("Add Physicians details");
 				if (su) {
 						assertFalse(pAddPhysicianPage.isActiveGroupMemberYesOptionDisabled(), "Activating Physician should be enabled");
 				} else {
@@ -170,7 +171,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(pAddPhysicianStep2EditLocationInfoPage.isSearchPageLoaded(),
 						"Expected the Add Physician Step2 Edit Location Information Page  to be loaded, but it was not.");
 
-				log("step 7: Assert if  Physicians added or not");
+				logStep("Assert if  Physicians added or not");
 				assertTrue(verifyTextPresent(driver, "Information Updated"));
 				String provider = SitegenConstants.FIRSTNAME + " " + lastName;
 				assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider));
@@ -178,29 +179,25 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				log("PHYSICAN ADDED AND TEST CASE PASSED");
 				log("TEST DATA CLEANING PROCESS  IS GOING START");
 
-				log("step 8: click Button GoBackToManagePhysicians");
+				logStep("click Button GoBackToManagePhysicians");
 				pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.clickBtnGoBackToManagePhysicians();
 
-				log("step 9:click link EditPhysician");
+				logStep("click link EditPhysician");
 				pAddPhysicianPage = pManageYourPhysiciansPage.clicklnkEditPhysician();
 				assertTrue(pAddPhysicianPage.isSearchPageLoaded(), "Expected the Add Physician Page  to be loaded, but it was not.");
 
-				log("step 10:click on button Delete Physician");
+				logStep("click on button Delete Physician");
 				pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.deletePhysician();
-				/*
-				 * log("Are you sure you wish to permanently delete: "+ provider+"?"); assertTrue(verifyTextPresent(driver,"Are you sure you wish to permanently delete: "+
-				 * provider+"?"));
-				 */
-
-				log("step 11:give Confirmation to delete operation");
+				
+				logStep("give Confirmation to delete operation");
 				pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.deletePhysican();
 				assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
-				log("step 12:Assert if deleted or not");
+				logStep("Assert if deleted or not");
 				assertTrue(verifyTextPresent(driver, "Information Updated"));
-				// assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,
-				// SitegenConstants.FIRSTNAME, SitegenConstants.TITLE)));
-				verifyTextPresent(driver, "Edit Physician");
+				assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,SitegenConstants.FIRSTNAME, SitegenConstants.TITLE))); 
+				assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
+								
 		}
 
 		/**
@@ -240,23 +237,22 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testPermission() throws Exception {
-
-				log("WARNING 6-25-2013 ISSUES in DEV3 build so this testcase wont be working there");
-				log("Also do check the status of ISSUES DE1178,DE1179");
-				
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				logStep("Navigate to SiteGen PracticeHomePage");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
-				log("step 4: Click on Link Permissions and Personnel Types");
+				logStep("Click on Link Permissions and Personnel Types");
 				ManageYourGroupPersonnelTypesPage pManageYourGroupPersonnelTypesPage = pSiteGenPracticeHomePage.clickLnkPermissions();
 				assertTrue(pManageYourGroupPersonnelTypesPage.isSearchPageLoaded(), "Expected the Manage Your Group Personnel Types to be loaded, but it was not.");
 
-				log("step 5: Click on Link Manage Permissions for Nurses");
+				logStep("Click on Link Manage Permissions for Nurses");
 				ManageUserPermissionsPage pManageUserPermissionsPage = pManageYourGroupPersonnelTypesPage.clicklnkManagePermissions4Nurses();
 				assertTrue(pManageUserPermissionsPage.isSearchPageLoaded(), "Expected the Manage User Permissions Page to be loaded, but it was not.");
 
-				log("step 6: Click on Link Manage Permissions for Nurses");
+				logStep("Click on Link Manage Permissions for Nurses");
 				pSiteGenPracticeHomePage = pManageUserPermissionsPage
 						.givePermission2Nurse(SitegenConstants.PERSONNELTYPE1, SitegenConstants.PERSONNELTYPE2, SitegenConstants.SOLUTIONS, SitegenConstants.LOCATIONS,
 								SitegenConstants.USERS);
@@ -265,14 +261,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(PageFactory.initElements(driver, SiteGenLoginPage.class).isSearchPageLoaded(),
 						"Expected the SiteGen login Page  to be loaded, but it was not.");
 
-				log("step 7: Login to Practice Portal");
+				logStep("Login to Practice Portal");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,testData.getProperty("siteGenAutomationPracticeUrl"));
 				PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("personnelTypeUserName"), testData.getProperty("personnelTypePswd"));
 
-				log("step 8: verify AptRequest Tab in Practice Portal");
+				logStep("Verify AptRequest Tab in Practice Portal");
 				assertTrue(practiceHome.verifyAptRequestTab(), "Appointment tab not displayed");
 
-				log("step 9: Logout");
+				logStep("Logout");
 				practiceHome.logOut();
 		}
 
@@ -300,47 +296,50 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testIntegrationEngAndInterfaceSetUp() throws Exception {
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage p1SiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				logStep("Navigate to SiteGen PracticeHomePage");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = p1SiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
-				log("step 4: Click on Interface set up link");
+				logStep("step 4: Click on Interface set up link");
 				InterfaceAdministrationPage pInterfaceAdministrationPage = pSiteGenPracticeHomePage.clickLnkInterfaceSetup();
 				assertTrue(pInterfaceAdministrationPage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-				log("Cleaning the testdata for Integration Type");
+				logStep("Cleaning the testdata for Integration Type");
 				pInterfaceAdministrationPage.cleanTestDataIntegrationEng();
 
-				log("step 5: Add new Integration Engine");
+				logStep("Add new Integration Engine");
 				String integrationEngine = pInterfaceAdministrationPage.AddIntegrationEngine();
 				assertEquals(integrationEngine, "Integration Engine", "Wrong Integration type added");
 
-				log("step 6: go back to Sitgen Home page");
+				logStep("Go back to Sitgen Home page");
 				SiteGenHomePage pSiteGenHomePage = pInterfaceAdministrationPage.clickLinkHome();
 				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-				log("step 7: click on Link MedfusionSiteAdministration");
+				logStep("Click on Link MedfusionSiteAdministration");
 				pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 				assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the View Integrations Page to be loaded, but it was not.");
 
-				log("step 8: click Link IntegrationEngine");
+				logStep("Click Link IntegrationEngine");
 				ViewIntegrationsPage pViewIntegrationsPage = pSiteGenPracticeHomePage.clickLnkIntegrationEngine();
 				assertTrue(pViewIntegrationsPage.isSearchPageLoaded(), "Expected the View Integrations Page to be loaded, but it was not.");
 
-				log("step 9: click Link Create IntegrationEngine");
+				logStep("Click Link Create IntegrationEngine");
 				CreateIntegrationStep1Page pCreateIntegrationPage = pViewIntegrationsPage.clickLnkCreateIntegration();
 				assertTrue(pCreateIntegrationPage.isSearchPageLoaded(), "Expected the View Integrations Page to be loaded, but it was not.");
 
-				log("step 10: Add New IntegrationEngine");
+				logStep("Add New IntegrationEngine");
 				CreateIntegrationStep2Page pCreateIntegrationStep2Page = pCreateIntegrationPage
 						.addNewIntegrationEng(SitegenConstants.EXTERNAL_SYSTEM, SitegenConstants.CHANNEL, SitegenConstants.INTEGRATION_NAME, SitegenConstants.REVIEWTYPE);
 				assertTrue(pCreateIntegrationStep2Page.isSearchPageLoaded(), "Expected the View Integrations Page to be loaded, but it was not.");
-				log("step 11: click btn SaveAndContinue");
+				logStep("Click btn SaveAndContinue");
 				pViewIntegrationsPage = pCreateIntegrationStep2Page.clickbtnSaveAndContinue();
-				log("step 12: Assert if New IntegrationEngine is added or not");
+				logStep("Assert if New IntegrationEngine is added or not");
 				assertTrue(verifyTextPresent(driver, "Integration '" + SitegenConstants.INTEGRATION_NAME + "' updated successfully."));
 
-				log("step 13: verify if Integrations Engine is added or not");
+				logStep("Verify if Integrations Engine is added or not");
 				assertTrue(pViewIntegrationsPage.verifyIfIntegrationsEngineIsAdded(SitegenConstants.INTEGRATION_NAME), "INTEGRATION_Engine not added");
 
 				log("Testcase passed");
@@ -358,10 +357,13 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		 */
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testMerchantAccountSetUpViaPaypal() throws Exception {
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				logStep("Navigate to SiteGen PracticeHomePage");
 				SiteGenPracticeHomePage practiseHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-			
+				logStep("Navigate to MerchantAccountPage");
 				MerchantAccountPage merchantAcctPage = practiseHome.clickOnMerchantAccountLink();
 
 				merchantAcctPage.deleteExistingMerchantAcct();
@@ -375,14 +377,61 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				merchantAcctSetUp.selectPartnerValue(SitegenConstants.PartnerValue3);
 				merchantAcctSetUp.clickOnSaveChanges();
 
-				log("Verify whether the Merchant Account added successfully");
+				logStep("Verify whether the Merchant Account added successfully");
 				assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage,
 						"Merchant Account added successfully message is not getting displayed");
-
+				logStep("Navigate to MerchantAccountPage");
 				practiseHome.clickOnMerchantAccountLink();
+
+				logStep("Verify whether the Account is Added in the Merchant Account List");
+				assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
+		}
+
+		/**
+		 * @throws Exception
+		 * @Author:-bbinisha
+		 * @Date :- 07-03-2013
+		 * @UserStrory ID in Rally : US6407
+		 * @StepsToReproduce: Login to Sitegen platform as SU Select the Practice Select MerchantAccount solution Select QBMS in the options Goto Merchant Account
+		 * Setup Provide data and save Verify whether the Merchant Account is added in Merchant Account List
+		 */
+		@Test(enabled = true, groups = {"AcceptanceTests"})
+		public void testMerchantAccountSetUpViaQBMS() throws Exception {
+				logStep("Login to SG as superuser - THIS REQUIRES MANUAL INPUT");
+				SiteGenHomePage pSiteGenHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
+				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
+				logStep("Navigate to SiteGen PracticeHomePage");
+				SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
+
+				logStep("Navigating to the Merchant Account List page.");
+				MerchantAccountPage merchantAcctPage = pSiteGenPracticeHomePage.clickOnMerchantAccountLink();
+
+				logStep("Delete Existing Merchant Account.");
+				merchantAcctPage.deleteExistingMerchantAcct();
+
+				logStep("Navigating to the Merchant Account Set Up Page.");
+				MerchantAccountSetUpPage merchantAcctSetUp = merchantAcctPage.clickOnMerchantAccountSetUp();
+				merchantAcctSetUp.clickOnPracticeRadioButton();
+
+				logStep("Entering Account details");
+				merchantAcctSetUp.selectStatus(SitegenConstants.statusValue2);
+				merchantAcctSetUp.selectProcessorValue(SitegenConstants.PROCESSORVALUE2);
+				merchantAcctSetUp.enterMerchantToken(SitegenConstants.merchantAcctQBMSToken);
+				merchantAcctSetUp.enterMerchantTestToken(SitegenConstants.merchantAcctQBMSToken);
+
+				logStep("Saving the account details");
+				merchantAcctSetUp.clickOnSaveChanges();
+
+				log("Verify whether the Merchant Account added successfully");
+				assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage, "Merchant Account is not getting added");
+
+				logStep("Navigate to merchant account List");
+				pSiteGenPracticeHomePage.clickOnMerchantAccountLink();
 
 				log("Verify whether the Account is Added in the Merchant Account List");
 				assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
+
+				merchantAcctPage.deleteExistingMerchantAcct();
 		}
 
 		/**
@@ -400,93 +449,47 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		 * =============================================================
 		 * @AreaImpacted :- Description
 		 */
-
+		
 		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testImportAndExportStaff() throws Exception {
+				logStep("Get Data from PropertyFileLoader");
+				logStep("LogIn");
 				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				logStep("Navigate to SiteGen PracticeHomePage");
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 			
-				log("step 4: Click on Link Permissions and Personnel Types");
+				logStep("Click on Link Permissions and Personnel Types");
 				ManageYourPersonnelPage pManageYourPersonnelPage = pSiteGenPracticeHomePage.clickLnkPersonnelNonPhysicians();
 				assertTrue(pManageYourPersonnelPage.isSearchPageLoaded(), "Expected the Manage Your Personnel Page to be loaded, but it was not.");
-
-				log("step 5: Click on Link Import Personnel And Physicians");
+		
+				logStep("Click on Link Import Personnel And Physicians");
 				ImportPersonnelAndPhysiciansPage pImportPersonnelAndPhysicians = pManageYourPersonnelPage.clickBtnImportPersonnelAndPhysicians();
 				assertTrue(pImportPersonnelAndPhysicians.isSearchPageLoaded(), "Expected the Import Personnel And Physicians Page to be loaded, but it was not.");
-
-				log("step 6: Import the csv file from the test\resource\testfile location");
+		
+				logStep("Import the csv file from the test\resource\testfile location");
 				ImportOrExportProgressPage pImportOrExportProgressPage = pImportPersonnelAndPhysicians.clickbtnimportStaffFile();
 				assertTrue(verifyTextPresent(driver, "Import/Export Progress"), "Import/Export Progress text is not present on Import/Export Progress");
-
-				log("step 7: Wait so it can be imported and click on Link List All Personnel");
+		
+				logStep("Wait so it can be imported and click on Link List All Personnel");
 				Thread.sleep(3000);
 				pImportPersonnelAndPhysicians = pImportOrExportProgressPage.clickLinkImportPersonnelAndPhysicians();
-
+		
 				log("Assertions For Import staff");
 				assertTrue(pImportPersonnelAndPhysicians
 						.verifyImportStaffCreationDate(pImportPersonnelAndPhysicians.getImportStaffCreateDate(), IHGUtil.getEstTimingWithTime()));
 				assertEquals(pImportPersonnelAndPhysicians.getFileName(), SitegenConstants.IMPORTSTAFFFILENAME);
 				assertEquals(pImportPersonnelAndPhysicians.getStatus(), SitegenConstants.FILEIMPORTSTATUS);
-
+		
 				log("Import staff testcase passed");
 				log("Export staff testcase Getting Started");
-
-				log("step 8: Click on link ExportPersonnel");
+		
+				logStep("Click on link ExportPersonnel");
 				ExportPersonnelPage pExportPersonnel = pImportPersonnelAndPhysicians.clickLinkExportPersonnel();
 				assertTrue(pExportPersonnel.isSearchPageLoaded(), "Expected the SiteGen Export Personnel page to be loaded, but it was not.");
 				pExportPersonnel.clickBtnExportStaff();
-
-				log("step 9: click on Download link (Export staff) -- validate HTTP Status Code");
+		
+				logStep("Click on Download link (Export staff) -- validate HTTP Status Code");
 				assertEquals(pExportPersonnel.clickLinkDownloadExportStaff(), 200, "Download of Export staff returned unexpected HTTP status code");
-		}
-
-		/**
-		 * @throws Exception
-		 * @Author:-bbinisha
-		 * @Date :- 07-03-2013
-		 * @UserStrory ID in Rally : US6407
-		 * @StepsToReproduce: Login to Sitegen platform as SU Select the Practice Select MerchantAccount solution Select QBMS in the options Goto Merchant Account
-		 * Setup Provide data and save Verify whether the Merchant Account is added in Merchant Account List
-		 */
-		@Test(enabled = true, groups = {"AcceptanceTests"})
-		public void testMerchantAccountSetUpViaQBMS() throws Exception {
-				log("step 2:LogIn");
-				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-				SiteGenHomePage pSiteGenHomePage = new SiteGenHomePage(driver);
-				pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
-				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
-				log("step 3: navigate to SiteGen PracticeHomePage");
-				SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
-
-				log("Step 6 :- Navigating to the Merchant Account List page.");
-				MerchantAccountPage merchantAcctPage = practiceHome.clickOnMerchantAccountLink();
-
-				log("Step 7 :- Delete Existing Merchant Account.");
-				merchantAcctPage.deleteExistingMerchantAcct();
-
-				log("Step 8 :- Navigating to the Merchant Account Set Up Page.");
-				MerchantAccountSetUpPage merchantAcctSetUp = merchantAcctPage.clickOnMerchantAccountSetUp();
-				merchantAcctSetUp.clickOnPracticeRadioButton();
-
-				log("Step 9 : Entering Account details");
-				merchantAcctSetUp.selectStatus(SitegenConstants.statusValue2);
-				merchantAcctSetUp.selectProcessorValue(SitegenConstants.PROCESSORVALUE2);
-				merchantAcctSetUp.enterMerchantToken(SitegenConstants.merchantAcctQBMSToken);
-				merchantAcctSetUp.enterMerchantTestToken(SitegenConstants.merchantAcctQBMSToken);
-
-				log("Step 10 : Saving the account details");
-				merchantAcctSetUp.clickOnSaveChanges();
-
-				log("Verify whether the Merchant Account added successfully");
-				assertEquals(merchantAcctSetUp.getAccountAddedSuccessMsg(), SitegenConstants.expSuccessMessage, "Merchant Account is not getting added");
-
-				log("Step 11 : Navigate to merchant account List");
-				practiceHome.clickOnMerchantAccountLink();
-
-				log("Verify whether the Account is Added in the Merchant Account List");
-				assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(), "Merchant Account not added in the Merchant Account List");
-
-				merchantAcctPage.deleteExistingMerchantAcct();
 		}
 }
