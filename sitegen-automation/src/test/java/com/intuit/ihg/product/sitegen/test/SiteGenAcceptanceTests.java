@@ -51,30 +51,28 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 * @AreaImpacted :- Description
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSiteGenLoginLogout() throws Exception {
-		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"),
-				testData.getProperty("automationPassword"));
-		IHGUtil util = new IHGUtil(driver);
-		assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
-				"Expected the SiteGen HomePage  to be loaded, but it was not.");
-		logStep("Check page elements are present within page");
-		assertTrue(util.isRendered((pSiteGenHomePage.lnkHome)), "lnk Home not displayed");
-		assertTrue(util.isRendered((pSiteGenHomePage.lnkHelp)), "lnk Help not displayed");
-		assertTrue(util.isRendered((pSiteGenHomePage.btnlogout)), "button logout not displayed");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-		logStep("Navigate to SiteGen PracticeHomePage");
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, "Administrator - Setup/Access"));
-		assertTrue(verifyTextPresent(driver, "Portal Solutions"));
-		assertTrue(verifyTextPresent(driver, "Additional Configurations"));
-		logStep("Logout");
-		loginpage = pSiteGenPracticeHomePage.clicklogout();
-		assertTrue(loginpage.isSearchPageLoaded(), "Expected the SiteGen login Page  to be loaded, but it was not.");
-	}
+		@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testSiteGenLoginLogout() throws Exception {
+				logStep("LogIn");
+				SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+				SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+				IHGUtil util = new IHGUtil(driver);
+				logStep("Check if SiteGen Homepage elements are present ");
+				assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
+				assertTrue(util.isRendered((pSiteGenHomePage.lnkHome)), "lnk Home not displayed");
+				assertTrue(util.isRendered((pSiteGenHomePage.lnkHelp)), "lnk Help not displayed");
+				assertTrue(util.isRendered((pSiteGenHomePage.btnlogout)), "button logout not displayed");
+				logStep("Navigate to SiteGen PracticeHomePage");
+				SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+				logStep("Check if SiteGen Practice Homepage elements are present ");
+				assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+				assertTrue(verifyTextPresent(driver, "Administrator - Setup/Access"));
+				assertTrue(verifyTextPresent(driver, "Portal Solutions"));
+				assertTrue(verifyTextPresent(driver, "Additional Configurations"));
+				logStep("Logout");
+				loginpage = pSiteGenPracticeHomePage.clicklogout();
+				assertTrue(loginpage.isSearchPageLoaded(), "Expected the SiteGen login Page  to be loaded, but it was not.");
+		}
 
 	/**
 	 * @throws Exception
@@ -104,7 +102,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pManageYourLocationsPage.isSearchPageLoaded(),
 				"Expected the SiteGen Manage location Page to be loaded, but it was not.");
 
-		logStep("Check if the data is clean or not");
+		logStep("Clean test data - remove all locations");
 		pManageYourLocationsPage.cleaningTestdata(SitegenConstants.PRACTICENAME, SitegenConstants.STATE);
 
 		logStep("Navigate to AddLocationPage");
@@ -123,7 +121,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(verifyTextPresent(driver, SitegenConstants.STATE));
 		assertTrue(verifyTextPresent(driver, SitegenConstants.PRACTICENAME));
 
-		logStep("Test case Passed, Now Cleaning Test Data");
+		logStep("Test case passed, cleaning test data - remove all locations");
 		pManageYourLocationsPage.cleaningTestdata(SitegenConstants.PRACTICENAME, SitegenConstants.STATE);
 	}
 
@@ -160,7 +158,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(),
 				"Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
-		logStep("Cleaning the testdata");
+		logStep("Cleaning the testdata - delete all physicians");
 		pManageYourPhysiciansPage.cleanTestPhysiciansData();
 
 		logStep("click Link Add Physicians and navigate to Add Physicians Page");
@@ -189,36 +187,33 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				"Expected the Add Physician Step2 Edit Location Information Page  to be loaded, but it was not.");
 
 		logStep("Assert if  Physicians added or not");
-		assertTrue(verifyTextPresent(driver, "Information Updated"));
+		assertTrue(verifyTextPresent(driver, "Information Updated"),"Physician was not added correctly");
 		String provider = SitegenConstants.FIRSTNAME + " " + lastName;
-		assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider));
+		assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider),"Physician was not added correctly");
 
-		logStep("Physician added test case passed");
+		logStep("Test case passed, cleaning test data");
 		logStep("Test data cleaning process is going to start");
 
-		logStep("click Button GoBackToManagePhysicians");
+		logStep("Click Button GoBackToManagePhysicians");
 		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.clickBtnGoBackToManagePhysicians();
 
-		logStep("click link EditPhysician");
+		logStep("Click link EditPhysician");
 		pAddPhysicianPage = pManageYourPhysiciansPage.clicklnkEditPhysician();
 		assertTrue(pAddPhysicianPage.isSearchPageLoaded(),
 				"Expected the Add Physician Page  to be loaded, but it was not.");
 
-		logStep("click on button Delete Physician");
+		logStep("Click on button Delete Physician");
 		pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.deletePhysician();
-		/* added */logStep("Are you sure You wish to permanently delete: " + provider + "?");
-		/* added */assertTrue(
-				verifyTextPresent(driver, "Are you sure you wish to permanently delete: " + provider + "?"));
+		logStep("Verify if confirmation of deleting physician is shown");
+		assertTrue(verifyTextPresent(driver, "Are you sure you wish to permanently delete: " + provider + "?"));
 
-		logStep("give Confirmation to delete operation");
+		logStep("Confirm delete operation");
 		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.deletePhysican();
-		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(),
-				"Expected the Manage Your Physicians Page  to be loaded, but it was not.");
+		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
-		logStep("Assert if deleted or not");
+		logStep("Assert if physician deleted or not");
 		assertTrue(verifyTextPresent(driver, "Information Updated"));
-		// assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,SitegenConstants.FIRSTNAME,
-		// SitegenConstants.TITLE)));
+		// assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,SitegenConstants.FIRSTNAME, SitegenConstants.TITLE)));
 		assertFalse(verifyTextPresent(driver, "Edit Physician"));
 
 	}
@@ -390,7 +385,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pViewIntegrationsPage.verifyIfIntegrationsEngineIsAdded(SitegenConstants.INTEGRATION_NAME),
 				"INTEGRATION_Engine not added");
 
-		logStep("clean Integration TestData");
+		logStep("Clean Integration TestData");
 		pViewIntegrationsPage.cleanIntegrationTestData();
 	}
 
@@ -465,17 +460,17 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Delete Existing Merchant Account.");
 		merchantAcctPage.deleteExistingMerchantAcct();
 
-		logStep("Navigating to the Merchant Account Set Up Page.");
+		logStep("Navigate to the Merchant Account Set Up Page.");
 		MerchantAccountSetUpPage merchantAcctSetUp = merchantAcctPage.clickOnMerchantAccountSetUp();
 		merchantAcctSetUp.clickOnPracticeRadioButton();
 
-		logStep("Entering Account details");
+		logStep("Enter Account details");
 		merchantAcctSetUp.selectStatus(SitegenConstants.statusValue2);
 		merchantAcctSetUp.selectProcessorValue(SitegenConstants.PROCESSORVALUE2);
 		merchantAcctSetUp.enterMerchantToken(SitegenConstants.merchantAcctQBMSToken);
 		merchantAcctSetUp.enterMerchantTestToken(SitegenConstants.merchantAcctQBMSToken);
 
-		logStep("Saving the account details");
+		logStep("Save the account details");
 		merchantAcctSetUp.clickOnSaveChanges();
 
 		logStep("Verify whether the Merchant Account added successfully");
@@ -489,6 +484,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(merchantAcctPage.verifyAcctInMerchantAcctList(),
 				"Merchant Account not added in the Merchant Account List");
 
+		logStep("Test case passed, clean test data - remove existing merchant account");
 		merchantAcctPage.deleteExistingMerchantAcct();
 	}
 
