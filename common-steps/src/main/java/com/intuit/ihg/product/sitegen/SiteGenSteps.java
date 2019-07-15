@@ -12,21 +12,19 @@ import org.openqa.selenium.WebDriver;
 public class SiteGenSteps extends BaseTestNGWebDriver {
 
 	public static void logSGLoginInfo(PropertyFileLoader testData) {
-		Log4jUtil.log("URL: " + testData.getProperty("sitegenUrl"));		
+		Log4jUtil.log("URL: " + testData.getProperty("sitegenUrl"));
 	}
 
 	public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password) throws Exception {
 		logStep("Get Data from PropertyFile");
-		PropertyFileLoader testData = new PropertyFileLoader();		
-		
-		logStep("Opening sitegen home page");
+		PropertyFileLoader testData = new PropertyFileLoader();
+
+		logStep("Opening SiteGen home page");
 		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 		SiteGenHomePage sHomePage = sloginPage.login(login, password);
 
 		logStep("Navigate to SiteGen PracticeHomePage");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.clickLinkMedfusionSiteAdministration();
-			
-		return pSiteGenPracticeHomePage;
+		return sHomePage.clickLinkMedfusionSiteAdministration();
 	}
-	
+
 }
