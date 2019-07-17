@@ -35,7 +35,7 @@ public class SitegenConstants {
 	public final static String PERSONNELTYPE2 = "Practice Administrator";
 	public final static String SOLUTIONS = "Appointment Request";
 	public final static String LOCATIONS = "All Locations";
-	public final static String USERS = "Auto, Sitegen";
+	public final static String USERS = "All Users";
 
 	// US6154 :- Integration Set UP &&
 	// US6153 :- Integration Engine
