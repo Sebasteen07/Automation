@@ -59,7 +59,7 @@ public class NoLoginPaymentPage extends BasePageObject {
 	@FindBy(xpath = ".//td[@class='table_text']/span")
 	private WebElement txtConfirmationNumber;
 
-	@FindBy(xpath = "//*[@id='payForm']/div[16]/div/div/div/iframe")
+	@FindBy(xpath = "//*[@id='payForm']/div[16]/div/div/div/iframe | //*[@id='payForm']/div[15]/div/div/div/iframe")
 	private WebElement reCaptchaFrame;
 
 	private String amountPrize;

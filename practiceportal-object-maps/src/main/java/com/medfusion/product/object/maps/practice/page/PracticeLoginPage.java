@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.practice.page;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -37,7 +38,13 @@ public class PracticeLoginPage extends BasePageObject {
 				IHGUtil.PrintMethodName();
 				log("URL: " + baseURL);
 				driver.get(baseURL);
-				driver.manage().window().maximize();
+				try{
+						driver.manage().window().maximize(); // known Selenium issue: org.openqa.selenium.WebDriverException: unknown error: failed to change window state to normal, current state is maximized
+				}catch (WebDriverException ex){
+						//just catch an exception trowed by known Selenium error to continue, it is not an issue which should fail the test
+						log("Window is already maximized");
+						log("Known Selenium issue: "+ ex.getMessage());
+				}
 				PageFactory.initElements(driver, this);
 		}
 

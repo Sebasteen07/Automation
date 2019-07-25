@@ -1,6 +1,5 @@
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 

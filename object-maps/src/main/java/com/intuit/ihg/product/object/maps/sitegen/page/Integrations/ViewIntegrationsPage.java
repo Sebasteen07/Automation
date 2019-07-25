@@ -143,11 +143,11 @@ public class ViewIntegrationsPage extends BasePageObject {
 				btnConfirmDelete.click();
 			}
 
-			log("Removed all IntegrationEngine and clean the test data ######");
+			log("Removed all IntegrationEngine and clean the test data");
 		} catch (org.openqa.selenium.NoSuchElementException c) {
-			log("The test data was already clean ######");
+			log("The test data was already clean");
 		} catch (Exception e) {
-			log("The test data was already clean ######");
+			log("The test data was already clean");
 		}
 
 	}

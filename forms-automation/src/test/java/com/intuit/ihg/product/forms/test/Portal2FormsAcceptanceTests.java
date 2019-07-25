@@ -133,6 +133,9 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		 */
 		@Test(groups = {"Forms"})
 		public void testCustomFormWithFUPsPI() throws Exception {
+				//if the tests is failing, it might be because the test failed in the middle in previous runs and the form is in different state than this tests expects
+				//quick trouble shooting: run this test with new patient
+				//if it is frequent issue, run this test with new patient every run
 				testCustomFormWithFUPs(Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData));
 		}
 

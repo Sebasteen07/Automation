@@ -45,8 +45,9 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 				log("step 1: login to SG as superuser - THIS REQUIRES MANUAL INPUT");
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
 				log("step 2: navigate to SiteGen PracticeHomePage");
-				SiteGenPracticeHomePage pSiteGenPracticeHomePage;
-				pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(String.valueOf(Utils.getAutomationPracticeID()));
+				String automationPracticeID = String.valueOf(Utils.getPracticeIDFromPIUrl(testData.getProperty("portal2Url2")));
+				SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
+
 				String parentHandle = driver.getWindowHandle();
 				log("step 3: Click on Patient Forms");
 				DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
