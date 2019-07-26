@@ -21,8 +21,7 @@ public class ExistingUserTests extends BaseTestNGWebDriver {
 		testData = new PropertyFileLoader();
 		String url = testData.getProperty("mfconnectURL");
 		System.out.println(url);
-		HomePage home = new HomePage(driver, url);
-		home.dummy();
+		new HomePage(driver, url);
 	}
 	
 	@Test(enabled=true)

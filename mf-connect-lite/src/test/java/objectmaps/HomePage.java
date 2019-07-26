@@ -36,9 +36,5 @@ public class HomePage extends BasePageObject {
 	
 	@FindBy(how = How.ID, using= "mfConnectBtn")
 	public WebElement mfConnectBtn;
-	
-	public void dummy() {
-		System.out.println("Dummy class");
-	}
 
 }
