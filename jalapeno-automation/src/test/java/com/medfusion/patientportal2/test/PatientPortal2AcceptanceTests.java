@@ -122,7 +122,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 				}
 		}
-
+		//TODO move to Utils
 		private String getRedirectUrl(String originUrl) {
 				log("Navigating to input URL and checking redirection for 10 seconds");
 				driver.get(originUrl);
@@ -147,10 +147,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		 * @return
 		 */
 		private boolean isInviteLinkFinal(String url) {
-				boolean ret = url.contains(INVITE_LINK_FRAGMENT) || url.contains(ACTIVATE_LINK_FRAGMENT);
-				if (!ret)
+				boolean isFinalUrl = url.contains(INVITE_LINK_FRAGMENT) || url.contains(ACTIVATE_LINK_FRAGMENT);
+				if (!isFinalUrl)
 						log("The retrieved link is a redirect URL : " + url);
-				return ret;
+				return isFinalUrl;
 		}
 
 		@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
@@ -278,6 +278,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 						new Mailinator().getLinkFromEmail(patientsEmail, INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 10);
 				assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 				logStep("Retrieved activation link is " + unlockLinkEmail);
+				if (!isInviteLinkFinal(unlockLinkEmail)) {
+						unlockLinkEmail = getRedirectUrl(unlockLinkEmail);
+				}
 				logStep("Comparing with portal unlock link " + unlockLinkPortal);
 				assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 		}
@@ -723,7 +726,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 				JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
-				// remove all cards because Selenium can't see AddNewCard button
+				logStep("Remove all cards because Selenium can't see AddNewCard button");
 				payBillsPage.removeAllCards();
 				logStep("Check that no card is present");
 				assertFalse(payBillsPage.isAnyCardPresent());
