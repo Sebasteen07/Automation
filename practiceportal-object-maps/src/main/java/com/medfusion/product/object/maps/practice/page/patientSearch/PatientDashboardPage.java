@@ -262,7 +262,7 @@ public class PatientDashboardPage extends BasePageObject {
 	public String readExternalPatientID() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 120, externalID);
-		patientID = externalID.getAttribute("value").toString();
+		patientID = txtexternalIDPM.getAttribute("value").toString();
 		return patientID;
 	}
 	
