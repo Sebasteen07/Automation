@@ -31,9 +31,9 @@
 				<include name="testDirectorySearchSingleValue"/>
 				<exclude name="testUnseenMessageList"/>
 				<exclude name="testDeleteP2PMessage"/>
-				<include name="testE2EPreCheckUpdatesOnlyDemographics"/>
-				<include name="testE2EPreCheckUpdatesOnlyInsurance"/>
-				<include name="testE2EPreCheckUpdatesSingleInsuranceImageCard"/>
+				<exclude name="testE2EPreCheckUpdatesOnlyDemographics"/>
+				<exclude name="testE2EPreCheckUpdatesOnlyInsurance"/>
+				<exclude name="testE2EPreCheckUpdatesSingleInsuranceImageCard"/>
 	    	 	<include name="testMU2GetEventForExistingPatient"/>
       	</methods>
 	</classes>
