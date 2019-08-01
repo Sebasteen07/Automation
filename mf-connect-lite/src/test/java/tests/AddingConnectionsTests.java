@@ -20,6 +20,8 @@ import objectmaps.OfficeSelectPage;
 import objectmaps.ConfirmDoctorPortalPage;
 import objectmaps.CreatePortalConnectionPage;
 import objectmaps.PortalLauncher;
+import objectmaps.SelectDoctorPage;
+import objectmaps.DoctorLocationPage;
 
 public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	protected PropertyFileLoader testData;
@@ -123,5 +125,53 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 		Assert.assertTrue(cpcp3.createConnectionBtn.isDisplayed());
 		Assert.assertTrue(cpcp3.resetPassword.isDisplayed());
 		
+	}
+	
+	@Test(enabled=true)
+	public void searchForDoctor() throws Exception {
+		AddConnectionPage acp = new AddConnectionPage(driver);
+		acp.clickMfDoctorBtn();
+		ConnectionDoctorPage cdp = new ConnectionDoctorPage(driver);
+		String doctor = testData.getProperty("doctor");
+		String zip = testData.getProperty("zip");
+		cdp.searchBy.sendKeys(doctor);
+		cdp.searchZip.sendKeys(zip);
+		cdp.directorySearchBtn.click();
+		
+		log("Checking for search results page and click first entry");
+		new SelectDoctorPage(driver);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]/p[1]"))));
+		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		log("Choosing a doctor location");
+		new DoctorLocationPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Back to select doctor"))));
+		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[6]")).click();
+		log("Choosing a sample portal");
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Back to search results"))));
+		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		log("Assessing create portal connection elements");
+		CreatePortalConnectionPage cpcp = new CreatePortalConnectionPage(driver);
+		Assert.assertTrue(cpcp.ccUsername.isDisplayed());
+		Assert.assertTrue(cpcp.ccPassword.isDisplayed());
+	}
+	
+	@Test(enabled=true)
+	public void searchForWebsite() throws Exception {
+		AddConnectionPage acp = new AddConnectionPage(driver);
+		acp.clickMfPortalBtn();
+		ConnectionPortalPage cpp = new ConnectionPortalPage(driver);
+		String url = testData.getProperty("url");
+		cpp.primaryURL.sendKeys(url);
+		cpp.directorySearchBtn.click();
+		
+		log("Picking a portal from search results");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]"))));
+		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		log("Assessing create portal connection elements");
+		CreatePortalConnectionPage cpcp = new CreatePortalConnectionPage(driver);
+		Assert.assertTrue(cpcp.ccUsername.isDisplayed());
+		Assert.assertTrue(cpcp.ccPassword.isDisplayed());
 	}
 }
