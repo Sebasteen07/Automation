@@ -19,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Page with general functionality. TODO Should be moved somewhere to BasePageObject later
  */
@@ -30,6 +32,11 @@ public abstract class MedfusionPage extends BasePageObject {
 		@FindBy(how = How.XPATH, using = "/html")
 		private WebElement ccdViewerHtmlTag;
 
+		@FindBy(how = How.ID,using = "updateMissingInformation_form")
+		private WebElement weNeedToConfirmSomethingModal;
+
+		@FindBy(how = How.ID, using = "updateMissingInfoButton")
+		private WebElement okButton;
 
 		public MedfusionPage(WebDriver driver) {
 				this(driver, null);
@@ -69,6 +76,32 @@ public abstract class MedfusionPage extends BasePageObject {
 		 * Will check basic elements in page constructor. Should be properly overwritten if you want to make this check
 		 */
 		public abstract boolean areBasicPageElementsPresent();
+
+		public boolean isElementVisible(WebElement element, int timeOutInSeconds){
+				try{
+						new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOf(element));
+				}catch (Exception ex){
+						log("Element is not visible.");
+						return false;
+				}
+				log("Element " + elementToString(element) + " is visible.");
+				return true;
+		}
+		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
+		public void handleWeNeedToConfirmSomethingModal(){
+				log("Checking if some confirmation needed");
+				while (isElementVisible(weNeedToConfirmSomethingModal, 10)){
+						log("We need to confirm something modal window shown");
+						okButton.click();
+
+						try {
+								//wait to modal view disappear
+								sleep(2000);
+						} catch (InterruptedException e) {
+								e.printStackTrace();
+						}
+				}
+		}
 
 
 		public String elementToString(WebElement element) {
@@ -225,13 +258,13 @@ public abstract class MedfusionPage extends BasePageObject {
 								new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOf(element));
 								log(elementToString(element) + " is displayed.", Level.INFO);
 						} catch (StaleElementReferenceException ex) {
-								log("StaleElementReferenceException was caught." + ex.toString(), Level.ERROR);
+								log("StaleElementReferenceException was caught while searching for " + elementToString(element) + "." + ex.toString(), Level.ERROR);
 								return false;
 						} catch (TimeoutException ex) {
-								log("TimeoutException was caught." + ex.toString(), Level.ERROR);
+								log("TimeoutException was caught while searching for " + elementToString(element) + "." + ex.toString(), Level.ERROR);
 								return false;
 						} catch (Exception ex) {
-								log("Exception was caught." + ex.toString(), Level.ERROR);
+								log("Exception was caught while searching for " + elementToString(element) + "." + ex.toString(), Level.ERROR);
 								ex.printStackTrace();
 								return false;
 						}
