@@ -13,10 +13,12 @@ public class ConfirmDoctorPortalPage extends HomePage {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(how = How.ID, using = "mfConnectBack")
+	@FindBy(how = How.LINK_TEXT, using = "Back to search results")
 	public WebElement mfConnectBack;
 	
 	@FindBy(how = How.ID, using = "mfCloseButton")
 	public WebElement mfCloseBtn;
 	
+	@FindBy(how = How.XPATH, using = "/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")
+	public WebElement firstElement;
 }
