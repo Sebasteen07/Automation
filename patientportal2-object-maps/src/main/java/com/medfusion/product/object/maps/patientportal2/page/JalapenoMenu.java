@@ -79,7 +79,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		//webElementsList.add(homeMenu); //TODO uncomment once the issue with missing Jalapeno Menu is solved
-		webElementsList.add(signoutButton);
+		//webElementsList.add(signoutButton);
 
 		return assessPageElements(webElementsList);
 	}
