@@ -30,7 +30,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	private WebElement leftMenuToggle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='home']/a/span")
-  private WebElement homeMenu;
+  protected WebElement homeMenu; //TODO make private
 
 	@FindBy(how = How.XPATH, using = "//*[@id='messages_lhn']/a/span")
 	private WebElement messagesMenu;
