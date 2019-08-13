@@ -384,7 +384,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 				assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
-				jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
+				jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
 				logStep("Logging out");
 				jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
@@ -476,7 +476,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 
 				logStep("Go to Documents tab");
-				DocumentsPage documentsPage = messagesPage.goToDocumentsPage();
+				DocumentsPage documentsPage = messagesPage.goToDocumentsPageFromMenu();
 
 
 				logStep("Check if document from received message is displayed on Documents page");
