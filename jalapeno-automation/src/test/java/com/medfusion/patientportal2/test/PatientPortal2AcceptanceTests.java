@@ -384,7 +384,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 				assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
-				jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
+				jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
 				logStep("Logging out");
 				jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
