@@ -26,8 +26,11 @@ import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.J
  */
 public abstract class JalapenoMenu extends MedfusionPage {
 
+	@FindBy(how = How.ID,using = "leftMenuToggle")
+	private WebElement leftMenuToggle;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='home']/a/span")
-    protected WebElement homeMenu;
+  private WebElement homeMenu;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='messages_lhn']/a/span")
 	private WebElement messagesMenu;
@@ -87,7 +90,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	public JalapenoHomePage clickOnMenuHome() {
 		log("Clicking on Home menu button");
-		homeMenu.click();
+			try {
+					homeMenu.click();
+			} catch (NoSuchElementException ex) {
+					log("Did not find Home button, trying mobile version size");
+					leftMenuToggle.click();
+					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
+					homeMenu.click();
+			}
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
@@ -187,12 +197,12 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
 
-	
+
 	public MedicalRecordSummariesPage goToHealthRecordsPage() {
-				
+
 		log("Clicking on Health Record menu button");
 		healthRecordMenu.click();
-		
+
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
 
@@ -213,11 +223,11 @@ public abstract class JalapenoMenu extends MedfusionPage {
         return PageFactory.initElements(driver, DocumentsPage.class);
     }
 
-	
+
 	public void menuHealthRecordClickOnly(){
 		log("Clicking on Health Record menu button");
 		try{
-			healthRecordMenu.click();			
+			healthRecordMenu.click();
 		}
 		catch (NoSuchElementException e){
 			driver.navigate().refresh();
