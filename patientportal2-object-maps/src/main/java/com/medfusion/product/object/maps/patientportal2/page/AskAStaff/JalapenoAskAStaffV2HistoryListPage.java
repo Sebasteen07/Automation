@@ -26,7 +26,6 @@ public class JalapenoAskAStaffV2HistoryListPage extends JalapenoMenu {
     public boolean areBasicPageElementsPresent() {
         ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-        webElementsList.add(homeMenu);
         webElementsList.add(signoutButton);
         webElementsList.add(backButton);
 
