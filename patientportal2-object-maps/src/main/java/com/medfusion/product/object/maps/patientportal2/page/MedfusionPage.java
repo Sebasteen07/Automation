@@ -8,12 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -51,8 +46,8 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
 				// there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
-				driver.manage().window().maximize();
-				System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
+				//driver.manage().window().maximize();
+				//System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
 				printCookies();
 				PageFactory.initElements(driver, this);
 

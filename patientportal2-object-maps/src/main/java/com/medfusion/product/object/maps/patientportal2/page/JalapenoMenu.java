@@ -2,12 +2,7 @@ package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -78,8 +73,8 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	public boolean areMenuElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-		webElementsList.add(homeMenu);
-		webElementsList.add(signoutButton);
+		//webElementsList.add(homeMenu);
+		//webElementsList.add(signoutButton);
 
 		return assessPageElements(webElementsList);
 	}
@@ -153,6 +148,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountButton));
 			accountButton.click();
 		}
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
@@ -167,10 +163,17 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
 			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
 			signoutDropdownButton.click();
 		} catch (ElementNotVisibleException ex) {
 			log("Element is not currently visible, trying mobile version size");
 			rightDropdownButton.click();
+				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
+		} catch (ElementNotInteractableException ex) {
+			log("Element is not currently not intractable, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
 			signoutDropdownButton.click();
 		}
 
