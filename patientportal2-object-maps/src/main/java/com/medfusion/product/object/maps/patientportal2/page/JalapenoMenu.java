@@ -97,6 +97,11 @@ public abstract class JalapenoMenu extends MedfusionPage {
 					leftMenuToggle.click();
 					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
 					homeMenu.click();
+			} catch (ElementNotInteractableException ex) {
+					log("Did not find Home button, trying mobile version size");
+					leftMenuToggle.click();
+					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
+					homeMenu.click();
 			}
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
