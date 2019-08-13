@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import java.util.ArrayList;
 
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -155,6 +156,20 @@ public class JalapenoHomePage extends JalapenoMenu {
 				log("Clicking on Medical Record Summaries button on dashboard");
 				medicalRecordSummaries.click();
 				return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
+		}
+
+		public DocumentsPage goToDocumentsPage() {
+
+				log("Clicking on Health Record menu button");
+				medicalRecordSummaries.click();
+				try {
+						WebElement otherDocumentsButton =
+								new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Other documents"))));
+						otherDocumentsButton.click();
+				} catch (NoSuchElementException e) {
+						log("Other documents button not found within 30 seconds, are you on the correct page?");
+				}
+				return PageFactory.initElements(driver, DocumentsPage.class);
 		}
 
 		public void clickStartRegistrationButton() {
