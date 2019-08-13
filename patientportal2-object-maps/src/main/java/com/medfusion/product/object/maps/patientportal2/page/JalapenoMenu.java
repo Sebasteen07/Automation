@@ -88,23 +88,29 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return assessPageElements(webElementsList);
 	}
 
-	public JalapenoHomePage clickOnMenuHome() {
-		log("Clicking on Home menu button");
-			try {
-					homeMenu.click();
-			} catch (NoSuchElementException ex) {
-					log("Did not find Home button, trying mobile version size");
-					leftMenuToggle.click();
-					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
-					homeMenu.click();
-			} catch (ElementNotInteractableException ex) {
-					log("Did not find Home button, trying mobile version size");
-					leftMenuToggle.click();
-					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
-					homeMenu.click();
-			}
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
+		private void openMenuIfClosed() {
+				try {
+						if (!homeMenu.isDisplayed()) {
+								openJalapenoMenu();
+						}
+				} catch (Exception ex) {
+						openJalapenoMenu();
+				}
+		}
+
+		private void openJalapenoMenu() {
+				log("Opening Jalapeno menu");
+				leftMenuToggle.click();
+				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
+				log("Jalapeno menu is opened");
+		}
+
+		public JalapenoHomePage clickOnMenuHome() {
+				openMenuIfClosed();
+				log("Clicking on Home menu button");
+				homeMenu.click();
+				return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
 
 	public JalapenoAppointmentsPage clickOnMenuMessages() {
 		log("Clicking on Messages menu button");
@@ -212,8 +218,8 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	}
 
     public DocumentsPage goToDocumentsPageFromMenu() {
-
-     log("Clicking on Health Record menu button");
+			openMenuIfClosed();
+      log("Clicking on Health Record menu button");
         healthRecordMenu.click();
         try {
 	        WebElement otherDocumentsButton = new WebDriverWait(driver, 30)
