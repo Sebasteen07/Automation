@@ -51,8 +51,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.LINK_TEXT, using = "Account")
 	private WebElement accountButton;
 
+		@FindBy(how = How.LINK_TEXT, using = "Account")
+		private WebElement accountDropdownButton;
+
 	@FindBy(how = How.LINK_TEXT, using = "My Account")
 	private WebElement myAccountButton;
+
+		@FindBy(how = How.LINK_TEXT, using = "My Account")
+		private WebElement myAccountDropdownButton;
 
 	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
 	private WebElement rightDropdownButton;
@@ -62,9 +68,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "signout")
     protected WebElement signoutButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='ccdList_lhn']/a/span")
-	private WebElement healthRecordMenu;	
+	private WebElement healthRecordMenu;
 
 	public JalapenoMenu(WebDriver driver) {
 		super(driver);
@@ -129,13 +135,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	public JalapenoAccountPage clickOnAccount() {
 		log("Clicking on Account button - regular resolution");
-		
+
 		try {
 			JavascriptExecutor ex = (JavascriptExecutor)driver;
 			ex.executeScript("arguments[0].click();", accountButton);
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountButton));
 			accountButton.click();
 		}
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
@@ -148,8 +155,8 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
-			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountButton));
-			accountButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(myAccountButton));
+			myAccountDropdownButton.click();
 		}
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}
