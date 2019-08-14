@@ -231,10 +231,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(messages);
 
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 2; i++) {
 						int attempt = i + 1;
 						log("Checking page elements, attempt: " + attempt, Level.INFO);
-						if (areMenuElementsPresent() && assessPageElements(webElementsList)) {
+						if (areMenuElementsPresent() && assessPageElements(webElementsList,120)) {
 								log("All basic elements are present", Level.INFO);
 								return true;
 						} else {

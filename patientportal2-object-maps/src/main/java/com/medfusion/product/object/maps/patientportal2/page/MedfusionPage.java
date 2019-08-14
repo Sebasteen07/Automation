@@ -212,14 +212,17 @@ public abstract class MedfusionPage extends BasePageObject {
 				return true;
 		}
 
+		public boolean assessPageElements(ArrayList<WebElement> allElements){
+				return assessPageElements(allElements, 20);
+		}
 
-		public boolean assessPageElements(ArrayList<WebElement> allElements) {
+		public boolean assessPageElements(ArrayList<WebElement> allElements, int timeOutInSeconds) {
 				log("Checking page elements", Level.DEBUG);
 
 				for (WebElement element : allElements) {
 						log("Searching for element: " + element.toString(), Level.DEBUG);
 						try {
-								new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
+								new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOf(element));
 								log(elementToString(element) + " is displayed.", Level.INFO);
 						} catch (StaleElementReferenceException ex) {
 								log("StaleElementReferenceException was caught." + ex.toString(), Level.ERROR);
