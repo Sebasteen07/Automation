@@ -257,9 +257,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 				return assessPageElements(webElementsList);
 		}
 
-		public boolean isHomeButtonPresent(WebDriver driver) {
-				return IHGUtil.waitForElement(driver, 120, homeMenu);
-		}
 
 		public JalapenoAskAStaffPage clickOnAskAStaff(WebDriver driver) {
 				IHGUtil.PrintMethodName();
