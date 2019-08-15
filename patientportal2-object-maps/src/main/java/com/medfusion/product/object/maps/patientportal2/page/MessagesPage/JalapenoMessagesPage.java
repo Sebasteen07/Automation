@@ -140,12 +140,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				return PageFactory.initElements(driver, JalapenoCcdViewerPage.class);
 		}
 
+		@Deprecated //use methods from JalapenoMenu to interact with menu elements!
 		public JalapenoHomePage backToHomePage(WebDriver driver) {
 				log("Get back to Home Page");
 
-				driver.findElement(By.id("home")).click();
-
-				return PageFactory.initElements(driver, JalapenoHomePage.class);
+				return clickOnMenuHome();
 		}
 
 		public JalapenoPayBillsStatementPage goToPayBillsPage(WebDriver driver) {

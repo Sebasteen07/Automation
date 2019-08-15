@@ -160,7 +160,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				JalapenoHomePage homePage = loginPage.login(testData.getCCDPatientUsername(), testData.getPassword());
 
 				logStep("Click on Health record menu");
-				MedicalRecordSummariesPage healthRecordPage = homePage.goToHealthRecordsPage();
+				MedicalRecordSummariesPage healthRecordPage = homePage.clickOnMedicalRecordSummaries(driver);
 				assertTrue(healthRecordPage.areBasicPageElementsPresent());
 
 				logStep("Copy source of Health Record Page and validate");
