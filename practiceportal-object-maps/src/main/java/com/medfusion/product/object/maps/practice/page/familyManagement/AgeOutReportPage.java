@@ -105,7 +105,7 @@ public class AgeOutReportPage extends BasePageObject {
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 
 		log("Check info message");
-		assertTrue(IHGUtil.exists(driver, 30, infoMessageAgedOut));
+		assertTrue(isElementVisible(infoMessageAgedOut,30));
 
 		return name;
 	}
@@ -119,6 +119,16 @@ public class AgeOutReportPage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 	}
 
-
+	public boolean isElementVisible(WebElement element, int timeOutInSeconds){
+		try{
+				log("Checking visibility of " + element.toString());
+			new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOf(element));
+				}catch (Exception ex){
+						log("Element is not visible.");
+						return false;
+				}
+				log("Element is visible.");
+				return true;
+		}
 
 }
