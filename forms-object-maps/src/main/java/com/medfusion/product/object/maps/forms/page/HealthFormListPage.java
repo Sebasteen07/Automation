@@ -29,7 +29,7 @@ public class HealthFormListPage extends BasePageObject {
 	public HealthFormListPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
 		IHGUtil.setFrame(driver, "iframe");
 		PageFactory.initElements(driver, this);
 	}
@@ -68,9 +68,12 @@ public class HealthFormListPage extends BasePageObject {
 		WebDriverWait wait = new WebDriverWait(driver, 50);
 		javascriptClick(wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))));
 		Thread.sleep(3000);
+		/*
+		TODO? fix exists (currently return always false) - so the condition is always true
 		if (!IHGUtil.exists(driver, newFormIframe)) {
 			driver.switchTo().defaultContent();
 		}
+		*/
 		driver.switchTo().frame(newFormIframe);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
