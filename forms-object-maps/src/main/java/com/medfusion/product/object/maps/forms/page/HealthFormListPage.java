@@ -29,7 +29,7 @@ public class HealthFormListPage extends BasePageObject {
 	public HealthFormListPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
 		IHGUtil.setFrame(driver, "iframe");
 		PageFactory.initElements(driver, this);
 	}
