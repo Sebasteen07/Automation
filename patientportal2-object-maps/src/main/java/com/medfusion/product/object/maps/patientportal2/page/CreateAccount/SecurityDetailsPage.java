@@ -131,7 +131,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
 
-				if (IHGUtil.exists(driver, 1, primaryLocationElement)) {
+
+				if (new IHGUtil(driver).isRendered(primaryLocationElement)) {
+						log("Set primary location");
 						primaryLocationElement.click();
 						IHGUtil.waitForElement(driver, 60, setLocation);
 						setLocation.click();
