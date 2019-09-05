@@ -79,14 +79,13 @@ public class CustomFormPage extends BasePageObject {
 	}
 
 	public void saveForm() throws InterruptedException {
-		Thread.sleep(1000);
-		scrollAndWait(0, 0, 500);
+		scrollAndWait(0, 0, 2500);
 		saveFormButton.click();
 		utils.waitForElementToDisappear(loadingNotification, 500, 20);
 	}
 
 	public void leaveFormPage() throws InterruptedException {
-		scrollAndWait(0, 0, 500);
+		scrollAndWait(0, 0, 2500);
 		backToTheListButton.click();
 	}
 
