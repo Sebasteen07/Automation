@@ -3,7 +3,6 @@ package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -16,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -24,6 +24,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -172,9 +173,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 				return PageFactory.initElements(driver, DocumentsPage.class);
 		}
 
-		public void clickStartRegistrationButton() {
+		public FiltersFormPages clickStartRegistrationButton() {
 				log("Clicking on Start Registration button.");
 				startRegistrationButton.click();
+				return PageFactory.initElements(driver, FiltersFormPages.class);
 		}
 
 		public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) {
