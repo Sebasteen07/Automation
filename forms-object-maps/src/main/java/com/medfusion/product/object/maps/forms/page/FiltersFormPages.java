@@ -2,6 +2,7 @@ package com.medfusion.product.object.maps.forms.page;
 
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,20 +13,19 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class FiltersFormPages extends BasePageObject {
 
+	
 	public FiltersFormPages(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
-	@FindBy(xpath = "//form[@id='iframe']")
-	private WebElement filtersForm;
-
+	
 	@FindBy(xpath = "//div[@id='s2id_locationFilter']/a[@class='select2-choice']")
 	private WebElement locationComboBox;
 
 	@FindBy(xpath = "//*[@id=\'select2-drop\']/ul/li[1]")
-	private WebElement selectLocationComboBox;
+	private WebElement selectFirstLocationComboBox;
 
 	@FindBy(xpath = "//input[@name='filterSubmit:submit']")
 	private WebElement selectLocationButton;
@@ -34,20 +34,23 @@ public class FiltersFormPages extends BasePageObject {
 	private WebElement providerComboBox;
 
 	@FindBy(xpath = "//ul[@class='select2-results']/li[2]")
-	private WebElement selectProviderComboBox;
+	private WebElement selectFirstProviderComboBox;
 
 	@FindBy(xpath = "//input[@name='filterSubmit:submit']")
 	private WebElement selectProviderButton;
-
+	
+	private static final By iFrameLocationComboBoxXpath = By.xpath("//div[@id='s2id_locationFilter']/a[@class='select2-choice']");	
+	private static final By iFrameProviderComboBoxXpath = By.xpath("//div[@id='s2id_providerFilter']/a[@class='select2-choice']"); 
+	
 	/**
 	 * Select Location DropDown
 	 */
-	public void selectLocationComboBox() {
+	public void selectFirstOptionLocationComboBox() {
 		IHGUtil.PrintMethodName();
 		locationComboBox.click();
-		selectLocationComboBox.click();
+		selectFirstLocationComboBox.click();
 	}
-	
+
 	/**
 	 * Submit Location Button
 	 */
@@ -55,16 +58,16 @@ public class FiltersFormPages extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		javascriptClick(selectLocationButton);
 	}
-	
+
 	/**
 	 * Select Provider DropDown
 	 */
-	public void selectProviderComboBox() {
+	public void selectFirstOptionProviderComboBox() {
 		IHGUtil.PrintMethodName();
 		providerComboBox.click();
-		selectProviderComboBox.click();
+		selectFirstProviderComboBox.click();
 	}
-    
+
 	/**
 	 * Submit Provider Button
 	 */
@@ -74,25 +77,31 @@ public class FiltersFormPages extends BasePageObject {
 	}
 
 	/**
-	 * If multiple locations and providers are configured for a pratice
-	 * This method will select first option from dropdown and
-	 * click on select button 
+	 * If multiple locations and providers are configured for a pratice This method
+	 * will select first option from dropdown and click on select button
+	 * @return HealthFormListPage
 	 * @throws InterruptedException
 	 */
-	public void selectfilterforms() throws InterruptedException {
-		Thread.sleep(3000);
-		if (!IHGUtil.exists(driver, filtersForm)) {
+	public HealthFormListPage selectfilterforms() throws InterruptedException {
+		IHGUtil iHGUtil = new IHGUtil(driver);
+		driver.switchTo().frame("iframe");
+
+		if (iHGUtil.isRendered(iFrameLocationComboBoxXpath)) {
+			log("Check if Location Dropdown and Location Button are available");
+			log("Selecting Location ComboBox");
+			selectFirstOptionLocationComboBox();
+			selectLocationButton();
+		}
+		if (iHGUtil.isRendered(iFrameProviderComboBoxXpath)) {
+			log("Check if Provider Dropdown and Location Button are available");
+			log("Selecting Provider ComboBox");
+			selectFirstOptionProviderComboBox();
+			selectProviderButton();
+		} else {
 			driver.switchTo().defaultContent();
 		}
-		driver.switchTo().frame("iframe");
-		FiltersFormPages filtersFormPages = PageFactory.initElements(driver, FiltersFormPages.class);
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		log("Selecting Location ComboBox");
-		filtersFormPages.selectLocationComboBox();
-		filtersFormPages.selectLocationButton();
-		log("Selecting Provider ComboBox");
-		filtersFormPages.selectProviderComboBox();
-		filtersFormPages.selectProviderButton();
-
+		
+		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
+
 }
