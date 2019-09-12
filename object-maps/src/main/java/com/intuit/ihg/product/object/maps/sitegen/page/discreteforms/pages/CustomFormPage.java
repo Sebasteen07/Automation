@@ -66,6 +66,7 @@ public class CustomFormPage extends BasePageObject {
 	}
 
 	public void clickOnSection(int sectionNumber) {
+		IHGUtil.PrintMethodName();
 		switch (sectionNumber) {
 			case 1:
 				firstSectionElement.click();
@@ -79,12 +80,14 @@ public class CustomFormPage extends BasePageObject {
 	}
 
 	public void saveForm() throws InterruptedException {
+		IHGUtil.PrintMethodName();
 		scrollAndWait(0, 0, 2500);
 		saveFormButton.click();
 		utils.waitForElementToDisappear(loadingNotification, 500, 20);
 	}
 
 	public void leaveFormPage() throws InterruptedException {
+		IHGUtil.PrintMethodName();
 		scrollAndWait(0, 0, 2500);
 		backToTheListButton.click();
 	}
