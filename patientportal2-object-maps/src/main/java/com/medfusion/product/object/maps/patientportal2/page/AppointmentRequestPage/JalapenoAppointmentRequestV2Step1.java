@@ -22,9 +22,6 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 		private WebElement providerSearchInput;
 
 		@FindBy(how = How.ID, using = "showall")
-		private WebElement providerSearchButton;
-
-		@FindBy(how = How.ID, using = "showall")
 		private WebElement showAllButton;
 
 		@FindBy(how = How.XPATH, using = "(//div[@id='locationProviderResultList']/ol/li[1]/ul/li/label/span)")
@@ -47,7 +44,6 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(previousAppoitmentRequestsButton);
 				webElementsList.add(providerSearchInput);
-				webElementsList.add(providerSearchButton);
 				webElementsList.add(showAllButton);
 				webElementsList.add(cancelButton);
 				webElementsList.add(continueButton);
@@ -62,7 +58,6 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(previousAppoitmentRequestsButton);
 				webElementsList.add(providerSearchInput);
-				webElementsList.add(providerSearchButton);
 				webElementsList.add(showAllButton);
 				webElementsList.add(cancelButton);
 				webElementsList.add(continueButton);

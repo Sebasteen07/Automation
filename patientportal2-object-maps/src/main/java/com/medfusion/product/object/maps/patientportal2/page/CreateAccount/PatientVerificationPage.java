@@ -15,26 +15,30 @@ import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
 public class PatientVerificationPage extends MedfusionPage {
 
-		public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
+		@FindBy(how = How.ID, using = "birthDate_month")
+		private WebElement dateOfBirthMonthSelect;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_month']") private WebElement dateOfBirthMonthSelect;
+		@FindBy(how = How.ID, using = "birthDate_day")
+		private WebElement dateOfBirthDayInput;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_day']") private WebElement dateOfBirthDayInput;
+		@FindBy(how = How.ID, using = "birthDate_year")
+		private WebElement dateOfBirthYearInput;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']") private WebElement dateOfBirthYearInput;
+		@FindBy(how = How.ID, using = "postalCode")
+		private WebElement zipCodeInput;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']") private WebElement zipCodeInput;
+		@FindBy(how = How.ID, using = "cancelStep")
+		private WebElement cancelButton;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='cancelStep']") private WebElement cancelButton;
-
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']") private WebElement continueButton;
+		@FindBy(how = How.ID, using = "nextStep")
+		private WebElement continueButton;
 
 		public PatientVerificationPage(WebDriver driver, String url) {
 				super(driver, url);
-				log("URL: " + url);
 		}
 
-		@Override public boolean areBasicPageElementsPresent() {
+		@Override
+		public boolean areBasicPageElementsPresent() {
 
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(zipCodeInput);
@@ -49,7 +53,9 @@ public class PatientVerificationPage extends MedfusionPage {
 
 		public void getToThisPage(String url) {
 				driver.get(url);
-				areBasicPageElementsPresent();
+				if (!areBasicPageElementsPresent()) {
+						throw new UnsupportedOperationException("Page was not successfully loaded");
+				}
 		}
 
 		public SecurityDetailsPage fillPatientInfoAndContinue(Patient patient) {

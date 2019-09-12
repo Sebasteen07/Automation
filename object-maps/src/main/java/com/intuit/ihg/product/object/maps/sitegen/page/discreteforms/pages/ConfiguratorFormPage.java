@@ -67,7 +67,7 @@ public class ConfiguratorFormPage extends BasePageObject {
 	 */
 
 	public DiscreteFormsList clickBackToTheList() throws InterruptedException {
-		scrollAndWait(0, 0, 500);
+		scrollAndWait(0, 0, 5000);
 		backToTheList.click();
 		return PageFactory.initElements(driver, DiscreteFormsList.class);
 	}

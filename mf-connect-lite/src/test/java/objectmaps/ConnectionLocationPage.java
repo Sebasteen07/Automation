@@ -25,12 +25,4 @@ public class ConnectionLocationPage extends HomePage{
 	@FindBy(how = How.ID, using = "mfConnectBack")
 	public WebElement mfConnectBack;
 
-	public void clickMfConnectionBack() {
-		mfConnectBack.click();
-	}
-	
-	public void clickSearch() {
-		directorySearchBtn.click();
-	}
-	
 }

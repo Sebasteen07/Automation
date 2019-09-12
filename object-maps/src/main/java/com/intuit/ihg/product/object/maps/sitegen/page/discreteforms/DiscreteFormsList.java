@@ -295,6 +295,7 @@ public class DiscreteFormsList extends BasePageObject {
 	}
 
 	private <T> T openForm(String formName, Class<T> nextPageClass) throws InterruptedException {
+		IHGUtil.PrintMethodName();
 		javascriptClick(driver.findElement(By.xpath("//a[text()='" + formName + "']")));
 		SitegenlUtil.switchToNewWindow(driver);
 		return PageFactory.initElements(driver, nextPageClass);

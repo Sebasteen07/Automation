@@ -182,9 +182,9 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @param type
 	 * @throws Exception
 	 */
-	public void setSex(String type) throws Exception {
+	public void setSex(String type) {
 		PortalUtil.PrintMethodName();
-		focusSelectAndSelectByValue(gender,type);
+		new Select(gender).selectByVisibleText(type);
 	}
 	public void setSex_20(String type) throws Exception {
 		PortalUtil.PrintMethodName();		

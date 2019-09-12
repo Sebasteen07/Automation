@@ -1,29 +1,29 @@
 package com.intuit.ihg.product.forms.test;
 
+import static com.intuit.ihg.product.forms.test.Utils.loginPI;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
+import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.intuit.ihg.product.forms.test.Utils.loginPI;
 
 public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		private PropertyFileLoader testData;
@@ -99,22 +99,16 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		 */
 		@Test(groups = {"Forms"})
 		public void testDiscreteFormDeleteCreatePublishPI() throws Exception {
-				String newFormName = SitegenConstants.DISCRETEFORMNAME;
+				String newFormName = SitegenConstants.DISCRETEFORMNAME;				
 				String welcomeMessage = createFormSG(testData.getProperty("sitegenUsername1"), testData.getProperty("sitegenPassword1"), newFormName);
-
+				
 				log("step 7: create patient and Log in to PI");
 				JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, testData, PracticeType.PRIMARY);
 
 				log("step 8: Click On Start Registration Button and verify welcome page of the previously created form");
-				home.clickStartRegistrationButton();
-				FormWelcomePage welcomePage = PageFactory.initElements(driver, FormWelcomePage.class);
-				// if there is only one reg. form
-				IHGUtil.setFrame(driver, "iframebody");
-				if (welcomePage.getMessageText() != null)
-						assertEquals(welcomePage.getMessageText(), welcomeMessage);
-						// if there are more reg. forms
-				else
-						assertEquals(PageFactory.initElements(driver, HealthFormListPage.class).openDiscreteForm(newFormName).getMessageText(), welcomeMessage);
+				FiltersFormPages filtersFormPages =  home.clickStartRegistrationButton();				
+				HealthFormListPage healthFormListPage = filtersFormPages.selectfilterforms();				
+				assertEquals(healthFormListPage.openDiscreteForm(newFormName).getMessageText(), welcomeMessage);
 		}
 
 		@Test(groups = {"Forms"})
