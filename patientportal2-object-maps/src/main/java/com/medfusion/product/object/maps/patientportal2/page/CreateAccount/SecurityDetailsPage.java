@@ -18,12 +18,10 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 
 public class SecurityDetailsPage extends MedfusionPage {
 
-		public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
-
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='userid']")
+		@FindBy(how = How.ID, using ="userid")
 		private WebElement inputUserId;
 
-		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='password']")
+		@FindBy(how = How.ID, using = "password")
 		private WebElement inputPassword;
 
 		@FindBy(how = How.ID, using = "secretQuestion")
@@ -44,7 +42,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "phone_type")
 		private WebElement selectPhoneType;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"preferredLocationId_field\"]/mf-locations/div/div/div[1]/span")
+		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/div/div[1]/span")
 		private WebElement primaryLocationElement;
 
 		@FindBy(how = How.XPATH, using = "//*[@class='ui-select-choices-row-inner']/div")
@@ -110,7 +108,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				buttonFinishStep.click();
-				selectStatementIfRequired(statementPreference);
+				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
+				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
 
@@ -132,7 +131,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
 
-				if (IHGUtil.exists(driver, 1, primaryLocationElement)) {
+
+				if (new IHGUtil(driver).isRendered(primaryLocationElement)) {
+						log("Set primary location");
 						primaryLocationElement.click();
 						IHGUtil.waitForElement(driver, 60, setLocation);
 						setLocation.click();
@@ -169,5 +170,4 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 				return false;
 		}
-
 }

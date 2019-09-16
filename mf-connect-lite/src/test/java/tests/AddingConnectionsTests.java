@@ -22,6 +22,7 @@ import objectmaps.CreatePortalConnectionPage;
 import objectmaps.PortalLauncher;
 import objectmaps.SelectDoctorPage;
 import objectmaps.DoctorLocationPage;
+import objectmaps.SelectPortalPage;
 
 public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	protected PropertyFileLoader testData;
@@ -52,7 +53,7 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void assessConnectionLocationPageElements() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfPracticeBtn();
+		acp.mfPracticeBtn.click();
 		log("Checking for office name and zip code search bars");
 		ConnectionLocationPage clp = new ConnectionLocationPage(driver);
 		Assert.assertTrue(clp.searchBy.isDisplayed());
@@ -62,7 +63,7 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void assessConnectionDoctorPageElements() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfPracticeBtn();
+		acp.mfPracticeBtn.click();
 		log("Checking for doctor name and zip code search bars");
 		ConnectionDoctorPage clp = new ConnectionDoctorPage(driver);
 		Assert.assertTrue(clp.searchBy.isDisplayed());
@@ -72,7 +73,7 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void assessConnectionPortalPageElements() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfPortalBtn();
+		acp.mfPracticeBtn.click();
 		log("Checking for url search bar");
 		ConnectionPortalPage cpp = new ConnectionPortalPage(driver);
 		Assert.assertTrue(cpp.primaryURL.isDisplayed());
@@ -81,27 +82,27 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void searchForOffice() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfPracticeBtn();
+		acp.mfPracticeBtn.click();
 		ConnectionLocationPage clp = new ConnectionLocationPage(driver);
 		String office = testData.getProperty("office");
 		String zip = testData.getProperty("zip");
 		clp.searchBy.sendKeys(office);
 		clp.searchZip.sendKeys(zip);
-		clp.clickSearch();
+		clp.directorySearchBtn.click();
 		
 		log("Checking for search results page");
-		new OfficeSelectPage(driver);
+		OfficeSelectPage osp = new OfficeSelectPage(driver);
 		log("Waiting for elements to load");
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]"))));
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		wait.until(ExpectedConditions.visibilityOf(osp.firstElement));
+		osp.firstElement.click();
 		
 		log("Checking for doctor's portal page");
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Back to search results"))));
-		new ConfirmDoctorPortalPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(osp.mfConnectBack));
+		ConfirmDoctorPortalPage cdpp = new ConfirmDoctorPortalPage(driver);
 		
 		log("Connecting to a connected portal");
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		cdpp.firstElement.click();
 		CreatePortalConnectionPage cpcp1 = new CreatePortalConnectionPage(driver);
 		Assert.assertTrue(cpcp1.createConnectionBtn.isDisplayed());
 		Assert.assertTrue(cpcp1.resetPassword.isDisplayed());
@@ -130,7 +131,7 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void searchForDoctor() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfDoctorBtn();
+		acp.mfDoctorBtn.click();
 		ConnectionDoctorPage cdp = new ConnectionDoctorPage(driver);
 		String doctor = testData.getProperty("doctor");
 		String zip = testData.getProperty("zip");
@@ -139,17 +140,18 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 		cdp.directorySearchBtn.click();
 		
 		log("Checking for search results page and click first entry");
-		new SelectDoctorPage(driver);
+		SelectDoctorPage sdp = new SelectDoctorPage(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]/p[1]"))));
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		wait.until(ExpectedConditions.visibilityOf(sdp.firstElement));
+		sdp.firstElement.click();
 		log("Choosing a doctor location");
-		new DoctorLocationPage(driver);
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Back to select doctor"))));
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[6]")).click();
+		DoctorLocationPage dlp = new DoctorLocationPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(dlp.mfConnectBack));
+		dlp.firstElement.click();
 		log("Choosing a sample portal");
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Back to search results"))));
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		ConfirmDoctorPortalPage cdpp = new ConfirmDoctorPortalPage(driver);
+		wait.until(ExpectedConditions.visibilityOf(cdpp.mfConnectBack));
+		cdpp.mfConnectBack.click();
 		log("Assessing create portal connection elements");
 		CreatePortalConnectionPage cpcp = new CreatePortalConnectionPage(driver);
 		Assert.assertTrue(cpcp.ccUsername.isDisplayed());
@@ -159,16 +161,17 @@ public class AddingConnectionsTests extends BaseTestNGWebDriver {
 	@Test(enabled=true)
 	public void searchForWebsite() throws Exception {
 		AddConnectionPage acp = new AddConnectionPage(driver);
-		acp.clickMfPortalBtn();
+		acp.mfPortalBtn.click();
 		ConnectionPortalPage cpp = new ConnectionPortalPage(driver);
 		String url = testData.getProperty("url");
 		cpp.primaryURL.sendKeys(url);
 		cpp.directorySearchBtn.click();
 		
 		log("Picking a portal from search results");
+		SelectPortalPage spp = new SelectPortalPage(driver);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]"))));
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]")).click();
+		wait.until(ExpectedConditions.visibilityOf(spp.firstElement));
+		spp.firstElement.click();
 		log("Assessing create portal connection elements");
 		CreatePortalConnectionPage cpcp = new CreatePortalConnectionPage(driver);
 		Assert.assertTrue(cpcp.ccUsername.isDisplayed());

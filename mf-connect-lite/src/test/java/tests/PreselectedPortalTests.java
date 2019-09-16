@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import objectmaps.AddConnectionPage;
 
 @Listeners(com.medfusion.listenerpackage.Listener.class)
 
@@ -46,9 +47,10 @@ public class PreselectedPortalTests extends BaseTestNGWebDriver {
 		ModalPage modal = new ModalPage(driver);
 		modal.existingAddConnectionButton.click();
 		log("Checking if recommended portals are displayed");
+		AddConnectionPage acp = new AddConnectionPage(driver);
 		String bodyText = (driver.findElement(By.tagName("body"))).getText();
 		Assert.assertFalse(bodyText.contains("Top recommended portals"), "Top recommended portals");
-		driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/ul[1]/li[1]/p[1]")).click();
+		acp.firstRecPortal.click();
 		log("Checking if login page is displayed after clicking a recommended portal");
 		CreatePortalConnectionPage cpcp = new CreatePortalConnectionPage(driver);
 		Assert.assertTrue(cpcp.ccPassword.isDisplayed());

@@ -17,44 +17,32 @@ import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class AuthUserLinkAccountPage extends MedfusionPage {
-	
-  public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
-
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='password']")
+	@FindBy(how = How.ID, using ="password")
 	private WebElement passwordInput;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='userid']")
+	@FindBy(how = How.ID, using = "userid")
 	private WebElement userIdInput;
 
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[1]")
 	private WebElement relationshipFirstSelect;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='email']")
+	@FindBy(how = How.ID, using = "email")
 	private WebElement emailInput;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='firstName']")
+	@FindBy(how = How.ID, using = "firstName")
 	private WebElement firstNameInput;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='lastName']")
+	@FindBy(how = How.ID, using = "lastName")
 	private WebElement lastNameInput;
 
 	@FindBy(how = How.XPATH, using = "(//select[@id='relationshipToPatient'])[2]")
 	private WebElement relationshipSecondSelect;
 
-	@FindBy(how = How.ID, using = "nextStep")
-	private WebElement continueButton;
-	
 	@FindBy(how = How.ID, using = "next")
     private WebElement continueButton2;
 
-	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
+	@FindBy(how = How.ID, using = "nextStep")
 	private WebElement enterPortalButton;
-
-	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
-	private WebElement electronicPaymentPreference;
-
-	@FindBy(how = How.ID, using = "updateStatementPrefButton")
-	private WebElement okButton;
 
 	public AuthUserLinkAccountPage(WebDriver driver) {
 		super(driver);
@@ -64,8 +52,7 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	public boolean areBasicPageElementsPresent() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(enterPortalButton);
-		webElementsList.add(continueButton);
+		//webElementsList.add(enterPortalButton);
 		webElementsList.add(relationshipSecondSelect);
 		webElementsList.add(lastNameInput);
 		webElementsList.add(firstNameInput);
@@ -87,9 +74,10 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		Select relationshipPatient = new Select(relationshipFirstSelect);
 		relationshipPatient.selectByVisibleText(relationship);
 
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(enterPortalButton));
 		enterPortalButton.click();
 
-		selectStatementIfRequired();
+		handleWeNeedToConfirmSomethingModal();
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
@@ -98,15 +86,15 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		IHGUtil.PrintMethodName();
 
 		firstNameInput.sendKeys(name);
-		lastNameInput.sendKeys(lastname);	
+		lastNameInput.sendKeys(lastname);
 		log("Guardian name: " + name + " " + lastname);
 
 		Select relationshipPatient = new Select(this.relationshipSecondSelect);
 		relationshipPatient.selectByVisibleText(relationship);
-		
+
 		//workaround for validation, triggers after focus leaves element
 		firstNameInput.sendKeys("");
-		
+
 		javascriptClick(continueButton2);
 
 		return PageFactory.initElements(driver, SecurityDetailsPage.class);
@@ -119,13 +107,5 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
 		wait.until(ExpectedConditions.textToBePresentInElementValue(emailInput, email));
-	}
-
-	private void selectStatementIfRequired() {
-		if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
-			log("Statement delivery preference lightbox is displayed");
-			electronicPaymentPreference.click();
-			okButton.click();
-		}
 	}
 }

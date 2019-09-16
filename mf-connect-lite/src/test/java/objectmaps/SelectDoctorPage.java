@@ -20,4 +20,7 @@ public class SelectDoctorPage extends HomePage {
 	@FindBy(how = How.ID, using = "mfCloseButton")
 	public WebElement mfCloseBtn;
 	
+	@FindBy(how = How.XPATH, using = "/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/ul[1]/li[1]/p[1]")
+	public WebElement firstElement;
+	
 }
