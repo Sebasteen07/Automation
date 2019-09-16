@@ -51,6 +51,7 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 				// there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
 				driver.manage().window().maximize();
+				log("Window size: " + driver.manage().window().getSize());
 				printCookies();
 				PageFactory.initElements(driver, this);
 
