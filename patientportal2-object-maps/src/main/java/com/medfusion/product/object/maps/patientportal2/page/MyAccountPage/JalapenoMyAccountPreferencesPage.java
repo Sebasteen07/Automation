@@ -18,110 +18,106 @@ import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
-	@FindBy(how = How.ID, using = "preferredLocation")
-	private WebElement preferredLocation;
+		@FindBy(how = How.ID, using = "preferredLocation")
+		private WebElement preferredLocation;
 
-	@FindBy(how = How.ID, using = "statementPreference")
-	private WebElement statementPreference;
+		@FindBy(how = How.ID, using = "statementPreference")
+		private WebElement statementPreference;
 
-	@FindBy(how = How.ID, using = "MessagingOptOut")
-	private WebElement patientMessagingOptOut;
+		@FindBy(how = How.ID, using = "messagingOptOut")
+		private WebElement patientMessagingOptOut;
 
-	@FindBy(how = How.ID, using = "apptRemindersOptOut")
-	private WebElement apptRemindersOptOut;
+		@FindBy(how = How.ID, using = "apptRemindersOptOut")
+		private WebElement apptRemindersOptOut;
 
-	@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
-	private WebElement successfulUpdateMessage;
-	
-	@FindBy(how = How.ID, using = "preferredLanguage")
-	private WebElement preferredLanguage;
+		@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
+		private WebElement successfulUpdateMessage;
 
-	
-	public JalapenoMyAccountPreferencesPage(WebDriver driver) {
-		super(driver);
-		IHGUtil.PrintMethodName();
-		driver.manage().window().maximize();
-		PageFactory.initElements(driver, this);
-	}
+		@FindBy(how = How.ID, using = "preferredLanguage")
+		private WebElement preferredLanguage;
 
-	public boolean checkAndSetStatementPreference(WebDriver driver, StatementPreferenceType statementPreferenceType) {
-		if (isStatementPreferenceSelected(statementPreferenceType)) {
-			log("Statement preference already was set up to: " + statementPreferenceType);
-			return false;
-		} else {
-			log("Setting up statement preference to: " + statementPreferenceType);
-			setStatementPreference(statementPreferenceType);
-			saveAccountChanges.click();
-			checkIfStatementPreferenceWasSaved(driver, statementPreferenceType);
-			return true;
+
+		public JalapenoMyAccountPreferencesPage(WebDriver driver) {
+				super(driver);
+				IHGUtil.PrintMethodName();
 		}
-	}
 
-	private boolean isStatementPreferenceSelected(StatementPreferenceType statementPreferenceType) {
-		String selectedOption = new Select(this.statementPreference).getFirstSelectedOption().getAttribute("value");
-		return selectedOption.equals(statementPreferenceType.name());
-	}
-
-	private void setStatementPreference(StatementPreferenceType statementPreferenceType) {
-		Select statementSelect = new Select(this.statementPreference);
-		statementSelect.selectByValue(statementPreferenceType.name());
-	}
-
-	private void checkIfStatementPreferenceWasSaved(WebDriver driver, StatementPreferenceType statementPreferenceType) {
-		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(successfulUpdateMessage));
-		assertTrue(isStatementPreferenceSelected(statementPreferenceType));
-		log("Statement preference is set up to: " + statementPreferenceType);
-	}
-
-	public boolean checkStatementPreferenceUpdated(StatementPreferenceType statementPreferenceType) {
-		if (isStatementPreferenceSelected(statementPreferenceType)) {
-			log("Statement preference is: " + statementPreferenceType);
-			return true;
-		} else {
-			log("Statement preference is not updated.");
-			return false;
+		public boolean checkAndSetStatementPreference(WebDriver driver, StatementPreferenceType statementPreferenceType) {
+				if (isStatementPreferenceSelected(statementPreferenceType)) {
+						log("Statement preference already was set up to: " + statementPreferenceType);
+						return false;
+				} else {
+						log("Setting up statement preference to: " + statementPreferenceType);
+						setStatementPreference(statementPreferenceType);
+						saveAccountChanges.click();
+						checkIfStatementPreferenceWasSaved(driver, statementPreferenceType);
+						return true;
+				}
 		}
-	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		private boolean isStatementPreferenceSelected(StatementPreferenceType statementPreferenceType) {
+				String selectedOption = new Select(this.statementPreference).getFirstSelectedOption().getAttribute("value");
+				return selectedOption.equals(statementPreferenceType.name());
+		}
 
+		private void setStatementPreference(StatementPreferenceType statementPreferenceType) {
+				Select statementSelect = new Select(this.statementPreference);
+				statementSelect.selectByValue(statementPreferenceType.name());
+		}
 
-		webElementsList.add(patientMessagingOptOut);
-		webElementsList.add(apptRemindersOptOut);
-		webElementsList.add(previousStep);
-		webElementsList.add(saveAccountChanges);
-		
-		return super.assessPageElements(true) && new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-	
-	public boolean checkStatementAndLocationElements() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		
-		webElementsList.add(preferredLocation);
-		webElementsList.add(statementPreference);
-		
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-	
-	
-	private void setStatementLanguage(String statementLanguageType) {
-		Select statementSelect = new Select(this.preferredLanguage);
-		statementSelect.selectByVisibleText(statementLanguageType);
-	}
-	
-	public void setStatementLanguage(WebDriver driver, String statementLanguageType) {
-		setStatementLanguage(statementLanguageType);
-		saveAccountChanges.click();
-	}
+		private void checkIfStatementPreferenceWasSaved(WebDriver driver, StatementPreferenceType statementPreferenceType) {
+				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(successfulUpdateMessage));
+				assertTrue(isStatementPreferenceSelected(statementPreferenceType));
+				log("Statement preference is set up to: " + statementPreferenceType);
+		}
 
-	public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
-		log("Click on Activity");
-		activityTab.click();
-		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
-		
-	}
+		public boolean checkStatementPreferenceUpdated(StatementPreferenceType statementPreferenceType) {
+				if (isStatementPreferenceSelected(statementPreferenceType)) {
+						log("Statement preference is: " + statementPreferenceType);
+						return true;
+				} else {
+						log("Statement preference is not updated.");
+						return false;
+				}
+		}
+
+		@Override
+		public boolean areBasicPageElementsPresent() {
+				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
+				webElementsList.add(patientMessagingOptOut);
+				webElementsList.add(apptRemindersOptOut);
+				webElementsList.add(previousStep);
+				webElementsList.add(saveAccountChanges);
+
+				return assessPageElements(webElementsList);
+		}
+
+		public boolean areStatementPreferenceAndPreferedLocationElementsPresent() {
+				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
+				webElementsList.add(preferredLocation);
+				webElementsList.add(statementPreference);
+
+				return assessPageElements(webElementsList);
+		}
+
+		private void setStatementLanguage(String statementLanguageType) {
+				Select statementSelect = new Select(this.preferredLanguage);
+				statementSelect.selectByVisibleText(statementLanguageType);
+		}
+
+		public void setStatementLanguage(WebDriver driver, String statementLanguageType) {
+				setStatementLanguage(statementLanguageType);
+				saveAccountChanges.click();
+		}
+
+		public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
+				log("Click on Activity");
+				activityTab.click();
+				return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
+
+		}
 
 
 }

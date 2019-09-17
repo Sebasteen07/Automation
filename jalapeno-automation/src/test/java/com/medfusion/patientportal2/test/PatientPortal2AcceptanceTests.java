@@ -280,6 +280,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Retrieved activation link is " + unlockLinkEmail);
 				if (!isInviteLinkFinal(unlockLinkEmail)) {
 						unlockLinkEmail = getRedirectUrl(unlockLinkEmail);
+						log("Retrieved link was redirect link. Final link is " + unlockLinkEmail);
 				}
 				logStep("Comparing with portal unlock link " + unlockLinkPortal);
 				assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
@@ -294,7 +295,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				logStep("Clicking on forgot username or password");
 				JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
 
-				assertTrue(forgotPasswordPage.assessForgotPasswordPageElements());
+				assertTrue(forgotPasswordPage.areBasicPageElementsPresent());
 
 				JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
 				logStep("Message was sent, closing");
@@ -306,7 +307,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				String emailSubject = "Help with your user name or password";
 				String inEmail = "Reset Password Now";
 				String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
-
+				if (!isInviteLinkFinal(url)){
+						url = getRedirectUrl(url);
+				}
 				assertTrue(url != null);
 
 				JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
@@ -381,7 +384,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 				assertTrue(jalapenoMessagesPage.areBasicPageElementsPresent());
 
-				jalapenoHomePage = jalapenoMessagesPage.backToHomePage(driver);
+				jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
 				logStep("Logging out");
 				jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
@@ -473,10 +476,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 
 				logStep("Go to Documents tab");
-				DocumentsPage documentsPage = messagesPage.goToDocumentsPage();
+				DocumentsPage documentsPage = messagesPage.goToDocumentsPageFromMenu();
 
 
-				logStep("Check if doccument from received message is displayed on Documents page");
+				logStep("Check if document from received message is displayed on Documents page");
 				assertTrue(documentsPage.checkLastImportedFileName(tmpDocument.getName()));
 
 		}
@@ -619,7 +622,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Continue to step 2.: click continue and assess elements");
 				JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-				assertTrue(appointmentRequestStep2.assessElements());
+				assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
 
 				logStep("Fill details and submit");
 				appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
@@ -633,12 +636,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 				logStep("Check elements and appointment request reason");
-				assertTrue(historyPage.assessElements());
+				assertTrue(historyPage.areBasicPageElementsPresent());
 				assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 				logStep("Check appointment request details");
 				assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-				homePage = historyPage.returnToHomePage(driver);
+				homePage = historyPage.clickOnMenuHome();
 				homePage.clickOnLogout();
 
 				logStep("Proceed in Practice Portal");
@@ -730,10 +733,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				payBillsPage.removeAllCards();
 				logStep("Check that no card is present");
 				assertFalse(payBillsPage.isAnyCardPresent());
-				assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
+				assertTrue(payBillsPage.areBasicPageElementsPresent());
 
 				JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
-				assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
+				assertTrue(confirmationPage.areBasicPageElementsPresent());
 				logStep("Verifying credit card ending");
 				assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 

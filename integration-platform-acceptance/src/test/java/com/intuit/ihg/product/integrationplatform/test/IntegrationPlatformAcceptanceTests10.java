@@ -376,7 +376,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 
 	}
 	
-	@Test(enabled = true, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = false, groups = {"P2P"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectSearch() throws Exception {
 
 		Log4jUtil.log("TestDirectSearch covers Post and of direct search API for Provider with OAuth 1.0");

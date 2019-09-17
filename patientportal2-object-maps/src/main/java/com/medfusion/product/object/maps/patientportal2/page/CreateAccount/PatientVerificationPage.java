@@ -32,8 +32,6 @@ public class PatientVerificationPage extends MedfusionPage {
 		public PatientVerificationPage(WebDriver driver, String url) {
 				super(driver, url);
 				log("URL: " + url);
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
 		}
 
 		@Override public boolean areBasicPageElementsPresent() {
