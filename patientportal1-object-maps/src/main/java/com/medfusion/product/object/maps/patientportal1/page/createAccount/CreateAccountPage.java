@@ -340,7 +340,7 @@ public class CreateAccountPage extends BasePageObject {
 	}
 
 	public void selectLocationIfNeeded() {
-		if (IHGUtil.exists(driver, 1, prefferedLocation)) {
+		if (new IHGUtil(driver).isRendered(prefferedLocation)) {
 			new Select(prefferedLocation).selectByIndex(1);
 		}
 	}
