@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import java.util.ArrayList;
 
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

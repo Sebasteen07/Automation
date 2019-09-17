@@ -37,6 +37,12 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "I forgot my user name and/or password.")
 	private WebElement forgotUserOrPasswordButton;
 
+	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
+	private WebElement electronicPaymentPreference;
+
+	@FindBy(how = How.ID, using = "updateMissingInfoButton")
+	private WebElement okButton;
+
 	@FindBy(how = How.XPATH, using = "//span[@data-ng-show = 'notice.existingaccount_same']")
     private WebElement healthKeyMatchError;
 
@@ -102,6 +108,13 @@ public class JalapenoLoginPage extends MedfusionPage {
 		log("Clicking on Pay Now button");
 		buttonPayNow.click();
 		return PageFactory.initElements(driver, JalapenoPayNowPage.class);
+	}
+
+	private void selectStatementIfRequired() {
+		if (new IHGUtil(driver).exists(electronicPaymentPreference, 10)) {
+			electronicPaymentPreference.click();
+			okButton.click();
+		}
 	}
 
 	public boolean isExistingAccountErrorDisplayed() {
