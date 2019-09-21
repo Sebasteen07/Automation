@@ -47,7 +47,7 @@ public class CalculatedFormDirectory extends BasePageObject {
 		IHGUtil iHGUtil = new IHGUtil(driver);
 		searchField.sendKeys(formName);
 		searchButton.click();
-		if (iHGUtil.exists(checkBox)) {
+		if (iHGUtil.isRendered(checkBox)) {
 			return checkBox.isDisplayed();
 		} else {
 			return false;
