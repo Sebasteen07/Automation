@@ -4,6 +4,7 @@ import static org.testng.AssertJUnit.*;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -107,6 +108,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		}
 
 		public void sendCCDIfNewestIsOlderThan(int days) {
+				//added for investigation why it is failing on locals outside of US and what zone is used on Jenkins where it is working
+				log("First ccd date: " + firstVisibleCCDDate.getText());
+				log("System default time zone: " + ZoneId.systemDefault().toString());
+
 				ZonedDateTime ccdDateUTC = MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText());
 				ZonedDateTime weekAgoDateUTC = MFDateUtil.getCurrentTimeUTC().minus(days, ChronoUnit.DAYS);
 
