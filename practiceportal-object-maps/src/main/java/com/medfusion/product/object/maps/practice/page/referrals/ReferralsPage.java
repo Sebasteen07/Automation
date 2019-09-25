@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
+import static java.lang.Thread.sleep;
+
 public class ReferralsPage extends BasePageObject {
 		//left menu
 		@FindBy(xpath = ".//a[contains(@href, 'rp.create')]")
@@ -165,7 +167,7 @@ public class ReferralsPage extends BasePageObject {
 				firstNameSearch.sendKeys(patientFirstName);
 				lastNameSearch.sendKeys(patientLastName);
 				searchPatients.click();
-				Thread.sleep(2000);
+				sleep(2000);
 				int searchResultCount = getSearchResultCount();
 				log("Search result: " + searchResultCount + " patients found.");
 
@@ -184,6 +186,7 @@ public class ReferralsPage extends BasePageObject {
 						fillPatientName(patientFirstName, patientLastName);
 						genger.click();
 						new Select(month).selectByIndex(4);
+						sleep(2000);
 						new Select(day).selectByIndex(4);
 						new Select(year).selectByIndex(4);
 						homePhone.sendKeys("1234567893");
