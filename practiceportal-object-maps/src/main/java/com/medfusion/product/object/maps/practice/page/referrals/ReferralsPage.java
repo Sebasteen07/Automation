@@ -165,6 +165,7 @@ public class ReferralsPage extends BasePageObject {
 				firstNameSearch.sendKeys(patientFirstName);
 				lastNameSearch.sendKeys(patientLastName);
 				searchPatients.click();
+				Thread.sleep(2000);
 				int searchResultCount = getSearchResultCount();
 				log("Search result: " + searchResultCount + " patients found.");
 
