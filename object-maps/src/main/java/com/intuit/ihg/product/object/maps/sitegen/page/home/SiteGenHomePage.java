@@ -84,8 +84,9 @@ public class SiteGenHomePage extends BasePageObject {
 
 	public SiteGenPracticeHomePage searchPracticeFromSGAdmin(String practiceName) throws Exception {
 		log("Automation Practice: " + practiceName);
-		IHGUtil.waitForElement(driver, 30, this.searchPracticeField);
+		IHGUtil.waitForElement(driver, 50, this.searchPracticeField);
 		searchPracticeField.sendKeys(practiceName);
+		Thread.sleep(5000);
 		String xpath = "//*[contains(text(),'" + practiceName + "')]";
 		driver.findElement(By.xpath(xpath)).click();
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);

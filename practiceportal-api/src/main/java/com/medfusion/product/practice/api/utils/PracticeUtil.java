@@ -202,23 +202,5 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 			rb.keyRelease(KeyEvent.VK_TAB);
 		}
 	}
-
-	/**
-	 * Will return true if Element exist else false
-	 * 
-	 * @param element :- WebElement
-	 * @return boolean
-	 */
-
-	public static boolean isExistsElement(WebDriver driver, WebElement element) {
-		try {
-			Actions builder = new Actions(driver);
-			builder.moveToElement(element).build().perform();
-			Point p = element.getLocation();
-			System.out.println("Where on the page is the top left-hand corner of the rendered element" + p);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
+	
 }
