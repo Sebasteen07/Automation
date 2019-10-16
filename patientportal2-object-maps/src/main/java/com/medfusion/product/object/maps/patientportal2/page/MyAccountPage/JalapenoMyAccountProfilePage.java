@@ -210,13 +210,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 				return genderExpected == genderOnPage;
 		}
 
-		public JalapenoHomePage returnToHomePage(WebDriver driver) {
-				log("Return to dashboard");
-				driver.findElement(By.id("home")).click();
-
-				return PageFactory.initElements(driver, JalapenoHomePage.class);
-		}
-
 		public JalapenoMyAccountSecurityPage goToSecurityTab(WebDriver driver) {
 				log("Click on Security");
 				securityTab.click();
