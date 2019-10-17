@@ -13,6 +13,8 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
 import com.medfusion.portal.utils.PortalConstants;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 import org.apache.commons.io.FileUtils;
@@ -288,29 +290,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test(enabled = true, groups = {"acceptance-basics", "commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testForgotPassword() throws Exception {
-		        createCommonPatient();
+				createCommonPatient();
+				resetForgottenPasswordOrUsername(patient.getEmail());
+		}
+
+		@Test(enabled = true, groups = {"acceptance-basics","commonpatient"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
+				createCommonPatient();
+				String email = IHGUtil.mixCase(patient.getEmail());
+				resetForgottenPasswordOrUsername(email);
+		}
+
+		private void resetForgottenPasswordOrUsername(String email) throws InterruptedException {
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
 				logStep("Clicking on forgot username or password");
 				JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
 
-				assertTrue(forgotPasswordPage.areBasicPageElementsPresent());
-
-				JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
+				JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(email);
 				logStep("Message was sent, closing");
 				forgotPasswordPage2.clickCloseButton();
 
 				logStep("Logging into Mailinator and getting ResetPassword url");
 				Mailinator mailinator = new Mailinator();
-				String[] mailAddress = patient.getEmail().split("@");
+				String[] mailAddress = email.split("@");
 				String emailSubject = "Help with your user name or password";
 				String inEmail = "Reset Password Now";
 				String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
 				if (!isInviteLinkFinal(url)){
 						url = getRedirectUrl(url);
 				}
-				assertTrue(url != null);
+				assertNotNull(url,"Url is null.");
 
 				JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
 				logStep("Redirecting to patient portal, filling secret answer as: " + patient.getSecurityQuestionAnswer());
@@ -333,6 +344,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 				PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
+				Instant messageBuildingStart = Instant.now();
 				logStep("Send a new secure message to static patient");
 				PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
 				patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
@@ -358,6 +370,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				patientMessagingPage = practiceHome.clickPatientMessagingTab();
 				assertTrue(patientMessagingPage.findMyMessage(messageSubject));
 				// TODO: Edit navigation on portal and search by date to search exact day
+
+				logStep("Check email for notification for new message");
+				//longer timeout needed as emails from Practice Portal are not sent out immediately but only once in a minute
+				//also need to check that the email is fresh enough as there might be email with the same content from different test run
+				String notificationEmailSubject = "New message from " + testData.getPracticeName();
+				String[] mailAddress = testData.getEmail().split("@");
+				Email email = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(notificationEmailSubject, 90, testSecondsTaken(messageBuildingStart));
+				assertNotNull(email, "Error: No new message notification recent enough found");
+				String emailBody = email.getBody();
+				assertTrue(emailBody.contains("Sign in to view this message"));
 		}
 
 		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
@@ -1404,5 +1426,60 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Verify Blink banner is still hidden");
 				assertFalse(jalapenoHomePage.isBlinkBannerDisplayed());
+		}
+
+		@Test(enabled = true, groups = {"acceptance-basics"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testAddandRemovePreferences() throws Exception {
+				logStep("Creating new patient");
+				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+				Patient localpatient = PatientFactory.createJalapenoPatient(username, testData);
+				localpatient = new CreatePatient().selfRegisterPatient(driver, localpatient, testData.getUrl());
+
+				logStep("Login");
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+				JalapenoHomePage homePage = loginPage.login(localpatient.getUsername(), localpatient.getPassword());
+
+				logStep("Go to MyAccount page");
+				JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
+
+				logStep("Open preferences tab");
+				JalapenoMyAccountPreferencesPage preferencesPage = myAccountPage.goToPreferencesTab(driver);
+
+				logStep("Set English preferred language");
+				preferencesPage.setEnglishAsPreferredLanguageAndSave();
+
+				logStep("Verify if preferred language is set to English");
+				assertEquals(preferencesPage.getPreferredLanguage(),"English");
+
+				logStep("Get preferred providers");
+				List<String> originalPreferredProviders = preferencesPage.getPreferredProviders();
+
+				logStep("Add preferred provider");
+				preferencesPage.addPreferredProviderAndSave(testData.getProperty("preferredProvider"));
+
+				logStep("Get preferred providers");
+				List<String> updatedPreferredProviders = preferencesPage.getPreferredProviders();
+
+				logStep("Verify if new preferred provider added");
+				assertTrue(originalPreferredProviders.size() + 1 == updatedPreferredProviders.size());
+				assertTrue(updatedPreferredProviders.contains(testData.getProperty("preferredProvider")),"List does not contain newly added provider");
+
+				logStep("Remove all preferred providers");
+				preferencesPage.removeAllPreferredProvidersAndSave();
+
+				logStep("Verify all preferred providers removed");
+				List<String> preferredProvidersAfterRemoval = preferencesPage.getPreferredProviders();
+				assertTrue(preferredProvidersAfterRemoval.size() == 0, "List of preferred providers should be empty but it is not");
+		}
+
+		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testPayNow() {
+				logStep("Open login page");
+				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+				logStep("Click on Pay a bill (without logging in");
+				JalapenoPayNowPage payNowPage = loginPage.clickPayNowButton();
+				logStep("Verify Pay now (Pay here) page");
+				assertTrue(payNowPage.validateNoLoginPaymentPage(testData.getFirstName(), testData.getLastName(), testData.getZipCode(), testData.getEmail()));
 		}
 }
