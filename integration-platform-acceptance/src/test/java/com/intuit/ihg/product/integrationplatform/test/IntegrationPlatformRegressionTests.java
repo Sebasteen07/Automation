@@ -58,7 +58,7 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
-
+	public static final String newPassword = "P@ssw0rd";
 
 	private PIDCTestData loadDataFromExcel() throws Exception {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -122,7 +122,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Filling in user credentials and finishing the registration");
 		// Filing the User credentials
-		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(testData.getZipCode(), emailAddressString, testData.getPatientPassword(),
+		MyPatientPage myPatientPage = pCreateAccountPage.fillPatientActivaion(testData.getZipCode(), emailAddressString, newPassword,
 				testData.getSecretQuestion(), testData.getSecretAnswer());
 
 		log("Step 8: Assert Webelements in MyPatientPage");
@@ -356,7 +356,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		MyPatientPage pMyPatientPage =
 				createNewPatientPage.BetaSiteCreateAccountPage(testData.getFirstName(), testData.getLastName(), email, testData.getPhoneNumber(),
 						testData.getDob_Month(), testData.getDob_Day(), testData.getDob_Year(), testData.getZip(), testData.getSSN(), testData.getAddress(),
-						testData.getPassword(), testData.getSecretQuestion(), testData.getAnswer(), testData.getAddressState(), testData.getAddressCity());
+						newPassword, testData.getSecretQuestion(), testData.getAnswer(), testData.getAddressState(), testData.getAddressCity());
 
 		String firstName = createNewPatientPage.FName;
 		String lastName = createNewPatientPage.LName;
@@ -431,7 +431,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(12000);
 		log("Step 20: Login to Patient Portal ");
 		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getUrl());
-		pMyPatientPage = portalloginpage.login(email, testData.getPassword());
+		pMyPatientPage = portalloginpage.login(email, newPassword);
 
 		log("Step 21: Go to Inbox");
 		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
@@ -481,7 +481,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Email as well as UserName:-" + email);
 		String FirstName = "MFPatient" + IHGUtil.createRandomNumericString();
 		MyPatientPage pMyPatientPage = createNewPatientPage.BetaSiteCreateAccountPage(FirstName, testData.getLastName(), email, testData.getHomePhoneNo(),
-				"January", "11", "1987", zip, testData.getSSN(), testData.getAddress1(), testData.getPassword(), testData.getSecretQuestion(),
+				"January", "11", "1987", zip, testData.getSSN(), testData.getAddress1(), newPassword, testData.getSecretQuestion(),
 				testData.getSecretAnswer(), testData.getState(), testData.getCity());
 
 		String firstName = createNewPatientPage.FName;
@@ -640,7 +640,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
 		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
+		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), newPassword);
 		
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
@@ -806,7 +806,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Email as well as UserName:-" + email);
 		String FirstName = "MFPatient" + IHGUtil.createRandomNumericString();
 		MyPatientPage pMyPatientPage = createNewPatientPage.BetaSiteCreateAccountPage(FirstName, testData.getLastName(), email, testData.getHomePhoneNo(),
-				"January", "11", "1987", zip, testData.getSSN(), testData.getAddress1(), testData.getPassword(), testData.getSecretQuestion(),
+				"January", "11", "1987", zip, testData.getSSN(), testData.getAddress1(), newPassword, testData.getSecretQuestion(),
 				testData.getSecretAnswer(), testData.getState(), testData.getCity());
 
 		String firstName = createNewPatientPage.FName;
@@ -833,7 +833,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Login to Second Patient Portal");
 		loginpage = new PortalLoginPage(driver, testData.getUrl());
-		pMyPatientPage = loginpage.login(email, testData.getPassword(), "loginFirstTime");
+		pMyPatientPage = loginpage.login(email, newPassword, "loginFirstTime");
 
 		log("Step 8: Assert Webelements in MyPatientPage");
 		// assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
@@ -854,7 +854,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 11: Logout from Patient portal");
 		pMyPatientPage.logout(driver);
 
-		log("####### PIDC Inbound for ondemandprovision ​#######");
+		log("####### PIDC Inbound for ondemandprovision #######");
 
 		log("Step 12: Login to Practice Portal to fetch Medfusion Member ID");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
