@@ -17,25 +17,25 @@ import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayN
 public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "userid")
-	public WebElement inputUserName;
+	private WebElement inputUserName;
 
 	@FindBy(how = How.ID, using = "password")
-	public WebElement inputPassword;
+	private WebElement inputPassword;
 
 	@FindBy(how = How.ID, using = "signin_btn")
-	public WebElement buttonSignIn;
+	private WebElement buttonSignIn;
 
 	@FindBy(how = How.ID, using = "create_btn")
-	public WebElement buttonCreateANewAccount;
+	private WebElement buttonCreateANewAccount;
 
 	@FindBy(how = How.ID, using = "remember")
-	public WebElement rememberUserNameCheckbox;
+	private WebElement rememberUserNameCheckbox;
 
 	@FindBy(how = How.ID, using = "paynow_button")
-	public WebElement buttonPayNow;
+	private WebElement buttonPayNow;
 
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "I forgot my user name and/or password.")
-	public WebElement forgotUserOrPasswordButton;
+	private WebElement forgotUserOrPasswordButton;
 
 	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 	private WebElement electronicPaymentPreference;
@@ -70,7 +70,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
 		log("User is logged in");
-		selectStatementIfRequired();
+		handleWeNeedToConfirmSomethingModal();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 

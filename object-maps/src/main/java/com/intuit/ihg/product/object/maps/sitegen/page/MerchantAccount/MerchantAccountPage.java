@@ -55,7 +55,7 @@ public class MerchantAccountPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
 		SitegenlUtil sUtil = new SitegenlUtil(driver);
-		return (sUtil.exists(deleteButton));
+		return (sUtil.isRendered(deleteButton));
 	}
 
 	/**

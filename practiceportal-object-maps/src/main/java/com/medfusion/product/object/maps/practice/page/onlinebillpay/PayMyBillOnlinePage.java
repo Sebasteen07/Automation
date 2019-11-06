@@ -450,7 +450,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	public boolean isVoidTransactionPresent() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframe");
-		if (IHGUtil.exists(driver, transactionsList)) {
+		if (new IHGUtil(driver).isRendered(transactionsList)) {
 			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
 		} else
 			return false;

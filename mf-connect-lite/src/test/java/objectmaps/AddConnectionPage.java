@@ -28,17 +28,8 @@ public class AddConnectionPage extends HomePage {
 	
 	@FindBy(how = How.ID, using= "mfPortalBtn")
 	public WebElement mfPortalBtn;
-
-	public void clickMfPracticeBtn() {
-		mfPracticeBtn.click();
-	}
 	
-	public void clickMfDoctorBtn() {
-		mfDoctorBtn.click();
-	}
-	
-	public void clickMfPortalBtn() {
-		mfPortalBtn.click();
-	}
+	@FindBy(how = How.XPATH, using = "/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/ul[1]/li[1]/p[1]")
+	public WebElement firstRecPortal;
 	
 }

@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -24,6 +25,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -172,9 +174,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 				return PageFactory.initElements(driver, DocumentsPage.class);
 		}
 
-		public void clickStartRegistrationButton() {
+		public FiltersFormPages clickStartRegistrationButton() {
 				log("Clicking on Start Registration button.");
 				startRegistrationButton.click();
+				return PageFactory.initElements(driver, FiltersFormPages.class);
 		}
 
 		public <T extends PortalFormPage> T clickContinueRegistrationButton(Class<T> pageClass) {
@@ -231,10 +234,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(messages);
 
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 2; i++) {
 						int attempt = i + 1;
 						log("Checking page elements, attempt: " + attempt, Level.INFO);
-						if (areMenuElementsPresent() && assessPageElements(webElementsList)) {
+						if (areMenuElementsPresent() && assessPageElements(webElementsList,120)) {
 								log("All basic elements are present", Level.INFO);
 								return true;
 						} else {

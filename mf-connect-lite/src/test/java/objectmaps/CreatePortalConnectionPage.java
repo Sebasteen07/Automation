@@ -19,6 +19,12 @@ public class CreatePortalConnectionPage extends HomePage {
 	@FindBy(how = How.ID, using= "mfCloseButton")
 	public WebElement mfCloseButton;
 	
+	@FindBy(how = How.ID, using= "connectionCredentials_username")
+	public WebElement ccUsername;
+	
+	@FindBy(how = How.ID, using= "connectionCredentials_password")
+	public WebElement ccPassword;
+	
 	@FindBy(how = How.ID, using= "createConnectionBtn")
 	public WebElement createConnectionBtn;
 	

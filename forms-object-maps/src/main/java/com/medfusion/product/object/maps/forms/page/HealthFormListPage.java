@@ -34,6 +34,8 @@ public class HealthFormListPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
+	private static final By newFormIframeXpath = By.xpath("//iframe[@title='Forms']");
+
 	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
 	
@@ -68,7 +70,9 @@ public class HealthFormListPage extends BasePageObject {
 		WebDriverWait wait = new WebDriverWait(driver, 50);
 		javascriptClick(wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectedForm))));
 		Thread.sleep(3000);
-		if (!IHGUtil.exists(driver, newFormIframe)) {
+		try {
+			driver.findElement(newFormIframeXpath);
+		} catch (NoSuchElementException ex){
 			driver.switchTo().defaultContent();
 		}
 		driver.switchTo().frame(newFormIframe);
