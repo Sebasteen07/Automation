@@ -301,7 +301,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				resetForgottenPasswordOrUsername(email);
 		}
 
-		private void resetForgottenPasswordOrUsername(String email) throws InterruptedException {
+		private void resetForgottenPasswordOrUsername(String email) {
+				Instant passwordResetStart = Instant.now();
 				logStep("Load login page");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -313,15 +314,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				forgotPasswordPage2.clickCloseButton();
 
 				logStep("Logging into Mailinator and getting ResetPassword url");
-				Mailinator mailinator = new Mailinator();
 				String[] mailAddress = email.split("@");
 				String emailSubject = "Help with your user name or password";
 				String inEmail = "Reset Password Now";
-				String url = mailinator.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
-				if (!isInviteLinkFinal(url)){
+				Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60, testSecondsTaken(passwordResetStart));
+				String url = Mailer.getLinkByText(receivedEmail, inEmail);
+				if (!isInviteLinkFinal(url)) {
 						url = getRedirectUrl(url);
 				}
-				assertNotNull(url,"Url is null.");
+				assertNotNull(url, "Url is null.");
 
 				JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
 				logStep("Redirecting to patient portal, filling secret answer as: " + patient.getSecurityQuestionAnswer());
