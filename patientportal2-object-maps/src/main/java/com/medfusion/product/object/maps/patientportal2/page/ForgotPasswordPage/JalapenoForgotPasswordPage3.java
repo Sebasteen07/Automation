@@ -14,16 +14,16 @@ import com.medfusion.common.utils.IHGUtil;
 public class JalapenoForgotPasswordPage3 extends MedfusionPage {
 
 		@FindBy(how = How.LINK_TEXT, using = "Sign In Now.")
-		private WebElement signInButton;
+		public WebElement signInButton;
 
 		@FindBy(how = How.ID, using = "secretAnswer_forgot")
-		private WebElement secretAnswer;
+		public WebElement secretAnswer;
 
 		@FindBy(how = How.ID, using = "forgotEnterSecretAnswerFormContinueButton")
-		private WebElement continueAndResetButton;
+		public WebElement continueAndResetButton;
 
 		public JalapenoForgotPasswordPage3(WebDriver driver, String url) {
-				super(driver, url);
+				super(driver);
 				IHGUtil.PrintMethodName();;
 		}
 
