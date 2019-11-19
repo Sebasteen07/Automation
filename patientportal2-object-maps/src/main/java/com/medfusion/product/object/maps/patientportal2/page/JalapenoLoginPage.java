@@ -13,6 +13,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class JalapenoLoginPage extends MedfusionPage {
 
@@ -99,6 +100,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public JalapenoForgotPasswordPage clickForgotPasswordButton() {
 		IHGUtil.PrintMethodName();
 		log("Clicking on Forgot Password button");
+		wait.until(ExpectedConditions.elementToBeClickable(forgotUserOrPasswordButton));
 		forgotUserOrPasswordButton.click();
 		return PageFactory.initElements(driver, JalapenoForgotPasswordPage.class);
 	}
