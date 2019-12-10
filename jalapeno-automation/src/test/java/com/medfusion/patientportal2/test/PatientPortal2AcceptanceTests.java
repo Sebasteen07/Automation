@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
@@ -25,7 +24,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
-
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
