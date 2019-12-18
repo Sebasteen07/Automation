@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="d0cb32ed-cf37-4b62-8a93-f020965033dc" created="3.0.0" activeEnvironment="Default environment" name="Claire 2.0" updated="3.0.0 2019-11-05T14:42:03Z" encryptionMode="Not encrypted" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="55a54ea6-4cc7-4add-8ea6-2e57f89c17c1" name="claire-2-app" type="rest_ex" wadlVersion="https://swagger.io/swagger2/specification" definitionUrl="http://d3-pl-app01.dev.medfusion.net:8360/claire-2-app/v2/api-docs?group=claire-2-app" basePath="/claire-2-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:description xsi:nil="true"/><con:settings/><con:definitionCache type="TEXT" rootPart="http://d3-pl-app01.dev.medfusion.net:8360/claire-2-app/v2/api-docs?group=claire-2-app"><con:part><con:url>http://d3-pl-app01.dev.medfusion.net:8360/claire-2-app/v2/api-docs?group=claire-2-app</con:url><con:content>{"swagger":"2.0","info":{"title":"claire-2-app"},"host":"d3-pl-app01.dev.medfusion.net:8360","basePath":"/claire-2-app","tags":[{"name":"ticket-resource","description":"Ticket Resource"},{"name":"connections-ui-controller","description":"the UiConnections API"},{"name":"validation-ticket-resource","description":"Validation Ticket Resource"},{"name":"create-connection-ui-controller","description":"Create Connection UI Controller"},{"name":"admin-rest-user-info-controller","description":"the AdminRestUserInfo API"}],"paths":{"/v1/admin-rest/users/{user_uuid}":{"get":{"tags":["AdminRestUserInfo"],"summary":"getUserInfo","operationId":"getUserInfo","consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"user_uuid","in":"path","description":"user_uuid","required":true,"type":"string"},{"in":"body","name":"requestId","description":"requestId","required":false,"schema":{"type":"string"}}],"responses":{"200":{"description":"Successful response","schema":{"$ref":"#/definitions/UserInfo"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"security":[{"pingOAuth":[]}]}},"/v1/tickets/{portalAccessId}/createDreTicket":{"post":{"tags":["ticket-resource"],"summary":"createDreTicket","operationId":"createDreTicketUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"portalAccessId","in":"path","description":"portalAccessId","required":true,"type":"integer","format":"int64"},{"name":"tasksToAdd","in":"query","description":"tasksToAdd","required":true,"type":"array","items":{"type":"string","enum":["FETCH_CCD","FETCH_UPCOMING_APPOINTMENTS","FETCH_PREVIOUS_APPOINTMENTS","FETCH_APPONTMENT_CCD","TEST_LOGIN","LOGIN","LOGOUT","VALIDATE_PORTAL","FETCH_DOCUMENTS","FETCH_PROFILES_TASK","FETCH_BILLING_ALERTS_TASK"]},"collectionFormat":"multi","enum":["FETCH_CCD","FETCH_UPCOMING_APPOINTMENTS","FETCH_PREVIOUS_APPOINTMENTS","FETCH_APPONTMENT_CCD","TEST_LOGIN","LOGIN","LOGOUT","VALIDATE_PORTAL","FETCH_DOCUMENTS","FETCH_PROFILES_TASK","FETCH_BILLING_ALERTS_TASK"]}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/DreTicketInfo"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/tickets/{portalAccessId}/refreshPortalAccess":{"post":{"tags":["ticket-resource"],"summary":"refreshPortalAccess","operationId":"refreshPortalAccessUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"portalAccessId","in":"path","description":"portalAccessId","required":true,"type":"integer","format":"int64"},{"name":"isAdminUser","in":"query","description":"isAdminUser","required":false,"type":"boolean","default":false}],"responses":{"200":{"description":"OK","schema":{"type":"boolean"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/tickets/{portalAccessId}/scheduleClonedConnection":{"post":{"tags":["ticket-resource"],"summary":"scheduleClonedConnection","operationId":"scheduleClonedConnectionUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"portalAccessId","in":"path","description":"portalAccessId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK"},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/tickets/{ticketId}":{"get":{"tags":["ticket-resource"],"summary":"getTicketInfo","operationId":"getTicketInfoUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"ticketId","in":"path","description":"ticketId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/DreTicketInfo"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/tickets/{ticketId}/credentials":{"get":{"tags":["ticket-resource"],"summary":"getPortalAccessCredentials","operationId":"getPortalAccessCredentialsUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"ticketId","in":"path","description":"ticketId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"type":"string"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/tickets/{ticketId}/masterpassword":{"get":{"tags":["ticket-resource"],"summary":"getPersonMasterPassword","operationId":"getPersonMasterPasswordUsingGET","consumes":["application/json"],"produces":["application/json","text/plain"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"ticketId","in":"path","description":"ticketId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"type":"string"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/ui/users/{user_uuid}/connections":{"get":{"tags":["UIConnections"],"summary":"getUserConnections","operationId":"getUserConnections","consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"user_uuid","in":"path","description":"user_uuid","required":true,"type":"string"}],"responses":{"200":{"description":"Successful response","schema":{"type":"array","items":{"$ref":"#/definitions/ConnectionUI"}}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"security":[{"pingOAuth":[]}]},"post":{"tags":["create-connection-ui-controller"],"summary":"createConnection","operationId":"createConnectionUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"user_uuid","in":"path","description":"user_uuid","required":true,"type":"string"},{"in":"body","name":"request","description":"request","required":true,"schema":{"$ref":"#/definitions/CreateConnectionRequest"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/ConnectionUI"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/v1/ui/users/{user_uuid}/connections/{connection_id}":{"get":{"tags":["UIConnections"],"summary":"getUserConnection","operationId":"getUserConnection","consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"name":"user_uuid","in":"path","description":"user_uuid","required":true,"type":"string"},{"name":"connection_id","in":"path","description":"connection_id","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"Successful response","schema":{"$ref":"#/definitions/ConnectionUI"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"security":[{"pingOAuth":[]}]}},"/v1/validation-tickets":{"post":{"tags":["validation-ticket-resource"],"summary":"createValidationTicket","operationId":"createValidationTicketUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"Authorization","in":"header","description":"Authorization Header","required":false,"type":"string"},{"in":"body","name":"ticket","description":"ticket","required":true,"schema":{"$ref":"#/definitions/DreTicketInfo"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/DreTicketInfo"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}}},"definitions":{"BaseCredentialInfo":{"type":"object","properties":{"cookies":{"type":"object","additionalProperties":{"type":"string"}},"restricted":{"type":"boolean"},"type":{"type":"string","enum":["USER_PASS","USER_PASS_SECRETS","TEST","AUTHID","ATHENA_API","AWP"]},"uniqueProfileId":{"type":"string"}}},"PersonInfo":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"masterPassword":{"type":"string"}}},"PortalTypeInfo":{"type":"object","properties":{"additionalInfoFields":{"type":"array","items":{"type":"string"}},"defaultCredentialsType":{"type":"string"},"description":{"type":"string"},"displayName":{"type":"string"},"dreStatus":{"type":"string"},"hidePrimaryUrl":{"type":"boolean"},"id":{"type":"integer","format":"int64"},"isRestricted":{"type":"boolean"},"isSingleInstance":{"type":"boolean"},"name":{"type":"string"},"queueName":{"type":"string"},"usesRetrieverUrl":{"type":"boolean"}}},"PortalInfo":{"type":"object","properties":{"addtlInfo":{"type":"object","additionalProperties":{"type":"string"}},"createDt":{"type":"string","format":"date-time"},"createdDt":{"type":"string","format":"date-time"},"credentialsType":{"type":"string"},"defaultLocation":{"$ref":"#/definitions/LocationInfo"},"id":{"type":"integer","format":"int64"},"logoUrl":{"type":"string"},"name":{"type":"string"},"portalOverrides":{"type":"object","additionalProperties":{"type":"string"}},"primaryUrl":{"type":"string"},"retrieverUrl":{"type":"string"},"securityQuestions":{"type":"array","items":{"type":"string"}},"seleniumOptions":{"type":"object","additionalProperties":{"type":"string"}},"status":{"type":"string","enum":["INACTIVE","ACTIVE","SUSPENDED","IN_DEV","NO_PORTAL"]},"type":{"type":"string"},"typeInfo":{"$ref":"#/definitions/PortalTypeInfo"}}},"UserInfo":{"type":"object","properties":{"authId":{"type":"string"},"id":{"type":"integer","format":"int64"},"profiles":{"type":"array","items":{"$ref":"#/definitions/ProfileInfo"}},"uuid":{"type":"string"}}},"PortalUI":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string"},"primaryUrl":{"type":"string"},"type":{"type":"string"}}},"ProfileInfo":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"person":{"$ref":"#/definitions/PersonInfo"}}},"CreateConnectionRequest":{"type":"object","properties":{"credentials":{"$ref":"#/definitions/BaseCredentialInfo"},"customerClientId":{"type":"string"},"location":{"$ref":"#/definitions/Location"},"portalId":{"type":"integer","format":"int64"},"profileId":{"type":"integer","format":"int64"},"providerNameAlias":{"type":"string"},"uniqueProfileId":{"type":"string"}}},"DreTicketInfo":{"type":"object","properties":{"connectionId":{"type":"integer","format":"int64"},"firstDataRetrieval":{"type":"boolean"},"id":{"type":"integer","format":"int64"},"isFirstTicket":{"type":"boolean"},"isValidationTicket":{"type":"boolean"},"jobCompleteTime":{"type":"string","format":"date-time"},"jobCreateTime":{"type":"string","format":"date-time"},"jobStatus":{"type":"string","enum":["SCHEDULED","SUBMITTED","SUCCESS","ERROR_OTHER","ERROR_USER_AUTH","SUBMITTED_STALE","PARTIAL_SUCCESS","ERROR_NEEDS_USER_INTERACTION","WAITING","PROFILES_FOUND"]},"jobStatusMessage":{"type":"string"},"jobSubmitTime":{"type":"string","format":"date-time"},"jobTicketId":{"type":"integer","format":"int64"},"metadata":{"type":"object","additionalProperties":{"type":"string"}},"nextJobWaitTime":{"type":"string","format":"date-time"},"personId":{"type":"integer","format":"int64"},"portalInfo":{"$ref":"#/definitions/PortalInfo"},"tasks":{"type":"array","items":{"$ref":"#/definitions/TicketTaskInfo"}}}},"DateTime":{"type":"object","properties":{"afterNow":{"type":"boolean"},"beforeNow":{"type":"boolean"},"centuryOfEra":{"type":"integer","format":"int32"},"chronology":{"$ref":"#/definitions/Chronology"},"dayOfMonth":{"type":"integer","format":"int32"},"dayOfWeek":{"type":"integer","format":"int32"},"dayOfYear":{"type":"integer","format":"int32"},"equalNow":{"type":"boolean"},"era":{"type":"integer","format":"int32"},"hourOfDay":{"type":"integer","format":"int32"},"millis":{"type":"integer","format":"int64"},"millisOfDay":{"type":"integer","format":"int32"},"millisOfSecond":{"type":"integer","format":"int32"},"minuteOfDay":{"type":"integer","format":"int32"},"minuteOfHour":{"type":"integer","format":"int32"},"monthOfYear":{"type":"integer","format":"int32"},"secondOfDay":{"type":"integer","format":"int32"},"secondOfMinute":{"type":"integer","format":"int32"},"weekOfWeekyear":{"type":"integer","format":"int32"},"weekyear":{"type":"integer","format":"int32"},"year":{"type":"integer","format":"int32"},"yearOfCentury":{"type":"integer","format":"int32"},"yearOfEra":{"type":"integer","format":"int32"},"zone":{"$ref":"#/definitions/DateTimeZone"}}},"DateTimeZone":{"type":"object","properties":{"fixed":{"type":"boolean"},"id":{"type":"string"}}},"LocationInfo":{"type":"object","properties":{"city":{"type":"string"},"homePageUrl":{"type":"string"},"id":{"type":"integer","format":"int64"},"locationId":{"type":"integer","format":"int64"},"name":{"type":"string"},"phone":{"type":"string"},"portalId":{"type":"integer","format":"int64"},"state":{"type":"string"},"zip":{"type":"string"}}},"TicketTaskInfo":{"type":"object","properties":{"dateMark":{"$ref":"#/definitions/DateTime"},"documentInfo":{"$ref":"#/definitions/DocumentInfo"},"key":{"type":"string"},"overallTaskResultStatus":{"type":"string","enum":["NO_CHANGE","UPDATED","FAILED","NO_DATA","NO_OP","WAITING","DATA_UNAVAILABLE"]},"results":{"type":"array","items":{"$ref":"#/definitions/TaskResultInfo"}},"taskId":{"type":"integer","format":"int64"},"ticketId":{"type":"integer","format":"int64"},"type":{"type":"string","enum":["FETCH_CCD","FETCH_UPCOMING_APPOINTMENTS","FETCH_PREVIOUS_APPOINTMENTS","FETCH_APPONTMENT_CCD","TEST_LOGIN","LOGIN","LOGOUT","VALIDATE_PORTAL","FETCH_DOCUMENTS","FETCH_PROFILES_TASK","FETCH_BILLING_ALERTS_TASK"]}}},"SecurityQuestionUI":{"type":"object","properties":{"answered":{"type":"boolean","example":false},"needsNewAnswer":{"type":"boolean","example":false},"question":{"type":"string"}}},"TaskResultInfo":{"type":"object","properties":{"documentInfo":{"$ref":"#/definitions/DocumentInfo"},"resultDate":{"$ref":"#/definitions/DateTime"},"status":{"type":"string","enum":["NO_CHANGE","UPDATED","FAILED","NO_DATA","NO_OP","WAITING","DATA_UNAVAILABLE"]}}},"ConnectionUI":{"type":"object","properties":{"hasEverSucceeded":{"type":"boolean","example":false},"id":{"type":"integer","format":"int64"},"portal":{"$ref":"#/definitions/PortalUI"},"profile":{"$ref":"#/definitions/ProfileUI"},"securityQuestions":{"type":"array","items":{"$ref":"#/definitions/SecurityQuestionUI"}},"status":{"type":"string","enum":["PORTAL_PLACEHOLDER","PORTAL_NO_PORTAL","PORTAL_INACTIVE","PORTAL_SUSPENDED","PORTAL_UNDER_DEVELOPMENT","JOB_PENDING","JOB_REFRESHING","JOB_WAITING","JOB_PARTIAL_SUCCESS","JOB_SUCCESS","JOB_USER_INTERACTION","JOB_USER_SECURITY_QUESTION","JOB_USER_CREDENTIALS","JOB_PROFILES_FOUND","JOB_ERROR","NO_JOB"]},"statusMessage":{"type":"string"}}},"ProfileUI":{"type":"object","properties":{"id":{"type":"integer","format":"int64"}}},"Chronology":{"type":"object","properties":{"zone":{"$ref":"#/definitions/DateTimeZone"}}},"Location":{"type":"object","properties":{"id":{"type":"string"},"type":{"type":"string"}}},"DocumentInfo":{"type":"object","properties":{"checksum":{"type":"string"},"checksumType":{"type":"string","enum":["SHA_1"]},"createDt":{"type":"string","format":"date-time"},"docType":{"type":"string","enum":["CCD","APPOINTMENTS","ENCOUNTER_CCD","NOTE_FILE","UNPARSEABLE_HEALTH_DATA","ANNUAL_WELLNESS_PROGRAM","STATEMENTS"]},"documentId":{"type":"string"},"documentProperties":{"type":"object","additionalProperties":{"type":"string"}},"filePath":{"type":"string"},"mimetype":{"type":"string"},"modifiedDt":{"type":"string","format":"date-time"},"originPortalId":{"type":"string"},"portalUniqueIdentifier":{"type":"string"},"size":{"type":"integer","format":"int64"}}}}}</con:content><con:type>https://swagger.io/swagger2/specification</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint></con:endpoints><con:resource name="/v1/admin-rest/users/{user_uuid}" path="/v1/admin-rest/users/{user_uuid}" id="e3d37b98-c782-4798-bec2-758f5e29384d"><con:settings/><con:parameters><con:parameter required="true"><con:name>user_uuid</con:name><con:style>TEMPLATE</con:style><con:description>user_uuid</con:description></con:parameter></con:parameters><con:method name="getUserInfo" id="03f14aa2-9a64-47e6-a655-11adddeaf275" method="GET"><con:description>
+getUserInfo</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/><con:sampleContent>{ }</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent>{
+  "authId" : "string",
+  "id" : 0,
+  "profiles" : [ {
+    "id" : 0,
+    "person" : {
+      "id" : 0,
+      "masterPassword" : "string"
+    }
+  } ],
+  "uuid" : "string"
+}</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="c6cf3c3f-ff00-4355-84dc-730687e7cbf8" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:request>{ }</con:request><con:originalUri>http://d3-pl-app01.dev.medfusion.net/claire-2-app/v1/admin-rest/users/</con:originalUri><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{portalAccessId}/createDreTicket" path="/v1/tickets/{portalAccessId}/createDreTicket" id="c5c72841-2d80-467e-9b90-ec04c9ba4a59"><con:settings/><con:parameters><con:parameter required="true"><con:name>portalAccessId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>portalAccessId</con:description></con:parameter></con:parameters><con:method name="createDreTicketUsingPOST" id="dd4f9904-527f-4b1b-8648-8eca82c2fff9" method="POST"><con:description>
+createDreTicket</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter><con:parameter required="true"><con:name>tasksToAdd</con:name><con:style>QUERY</con:style><con:dataType>array</con:dataType><con:description>tasksToAdd</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>201</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="ac40f99e-879c-4174-862d-77670940e7d6" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{portalAccessId}/refreshPortalAccess" path="/v1/tickets/{portalAccessId}/refreshPortalAccess" id="6cc27a6e-74d4-4802-b5d3-879685dd4fa7"><con:settings/><con:parameters><con:parameter required="true"><con:name>portalAccessId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>portalAccessId</con:description></con:parameter></con:parameters><con:method name="refreshPortalAccessUsingPOST" id="e22ffcad-6c89-4469-986b-a83b3b0ecf55" method="POST"><con:description>
+refreshPortalAccess</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter><con:parameter><con:name>isAdminUser</con:name><con:style>QUERY</con:style><con:dataType>boolean</con:dataType><con:default>false</con:default><con:description>isAdminUser</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>201</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="055a73dd-7855-482f-9348-afa2f007bc5c" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{portalAccessId}/scheduleClonedConnection" path="/v1/tickets/{portalAccessId}/scheduleClonedConnection" id="c8733949-5848-4c1b-b0d3-2384744a1bc8"><con:settings/><con:parameters><con:parameter required="true"><con:name>portalAccessId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>portalAccessId</con:description></con:parameter></con:parameters><con:method name="scheduleClonedConnectionUsingPOST" id="824c8f9f-8e59-4fcf-9013-7352cb6d875b" method="POST"><con:description>
+scheduleClonedConnection</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>201</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="7d4a6650-9adf-46af-b4d3-6e5f4e32f640" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{ticketId}" path="/v1/tickets/{ticketId}" id="3ac8eb05-1cc2-4bd0-99aa-b7cfd6863a40"><con:settings/><con:parameters><con:parameter required="true"><con:name>ticketId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>ticketId</con:description></con:parameter></con:parameters><con:method name="getTicketInfoUsingGET" id="fe60c1d1-d1f9-4e23-bd5b-2aff0803465d" method="GET"><con:description>
+getTicketInfo</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="200d1c42-5a0b-463a-91b8-7382c0127730" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{ticketId}/credentials" path="/v1/tickets/{ticketId}/credentials" id="149f63d6-a19a-408f-968e-f9db1219524a"><con:settings/><con:parameters><con:parameter required="true"><con:name>ticketId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>ticketId</con:description></con:parameter></con:parameters><con:method name="getPortalAccessCredentialsUsingGET" id="93b2ff34-03a8-4f6c-939a-b2c26340c915" method="GET"><con:description>
+getPortalAccessCredentials</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="039435c7-bf6d-48e8-abc6-6a01f0f66c0c" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/tickets/{ticketId}/masterpassword" path="/v1/tickets/{ticketId}/masterpassword" id="804d78f1-c2f3-4c7c-917c-2e6c16908f25"><con:settings/><con:parameters><con:parameter required="true"><con:name>ticketId</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>ticketId</con:description></con:parameter></con:parameters><con:method name="getPersonMasterPasswordUsingGET" id="207c10d7-e54a-455c-8c39-0511ed915f00" method="GET"><con:description>
+getPersonMasterPassword</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent>"string"</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>text/plain</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="c8166b45-096c-45fc-8a58-7d807b6ee536" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/ui/users/{user_uuid}/connections" path="/v1/ui/users/{user_uuid}/connections" id="c23f05e3-d2a5-4c79-930e-278ee647a747"><con:settings/><con:parameters><con:parameter required="true"><con:name>user_uuid</con:name><con:style>TEMPLATE</con:style><con:description>user_uuid</con:description></con:parameter></con:parameters><con:method name="getUserConnections" id="929148a3-8851-4d6a-af48-191cec8460e8" method="GET"><con:description>
+getUserConnections</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent>[ {
+  "hasEverSucceeded" : false,
+  "id" : 0,
+  "portal" : {
+    "id" : 0,
+    "name" : "string",
+    "primaryUrl" : "string",
+    "type" : "string"
+  },
+  "profile" : {
+    "id" : 0
+  },
+  "securityQuestions" : [ {
+    "answered" : false,
+    "needsNewAnswer" : false,
+    "question" : "string"
+  } ],
+  "status" : "PORTAL_PLACEHOLDER",
+  "statusMessage" : "string"
+} ]</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="8a55a6d0-0f46-4764-85ba-0b63eaafdea5" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method><con:method name="createConnectionUsingPOST" id="523ef1f9-e7cd-4d59-85f7-322cc48de45c" method="POST"><con:description>
+createConnection</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/><con:sampleContent>{
+  "credentials" : {
+    "cookies" : {
+      "additionalProp1" : "string",
+      "additionalProp2" : "string",
+      "additionalProp3" : "string"
+    },
+    "restricted" : true,
+    "type" : "USER_PASS",
+    "uniqueProfileId" : "string"
+  },
+  "customerClientId" : "string",
+  "location" : {
+    "id" : "string",
+    "type" : "string"
+  },
+  "portalId" : 0,
+  "profileId" : 0,
+  "providerNameAlias" : "string",
+  "uniqueProfileId" : "string"
+}</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>201</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="bfd90555-7098-4006-ae68-60d18979fc14" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:request>{\r
+  "credentials" : {\r
+    "cookies" : {\r
+      "additionalProp1" : "string",\r
+      "additionalProp2" : "string",\r
+      "additionalProp3" : "string"\r
+    },\r
+    "restricted" : true,\r
+    "type" : "USER_PASS",\r
+    "uniqueProfileId" : "string"\r
+  },\r
+  "customerClientId" : "string",\r
+  "location" : {\r
+    "id" : "string",\r
+    "type" : "string"\r
+  },\r
+  "portalId" : 0,\r
+  "profileId" : 0,\r
+  "providerNameAlias" : "string",\r
+  "uniqueProfileId" : "string"\r
+}</con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/ui/users/{user_uuid}/connections/{connection_id}" path="/v1/ui/users/{user_uuid}/connections/{connection_id}" id="971eba26-6698-4022-aa0d-213fbedf0f76"><con:settings/><con:parameters><con:parameter required="true"><con:name>user_uuid</con:name><con:style>TEMPLATE</con:style><con:description>user_uuid</con:description></con:parameter><con:parameter required="true"><con:name>connection_id</con:name><con:style>TEMPLATE</con:style><con:dataType>integer</con:dataType><con:description>connection_id</con:description></con:parameter></con:parameters><con:method name="getUserConnection" id="950ad959-a3a7-42d5-a6bc-125c943b8102" method="GET"><con:description>
+getUserConnection</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent>{
+  "hasEverSucceeded" : false,
+  "id" : 0,
+  "portal" : {
+    "id" : 0,
+    "name" : "string",
+    "primaryUrl" : "string",
+    "type" : "string"
+  },
+  "profile" : {
+    "id" : 0
+  },
+  "securityQuestions" : [ {
+    "answered" : false,
+    "needsNewAnswer" : false,
+    "question" : "string"
+  } ],
+  "status" : "PORTAL_PLACEHOLDER",
+  "statusMessage" : "string"
+}</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="f275ecd3-9d70-412e-bd6a-251e46bd2897" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource><con:resource name="/v1/validation-tickets" path="/v1/validation-tickets" id="9a5e535c-34a7-4d75-b363-41bcbd826308"><con:settings/><con:parameters/><con:method name="createValidationTicketUsingPOST" id="089779a8-b98a-4c27-aa55-f770397c44df" method="POST"><con:description>
+createValidationTicket</con:description><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:style>HEADER</con:style><con:description>Authorization Header</con:description></con:parameter></con:parameters><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/><con:sampleContent>{
+  "connectionId" : 0,
+  "firstDataRetrieval" : true,
+  "id" : 0,
+  "isFirstTicket" : true,
+  "isValidationTicket" : true,
+  "jobCompleteTime" : "2015-07-20T15:49:04-07:00",
+  "jobCreateTime" : "2015-07-20T15:49:04-07:00",
+  "jobStatus" : "SCHEDULED",
+  "jobStatusMessage" : "string",
+  "jobSubmitTime" : "2015-07-20T15:49:04-07:00",
+  "jobTicketId" : 0,
+  "metadata" : {
+    "additionalProp1" : "string",
+    "additionalProp2" : "string",
+    "additionalProp3" : "string"
+  },
+  "nextJobWaitTime" : "2015-07-20T15:49:04-07:00",
+  "personId" : 0,
+  "portalInfo" : {
+    "addtlInfo" : {
+      "additionalProp1" : "string",
+      "additionalProp2" : "string",
+      "additionalProp3" : "string"
+    },
+    "createDt" : "2015-07-20T15:49:04-07:00",
+    "createdDt" : "2015-07-20T15:49:04-07:00",
+    "credentialsType" : "string",
+    "defaultLocation" : {
+      "city" : "string",
+      "homePageUrl" : "string",
+      "id" : 0,
+      "locationId" : 0,
+      "name" : "string",
+      "phone" : "string",
+      "portalId" : 0,
+      "state" : "string",
+      "zip" : "string"
+    },
+    "id" : 0,
+    "logoUrl" : "string",
+    "name" : "string",
+    "portalOverrides" : {
+      "additionalProp1" : "string",
+      "additionalProp2" : "string",
+      "additionalProp3" : "string"
+    },
+    "primaryUrl" : "string",
+    "retrieverUrl" : "string",
+    "securityQuestions" : [ "string" ],
+    "seleniumOptions" : {
+      "additionalProp1" : "string",
+      "additionalProp2" : "string",
+      "additionalProp3" : "string"
+    },
+    "status" : "INACTIVE",
+    "type" : "string",
+    "typeInfo" : {
+      "additionalInfoFields" : [ "string" ],
+      "defaultCredentialsType" : "string",
+      "description" : "string",
+      "displayName" : "string",
+      "dreStatus" : "string",
+      "hidePrimaryUrl" : true,
+      "id" : 0,
+      "isRestricted" : true,
+      "isSingleInstance" : true,
+      "name" : "string",
+      "queueName" : "string",
+      "usesRetrieverUrl" : true
+    }
+  },
+  "tasks" : [ {
+    "dateMark" : {
+      "afterNow" : true,
+      "beforeNow" : true,
+      "centuryOfEra" : 0,
+      "chronology" : {
+        "zone" : {
+          "fixed" : true,
+          "id" : "string"
+        }
+      },
+      "dayOfMonth" : 0,
+      "dayOfWeek" : 0,
+      "dayOfYear" : 0,
+      "equalNow" : true,
+      "era" : 0,
+      "hourOfDay" : 0,
+      "millis" : 0,
+      "millisOfDay" : 0,
+      "millisOfSecond" : 0,
+      "minuteOfDay" : 0,
+      "minuteOfHour" : 0,
+      "monthOfYear" : 0,
+      "secondOfDay" : 0,
+      "secondOfMinute" : 0,
+      "weekOfWeekyear" : 0,
+      "weekyear" : 0,
+      "year" : 0,
+      "yearOfCentury" : 0,
+      "yearOfEra" : 0,
+      "zone" : {
+        "fixed" : true,
+        "id" : "string"
+      }
+    },
+    "documentInfo" : {
+      "checksum" : "string",
+      "checksumType" : "SHA_1",
+      "createDt" : "2015-07-20T15:49:04-07:00",
+      "docType" : "CCD",
+      "documentId" : "string",
+      "documentProperties" : {
+        "additionalProp1" : "string",
+        "additionalProp2" : "string",
+        "additionalProp3" : "string"
+      },
+      "filePath" : "string",
+      "mimetype" : "string",
+      "modifiedDt" : "2015-07-20T15:49:04-07:00",
+      "originPortalId" : "string",
+      "portalUniqueIdentifier" : "string",
+      "size" : 0
+    },
+    "key" : "string",
+    "overallTaskResultStatus" : "NO_CHANGE",
+    "results" : [ {
+      "documentInfo" : {
+        "checksum" : "string",
+        "checksumType" : "SHA_1",
+        "createDt" : "2015-07-20T15:49:04-07:00",
+        "docType" : "CCD",
+        "documentId" : "string",
+        "documentProperties" : {
+          "additionalProp1" : "string",
+          "additionalProp2" : "string",
+          "additionalProp3" : "string"
+        },
+        "filePath" : "string",
+        "mimetype" : "string",
+        "modifiedDt" : "2015-07-20T15:49:04-07:00",
+        "originPortalId" : "string",
+        "portalUniqueIdentifier" : "string",
+        "size" : 0
+      },
+      "resultDate" : {
+        "afterNow" : true,
+        "beforeNow" : true,
+        "centuryOfEra" : 0,
+        "chronology" : {
+          "zone" : {
+            "fixed" : true,
+            "id" : "string"
+          }
+        },
+        "dayOfMonth" : 0,
+        "dayOfWeek" : 0,
+        "dayOfYear" : 0,
+        "equalNow" : true,
+        "era" : 0,
+        "hourOfDay" : 0,
+        "millis" : 0,
+        "millisOfDay" : 0,
+        "millisOfSecond" : 0,
+        "minuteOfDay" : 0,
+        "minuteOfHour" : 0,
+        "monthOfYear" : 0,
+        "secondOfDay" : 0,
+        "secondOfMinute" : 0,
+        "weekOfWeekyear" : 0,
+        "weekyear" : 0,
+        "year" : 0,
+        "yearOfCentury" : 0,
+        "yearOfEra" : 0,
+        "zone" : {
+          "fixed" : true,
+          "id" : "string"
+        }
+      },
+      "status" : "NO_CHANGE"
+    } ],
+    "taskId" : 0,
+    "ticketId" : 0,
+    "type" : "FETCH_CCD"
+  } ]
+}</con:sampleContent></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>200</con:status><con:params/><con:sampleContent xsi:nil="true"/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>201</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>401</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>403</con:status><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>*/*</con:mediaType><con:status>404</con:status><con:params/></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" id="7448fa9b-c698-4392-888a-cef560f1cf8d" mediaType="application/json"><con:settings/><con:endpoint>http://d3-pl-app01.dev.medfusion.net:8360</con:endpoint><con:request>{\r
+  "connectionId" : 0,\r
+  "firstDataRetrieval" : true,\r
+  "id" : 0,\r
+  "isFirstTicket" : true,\r
+  "isValidationTicket" : true,\r
+  "jobCompleteTime" : "2015-07-20T15:49:04-07:00",\r
+  "jobCreateTime" : "2015-07-20T15:49:04-07:00",\r
+  "jobStatus" : "SCHEDULED",\r
+  "jobStatusMessage" : "string",\r
+  "jobSubmitTime" : "2015-07-20T15:49:04-07:00",\r
+  "jobTicketId" : 0,\r
+  "metadata" : {\r
+    "additionalProp1" : "string",\r
+    "additionalProp2" : "string",\r
+    "additionalProp3" : "string"\r
+  },\r
+  "nextJobWaitTime" : "2015-07-20T15:49:04-07:00",\r
+  "personId" : 0,\r
+  "portalInfo" : {\r
+    "addtlInfo" : {\r
+      "additionalProp1" : "string",\r
+      "additionalProp2" : "string",\r
+      "additionalProp3" : "string"\r
+    },\r
+    "createDt" : "2015-07-20T15:49:04-07:00",\r
+    "createdDt" : "2015-07-20T15:49:04-07:00",\r
+    "credentialsType" : "string",\r
+    "defaultLocation" : {\r
+      "city" : "string",\r
+      "homePageUrl" : "string",\r
+      "id" : 0,\r
+      "locationId" : 0,\r
+      "name" : "string",\r
+      "phone" : "string",\r
+      "portalId" : 0,\r
+      "state" : "string",\r
+      "zip" : "string"\r
+    },\r
+    "id" : 0,\r
+    "logoUrl" : "string",\r
+    "name" : "string",\r
+    "portalOverrides" : {\r
+      "additionalProp1" : "string",\r
+      "additionalProp2" : "string",\r
+      "additionalProp3" : "string"\r
+    },\r
+    "primaryUrl" : "string",\r
+    "retrieverUrl" : "string",\r
+    "securityQuestions" : [ "string" ],\r
+    "seleniumOptions" : {\r
+      "additionalProp1" : "string",\r
+      "additionalProp2" : "string",\r
+      "additionalProp3" : "string"\r
+    },\r
+    "status" : "INACTIVE",\r
+    "type" : "string",\r
+    "typeInfo" : {\r
+      "additionalInfoFields" : [ "string" ],\r
+      "defaultCredentialsType" : "string",\r
+      "description" : "string",\r
+      "displayName" : "string",\r
+      "dreStatus" : "string",\r
+      "hidePrimaryUrl" : true,\r
+      "id" : 0,\r
+      "isRestricted" : true,\r
+      "isSingleInstance" : true,\r
+      "name" : "string",\r
+      "queueName" : "string",\r
+      "usesRetrieverUrl" : true\r
+    }\r
+  },\r
+  "tasks" : [ {\r
+    "dateMark" : {\r
+      "afterNow" : true,\r
+      "beforeNow" : true,\r
+      "centuryOfEra" : 0,\r
+      "chronology" : {\r
+        "zone" : {\r
+          "fixed" : true,\r
+          "id" : "string"\r
+        }\r
+      },\r
+      "dayOfMonth" : 0,\r
+      "dayOfWeek" : 0,\r
+      "dayOfYear" : 0,\r
+      "equalNow" : true,\r
+      "era" : 0,\r
+      "hourOfDay" : 0,\r
+      "millis" : 0,\r
+      "millisOfDay" : 0,\r
+      "millisOfSecond" : 0,\r
+      "minuteOfDay" : 0,\r
+      "minuteOfHour" : 0,\r
+      "monthOfYear" : 0,\r
+      "secondOfDay" : 0,\r
+      "secondOfMinute" : 0,\r
+      "weekOfWeekyear" : 0,\r
+      "weekyear" : 0,\r
+      "year" : 0,\r
+      "yearOfCentury" : 0,\r
+      "yearOfEra" : 0,\r
+      "zone" : {\r
+        "fixed" : true,\r
+        "id" : "string"\r
+      }\r
+    },\r
+    "documentInfo" : {\r
+      "checksum" : "string",\r
+      "checksumType" : "SHA_1",\r
+      "createDt" : "2015-07-20T15:49:04-07:00",\r
+      "docType" : "CCD",\r
+      "documentId" : "string",\r
+      "documentProperties" : {\r
+        "additionalProp1" : "string",\r
+        "additionalProp2" : "string",\r
+        "additionalProp3" : "string"\r
+      },\r
+      "filePath" : "string",\r
+      "mimetype" : "string",\r
+      "modifiedDt" : "2015-07-20T15:49:04-07:00",\r
+      "originPortalId" : "string",\r
+      "portalUniqueIdentifier" : "string",\r
+      "size" : 0\r
+    },\r
+    "key" : "string",\r
+    "overallTaskResultStatus" : "NO_CHANGE",\r
+    "results" : [ {\r
+      "documentInfo" : {\r
+        "checksum" : "string",\r
+        "checksumType" : "SHA_1",\r
+        "createDt" : "2015-07-20T15:49:04-07:00",\r
+        "docType" : "CCD",\r
+        "documentId" : "string",\r
+        "documentProperties" : {\r
+          "additionalProp1" : "string",\r
+          "additionalProp2" : "string",\r
+          "additionalProp3" : "string"\r
+        },\r
+        "filePath" : "string",\r
+        "mimetype" : "string",\r
+        "modifiedDt" : "2015-07-20T15:49:04-07:00",\r
+        "originPortalId" : "string",\r
+        "portalUniqueIdentifier" : "string",\r
+        "size" : 0\r
+      },\r
+      "resultDate" : {\r
+        "afterNow" : true,\r
+        "beforeNow" : true,\r
+        "centuryOfEra" : 0,\r
+        "chronology" : {\r
+          "zone" : {\r
+            "fixed" : true,\r
+            "id" : "string"\r
+          }\r
+        },\r
+        "dayOfMonth" : 0,\r
+        "dayOfWeek" : 0,\r
+        "dayOfYear" : 0,\r
+        "equalNow" : true,\r
+        "era" : 0,\r
+        "hourOfDay" : 0,\r
+        "millis" : 0,\r
+        "millisOfDay" : 0,\r
+        "millisOfSecond" : 0,\r
+        "minuteOfDay" : 0,\r
+        "minuteOfHour" : 0,\r
+        "monthOfYear" : 0,\r
+        "secondOfDay" : 0,\r
+        "secondOfMinute" : 0,\r
+        "weekOfWeekyear" : 0,\r
+        "weekyear" : 0,\r
+        "year" : 0,\r
+        "yearOfCentury" : 0,\r
+        "yearOfEra" : 0,\r
+        "zone" : {\r
+          "fixed" : true,\r
+          "id" : "string"\r
+        }\r
+      },\r
+      "status" : "NO_CHANGE"\r
+    } ],\r
+    "taskId" : 0,\r
+    "ticketId" : 0,\r
+    "type" : "FETCH_CCD"\r
+  } ]\r
+}</con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:parameters/></con:request></con:method></con:resource></con:interface><con:savedRecentRuns>1</con:savedRecentRuns><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:xmlTemplates/><con:parameters/></con:reporting><con:eventHandlers type="RequestFilter.filterRequest" name="RequestFilter.filterRequest"><con:script>// Sample event script to add custom HTTP header to all outgoing REST, SOAP and HTTP(S) calls
+// This code is often used for adding custom authentication to SoapUI Pro tests
+
+// If hardcoding the token, uncomment and change line 5
+// def token = '4567'
+
+// If your token is parameterized in Project level custom property, uncomment line 8
+// def token = request.parent.testCase.testSuite.project.getProperty('auth_token').getValue()
+
+// To modify all outgoing calls, remove comments from lines 11 to 16
+// def headers = request.requestHeaders
+// if (headers.containsKey('auth_token2') == false) {
+//   headers.put('auth_token2', token)
+//   request.requestHeaders = headers
+// }</con:script></con:eventHandlers><con:eventHandlers type="TestRunListener.afterStep" name="TestRunListener.afterStep"><con:script>// Save all test step results into files
+// Change the directory path in line 5 to a location where you want to store details
+// then uncomment lines 5 to 10
+
+// filePath = 'C:\\tempOutputDirectory\\'
+// fos = new FileOutputStream(filePath + testStepResult.testStep.label + '.txt', true)
+// pw = new PrintWriter(fos)
+// testStepResult.writeTo(pw)
+// pw.close()
+// fos.close()</con:script></con:eventHandlers><con:authRepository/><con:tags/></con:soapui-project>
