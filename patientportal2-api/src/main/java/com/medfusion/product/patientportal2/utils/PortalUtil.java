@@ -104,19 +104,7 @@ public class PortalUtil extends IHGUtil {
 				alert.accept();
 		}
 
-		public static boolean isExistsElement(WebDriver driver, WebElement element) {
-				try {
-						Actions builder = new Actions(driver);
-						builder.moveToElement(element).build().perform();
-						Point p = element.getLocation();
-						System.out.println("Where on the page is the top left-hand corner of the rendered element" + p);
-						return true;
-				} catch (Exception e) {
-						return false;
-				}
-		}
-
-
+		
 		public static void setquestionnarieFrame(WebDriver pDriver) throws Exception {
 				IHGUtil.PrintMethodName();
 				pDriver.switchTo().defaultContent();

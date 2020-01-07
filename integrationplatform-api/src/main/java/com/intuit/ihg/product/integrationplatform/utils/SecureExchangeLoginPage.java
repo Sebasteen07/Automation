@@ -16,7 +16,7 @@ public class SecureExchangeLoginPage {
 	@FindBy(how = How.ID, using = "UserName")
 	public WebElement inputUserName;
 	
-	@FindBy(how = How.ID, using = "Password")
+	@FindBy(how = How.ID, using = "passwordBox")
 	public WebElement inputPassword;
 	
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Sign In')]")

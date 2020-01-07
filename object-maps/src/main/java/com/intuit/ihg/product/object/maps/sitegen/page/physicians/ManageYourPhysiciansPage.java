@@ -136,7 +136,7 @@ public class ManageYourPhysiciansPage extends BasePageObject {
 		SitegenlUtil.setSiteGenFrame(driver);
 		boolean result = false;
 		try {
-			result = IHGUtil.waitForElement(driver, 2, lnkEditPhysician);
+			result = IHGUtil.waitForElement(driver, 5, lnkEditPhysician);
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}

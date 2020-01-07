@@ -246,7 +246,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
 		int i = 0;
-		if (!PracticeUtil.isExistsElement(driver, gotoLastPage)) {
+		if (!IHGUtil.exists(driver, gotoLastPage)) {
 			for (WebElement complaint : searchResultReason) {
 				i++;
 				if (complaint.getText().contains(subjectSubString)) {

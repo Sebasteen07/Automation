@@ -47,6 +47,7 @@ import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
 import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
@@ -271,9 +272,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 14: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getPracticeName(), 3, "Portal 1.0");
-
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		
 		// patient Portal validation
 		log("Step 15: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
@@ -441,8 +444,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 1.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
@@ -879,10 +884,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		// Patient portal validation
-		log("Step 13: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getPracticeName(), 3, "Portal 1.0");
-
+		log("Step 13: Check secure message in patient mailinator inbox");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
 		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
@@ -1343,9 +1350,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		verifyTrue(completed, "Message processing was not completed in time");
 
-		log("Step 13: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testcasesData.getGmailUserName(), testcasesData.getGmailPassword(), testcasesData.getPracticeName(), 3, "Portal 1.0");
+		log("Step 13: Check secure message in patient mailinator inbox");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getUserName(), subject, messageLink, 5);
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
@@ -1642,8 +1651,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 1.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
