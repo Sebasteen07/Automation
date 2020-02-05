@@ -5,11 +5,13 @@ public class PatientDetail {
 	private String ethnicity;
 	private String gender;
 	private String preferredLanguage;
+	
 	private String preferredCommunication;
 	private String genderIdentity;
 	private String sexualOrientation;
+	private String stateNodeValue;
 	
-	public PatientDetail(String race,String ethnicity,String gender,String preferredLanguage, String preferredCommunication, String genderIdentity,String sexualOrientation) {
+	public PatientDetail(String race,String ethnicity,String gender,String preferredLanguage, String preferredCommunication, String genderIdentity,String sexualOrientation,String stateNodeValue) {
 		this.race=race;
 		this.ethnicity=ethnicity;
 		this.gender=gender;
@@ -17,6 +19,7 @@ public class PatientDetail {
 		this.preferredCommunication=preferredCommunication;
 		this.genderIdentity=genderIdentity;
 		this.sexualOrientation=sexualOrientation;
+		this.stateNodeValue = stateNodeValue;
 		
 	}
 	public String getRace() {
@@ -60,5 +63,11 @@ public class PatientDetail {
 	}
 	public void setSexualOrientation(String sexualOrientation) {
 		this.sexualOrientation = sexualOrientation;
+	}
+	public String getStateNodeValue() {
+		return stateNodeValue;
+	}
+	public void setStateNodeValue(String stateNodeValue) {
+		this.stateNodeValue = stateNodeValue;
 	}
 }
