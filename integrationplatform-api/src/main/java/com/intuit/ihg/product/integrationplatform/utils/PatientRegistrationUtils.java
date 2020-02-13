@@ -98,10 +98,9 @@ public class PatientRegistrationUtils {
 		for(int i =0;i< row;i++) {
 			for(int j=0;j<=maxLength;j++) {
 				setValues[i][j] = patientValues[i][counter];
-				//System.out.println("i: "+i+"  j: "+j+"  patientValues : "+patientValues[i][counter]);				
 				counter++;
 			}
-			testData.patientDetailList.add(new PatientDetail(setValues[i][0], setValues[i][1], setValues[i][2], setValues[i][3], setValues[i][4], setValues[i][5], setValues[i][6]));
+			testData.patientDetailList.add(new PatientDetail(setValues[i][0], setValues[i][1], setValues[i][2], setValues[i][3], setValues[i][4], setValues[i][5], setValues[i][6], setValues[i][7]));
 		}
 		
 		updateCommasWithInValues1(testData.patientDetailList);
@@ -197,7 +196,7 @@ public class PatientRegistrationUtils {
 			String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
-			//if(portal1 == true)
+			
 			if(portalVersion.contains("1.0")) {
 				registerPatient10(activationUrl, driver,payloadObj.zipGroup.get(i),payloadObj.emailGroup.get(i),testData.getPatientPassword(),testData.getSecretQuestion(),testData.getSecretAnswer());
 			}

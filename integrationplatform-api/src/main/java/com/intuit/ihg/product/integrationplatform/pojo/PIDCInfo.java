@@ -12,6 +12,8 @@ public class PIDCInfo {
 	private ArrayList<String> preferredCommunication= null;
 	private ArrayList<String> genderIdentity=null;
 	private ArrayList<String> sexualOrientation=null;
+	private ArrayList<String> stateNodeValue=null;
+
 	private String batchSize = "";	
 	private String username = "";
 	private String password = "";
@@ -64,8 +66,7 @@ public class PIDCInfo {
 	private String address2SC = "";
 	private String portalVersion = "";
 	private String csvFilePath = "";
-	public ArrayList<PatientDetail> patientDetailList = new ArrayList<PatientDetail>();
-	
+	public ArrayList<PatientDetail> patientDetailList = new ArrayList<PatientDetail>();	
 	private String restUrl_20="";
 	private String practiceId_PIDC_20="";
 	private String oAuthAppToken_20 = "";
@@ -609,6 +610,14 @@ public class PIDCInfo {
 
 	public void setPreferredLanguageType(String preferredLanguageType) {
 		this.preferredLanguageType = preferredLanguageType;
+	}
+	
+	public ArrayList<String> getStateNodeValue() {
+		return stateNodeValue;
+	}
+
+	public void setStateNodeValue(ArrayList<String> stateNodeValue) {
+		this.stateNodeValue = stateNodeValue;
 	}
 
 }
