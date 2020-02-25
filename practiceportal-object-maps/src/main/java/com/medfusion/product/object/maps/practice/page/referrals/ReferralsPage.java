@@ -211,7 +211,7 @@ public class ReferralsPage extends BasePageObject {
 				patientFirstNameSearch.sendKeys(patientFirstName);
 				patientLastNameSearch.sendKeys(patientLastName);
 				buttonSearch.click();
-				IHGUtil.waitForElement(driver, 30, arrivedReferral);
+				sleep(5000);
 				arrivedReferral.click();
 				IHGUtil.waitForElement(driver, 30, saveChanges);
 				saveChanges.click();

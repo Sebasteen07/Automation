@@ -1,5 +1,6 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.physicians;
 
+import static java.lang.Thread.sleep;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -140,13 +141,15 @@ public class AddPhysicianPage extends BasePageObject {
 	 * @author bkrishnankutty
 	 * @Desc:- To delete the Physician
 	 * @return AddPhysicianStep2EditLocationInfoPage
+	 * @throws InterruptedException 
 	 * 
 	 */
-	public AddPhysicianStep2EditLocationInfoPage deletePhysician() {
+	public AddPhysicianStep2EditLocationInfoPage deletePhysician() throws InterruptedException  {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		javascriptClick(btnDeletePhysican);
+		sleep(5000);
 		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
 
 	}

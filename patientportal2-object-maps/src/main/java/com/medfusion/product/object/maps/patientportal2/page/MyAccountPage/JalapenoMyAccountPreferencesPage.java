@@ -3,7 +3,9 @@ package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +26,21 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.ID, using = "statementPreference")
 		private WebElement statementPreference;
 
+		@FindBy(how = How.NAME, using = "preferredLanguage")
+		private WebElement preferredLanguageSelect;
+
+		@FindBy(how = How.XPATH, using = "//div[contains(@input-id,'preferredLanguage')]//div[text()='English']")
+		private WebElement preferredLanguageEnglish;
+
+		@FindBy(how = How.NAME, using = "provider")
+		private WebElement preferredProvider;
+
+		@FindBy(how = How.XPATH, using = "//div[contains(@name,'provider')]//div/span/span/span/span[2]/span")
+		private List<WebElement> selectedPreferredProviders;
+
+		@FindBy(how = How.XPATH, using = "//div[contains(@name,'provider')]//input")
+		private WebElement addPreferredProvider;
+
 		@FindBy(how = How.ID, using = "messagingOptOut")
 		private WebElement patientMessagingOptOut;
 
@@ -33,9 +50,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
 		private WebElement successfulUpdateMessage;
 
-		@FindBy(how = How.ID, using = "preferredLanguage")
-		private WebElement preferredLanguage;
-
+		private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//div[contains(@name,'provider')]//div[text()='%s']";
+		private static final String REMOVE_PREFERRED_PROVIDER_LOCATOR = "//div[contains(@name,'provider')]//span[contains(@class,'close ui-select-match-close')]";
 
 		public JalapenoMyAccountPreferencesPage(WebDriver driver) {
 				super(driver);
@@ -93,6 +109,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				return assessPageElements(webElementsList);
 		}
 
+		@Deprecated
 		public boolean areStatementPreferenceAndPreferedLocationElementsPresent() {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
@@ -102,22 +119,65 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				return assessPageElements(webElementsList);
 		}
 
+		//this method is not working, the element is not select but something customized
+		@Deprecated
 		private void setStatementLanguage(String statementLanguageType) {
-				Select statementSelect = new Select(this.preferredLanguage);
+				Select statementSelect = new Select(this.preferredLanguageSelect);
 				statementSelect.selectByVisibleText(statementLanguageType);
 		}
 
+		//this method is not working, the element is not select but something customized
+		@Deprecated
 		public void setStatementLanguage(WebDriver driver, String statementLanguageType) {
 				setStatementLanguage(statementLanguageType);
 				saveAccountChanges.click();
 		}
 
+		//TODO move to JalapenoMyAccountPage
+		@Deprecated
 		public JalapenoMyAccountActivityPage goToActivityTab(WebDriver driver) {
 				log("Click on Activity");
 				activityTab.click();
 				return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
-
 		}
 
+		public String getPreferredLanguage() {
+				return preferredLanguageSelect.getText();
+		}
 
+		public void setEnglishAsPreferredLanguageAndSave() {
+				IHGUtil.PrintMethodName();
+				wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageSelect));
+				preferredLanguageSelect.click();
+				wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageEnglish));
+				preferredLanguageEnglish.click();
+				saveAccountChanges.click();
+		}
+
+		public List<String> getPreferredProviders() {
+				IHGUtil.PrintMethodName();
+				ArrayList<String> preferredProviders = new ArrayList<String>();
+				for (WebElement e : selectedPreferredProviders) {
+						preferredProviders.add(e.getText());
+				}
+				log("Preferred providers: " + preferredProviders);
+				return preferredProviders;
+		}
+
+		public void addPreferredProviderAndSave(String name) {
+				IHGUtil.PrintMethodName();
+				log("Add " + name + " as preferred provider");
+				addPreferredProvider.click();
+				String providerLocator = String.format(ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE, name);
+				driver.findElement(By.xpath(providerLocator)).click();
+				saveAccountChanges.click();
+		}
+
+		public void removeAllPreferredProvidersAndSave() {
+				IHGUtil.PrintMethodName();
+				for (int i = 0; i < driver.findElements(By.xpath(REMOVE_PREFERRED_PROVIDER_LOCATOR)).size(); i++) {
+						driver.findElement(By.xpath(REMOVE_PREFERRED_PROVIDER_LOCATOR)).click();
+				}
+				saveAccountChanges.click();
+		}
 }
