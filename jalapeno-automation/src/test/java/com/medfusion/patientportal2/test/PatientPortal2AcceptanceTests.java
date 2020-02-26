@@ -650,6 +650,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				homePage = appointmentRequestStep2.submitAppointment(driver);
 
 				logStep("Check if thank you frame is displayd");
+				Thread.sleep(10000);
 				assertTrue(homePage.isTextDisplayed("Thank you"));
 
 				logStep("Navigate to Appointment Request History");
