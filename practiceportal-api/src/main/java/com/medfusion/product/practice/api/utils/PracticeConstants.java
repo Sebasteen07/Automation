@@ -67,7 +67,7 @@ public class PracticeConstants {
 
 		public final static String CARD_HOLDER_NAME = "DevThree";
 		public final static String EXPIRATION_MONTH = "December";
-		public final static String EXPIRATION_YEAR = "2019";
+		//public final static String EXPIRATION_YEAR = String.valueOf(2020+3);
 		public final static String ZIP_CODE = "94043";
 		public final static String PROVIDER = "Geisel";
 		public final static String PAYMENT_COMMENT = "Test Comment";

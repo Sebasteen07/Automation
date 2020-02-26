@@ -1,5 +1,10 @@
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import org.openqa.selenium.WebElement;
+
 public class ApptRequestEntity {
 
 	private int processOption;
@@ -83,7 +88,15 @@ public class ApptRequestEntity {
 	}
 
 	public ApptRequestEntity setApptDate(String apptDate) {
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/YYYY");
+		Date date = new Date();
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
+		calender.add(Calendar.DAY_OF_YEAR, 1);
+		date = calender.getTime();
+		apptDate = df.format(date);
 		this.apptDate = apptDate;
+		System.out.println("This is the tomorrow date "+apptDate);
 		return this;
 	}
 

@@ -59,10 +59,10 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 		}
 
 
-		public void clickOnContinueButton(WebDriver driver) {
+		public void clickOnContinueButton(WebDriver driver) throws InterruptedException {
 				log("Click on Continue button");
 				IHGUtil.setFrame(driver, "iframebody");
-
+				IHGUtil.waitForElement(driver, 30, continueButton);
 				javascriptClick(continueButton);
 		}
 

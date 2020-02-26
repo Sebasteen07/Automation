@@ -52,7 +52,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	@FindBy(name = "processAppointment:action")
 	private List<WebElement> processOptions;
 
-
 	@FindBy(xpath = ".//input[@value='Submit Appointment Request']")
 	private WebElement btnSubmitApptRequest;
 	@FindBy(xpath = ".//table/tbody/tr[1]/td/table/tbody/tr[5]/td[2]/span")
@@ -103,10 +102,11 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	public void processApptAndSubmit(ApptRequestEntity entity) {
 		IHGUtil.PrintMethodName();
 
+		
 		// For one reason or another, diving further into another iframe is no longer required.
-		// If you encounter element not found etc exceptions inside this method, uncomment the following
+	    // If you encounter element not found etc exceptions inside this method, uncomment the following
 
-		// driver.switchTo().frame("iframebody");
+	    // driver.switchTo().frame("iframebody");
 
 		// Select process option
 		for (WebElement action : processOptions) {
@@ -138,13 +138,14 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * Will mark request as cancelled and continue to next step
 	 * 
 	 * @return appt request search page
+	 * @throws InterruptedException
 	 */
-	public ApptRequestDetailStep2Page chooseApproveAndSubmit() {
+	public ApptRequestDetailStep2Page chooseApproveAndSubmit() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
-		ApptRequestEntity entity = new ApptRequestEntity().setProcessOption(ApptRequestProcessOption.APPROVE).setApptDate("01/01/2020").setSubject("Approved")
-				.setBody("This is a response from the Practice").setNoReply(false);
+		ApptRequestEntity entity = new ApptRequestEntity();
+		entity.setProcessOption(ApptRequestProcessOption.APPROVE).setApptDate(entity.getApptDate())
+				.setSubject("Approved").setBody("This is a response from the Practice").setNoReply(false);
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
@@ -157,10 +158,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	public ApptRequestDetailStep2Page chooseCancelAndSubmit() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
-		ApptRequestEntity entity =
-				new ApptRequestEntity().setProcessOption(ApptRequestProcessOption.CANCEL).setSubject("Approved").setSubject("This is a response from the Practice");
-
+		ApptRequestEntity entity = new ApptRequestEntity().setProcessOption(ApptRequestProcessOption.CANCEL).setSubject("Approved").setSubject("This is a response from the Practice");		
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
@@ -180,7 +178,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 
 	}
 
-
 	/**
 	 * Will check Secure Message reply text & returns message text
 	 * 
@@ -193,7 +190,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return messageBody.getText();
 	}
 
-	public boolean checkAppointmentDetails(String preferredTimeFrame, String preferredDay, String preferredTimeOfDay, String reason) {
+	public boolean checkAppointmentDetails(String preferredTimeFrame, String preferredDay, String preferredTimeOfDay,String reason) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 

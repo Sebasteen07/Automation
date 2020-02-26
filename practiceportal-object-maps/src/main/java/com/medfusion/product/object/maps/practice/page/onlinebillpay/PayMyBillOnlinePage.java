@@ -1,6 +1,9 @@
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
+import java.util.Calendar;
+import java.util.List;
 
+import org.eclipse.jetty.util.log.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +12,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -48,8 +50,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//input[@name='paymentComment']")
 	private WebElement paymentComment;
 
-	@FindBy(
-			xpath = "//*/tr/td[2][contains(.,'t save card post transaction')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
+	@FindBy(xpath = "//*/tr/td[2][contains(.,'t save card post transaction')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
 	private WebElement donotSaveTransaction;
 
 	@FindBy(xpath = "//*/tr/td[2][contains(.,'Pay with New Card')]/preceding-sibling::td/input[@name='creditCardPanel:existingccdetailscontainer:ccRadioGroup']")
@@ -85,7 +86,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//div[@id='content']/div[2]/strong/div/p")
 	public WebElement paymentConfirmationText;
 
-	@FindBy(name = "voidPayment")
+	@FindBy(xpath = "//input[@name='voidPayment']")
 	private WebElement voidPaymentButton;
 
 	@FindBy(name = "comment")
@@ -118,7 +119,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 
 	@FindBy(id = "table-1")
 	private WebElement transactionsList;
-
 
 	/**
 	 * @Description:Set First name
@@ -167,8 +167,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		}
 
 	}
-
-
 
 	/**
 	 * @Description:Choose the provider name from Drop Down
@@ -266,20 +264,38 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		Select sel = new Select(cardType);
 		sel.selectByVisibleText(PracticeConstants.CARD_TYPE_VISA);
 
-
 	}
 
 	/**
+	 * @throws Exception
 	 * @Description:Set Expiration date
 	 */
-	public void setExpirationDate() {
+	public void setExpirationDate() throws Exception
+
+	{
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(expirationMonth);
 		sel.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
 		Select sele = new Select(expirationYear);
-		sele.selectByVisibleText(PracticeConstants.EXPIRATION_YEAR);
+		List<WebElement> dropdown = sele.getOptions();
+		for (int i = 0; i < dropdown.size(); i++) {
+			String drop_down_values = dropdown.get(i).getText();
+			String current_date = IHGUtil.getCurrentDate();
+			String Current_year = current_date.substring(0, 4);
+			int ExpirationYear = Integer.valueOf(Current_year);
+			String yearInString = String.valueOf(ExpirationYear + 2);
+			if (yearInString.equals(drop_down_values)) {
+				sele.selectByVisibleText(yearInString);
+				log("The" + yearInString + "and" + drop_down_values + " Matched");
+			}
 
+			else {
+
+				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
+
+			}
+		}
 	}
 
 	/**
@@ -303,7 +319,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
 
 	}
-
 
 	/**
 	 * @Description:Search For Patient
@@ -367,14 +382,15 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		searchForPatients.click();
 		IHGUtil.waitForElement(driver, 30, searchResult);
 
-		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'" + lName + ", " + fName + "')]")).click();
+		driver.findElement(By.xpath(
+				"//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'" + lName + ", " + fName + "')]"))
+				.click();
 		Thread.sleep(10000);
 
 	}
 
-
-	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount, String cardHolderName, String cardNum,
-			String cardTyp) throws Exception {
+	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount,
+			String cardHolderName, String cardNum, String cardTyp) throws Exception {
 		IHGUtil.PrintMethodName();
 		setLocation(location);
 		setPatientAccountNumber(acctNum);
@@ -407,8 +423,24 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		Select selexp = new Select(expirationMonth);
 		selexp.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
 		Select sele = new Select(expirationYear);
-		sele.selectByVisibleText(PracticeConstants.EXPIRATION_YEAR);
+		List<WebElement> dropdown = sele.getOptions();
+		for (int i = 0; i < dropdown.size(); i++) {
+			String drop_down_values = dropdown.get(i).getText();
+			String current_date = IHGUtil.getCurrentDate();
+			String Current_year = current_date.substring(0, 4);
+			int ExpirationYear = Integer.valueOf(Current_year);
+			String yearInString = String.valueOf(ExpirationYear + 2);
+			if (yearInString.equals(drop_down_values)) {
+				sele.selectByVisibleText(yearInString);
+				log("The" + yearInString + "and" + drop_down_values + " Matched");
+			}
 
+			else {
+
+				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
+
+			}
+		}
 		cvvCode.clear();
 		cvvCode.sendKeys(PracticeConstants.CVV);
 
@@ -427,10 +459,12 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	public void voidPayment(String voidComment) throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframe");
-		IHGUtil.waitForElement(driver, 30, voidPaymentButton);
+		IHGUtil.waitForElement(driver, 50, voidPaymentButton);
 		voidPaymentButton.click();
-
+		System.out.println("THE VOID ELEMENT GOT CLICKED");
+		Thread.sleep(8000);
 		driver.switchTo().activeElement();
+		IHGUtil.waitForElement(driver, 50, iFrameRefundWindow);
 		driver.switchTo().frame(iFrameRefundWindow);
 		commentForVoid.sendKeys(voidComment);
 		voidButton.click();
@@ -451,12 +485,11 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframe");
 		if (new IHGUtil(driver).isRendered(transactionsList)) {
+			IHGUtil.waitForElement(driver, 30, transactionsList);
 			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
 		} else
 			return false;
 
 	}
-
-
 
 }
