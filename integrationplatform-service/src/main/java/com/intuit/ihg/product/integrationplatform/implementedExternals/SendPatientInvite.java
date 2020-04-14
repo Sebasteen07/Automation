@@ -18,8 +18,8 @@ public class SendPatientInvite implements iPIDCSendPatientInvite {
 
 		
 		//Enhancement Code
-		testData.patientDetailList.add(new PatientDetail("Race", "Ethnicity", "Gender", "PreferredLanguage", "PreferredCommunication", "GenderIdentity", "SexualOrientation"));
-		testData.patientDetailList.add(new PatientDetail("American Indian or Alaska Native", "Hispanic or Latino", "MALE", "English", "US Mail", "Straight or heterosexual", "Male"));
+		testData.patientDetailList.add(new PatientDetail("Race", "Ethnicity", "Gender", "PreferredLanguage", "PreferredCommunication", "GenderIdentity", "SexualOrientation","NC"));
+		testData.patientDetailList.add(new PatientDetail("American Indian or Alaska Native", "Hispanic or Latino", "MALE", "English", "US Mail", "Straight or heterosexual", "Male","WYO"));
 		testData.setBatchSize("1");
 		testData.setPortalVersion("2.0");
 		testData.setZipCode(zipCode);

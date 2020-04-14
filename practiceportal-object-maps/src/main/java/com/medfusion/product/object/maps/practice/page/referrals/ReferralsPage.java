@@ -164,6 +164,7 @@ public class ReferralsPage extends BasePageObject {
 				advancedSearch.click();
 				driver.switchTo().frame(advancedSearchFrame);
 				log("Switched to advanced search iframe");
+				IHGUtil.waitForElement(driver, 30, firstNameSearch);
 				firstNameSearch.sendKeys(patientFirstName);
 				lastNameSearch.sendKeys(patientLastName);
 				searchPatients.click();

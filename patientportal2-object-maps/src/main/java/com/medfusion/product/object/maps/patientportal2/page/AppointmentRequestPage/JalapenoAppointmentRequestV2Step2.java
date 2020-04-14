@@ -3,6 +3,8 @@ package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequest
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -118,7 +120,10 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 				appointmentReasonTextArea.sendKeys(appointmentReason);
 		}
 
-		public JalapenoHomePage submitAppointment(WebDriver driver) {
+		public JalapenoHomePage submitAppointment(WebDriver driver) throws InterruptedException {
+			    IHGUtil.waitForElement(driver, 50, requestAppointmentButton);
+			    JavascriptExecutor js = (JavascriptExecutor) driver;
+			    js.executeScript("arguments[0].scrollIntoView();", requestAppointmentButton);
 				requestAppointmentButton.click();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}

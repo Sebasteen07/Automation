@@ -537,7 +537,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "portalVersion")
 	public Object[][] portalVersionForRegistration() {
-		Object[][] obj = new Object[][] { {"1.0"}, {"2.0"},};
+		Object[][] obj = new Object[][] { {"2.0"},};
 		return obj;
 	}
 

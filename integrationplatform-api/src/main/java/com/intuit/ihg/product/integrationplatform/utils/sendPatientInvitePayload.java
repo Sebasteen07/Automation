@@ -301,7 +301,7 @@ public class sendPatientInvitePayload {
 
 				Element State = doc.createElement("State");
 				HomeAddress.appendChild(State);
-				State.appendChild(doc.createTextNode("NC"));
+				State.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
 
 				Element Country = doc.createElement("Country");
 				HomeAddress.appendChild(Country);

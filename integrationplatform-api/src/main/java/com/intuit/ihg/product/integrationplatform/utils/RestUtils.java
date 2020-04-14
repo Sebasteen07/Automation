@@ -701,6 +701,12 @@ public class RestUtils {
 				Node npreferredCommunication = patient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION).item(0);
 					Log4jUtil.log("Searching: Patient Communication:" + testData.patientDetailList.get(j+1).getPreferredCommunication() + ", and Actual Patient preferredCommunication is:" + npreferredCommunication.getTextContent().toString());
 					Assert.assertEquals(npreferredCommunication.getTextContent(), testData.patientDetailList.get(j+1).getPreferredCommunication(), "Patient has different preferredCommunication than expected. preferredCommunication is: " + npreferredCommunication.getTextContent());
+					Node nstateNodeValue = patient.getElementsByTagName(IntegrationConstants.STATE).item(0);
+					if(testData.patientDetailList.get(j+1).getStateNodeValue().trim().length()>=3) {
+						testData.patientDetailList.get(j+1).setStateNodeValue(testData.patientDetailList.get(j+1).getStateNodeValue().trim().substring(0, 2));
+					}
+					Log4jUtil.log("Searching: Patient State:" + testData.patientDetailList.get(j+1).getStateNodeValue().trim() + ", and Actual Patient State is:" + nstateNodeValue.getTextContent().toString());
+					Assert.assertEquals(nstateNodeValue.getTextContent(), testData.patientDetailList.get(j+1).getStateNodeValue().trim(), "Patient has different State than expected. State is: " + nstateNodeValue.getTextContent());
 					Log4jUtil.log("------------------------------------------------------------------------------------------------------:");
 				if (patientID != null) {
 					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
