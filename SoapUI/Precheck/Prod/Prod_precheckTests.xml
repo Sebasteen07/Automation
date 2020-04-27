@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="bd7e74a3-9a7d-45db-8342-a8b18e70f3f4" activeEnvironment="Prod" name="REST Project 41" lastOpened="2017-12-06T19:41:31.385Z" resourceRoot="" soapui-version="6.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="108ff4e7-5266-4be6-bfa9-e4ed2e230fef" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://pr-pt-app01.pub.medfusion.net:8087" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087</con:endpoint></con:endpoints><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:resource name="Reminderdata" path="/v1/reminderdata" id="c6854e6d-189b-455d-af1d-5396f82cf999"><con:settings/><con:parameters/><con:method name="Reminderdata" id="eae8beb6-8d1c-49e0-b313-caf4ac4feacb" method="GET"><con:settings/><con:parameters/><con:request name="Request 1" id="67921468-af9e-4037-b641-ef70e5a34e89" mediaType="application/json"><con:settings/><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource></con:interface><con:testSuite id="a62b9a7e-4c6f-4c71-ac75-415526a25ad5" name="PROD PRECHECK"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="16cc1a55-978e-444f-b19b-7d7873f4f179" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Schedule Reminder Data" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties" id="b495048c-a79d-442d-bad6-5dcf8ae7e322"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>birthDate</con:name><con:value>"1990-1-27 "</con:value></con:property><con:property><con:name>firstName</con:name><con:value>"Neil"</con:value></con:property><con:property><con:name>lastName</con:name><con:value>"James"</con:value></con:property><con:property><con:name>emailAddress</con:name><con:value>"automationtest123prod@mailinator.com"</con:value></con:property><con:property><con:name>practiceId</con:name><con:value>24316</con:value></con:property><con:property><con:name>emrId</con:name><con:value>236376</con:value></con:property><con:property><con:name>createdDate</con:name><con:value>2017-12-06T19:40:47Z</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="POST create schedule reminder data" id="c03f2122-189b-49aa-9486-c6046d1222e4"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="0abd871b-070f-4009-991b-f40a74fbd923" name="POST create schedule reminder data" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087/v1/reminderdata</con:endpoint><con:request>{
+<con:soapui-project id="bd7e74a3-9a7d-45db-8342-a8b18e70f3f4" activeEnvironment="Prod" name="REST Project 41" lastOpened="2017-12-06T19:41:31.385Z" resourceRoot="" soapui-version="6.0.0" encryptionMode="Not encrypted" updated="2.8.2 2019-08-27T17:04:01Z" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="108ff4e7-5266-4be6-bfa9-e4ed2e230fef" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://pr-pt-app01.pub.medfusion.net:8087" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087</con:endpoint></con:endpoints><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:resource name="Reminderdata" path="/v1/reminderdata" id="c6854e6d-189b-455d-af1d-5396f82cf999"><con:settings/><con:parameters/><con:method name="Reminderdata" id="eae8beb6-8d1c-49e0-b313-caf4ac4feacb" method="GET"><con:settings/><con:parameters/><con:request name="Request 1" id="67921468-af9e-4037-b641-ef70e5a34e89" mediaType="application/json"><con:settings/><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:method><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:resource></con:interface><con:testSuite id="a62b9a7e-4c6f-4c71-ac75-415526a25ad5" name="PROD PRECHECK"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="16cc1a55-978e-444f-b19b-7d7873f4f179" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Schedule Reminder Data" searchProperties="true"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="b495048c-a79d-442d-bad6-5dcf8ae7e322"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>birthDate</con:name><con:value>"1990-1-27 "</con:value></con:property><con:property><con:name>firstName</con:name><con:value>"Neil"</con:value></con:property><con:property><con:name>lastName</con:name><con:value>"James"</con:value></con:property><con:property><con:name>emailAddress</con:name><con:value>"automationtest123prod@mailinator.com"</con:value></con:property><con:property><con:name>practiceId</con:name><con:value>24316</con:value></con:property><con:property><con:name>emrId</con:name><con:value>236376</con:value></con:property><con:property><con:name>createdDate</con:name><con:value>2017-12-06T19:40:47Z</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="POST create schedule reminder data" id="c03f2122-189b-49aa-9486-c6046d1222e4"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="0abd871b-070f-4009-991b-f40a74fbd923" name="POST create schedule reminder data" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:8087/v1/reminderdata</con:endpoint><con:request>{
   "addressLineOne": "address 1",
   "addressLineTwo": "address 2",
   "birthDate": ${Properties#birthDate},
@@ -372,4 +372,1061 @@ ${Properties#urlBody}</con:request><con:assertion type="Valid HTTP Status Codes"
   "sendingApplication": ${Properties#sendingApplication},
    "sendingReason":${Properties#sendingReason}
   
-}</con:request><con:assertion type="JsonPath Existence Match" id="f6baef76-e4fa-46eb-a51f-0d47da04a370" name="Check for existence of [status]"><con:configuration><path>$.status</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="Valid HTTP Status Codes" id="64426c33-a546-4052-b058-40546facd700" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="c3c2246a-7e9e-454c-bfb1-78d3537713d3" name="Match content of [status]"><con:configuration><path>$.status</path><content>Text notification sent.</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>ce6184a5-99ec-4516-ac7a-ca38ff0647bc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:requirements/><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:oAuth2ProfileContainer/><con:reporting><con:reportTemplates/><con:xmlTemplates/><con:xmlTemplates/><con:parameters/><con:parameters/></con:reporting><con:reporting/><con:environment id="a4a25c65-ce71-48ca-9a11-80de3219091d" name="Prod"><con:service type="REST" name="http://pr-pt-app01.pub.medfusion.net:8087"><con:endpoint authProfile="No Authorization"/></con:service><con:databaseConnectionContainer/></con:environment><con:authRepository/><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec><con:tags/></con:soapui-project>
+}</con:request><con:assertion type="JsonPath Existence Match" id="f6baef76-e4fa-46eb-a51f-0d47da04a370" name="Check for existence of [status]"><con:configuration><path>$.status</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="Valid HTTP Status Codes" id="64426c33-a546-4052-b058-40546facd700" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>202</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="c3c2246a-7e9e-454c-bfb1-78d3537713d3" name="Match content of [status]"><con:configuration><path>$.status</path><content>Text notification sent.</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>ce6184a5-99ec-4516-ac7a-ca38ff0647bc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:testCase id="16f8bd8a-6b85-40da-83f4-70e394c727a1" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Appointment Types API" searchProperties="true">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="properties" name="Properties" id="e350a3ca-3c26-423e-aa61-c1f51ba2b83f">
+        <con:settings/>
+        <con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:properties>
+            <con:property>
+              <con:name>practiceId</con:name>
+              <con:value>10921</con:value>
+            </con:property>
+            <con:property>
+              <con:name>includeInactive</con:name>
+              <con:value>true</con:value>
+            </con:property>
+            <con:property>
+              <con:name>includeInactive2</con:name>
+              <con:value>false</con:value>
+            </con:property>
+            
+            <con:property>
+              <con:name>practiceId2</con:name>
+              <con:value>10871</con:value>
+            </con:property>
+            <con:property>
+              <con:name>Authorization</con:name>
+              <con:value>Basic UGF5bWVudHMwOTpwYXNzd29yZDE=</con:value>
+            </con:property>
+            <con:property>
+              <con:name>InvalidAuthorization</con:name>
+              <con:value>Bearer yJhbGciOiJIUzI1NiIsImtpZCI6InN5c3RlbUp3dCJ9.eyJjbGllbnRfaWQiOiJTeXN0ZW1Kd3RWYWxpZGF0aW9uQ2xpZW50VjEiLCJleHAiOjE1NzQ0NTY2NjMsInNjb3BlIjpbXX0.atNDaCvzp3edrKt_Hza2t-2f8pi6utyhPRmQX6UTofE</con:value>
+            </con:property>
+          <con:property><con:name>appointmentTypeId</con:name><con:value>"2616716"</con:value></con:property><con:property><con:name>categoryId</con:name><con:value>"cat 93"</con:value></con:property><con:property><con:name>categoryName</con:name><con:value>"category 23"</con:value></con:property><con:property><con:name>categoryIName</con:name><con:value>"category 93"</con:value></con:property></con:properties>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="POST to get token 1" id="ac01c425-d9d8-411a-a467-19d6a0ddb636">
+        <con:settings/>
+        <con:config method="POST" xsi:type="con:HttpRequest" id="8ae11df4-4f10-4870-9017-b2df7f6e1a57" name="POST to get token 1" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>https://vip-ping.medfusion.net/as/token.oauth2</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="54c6e7e2-2c13-4e97-8076-847d427be6da" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="e8dd7307-20dc-4b62-9b7c-a6864fb4966f" name="Check for existence of [access_token]">
+            <con:configuration>
+              <path>$.access_token</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Match" id="aee5e10e-16f8-4295-a51f-b183e79f8a30" name="Match content of [token_type]">
+            <con:configuration>
+              <path>$.token_type</path>
+              <content>Bearer</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>grant_type</con:name>
+              <con:value>client_credentials</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>client_credentials</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_id</con:name>
+              <con:value>SystemJwtValidationClientV1</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>SystemJwtValidationClientV1</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_secret</con:name>
+              <con:value>QBJunWZuyOwEjut17XCLvcLTkPB8HCOtwHc6zcFrmz4X62WHeidhPmCstFPWfHZ6</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>QBJunWZuyOwEjut17XCLvcLTkPB8HCOtwHc6zcFrmz4X62WHeidhPmCstFPWfHZ6</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes for Practice(ALL)" id="f248d3dd-5123-41ac-b7cf-9a4937d305d1">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes for Practice(ALL)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=true&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="f5e1437a-7c84-4132-b73d-569c44d9e42c" name="JsonPath Existence Match">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['id']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="8709b3ae-fbc0-4af9-bf83-b0998ccc3ac9" name="JsonPath Existence Match 2">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="1f2c185d-a84b-4723-9fac-b685a1bf0266" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="274ff27b-9458-4115-bb4b-0d9aaedad8fe" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="690fa19f-feb8-4951-98a1-1a72e27b5587" name="JsonPath Existence Match 5">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="d7085df3-8e4d-4890-be8b-97fa941aa923" name="JsonPath Existence Match 6">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['active']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes (except inactive types)" id="35cb0607-7680-4939-b7d7-b4cb7d388866">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes (except inactive types)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=false&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          
+          
+          <con:assertion type="JsonPath Existence Match" id="2e4fd7e2-9a5e-445a-b582-75b757f37228" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="a18038b0-6ea8-4222-97aa-9dcb134a53f9" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes for Practice(Default Category)" id="15fbc5d2-271c-4df8-befb-15b19d5c0305">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes for Practice(Default Category)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=true&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="f5e1437a-7c84-4132-b73d-569c44d9e42c" name="JsonPath Existence Match">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['id']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="8709b3ae-fbc0-4af9-bf83-b0998ccc3ac9" name="JsonPath Existence Match 2">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="1f2c185d-a84b-4723-9fac-b685a1bf0266" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="274ff27b-9458-4115-bb4b-0d9aaedad8fe" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="690fa19f-feb8-4951-98a1-1a72e27b5587" name="JsonPath Existence Match 5">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="d7085df3-8e4d-4890-be8b-97fa941aa923" name="JsonPath Existence Match 6">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['active']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            
+          <con:parameter><con:name>Authorization</con:name><con:value>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:value><con:style>HEADER</con:style><con:default>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:default></con:parameter></con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes (Defaut category Except deleted)" id="bcf9c797-db4a-481c-bc63-fd4cca9ac155">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes (Defaut category Except deleted)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=false&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          
+          
+          <con:assertion type="JsonPath Existence Match" id="2e4fd7e2-9a5e-445a-b582-75b757f37228" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="a18038b0-6ea8-4222-97aa-9dcb134a53f9" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes (Invalid Authorization)" id="4e4633a4-7306-4bc5-b851-4cae67548242">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes (Invalid Authorization)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=false&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>401</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>${Properties#InvalidAuthorization}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>${Properties#InvalidAuthorization}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes (openToken)" id="79865fcf-3006-41ce-8605-6be313608b18">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes (openToken)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=false&amp;practiceId=10921</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration><codes>200</codes></con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>opentoken T1RLAQJpzprPQ-RQDS3CXyzT4iObSo5c6xBeEN8DB84Jv35h0X4hIvjvAADgDQ2jpWt6AarTJloF_IYVZAMHJWcRUH9gJAcIsTQIRqzeXn2zepCYNYgBYUBAt5wCMZsSg8ZYAYNdCfHjqlrxjeYYcRyYHHgFjY3TpDrDXsMJF-EiWffC0qhzijVaGYSE3ty6k3vw55-V0SXnCUBwOhf2Cgz0FID22ruJJs6Z9avBKIQQQnrAllynH13Bg3x7sE_T2zVDpZD8Zw9lqllwb3QT-AxGDtqT12yQR6u6BncVMagYaIeauUkaKg8_8DUOTsGLaxinTk82jFoNi-kW4gDEUTMJ3DS7wZiUahGo3YA*</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>opentoken T1RLAQJpzprPQ-RQDS3CXyzT4iObSo5c6xBeEN8DB84Jv35h0X4hIvjvAADgDQ2jpWt6AarTJloF_IYVZAMHJWcRUH9gJAcIsTQIRqzeXn2zepCYNYgBYUBAt5wCMZsSg8ZYAYNdCfHjqlrxjeYYcRyYHHgFjY3TpDrDXsMJF-EiWffC0qhzijVaGYSE3ty6k3vw55-V0SXnCUBwOhf2Cgz0FID22ruJJs6Z9avBKIQQQnrAllynH13Bg3x7sE_T2zVDpZD8Zw9lqllwb3QT-AxGDtqT12yQR6u6BncVMagYaIeauUkaKg8_8DUOTsGLaxinTk82jFoNi-kW4gDEUTMJ3DS7wZiUahGo3YA*</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes for Practice(400)" id="41d176f5-ec68-40f1-977d-73f3b941bfb7">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes for Practice(400)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=true&amp;practiceId=20624uuu</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>400</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="httprequest" name="Get ALL appointmentTypes for Practice(Basic Auth)" id="1e7fe4dc-846d-4d3f-ae24-56e88e92405e">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes for Practice(Basic Auth)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=true&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="f5e1437a-7c84-4132-b73d-569c44d9e42c" name="JsonPath Existence Match">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['id']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="8709b3ae-fbc0-4af9-bf83-b0998ccc3ac9" name="JsonPath Existence Match 2">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="1f2c185d-a84b-4723-9fac-b685a1bf0266" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="274ff27b-9458-4115-bb4b-0d9aaedad8fe" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="690fa19f-feb8-4951-98a1-1a72e27b5587" name="JsonPath Existence Match 5">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="d7085df3-8e4d-4890-be8b-97fa941aa923" name="JsonPath Existence Match 6">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['active']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="groovy" name="Groovy Script" id="c3f1acc1-f96e-40df-89cc-c7ebaeb06cef"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmenttypeid = generator((('1'..'9')+('1'..'9')+('1'..'9')).join(), 7 )
+log.info appointmenttypeid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("appointmentTypeId",'"'+appointmenttypeid+'"' )
+
+def generator1 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+catid = generator1((('1'..'9')+('1'..'9')).join(), 2 )
+log.info catid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryId",'"'+"cat "+catid+'"' )
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryIName",'"'+"category "+catid+'"' )
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an appointment type that does not exist" id="34f71f93-2ee0-471c-a922-378f7b51a835"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an appointment type that does not exist" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>${Properties#categoryId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an appointment type that does not exist#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Copy of Groovy Script" id="5cc1bd62-84f5-4e8e-a92e-e1e657d417b6"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmenttypeid = generator((('1'..'9')+('1'..'9')+('1'..'9')).join(), 7 )
+log.info appointmenttypeid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("appointmentTypeId",'"'+appointmenttypeid+'"' )
+
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an appointment type with unique appointmentType id but same category id" id="bbc00803-2a43-4cef-b9f8-bebebc0d2bb1"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an appointment type with unique appointmentType id but same category id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>${Properties#categoryId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an appointment type that does not exist#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="PUT Update an appointment type without appointment type name" id="a2ef8438-7bf8-499c-b454-9a7e15644826"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="PUT Update an appointment type without appointment type name" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>${Properties#categoryId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an appointment type that does not exist#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="f88d7930-f64e-417b-97ee-69fe7a68e5f2" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>""</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an appointment type that already exists" id="ea3f37c5-90ba-4629-a51f-271a737bff0e"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an appointment type that already exists" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="4326b6bf-8815-4347-b8cd-389837adbe29" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>400</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Invalid auth" id="32d91e8b-7108-4b45-8847-b63aa2b5f0f8"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="Invalid auth" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="335e3658-9b27-40a5-8180-3cd7913c028c" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InN5c3RlbUp3dCJ9.eyJjbGllbnRfaWQiOiJTeXN0ZW1Kd3RWYWxpZGF0aW9uQ2xpZW50VjEiLCJleHAiOjE1ODI1ODA2MDcsInNjb3BlIjpbXX0.Wi3TATY2K4L_9mA4UuEcZhkoVQ9dcrmEFBg6yMvP6p325</con:value><con:style>HEADER</con:style><con:default>Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InN5c3RlbUp3dCJ9.eyJjbGllbnRfaWQiOiJTeXN0ZW1Kd3RWYWxpZGF0aW9uQ2xpZW50VjEiLCJleHAiOjE1ODI1ODA2MDcsInNjb3BlIjpbXX0.Wi3TATY2K4L_9mA4UuEcZhkoVQ9dcrmEFBg6yMvP6p325</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script 2" id="ab33b12b-113a-4c3a-8cd5-d877dbec5fd8"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmenttypeid = generator((('1'..'9')+('1'..'9')+('1'..'9')).join(), 7 )
+log.info appointmenttypeid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("appointmentTypeId",'"'+appointmenttypeid+'"' )
+
+def generator1 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+catid = generator1((('1'..'9')+('1'..'9')).join(), 2 )
+log.info catid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryId",'"'+"cat "+catid+'"' )
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryIName",'"'+"category "+catid+'"' )
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an inactive appointment type" id="71c14d6f-a722-4515-9a55-23ea102c37cd"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an inactive appointment type" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": false,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Inactive Allergies",
+  "categoryId": ${Properties#categoryId},
+  "categoryName":"Category name something",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Inactive Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>${Properties#categoryId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an inactive appointment type#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script 3" id="1616ca9b-ceb9-4f16-9282-dacf59b97aee"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmenttypeid = generator((('1'..'9')+('1'..'9')+('1'..'9')).join(), 7 )
+log.info appointmenttypeid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("appointmentTypeId",'"'+appointmenttypeid+'"' )
+
+def generator1 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+catid = generator1((('1'..'9')+('1'..'9')).join(), 2 )
+log.info catid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryId",'"'+"cat "+catid+'"' )
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryIName",'"'+"category "+catid+'"' )
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an  appointment type for default category name" id="61aec2a9-2f6f-4289-874e-8af262dcd6d7"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an  appointment type for default category name" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId":"--",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>"--"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an  appointment type for default category name#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script 4" id="014b334f-90e8-4e12-9e6b-31b59efc05ea"><con:settings/><con:config><script>def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+appointmenttypeid = generator((('1'..'9')+('1'..'9')+('1'..'9')).join(), 7 )
+log.info appointmenttypeid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("appointmentTypeId",'"'+appointmenttypeid+'"' )
+
+def generator1 = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+catid = generator1((('1'..'9')+('1'..'9')).join(), 2 )
+log.info catid
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryId",'"'+"cat "+catid+'"' )
+testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("categoryIName",'"'+"category "+catid+'"' )
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="POST Create an  appointment type for a practice that does not have psm" id="c7e2730f-0b50-4696-9f84-9085ebecd81d"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Create an  appointment type for a practice that does not have psm" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId":"--",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "5984509345"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6bb5fe4f-cf53-437b-8ae7-6977e53d3039" name="Match content of [appointmentTypeId]"><con:configuration><path>$['appointmentTypeId']</path><content>${Properties#appointmentTypeId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e3c295b8-0b01-42f4-a86b-676e2b27f9a2" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>"--"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an  appointment type for default category name#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get appointment type based on uuid-System user" id="2a484fb5-82b3-4366-b215-36792681e706"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="Get appointment type based on uuid-System user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId":"--",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "5984509345"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Allergies"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${POST Create an appointment type that does not exist#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="91cdbc99-5a5b-447f-9f4a-c2b990594d14" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${POST Create an appointment type that does not exist#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get appointment type based on uuid-Basic/opentoken Staff user" id="9cea8658-732b-4c95-82e8-eb25b9beb22b"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="Get appointment type based on uuid-Basic/opentoken Staff user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId":"--",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "5984509345"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="021c7acb-9a92-4b82-80da-abd0d6d72eba" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:value><con:style>HEADER</con:style><con:default>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="PUT  appointment type based on uuid-System user" id="3fc5dfb6-946e-4723-b5aa-e9e9e72d4030"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="PUT  appointment type based on uuid-System user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": false,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Physical",
+  "categoryId":"Updated category",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Physical"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${PUT  appointment type based on uuid-System user#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="91cdbc99-5a5b-447f-9f4a-c2b990594d14" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${POST Create an appointment type that does not exist#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get appointment type based on uuid after updating" id="1e60f8c4-2987-4c16-b47f-0ae334d1b0c9"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="Get appointment type based on uuid after updating" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": true,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Allergies",
+  "categoryId":"--",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "5984509345"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="427163cb-70d6-4148-80f8-ffdae0fb207a" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2e4c2b12-527b-4228-a8ec-09852935b678" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5af0cd49-fdf5-4046-8eb3-adcbab498353" name="Match content of [appointmentTypeName]"><con:configuration><path>$['appointmentTypeName']</path><content>"Physical"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="fe2bc074-6f83-481b-aec6-fc53eacaa61d" name="Check for existence of [categoryName]"><con:configuration><path>$['categoryName']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="1bb96c5b-f613-4135-9537-ca5c8c874c0d" name="Match content of [active]"><con:configuration><path>$['active']</path><content>${PUT  appointment type based on uuid-System user#RawRequest#$['active']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="91cdbc99-5a5b-447f-9f4a-c2b990594d14" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${POST Create an appointment type that does not exist#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="a6b45c0f-c287-456f-8fb3-d800b1c6f9ae" name="Match content of [categoryId]"><con:configuration><path>$['categoryId']</path><content>${Get appointment type based on uuid after updating#Response#$['categoryId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="PUT  appointment type based on uuid-Basic/Opentoken staff user" id="1c6c8aa3-2c41-4001-a42d-07d9919cb38a"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="PUT  appointment type based on uuid-Basic/Opentoken staff user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/${POST Create an appointment type that does not exist#Response#$['id']}</con:endpoint><con:request>{
+  "active": false,
+  "appointmentTypeId": ${Properties#appointmentTypeId},
+  "appointmentTypeName": "Physical",
+  "categoryId":"Updated category",
+  "categoryName":"Default",
+  "integrationId": "9",
+  "practiceId": "24289"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7b18e8f2-fa4c-4078-a8f0-3f56c8b87bb9" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic UGF5bWVudHMwOTpwYXNzd29yZDE=</con:value><con:style>HEADER</con:style><con:default>Basic UGF5bWVudHMwOTpwYXNzd29yZDE=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get ALL appointmentTypes for Practice(ALL) 2" id="413c2623-ecf6-4df7-8644-3f5c89a58a51">
+        <con:settings/>
+        <con:config method="GET" xsi:type="con:HttpRequest" id="c24d2534-d938-48d7-8615-8fd680efc1ea" name="Get ALL appointmentTypes for Practice(ALL) 2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes?includeInactive=true&amp;practiceId=24289</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="351dc087-47d4-4379-8d63-e932e8d8b198" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="f5e1437a-7c84-4132-b73d-569c44d9e42c" name="JsonPath Existence Match">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['id']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="8709b3ae-fbc0-4af9-bf83-b0998ccc3ac9" name="JsonPath Existence Match 2">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="1f2c185d-a84b-4723-9fac-b685a1bf0266" name="JsonPath Existence Match 3">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['appointmentTypeName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="274ff27b-9458-4115-bb4b-0d9aaedad8fe" name="JsonPath Existence Match 4">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryId']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="690fa19f-feb8-4951-98a1-1a72e27b5587" name="JsonPath Existence Match 5">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['categoryName']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="d7085df3-8e4d-4890-be8b-97fa941aa923" name="JsonPath Existence Match 6">
+            <con:configuration>
+              <path>$['appointmentTypes'][0]['active']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>Authorization</con:name>
+              <con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value>
+              <con:style>HEADER</con:style>
+              <con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default>
+            </con:parameter>
+          </con:parameters>
+        </con:config>
+      </con:testStep><con:testStep type="httprequest" name="POST Update all appointment types for a practice-Staff user" id="caeb11cb-3f1e-41ec-966d-73d3dd8123fc"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Update all appointment types for a practice-Staff user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/update</con:endpoint><con:request>{
+   "appointmentTypes" : [
+      {
+         "id" : "dce02bdd-e47f-4df0-b279-d10939092197",
+         "appointmentTypeId" : "6162671",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 48",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "2ce62845-e788-4daf-9715-6f53d371fb35",
+         "appointmentTypeId" : "7763859",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 48",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "b3734608-4362-44c0-ad55-59259c094103",
+         "appointmentTypeId" : "6321379",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 94",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "bf53cca3-ab6a-4806-9236-8159ff3afe65",
+         "appointmentTypeId" : "3787135",
+         "appointmentTypeName" : "Inactive Allergies",
+         "categoryId" : "cat 76",
+         "categoryName" : "Category name something",
+         "active" : false
+      },
+      {
+         "id" : "92521ed3-9375-46dc-80ba-730ee4af14dc",
+         "appointmentTypeId" : "5226426",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "--",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "ba5a8b36-4e7a-4325-8cbb-b974efe3407b",
+         "appointmentTypeId" : "2616716",
+         "appointmentTypeName" : "Physical",
+         "categoryId" : "Updated category",
+         "categoryName" : "Default",
+         "active" : false
+      },
+      {
+         "id" : "aa3ee19b-01fe-49e9-b101-41688f3f25a5",
+         "appointmentTypeId" : "1000182",
+         "appointmentTypeName" : "Follow Up",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "684808c7-d15a-49fa-bd33-eb36511360e9",
+         "appointmentTypeId" : "1000166",
+         "appointmentTypeName" : "Sick Visit",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "9fffd27e-d7a9-46fe-8f35-ab72808ed203",
+         "appointmentTypeId" : "1000165",
+         "appointmentTypeName" : "Emergency",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "18650c70-374e-4eaa-9749-d9de3d9a4a9f",
+         "appointmentTypeId" : "100048",
+         "appointmentTypeName" : "New Patient - 15",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+       {
+         "id" : "767bdcce-1426-4aa3-95a3-a94043ed371e",
+         "appointmentTypeId" : "1001",
+         "appointmentTypeName" : "Routine checkups",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "ae36c1b1-7347-4269-a0f7-710ce1dd3581",
+         "appointmentTypeId" : "2001",
+         "appointmentTypeName" : "Injection 15",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      }
+   ]
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7b18e8f2-fa4c-4078-a8f0-3f56c8b87bb9" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:value><con:style>HEADER</con:style><con:default>Basic ZG9jZWxlbWVudDptZWRmdXNpb24xMjM=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>integrationId</con:name><con:value>9</con:value><con:style>QUERY</con:style><con:default>9</con:default></con:parameter><con:parameter><con:name>practiceId</con:name><con:value>24289</con:value><con:style>QUERY</con:style><con:default>24289</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="POST Update all appointment types for a practice-System user" id="718e302f-8aaa-4bd7-8f3b-02a2ad280700"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="ad5711ae-a450-4418-867d-6e3d07de5292" name="POST Update all appointment types for a practice-System user" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://pr-pt-app01.pub.medfusion.net:9000/mf-appointment-types/v1/appointmentTypes/update</con:endpoint><con:request>{
+   "appointmentTypes" : [
+      {
+         "id" : "dce02bdd-e47f-4df0-b279-d10939092197",
+         "appointmentTypeId" : "6162671",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 48",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "2ce62845-e788-4daf-9715-6f53d371fb35",
+         "appointmentTypeId" : "7763859",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 48",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "b3734608-4362-44c0-ad55-59259c094103",
+         "appointmentTypeId" : "6321379",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "cat 94",
+         "categoryName" : "Category name something",
+         "active" : true
+      },
+      {
+         "id" : "bf53cca3-ab6a-4806-9236-8159ff3afe65",
+         "appointmentTypeId" : "3787135",
+         "appointmentTypeName" : "Inactive Allergies",
+         "categoryId" : "cat 76",
+         "categoryName" : "Category name something",
+         "active" : false
+      },
+      {
+         "id" : "92521ed3-9375-46dc-80ba-730ee4af14dc",
+         "appointmentTypeId" : "5226426",
+         "appointmentTypeName" : "Allergies",
+         "categoryId" : "--",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "ba5a8b36-4e7a-4325-8cbb-b974efe3407b",
+         "appointmentTypeId" : "2616716",
+         "appointmentTypeName" : "Physical",
+         "categoryId" : "Updated category",
+         "categoryName" : "Default",
+         "active" : false
+      },
+      {
+         "id" : "aa3ee19b-01fe-49e9-b101-41688f3f25a5",
+         "appointmentTypeId" : "1000182",
+         "appointmentTypeName" : "Follow Up",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "684808c7-d15a-49fa-bd33-eb36511360e9",
+         "appointmentTypeId" : "1000166",
+         "appointmentTypeName" : "Sick Visit",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "9fffd27e-d7a9-46fe-8f35-ab72808ed203",
+         "appointmentTypeId" : "1000165",
+         "appointmentTypeName" : "Emergency",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "18650c70-374e-4eaa-9749-d9de3d9a4a9f",
+         "appointmentTypeId" : "100048",
+         "appointmentTypeName" : "New Patient - 15",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+       {
+         "id" : "767bdcce-1426-4aa3-95a3-a94043ed371e",
+         "appointmentTypeId" : "1001",
+         "appointmentTypeName" : "Routine checkups",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      },
+      {
+         "id" : "ae36c1b1-7347-4269-a0f7-710ce1dd3581",
+         "appointmentTypeId" : "2001",
+         "appointmentTypeName" : "Injection 15",
+         "categoryId" : "internal_default",
+         "categoryName" : "Default",
+         "active" : true
+      }
+   ]
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7b18e8f2-fa4c-4078-a8f0-3f56c8b87bb9" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST to get token 1#Response#$.access_token}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST to get token 1#Response#$.access_token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>integrationId</con:name><con:value>9</con:value><con:style>QUERY</con:style><con:default>9</con:default></con:parameter><con:parameter><con:name>practiceId</con:name><con:value>24289</con:value><con:style>QUERY</con:style><con:default>24289</con:default></con:parameter></con:parameters></con:config></con:testStep><con:properties/>
+      <con:reportParameters/>
+      <con:breakPoints>
+        <con:testStepId>faf68f25-f2fc-4905-a224-de6553b0e4b1</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>fabed595-cce7-4a88-8034-efff89c813ea</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>5a34123d-6dff-4925-841c-626ead29a49d</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>207fa272-f0d8-44cd-8a67-48af37e1d1dc</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>5eade0a1-c543-422c-8364-f223e4d2afcd</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>f49f274c-2507-405f-92e4-3b7859e31199</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+      <con:breakPoints>
+        <con:testStepId>ecda42f2-9e8a-4f7a-9964-787e76c226e7</con:testStepId>
+        <con:status>NONE</con:status>
+        <con:properties/>
+      </con:breakPoints>
+    <con:breakPoints><con:testStepId>1e030625-b36a-43c2-bb64-2e18c4f9e26d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>79d971bf-a3da-48c2-b29d-94fd6bb4886c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3bb3d61d-d7e3-42d7-8735-8724f715df1c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2218d79a-33ae-42ca-8d6b-3c7a06cc81d6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>0a680e5b-70ab-4982-84f6-dfb8c9f20082</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bae763ab-ef68-482e-ac40-4086e22ff397</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>7d6c9291-fcd2-4a7d-b79a-2dc16d082c6a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:requirements/><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:reportTemplates/><con:xmlTemplates/><con:xmlTemplates/><con:parameters/><con:parameters/></con:reporting><con:reporting/><con:environment id="a4a25c65-ce71-48ca-9a11-80de3219091d" name="Prod"><con:service type="REST" name="http://pr-pt-app01.pub.medfusion.net:8087"><con:endpoint authProfile="No Authorization"/></con:service><con:databaseConnectionContainer/><con:jmsConnectionContainer/></con:environment><con:authRepository/><con:environmentSpec><con:entry environmentId="a4a25c65-ce71-48ca-9a11-80de3219091d"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec><con:tags/></con:soapui-project>
