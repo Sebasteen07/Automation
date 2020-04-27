@@ -14,27 +14,29 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 public class JalapenoAskAStaffV2HistoryListPage extends JalapenoMenu {
 
-    @FindBy(how = How.ID, using = "backButton")
-    private WebElement backButton;
-    
-    public JalapenoAskAStaffV2HistoryListPage(WebDriver driver) {
-        super(driver);
-        IHGUtil.PrintMethodName();
-    }
+	@FindBy(how = How.ID, using = "backButton")
+	private WebElement backButton;
 
-    @Override
-    public boolean areBasicPageElementsPresent() {
-        ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+	public JalapenoAskAStaffV2HistoryListPage(WebDriver driver) {
+		super(driver);
+		IHGUtil.PrintMethodName();
+	}
 
-        webElementsList.add(backButton);
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-        return assessPageElements(webElementsList);
-    }
-    
-    public JalapenoAskAStaffV2HistoryDetailPage goToDetailByReason(String reason){
-        log("Searching table Reasons for " + reason);
-        driver.findElement(By.xpath("//table/tbody/tr/td[contains(text(),'" + reason + "')]/..")).click();
-        return PageFactory.initElements(driver, JalapenoAskAStaffV2HistoryDetailPage.class);
-    }
+		webElementsList.add(backButton);
+
+		return assessPageElements(webElementsList);
+	}
+
+	public JalapenoAskAStaffV2HistoryDetailPage goToDetailByReason(String reason) throws InterruptedException {
+		log("Searching table Reasons for " + reason);
+		Thread.sleep(8000);
+		driver.findElement(By.xpath("//table/tbody/tr/td[contains(text(),'" + reason + "')]/..")).click();
+
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2HistoryDetailPage.class);
+	}
 
 }
