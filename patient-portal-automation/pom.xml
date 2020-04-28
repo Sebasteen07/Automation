@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>20.3.0-SNAPSHOT</version>
+        <version>20.4.0-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>patientportal1-automation</artifactId>
@@ -24,7 +24,7 @@
 	<properties>
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>20.3.0-SNAPSHOT</ihg.version>
+		<ihg.version>20.4.0-SNAPSHOT</ihg.version>
 	</properties>
 	
 	<dependencies>
