@@ -36,6 +36,9 @@ public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'This online encounter was charged')]")
 	private WebElement requestDetailsPayment;
 	
+	@FindBy(how = How.XPATH, using = "//li[@class='attachment ng-scope']")
+	private WebElement requestAttachedFile;
+	
 
 	public JalapenoAskAStaffV2HistoryDetailPage(WebDriver driver) {
 		super(driver);
@@ -82,4 +85,9 @@ public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 	public String getRequestDetailPayment() {
 		return requestDetailsPayment.getText();
 	}
+
+	public String getRequestAttachedFile() {
+		return requestAttachedFile.getText();
+	}
+	
 }

@@ -17,6 +17,7 @@ import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -103,11 +104,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String questionText = "wat";
-
+	private static String ErrorfilePath = System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
+	private static String CorrectfilePath = System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
+	
 	private PropertyFileLoader testData;
 	private Patient patient = null;
-
-	// JalapenoPayBillsMakePaymentPage payBillsPage;
+	
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws IOException {
@@ -468,8 +472,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Send CCD if there is CCD older than 7 days");
 		recordSummaries.sendCCDIfNewestIsOlderThan(7);
 
-		/*logStep("Set filter to third visible CCD");
-		recordSummaries.setFilterToThirdCCDDate();*/
+		/*
+		 * logStep("Set filter to third visible CCD");
+		 * recordSummaries.setFilterToThirdCCDDate();
+		 */
 
 		logStep("Select and send CCD to Direct email address");
 		recordSummaries.selectFirstVisibleCCD();
@@ -1687,6 +1693,128 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 								.replace("This online encounter was charged $", "").replace(".", "")),
 				"Expected: " + askPaidAmount.replace("$ ", "") + ", found: " + askHistoryDetail
 						.getRequestDetailPayment().replace("This online encounter was charged $", "").replace(".", ""));
+
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+	}
+
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskAttachment() throws Exception {
+		String expectedCorrectFileText = "sw-test-academy.txt";
+
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("askAV2User"),
+				testData.getProperty("askAV2Password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+		System.out.println(askaSubject);
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueAttachment(askaSubject, questionText);
+
+		logStep("Add Attachmnet and remove Attachment ");
+		askPage1.uploadFileWithRobotRepeat(ErrorfilePath, CorrectfilePath);
+
+		logStep("Remove All the Attachment Except one and click on continue button ");
+		askPage1.removeAttachment();
+
+		logStep("Verify Uploaded file name in submit page ");
+		assertTrue(expectedCorrectFileText.equals(askPage1.getProperFileText()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askPage1.getProperFileText());
+
+		logStep("Verify Subject in submit page ");
+		assertTrue(askaSubject.equals(askPage2.getSubject()),
+				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+
+		logStep("Verify Quesion in Submit paget ");
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+		logStep("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("askAV2DoctorLogin"),
+				testData.getProperty("askAV2DoctorPassword"));
+
+		logStep("Click Ask A Staff tab");
+		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
+
+		logStep("Search for questions");
+		searchQ.searchForQuestions();
+		AskAStaffQuestionDetailStep1Page detailStep1 = searchQ.getQuestionDetails(askaSubject);
+		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
+
+		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
+		logStep("Choose action on patient question");
+		AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
+
+		logStep("Respond to patient question");
+		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test",
+				"This message was generated by an automated test");
+
+		logStep("Confirm response details to patient");
+		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
+
+		logStep("Validate submit of confirmation");
+		assertTrue(detailStep4.isQuestionDetailPageLoaded());
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		logStep("Login patient");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		homePage = loginPage.login(testData.getProperty("askAV2User"), testData.getProperty("askAV2Password"));
+
+		logStep("Go to messages");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Check if message was delivered");
+		assertTrue(messagesPage.isMessageDisplayed(driver,
+				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
+
+		logStep("Go back to the aska again and check submission status changed");
+		homePage = messagesPage.clickOnMenuHome();
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+		askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Reverify subject and question in history detail, verify status is now completed");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Completed".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Completed" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
 
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();

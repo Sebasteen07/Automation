@@ -10,6 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
@@ -17,6 +19,12 @@ import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
 import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
@@ -38,6 +46,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//div[text()=' Payment Details ']")
 	private WebElement paymentDetails;
+
+	@FindBy(how = How.ID, using = "attachments")
+	private WebElement attachmnetFiles;
 
 	// Custom component, use click -> sendkeys sequence to manipulate
 	@FindBy(how = How.XPATH, using = "//div[@id='locationField']/mf-combobox/div")
@@ -106,6 +117,21 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//span[@class=\"pull-right ng-binding\"]")
 	private WebElement subjectCharCount;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Error_Files_Testing.pdf']")
+	private WebElement errorFileName;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='sw-test-academy.txt']")
+	private WebElement properFileName;
+
+	@FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right ng-binding']")
+	private WebElement errorFileRemove;
+
+	@FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right ng-binding']")
+	private WebElement fileRemovbutton;
+
+	@FindBy(how = How.ID, using = "attachments_error")
+	private WebElement fileUploadErrorMsg;
 
 	private long createdTS;
 
@@ -178,6 +204,78 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 
+	public JalapenoAskAStaffV2Page2 fillAndContinueAttachment(String subject, String question)
+			throws InterruptedException {
+		if (subject != null && !subject.trim().isEmpty()) {
+			subjectBox.clear();
+			subjectBox.sendKeys(subject);
+			Thread.sleep(1000);
+		}
+		questionBox.sendKeys(question);
+		Thread.sleep(1000);
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+	}
+
+	public JalapenoAskAStaffV2Page2 setClipboardData(String string) {
+		IHGUtil.PrintMethodName();
+		// StringSelection is a class that can be used for copy and paste operations.
+		StringSelection stringSelection = new StringSelection(string);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+	}
+
+	public JalapenoAskAStaffV2Page2 uploadFileWithRobot(String errorfilePath, String correctfilePath) {
+		IHGUtil.PrintMethodName();
+		attachmnetFiles.click();
+		Robot robot = null;
+
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		robot.delay(8000);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.delay(1500);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+	}
+
+	public void uploadFileWithRobotRepeat(String errorfilePath, String correctfilePath) throws InterruptedException {
+
+		for (int i = 0; i <= 5; i++) {
+			if (i == 0) {
+				setClipboardData(errorfilePath);
+				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
+				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded more than 2 MB file  " + errorFileName.getText());
+				assertTrue(errorFileName.getText().equals("Error_Files_Testing.pdf"),
+						"Expected: " + errorFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
+				assertTrue(fileUploadErrorMsg.getText().equals("Your attachments exceed the maximum size of 2MB."),
+						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Your attachments exceed the maximum size of 2MB.");	
+				errorFileRemove.click();
+				continue;
+			} else {
+
+				setClipboardData(correctfilePath);
+				//wait for the window to open the folder
+				Thread.sleep(5000);
+				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
+				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded  2 MB file  " + properFileName.getText());
+				assertTrue(properFileName.getText().equals("sw-test-academy.txt"),
+						"Expected: " + properFileName.getText() + ", found: " + "sw-test-academy.txt");
+			}
+		}
+		
+	}
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
@@ -185,7 +283,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		webElementList.add(questionBox);
 		webElementList.add(historyButton);
 		webElementList.add(continueButton);
-		webElementList.add(paymentDetails);
 		// provider, location, and card info are all optional
 		return assessPageElements(webElementList);
 	}
@@ -242,6 +339,36 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		} else {
 			log("No previous card is displayed");
 		}
+	}
+
+	private ArrayList<WebElement> getRemoveAttachment() {
+		return (ArrayList<WebElement>) driver
+				.findElements(By.xpath("//tr[contains(@class, 'attachmentItem ng-scope')]"));
+	}
+
+	public void removeAttachment() throws InterruptedException {
+		log("Removing of displayed Attachment");
+		ArrayList<WebElement> attachmnet = getRemoveAttachment();
+
+		if (attachmnet.size() > 0) {
+			log("Count of displayed Attachment: " + attachmnet.size());
+			int removeButton = 0;
+
+			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver
+					.findElements(By.xpath("//a[@class='attachmentRemoveLink pull-right ng-binding']"));
+			for (int i = 0; i < removeButtons.size() - 1; i++) {
+				if (removeButtons.get(i).isDisplayed()) {
+					fileRemovbutton.click();
+					removeButtons.get(i);
+					log("Attachment #" + removeButton + " removed");
+					// need to sleep because of modal disappearing time
+					Thread.sleep(5000);
+				}
+			}
+		} else {
+			log("No Attachment  is displayed");
+		}
+		continueButton.sendKeys(Keys.ENTER);
 	}
 
 	private JalapenoAskAStaffV2Page1 removeCreditCard(WebElement removeButton) {
@@ -332,6 +459,21 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	public String getAskaPaymentText() {
 		return paymentAmount.getText();
+
+	}
+
+	public String getProperFileText() {
+		return properFileName.getText();
+
+	}
+
+	public String getErrorFileText() {
+		return errorFileName.getText();
+
+	}
+
+	public String getErrorFileMsgText() {
+		return fileUploadErrorMsg.getText();
 
 	}
 

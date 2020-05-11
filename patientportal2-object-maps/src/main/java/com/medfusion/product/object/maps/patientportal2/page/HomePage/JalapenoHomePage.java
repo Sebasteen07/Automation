@@ -271,11 +271,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page1 openSpecificAskaV2(String askaName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(8000);
 		askAQuestion.click();
-		System.out.println("It clicked on the ASK a question in homepage");
+		log("It clicked on the ASK a question in homepage");
 		try {
-			driver.findElement(By.linkText(askaName)).click();
-			System.out.println("clciked the element ASK Paid");
+			
+			driver.findElement(By.xpath("//a[text()='Ask (Staff)']")).click();
+			
 		} catch (NoSuchElementException e) {
 			log("No question with the specified link text found! name: " + askaName);
 			e.printStackTrace();

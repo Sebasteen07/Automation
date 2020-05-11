@@ -142,8 +142,8 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		body.sendKeys(bodyContent);
 
 		diagnosticCode.sendKeys(diagnosticCodeContent);
+		IHGUtil.waitForElement(driver, 30, diagnosticContentButton);
 		diagnosticContentButton.click();
-
 		btnProcess.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);
 	}

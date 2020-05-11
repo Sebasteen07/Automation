@@ -1,6 +1,7 @@
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
@@ -33,9 +35,8 @@ public class JalapenoAskAStaffV2HistoryListPage extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2HistoryDetailPage goToDetailByReason(String reason) throws InterruptedException {
 		log("Searching table Reasons for " + reason);
-		Thread.sleep(8000);
+		driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 		driver.findElement(By.xpath("//table/tbody/tr/td[contains(text(),'" + reason + "')]/..")).click();
-
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2HistoryDetailPage.class);
 	}
 
