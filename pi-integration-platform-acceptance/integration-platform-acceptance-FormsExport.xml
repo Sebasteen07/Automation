@@ -12,6 +12,7 @@
 		<methods>
 				<include name="testEHDCSendCCD"/>
 	    		<include name="testCCDE2EFormExportfromPracticeRegression"/>
+	    		<include name="testOnDemandHealthData"/>
       	</methods>
 	</classes>
 </test>
