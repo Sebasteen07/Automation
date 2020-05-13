@@ -3282,4 +3282,17 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
     	}
     	return isFileDeleted;
     }
+	
+	public static boolean isOnDemandRequestSubmitted(String xmlFileName, String patientId)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PATIENTID);
+		{
+			Log4jUtil.log(nodes.item(0).getTextContent()+" Expectd Patient Id and Actual PatientId  : "+patientId);
+			Assert.assertTrue(nodes.item(0).getTextContent().equals(patientId),
+					"The Patient Id should match");
+		}
+		return true;
+	}
 }
