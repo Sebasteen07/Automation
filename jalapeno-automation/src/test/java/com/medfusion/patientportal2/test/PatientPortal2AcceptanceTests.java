@@ -109,6 +109,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static String CorrectfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
 	
+	
+	
 	private PropertyFileLoader testData;
 	private Patient patient = null;
 	
@@ -1718,6 +1720,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Add Attachmnet and remove Attachment ");
 		askPage1.uploadFileWithRobotRepeat(ErrorfilePath, CorrectfilePath);
+		log("Printing the Error file path"+ ErrorfilePath);
+		log("Printing the Correct file path"+ CorrectfilePath);
+		
 
 		logStep("Remove All the Attachment Except one and click on continue button ");
 		askPage1.removeAttachment();
