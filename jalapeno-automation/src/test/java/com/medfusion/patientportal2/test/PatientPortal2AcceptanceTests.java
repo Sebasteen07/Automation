@@ -108,12 +108,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
 	private static String CorrectfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
-	
-	
-	
+
 	private PropertyFileLoader testData;
 	private Patient patient = null;
-	
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws IOException {
@@ -1700,7 +1697,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test
 	public void testAskAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
@@ -1720,9 +1717,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Add Attachmnet and remove Attachment ");
 		askPage1.uploadFileWithRobotRepeat(ErrorfilePath, CorrectfilePath);
-		log("Printing the Error file path"+ ErrorfilePath);
-		log("Printing the Correct file path"+ CorrectfilePath);
-		
 
 		logStep("Remove All the Attachment Except one and click on continue button ");
 		askPage1.removeAttachment();

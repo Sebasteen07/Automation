@@ -226,9 +226,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page2 uploadFileWithRobot(String errorfilePath, String correctfilePath) {
 		IHGUtil.PrintMethodName();
-		log("Now we will click on the attachment files");
 		attachmnetFiles.click();
-		log("We are able to click on the attachment file");
 		Robot robot = null;
 
 		try {
@@ -236,7 +234,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
-		log("Now we will use robot class to upload the files from the path we had set");
 		robot.delay(8000);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
@@ -254,11 +251,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 		for (int i = 0; i <= 5; i++) {
 			if (i == 0) {
-				log("Now we are setting the path by using setclipboard");
 				setClipboardData(errorfilePath);
-				log("ERROR FILE PATH ITS PICKING  " + errorfilePath);
+				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
-				log("Now we get the path will try to upload the file by using the path we passing");
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
 				log("Uploaded more than 2 MB file  " + errorFileName.getText());
 				assertTrue(errorFileName.getText().equals("Error_Files_Testing.pdf"),
