@@ -96,11 +96,14 @@ public class AChecker extends BasePageObject {
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
-		Thread.sleep(3000);
+		Thread.sleep(15000);
+		System.out.println(pasteField.isDisplayed());
+		log("The pastefiled is displayed"+ pasteField.isDisplayed());
+		System.out.println(pasteField.isEnabled());
+		log("The pastefiled is Enabled"+ pasteField.isEnabled());
 		log("It will start validating the source code by pasting it on the clipboard");
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("checkpaste")));
 		pasteField.click();
-		pasteField.click();
+		javascriptClick(pasteField);
 		System.out.println("pasteField get clicked");
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
