@@ -95,7 +95,6 @@ public class AChecker extends BasePageObject {
 	public void validate() throws InterruptedException {
 		log("It will start validating the source code by pasting it on the clipboard");
 		javascriptClick(pasteField);
-		IHGUtil.waitForElement(driver, 50, pasteField);
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
 		log("It clicked on the pastefield and had sended the keys");
