@@ -96,16 +96,19 @@ public class AChecker extends BasePageObject {
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
 		validateButton.click();
+		System.out.println("It clicked on the validate button");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
 			log(errors.getText());
 		}
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
+		System.out.println("We got the success Message");
 	}
 	
 	private void openOptions(){
 		tabPaste.click();
 		options.click();
+		System.out.println("It clicked on tabPaste  and Option Button");
 	}
 	
 	private void closeOptions(){
