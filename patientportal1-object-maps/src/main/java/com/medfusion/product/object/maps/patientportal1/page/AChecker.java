@@ -106,7 +106,7 @@ public class AChecker extends BasePageObject {
 		log("It clicked on the validate button");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
-			log(errors.getText());''
+			log(errors.getText());
 		}
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
 		System.out.println("We got the success Message");
