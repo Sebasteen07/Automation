@@ -44,9 +44,9 @@ public class AChecker extends BasePageObject {
 	public WebElement tabPaste;
 
 	// The text field in which to paste HTML
-	@FindBy(how = How.ID, using = "checkpaste")
+	@FindBy(how = How.XPATH, using = "//textarea[@name='pastehtml']")
 	public WebElement pasteField;
-
+	
 	// The Check it button
 	@FindBy(how = How.ID, using = "validate_paste")
 	public WebElement validateButton;
