@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author pharlid
@@ -92,11 +93,16 @@ public class AChecker extends BasePageObject {
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() {
+		IHGUtil.waitForElement(driver, 50, pasteField);
 		pasteField.click();
+		IHGUtil.waitForElement(driver, 50, pasteField);
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
+		IHGUtil.waitForElement(driver, 50, validateButton);
+		System.out.println("It waited for the given time period");
 		validateButton.click();
 		System.out.println("It clicked on the validate button");
+		IHGUtil.waitForElement(driver, 50, validationSpinner);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
 			log(errors.getText());

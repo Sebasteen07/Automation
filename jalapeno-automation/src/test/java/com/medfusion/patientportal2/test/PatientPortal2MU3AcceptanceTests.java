@@ -198,7 +198,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		private AChecker copySourceNavigateToACheckerAndValidate(MedfusionPage page) throws InterruptedException {
 				logStep("Copy source");
 				StringSelection source = page.getHtmlSource();
-				logStep("Printing the HTML Source Code"+ source);
+				logStep("Printing the HTML Source Code"+ page.getHtmlSource());
 				logStep("Navigate to AChecker");
 				AChecker achecker = openAchecker();
 				logStep("ITS Navigated to AChecker");
