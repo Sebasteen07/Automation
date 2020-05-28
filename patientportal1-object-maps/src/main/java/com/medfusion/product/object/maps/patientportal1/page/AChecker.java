@@ -93,7 +93,7 @@ public class AChecker extends BasePageObject {
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
-		Thread.sleep(5000);
+		log("It will start validating the source code by pasting it on the clipboard");
 		pasteField.click();
 		IHGUtil.waitForElement(driver, 50, pasteField);
 		pasteField.sendKeys(Keys.CONTROL, "a");
@@ -102,7 +102,7 @@ public class AChecker extends BasePageObject {
 		Thread.sleep(5000);
 		validateButton.click();
 		log("It clicked on the validate button");
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
+		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
 			log(errors.getText());
 		}
