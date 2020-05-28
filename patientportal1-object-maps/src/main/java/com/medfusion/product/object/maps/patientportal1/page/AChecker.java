@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -44,8 +45,9 @@ public class AChecker extends BasePageObject {
 	public WebElement tabPaste;
 
 	// The text field in which to paste HTML
-	@FindBy(how = How.XPATH, using = "//textarea[@name='pastehtml']")
+	@FindBy(how = How.XPATH, using = "//textarea[@id='checkpaste']")
 	public WebElement pasteField;
+	
 	
 	// The Check it button
 	@FindBy(how = How.ID, using = "validate_paste")
@@ -66,7 +68,8 @@ public class AChecker extends BasePageObject {
 		super(driver);
 		driver.manage().deleteAllCookies();
 		driver.get(ACECKER_URL);
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
+		driver.navigate().refresh();
 		PageFactory.initElements(driver, this);
 	}
 
@@ -93,17 +96,15 @@ public class AChecker extends BasePageObject {
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
+		Thread.sleep(3000);
 		log("It will start validating the source code by pasting it on the clipboard");
-		wait.until(ExpectedConditions.elementToBeClickable(pasteField));
-		driver.findElement(By.xpath("//textarea[@name='pastehtml']")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("checkpaste")));
+		pasteField.click();
 		pasteField.click();
 		System.out.println("pasteField get clicked");
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
-		log("It clicked on the pastefield and had sended the keys");
-		Thread.sleep(5000);
 		validateButton.click();
-		log("It clicked on the validate button");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
 			log(errors.getText());
@@ -115,7 +116,6 @@ public class AChecker extends BasePageObject {
 	private void openOptions(){
 		tabPaste.click();
 		options.click();
-		System.out.println("It clicked on tabPaste  and Option Button");
 	}
 	
 	private void closeOptions(){
