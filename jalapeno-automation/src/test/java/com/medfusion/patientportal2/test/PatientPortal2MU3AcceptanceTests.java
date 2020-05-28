@@ -207,7 +207,6 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 			    Thread.sleep(3000);
 			    logStep("To Validate moving to Toolkit to get the content and set the clipboard");
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(source, source);
-				Thread.sleep(5000);
 				achecker.validate();
 				
 		}
