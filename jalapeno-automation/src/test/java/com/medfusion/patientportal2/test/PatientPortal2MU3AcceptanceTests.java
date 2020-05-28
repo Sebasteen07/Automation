@@ -191,21 +191,15 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				AChecker achecker = new AChecker(driver);
 				achecker.setupLevel(level);
 				logStep("Navigate to AChecker and the level as been set");
-
 				return achecker;
 		}
 
 		private AChecker copySourceNavigateToACheckerAndValidate(MedfusionPage page) throws InterruptedException {
-				logStep("Copy source");
 				StringSelection source = page.getHtmlSource();
-				logStep("Printing the HTML Source Code"+ page.getHtmlSource());
 				logStep("Navigate to AChecker");
 				AChecker achecker = openAchecker();
 				logStep("ITS Navigated to AChecker");
-				logStep("Validate");
 				pastAndValidateSource(achecker, source);
-				logStep("Validating the Source");
-
 				return achecker;
 		}
 
@@ -213,10 +207,8 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 			    Thread.sleep(8000);
 			    logStep("To Validate moving to Toolkit to get the content and set the clipboard");
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(source, source);
-				logStep("Printing the  sorce of set content"+source);
-				logStep("Validation Done of Toolkit for the the content and set the clipboard");
 				Thread.sleep(10000);
 				achecker.validate();
-				logStep("Validation Done achecker validate");
+				
 		}
 }
