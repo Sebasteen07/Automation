@@ -94,6 +94,8 @@ public class AChecker extends BasePageObject {
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
 		log("It will start validating the source code by pasting it on the clipboard");
+		wait.until(ExpectedConditions.elementToBeClickable(pasteField));
+		driver.findElement(By.xpath("//textarea[@name='pastehtml']")).click();
 		pasteField.click();
 		System.out.println("pasteField get clicked");
 		pasteField.sendKeys(Keys.CONTROL, "a");
@@ -104,7 +106,7 @@ public class AChecker extends BasePageObject {
 		log("It clicked on the validate button");
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
-			log(errors.getText());
+			log(errors.getText());''
 		}
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
 		System.out.println("We got the success Message");
