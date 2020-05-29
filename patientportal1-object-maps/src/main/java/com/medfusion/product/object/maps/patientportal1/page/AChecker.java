@@ -98,21 +98,36 @@ public class AChecker extends BasePageObject {
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
 		
+		System.out.println("The paste HTML markup tab  is displayed????: "+ tabPaste.isDisplayed());
+		System.out.println("The paste HTML mark tab is enabled?????: "+ tabPaste.isEnabled());
+		
+		tabPaste.click();
+		
+		System.out.println("clicked on tab");
+		
 		
 		System.out.println("The pastefield is displayed????: "+ pasteField.isDisplayed());
 		System.out.println("The pastefield is enabled????: "+pasteField.isEnabled());
 		//log("The pastefiled is Enabled"+ pasteField.isEnabled());
+		
 		System.out.println(pasteField.getLocation());
 		log("It will start validating the source code by pasting it on the clipboard");
 		//pasteField.click();
 		//((JavascriptExecutor)driver).executeScript("window.scrollTo(0,"+pasteField.getLocation().x+")");
 		//pasteField.click();
-		javascriptClick(pasteField);
+		//javascriptClick(pasteField);
 		
-		System.out.println("pasteField get clicked,,, javascriptclickworked");
+		//System.out.println("pasteField get clicked,,, javascriptclickworked");
 		
+		pasteField.click();
+		
+		System.out.println("COpy pasting code into bigg box");
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
+		
+		System.out.println("Sendkeys worked---copy pasted worked");
+		
+		System.out.println("clicking on vheck button");
 		validateButton.click();
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("AC_spinner_by_paste")));
 		if (errors.isDisplayed()) {
