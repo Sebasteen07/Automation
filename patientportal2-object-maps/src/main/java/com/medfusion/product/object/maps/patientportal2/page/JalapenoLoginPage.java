@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
@@ -91,7 +93,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 		IHGUtil.PrintMethodName();
 		log("Clicking on Create a new account button");
-		// new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
+		new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
 		buttonCreateANewAccount.click();
 		return PageFactory.initElements(driver, PatientDemographicPage.class);
 	}

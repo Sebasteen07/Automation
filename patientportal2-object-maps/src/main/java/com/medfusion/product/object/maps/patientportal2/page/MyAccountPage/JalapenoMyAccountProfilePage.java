@@ -246,7 +246,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 				return assessPageElements(webElementsList);
 		}
 
-		public boolean modifyAndValidatePageContent() {
+		public boolean modifyAndValidatePageContent() throws InterruptedException {
 				Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
 				itemsToChange.put(address1Textbox, "address");
 				itemsToChange.put(cityTextbox, "city");

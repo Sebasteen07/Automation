@@ -107,20 +107,20 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 				return assessPageElements(webElementsList);
 		}
 
-		private void fillNewCardInformation(CreditCard card) {
+		private void fillNewCardInformation(CreditCard card) throws InterruptedException {
 				log("Verify all elements of lightbox are visible");
 				assertTrue(areAddNewCreditCardLightboxElementsPresent());
 
 				log("Filling info about new credit card");
 				log("Name on card: " + card.getName());
+				Thread.sleep(2000);
 				nameOnCard.sendKeys(card.getName());
-
 				log("ZipCode: " + card.getZipCode());
 				bill_zipcode.sendKeys(card.getZipCode());
 
 				log("Card number: " + card.getCardNumber());
 				cardNumber.sendKeys(card.getCardNumber());
-
+				
 				log("Expiration: " + card.getExpMonth() + "/" + card.getExpYear());
 
 				Select selectMonth = new Select(expirationMonth);
@@ -128,7 +128,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 				Select selectYear = new Select(expirationYear);
 				selectYear.selectByVisibleText(card.getExpYear());
-
 				log("CVV: " + card.getCvvCode());
 				creditCardCVV.sendKeys(card.getCvvCode());
 
@@ -137,13 +136,14 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 				log("Submit new card");
 				submitNewCard.click();
+				Thread.sleep(3000);
 		}
 
-		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) {
+		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) throws InterruptedException {
 				return fillPaymentInfo(amount, accNumber, creditCard, "");
 		}
 
-		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) {
+		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) throws InterruptedException {
 
 				WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -160,6 +160,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 				log("Insert CVV code: " + creditCard.getCvvCode());
 				wait.until(ExpectedConditions.visibilityOf(confirmCVV));
+				
 				confirmCVV.sendKeys(creditCard.getCvvCode());
 
 				if (!location.equals("")) {

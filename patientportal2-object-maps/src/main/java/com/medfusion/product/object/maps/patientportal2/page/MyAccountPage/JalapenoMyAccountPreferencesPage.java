@@ -151,7 +151,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				preferredLanguageSelect.click();
 				wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageEnglish));
 				preferredLanguageEnglish.click();
-				saveAccountChanges.click();
+				javascriptClick(saveAccountChanges);
 		}
 
 		public List<String> getPreferredProviders() {
@@ -164,13 +164,13 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				return preferredProviders;
 		}
 
-		public void addPreferredProviderAndSave(String name) {
+		public void addPreferredProviderAndSave(String name) throws InterruptedException{
 				IHGUtil.PrintMethodName();
 				log("Add " + name + " as preferred provider");
 				addPreferredProvider.click();
 				String providerLocator = String.format(ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE, name);
 				driver.findElement(By.xpath(providerLocator)).click();
-				saveAccountChanges.click();
+				javascriptClick(saveAccountChanges);
 		}
 
 		public void removeAllPreferredProvidersAndSave() {
@@ -178,6 +178,6 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				for (int i = 0; i < driver.findElements(By.xpath(REMOVE_PREFERRED_PROVIDER_LOCATOR)).size(); i++) {
 						driver.findElement(By.xpath(REMOVE_PREFERRED_PROVIDER_LOCATOR)).click();
 				}
-				saveAccountChanges.click();
-		}
+
+				javascriptClick(saveAccountChanges);}
 }

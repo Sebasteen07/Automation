@@ -160,7 +160,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		if (subject != null && !subject.trim().isEmpty()) {
 			subjectBox.clear();
 			subjectBox.sendKeys(subject);
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 		}
 		questionBox.sendKeys(question);
 		Thread.sleep(10000);
@@ -449,7 +449,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		// help), updated to sendKeys
 		wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
 		continueButton.sendKeys(Keys.ENTER);
-
 		return PageFactory.initElements(driver, JalapenoAskPayBillsConfirmationPage.class);
 	}
 

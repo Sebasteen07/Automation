@@ -2,11 +2,14 @@ package com.medfusion.product.object.maps.practice.page.rxrenewal;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
@@ -167,7 +170,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void setRxRenewalFields() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver, 40, setQuantity);
 		setQuantity.clear();
 		setQuantity.sendKeys(PracticeConstants.QUANTITY);
 		Select startDaySelect = new Select(setFrequency);
@@ -180,12 +182,14 @@ public class RxRenewalSearchPage extends BasePageObject {
 	}
 
 	/**
+	 * @throws InterruptedException 
 	 * @Description:Click on Process RxRenewal Button
 	 */
-	public void clickProcessRxRenewal() {
+	public void clickProcessRxRenewal() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		processRxRenewalbtn.click();
+		Thread.sleep(2000);
 	}
 
 	/**
@@ -194,9 +198,11 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void verifyPrescriptionConfirmationSection(String subject) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver, 20, mediactionName);
+		IHGUtil.waitForElement(driver, 30,mediactionName);
 		BaseTestSoftAssert.verifyEquals(drug.getText(), PracticeConstants.DRUG);
 		BaseTestSoftAssert.verifyEquals(quantity.getText(), PracticeConstants.QUANTITY);
+		//WebDriverWait wait= new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.visibilityOf(frequency));
 		BaseTestSoftAssert.verifyEquals(frequency.getText(), PracticeConstants.FREQUENCY);
 		BaseTestSoftAssert.verifyEquals(subjectMessage.getText(), subject);
 		BaseTestSoftAssert.verifyEquals(bodyMessage.getText(), PracticeConstants.MESSAGE_BODY);

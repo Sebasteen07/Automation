@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
 
 import static java.lang.Thread.sleep;
@@ -141,11 +142,12 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		/**
 		 * Updates web elements values, submits form and validates submitted results
+		 * @throws InterruptedException 
 		 */
-		public boolean updateAndValidateWebElements(Map<WebElement, String> map, WebElement submitElement) {
+		public boolean updateAndValidateWebElements(Map<WebElement, String> map, WebElement submitElement) throws InterruptedException {
 				updateWebElements(map);
 				clickOnElement(submitElement);
-				return validateWebElements(map);
+;				return validateWebElements(map);
 		}
 
 		/**
@@ -159,11 +161,12 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		/**
 		 * Clicks on web element
+		 * @throws InterruptedException 
 		 */
 		public void clickOnElement(WebElement element) {
 				if (element != null) {
 						log("Click on: " + elementToString(element));
-						element.click();
+						javascriptClick(element);
 				} else {
 						throw new UnsupportedOperationException("Error when clicking element - element is null. " + elementToString(element));
 				}
