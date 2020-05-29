@@ -252,6 +252,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		for (int i = 0; i <= 5; i++) {
 			if (i == 0) {
 				setClipboardData(errorfilePath);
+				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
 				log("Uploaded more than 2 MB file  " + errorFileName.getText());

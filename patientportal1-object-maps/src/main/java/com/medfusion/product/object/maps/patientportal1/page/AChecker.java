@@ -3,15 +3,18 @@ package com.medfusion.product.object.maps.patientportal1.page;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author pharlid
@@ -43,9 +46,10 @@ public class AChecker extends BasePageObject {
 	public WebElement tabPaste;
 
 	// The text field in which to paste HTML
-	@FindBy(how = How.ID, using = "checkpaste")
+	@FindBy(how = How.XPATH, using = "//textarea[@id='checkpaste']")
 	public WebElement pasteField;
-
+	
+	
 	// The Check it button
 	@FindBy(how = How.ID, using = "validate_paste")
 	public WebElement validateButton;
@@ -65,7 +69,8 @@ public class AChecker extends BasePageObject {
 		super(driver);
 		driver.manage().deleteAllCookies();
 		driver.get(ACECKER_URL);
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
+		driver.navigate().refresh();
 		PageFactory.initElements(driver, this);
 	}
 
@@ -91,8 +96,16 @@ public class AChecker extends BasePageObject {
 	}
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
-	public void validate() {
-		pasteField.click();
+	public void validate() throws InterruptedException {
+		System.out.println(pasteField.isDisplayed());
+		log("The pastefiled is displayed"+ pasteField.isDisplayed());
+		System.out.println(pasteField.isEnabled());
+		log("The pastefiled is Enabled"+ pasteField.isEnabled());
+		System.out.println(pasteField.getLocation());
+		log("It will start validating the source code by pasting it on the clipboard");
+		//pasteField.click();
+		((JavascriptExecutor)driver).executeScript("window.scrollTo(0,"+pasteField.getLocation().x+")");  pasteField.click();
+		System.out.println("pasteField get clicked");
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
 		validateButton.click();
@@ -101,6 +114,7 @@ public class AChecker extends BasePageObject {
 			log(errors.getText());
 		}
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
+		System.out.println("We got the success Message");
 	}
 	
 	private void openOptions(){

@@ -41,6 +41,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		@FindBy(how = How.ID, using = "downloadButton")
 		private WebElement downloadButton;
 
+		@FindBy(how = How.ID, using = "healthRecordRequest")
+		private WebElement healthRecordRequestButton;
+		
 		@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[1]/input")
 		private WebElement firstVisibleCCDCheckbox;
 
@@ -88,7 +91,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//*[@id=\"documentsTable\"]/tbody[1]/tr/td[5]/button")
 		private WebElement downloadAttachment;
 
-
+		@FindBy(how = How.XPATH, using = "//div[@id=\"ccdModalDialog\"]/div[1]/button/span")
+		private WebElement closeOnDemandPopUpButton;
+		
 		public MedicalRecordSummariesPage(WebDriver driver) {
 				super(driver);
 		}
@@ -246,6 +251,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		public void selectDownload() {
 				downloadButton.click();
 		}
+		
+		public void selectHealthRecordRequestButton() {
+			healthRecordRequestButton.click();
+		}
 
 		public void selectFirstVisibleCCDDate() {
 				firstVisibleCCDDate.click();
@@ -277,6 +286,11 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		public String getMessageAttachmentData() {
 				IHGUtil.waitForElement(driver, 60, secureMessageAttachmentData);
 				return secureMessageAttachmentData.getText();
+		}
+		
+		public void closeOnDemandPopUpButton () {
+			IHGUtil.waitForElement(driver, 60, closeOnDemandPopUpButton);
+			closeOnDemandPopUpButton.click();
 		}
 
 

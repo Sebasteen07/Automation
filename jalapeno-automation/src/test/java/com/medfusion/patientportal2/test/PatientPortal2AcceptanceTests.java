@@ -108,10 +108,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
 	private static String CorrectfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
-	
+
 	private PropertyFileLoader testData;
 	private Patient patient = null;
-	
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws IOException {
@@ -1697,7 +1696,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test
 	public void testAskAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 

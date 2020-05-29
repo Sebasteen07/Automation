@@ -3,9 +3,18 @@ package com.intuit.ihg.product.integrationplatform.test;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.By;
@@ -3002,4 +3011,57 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 20: Logout");
 		homePage.clickOnLogout();
 	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testOnDemandHealthData() throws Exception {
+		log("Test Case: Request health data OnDemand in patient Portal 2.0");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		log("Step 1: Load Data from External file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		EHDC testData = new EHDC();
+		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
+
+		String restApiCall = testData.RestUrl;
+		restApiCall = restApiCall.replace("ccd", "healthdata");
+		log("restApiCall=" +restApiCall);
+		
+		log("Step 2: Generate Since time for the GET API Call.");
+		LocalTime midnight = LocalTime.MIDNIGHT;
+		LocalDate today = LocalDate.now(ZoneId.of("America/New_York"));
+		LocalDateTime todayMidnight = LocalDateTime.of(today, midnight);
+		ZonedDateTime zdt = todayMidnight.atZone(ZoneId.of("America/New_York"));
+		long millis = zdt.toInstant().toEpochMilli() / 1000;
+		log("midnight"+millis);
+
+		log("Step 3: Login to Portal 2.0");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		
+		log("Step 4: Go to  Health Record Summaries");
+		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+		Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
+		
+		log("Step 5: Click on Request Health Record");
+		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
+		
+		Thread.sleep(6000);
+		
+		log("Step 6: Close the onDemand PopUp ");
+		MedicalRecordSummariesPageObject.closeOnDemandPopUpButton();
+		
+		log("Step 7: Logout");
+		homePage.clickOnLogout();
+		
+		log("Step 8: Setup Oauth Token");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+		
+		log("Step 9: Do the Get onDemand Health Data Get API Call.");
+		RestUtils.setupHttpGetRequest(restApiCall+ "?since=" + millis + ",0", testData.ResponsePath);
+		
+		log("Step 10: Verify Patient Details in the Get Api Call.");
+		RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+	}
+		
 }
