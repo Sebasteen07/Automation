@@ -1,13 +1,17 @@
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -37,6 +41,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 		private WebElement radioButton;
+		
+		@FindBy(how = How.XPATH, using = "//input[@value='radio1']")
+		private WebElement AddradioButton; //For add a New Pharmacy
 
 		@FindBy(how = How.LINK_TEXT, using = "Home")
 		private WebElement homeButton; //this is not home button in Jalapeno Menu
@@ -75,7 +82,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 						} catch (StaleElementReferenceException ex) {
 								log("Dont know what's going on here");
 						}
-						// continueButton.click();
 				}
 
 				log("Clicking on continue button");
@@ -84,7 +90,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				driver.switchTo().defaultContent();
 		}
 
-		public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) {
+		public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
 
 				driver.switchTo().defaultContent();
 				driver.switchTo().frame("iframebody");
@@ -93,21 +99,24 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				this.medicationName.sendKeys(medication);
 				this.dosage.sendKeys(dosage);
 				this.quantity.sendKeys(Integer.toString(quantity));
-
 				log("Insert pharmacy information");
+				AddradioButton.click();// Clicking on Add a pharmacy radio button
 				pharmacyName.sendKeys("PharmacyName");
 				pharmacyPhone.sendKeys("3216549870");
-				radioButton.click();
-
 				log("Click on Continue button");
-				continueButton.click();
-
+				wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+				javascriptClick(continueButton);
+				Thread.sleep(1000);
+				
+			
 				log("Click on Submit button");
-				submitButton.click();
+				wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+				javascriptClick(submitButton);
 
 				log("Return to Home Dashboard");
-				homeButton.click();
-
+				wait.until(ExpectedConditions.elementToBeClickable(homeButton));
+				javascriptClick(homeButton);
+				
 				driver.switchTo().defaultContent();
 
 				return PageFactory.initElements(driver, JalapenoHomePage.class);

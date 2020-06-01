@@ -30,7 +30,7 @@ public class AskAStaffQuestionDetailStep4Page extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
-		IHGUtil.waitForElement(driver, 20, viewPatientChart);
+		IHGUtil.waitForElement(driver, 25, viewPatientChart);
 		boolean result = false;
 		try {
 			result = viewPatientChart.isDisplayed();

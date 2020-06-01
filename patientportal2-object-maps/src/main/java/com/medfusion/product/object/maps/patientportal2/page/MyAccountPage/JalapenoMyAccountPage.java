@@ -27,7 +27,7 @@ public abstract class JalapenoMyAccountPage extends JalapenoMenu {
 		@FindBy(how = How.ID, using = "prevStep")
 		protected WebElement previousStep;
 
-		@FindBy(how = How.ID, using = "saveAccountChanges")
+		@FindBy(how = How.XPATH, using = "//button[@id='saveAccountChanges']")
 		protected WebElement saveAccountChanges;
 
 		protected JalapenoMyAccountPage(WebDriver driver) {

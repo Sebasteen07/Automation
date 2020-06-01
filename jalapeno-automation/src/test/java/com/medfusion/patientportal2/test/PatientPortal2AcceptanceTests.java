@@ -665,13 +665,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// workaround for extra appointments list when multiple appointments solutions
 		// are on
 		try {
+			
 			driver.findElement(By.id("appointmentSolutionBtn")).click();
 		} catch (WebDriverException e) {
-			// go on assuming we didn't find the extra page and button
+			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
 		}
 
-		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
-				JalapenoAppointmentRequestV2Step1.class);
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,JalapenoAppointmentRequestV2Step1.class);
 		logStep("Assess Elements and choose provider");
 		appointmentRequestStep1.chooseFirstProvider();
 
@@ -749,7 +749,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click On Process RxRenewal Button in Practice Portal");
 		rxRenewalSearchPage.clickProcessRxRenewal();
-
 		String subject = rxRenewalSearchPage.getSubject();
 		logStep("Verify Prescription Confirmation in Practice Portal");
 		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
@@ -847,9 +846,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
-
+		
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
-		System.out.println(askaSubject);
+	
 
 		logStep("Fill question and continue");
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
@@ -1556,7 +1555,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPayNow() {
+	public void testPayNow() throws RuntimeException, InterruptedException {
 		logStep("Open login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 

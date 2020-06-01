@@ -1,20 +1,14 @@
 package com.medfusion.product.object.maps.patientportal1.page;
-
 import junit.framework.Assert;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 
 /**
  * @author pharlid
@@ -97,6 +91,7 @@ public class AChecker extends BasePageObject {
 
 	// Assuming the validation window is selected, paste from clipboard, click validate and wait for spinner
 	public void validate() throws InterruptedException {
+		tabPaste.click();
 		pasteField.click();
 		pasteField.sendKeys(Keys.CONTROL, "a");
 		pasteField.sendKeys(Keys.CONTROL, "v");
@@ -108,9 +103,10 @@ public class AChecker extends BasePageObject {
 		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
 		System.out.println("We got the success Message");
 	}
-	
+
 	private void openOptions(){
 		tabPaste.click();
+		options.click();
 	}
 	
 	private void closeOptions(){
