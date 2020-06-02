@@ -21,9 +21,9 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 		public void virtualCardSwipeTest(WebDriver driver, PropertyFileLoader testData, String cardType) throws InterruptedException {
 				logStep("Navigate to Login page");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-
 				logStep("Enter credentials and login");
 				PracticeHomePage practiceHome;
+				
 				if (cardType.equalsIgnoreCase(PracticeConstants.CARD_TYPE_VISA)) {
 						practiceHome = practiceLogin.login(testData.getProperty("doctorLogin"), testData.getProperty("doctorPassword"));
 				} else {
@@ -47,7 +47,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				} else {
 						virtualCardSwiper
 								.addCreditCardMandatoryInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD,
-										PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD);
+										PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD,PracticeConstants.PATIENT_ACCOUNT,PracticeConstants.PATIENT_NAME);
 				}
 				logStep("Verify whether the payment is completed successfully.");
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
@@ -87,7 +87,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				} else {
 						virtualCardSwiper
 								.addCreditCardMandatoryInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD,
-										PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD);
+										PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount, PracticeConstants.ZIP, PracticeConstants.SWIPE_STRING_MASTERCARD,PracticeConstants.PATIENT_ACCOUNT,PracticeConstants.PATIENT_NAME);
 				}
 				logStep("Verify whether the payment is completed successfully.");
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,

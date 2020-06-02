@@ -584,7 +584,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				assertTrue(patientDemographicPage.isInactiveAccountExistsErrorDisplayed());
 		}
 
-		@Test(enabled = true, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
+		@Test(enabled = false, groups = {"acceptance-solutions"}, retryAnalyzer = RetryAnalyzer.class)
 		public void testAppointmentRequest() throws Exception {
 
 				String appointmentReason = "Illness" + System.currentTimeMillis();
