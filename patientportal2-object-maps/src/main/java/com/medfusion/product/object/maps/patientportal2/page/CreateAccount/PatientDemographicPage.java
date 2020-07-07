@@ -1,5 +1,10 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -10,11 +15,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
 public class PatientDemographicPage extends MedfusionPage {
+	    private PropertyFileLoader testData;
 
 		public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
 
@@ -59,7 +64,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 		@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
 		private WebElement setState;
-
+		
 		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
 		private WebElement inputZipCode;
 
@@ -71,7 +76,10 @@ public class PatientDemographicPage extends MedfusionPage {
 
 		@FindBy(how = How.XPATH, using = "//p[@data-ng-show = 'createAccountStep1_form.$error.inactiveAccount'][contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 		private WebElement inactiveAccountExistsError;
-
+		
+		@FindBy(how = How.XPATH, using = "//p[@id='dateofbirth-error']")
+		private WebElement  StateAgeOutError;
+		
 		public PatientDemographicPage(WebDriver driver) {
 				super(driver);
 		}
@@ -105,27 +113,28 @@ public class PatientDemographicPage extends MedfusionPage {
 				return monthText;
 		}
 
-		public void fillInPatientData(JalapenoPatient patient) {
+		public void fillInPatientData(JalapenoPatient patient) throws Exception {
 				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), patient.getDOBMonthText(), patient.getDOBDay(),
 						patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
 						patient.getState());
 		}
 
-		public void fillInPatientData(Patient patient) {
+		public void fillInPatientData(Patient patient) throws Exception {
 				fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), convertDOBMonthToText(patient.getDOBMonth()), patient.getDOBDay(),
 						patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
 						patient.getState());
 		}
-
+		
 		public void fillInPatientData(String firstName, String lastName, String emailAddress, String dobMonth, String dobDay, String dobYear,
-				Patient.GenderExtended gender, String zipCode) throws NullPointerException, Exception {
+				Patient.GenderExtended gender, String zipCode) throws NullPointerException, Exception 
+		{
 				PropertyFileLoader testData = new PropertyFileLoader();
 				fillInPatientData(firstName, lastName, emailAddress, dobMonth, dobDay, dobYear, gender, zipCode, testData.getProperty("Address1"),
 						testData.getProperty("Address2"), testData.getProperty("City"), testData.getProperty("State"));
 		}
 
 		public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay, String dobYear,
-				Patient.GenderExtended gender, String zipCode, String address1, String address2, String city, String state) {
+				Patient.GenderExtended gender, String zipCode, String address1, String address2, String city, String state) throws Exception {
 				setName(firstName, lastName);
 				setEmail(email);
 				setDateOfBirth(dobMonthText, dobDay, dobYear);
@@ -142,7 +151,7 @@ public class PatientDemographicPage extends MedfusionPage {
 				buttonContinue.click();
 		}
 
-		private void setDateOfBirth(String month, String day, String year) {
+		private void setDateOfBirth(String month, String day, String year){
 				updateWebElement(inputDateOfBirthMonth, month);
 				updateWebElement(inputDateOfBirthDay, day);
 				updateWebElement(inputDateOfBirthYear, year);
@@ -158,7 +167,7 @@ public class PatientDemographicPage extends MedfusionPage {
 				}
 		}
 
-		private void setName(String firstName, String lastName) {
+		private void setName(String firstName, String lastName)  {
 				updateWebElement(inputPatientFirstName, firstName);
 				updateWebElement(inputPatientLastName, lastName);
 		}
@@ -167,7 +176,7 @@ public class PatientDemographicPage extends MedfusionPage {
 				updateWebElement(inputEmailAddresss, email);
 		}
 
-		private void setAddress(String address1, String address2, String city, String state, String zipCode) {
+		private void setAddress(String address1, String address2, String city, String state, String zipCode)  {
 				updateWebElement(inputAddress1, address1);
 				updateWebElement(inputAddress2, address2);
 				updateWebElement(inputCity, city);
@@ -175,7 +184,7 @@ public class PatientDemographicPage extends MedfusionPage {
 				inputState.click();
 				setState.click();
 		}
-
+		
 		public boolean isInactiveAccountExistsErrorDisplayed() {
 				try {
 						log("Looking for inactive account already exists error on PatientDemographicsPage");
@@ -184,4 +193,21 @@ public class PatientDemographicPage extends MedfusionPage {
 				}
 				return false;
 		}
-}
+		
+		public void fillInUnderAgePatientData(Patient patient) throws Exception{
+			PropertyFileLoader testData= new PropertyFileLoader();
+			String UnderageYear= testData.getDOBYearUnderage();
+			fillInPatientData(patient.getFirstName(), patient.getLastName(), patient.getEmail(), convertDOBMonthToText(patient.getDOBMonth()), patient.getDOBDay(),
+					UnderageYear, patient.getGender(), patient.getZipCode(), patient.getAddress1(), patient.getAddress2(), patient.getCity(),
+					patient.getState());
+			log("Verify if the error message is displayed while creating under-age patient at patient portal");
+			assertTrue(StateAgeOutError.isDisplayed());
+			log("The Error Message is: " + StateAgeOutError.getText());
+			assertTrue(StateAgeOutError.getText().equals("Accounts for patients under 12 must be activated by the practice."));
+			log("Verify that the Next Button is disabled");
+			assertFalse(buttonContinue.isEnabled());
+			
+		}
+	
+		}
+
