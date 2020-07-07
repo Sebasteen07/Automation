@@ -205,6 +205,7 @@ public class PatientDemographicPage extends MedfusionPage {
 			log("The Error Message is: " + StateAgeOutError.getText());
 			assertTrue(StateAgeOutError.getText().equals("Accounts for patients under 12 must be activated by the practice."));
 			log("Verify that the Next Button is disabled");
+			
 			assertFalse(buttonContinue.isEnabled());
 			
 		}

@@ -1940,6 +1940,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Create a underage patient account at patient portal and validate State ageout error");
 	    createUnderAgePatient();
+	    
 	    logStep("Test case passed");
 	    
 	}
