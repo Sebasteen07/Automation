@@ -1,27 +1,27 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
-
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-
 import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
-
+import javax.transaction.Synchronization;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
 public class PatientDemographicPage extends MedfusionPage {
 	    private PropertyFileLoader testData;
 
-		public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
+	    public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
 
 		@FindBy(how = How.ID, using = "firstName")
 		private WebElement inputPatientFirstName;
@@ -62,9 +62,9 @@ public class PatientDemographicPage extends MedfusionPage {
 		@FindBy(how = How.XPATH, using = "//*[@placeholder='State'][1]")
 		private WebElement inputState;
 
-		@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
+	    @FindBy(how = How.XPATH, using ="//li[@class='ui-select-choices-group']/div[3]/span/div") 
 		private WebElement setState;
-		
+
 		@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
 		private WebElement inputZipCode;
 
@@ -76,7 +76,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 		@FindBy(how = How.XPATH, using = "//p[@data-ng-show = 'createAccountStep1_form.$error.inactiveAccount'][contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 		private WebElement inactiveAccountExistsError;
-		
+
 		@FindBy(how = How.XPATH, using = "//p[@id='dateofbirth-error']")
 		private WebElement  StateAgeOutError;
 		
@@ -142,40 +142,17 @@ public class PatientDemographicPage extends MedfusionPage {
 				setAddress(address1, address2, city, state, zipCode);
 		}
 
-		public SecurityDetailsPage continueToSecurityPage() {
-				javascriptClick(buttonContinue);
-				return PageFactory.initElements(driver, SecurityDetailsPage.class);
-		}
-
-		public void tryToContinueToSecurityPage() {
-				buttonContinue.click();
-		}
-
 		private void setDateOfBirth(String month, String day, String year){
 				updateWebElement(inputDateOfBirthMonth, month);
 				updateWebElement(inputDateOfBirthDay, day);
 				updateWebElement(inputDateOfBirthYear, year);
 		}
 
-		private void setGender(Patient.GenderExtended gender) {
-				if (gender == Patient.GenderExtended.MALE) {
-						maleGender.click();
-				} else if (gender == Patient.GenderExtended.FEMALE) {
-						femaleGender.click();
-				} else if (gender == Patient.GenderExtended.DECLINED) {
-						declinedGender.click();
-				}
-		}
-
 		private void setName(String firstName, String lastName)  {
 				updateWebElement(inputPatientFirstName, firstName);
 				updateWebElement(inputPatientLastName, lastName);
 		}
-
-		private void setEmail(String email) {
-				updateWebElement(inputEmailAddresss, email);
-		}
-
+		
 		private void setAddress(String address1, String address2, String city, String state, String zipCode)  {
 				updateWebElement(inputAddress1, address1);
 				updateWebElement(inputAddress2, address2);
@@ -183,6 +160,18 @@ public class PatientDemographicPage extends MedfusionPage {
 				updateWebElement(inputZipCode, zipCode);
 				inputState.click();
 				setState.click();
+		}
+		private void setEmail(String email) {
+			updateWebElement(inputEmailAddresss, email);
+		}
+		private void setGender(Patient.GenderExtended gender) {
+			if (gender == Patient.GenderExtended.MALE) {
+				maleGender.click();
+			} else if (gender == Patient.GenderExtended.FEMALE) {
+				femaleGender.click();
+			} else if (gender == Patient.GenderExtended.DECLINED) {
+				declinedGender.click();
+			}
 		}
 		
 		public boolean isInactiveAccountExistsErrorDisplayed() {
@@ -192,6 +181,15 @@ public class PatientDemographicPage extends MedfusionPage {
 				} catch (Exception e) {
 				}
 				return false;
+		}
+		
+		public SecurityDetailsPage continueToSecurityPage() {
+			javascriptClick(buttonContinue);
+			return PageFactory.initElements(driver, SecurityDetailsPage.class);
+		}
+
+		public void tryToContinueToSecurityPage() {
+			buttonContinue.click();
 		}
 		
 		public void fillInUnderAgePatientData(Patient patient) throws Exception{
@@ -205,10 +203,10 @@ public class PatientDemographicPage extends MedfusionPage {
 			log("The Error Message is: " + StateAgeOutError.getText());
 			assertTrue(StateAgeOutError.getText().equals("Accounts for patients under 12 must be activated by the practice."));
 			log("Verify that the Next Button is disabled");
-			
 			assertFalse(buttonContinue.isEnabled());
 			
 		}
 	
 		}
+
 

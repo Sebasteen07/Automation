@@ -137,7 +137,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
         if (Objects.isNull(patient)) {
             String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
             patient = PatientFactory.createJalapenoPatient(username, testData);
-            patient = new CreatePatient().selfRegisterUnderAgerPatient(driver, patient, testData.getUrl());
+            patient = new CreatePatient().selfRegisterUnderAgePatient(driver, patient, testData.getUrl());
         }
     }
 
@@ -677,13 +677,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// workaround for extra appointments list when multiple appointments solutions
 		// are on
 		try {
-			
+
 			driver.findElement(By.id("appointmentSolutionBtn")).click();
 		} catch (WebDriverException e) {
 			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
 		}
 
-		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,JalapenoAppointmentRequestV2Step1.class);
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
 		logStep("Assess Elements and choose provider");
 		appointmentRequestStep1.chooseFirstProvider();
 
@@ -858,9 +859,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
-		
+
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
-	
 
 		logStep("Fill question and continue");
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
@@ -1829,6 +1829,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 	}
+	
+	
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testStateAgeOut() throws Exception {
 		Instant testStart = Instant.now();
@@ -1940,12 +1942,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Create a underage patient account at patient portal and validate State ageout error");
 	    createUnderAgePatient();
-	    
 	    logStep("Test case passed");
 	    
 	}
 
-	
-	
-		
+			
 	}

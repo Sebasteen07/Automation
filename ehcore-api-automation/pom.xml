@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>20.4.0-SNAPSHOT</version>
+		<version>20.5.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>ehcore-api-automation</artifactId>
@@ -15,10 +15,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>20.4.0-SNAPSHOT</ihg.version>
-		<dcf-version>20.4.0-SNAPSHOT</dcf-version>
-		<eh-core-version>20.4.0-SNAPSHOT</eh-core-version>
-		<messages-version>20.4.0-SNAPSHOT</messages-version>
+		<ihg.version>20.5.0-SNAPSHOT</ihg.version>
+		<dcf-version>20.5.0-SNAPSHOT</dcf-version>
+		<eh-core-version>20.5.0-SNAPSHOT</eh-core-version>
+		<messages-version>20.5.0-SNAPSHOT</messages-version>
 		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
@@ -128,7 +128,7 @@
 		<dependency>
 			<groupId>com.intuit.health.eh.adapters</groupId>
 			<artifactId>allscripts-ehr-adapter-dto</artifactId>
-			<version>20.4.0-SNAPSHOT</version>
+			<version>20.5.0-SNAPSHOT</version>
 		</dependency>
 		<!-- Allscripts Dependencies END -->
 		
@@ -265,7 +265,7 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>object-maps</artifactId>
-			<version>20.4.0-SNAPSHOT</version>
+			<version>20.5.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

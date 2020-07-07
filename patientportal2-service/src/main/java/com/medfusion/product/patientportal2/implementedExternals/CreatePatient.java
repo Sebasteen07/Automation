@@ -8,11 +8,13 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.patientportal2.flows.ICreatePatient;
 
+
 import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 
 public class CreatePatient implements ICreatePatient {
+
 		@Override
 		public Patient selfRegisterPatient(WebDriver driver, Patient patient, String url) throws Exception {
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
@@ -25,11 +27,10 @@ public class CreatePatient implements ICreatePatient {
 				return patient;
 		}
 
-		public Patient selfRegisterUnderAgerPatient(WebDriver driver, Patient patient, String url) throws Exception {
+		public Patient selfRegisterUnderAgePatient(WebDriver driver, Patient patient, String url) throws Exception {
 			  JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 		        PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
-		        patientDemographicPage.fillInUnderAgePatientData(patient);
-		        
+		        patientDemographicPage.fillInUnderAgePatientData(patient); 
 		        return patient;
 
 		 
