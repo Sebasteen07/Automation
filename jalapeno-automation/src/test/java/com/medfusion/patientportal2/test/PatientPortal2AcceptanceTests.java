@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -7,6 +8,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
@@ -126,6 +129,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
 			patient = PatientFactory.createJalapenoPatient(username, testData);
 			patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
+		}
+	}
+
+	public void createCommonPatientStateSpecific() throws Exception {
+		if (Objects.isNull(patient)) {
+			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientStateSpecific(driver, patient, testData.getUrl());
 		}
 	}
 
@@ -665,13 +676,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// workaround for extra appointments list when multiple appointments solutions
 		// are on
 		try {
-			
+
 			driver.findElement(By.id("appointmentSolutionBtn")).click();
 		} catch (WebDriverException e) {
 			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
 		}
 
-		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,JalapenoAppointmentRequestV2Step1.class);
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
 		logStep("Assess Elements and choose provider");
 		appointmentRequestStep1.chooseFirstProvider();
 
@@ -846,9 +858,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
-		
+
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
-	
 
 		logStep("Fill question and continue");
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
@@ -1816,5 +1827,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
+	}
+
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientStateSpecific() throws Exception {
+		createCommonPatientStateSpecific();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		assertTrue(homePage.areBasicPageElementsPresent());
 	}
 }
