@@ -1,5 +1,6 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
+
 import static org.testng.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private PropertyFileLoader testData;
 	private Patient patient = null;
 	private JalapenoPatient Jalapenopatient = null;
-	
+
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws IOException {
 		log("Getting Test Data");
@@ -131,15 +132,23 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			patient = PatientFactory.createJalapenoPatient(username, testData);
 			patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		}
+	}
+
+	public void createUnderAgePatient() throws Exception {
+		if (Objects.isNull(patient)) {
+			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterUnderAgePatient(driver, patient, testData.getUrl());
 		}
+	}
 	
-    public void createUnderAgePatient() throws Exception {
-        if (Objects.isNull(patient)) {
-            String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
-            patient = PatientFactory.createJalapenoPatient(username, testData);
-            patient = new CreatePatient().selfRegisterUnderAgePatient(driver, patient, testData.getUrl());
-        }
-    }
+	public void createCommonPatientStateSpecific() throws Exception {
+		if (Objects.isNull(patient)) {
+			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientStateSpecific(driver, patient, testData.getUrl());
+		}
+	}
 
 	// TODO move to Utils
 	private String getRedirectUrl(String originUrl) {
@@ -1046,14 +1055,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
 				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
 				testData.getZipCode());
-        
+
 		logStep("Register Dependent - Enter all the details and click on Register");
 		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
 				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
 				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
 				testData.getZipCode());
 		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-		
+
 		logStep("Finishing of patient activation: step 1 - verifying identity");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
 		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
@@ -1829,8 +1838,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 	}
-	
-	
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testStateAgeOut() throws Exception {
 		Instant testStart = Instant.now();
@@ -1890,19 +1898,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = jalapenoHomePage.clickOnLogout();
 		jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
 		jalapenoHomePage.faChangePatient();
-		
+
 		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
 
 		logStep("Logging out");
 		jalapenoHomePage.clickOnLogout();
-		
+
 		logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
 		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30,
 				testSecondsTaken(testStart));
-		
+
 		assertNotNull(emailGuardian,
 				"Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
@@ -1915,18 +1923,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
 		logStep("Comparing with dependents link from PrP " + guardianUrl);
-		
+
 		assertEquals(guardianUrl, guardianUrlEmail,
 				"Practice portal and email unlock links for guardian are not equal!");
 
 		String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
 		Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30,
 				testSecondsTaken(testStart));
-		
+
 		assertNotNull(emailPatient,
 				"Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
 		String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
-		
+
 		assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
 
 		// SendInBlue workaround, go through the redirect and save the actual URL if the
@@ -1936,15 +1944,23 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		}
 		logStep("Retrieved patients activation link is " + patientUrl);
 		logStep("Comparing with patients link from PrP " + patientUrlEmail);
-		
+
 		assertEquals(patientUrl, patientUrlEmail,
 				"Practice portal and email unlock links for dependent are not equal!");
 
 		logStep("Create a underage patient account at patient portal and validate State ageout error");
-	    createUnderAgePatient();
-	    logStep("Test case passed");
-	    
+		createUnderAgePatient();
+		logStep("Test case passed");
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreatePatientStateSpecific() throws Exception {
+		createCommonPatientStateSpecific();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		assertTrue(homePage.areBasicPageElementsPresent());
 	}
 
-			
-	}
+}
