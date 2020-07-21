@@ -97,7 +97,7 @@ public class JalapenoPayNowPage extends IHGUtil {
 				emailAddressInput.sendKeys(payInfo.getEmailAddress());
 		}
 
-		public boolean validateNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email) {
+		public boolean validateNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email) throws InterruptedException {
 				IHGUtil.PrintMethodName();
 				String amountToBePaid = IHGUtil.createRandomNumericString().substring(1, 4);
 
@@ -112,6 +112,7 @@ public class JalapenoPayNowPage extends IHGUtil {
 
 				amountInput.sendKeys(amountToBePaid);
 				cvvCodeInput.sendKeys("123");
+				Thread.sleep(3000);
 				cardZipInput.sendKeys(patientZip);
 
 				selectFirstLocation();
@@ -120,7 +121,7 @@ public class JalapenoPayNowPage extends IHGUtil {
 						paymentCommentInput.sendKeys("Payment");
 				}
 				emailAddressInput.sendKeys(email);
-				submitButton.click();
+			    javascriptClick(submitButton);
 
 				return reCaptchaFrame.isDisplayed();
 		}

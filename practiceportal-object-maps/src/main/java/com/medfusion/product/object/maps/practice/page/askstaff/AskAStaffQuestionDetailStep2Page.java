@@ -140,10 +140,13 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 
 		subject.sendKeys(subjectContent + " " + createdTs);
 		body.sendKeys(bodyContent);
-
 		diagnosticCode.sendKeys(diagnosticCodeContent);
+//<<<<<<< Updated upstream
+		IHGUtil.waitForElement(driver, 30, diagnosticContentButton);
+//=======
+	
+//>>>>>>> Stashed changes
 		diagnosticContentButton.click();
-
 		btnProcess.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);
 	}

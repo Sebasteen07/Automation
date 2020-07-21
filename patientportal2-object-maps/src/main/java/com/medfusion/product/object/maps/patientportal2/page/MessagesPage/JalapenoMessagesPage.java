@@ -8,8 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -40,6 +38,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//button[contains(text(),'Send')]")
 		private WebElement sendButton;
+		
+		@FindBy(how=How.XPATH, using= "//*[contains(text(),'Your reply was successfully sent')]")
+		private WebElement successMsg;
 
 		@FindBy(how = How.XPATH, using = "//a[.='View health data']")
 		private WebElement ccdDocument;
@@ -113,17 +114,21 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				return false;
 		}
 
-		public boolean replyToMessage(WebDriver driver) {
+		public boolean replyToMessage(WebDriver driver) throws InterruptedException {
 				IHGUtil.PrintMethodName();
 
 				log("Write a message");
+				
 				replyButton.click();
 				replyBody.sendKeys("This is response to doctor's message");
-
+				Thread.sleep(5000);
 				sendButton.click();
+				Thread.sleep(5000);
+				boolean value= isElementVisible(successMsg, 10);
+				System.out.println(value);
 
 				try {
-						IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 20);
+						IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 30);
 						log("Message sent");
 						return true;
 				} catch (Exception e) {
@@ -164,7 +169,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 		public String returnMessageSentDate() {
 				IHGUtil.PrintMethodName();
-				// PortalUtil.setPortalFrame(driver);
 				IHGUtil.waitForElement(driver, 60, lableSent);
 				return lableSent.getText().toString();
 		}

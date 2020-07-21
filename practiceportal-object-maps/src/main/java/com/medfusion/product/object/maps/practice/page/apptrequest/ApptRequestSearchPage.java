@@ -239,7 +239,6 @@ public class ApptRequestSearchPage extends BasePageObject {
 	public ApptRequestDetailStep1Page getRequestDetails(String subjectSubString) throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
 		try {
 			searchResults.isDisplayed();
 		} catch (Exception e) {

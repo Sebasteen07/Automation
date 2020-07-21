@@ -12,66 +12,82 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 
-		@FindBy(how = How.ID, using = "backButton")
-		private WebElement backButton;
+	@FindBy(how = How.ID, using = "backButton")
+	private WebElement backButton;
 
-		@FindBy(how = How.ID, using = "created_ts_value")
-		private WebElement requestDetailDate;
+	@FindBy(how = How.ID, using = "created_ts_value")
+	private WebElement requestDetailDate;
 
-		@FindBy(how = How.ID, using = "provider_name_value") //hidden if there in only one provider
-		private WebElement requestDetailProvider;
+	@FindBy(how = How.ID, using = "provider_name_value") // hidden if there in only one provider
+	private WebElement requestDetailProvider;
 
-		@FindBy(how = How.ID, using = "location_name_value")
-		private WebElement requestDetailLocation;
+	@FindBy(how = How.ID, using = "location_name_value")
+	private WebElement requestDetailLocation;
 
-		@FindBy(how = How.ID, using = "subject_value")
-		private WebElement requestDetailSubject;
+	@FindBy(how = How.ID, using = "subject_value")
+	private WebElement requestDetailSubject;
 
-		@FindBy(how = How.ID, using = "question_value")
-		private WebElement requestDetailQuestion;
+	@FindBy(how = How.ID, using = "question_value")
+	private WebElement requestDetailQuestion;
 
-		@FindBy(how = How.ID, using = "status_value")
-		private WebElement requestDetailStatus;
+	@FindBy(how = How.ID, using = "status_value")
+	private WebElement requestDetailStatus;
 
-		public JalapenoAskAStaffV2HistoryDetailPage(WebDriver driver) {
-				super(driver);
-				IHGUtil.PrintMethodName();
-		}
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'This online encounter was charged')]")
+	private WebElement requestDetailsPayment;
+	
+	@FindBy(how = How.XPATH, using = "//li[@class='attachment ng-scope']")
+	private WebElement requestAttachedFile;
+	
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(backButton);
-				webElementsList.add(requestDetailDate);
-				webElementsList.add(requestDetailLocation);
-				webElementsList.add(requestDetailSubject);
-				webElementsList.add(requestDetailQuestion);
-				webElementsList.add(requestDetailStatus);
+	public JalapenoAskAStaffV2HistoryDetailPage(WebDriver driver) {
+		super(driver);
+		IHGUtil.PrintMethodName();
+	}
 
-				return assessPageElements(webElementsList);
-		}
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(backButton);
+		webElementsList.add(requestDetailDate);
+		webElementsList.add(requestDetailLocation);
+		webElementsList.add(requestDetailSubject);
+		webElementsList.add(requestDetailQuestion);
+		webElementsList.add(requestDetailStatus);
 
-		public String getRequestDetailDate() {
-				return requestDetailDate.getText();
-		}
+		return assessPageElements(webElementsList);
+	}
 
-		public WebElement getRequestDetailProvider() {
-				return requestDetailProvider;
-		}
+	public String getRequestDetailDate() {
+		return requestDetailDate.getText();
+	}
 
-		public String getRequestDetailLocation() {
-				return requestDetailLocation.getText();
-		}
+	public WebElement getRequestDetailProvider() {
+		return requestDetailProvider;
+	}
 
-		public String getRequestDetailSubject() {
-				return requestDetailSubject.getText();
-		}
+	public String getRequestDetailLocation() {
+		return requestDetailLocation.getText();
+	}
 
-		public String getRequestDetailQuestion() {
-				return requestDetailQuestion.getText();
-		}
+	public String getRequestDetailSubject() {
+		return requestDetailSubject.getText();
+	}
 
-		public String getRequestDetailStatus() {
-				return requestDetailStatus.getText();
-		}
+	public String getRequestDetailQuestion() {
+		return requestDetailQuestion.getText();
+	}
+
+	public String getRequestDetailStatus() {
+		return requestDetailStatus.getText();
+	}
+
+	public String getRequestDetailPayment() {
+		return requestDetailsPayment.getText();
+	}
+
+	public String getRequestAttachedFile() {
+		return requestAttachedFile.getText();
+	}
+	
 }

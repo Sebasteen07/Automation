@@ -193,5 +193,11 @@ public class IntegrationConstants {
 		public static final String FORMTYPE="pre-reg";
 		public static final String NEXTURI="next-uri";
 		public static final String STATE = "State";
+		
+		//onDemand Health Data
+		public static final String PATIENTID = "PatientId";
+		public static final String PRACTICEID = "PracticeId";
+		public static final String HEALTHDATA = "HealthData";
+		
 }
 
