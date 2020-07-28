@@ -85,7 +85,9 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	public SecurityDetailsPage continueToCreateGuardianOnly(String name, String lastname, String relationship) {
 		IHGUtil.PrintMethodName();
 
+		firstNameInput.clear();
 		firstNameInput.sendKeys(name);
+		lastNameInput.clear();
 		lastNameInput.sendKeys(lastname);
 		log("Guardian name: " + name + " " + lastname);
 

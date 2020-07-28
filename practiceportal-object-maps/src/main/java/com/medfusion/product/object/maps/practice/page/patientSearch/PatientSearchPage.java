@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.practice.page.patientSearch;
 
+import static org.testng.Assert.assertTrue;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -7,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -63,6 +67,21 @@ public class PatientSearchPage extends BasePageObject {
 	@FindBy(xpath = "//table[@class='searchForm']//input[@name='member_type']")
 	private List<WebElement> patientStatus;
 
+	@FindBy(linkText = "Delete")
+	private WebElement deletePatient;
+	
+	@FindBy(xpath = "//input[@value='Delete']")
+	private WebElement confirmdeletePatient;
+	
+	@FindBy(xpath = "//*[text()='No Records were found']")
+	private WebElement checkdeletePatient;
+	
+	@FindBy(linkText = "Deactivate")
+	private WebElement deactivatePatient;
+	
+	@FindBy(xpath = "//input[@value='Deactivate']")
+	private WebElement confirmdeactivatePatient;
+	
 	private WebElement patient;
 
 	/**
@@ -221,5 +240,45 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, searchForPatient);
 		Thread.sleep(2000);
 		searchForPatient.click();
+	}
+	
+	public void deletePatient() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 15, deletePatient);
+		deletePatient.click();
+		IHGUtil.waitForElement(driver, 15, confirmdeletePatient);
+		confirmdeletePatient.click();
+	}
+	
+	public void verifyDeletedPatient(String fName,String lName) throws Exception {
+		IHGUtil.PrintMethodName();
+		searchForPatientInPatientSearch(fName , lName);
+		Boolean status =IHGUtil.waitForElement(driver, 15, checkdeletePatient);
+		if(status)
+			log("Patient is deleted successfully");
+		else{
+			log("Patient is not deleted");
+			assertTrue(status);
+		}
+	}
+	
+	public void deactivatePatient() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 15, deactivatePatient);
+		deactivatePatient.click();
+		IHGUtil.waitForElement(driver, 15, confirmdeactivatePatient);
+		confirmdeactivatePatient.click();
+	}
+	
+	public void verifyDeactivatedPatient(String fName,String lName) throws Exception {
+		IHGUtil.PrintMethodName();
+		WebElement checkdeactivatePatient= driver.findElement((By.xpath("//*[contains(text(),'"+fName+" "+ lName +"(Deactivated)')]")));
+		Boolean status =IHGUtil.waitForElement(driver, 15, checkdeactivatePatient);
+		if(status)
+			log("Patient is deactivated successfully");
+		else{
+			log("Patient is not deactivated");
+			assertTrue(status);
+		}
 	}
 }

@@ -258,4 +258,30 @@ public abstract class JalapenoMenu extends MedfusionPage {
 						healthRecordMenu.click();
 				}
 		}
+		
+		public NGLoginPage LogoutfromNGMFPortal() {
+
+			log("Clicking on Logout button - regular resolution");
+
+			try {
+					signoutButton.click();
+			} catch (NoSuchElementException ex) {
+					log("Did not find Logout button, trying mobile version size");
+					rightDropdownButton.click();
+					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+					signoutDropdownButton.click();
+			} catch (ElementNotVisibleException ex) {
+					log("Element is not currently visible, trying mobile version size");
+					rightDropdownButton.click();
+					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+					signoutDropdownButton.click();
+			} catch (ElementNotInteractableException ex) {
+					log("Element is not currently not intractable, trying mobile version size");
+					rightDropdownButton.click();
+					new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+					signoutDropdownButton.click();
+			}
+
+			return PageFactory.initElements(driver, NGLoginPage.class);
+	}
 }

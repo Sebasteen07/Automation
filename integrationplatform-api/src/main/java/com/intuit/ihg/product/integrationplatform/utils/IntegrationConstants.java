@@ -37,6 +37,9 @@ public class IntegrationConstants {
 	public static final String STATUS = "Status";
 	public static final String REGISTERED = "REGISTERED";
 	public static final String CCD_MESSAGE_SUBJECT = "You have a new health data summary";
+	public static final String PORTALSTATUS = "PortalStatus";
+	public static final String DEACTIVATED = "DEACTIVATED";
+	public static final String DELETED = "DELETED";
 
 	// Appointment Request constants
 	public static final String REASON = "Reason";
