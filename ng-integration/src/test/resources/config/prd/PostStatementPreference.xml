@@ -1,0 +1,38 @@
+<ns2:StatementPreferences xmlns:ns2="http://schema.medfusion.com/statementPreferences/v1">
+	<StatementPreferencesHeaders>
+		<Sender deviceName="String" deviceVersion="String" deviceLocalTime="2001-12-17T09:30:47-05:00" deviceUTCTime="2001-12-17T09:30:47-05:00" vendorName="Text">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>String</Key>
+					<Value>Text</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Sender>
+		<Partner deviceName="String" deviceVersion="String" deviceLocalTime="2001-12-17T09:30:47-05:00" deviceUTCTime="2001-12-17T09:30:47-05:00" vendorName="Text">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>String</Key>
+					<Value>Text</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Partner>
+		<Destination deviceName="String" deviceVersion="String" deviceLocalTime="2001-12-17T09:30:47-05:00" deviceUTCTime="2001-12-17T09:30:47-05:00" vendorName="Text">
+			<DeviceArguments>
+				<KeyValuePair>
+					<Key>String</Key>
+					<Value>Text</Value>
+				</KeyValuePair>
+			</DeviceArguments>
+		</Destination>
+	</StatementPreferencesHeaders>	
+	<StatementPreference>
+		<PracticePatientId>PI442627</PracticePatientId>
+		<MedfusionMemberId>442627</MedfusionMemberId>
+		<Preferences>
+		<Preference>
+			<Name>STATEMENT_DELIVERY_PREF</Name>
+			<Value>BOTH</Value>
+		</Preference>
+		</Preferences>
+	</StatementPreference>
+</ns2:StatementPreferences>
