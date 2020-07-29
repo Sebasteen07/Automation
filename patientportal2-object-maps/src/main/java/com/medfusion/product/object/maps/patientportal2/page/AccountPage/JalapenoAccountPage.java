@@ -111,4 +111,25 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				wait.until(ExpectedConditions.presenceOfElementLocated(
 						By.xpath("//*[@data-ng-show='inviteSuccess' and contains(.,'You have successfully invited " + fullName + " to be your trusted representative')]")));
 		}
+		
+		private void fillLightboxInputs(String fname,String lname,String email) {
+			trustedRepFirstNameInput.sendKeys(fname);
+			trustedRepLastNameInput.sendKeys(lname);
+			trustedRepEmailInput.sendKeys(email);
+	    }
+		
+		public void inviteTrustedRepresentative(String fname, String lname,String email) {
+			WebDriverWait wait = new WebDriverWait(driver, 15);
+			wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
+
+			inviteNewButton.click();
+
+			waitUntilLightboxContentLoads(wait);
+			fillLightboxInputs(fname,lname, email);
+
+			sendInvitationButton.click();
+
+			String fullName = fname + " " + lname;
+			waitUntilSuccessMessageLoads(wait, fullName);
+	}
 }
