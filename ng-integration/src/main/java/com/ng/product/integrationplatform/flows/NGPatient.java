@@ -17,7 +17,7 @@ import com.ng.product.integrationplatform.utils.DBUtils;
 public class NGPatient {
 
 	public static NewPatient patientUsingJSON(PropertyFileLoader propertyLoaderObj,String mode) throws Throwable{
-		System.out.println("Step Begins --- API Route Add New Person");
+		Log4jUtil.log("Step Begins --- API Route Add New Person");
 		NewPatient newpatient = new NewPatient();
 		try {
 			    

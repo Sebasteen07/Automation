@@ -40,7 +40,7 @@ public class NGAPIUtils {
 	private static String PracticeID="";
 	
 	public NGAPIUtils(PropertyFileLoader PropertyLoaderObj) throws IOException {
-		System.out.println("API Execution Mode "+PropertyLoaderObj.getNGAPIexecutionMode());	
+		Log4jUtil.log("API Execution Mode "+PropertyLoaderObj.getNGAPIexecutionMode());	
 		
 		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
 			TokenGenerationURL =apiRoutes.QAMainTokenGenerationURL.getRouteURL().toString();
@@ -88,10 +88,10 @@ public class NGAPIUtils {
         assertTrue(httpResponse.getStatusLine().getStatusCode() == 200);
         
         String sResp = EntityUtils.toString(httpResponse.getEntity());
-//        System.out.println(sResp);
+
         JsonObject jsonObject = new JsonParser().parse(sResp).getAsJsonObject();        
         String token = jsonObject.get("access_token").toString().replace("\"", "");
-        System.out.println("Bearer token "+token);
+        Log4jUtil.log("Bearer token "+token);
 		return token;
 	}
 	
@@ -122,11 +122,11 @@ public class NGAPIUtils {
 //      Execute the Request
 		httpResponse = httpClient.execute(httpPut);
 	
-        System.out.println("Status code for LoginDefaults "+httpResponse.getStatusLine().getStatusCode());
+		Log4jUtil.log("Status code for LoginDefaults "+httpResponse.getStatusLine().getStatusCode());
 		 if(httpResponse.getStatusLine().getStatusCode()==200){
-			 System.out.println("Log in to Enterprise and practice is successfully");
+			 Log4jUtil.log("Log in to Enterprise and practice is successfully");
 	        }else{
-	        	System.out.println("Unable to log in to enterprise and practice");
+	        	Log4jUtil.log("Unable to log in to enterprise and practice");
 	        }
 		 assertTrue(httpResponse.getStatusLine().getStatusCode() == 200);
 		 
@@ -144,7 +144,6 @@ public class NGAPIUtils {
 		final Date currentTime = new Date();
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		//System.out.println("UTC time: " + sdf.format(currentTime));
 		return sdf.format(currentTime).toString();
 	}
 	
@@ -153,9 +152,9 @@ public class NGAPIUtils {
 
         System.setProperty("AuthEnterpriseSignature",authSignature);
         System.setProperty("Email",EnterpriseEmail);
-        System.out.println("Route URL  is " + FinalURL);
-        System.out.println("API Method to be performed " +  apiMethod);
-        System.out.println("Auth Signature is " + authSignature);
+        Log4jUtil.log("Route URL  is " + FinalURL);
+        Log4jUtil.log("API Method to be performed " +  apiMethod);
+        Log4jUtil.log("Auth Signature is " + authSignature);
         return authSignature;
     }
 	
@@ -169,7 +168,7 @@ public class NGAPIUtils {
 			String XNGSessionId= getXNGSession(token);
 			System.setProperty("BearerToken", "Bearer "+token);
 			System.setProperty("XNGSessionId",XNGSessionId);
-//			System.out.println("\n Payload "+arg_Payload.toString());
+
 			Log4jUtil.log("PostURL "+argRouteURL);
 
 			CloseableHttpResponse httpResponse = null;
@@ -196,10 +195,6 @@ public class NGAPIUtils {
 	        }
 	        	        
 	        httpHeaders = httpPost.getAllHeaders();
-	        
-//	        for (Header header: httpHeaders) {
-//	            System.out.println("Request Key [ " + header.getName() + "], Value[ " + header.getValue() + " ]");
-//	        }
 
 	        httpPost.setEntity(arg_Payload);
 	        httpResponse = httpClient.execute(httpPost);
@@ -209,16 +204,16 @@ public class NGAPIUtils {
 	        Log4jUtil.log("Status code " + httpResponse.getStatusLine().getStatusCode());
 	        
 	        if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
-	        	System.out.println("Patient created successfully");
+	        	Log4jUtil.log("Patient created successfully");
 	        }else{
-	            System.out.println("Unable to create patient");
+	        	Log4jUtil.log("Unable to create patient");
 	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }
 	        
 	        for(Header headerRes: httpResponse.getAllHeaders()){
 	            if(headerRes.getName().equalsIgnoreCase("Location")){
 	                strLocationHeader= headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1];
-	                System.out.println("Request processed with ID as " + headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1]);
+	                Log4jUtil.log("Request processed with ID as " + headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1]);
 	            }
 	        }
 	        return strLocationHeader;
@@ -236,12 +231,8 @@ public class NGAPIUtils {
 		try {
 			StringEntity arg_Payload=new StringEntity(argPayload, ContentType.APPLICATION_JSON);
 		
-//			String token = getToken();
 			String XNGDate = getXNGDate();
-//			String XNGSessionId= getXNGSession(token);
-//			System.setProperty("BearerToken", "Bearer "+token);
-//			System.setProperty("XNGSessionId",XNGSessionId);
-			System.out.println("\n Payload "+arg_Payload.toString());
+			Log4jUtil.log("\n Payload "+arg_Payload.toString());
 			Log4jUtil.log("PostURL "+argRouteURL);
 
 			Header[] httpHeaders;
@@ -274,16 +265,16 @@ public class NGAPIUtils {
 	        Log4jUtil.log("Status code of Post Request " + httpResponse.getStatusLine().getStatusCode());
 	        if(ExpectedStatusCode!=0){
 	        if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
-	        	System.out.println("Post request completed successfully");
+	        	Log4jUtil.log("Post request completed successfully");
 	        }else{
-	            System.out.println("Unable to post the request");
+	        	Log4jUtil.log("Unable to post the request");
 	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }}
 	        
 	        for(Header headerRes: httpResponse.getAllHeaders()){
 	            if(headerRes.getName().equalsIgnoreCase("Location")){
 	                strLocationHeader= headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1];
-	                System.out.println("Request processed with ID as " + headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1]);
+	                Log4jUtil.log("Request processed with ID as " + headerRes.getValue().split("/")[headerRes.getValue().split("/").length-1]);
 	            }
 	        }
 	        return strLocationHeader;
@@ -308,10 +299,7 @@ public class NGAPIUtils {
         CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
 		
-//		String token = getToken();
 		String XNGDate = getXNGDate();
-//		String XNGSessionId= getXNGSession(token);
-//		System.setProperty("CAGatewayToken","Bearer " + CAGatewayAuthCode.getToken());
 		String Email= EnterpriseEmail;
 		
      	httpGet.addHeader("Accept", "*/*");
@@ -336,16 +324,16 @@ public class NGAPIUtils {
 	    Log4jUtil.log("Status code of Get request "+httpResponse.getStatusLine().getStatusCode());
 	    if(ExpectedStatusCode!=0){
 	    if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
-        	System.out.println("Get request completed successfully");
+	    	Log4jUtil.log("Get request completed successfully");
         }else{
-            System.out.println("Unable to get the request");
+        	Log4jUtil.log("Unable to get the request");
             Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
         }}
 	
 	    HttpEntity entity = httpResponse.getEntity();
 
         String response = EntityUtils.toString(entity);
-        System.out.println("Get Response "+response);
+        Log4jUtil.log("Get Response "+response);
        return response;
 		}catch (Exception E) {
 		Log4jUtil.log("Exception caught "+E);

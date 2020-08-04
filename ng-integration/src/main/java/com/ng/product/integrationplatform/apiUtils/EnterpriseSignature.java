@@ -20,14 +20,16 @@ public class EnterpriseSignature {
     public static String SignatureGeneration(String username, String password, String email, String finalURl,
                                              String body, String queryString, String requestMethod) {
         try {
+        	String timezone="UTC";
+        	String dateFormat ="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 			String passwordHash = new String();
 			passwordHash = sha1(username + "nghash" + password);
 			body = new String(Hex.encodeHex(DigestUtils.md5(body))).toUpperCase();
 			queryString = FinalSignature.CanonicalQueryString(queryString);
 			queryString = new String(Hex.encodeHex(DigestUtils.md5(queryString))).toUpperCase();
 			String url = FinalSignature.CanonicalURI(finalURl);
-			TimeZone tz = TimeZone.getTimeZone("UTC");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"); 
+			TimeZone tz = TimeZone.getTimeZone(timezone);
+			DateFormat df = new SimpleDateFormat(dateFormat); 
 			df.setTimeZone(tz);
 			NGTime = df.format(new Date());
 
