@@ -14,6 +14,12 @@ import com.ng.product.integrationplatform.apiUtils.apiRoutes;
 import com.ng.product.integrationplatform.pojo.NewPatient;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
+
 public class NGPatient {
 
 	public static NewPatient patientUsingJSON(PropertyFileLoader propertyLoaderObj,String mode) throws Throwable{

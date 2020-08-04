@@ -1,5 +1,11 @@
 package com.ng.product.integrationplatform.apiUtils;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
+
 public enum apiConfig {
 	
 	QAMainEnterpriseUsername("MFapiuser1"),

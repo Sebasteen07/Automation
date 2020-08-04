@@ -12,6 +12,12 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.medfusion.common.utils.IHGUtil;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
+
 public class DBUtils {	
 	
 	@SuppressWarnings("resource")

@@ -1,5 +1,10 @@
 package com.ng.product.integrationplatform.apiUtils;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;

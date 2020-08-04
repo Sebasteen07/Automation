@@ -30,6 +30,12 @@ import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.medfusion.common.utils.IHGUtil;
 import com.ng.product.integrationplatform.pojo.LoginDefaults;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
+
 public class NGAPIUtils {
 	
 	private static String TokenGenerationURL="";

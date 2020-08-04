@@ -1,5 +1,11 @@
 package com.ng.product.integrationplatform.pojo;
 
+/************************
+ * 
+ * @author Narora
+ * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ ************************/
+
 public class ChartPojo {
 
 private String firstOfficeEncDate;
