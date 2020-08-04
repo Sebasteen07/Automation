@@ -1417,4 +1417,16 @@ public class PropertyFileLoader {
 			throw new NullPointerException("Property " + prop + " not found in the property file.");
 		return property.getProperty(prop);
 	}
+	
+	public String getNGEPMProviderName() {
+		return property.getProperty("EPMProviderName");
+	}
+	
+	public String getNGEPMLocationName() {
+		return property.getProperty("EPMLocationName");
+	}
+	
+	public String getNGEPMRenderingProviderName() {
+		return property.getProperty("EPMRenderingProviderName");
+	}
 }
