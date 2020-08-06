@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.flows;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -12,7 +13,7 @@ import com.ng.product.integrationplatform.utils.DBUtils;
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public class Chart {

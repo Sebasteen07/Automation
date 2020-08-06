@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
 import static org.testng.Assert.assertNotNull;
@@ -42,7 +43,7 @@ import com.ng.product.integrationplatform.utils.DBUtils;
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
@@ -88,7 +89,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -212,7 +213,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
-			System.out.println(sDate1);				
+			log(sDate1);				
 			
 		log("Step 11 : Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, activationUrl);
@@ -270,7 +271,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -281,20 +282,20 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step Begins: Create the patient in NG EPM without Last Name");
 		NewPatient createPatient1 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutLastName");
 		
-        System.out.println("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1));
+		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1));
 	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Dob");
 		NewPatient createPatient2 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutDOB");
 		
-        System.out.println("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2));
+		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2));
 	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Gender");
 		NewPatient createPatient3 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutSex");
-        System.out.println("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3));
+		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3));
 		
 	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3) , 400);
 		log("Step End: Person should not be created");
@@ -312,7 +313,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -342,7 +343,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -433,7 +434,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	
 	ObjectMapper objMap = new ObjectMapper();
     String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-    System.out.println("Guardian Request Body is \n" + requestbody);
+    log("Guardian Request Body is \n" + requestbody);
 	
     apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
     apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -445,7 +446,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 	
     String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
-    System.out.println("Dependent Request Body is \n" + dependentrequestbody);
+    log("Dependent Request Body is \n" + dependentrequestbody);
 		
 	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,dependentrequestbody , 201);
 	log("Step End: Dependent created with id "+dependentperson_id);
@@ -601,7 +602,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 		
 	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
-	    System.out.println("Dependent Request Body is \n" + dependentrequestbody);
+	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
@@ -701,7 +702,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -737,7 +738,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
-			System.out.println(sDate1);
+			log(sDate1);
 			
 		
 			log("Step 5 : Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -814,7 +815,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -927,7 +928,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -1050,7 +1051,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
-			System.out.println(sDate1);				
+			log(sDate1);				
 			
 		log("Step 11 : Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, activationUrl);
@@ -1100,7 +1101,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
-        System.out.println("Request Body is \n" + requestbody);
+        log("Request Body is \n" + requestbody);
 		
 	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
 	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
@@ -1131,7 +1132,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
-			System.out.println(sDate1);				
+			log(sDate1);				
 			
 		log("Step 11 : Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, activationUrl);

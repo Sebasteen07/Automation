@@ -1,9 +1,10 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.apiUtils;
 
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public enum apiRoutes {

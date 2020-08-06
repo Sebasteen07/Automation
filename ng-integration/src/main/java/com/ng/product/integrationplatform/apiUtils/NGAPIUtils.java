@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.apiUtils;
 import static org.testng.Assert.assertTrue;
 
@@ -33,7 +34,7 @@ import com.ng.product.integrationplatform.pojo.LoginDefaults;
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public class NGAPIUtils {
@@ -114,7 +115,7 @@ public class NGAPIUtils {
 		
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
-        System.out.println("Login Defaults request Body is \n" + requestbody);
+        Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
              
 		StringEntity entity=new StringEntity(requestbody);
 		
@@ -139,7 +140,7 @@ public class NGAPIUtils {
 	        for(Header headerRes: httpResponse.getAllHeaders()){
 	            if(headerRes.getName().equalsIgnoreCase("X-NG-SessionId")){
 	                strLocationHeader= headerRes.getValue().toString();
-	                System.out.println("X-NG-SessionId is " + headerRes.getValue());
+	                Log4jUtil.log("X-NG-SessionId is " + headerRes.getValue());
 	            }
 	        }
 			return strLocationHeader;
