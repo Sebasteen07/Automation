@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.utils;
 
 import java.sql.Connection;
@@ -15,7 +16,7 @@ import com.medfusion.common.utils.IHGUtil;
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public class DBUtils {	

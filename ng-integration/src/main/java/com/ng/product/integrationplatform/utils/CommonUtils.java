@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertTrue;
@@ -11,7 +12,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 /************************
  * 
  * @author Narora
- * <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+ * 
  ************************/
 
 public class CommonUtils {
