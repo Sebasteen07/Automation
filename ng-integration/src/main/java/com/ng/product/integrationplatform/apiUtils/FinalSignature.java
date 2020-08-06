@@ -9,6 +9,8 @@ package com.ng.product.integrationplatform.apiUtils;
 
 import org.apache.commons.collections.map.MultiValueMap;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -32,7 +34,7 @@ public class FinalSignature {
 		{
 			url = new java.net.URI(uri);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			Log4jUtil.log(e.getMessage());
 		}
 		String canonicalURI = url.getPath().replace("{", "%7B")
 				.replace("}", "%7D")
@@ -129,7 +131,7 @@ public class FinalSignature {
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			Log4jUtil.log(ex.getMessage());
 		}
 		return null;
 	}

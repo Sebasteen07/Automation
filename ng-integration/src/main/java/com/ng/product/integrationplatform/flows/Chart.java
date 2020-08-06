@@ -42,7 +42,7 @@ public class Chart {
 			Log4jUtil.log("Chart created with id "+chart_id);
 			
 	} catch (Exception e) {
-        e.printStackTrace();
+		Log4jUtil.log(e.getMessage());
     }
 		return chart;
 	}

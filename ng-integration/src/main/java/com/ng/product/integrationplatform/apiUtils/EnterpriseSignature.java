@@ -11,6 +11,8 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.HmacUtils;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -46,7 +48,7 @@ public class EnterpriseSignature {
 					Hex.encodeHex(HmacUtils.hmacSha256(passwordHash.getBytes("UTF-8"), requestData.getBytes("UTF-8"))));
 			System.out.println(requestData);
 		} catch (Exception e) {
-            e.printStackTrace();
+			Log4jUtil.log(e.getMessage());
         }
 
         return requestData;

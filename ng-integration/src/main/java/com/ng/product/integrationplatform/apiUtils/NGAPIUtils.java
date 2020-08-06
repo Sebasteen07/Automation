@@ -80,10 +80,10 @@ public class NGAPIUtils {
 			httpResponse = httpClient.execute(httpPost);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log4jUtil.log(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log4jUtil.log(e.getMessage());
 		}
         httpPost.releaseConnection();
         Log4jUtil.log("Status code of Token geneartion "+httpResponse.getStatusLine().getStatusCode());
@@ -227,8 +227,7 @@ public class NGAPIUtils {
 
 		}
 		catch (Exception E) {
-			Log4jUtil.log("Exception caught "+E);
-			E.getCause().printStackTrace();
+			Log4jUtil.log("Exception caught "+E.getMessage());
 		}
 			return null;
 	}
@@ -288,8 +287,7 @@ public class NGAPIUtils {
 
 		}
 		catch (Exception E) {
-			Log4jUtil.log("Exception caught "+E);
-			E.getCause().printStackTrace();
+			Log4jUtil.log("Exception caught "+E.getMessage());
 		}
 				return null;
 	}
@@ -343,8 +341,7 @@ public class NGAPIUtils {
         Log4jUtil.log("Get Response "+response);
        return response;
 		}catch (Exception E) {
-		Log4jUtil.log("Exception caught "+E);
-		E.getCause().printStackTrace();
+		Log4jUtil.log("Exception caught "+E.getMessage());
 	}
 	return null;
 }

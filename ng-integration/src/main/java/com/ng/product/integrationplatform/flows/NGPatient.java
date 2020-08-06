@@ -123,7 +123,7 @@ public class NGPatient {
             newpatient.setReligionId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForReligion));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        	Log4jUtil.log(e.getMessage());
         }
 		return newpatient;
 	}
