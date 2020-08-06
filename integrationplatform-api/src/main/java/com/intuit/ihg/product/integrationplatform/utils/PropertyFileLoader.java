@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.FileReader;
