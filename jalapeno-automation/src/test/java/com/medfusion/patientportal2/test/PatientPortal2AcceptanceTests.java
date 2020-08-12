@@ -4,6 +4,7 @@ package com.medfusion.patientportal2.test;
 import static org.testng.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -105,6 +107,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
 	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
+	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
+	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with TestPracticeELE02";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE = "Thank you for creating an account with TestPracticeELE01";
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String questionText = "wat";
@@ -141,7 +147,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			patient = new CreatePatient().selfRegisterUnderAgePatient(driver, patient, testData.getUrl());
 		}
 	}
-	
+
 	public void createCommonPatientStateSpecific() throws Exception {
 		if (Objects.isNull(patient)) {
 			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
@@ -1953,7 +1959,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test case passed");
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientStateSpecific() throws Exception {
 		createCommonPatientStateSpecific();
@@ -1963,4 +1969,85 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.areBasicPageElementsPresent());
 	}
 
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientActivationEnrolment() throws Exception {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');		
+		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
+
+		logStep("Generating Activation Link of patient in First Practice Porta");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String firstunlockLinkPortal = patientActivationSearchTest.getPatientActivationPracticeLink(driver, testData,
+				patientsEmail, "doctorLogin1", "doctorPassword1");
+		logStep("Patient first practice unlockLinkPortal" + firstunlockLinkPortal);
+
+		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
+		String firstunlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName1"), INVITE_EMAIL_BUTTON_TEXT, 10);
+		assertNotNull(firstunlockLinkEmail, "Error: Activation link not found.");
+
+		logStep("Retrieved activation link for first Practice is " + firstunlockLinkEmail);
+		if (!isInviteLinkFinal(firstunlockLinkEmail)) {
+			firstunlockLinkEmail = getRedirectUrl(firstunlockLinkEmail);
+			log("Retrieved link was redirect link. Final link for first Practice is " + firstunlockLinkEmail);
+		}
+		logStep("Comparing with portal unlock link for first Practice " + firstunlockLinkPortal);
+		assertEquals(firstunlockLinkEmail, firstunlockLinkPortal, "!patient unlock links are not equal!");
+
+		logStep("Generating Unlock link and  Activating patient on Seocnd Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest1 = new PatientActivationSearchTest();
+		String secondunlockLinkPortal = patientActivationSearchTest1.getPatientActivationPracticeLink(driver, testData,
+				patientsEmail, "doctorLoginPractice2", "doctorPasswordPractice2");
+
+		logStep("Logging into Mailinator and getting Patient Activation url for Seond Practice");
+		String secondunlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName2"), INVITE_EMAIL_BUTTON_TEXT, 20);
+		assertNotNull(secondunlockLinkEmail, "Error: Activation link not found for second practice.");
+		logStep("Retrieved activation link for Seond Practice is " + secondunlockLinkEmail);
+
+		if (!isInviteLinkFinal(secondunlockLinkEmail)) {
+			secondunlockLinkEmail = getRedirectUrl(secondunlockLinkEmail);
+			log("Retrieved link was redirect link. Final link for Seond Practice is " + secondunlockLinkEmail);
+		}
+		logStep("Comparing with portal unlock link for Second Practice " + secondunlockLinkEmail);
+		assertEquals(secondunlockLinkEmail, secondunlockLinkPortal, "!patient unlock links are not equal for Seond Practice!");
+
+		logStep("Finishing of patient activation for portal 2: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, secondunlockLinkPortal);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+				patientActivationSearchTest1.getPatientIdString(), testData.getPassword(), testData);
+
+		logStep("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Checking if address in My Account is filled");
+		JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
+		JalapenoMyAccountProfilePage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(
+				jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.ZIP_CODE));
+		
+		
+		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE));
+		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE));
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 15));
+		
+		
+		logStep("Load login page for the auto enrolled practice");
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, testData.getProperty("practiceUrl3"));
+		JalapenoHomePage homePage = loginPage.login(patientActivationSearchTest1.getPatientIdString(), testData.getPassword());
+		
+		
+	
+		
+		
+		
+	
+		}
+
 }
+

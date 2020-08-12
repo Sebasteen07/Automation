@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -16,118 +17,128 @@ import com.medfusion.product.practice.api.pojo.PracticeTestData;
 
 public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 
-		private String unlockLink = "";
-		private String firstNameString = "";
-		private String lastNameString = "";
-		private String patientIdString = "";
-		private String zipCodeString = "";
-		private String emailAddressString = "";
+	private String unlockLink = "";
+	private String firstNameString = "";
+	private String lastNameString = "";
+	private String patientIdString = "";
+	private String zipCodeString = "";
+	private String emailAddressString = "";
 
-		public String getUnlockLink() {
-				return unlockLink;
-		}
+	public String getUnlockLink() {
+		return unlockLink;
+	}
 
-		public String getFirstNameString() {
-				return firstNameString;
-		}
+	public String getFirstNameString() {
+		return firstNameString;
+	}
 
-		public String getLastNameString() {
-				return lastNameString;
-		}
+	public String getLastNameString() {
+		return lastNameString;
+	}
 
-		public String getPatientIdString() {
-				return patientIdString;
-		}
+	public String getPatientIdString() {
+		return patientIdString;
+	}
 
-		public String getZipCodeString() {
-				return zipCodeString;
-		}
+	public String getZipCodeString() {
+		return zipCodeString;
+	}
 
-		public String getEmailAddressString() {
-				return emailAddressString;
-		}
+	public String getEmailAddressString() {
+		return emailAddressString;
+	}
 
-		public PatientInfo PatientActivation(WebDriver driver, PracticeTestData practiceTestData, String email, String doctorLogin, String doctorPassword,
-				String url, PatientInfo patInfo) throws InterruptedException {
+	public PatientInfo PatientActivation(WebDriver driver, PracticeTestData practiceTestData, String email,
+			String doctorLogin, String doctorPassword, String url, PatientInfo patInfo) throws InterruptedException {
 
-				log("Test Case: Patient Activation");
-				log("Execution Environment: " + IHGUtil.getEnvironmentType());
-				log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Test Case: Patient Activation");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
 
-				log("step 1: Login to Practice Portal");
+		log("step 1: Login to Practice Portal");
 
-				String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
-				String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
-				String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPassword() : doctorPassword;
+		String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
+		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
+		String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPassword() : doctorPassword;
 
-				// Now start login with practice data
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
-				PracticeHomePage practiceHome = practiceLogin.login(tempDocLogin, tempDocPassword);
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(tempDocLogin, tempDocPassword);
 
-				log("step 2: Click on Patient Search");
-				PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+		log("step 2: Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 
-				log("step 3: Click on Add new Patient");
-				PatientActivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
+		log("step 3: Click on Add new Patient");
+		PatientActivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
 
-				log("step 4: Enter all the details and click on Register");
-				patientactivationPage.setInitialDetails(email);
+		log("step 4: Enter all the details and click on Register");
+		patientactivationPage.setInitialDetails(email);
 
-				log("Moving to linkUrl to finish Create Patient procedure");
+		log("Moving to linkUrl to finish Create Patient procedure");
 
-				patInfo.unlockLink = patientactivationPage.getUnlockLink();
+		patInfo.unlockLink = patientactivationPage.getUnlockLink();
 
-				patInfo.firstName = patientactivationPage.getFirstNameString();
-				patInfo.lastName = patientactivationPage.getLastNameString();
-				patInfo.practicePatientId = patientactivationPage.getPatientIdString();
-				patInfo.zipCode = patientactivationPage.getZipCodeString();
-				patInfo.email = patientactivationPage.getEmailAddressString();
+		patInfo.firstName = patientactivationPage.getFirstNameString();
+		patInfo.lastName = patientactivationPage.getLastNameString();
+		patInfo.practicePatientId = patientactivationPage.getPatientIdString();
+		patInfo.zipCode = patientactivationPage.getZipCodeString();
+		patInfo.email = patientactivationPage.getEmailAddressString();
 
-				driver.switchTo().defaultContent();
+		driver.switchTo().defaultContent();
 
-				return patInfo;
-		}
+		return patInfo;
+	}
 
-		public String getPatientActivationLink(WebDriver driver, PropertyFileLoader testData, String email) throws Exception {
-				String tempUrl = testData.getPortalUrl();
-				String tempDocLogin = testData.getDoctorLogin();
-				String tempDocPassword = testData.getDoctorPassword();
+	public String getPatientActivationLink(WebDriver driver, PropertyFileLoader testData, String email)
+			throws Exception {
+		String tempUrl = testData.getPortalUrl();
+		String tempDocLogin = testData.getDoctorLogin();
+		String tempDocPassword = testData.getDoctorPassword();
 
-				return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
-		}
+		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
+	}
 
-		public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email) throws Exception {
-				String tempUrl = practiceTestData.getUrl();
-				String tempDocLogin = practiceTestData.getUsername();
-				String tempDocPassword = practiceTestData.getPassword();
+	public String getPatientActivationPracticeLink(WebDriver driver, PropertyFileLoader testData, String email,
+			String doctorlogin, String doctorPassword) throws Exception {
+		String tempUrl = testData.getPortalUrl();
+		String tempDocLogin = testData.getProperty(doctorlogin);
+		String tempDocPassword = testData.getProperty(doctorPassword);
+		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
+	}
 
-				return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
-		}
+	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email)
+			throws Exception {
+		String tempUrl = practiceTestData.getUrl();
+		String tempDocLogin = practiceTestData.getUsername();
+		String tempDocPassword = practiceTestData.getPassword();
+		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
+	}
 
-		public String getPatientActivationLink(WebDriver driver, String email, String doctorLogin, String doctorPassword, String url) throws Exception {
-				log("step 1: Login to Practice Portal");
-				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
-				PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+	public String getPatientActivationLink(WebDriver driver, String email, String doctorLogin, String doctorPassword,
+			String url) throws Exception {
+		log("step 1: Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
 
-				log("step 2: Click on Patient Search");
-				PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+		log("step 2: Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 
-				log("step 3: Click on Add new Patient");
-				PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+		log("step 3: Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
-				log("step 4: Enter all the details and click on Register");
-				patientActivationPage.setInitialDetails(email);
+		log("step 4: Enter all the details and click on Register");
+		patientActivationPage.setInitialDetails(email);
 
-				log("Moving to linkUrl to finish Create Patient procedure");
-				unlockLink = patientActivationPage.getUnlockLink();
-				firstNameString = patientActivationPage.getFirstNameString();
-				lastNameString = patientActivationPage.getLastNameString();
-				patientIdString = patientActivationPage.getPatientIdString();
-				zipCodeString = patientActivationPage.getZipCodeString();
-				emailAddressString = patientActivationPage.getEmailAddressString();
+		log("Moving to linkUrl to finish Create Patient procedure");
+		unlockLink = patientActivationPage.getUnlockLink();
+		firstNameString = patientActivationPage.getFirstNameString();
+		lastNameString = patientActivationPage.getLastNameString();
+		patientIdString = patientActivationPage.getPatientIdString();
+		zipCodeString = patientActivationPage.getZipCodeString();
+		emailAddressString = patientActivationPage.getEmailAddressString();
 
-				driver.switchTo().defaultContent();
+		driver.switchTo().defaultContent();
 
-				return unlockLink;
-		}
+		return unlockLink;
+	}
 }

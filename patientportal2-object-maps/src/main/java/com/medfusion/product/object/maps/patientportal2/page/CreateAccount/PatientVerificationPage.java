@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class PatientVerificationPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 
 				log("Fill inputs with ZIP: " + zipCode + " and DOB: " + month + "/" + day + "/" + year);
+				IHGUtil.waitForElement(driver, 10, zipCodeInput);
 				zipCodeInput.sendKeys(zipCode);
 				Select dobMonth = new Select(dateOfBirthMonthSelect);
 				if (month.startsWith("0")) {
