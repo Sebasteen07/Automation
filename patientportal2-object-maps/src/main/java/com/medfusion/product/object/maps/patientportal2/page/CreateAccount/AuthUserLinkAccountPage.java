@@ -1,3 +1,4 @@
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
@@ -85,7 +86,9 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	public SecurityDetailsPage continueToCreateGuardianOnly(String name, String lastname, String relationship) {
 		IHGUtil.PrintMethodName();
 
+		firstNameInput.clear();
 		firstNameInput.sendKeys(name);
+		lastNameInput.clear();
 		lastNameInput.sendKeys(lastname);
 		log("Guardian name: " + name + " " + lastname);
 

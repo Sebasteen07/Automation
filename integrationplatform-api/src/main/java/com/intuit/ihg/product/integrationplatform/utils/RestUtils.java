@@ -1,3 +1,4 @@
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.File;
@@ -3294,5 +3295,52 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 					"The Patient Id should match");
 		}
 		return true;
+	}
+	
+	public static void isPatientDeactivatedorDeleted(String xmlFileName, String practicePatientId, String firstName, String lastName, String patientID,String portalStatus)
+			throws ParserConfigurationException, SAXException, IOException {
+		System.out.println(xmlFileName+" "+practicePatientId+" "+firstName+ " "+lastName+ " "+patientID);
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for (int i = 0; i < patients.getLength(); i++) {
+			if (patients.item(i).getTextContent().equals(practicePatientId)) {
+				Log4jUtil.log("Searching: External Patient ID:" + practicePatientId + ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
+				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+						"Patient has different status than expected. Status is: " + status.getTextContent());
+				
+				Node portalstatus = patient.getElementsByTagName(IntegrationConstants.PORTALSTATUS).item(0);
+				if(portalStatus.equalsIgnoreCase("DEACTIVATED")){
+				Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DEACTIVATED,
+						"Patient has different portal status than expected. Portal Status is: " + portalstatus.getTextContent());
+				Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());}	
+				else if(portalStatus.equalsIgnoreCase("DELETED")){				
+				Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DELETED,
+						"Patient has different portal status than expected. Portal Status is: " + portalstatus.getTextContent());
+				Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());}
+				else{
+					Log4jUtil.log("Invalid Portal Status");
+				}
+				
+				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient FirstName:" + firstName + ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
+				Assert.assertEquals(nfirstName.getTextContent(), firstName,
+						"Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
+				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient LastName:" + lastName + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
+				Assert.assertEquals(nlastName.getTextContent(), lastName, "Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
+				if (patientID != null) {
+					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+					Assert.assertEquals(nPatientId.getTextContent(), patientID,
+							"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: " + nPatientId.getTextContent());
+					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID + ", and Actual Medfusion Patient ID is:" + nPatientId.getTextContent().toString());
+				}
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
 	}
 }

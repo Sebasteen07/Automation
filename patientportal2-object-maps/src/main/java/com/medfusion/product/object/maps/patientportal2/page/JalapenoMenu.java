@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
@@ -252,4 +252,30 @@ public abstract class JalapenoMenu extends MedfusionPage {
 			healthRecordMenu.click();
 		}
 	}
+	
+	public NGLoginPage LogoutfromNGMFPortal() {
+
+		log("Clicking on Logout button - regular resolution");
+
+		try {
+				signoutButton.click();
+		} catch (NoSuchElementException ex) {
+				log("Did not find Logout button, trying mobile version size");
+				rightDropdownButton.click();
+				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+				signoutDropdownButton.click();
+		} catch (ElementNotVisibleException ex) {
+				log("Element is not currently visible, trying mobile version size");
+				rightDropdownButton.click();
+				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+				signoutDropdownButton.click();
+		} catch (ElementNotInteractableException ex) {
+				log("Element is not currently not intractable, trying mobile version size");
+				rightDropdownButton.click();
+				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+				signoutDropdownButton.click();
+		}
+
+		return PageFactory.initElements(driver, NGLoginPage.class);
+        }
 }

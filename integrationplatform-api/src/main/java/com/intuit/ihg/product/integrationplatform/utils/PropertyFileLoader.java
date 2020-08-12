@@ -1,3 +1,4 @@
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.FileReader;
@@ -6,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PropertyFileLoader {
@@ -1295,5 +1297,137 @@ public class PropertyFileLoader {
 	}
 	public String getDeleteToken() {
 		return property.getProperty("token_p2p");
+	}
+	
+	//DB
+	public String getPostGREdbHostName() {
+		return property.getProperty("PostGREdbHostName");
+	}
+	public String getPostGREdbName() {
+		return property.getProperty("PostGREdbName");
+	}
+	public String getPostGREdbUserName() {
+		return property.getProperty("PostGREdbUserName");
+	}
+	public String getPostGREdbPassword() {
+		return property.getProperty("PostGREdbPassword");
+	}
+	
+	public String getCoreMSSQLdbHostName() {
+		return property.getProperty("CoredbHostName");
+	}
+	public String getCoreMSSQLdbName() {
+		return property.getProperty("CoredbName");
+	}
+	public String getCoreMSSQLdbUserName() {
+		return property.getProperty("CoredbUserName");
+	}
+	public String getCoreMSSQLdbPassword() {
+		return property.getProperty("CoredbPassword");
+	}
+	
+	public String getMFMSSQLdbHostName() {
+		return property.getProperty("MFAgentdbHostName");
+	}
+	public String getMFMSSQLdbName() {
+		return property.getProperty("MFAgentdbName");
+	}
+	public String getMFMSSQLdbUserName() {
+		return property.getProperty("MFAgentdbUserName");
+	}
+	public String getMFMSSQLdbPassword() {
+		return property.getProperty("MFAgentdbPassword");
+	}
+	
+	public String getMFOracleSQLdbHostName() {
+		return property.getProperty("ConsumerdbHostName");
+	}
+	public String getMFOracleSQLdbName() {
+		return property.getProperty("ConsumerdbName");
+	}
+	public String getMFOracleSQLdbUserName() {
+		return property.getProperty("ConsumerdbUserName");
+	}
+	public String getMFOracleSQLdbPassword() {
+		return property.getProperty("ConsumerdbPassword");
+	}
+//	MF API Url
+	public String getProcessingURL() {
+		return property.getProperty("processingURL");
+	}
+	public String getPIDCURL() {
+		return property.getProperty("GetPIDCURL");
+	}
+	
+	public String getPhoneNumber() {
+		return property.getProperty("phoneNumber");
+	}
+//	Practice Portal URL
+	public String getDoctorLogin() {
+		return property.getProperty("doctorLogin");
+	}
+
+	public String getDoctorPassword() {
+		return property.getProperty("doctorPassword");
+	}
+	public String getPortalUrl() {
+		return property.getProperty("portalUrl");
+	}
+	public String getDOBDay() {
+		return property.getProperty("DOBDay");
+	}
+
+	public String getDOBMonth() {
+		return property.getProperty("DOBMonth");
+	}
+
+	public String getDOBMonthText() {
+		return property.getProperty("DOBMonthText");
+	}
+
+	public String getDOBYear() {
+		return property.getProperty("DOBYear");
+	}
+
+	public String getDOBYearUnderage() {
+		return property.getProperty("DOBYearUnderage");
+	}
+//	NG API
+	public String getNGAPIexecutionMode() {
+		return property.getProperty("NGAPIexecutionMode");
+	}
+	
+	public String getNGAPIQAMainPracticeID() {
+		return property.getProperty("NGAPIQAMainPracticeID");
+	}
+	
+	public String getNGAPIQAMainEnterpriseID() {
+		return property.getProperty("NGAPIQAMainEnterpriseID");
+	}
+	
+	public String getNGAPISITPracticeID() {
+		return property.getProperty("NGAPISITPracticeID");
+	}
+	
+	public String getNGAPISITEnterpriseID() {
+		return property.getProperty("NGAPISITEnterpriseID");
+	}
+	
+	public String getProperty(String prop) throws NullPointerException {
+		if (property.getProperty(prop) == null)
+			throw new NullPointerException("Property " + prop + " not found in the property file.");
+		return property.getProperty(prop);
+	}
+	
+	public String getNGEPMProviderName() {
+		return property.getProperty("EPMProviderName");
+	}
+	
+	public String getNGEPMLocationName() {
+		return property.getProperty("EPMLocationName");
+	}
+	
+	public String getNGEPMRenderingProviderName() {
+		return property.getProperty("EPMRenderingProviderName");
 	}
 }
