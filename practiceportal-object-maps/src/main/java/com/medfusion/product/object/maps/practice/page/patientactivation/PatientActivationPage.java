@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientactivation;
 
 import static org.testng.AssertJUnit.*;
@@ -106,8 +107,9 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(xpath = ".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
-
-	private String firstNameString = "";
+	
+	static  String firstNameString = "Beta" + IHGUtil.createRandomNumericString();
+	
 	private String lastNameString = "";
 	private String patientIdString = "";
 	private String zipCodeString = "";
@@ -148,7 +150,6 @@ public class PatientActivationPage extends BasePageObject {
 	}
 
 	public void setInitialDetails(String sEmail) {
-		firstNameString = "Beta" + IHGUtil.createRandomNumericString();
 		lastNameString = "Tester";
 		emailAddressString = sEmail;
 		patientIdString = emailAddressString;
@@ -182,6 +183,7 @@ public class PatientActivationPage extends BasePageObject {
 		clickDone();
 
 	}
+
 
 	public String setInitialDetailsAllFields(String firstName, String lastName, String gender, String patientID, String homePhone, String email, String month,
 			String day, String year, String address1, String address2, String city, String state, String zipCode) {
