@@ -66,15 +66,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "currentPatientBubble")
 	private WebElement bubble;
-
-	@FindBy(how = How.ID, using = "bubbleLabel")
-	private WebElement bubbleLabel;
-
-	@FindBy(how = How.ID, using = "familyAccountBtn")
+	
+	@FindBy(how = How.ID, using = "listBadgedependent")
 	private WebElement viewDifferentPatientButton;
-
-	@FindBy(how = How.ID, using = "listBadge_0")
-	private WebElement listBadgeDropdownButton;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
@@ -263,10 +257,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(bubble);
-		webElementsList.add(bubbleLabel);
 		if (button)
-			webElementsList.add(viewDifferentPatientButton);
+			webElementsList.add(bubble);
 
 		return assessPageElements(webElementsList);
 	}
@@ -315,11 +307,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoSymptomAssessmentPage.class);
 	}
 
-	public void faChangePatient() {
+	public void faChangePatient() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-
+		bubble.click();	
 		viewDifferentPatientButton.click();
-		listBadgeDropdownButton.click();
+		
 	}
 
 	public String getOutstandingPatientBalance() {
