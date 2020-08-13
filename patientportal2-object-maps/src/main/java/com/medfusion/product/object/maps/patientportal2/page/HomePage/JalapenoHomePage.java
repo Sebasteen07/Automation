@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -92,6 +93,15 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
+	
+	@FindBy(how=How.XPATH, using="//i[@class='caret pull-right']")
+	private WebElement practiceToggleSearch;
+	
+	@FindBy(how=How.XPATH, using="//input[@type='search']")
+	private WebElement practiceInput;
+	
+	@FindBy(how=How.XPATH, using="//button[@id='switchingPracticeContinueButton']")
+	private WebElement switchButtonContinue;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -350,5 +360,14 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void closeModalPopUp() {
 		javascriptClick(buttonContinue);
+	}
+	
+	public void switchPractice(String practice) {
+		log("Clicking on Practice toggle Search");
+		practiceToggleSearch.click();
+		practiceInput.sendKeys(practice);
+		practiceInput.sendKeys(Keys.ENTER);
+		IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+		switchButtonContinue.click();
 	}
 }

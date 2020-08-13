@@ -20,7 +20,7 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 		@FindBy(how = How.ID, using = "confirmPassword")
 		public WebElement confirmPassword;
 
-		@FindBy(how = How.ID, using = "resetPasswordButton")
+		@FindBy(how = How.ID, using = "resetButtonContinueButton")
 		public WebElement resetPasswordButton;
 
 		@FindBy(how = How.ID, using = "paymentPreference_Electronic")
