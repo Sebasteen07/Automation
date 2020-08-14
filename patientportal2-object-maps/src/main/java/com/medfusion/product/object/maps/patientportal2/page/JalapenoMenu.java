@@ -73,7 +73,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	private WebElement signoutDropdownButton;
 
 	@FindBy(how = How.ID, using = "signout")
-	private WebElement signoutButton;
+	private WebElement signout;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='ccdList_lhn']/a/span")
 	private WebElement healthRecordMenu;
@@ -198,7 +198,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		log("Clicking on Logout button - regular resolution");
 
 		try {
-			signoutButton.click();
+			javascriptClick(signout);
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
 			rightDropdownButton.click();
@@ -258,7 +258,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		log("Clicking on Logout button - regular resolution");
 
 		try {
-				signoutButton.click();
+			    javascriptClick(signout);
 		} catch (NoSuchElementException ex) {
 				log("Did not find Logout button, trying mobile version size");
 				rightDropdownButton.click();

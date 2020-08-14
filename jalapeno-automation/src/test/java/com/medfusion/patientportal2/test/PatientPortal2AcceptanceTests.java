@@ -2095,7 +2095,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			        	
 			        log("Waiting for welcome mail at patient inbox from second practice");
 			        Instant testStart = Instant.now();
-			        Email visitPortal = new Mailer(patientsEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 30,
+			        Email visitPortal = new Mailer(patientsEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,60,
 							testSecondsTaken(testStart));
 					assertNotNull(visitPortal,
 							"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
@@ -2119,91 +2119,5 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 			        logStep("Auto Enrolment to Second Practice is completed");				
 		}
-		//PP2220
-		@Test(enabled = true, groups = { "acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
-		public void testGuardianAutoEnrolment() throws Exception {
-	    String guardianpatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-	    String guardianFirstName = "BetaGuardian" + IHGUtil.createRandomNumericString();
-	    String guardianLogin = PortalUtil.generateUniqueUsername("login", testData);
-
-		logStep("Guardian Patient Activation at Practice Portal1");
-	    PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-	    String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,guardianpatientEmail,testData.getProperty("doctorLogin01"),testData.getProperty("doctorPassword01"),testData.getPortalUrl(),guardianFirstName);
-		
-		logStep("Finishing of patient activation: step 1 - verifying identity");
-		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
-		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
-				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(),
-				testData.getDOBYear());
-
-		logStep("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
-				patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
-
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-
-		logStep("Logging out");
-		JalapenoLoginPage jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
-		
-		logStep("Registering Dependent patient at Practice1");
-		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		String patientFirstName = "BetaDependent" + IHGUtil.createRandomNumericString();
-		
-		//PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-		String guardianLinkPortal01 = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,patientsEmail,testData.getProperty("doctorLogin1"),testData.getProperty("doctorPassword1"),testData.getPortalUrl(),patientFirstName);
-		
-		logStep("Logging into Mailinator and getting Patient Activation url");
-		String unlockLinkEmail01 = new Mailinator().getLinkFromEmail(patientsEmail,
-				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName1"), INVITE_EMAIL_BUTTON_TEXT, 10);
-		assertNotNull(unlockLinkEmail01, "Error: Activation link not found.");
-		
-		System.out.println("UNLOCK LINK EMAIL PORTAL1+====="+unlockLinkEmail01);
-		
-		logStep("Retrieved activation link is " + unlockLinkEmail01);
-		if (!isInviteLinkFinal(unlockLinkEmail01)) {
-			unlockLinkEmail01 = getRedirectUrl(unlockLinkEmail01);
-			log("Retrieved link was redirect link. Final link is " + unlockLinkEmail01);
-		}
-		logStep("Comparing with portal unlock link " + guardianLinkPortal01);
-		assertEquals(unlockLinkEmail01, guardianLinkPortal01, "!patient unlock links are not equal!");
-
-		logStep("Registering Dependent Patient at Practice2");
-		//PatientActivationSearchTest patientActivationSearchTest02 = new PatientActivationSearchTest();
-		String unlockLinkPortal02 = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,patientsEmail,testData.getProperty("doctorLoginPractice2"),testData.getProperty("doctorLoginPractice2"),testData.getPortalUrl(),patientFirstName);
-
-		
-		System.out.println("PORTAL UNLOCK LINK PORTAL2+=====+" +unlockLinkPortal02);
-
-		logStep("Logging into Mailinator and getting Patient Activation url");
-		String unlockLinkEmail02 = new Mailinator().getLinkFromEmail(patientsEmail,
-				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName2"), INVITE_EMAIL_BUTTON_TEXT, 10);
-		assertNotNull(unlockLinkEmail02, "Error: Activation link not found.");
-		logStep("Retrieved activation link is " + unlockLinkEmail02);
-		if (!isInviteLinkFinal(unlockLinkEmail02)) {
-			unlockLinkEmail02 = getRedirectUrl(unlockLinkEmail02);
-			log("Retrieved link was redirect link. Final link is " + unlockLinkEmail02);
-		}
-		logStep("Comparing with portal unlock link " + unlockLinkPortal02);
-		assertEquals(unlockLinkEmail02, unlockLinkPortal02, "!patient unlock links are not equal!");
-		
-		logStep("Sign up using invite link from Practice Portal1");
-		
-		patientVerificationPage.getToThisPage(guardianLinkPortal01);
-		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
-				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
-		
-		logStep("Continue registration - check dependent info and fill login credentials");
-		linkAccountPage.checkDependentInfo(patientFirstName,"Tester", patientsEmail);
-		jalapenoHomePage = linkAccountPage.linkPatientToCreateGuardian(guardianLogin, testData.getPassword(), "Parent");
-
-		logStep("Continue to the portal and check elements");
-		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
-		
-		logStep("Validate Welcome mail recieved by guardianpatient at Practice Portal2");
-		
-	}
-
-
 }
 
