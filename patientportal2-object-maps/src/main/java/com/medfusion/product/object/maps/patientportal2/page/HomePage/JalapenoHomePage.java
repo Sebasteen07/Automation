@@ -255,7 +255,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public boolean assessFamilyAccountElements(boolean button) {
 		IHGUtil.PrintMethodName();
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		if (button)
 			webElementsList.add(bubble);

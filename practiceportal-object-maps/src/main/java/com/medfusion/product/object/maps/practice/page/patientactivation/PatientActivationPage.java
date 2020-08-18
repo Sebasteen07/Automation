@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.practice.page.patientactivation;
 import static org.testng.AssertJUnit.*;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -326,7 +327,7 @@ public class PatientActivationPage extends BasePageObject {
 		PropertyFileLoader testData=new PropertyFileLoader();
 		lastNameString = "Tester";
 		emailAddressString = sEmail;
-		patientIdString = emailAddressString;
+		patientIdString =  "jalapeno"+IHGUtil.createRandomNumericString();;
 		IHGUtil.PrintMethodName();
 		log("New Random First Name is " + firstname);
 		firstName.sendKeys(firstname);
