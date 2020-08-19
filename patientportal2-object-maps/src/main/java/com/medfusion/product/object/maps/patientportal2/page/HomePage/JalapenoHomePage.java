@@ -1,10 +1,12 @@
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
+
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +17,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
@@ -255,8 +258,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public boolean assessFamilyAccountElements(boolean button) {
 		IHGUtil.PrintMethodName();
-		
-		log("Bubble is visible "+isElementVisible(bubble, 5));
+		log("Current window size is "+driver.manage().window().getSize());
+		driver.manage().window().maximize();
+		log("After maximizing "+driver.manage().window().getSize());
+		Dimension d = new Dimension(1382,744);
+		driver.manage().window().setSize(d);
+		log("After resizing " +driver.manage().window().getSize());
+		log("Bubble is visible?? "+isElementVisible(bubble, 5));
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		if (button)
 			webElementsList.add(bubble);
@@ -309,8 +317,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void faChangePatient() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		bubble.click();	
-		viewDifferentPatientButton.click();
+		//bubble.click();
+		javascriptClick(bubble);
+		javascriptClick(viewDifferentPatientButton);
+		//viewDifferentPatientButton.click();
 		
 	}
 
