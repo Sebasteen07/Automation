@@ -64,7 +64,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "inprogressformbutton")
 	private WebElement continueRegistrationButton;
 
-	@FindBy(how = How.ID, using = "currentPatientBubble")
+	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble']")
 	private WebElement bubble;
 	
 	@FindBy(how = How.ID, using = "listBadgedependent")
@@ -260,7 +260,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		if (button)
 			webElementsList.add(bubble);
-
 		return assessPageElements(webElementsList);
 	}
 
