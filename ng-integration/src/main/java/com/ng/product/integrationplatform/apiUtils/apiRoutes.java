@@ -9,7 +9,7 @@ package com.ng.product.integrationplatform.apiUtils;
 
 public enum apiRoutes {
 	
-	BaseURL ("https://api.nextgen.com/AWSVPQADB02.consolidated_testing/NextGen.Api.Edge/5.9.5.58/"),
+	BaseURL ("https://api.nextgen.com/AWSVPQADB02.consolidated_testing/NextGen.Api.Edge/6.0.0.10/"),
 	BaseSITURL ("https://api.nextgen.com/AWSVPQADB02.ngqa_595_MFSIT/NextGen.Api.Edge/5.9.5.35/"),
 //	BaseCAGatewayURL ("https://nativeapi.nextgen.com/nga-native-api/"),
 	BaseCAGatewayURL ("https://nativeapi.nextgen.com/nge/prod/nge-api/api/"),
@@ -22,7 +22,18 @@ public enum apiRoutes {
 	AddEncounter("api/persons/personId/chart/encounters"),
 	PostEnrollment("api/persons/personId/chart/enrollment/begin"),
 	GetEnrollmentStatus("api/persons/personId/chart/enrollment/status"),
-	AddDiagnosis("api/persons/personId/chart/encounters/encounterId/diagnoses");
+	AddDiagnosis("api/persons/personId/chart/encounters/encounterId/diagnoses"),
+	LogInDefaults("api/users/userId/login-defaults"),
+	PrescribeMedication("api/persons/personId/chart/encounters/encounterId/medications"),
+	AddAllergy("api/persons/personId/chart/encounters/encounterId/allergies"),
+	AddProcedure("api/persons/personId/chart/encounters/encounterId/procedures"),
+	AddProblem("api/persons/personId/chart/problems"),
+	AddNewLabOrder("api/persons/personId/chart/encounters/encounterId/lab/orders"),
+	AddNewImmunizationsOrder("api/persons/personId/chart/encounters/encounterId/immunizations/orders"),
+	AddLabPanel("api/persons/personId/chart/lab/panels"),
+	AddLabOrderTest("api/persons/personId/chart/lab/orders/orderId/tests"),
+	AddObservationPanel("api/persons/personId/chart/lab/panels"),
+	AddObservationResults("api/persons/personId/chart/lab/panels/panelId/results");
 	
 	private String routeURL;
 
