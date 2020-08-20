@@ -158,6 +158,7 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 
 		log("Moving to linkUrl to finish Create Patient procedure");
 		unlockLink = patientActivationPage.getUnlockLink();
+		log("Unlock link from practice portal is " +unlockLink);
 		firstNameString = patientActivationPage.getFirstNameString();
 		lastNameString = patientActivationPage.getLastNameString();
 		patientIdString = patientActivationPage.getPatientIdString();

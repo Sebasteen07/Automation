@@ -249,7 +249,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 
 		public boolean assessPageElements(ArrayList<WebElement> allElements){
-				return assessPageElements(allElements, 20);
+				return assessPageElements(allElements, 30);
 		}
 
 		public boolean assessPageElements(ArrayList<WebElement> allElements, int timeOutInSeconds) {
