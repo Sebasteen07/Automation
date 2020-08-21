@@ -56,7 +56,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 	
-    int arg_timeOut=300; 
+    int arg_timeOut=600; 
     NGAPIUtils ngAPIUtils;
     apiRoutes EnterprisebaseURL;
 
