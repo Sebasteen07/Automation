@@ -155,6 +155,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 6: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
+		Thread.sleep(15000);
 		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
@@ -992,6 +993,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 6: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
+		Thread.sleep(15000);
 		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
@@ -1175,6 +1177,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step Begins: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
+		Thread.sleep(15000);
 		log("Step Begins: Do get processing status call and verify the processing time of registration mail to be received");
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
