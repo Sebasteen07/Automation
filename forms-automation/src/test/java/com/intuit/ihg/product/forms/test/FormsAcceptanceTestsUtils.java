@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.forms.test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -364,6 +365,7 @@ public class FormsAcceptanceTestsUtils extends BaseTestNGWebDriver {
 		private void verifyFormsDateAndPDF(ViewPatientFormPage viewFormPage) throws Exception {
 				log("Verify date and download code");
 				// take the date of form submission
+				Thread.sleep(8000);
 				String submittedDate = IHGUtil.extractDateFromText(viewFormPage.getLastUpdatedDateText());
 				// get current date in the same format as the date at the page
 				String currentDate = IHGUtil.getFormattedCurrentDate(submittedDate);
