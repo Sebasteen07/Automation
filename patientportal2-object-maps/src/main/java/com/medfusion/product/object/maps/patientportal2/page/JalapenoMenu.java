@@ -9,8 +9,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -56,9 +54,12 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	// (based on Linked Account settings)
 	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount']/a")
 	private WebElement accountButton;
-
-	@FindBy(how = How.LINK_TEXT, using = "Account")
+	
+	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdown']/a")
 	private WebElement accountDropdownButton;
+	
+	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdownlog']/a")
+	private WebElement accountDropdownLinkedButton;
 
 	@FindBy(how = How.LINK_TEXT, using = "My Account")
 	private WebElement myAccountButton;
@@ -66,11 +67,17 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.LINK_TEXT, using = "My Account")
 	private WebElement myAccountDropdownButton;
 
-	@FindBy(how = How.ID, using = "open-top-loggedIn-btn")
+	@FindBy(how = How.ID, using = "open-top-loggedIn-grp")
 	private WebElement rightDropdownButton;
 
-	@FindBy(how = How.ID, using = "signout_dropdown")
+	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
+	private WebElement rightDropdownLinkedButton;
+	
+	@FindBy(how = How.XPATH, using = "//li[@id='signout_dropdown']")
 	private WebElement signoutDropdownButton;
+	
+	@FindBy(how = How.XPATH, using = "//li[@id='signout_dropdownlog']")
+	private WebElement signoutDropdownLinkedButton;
 
 	@FindBy(how = How.ID, using = "signout")
 	private WebElement signout;
@@ -171,11 +178,18 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		try {
 			JavascriptExecutor ex = (JavascriptExecutor) driver;
 			ex.executeScript("arguments[0].click();", accountButton);
+			
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
-			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountButton));
-			accountButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownButton));
+			accountDropdownButton.click();
+		} catch  (ElementNotInteractableException ex) {
+			log("Did not find Account button, trying mobile version size for linked Account");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownLinkedButton));
+			accountDropdownLinkedButton.click();
+			
 		}
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
 	}
@@ -199,6 +213,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		try {
 			javascriptClick(signout);
+			
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
 			rightDropdownButton.click();
@@ -211,9 +226,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 			signoutDropdownButton.click();
 		} catch (ElementNotInteractableException ex) {
 			log("Element is not currently not intractable, trying mobile version size");
-			rightDropdownButton.click();
-			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-			signoutDropdownButton.click();
+			rightDropdownLinkedButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownLinkedButton));
+			signoutDropdownLinkedButton.click();
 		}
 
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
