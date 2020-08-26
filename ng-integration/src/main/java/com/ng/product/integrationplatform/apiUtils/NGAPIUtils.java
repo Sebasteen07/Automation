@@ -30,6 +30,8 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.medfusion.common.utils.IHGUtil;
 import com.ng.product.integrationplatform.pojo.LoginDefaults;
+import com.ng.product.integrationplatform.utils.CommonUtils;
+import com.ng.product.integrationplatform.utils.DBUtils;
 
 /************************
  * 
@@ -45,11 +47,14 @@ public class NGAPIUtils {
 	private static String EnterpriseEmail="";
 	private static String EnterpriseID="";
 	private static String PracticeID="";
+	private static String BaseURL="";
+	private static String XNGSessionID="";
 	
-	public NGAPIUtils(PropertyFileLoader PropertyLoaderObj) throws IOException {
+	public NGAPIUtils(PropertyFileLoader PropertyLoaderObj) throws Throwable {
 		Log4jUtil.log("API Execution Mode "+PropertyLoaderObj.getNGAPIexecutionMode());	
-		
+		XNGSessionID = DBUtils.executeQueryOnDB("NGCoreDB","Select option_value from configuration_options where app_name='API' and key_name='SiteId'");
 		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+			BaseURL =apiRoutes.BaseURL.getRouteURL().toString();
 			TokenGenerationURL =apiRoutes.QAMainTokenGenerationURL.getRouteURL().toString();
 		    EnterpriseUsername= apiConfig.valueOf("QAMainEnterpriseUsername").getConfigProperty().toString();
 		    EnterprisePassword= apiConfig.valueOf("QAMainEnterprisePassword").getConfigProperty().toString();
@@ -58,6 +63,7 @@ public class NGAPIUtils {
 		    PracticeID= PropertyLoaderObj.getNGAPIQAMainPracticeID();
 		}
 		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			BaseURL =apiRoutes.BaseSITURL.getRouteURL().toString();
 			TokenGenerationURL =apiRoutes.SITTokenGenerationURL.getRouteURL().toString();
 			EnterpriseUsername= apiConfig.valueOf("SITEnterpriseUsername").getConfigProperty().toString();
 			EnterprisePassword= apiConfig.valueOf("SITEnterprisePassword").getConfigProperty().toString();
@@ -94,8 +100,7 @@ public class NGAPIUtils {
         }
         assertTrue(httpResponse.getStatusLine().getStatusCode() == 200);
         
-        String sResp = EntityUtils.toString(httpResponse.getEntity());
-
+        String sResp = EntityUtils.toString(httpResponse.getEntity());        
         JsonObject jsonObject = new JsonParser().parse(sResp).getAsJsonObject();        
         String token = jsonObject.get("access_token").toString().replace("\"", "");
         Log4jUtil.log("Bearer token "+token);
@@ -122,7 +127,7 @@ public class NGAPIUtils {
 		httpPut.setHeader("Accept", "*/*");
 		httpPut.setHeader("Authorization", "Bearer "+token);
 		httpPut.setHeader("Content-type", "application/json");
-
+		
 //	    Set the body    
 		httpPut.setEntity(entity);
 		
@@ -193,12 +198,14 @@ public class NGAPIUtils {
 	        httpPost.addHeader("Authorization", System.getProperty("BearerToken"));
 	        httpPost.addHeader("X-NG-Date",XNGDate);
 	        httpPost.addHeader("X-NG-SessionId",System.getProperty("XNGSessionId"));
+
 	       }
 	        else if(mode.equalsIgnoreCase("EnterpriseGateway")){
 	        	getAuthSignature(argRouteURL,"POST",argPayload, "");
 	        	httpPost.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
 	        	httpPost.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
 	        	httpPost.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+	        	httpPost.addHeader("x-nge-site-id",XNGSessionID);
 	        }
 	        	        
 	        httpHeaders = httpPost.getAllHeaders();
@@ -261,6 +268,7 @@ public class NGAPIUtils {
 	        	httpPost.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email.toLowerCase() + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
 	        	httpPost.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
 	        	httpPost.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+	        	httpPost.addHeader("x-nge-site-id",XNGSessionID);
 	        }
 	        
 	        httpPost.setEntity(arg_Payload);
@@ -298,8 +306,7 @@ public class NGAPIUtils {
 		Log4jUtil.log("GetURL "+argRouteURL);
 		try {
 	    HttpGet httpGet;
-		httpGet = new HttpGet(argRouteURL);
-
+		httpGet = new HttpGet(argRouteURL);	
 		Header[] httpHeaders;
         CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -319,6 +326,7 @@ public class NGAPIUtils {
         	httpGet.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email.toLowerCase() + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
         	httpGet.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
         	httpGet.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+        	httpGet.addHeader("x-nge-site-id",XNGSessionID);
         }	
 	    httpResponse = httpClient.execute(httpGet);
 	    
@@ -344,5 +352,5 @@ public class NGAPIUtils {
 		Log4jUtil.log("Exception caught "+E.getMessage());
 	}
 	return null;
-}
+    }
 }

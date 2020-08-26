@@ -4,11 +4,17 @@ package com.ng.product.integrationplatform.tests;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.eclipse.jetty.util.log.Log;
+import org.jsoup.select.Elements;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -17,24 +23,33 @@ import org.xml.sax.SAXException;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests;
 import com.medfusion.portal.utils.PortalConstants;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.tests.PatientActivationSearchTest;
+import com.medfusion.qa.mailinator.Email;
+import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
 import com.ng.product.integrationplatform.apiUtils.apiRoutes;
+import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.pojo.NewPatient;
 import com.ng.product.integrationplatform.utils.CommonUtils;
@@ -50,21 +65,29 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
  
 	private PropertyFileLoader PropertyLoaderObj;
 	
-	private static final String NewDependentActivationMessage ="You are invited to create a Patient Portal guardian account";
+	private static final String NewDependentActivationMessage ="You are invited to create a Patient Portal guardian account at ";
 	private static final String MemberConfirmationMessage ="New Member Confirmation";
 	private static final String PortalURL ="Visit our patient portal now";
 	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
+	private static final String INVITE_LINK_FRAGMENT = "invite";
+	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
+	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
+	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
+	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	
     int arg_timeOut=600; 
     NGAPIUtils ngAPIUtils;
     apiRoutes EnterprisebaseURL;
+    NGAPIFlows NGAPIFlows;
 
 	@BeforeClass(alwaysRun = true)
-	public void prepareTestData() throws IOException {
+	public void prepareTestData() throws Throwable {
 		log("Getting Test Data");
 		PropertyLoaderObj = new PropertyFileLoader();
 		ngAPIUtils = new NGAPIUtils(PropertyLoaderObj);
+		NGAPIFlows = new NGAPIFlows(PropertyLoaderObj);
 		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
 			EnterprisebaseURL= apiRoutes.valueOf("BaseURL");
 		}
@@ -91,10 +114,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=ngAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -155,7 +178,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 6: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
-		Thread.sleep(15000);
+		Thread.sleep(7000);
 		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
@@ -274,31 +297,31 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		ngAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 400);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Last Name");
 		NewPatient createPatient1 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutLastName");
 		
 		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1));
-	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1) , 400);
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Dob");
 		NewPatient createPatient2 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutDOB");
 		
 		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2));
-	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2) , 400);
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Gender");
 		NewPatient createPatient3 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutSex");
 		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3));
 		
-	    ngAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3) , 400);
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3) , 400);
 		log("Step End: Person should not be created");
 					
 	}
@@ -316,10 +339,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
@@ -346,10 +369,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
@@ -437,10 +460,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
     log("Guardian Request Body is \n" + requestbody);
 	
-    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+    apiRoutes baseURL = EnterprisebaseURL;
+    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 	String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-	String person_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+	String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 	log("Step End: Guardian created with id "+person_id);
 	
 	log("Step 2: Create the Dependent in NG EPM");
@@ -449,7 +472,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
     log("Dependent Request Body is \n" + dependentrequestbody);
 		
-	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("CAGateway",finalURL,dependentrequestbody , 201);
+	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 	log("Step End: Dependent created with id "+dependentperson_id);
 	
 	log("Step 3: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -483,8 +506,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 	CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 	
-	verifyProcessingStatusto3(person_id.trim());
-	verifyProcessingStatusto3(dependentperson_id.trim());
+	verifyProcessingStatusto3(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
+	verifyProcessingStatusto3(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 	
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
@@ -595,8 +618,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		System.setProperty("ParentEmailAddress", guardianFirstName+ "@mailinator.com");
 		
 		ObjectMapper objMap = new ObjectMapper();		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
 
 		log("Step 1: Create the Dependent in NG EPM");
@@ -605,7 +628,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
 	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
-		String dependentperson_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,dependentrequestbody , 201);
+		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for dependent");
@@ -627,7 +650,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 		
-		verifyProcessingStatusto3(dependentperson_id.trim());
+		verifyProcessingStatusto3(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 		
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
@@ -705,10 +728,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -728,7 +751,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 		
-		verifyProcessingStatusto3(person_id.trim());
+		verifyProcessingStatusto3(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
@@ -818,10 +841,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=NGAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -931,10 +954,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=ngAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -993,7 +1016,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 6: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
-		Thread.sleep(15000);
+		Thread.sleep(7000);
 		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
@@ -1105,10 +1128,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
-	    apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
-	    apiRoutes personURL =apiRoutes.valueOf("AddPerson"); 
+	    apiRoutes baseURL = EnterprisebaseURL;
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
 		String finalURL =baseURL.getRouteURL() + personURL.getRouteURL();	
-		String person_id=ngAPIUtils.setupNGHttpFirstPostRequest("CAGateway",finalURL,requestbody , 201);
+		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -1151,7 +1174,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		return person_id;
 	}
 	
-	public void verifyMFJOBStatus(String person_id) throws Throwable{
+	public void verifyMFJOBStatus(String person_id,String integrationID) throws Throwable{
 		
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id.trim()+"'");
 		
@@ -1177,10 +1200,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step Begins: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
-		Thread.sleep(15000);
+		Thread.sleep(7000);
 		log("Step Begins: Do get processing status call and verify the processing time of registration mail to be received");
 
-		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
+		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
@@ -1231,14 +1254,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step End: RSDK sent enrollment status to MF agent after patient enrollment to MF portal");
 	}
 	
-	public void verifyProcessingStatusto3(String person_id) throws Throwable{
+	public void verifyProcessingStatusto3(String person_id,String integrationID) throws Throwable{
 		String processing_status =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		if(processing_status.equals("1")||processing_status.equals("2")){
 			log("Processing status is "+processing_status+" i.e. Enrollment record is sent to RSDK.");
 			for (int i = 0; i < arg_timeOut; i++) {
 				processing_status =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 	            if (processing_status.equals("2")) {
-	            	verifyMFJOBStatus(person_id);
+	            	verifyMFJOBStatus(person_id,integrationID);
 	                break;
 	            } else {
 	                if (i == arg_timeOut - 1)
