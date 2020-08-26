@@ -75,7 +75,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	
-    int arg_timeOut=600; 
+    int arg_timeOut=900; 
     NGAPIUtils ngAPIUtils;
     apiRoutes EnterprisebaseURL;
 
@@ -776,8 +776,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 			
 		log("Step 8: Create the trusted patient in NG EPM");
-		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
-		String trustedperson_id=NGPatient.CreateNGPatient(trustedPatient);
+		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		String trustedPatientrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(trustedPatient);
+		log("Trusted Patient Request Body " +trustedPatientrequestbody);
+		String trustedperson_id= NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,trustedPatientrequestbody, 201);
 		log("Step End: Person created with id "+trustedperson_id);
 
 		log("Step 9 :Load login page and log in to Patient 1 account");
