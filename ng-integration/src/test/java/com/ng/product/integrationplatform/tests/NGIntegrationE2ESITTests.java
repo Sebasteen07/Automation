@@ -175,11 +175,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
 		Thread.sleep(7000);
-		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
+//		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
-		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
-		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
+//		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
+//		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
@@ -502,8 +502,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 	CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 	
-	verifyProcessingStatusto3(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
-	verifyProcessingStatusto3(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
+	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
+	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 	
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
@@ -646,7 +646,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 		
-		verifyProcessingStatusto3(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
+		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 		
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
@@ -747,7 +747,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 		
-		verifyProcessingStatusto3(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
+		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getIntegrationPracticeID());
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
@@ -1013,11 +1013,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
 		Thread.sleep(7000);
-		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
+//		log("Step 7: Do get processing status call and verify the processing time of registration mail to be received");
 
-		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
-		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
+//		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
+//		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
@@ -1170,7 +1170,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		return person_id;
 	}
 	
-	public void verifyMFJOBStatus(String person_id,String integrationID) throws Throwable{
+	public void verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(String person_id,String integrationID) throws Throwable{
 		
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id.trim()+"'");
 		
@@ -1197,11 +1197,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
 
 		Thread.sleep(7000);
-		log("Step Begins: Do get processing status call and verify the processing time of registration mail to be received");
+//		log("Step Begins: Do get processing status call and verify the processing time of registration mail to be received");
 
-		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
-		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
+//		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
+//		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
@@ -1292,5 +1292,88 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
             }
         }
 	  }
+	}
+	
+    public void verifyMFJOBStatus(String person_id,String integrationID) throws Throwable{
+		
+		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id.trim()+"'");
+		
+		log("Step Begins: Verify the status of MF agent job");
+        String emailStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
+		String jobStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"')");
+
+		log("Status of MF agent job "+jobStatus1);
+		if(!jobStatus1.isEmpty()){
+			if(jobStatus1.equalsIgnoreCase("Pending"))
+		    log("Step End: Request is sent to RSDK and inprocess with job status "+jobStatus1);
+			else if(jobStatus1.equalsIgnoreCase("COMPLETED"))
+			log("Registration URL is received");
+			}
+		else{
+			log("Please check Bad request or MF agent is not working");
+		}
+			
+        String jobID = DBUtils.executeQueryOnDB("MFAgentDB","select jobid from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"')");
+		
+		String messageID = DBUtils.executeQueryOnDB("MFAgentDB","select messageid from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"')");
+		
+		Log4jUtil.log("Step Begins: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
+
+		Thread.sleep(7000);
+		log("Step Begins: Do get processing status call and verify the processing time of registration mail to be received");
+
+		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
+		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+	
+		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
+		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
+		
+		if(emailStatus.equalsIgnoreCase("Pending")){
+			for (int i = 0; i < arg_timeOut; i++) {
+				emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
+				if (emailStatus.equalsIgnoreCase("COMPLETED")) {
+	            	log("Step End: Mail sent to patient successfully");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
+		CommonUtils.VerifyTwoValues(emailStatus,"equals","COMPLETED");
+		
+		String jobStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"')");
+		CommonUtils.VerifyTwoValues(jobStatus,"equals","COMPLETED");
+		log("Step End: The processing status of MF agent job is "+jobStatus+" registration mail is sent to patient for enrollment");		
+	}
+    
+    public void verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(String person_id,String integrationID) throws Throwable{
+		String processing_status =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
+		if(processing_status.equals("1")||processing_status.equals("2")){
+			log("Processing status is "+processing_status+" i.e. Enrollment record is sent to RSDK.");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
+	            if (processing_status.equals("2")) {
+	            	verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(person_id,integrationID);
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
+	            if (processing_status.equals("3")) {
+	            	log("Step End: Processing status is "+processing_status+" i.e. RSDK has sent mail to the guardian");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
 	}
 }
