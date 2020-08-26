@@ -30,7 +30,6 @@ import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.patientportal2.test.PatientPortal2AcceptanceTests;
 import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
@@ -49,7 +48,6 @@ import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
 import com.ng.product.integrationplatform.apiUtils.apiRoutes;
-import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.pojo.NewPatient;
 import com.ng.product.integrationplatform.utils.CommonUtils;
@@ -80,14 +78,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     int arg_timeOut=600; 
     NGAPIUtils ngAPIUtils;
     apiRoutes EnterprisebaseURL;
-    NGAPIFlows NGAPIFlows;
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws Throwable {
 		log("Getting Test Data");
 		PropertyLoaderObj = new PropertyFileLoader();
 		ngAPIUtils = new NGAPIUtils(PropertyLoaderObj);
-		NGAPIFlows = new NGAPIFlows(PropertyLoaderObj);
 		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
 			EnterprisebaseURL= apiRoutes.valueOf("BaseURL");
 		}
