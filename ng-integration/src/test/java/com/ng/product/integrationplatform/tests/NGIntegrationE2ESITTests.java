@@ -181,6 +181,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
 //		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
+		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
 		
@@ -1021,6 +1022,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
 //		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
+		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
 		
@@ -1205,6 +1207,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
 //		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
+		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
 		
@@ -1329,6 +1332,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 	
+		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
 		
