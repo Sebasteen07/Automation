@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>20.6.0-SNAPSHOT</version>
+        <version>20.7.0-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>integrationplatform-api</artifactId>
@@ -44,27 +44,27 @@
 		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>qa-automation-utils</artifactId>
-  			<version>20.6.0-SNAPSHOT</version>
+  			<version>20.7.0-SNAPSHOT</version>
   		</dependency>
   		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal1-api</artifactId>
-  			<version>20.6.0-SNAPSHOT</version>
+  			<version>20.7.0-SNAPSHOT</version>
   		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal1-api</artifactId>
-  			<version>20.6.0-SNAPSHOT</version>
+  			<version>20.7.0-SNAPSHOT</version>
   		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal2-object-maps</artifactId>
-  			<version>20.6.0-SNAPSHOT</version>
+  			<version>20.7.0-SNAPSHOT</version>
   		</dependency>
   		<dependency>
        		<groupId>com.intuit.ihg</groupId>
        		<artifactId>patientportal1-object-maps</artifactId>
-       		<version>20.6.0-SNAPSHOT</version>
+       		<version>20.7.0-SNAPSHOT</version>
        	</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -97,21 +97,21 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>20.6.0-SNAPSHOT</version>
+	      <version>20.7.0-SNAPSHOT</version>
 	      <scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 	      <groupId>com.intuit.health.eh.adapters</groupId>
 	      <artifactId>allscripts-ehr-adapter-dto</artifactId>
-	      <version>20.6.0-SNAPSHOT</version>
+	      <version>20.7.0-SNAPSHOT</version>
 	      <scope>compile</scope>
     	</dependency>
     	
     	<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>20.6.0-SNAPSHOT</version>
+			<version>20.7.0-SNAPSHOT</version>
 		</dependency>
 		
   		<dependency>
@@ -123,7 +123,7 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>20.6.0-SNAPSHOT</version>
+	  		<version>20.7.0-SNAPSHOT</version>
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>com.allscripts</groupId>
@@ -154,7 +154,7 @@
         <dependency>
 	  	 	<groupId>com.intuit.ihg</groupId>
 	  	 	<artifactId>practiceportal-object-maps</artifactId>
-	  	 	<version>20.6.0-SNAPSHOT</version>
+	  	 	<version>20.7.0-SNAPSHOT</version>
 	  </dependency>
 	</dependencies>
 	<build>
