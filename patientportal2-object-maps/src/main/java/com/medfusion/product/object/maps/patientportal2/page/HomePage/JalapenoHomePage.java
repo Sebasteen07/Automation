@@ -170,6 +170,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
 		log("Clicking on Medical Record Summaries button on dashboard");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
@@ -177,6 +179,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public DocumentsPage goToDocumentsPage() {
 
 		log("Clicking on Health Record menu button");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		try {
 			WebElement otherDocumentsButton = new WebDriverWait(driver, 30)

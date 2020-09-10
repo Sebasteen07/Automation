@@ -36,7 +36,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	@FindBy(id = "primaryphone_type")
 	private WebElement primaryPhoneType;
 
-	@FindBy(id = "gender")
+	@FindBy(xpath = "//*[@id='gender']")
 	private WebElement gender;
 
 	@FindBy(xpath = "//label[@for='gender']")
@@ -280,13 +280,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 			driver.switchTo().frame(w1);
 		}
 		
-		setStreetAddress_20();
+			setStreetAddress_20();
 			setCity_20();
 			setState_20(state1);
 			setZip_20();
 			setPrimaryPhoneNumber_20();
 			setPrimaryPhoneType_20(phoneType);
-			setSex_20(type);
+			setSex(type);
 
 			return clickSaveContinue(FormEmergencyContactPage.class);
 		}

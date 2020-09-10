@@ -1427,7 +1427,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayNow() throws Exception {
 
 		log("Test Case: testPayNow - No login payment");
@@ -1443,7 +1443,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		log("Step 2: Fill in payment info and submit");
 		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
-		
+		Thread.sleep(90000);
 		log("Step 3: Verify payment OK");
 		
 		log("Step 4: Verify account set to N/A");
