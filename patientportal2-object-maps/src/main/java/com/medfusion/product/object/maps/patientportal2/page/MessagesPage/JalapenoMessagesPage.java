@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 
 import java.util.ArrayList;
@@ -53,8 +54,18 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
 		private WebElement statementLinkText;
-
+		
+		@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
+		private WebElement msgSubject;
+		
+		@FindBy(xpath = "//div[@class='messageContent ng-binding']//a")
+		private WebElement messageURL;
+		
+		@FindBy(xpath = "//div[@class='messageContent ng-binding']")
+		private WebElement inboxMessageBody;
+		
 		private static final int maxCount = 15;
+		private static final String replyContent="This is response to doctor's message";
 
 		@Override
 		public boolean areBasicPageElementsPresent() {
@@ -120,7 +131,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				log("Write a message");
 				
 				replyButton.click();
-				replyBody.sendKeys("This is response to doctor's message");
+				replyBody.sendKeys(replyContent);
 				Thread.sleep(5000);
 				sendButton.click();
 				Thread.sleep(5000);
@@ -177,6 +188,24 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				log("Statement: " + statementLinkText.getText());
 				statementLinkText.click();
 				return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
+		}
+		
+		public int checkSubjectLength() {
+			log("The subject of the message recieved at Patient inbox is "+msgSubject.getText());
+			return msgSubject.getText().length();
+		}
+		
+		public String getMessageBody()
+		{
+			return inboxMessageBody.getText();
+		}
+
+		public String getMessageURL() {
+			return messageURL.getText();
+		}
+		
+		public static String getPatientReply() {
+			return replyContent;
 		}
 
 }
