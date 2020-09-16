@@ -10,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
@@ -535,6 +534,29 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Go to Documents tab");
 		DocumentsPage documentsPage = recordSummaries.gotoOtherDocumentTab();
 		// assertTrue(documentsPage.areBasicPageElementsPresent());
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientEducationNoIssue() throws InterruptedException {
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage
+				.login(testData.getProperty("patientEducationNoissueUserName"), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Navigate to Medical Record Summaries Page");
+		MedicalRecordSummariesPage recordSummaries = jalapenoHomePage.clickOnMedicalRecordSummaries(driver);
+
+		logStep("Select first visible CCD");
+		recordSummaries.selectFirstVisibleCCD();
+
+		logStep("Click on patient Education Button ");
+		recordSummaries.clickPatientEducation();
+
+		logStep("Validating the issue's on Care Nexis Page");
+		assertEquals(recordSummaries.getUnmatchedCondition(), "Unmatched Condition");
 
 	}
 
