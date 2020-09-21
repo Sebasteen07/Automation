@@ -2,8 +2,6 @@
 package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
-
-//import static org.testng.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -12,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
@@ -400,7 +397,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Instant messageBuildingStart = Instant.now();
 		logStep("Send a new secure message to static patient");
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
+		ArrayList<String> practicePortalMessage= patientMessagingPage.setFieldsAndPublishMessage(testData, "TestingMessage", messageSubject);
 
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -412,7 +409,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Waiting for message from practice portal");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
-
+		
+		logStep("Veriying the length of the subject at Patient Portal");
+		int subjectLength=messagesPage.checkSubjectLength();
+        assertEquals(messageSubject.length(), subjectLength);
+        
+        logStep("Verifying the content of the Message at Patient Portal");
+        assertEquals(practicePortalMessage.get(1), messagesPage.getMessageBody());
+        
+        logStep("Verifying that URL is present in Patient inbox as sent from Practice Portal");
+        assertEquals(practicePortalMessage.get(0), messagesPage.getMessageURL());
+              
 		logStep("Response to the message");
 		assertTrue(messagesPage.replyToMessage(driver));
 
@@ -422,6 +429,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		patientMessagingPage = practiceHome.clickPatientMessagingTab();
 		assertTrue(patientMessagingPage.findMyMessage(messageSubject));
+		
+		logStep("Verifying Reply Content at Practice Portal");
+		String replyContent= patientMessagingPage.checkReplyContent();
+		assertEquals(replyContent,JalapenoMessagesPage.getPatientReply());
+		
 		// TODO: Edit navigation on portal and search by date to search exact day
 
 		logStep("Check email for notification for new message");
@@ -522,6 +534,29 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Go to Documents tab");
 		DocumentsPage documentsPage = recordSummaries.gotoOtherDocumentTab();
 		// assertTrue(documentsPage.areBasicPageElementsPresent());
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientEducationNoIssue() throws InterruptedException {
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage
+				.login(testData.getProperty("patientEducationNoissueUserName"), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Navigate to Medical Record Summaries Page");
+		MedicalRecordSummariesPage recordSummaries = jalapenoHomePage.clickOnMedicalRecordSummaries(driver);
+
+		logStep("Select first visible CCD");
+		recordSummaries.selectFirstVisibleCCD();
+
+		logStep("Click on patient Education Button ");
+		recordSummaries.clickPatientEducation();
+
+		logStep("Validating the issue's on Care Nexis Page");
+		assertEquals(recordSummaries.getUnmatchedCondition(), "Unmatched Condition");
 
 	}
 
