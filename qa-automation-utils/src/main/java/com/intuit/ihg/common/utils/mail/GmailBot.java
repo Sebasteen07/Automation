@@ -17,6 +17,9 @@ import javax.mail.Flags.Flag;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeUtility;
 import javax.mail.search.*;
+
+import org.eclipse.jetty.util.log.Log;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -106,6 +109,8 @@ public class GmailBot implements MailBot {
 	public Store connect(MailSessionType mt, String sUser, String sPassword) throws MessagingException {
 
 		IHGUtil.PrintMethodName();
+		
+		Log4jUtil.log("Gmail Password :" + sPassword);
 
 		mailSession = setup(mt);
 
@@ -117,6 +122,7 @@ public class GmailBot implements MailBot {
 			case IMAP:
 
 				store = mailSession.getStore("imaps");
+				Log4jUtil.log(sPassword);
 				store.connect("imap.gmail.com", sUser, sPassword);
 				break;
 

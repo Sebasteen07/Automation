@@ -2743,6 +2743,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		log("Step 5: Do a get pidc call to get medfusion member id");
+		Thread.sleep(5000);
 		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
 		Thread.sleep(2000);
 		
@@ -2849,6 +2850,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
+		Thread.sleep(10000);
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);

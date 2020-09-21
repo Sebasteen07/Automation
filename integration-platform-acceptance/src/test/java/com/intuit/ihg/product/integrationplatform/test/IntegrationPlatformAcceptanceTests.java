@@ -1654,7 +1654,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 7);
 
 		log("Step 7: Login to Patient Portal");
 		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);

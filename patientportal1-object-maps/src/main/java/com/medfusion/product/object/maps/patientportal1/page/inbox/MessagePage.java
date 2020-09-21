@@ -182,6 +182,8 @@ public class MessagePage extends BasePageObject {
 	 */
 	public void verifyCCDViewerAndClose() throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		driver.manage().window().maximize();
+		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
 		IHGUtil.waitForElement(driver, 20, webframe);
 		driver.switchTo().frame(webframe);
