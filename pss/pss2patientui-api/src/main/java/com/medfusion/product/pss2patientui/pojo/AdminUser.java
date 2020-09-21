@@ -9,9 +9,20 @@ public class AdminUser {
 	private Boolean isInsuranceDisplayed;
 	private Boolean isIPDFLow;
 	private Boolean isLoginlessFlow;
+	private Boolean isAnonymousFlow;
+
+
 	private String practiceId;
 
 	public AdminUser() {}
+
+	public Boolean getIsAnonymousFlow() {
+		return isAnonymousFlow;
+	}
+
+	public void setIsAnonymousFlow(Boolean isAnonymousFlow) {
+		this.isAnonymousFlow = isAnonymousFlow;
+	}
 
 	public String getUser() {
 		return user;

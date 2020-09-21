@@ -22,10 +22,11 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.Appointm
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".btn")})
+	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 provider-width-btn']")})
 	private List<WebElement> providerList;
 
 	@FindBy(how = How.ID, using = "providerserach")
@@ -44,6 +45,8 @@ public class Provider extends PSS2MainPage {
 		// webElementsList.add(providerList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
+
+	CommonMethods CommonMethods = new CommonMethods(driver);
 
 	public Location selectLocation(String providerName) {
 		log("in selectLocation providerList" + providerName);
@@ -82,7 +85,7 @@ public class Provider extends PSS2MainPage {
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
-		return null;
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 	
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
@@ -115,9 +118,23 @@ public class Provider extends PSS2MainPage {
 		return providerList;
 	}
 
-	public int searchForProviderFromList(String providerName) {
+	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
+		Thread.sleep(6000);
+
+		CommonMethods.highlightElement(providerList.get(0));
+		providerList.get(0).click();
+		log("Clicked on the Provider ");
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+
+	public int searchForProviderFromListt(String providerName) throws InterruptedException {
+		searchForProvider.sendKeys(providerName);
+		log("providerList = " + providerList.size());
+		Thread.sleep(6000);
+
+
 		return providerList.size();
 	}
 }

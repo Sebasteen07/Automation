@@ -1,0 +1,128 @@
+<h2>Reporter output</h2><table><tr><td><pre>
+testRoot: C:\Users\Qaauto\Documents\qa-automation\pss\pss2patientui-automation
+testConfigFile: null
+testResultVideos: true
+testResultScreenshots: true
+selenium.browser: chrome
+client os.type: windows
+clear.browser.cache: true
+enable.video.recording: true
+capture.screenshot: true
+reporting.full.stack.trace: false
+isJavascriptCaptureEnabled: false
+isProxyEnabled: false
+logger.level: null
+firefox.profile: null
+firefox.assumeUntrustedCertificateIssuer: true (default = false)
+firefox.acceptUntrustedCertificates: true (default = true)
+firefox.isenableNativeEventEnabled: false
+firefox.downloadable.mime.types: application/excel,application/x-excel,application/x-msexcel,application/vnd.ms-excel,text/comma-separated-values,application/csv,image/jpeg,text/csv,application/x-ofx,application/vnd.intu.qfx,application/vnd.intu.qbo,application/pdf,application/x-pdf
+firefox.download.location: C:\Users\Qaauto\Documents\qa-automation\pss\pss2patientui-automation\target\firefox-download
+</pre><br/></td></tr>
+<tr><td>Test case: testE2EAnonymousAthena<br/></td></tr>
+<tr><td>Execution Environment: DEV3<br/></td></tr>
+<tr><td>Execution Browser: chrome<br/></td></tr>
+<tr><td>Resetting step counter<br/></td></tr>
+<tr><td>Step 1: set test data for new patient <br/></td></tr>
+<tr><td>Step 2: Fetch rule and settings from PSS 2.0 Admin portal<br/></td></tr>
+<tr><td>adminSettings Step 1: LOGIN TO ADMIN<br/></td></tr>
+<tr><td>adminSettings Step 1: Login to Admin portal. url=https://dev3-pss-adminportal-ui.dev.medfusion.net/ and username=pss.atstaff1 and password=admin123<br/></td></tr>
+<tr><td>Checking all elements on PSS2AdminLogin<br/></td></tr>
+<tr><td>refreshing admin page after login<br/></td></tr>
+<tr><td>adminSettings Step 2: Navigate to ACCESS RULE tab in settings<br/></td></tr>
+<tr><td>Status of Enable Anonymous Flow = true<br/></td></tr>
+<tr><td>Status of Display Privacy policy = false<br/></td></tr>
+<tr><td>Status of Allow Duplicate Patient false<br/></td></tr>
+<tr><td>Status of Enable OTP true<br/></td></tr>
+<tr><td>Anonymous url is https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/></td></tr>
+<tr><td>PSS Patient URL : https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/></td></tr>
+<tr><td>Anonymous url is https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/></td></tr>
+<tr><td>buttonSaveAnonymous clicked Sucessfully <br/></td></tr>
+<tr><td>Click on Save Button<br/></td></tr>
+<tr><td>adminSettings Step 3: Navigate to Patient Flow tab in settings<br/></td></tr>
+<tr><td>Checking page elements<br/></td></tr>
+<tr><td>are basic elements present true<br/></td></tr>
+<tr><td>adminSettings Step 4: Fetch the list of Rules<br/></td></tr>
+<tr><td>length 2<br/></td></tr>
+<tr><td>Rule length : T, L, B<br/></td></tr>
+<tr><td>Rule length : T, L, B<br/></td></tr>
+<tr><td>Insurance Displayed ? true<br/></td></tr>
+<tr><td>adminSettings Step 5: Logout from PSS Admin Portal<br/></td></tr>
+<tr><td>logging out from admin...need to add logic to check which page it redirects too<br/></td></tr>
+<tr><td>Step 3: Fetch the rules set in Admin<br/></td></tr>
+<tr><td>rule are T, L, B<br/></td></tr>
+<tr><td>Step 4: Move to PSS patient Portal 2.0 to book an Appointment - https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/></td></tr>
+<tr><td>Checking all elements on AnonymousDismissPage<br/></td></tr>
+<tr><td>selectAFlow method started<br/></td></tr>
+<tr><td>Step 8: Select Appointment for appointment. startOrderon? true<br/></td></tr>
+<tr><td>--------Flow Starts---------------<br/></td></tr>
+<tr><td>don't update Insurance<br/></td></tr>
+<tr><td>size of list=2<br/></td></tr>
+<tr><td>selectOrderWith=Appointment type<br/></td></tr>
+<tr><td>selectOrderWith=Appointment type<br/></td></tr>
+<tr><td>Step 9: Verfiy Appointment Page and appointment =Any 15<br/></td></tr>
+<tr><td>Checking all elements on AppointmentPage<br/></td></tr>
+<tr><td>Step 10: Verfiy Location Page and location to be selected = 7 Hills Department<br/></td></tr>
+<tr><td>Checking all elements on Location<br/></td></tr>
+<tr><td>In SearchProvider Method<br/></td></tr>
+<tr><td>Location is ---> 3 . 7 Hills Department<br/></td></tr>
+<tr><td>address = null<br/></td></tr>
+<tr><td>Step 11: Verfiy Provider Page and Provider = Chris Bulkley<br/></td></tr>
+<tr><td>Checking all elements on Provider<br/></td></tr>
+<tr><td>providerList = 1<br/></td></tr>
+<tr><td>Clicked on the Provider <br/></td></tr>
+<tr><td>Checking page elements<br/></td></tr>
+<tr><td>Appointment Date selected=18<br/></td></tr>
+<tr><td> isAnonymousFlow is TRUE <br/></td></tr>
+<tr><td>Step 12: Verify Confirmation page and Scheduled page<br/></td></tr>
+<tr><td>Appointment Time selected=01:30 AM<br/></td></tr>
+<tr><td>phoneNumber= 7856324102<br/></td></tr>
+<tr><td>Day=11<br/></td></tr>
+<tr><td>date_pres 2015-2026<br/></td></tr>
+<tr><td>Enabled ?true<br/></td></tr>
+<tr><td>Displayed ? true<br/></td></tr>
+<tr><td>date >>>> 2015-2026<br/></td></tr>
+<tr><td>1983  2015<br/></td></tr>
+<tr><td>Difference is 37.0<br/></td></tr>
+<tr><td>clicks :4<br/></td></tr>
+<tr><td>date is selected	<br/></td></tr>
+<tr><td>formfilled ...<br/></td></tr>
+<tr><td>Step 13: Verify if Appointment is scheduled and download ics file<br/></td></tr>
+<tr><td>>> Chris BulkleyChange<br/></td></tr>
+<tr><td>apt Details= 7 Hills Department
+867-645-4781
+Change<br/></td></tr>
+<tr><td>apt Details= Any 15Change<br/></td></tr>
+<tr><td>apt Details= September 18, 2020 Change<br/></td></tr>
+<tr><td>apt Details= 01:30 AM (EDT)Change<br/></td></tr>
+<tr><td>apt Details= Chris BulkleyChange<br/></td></tr>
+<tr><td>appointment ID = Your confirmation number is:<br/></td></tr>
+<tr><td>Checking all elements on ScheduledAppointmentAnonymous<br/></td></tr>
+<tr><td>Add to calendar option is displayed and is clickable.<br/></td></tr>
+<tr><td>latestFile C:\Users\Qaauto\Downloads\1288440.ics<br/></td></tr>
+<tr><td>Reading ICS file for the given path. C:\Users\Qaauto\Downloads\1288440.ics<br/></td></tr>
+<tr><td> calander details  = BEGIN:VEVENT
+DTSTAMP:20200917T081902Z
+DTSTART:20200918T053000Z
+DTEND:20200918T054500Z
+SUMMARY:Doctors appointment
+UID:20200917T081902Z-1@fe80:0:0:0:250:56ff:fe8b:3718%ens192
+DESCRIPTION:Date : 09/18/2020\nTime : 01:30:00(EDT)\nDuration : 15 minutes\nProvider : Chris Bulkley-Jones\nConfirmation Number : 225349\nLocation : 200806 Road no 1 Near road no 2 New york CA 12345 43.2978147 -73.68089090000001\n867-645-4781\n
+CREATED:20200917T081902Z
+END:VEVENT
+<br/></td></tr>
+<tr><td>Date : 09/18/2020
+Time : 01:30:00(EDT)
+Duration : 15 minutes
+Provider : Chris Bulkley-Jones
+Confirmation Number : 225349
+Location : 200806 Road no 1 Near road no 2 New york CA 12345 43.2978147 -73.68089090000001
+867-645-4781
+<br/></td></tr>
+<tr><td>filePath= C:\Users\Qaauto\Downloads\1288440.ics<br/></td></tr>
+<tr><td>filePath= true<br/></td></tr>
+<tr><td>1288440.ics is deleted!<br/></td></tr>
+<tr><td>Is file deleted ? true<br/></td></tr>
+<tr><td>Test Case Passed<br/></td></tr>
+<tr><td>TEST RESULT:<br/></td></tr>
+</table>

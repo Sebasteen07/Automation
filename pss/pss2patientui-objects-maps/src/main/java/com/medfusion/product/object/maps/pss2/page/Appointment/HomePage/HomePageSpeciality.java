@@ -133,7 +133,7 @@ public class HomePageSpeciality extends PSS2MainPage {
 		return null;
 	}
 
-	public OnlineAppointmentScheduling logout() {
+	public OnlineAppointmentScheduling logout() throws InterruptedException {
 		patientheader.logout();
 		return PageFactory.initElements(driver, OnlineAppointmentScheduling.class);
 	}

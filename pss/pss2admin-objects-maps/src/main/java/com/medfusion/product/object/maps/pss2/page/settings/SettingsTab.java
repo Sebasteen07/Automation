@@ -45,6 +45,7 @@ public class SettingsTab extends PSS2MenuPage {
 
 	public AccessRules gotoAccessTab() {
 		accessTab.click();
+		jse.executeScript("window.scrollBy(0,550)", "");
 		return PageFactory.initElements(driver, AccessRules.class);
 	}
 

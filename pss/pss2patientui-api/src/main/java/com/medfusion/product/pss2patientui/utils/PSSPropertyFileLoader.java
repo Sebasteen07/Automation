@@ -49,7 +49,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGW"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGE"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
@@ -107,11 +107,20 @@ public class PSSPropertyFileLoader {
 		adminuser.setPracticeId(property.getProperty("practiceIdNG"));
 	}
 
+	public void setAdminAthena(AdminUser adminuser) {
+		adminuser.setAdminUrl(property.getProperty("adminurl"));
+		adminuser.setUser(property.getProperty("adminusernameAthena"));
+		adminuser.setPassword(property.getProperty("adminpasswordAthena"));
+		adminuser.setPracticeId(property.getProperty("practiceIdAthena"));
+		adminuser.setRule(property.getProperty("rule"));
+
+	}
+
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
-		appointValues.setLocation(property.getProperty("locationGE"));
+		appointValues.setLocation(property.getProperty("location"));
 		appointValues.setPassword(property.getProperty("passwordGE"));
 		appointValues.setProvider(property.getProperty("providerGE"));
 		appointValues.setSpeciality(property.getProperty("specialityGE"));
@@ -170,6 +179,10 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseNG(Appointment appointValues) {
 		Log4jUtil.log("Loading data for Next Gen appointment related cases..");
+		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
+		Log4jUtil.log(appointValues.getUrlAnonymous());
+
+		appointValues.setIsInsuranceEnabled(true);
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
 		appointValues.setDatetime(property.getProperty("datetimeNG"));
 		appointValues.setLocation(property.getProperty("locationNG"));
@@ -228,4 +241,25 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordNG"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 	}
+
+	public void setAppointmentResponseAthena(Appointment appointValues) {
+		
+		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAthena"));
+		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setAppointmenttype(property.getProperty("appointmenttypeAthena"));
+		appointValues.setLocation(property.getProperty("locationAthena"));
+		appointValues.setProvider(property.getProperty("providerAthena"));
+		appointValues.setDob(property.getProperty("dobAthena"));
+		appointValues.setFirstName(property.getProperty("firstNameGW"));
+		appointValues.setLastName(property.getProperty("lastNameGW"));
+		appointValues.setEmail(property.getProperty("emailGW"));
+		appointValues.setGender(property.getProperty("genderNG"));
+		appointValues.setZipCode(property.getProperty("zipCodeNG"));
+		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
+		// appointValues.setAnonymousFlow(true);
+
+
+	}
+
+
 }

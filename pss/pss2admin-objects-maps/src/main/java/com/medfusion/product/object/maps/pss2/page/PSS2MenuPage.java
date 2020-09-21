@@ -18,11 +18,19 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/a")
+	// @FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/a")
+	// private WebElement settingsLogout;
+
+	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
 	private WebElement settingsLogout;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/ul/li/a/i")
+	// @FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/ul/li/a/i")
+	// private WebElement logout;
+
+
+	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
 	private WebElement logout;
+
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/settings\"]")
 	private WebElement linkSettings;

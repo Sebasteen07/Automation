@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AccessRules extends SettingsTab {
 
@@ -19,7 +20,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "checkbox2")
 	private WebElement checkShowInsurancePage;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[2]/div[2]/div/fieldset/div[2]/div[1]/input")
+	@FindBy(how = How.XPATH, using = "//fieldset//i")
 	private WebElement checkShowPrivacyPolicyPage;
 
 	@FindBy(how = How.ID, using = "checkbox4")
@@ -43,15 +44,42 @@ public class AccessRules extends SettingsTab {
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
 	private List<WebElement> buttonList;
 
-	@FindAll({@FindBy(xpath = ".//*[@class=\"col-md-12\"]/a")})
+	// @FindAll({@FindBy(xpath = ".//*[@class=\"col-md-12\"]/a")})
+	// private List<WebElement> urlList;
+
+	@FindAll({@FindBy(xpath = "//div[@class=\"col-md-12\"]/a")})
 	private List<WebElement> urlList;
 	
 	@FindBy(how = How.ID, using = "enableloginless")
 	private WebElement enableLoginless;
 	
+	// *******************WebElements for anonymous flow*****************************
+
+	// @FindBy(how = How.XPATH, using = "//div[4]//div[1]//div[1]//div[1]//label[1]//i[1]")
+	// private WebElement enableAnonymous;
+
+	@FindBy(how = How.ID, using = "enableanonymous")
+	private WebElement enableAnonymous;
+
+	@FindBy(how = How.ID, using = "showPrivacyForAnonymousConfig")
+	private WebElement displayPrivacyPolicyAnonymous;
+
+	@FindBy(how = How.ID, using = "showDuplicatePatient")
+	private WebElement allowDuplicatePatientAnonymous;
+
+	@FindBy(how = How.ID, using = "enableOtpAnonymousConfig")
+	private WebElement enableOTPAnonymous;
+
+	@FindBy(how = How.XPATH,
+			using = "//div[@class='col-md-12']//div[@class='row']//div[@class='col-md-12']//button[@class='btn btn-primary'][contains(text(),'Save')]")
+	private WebElement buttonSaveAnonymous;
+
+
 	public AccessRules(WebDriver driver) {
 		super(driver);
 	}
+
+	CommonMethods commonMethods = new CommonMethods(driver);
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -66,6 +94,7 @@ public class AccessRules extends SettingsTab {
 	public String getLoginlessURL() {
 		return urlList.get(0).getText();
 	}
+
 
 	public String isLLNewPatientSelected() {
 		return checkNewPatient.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getCssValue("background-color"); //
@@ -129,8 +158,47 @@ public class AccessRules extends SettingsTab {
 	public WebElement getIDPUrlElement() {
 		return urlList.get(1);
 	}
-	
+
 	public String isLoginlessTrue() {
 		return enableLoginless.getAttribute("ng-reflect-model");
 	}
+	
+
+	public String getAnonymousUrl() {
+		log("Anonymous url is " + urlList.get(2).getText());
+		commonMethods.highlightElement(urlList.get(2));
+		return urlList.get(2).getText();
+
+	}
+
+	public String isEnableAnonymousSelected() {
+		commonMethods.highlightElement(enableAnonymous);
+		return enableAnonymous.getAttribute("ng-reflect-model");
+	}
+
+	public String isDisplayPrivacypolicyAnonymous() {
+		commonMethods.highlightElement(displayPrivacyPolicyAnonymous);
+		return displayPrivacyPolicyAnonymous.getAttribute("ng-reflect-model");
+	}
+	
+	public String isAllowDuplicatePatientAnonymous() {
+		commonMethods.highlightElement(displayPrivacyPolicyAnonymous);
+		return displayPrivacyPolicyAnonymous.getAttribute("ng-reflect-model");
+	}
+	
+	public String isEnableOtpAnonymous() {
+		commonMethods.highlightElement(enableOTPAnonymous);
+
+		return enableOTPAnonymous.getAttribute("ng-reflect-model");
+	}
+	
+	public void saveAnonymouSetting() {
+		commonMethods.highlightElement(buttonSaveAnonymous);
+		buttonSaveAnonymous.click();
+		log("buttonSaveAnonymous clicked Sucessfully ");
+
+	}
+
+
+
 }

@@ -15,17 +15,22 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 
 public class AppointmentDateTime extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".rbc-event-content")})
+	@FindAll({@FindBy(xpath = "//div[@class='rbc-event-content']")})
 	public List<WebElement> appointmentList;
+	
 
-	@FindAll({@FindBy(css = ".time-btn")})
+	@FindAll({@FindBy(xpath = "//a[@id='containerDiv']")})
 	public List<WebElement> appointmentTimeList;
+
+	// @FindAll({@FindBy(css = ".time-btn")})
+	// public List<WebElement> appointmentTimeList;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
 	private WebElement scrollBarCalander;
@@ -40,11 +45,15 @@ public class AppointmentDateTime extends PSS2MainPage {
 			IHGUtil.waitForElement(driver, 120, appointmentList.get((appointmentList.size() - 1)));
 		}
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(appointmentList.get(0));
+		for (int i = 0; i < appointmentList.size(); i++) {
+			webElementsList.add(appointmentList.get(i));
+		}
+
 		return assessPageElements(webElementsList);
 	}
 
 	public String selectDate(Boolean nextMonthBooking) {
+		String dt = null;
 		if (nextMonthBooking) {
 			driver.findElement(By.className("rbc-next-month")).click();
 			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
@@ -54,12 +63,13 @@ public class AppointmentDateTime extends PSS2MainPage {
 			if (appointmentList.get(i).isDisplayed()) {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
-				appointmentTimeList.clear();
+				dt = appointmentList.get(i).getText();
+				//appointmentTimeList.clear();
 				return appointmentList.get(i).getText();
 				
 			}
 		}
-		return null;
+		return dt;
 	}
 
 	public UpdateInsurancePage selectAppointmentTimeIns() {
@@ -88,11 +98,27 @@ public class AppointmentDateTime extends PSS2MainPage {
 			}
 		}
 		appointmentTimeList.clear();
-		return null;
+		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
 
-	public void selectAppointmentDateAndTime(WebDriver driver) {
+	public AnonymousPatientInformation selectAppointmentTimeSlot(Boolean nextMonthBooking) {
+
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			if (appointmentTimeList.get(i).isDisplayed()) {
+				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
+				appointmentTimeList.get(i).click();
+				return PageFactory.initElements(driver, AnonymousPatientInformation.class);
+			}
+		}
+		appointmentTimeList.clear();
+		return PageFactory.initElements(driver, AnonymousPatientInformation.class);
+	}
+
+	public UpdateInsurancePage selectAppointmentDateAndTime(WebDriver driver) {
+		// List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+		log("Available time slots are " + appointmentTimeList.size());
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
@@ -100,7 +126,8 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 			}
 		}
-		appointmentTimeList.clear();
+		// appointmentTimeList.clear();
+		return PageFactory.initElements(driver, UpdateInsurancePage.class);
 	}
 
 	public String getTimeDifference() {

@@ -42,8 +42,8 @@ public class ExistingPatient extends PSS2MainPage {
 	@FindAll({@FindBy(css = ".dismissbuttons")})
 	private List<WebElement> dismissButton;
 
-	public ExistingPatient(WebDriver driver) {
-		super(driver);
+	public ExistingPatient(WebDriver driver, String url) {
+		super(driver, url);
 	}
 
 	@Override

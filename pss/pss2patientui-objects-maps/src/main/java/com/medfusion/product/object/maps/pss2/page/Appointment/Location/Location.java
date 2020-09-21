@@ -26,13 +26,16 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class Location extends PSS2MainPage {
 
-	@FindAll({@FindBy(className = "locationlinkclick")})
+	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
 	private List<WebElement> locationList;
 
-	@FindBy(how = How.ID, using = "sel1")
+	@FindAll({@FindBy(xpath = "//a[contains(text(),'River Oaks Main')]")})
+	private List<WebElement> locationRever;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='sel1']")
 	private WebElement selectRadius;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"locationwizardlist\"]/div[3]/div[1]/div/div[1]/div/input")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-sm-4 locationclass']//input[@placeholder='Zipcode']")
 	private WebElement nearByZipCodeInput;
 
 	public Location(WebDriver driver) {
@@ -58,16 +61,26 @@ public class Location extends PSS2MainPage {
 
 
 	public Provider searchProvider(String locationName) throws InterruptedException {
-		isViewallmessagesButtonPresent(driver);
+
+		log("In SearchProvider Method");
+		// isViewallmessagesButtonPresent(driver);
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
-				javascriptClick(locationList.get(i));
+				log("Location is ---> " + locationList.get(i).getText());
+
+				locationList.get(i).click();
+				// javascriptClick(locationList.get(i));
 				// getLocAddress(i);
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
-		return null;
+		return PageFactory.initElements(driver, Provider.class);
+
 	}
+
+
+
+
 
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		isViewallmessagesButtonPresent(driver);
@@ -149,6 +162,7 @@ public class Location extends PSS2MainPage {
 	public Boolean isSearchLocationEnabled() {
 		// log("ZipSearch display =" + nearByZipCodeInput.isDisplayed() + " and Select Dropdown display=" + selectRadius.isDisplayed());
 		if (selectRadius.isDisplayed() && nearByZipCodeInput.isDisplayed()) {
+			log("selectRadius.isDisplayed  --->" + selectRadius.isDisplayed());
 			return true;
 		} else {
 			return false;

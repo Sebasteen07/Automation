@@ -13,7 +13,12 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.Loginle
 
 public class OnlineAppointmentScheduling extends PSS2MainPage {
 	
-	@FindBy(how = How.XPATH, using = ".//div[@class=\"col-sm-10\"]/div[1]/a/span")
+	//Code Change by SS
+
+	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
+	private WebElement dismissBtn;
+
+	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement buttonNewPatient;
 	
 	@FindBy(how = How.XPATH, using = ".//div[@class=\"col-sm-10\"]/div[2]/a/span")
@@ -43,10 +48,16 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 	}
 
 	public LoginlessPatientInformation selectNewPatientLoginLess() {
-		buttonNewPatient.click();
+
+		// buttonNewPatient.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
 
+	public LoginlessPatientInformation clickDismiss() {
+
+		buttonNewPatient.click();
+		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
+	}
 	public ExistingPatientIDP selectExistingPatientIDP() {
 		buttonExistingPatient.click();
 		return PageFactory.initElements(driver, ExistingPatientIDP.class);

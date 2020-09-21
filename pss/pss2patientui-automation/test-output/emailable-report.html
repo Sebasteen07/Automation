@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>TestNG:  Unit Test</title>
+<style type="text/css">
+table caption,table.info_table,table.param,table.passed,table.failed {margin-bottom:10px;border:1px solid #000099;border-collapse:collapse;empty-cells:show;}
+table.info_table td,table.info_table th,table.param td,table.param th,table.passed td,table.passed th,table.failed td,table.failed th {
+border:1px solid #000099;padding:.25em .5em .25em .5em
+}
+table.param th {vertical-align:bottom}
+td.numi,th.numi,td.numi_attn {
+text-align:right
+}
+tr.total td {font-weight:bold}
+table caption {
+text-align:center;font-weight:bold;
+}
+table.passed tr.stripe td,table tr.passedodd td {background-color: #00AA00;}
+table.passed td,table tr.passedeven td {background-color: #33FF33;}
+table.passed tr.stripe td,table tr.skippedodd td {background-color: #cccccc;}
+table.passed td,table tr.skippedodd td {background-color: #dddddd;}
+table.failed tr.stripe td,table tr.failedodd td,table.param td.numi_attn {background-color: #FF3333;}
+table.failed td,table tr.failedeven td,table.param tr.stripe td.numi_attn {background-color: #DD0000;}
+tr.stripe td,tr.stripe th {background-color: #E6EBF9;}
+p.totop {font-size:85%;text-align:center;border-bottom:2px black solid}
+div.shootout {padding:2em;border:3px #4854A8 solid}
+</style>
+</head>
+<body>
+<table cellspacing=0 cellpadding=0 class="param">
+<tr><th>Test</th><th class="numi">Methods<br/>Passed</th><th class="numi">Scenarios<br/>Passed</th><th class="numi"># skipped</th><th class="numi"># failed</th><th class="numi">Total<br/>Time</th><th class="numi">Included<br/>Groups</th><th class="numi">Excluded<br/>Groups</th></tr>
+<tr><td style="text-align:left;padding-right:2em">Default test</td><td class="numi">1</td><td class="numi">1</td><td class="numi">0</td><td class="numi">0</td><td class="numi">415.4 seconds</td><td class="numi"></td><td class="numi"></td></tr>
+</table>
+<a id="summary"></a>
+<table cellspacing=0 cellpadding=0 class="passed">
+<tr><th>Class</th><th>Method</th><th># of<br/>Scenarios</th><th>Start</th><th>Time<br/>(ms)</th></tr>
+<tr><th colspan="4">Default test &#8212; passed</th></tr>
+<tr class="passedodd"><td rowspan="1">com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests02<td><a href="#m1"><b>testE2EAnonymousAthena</b> (AcceptanceTests) </a></td><td class="numi">1</td><td>1600330335023</td><td class="numi">409453</td></tr>
+</table>
+<h1>Default test</h1>
+<a id="m1"></a><h2>com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests02:testE2EAnonymousAthena</h2>
+<table cellspacing=0 cellpadding=0 class="param">
+<tr><th style="padding-left:1em;padding-right:1em">Parameter #1</th></tr>
+<tr><td style="padding-left:.5em;padding-right:2em">ATHENA</td>
+</tr>
+<tr><td style="padding-left:3em" colspan="1">
+Step 1: set test data for new patient <br/><br/>
+Step 2: Fetch rule and settings from PSS 2.0 Admin portal<br/><br/>
+adminSettings Step 1: LOGIN TO ADMIN<br/><br/>
+adminSettings Step 1: Login to Admin portal. url=https://dev3-pss-adminportal-ui.dev.medfusion.net/ and username=pss.atstaff1 and password=admin123<br/><br/>
+Checking all elements on PSS2AdminLogin<br/><br/>
+refreshing admin page after login<br/><br/>
+adminSettings Step 2: Navigate to ACCESS RULE tab in settings<br/><br/>
+Status of Enable Anonymous Flow = true<br/><br/>
+Status of Display Privacy policy = false<br/><br/>
+Status of Allow Duplicate Patient false<br/><br/>
+Status of Enable OTP true<br/><br/>
+Anonymous url is https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/><br/>
+PSS Patient URL : https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/><br/>
+Anonymous url is https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/><br/>
+buttonSaveAnonymous clicked Sucessfully <br/><br/>
+Click on Save Button<br/><br/>
+adminSettings Step 3: Navigate to Patient Flow tab in settings<br/><br/>
+Checking page elements<br/><br/>
+are basic elements present true<br/><br/>
+adminSettings Step 4: Fetch the list of Rules<br/><br/>
+length 2<br/><br/>
+Rule length : T, L, B<br/><br/>
+Rule length : T, L, B<br/><br/>
+Insurance Displayed ? true<br/><br/>
+adminSettings Step 5: Logout from PSS Admin Portal<br/><br/>
+logging out from admin...need to add logic to check which page it redirects too<br/><br/>
+Step 3: Fetch the rules set in Admin<br/><br/>
+rule are T, L, B<br/><br/>
+Step 4: Move to PSS patient Portal 2.0 to book an Appointment - https://dev3-pss.dev.medfusion.net/psspatient/anonymous/aff1e83e-f67b-43fc-8a13-b49d55945d44<br/><br/>
+Checking all elements on AnonymousDismissPage<br/><br/>
+selectAFlow method started<br/><br/>
+Step 8: Select Appointment for appointment. startOrderon? true<br/><br/>
+--------Flow Starts---------------<br/><br/>
+don't update Insurance<br/><br/>
+size of list=2<br/><br/>
+selectOrderWith=Appointment type<br/><br/>
+selectOrderWith=Appointment type<br/><br/>
+Step 9: Verfiy Appointment Page and appointment =Any 15<br/><br/>
+Checking all elements on AppointmentPage<br/><br/>
+Step 10: Verfiy Location Page and location to be selected = 7 Hills Department<br/><br/>
+Checking all elements on Location<br/><br/>
+In SearchProvider Method<br/><br/>
+Location is ---> 3 . 7 Hills Department<br/><br/>
+address = null<br/><br/>
+Step 11: Verfiy Provider Page and Provider = Chris Bulkley<br/><br/>
+Checking all elements on Provider<br/><br/>
+providerList = 1<br/><br/>
+Clicked on the Provider <br/><br/>
+Checking page elements<br/><br/>
+Appointment Date selected=18<br/><br/>
+ isAnonymousFlow is TRUE <br/><br/>
+Step 12: Verify Confirmation page and Scheduled page<br/><br/>
+Appointment Time selected=01:30 AM<br/><br/>
+phoneNumber= 7856324102<br/><br/>
+Day=11<br/><br/>
+date_pres 2015-2026<br/><br/>
+Enabled ?true<br/><br/>
+Displayed ? true<br/><br/>
+date >>>> 2015-2026<br/><br/>
+1983  2015<br/><br/>
+Difference is 37.0<br/><br/>
+clicks :4<br/><br/>
+date is selected	<br/><br/>
+formfilled ...<br/><br/>
+Step 13: Verify if Appointment is scheduled and download ics file<br/><br/>
+>> Chris BulkleyChange<br/><br/>
+apt Details= 7 Hills Department
+867-645-4781
+Change<br/><br/>
+apt Details= Any 15Change<br/><br/>
+apt Details= September 18, 2020 Change<br/><br/>
+apt Details= 01:30 AM (EDT)Change<br/><br/>
+apt Details= Chris BulkleyChange<br/><br/>
+appointment ID = Your confirmation number is:<br/><br/>
+Checking all elements on ScheduledAppointmentAnonymous<br/><br/>
+Add to calendar option is displayed and is clickable.<br/><br/>
+latestFile C:\Users\Qaauto\Downloads\1288440.ics<br/><br/>
+Reading ICS file for the given path. C:\Users\Qaauto\Downloads\1288440.ics<br/><br/>
+ calander details  = BEGIN:VEVENT
+DTSTAMP:20200917T081902Z
+DTSTART:20200918T053000Z
+DTEND:20200918T054500Z
+SUMMARY:Doctors appointment
+UID:20200917T081902Z-1@fe80:0:0:0:250:56ff:fe8b:3718%ens192
+DESCRIPTION:Date : 09/18/2020\nTime : 01:30:00(EDT)\nDuration : 15 minutes\nProvider : Chris Bulkley-Jones\nConfirmation Number : 225349\nLocation : 200806 Road no 1 Near road no 2 New york CA 12345 43.2978147 -73.68089090000001\n867-645-4781\n
+CREATED:20200917T081902Z
+END:VEVENT
+<br/><br/>
+Date : 09/18/2020
+Time : 01:30:00(EDT)
+Duration : 15 minutes
+Provider : Chris Bulkley-Jones
+Confirmation Number : 225349
+Location : 200806 Road no 1 Near road no 2 New york CA 12345 43.2978147 -73.68089090000001
+867-645-4781
+<br/><br/>
+filePath= C:\Users\Qaauto\Downloads\1288440.ics<br/><br/>
+filePath= true<br/><br/>
+1288440.ics is deleted!<br/><br/>
+Is file deleted ? true<br/><br/>
+Test Case Passed<br/><br/>
+</td></tr>
+</table>
+<p class="totop"><a href="#summary">back to summary</a></p>
+</body></html>

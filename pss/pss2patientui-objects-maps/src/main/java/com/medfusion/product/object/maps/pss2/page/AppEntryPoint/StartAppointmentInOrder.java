@@ -17,7 +17,10 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class StartAppointmentInOrder extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".btn")})
+	// @FindAll({@FindBy(xpath = "//body/div[@id='root']/div/div/div[@class='container']/div/div[@id='appointtypewizarddatalist']/div/button")})
+	// private List<WebElement> startingWith;
+
+	@FindAll({@FindBy(xpath = "//a[@class='btn appointmentTypedashboardbtn']")})
 	private List<WebElement> startingWith;
 
 	public StartAppointmentInOrder(WebDriver driver) {
@@ -35,6 +38,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		for (int i = 1; i <= startingWith.size(); i++) {
 
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				log("Starting Point Selected is " + startingWith.get(i).getText());
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
@@ -43,12 +47,15 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		return null;
 	}
 
-	public AppointmentPage selectFirstAppointment(String selectOrderWith) {
+	public AppointmentPage selectFirstAppointment(String selectOrderWith) throws InterruptedException {
 		log("size of list=" + startingWith.size());
+
 		log("selectOrderWith=" + selectOrderWith);
 		for (int i = 0; i < startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
 				log("selectOrderWith=" + selectOrderWith);
+
+				Thread.sleep(3000);
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}

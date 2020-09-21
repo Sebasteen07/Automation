@@ -25,14 +25,16 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
-		Thread.sleep(4400);
+		Thread.sleep(2000);
 		Log4jUtil.log("New = " + accessrule.isLLNewPatientSelected());
 		Log4jUtil.log("Existing = " + accessrule.isLLExistingPatientSelected());
-		Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
+		// Code changed by SS
+		// Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
 
 		Log4jUtil.log("isLLExistingPatientSelected " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
-			Log4jUtil.log("isLLInsurancePageSelected " + accessrule.isLLInsurancePageSelected());
+			// Code Commented
+			// Log4jUtil.log("isLLInsurancePageSelected " + accessrule.isLLInsurancePageSelected());
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
 			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("true")) {
 				accessrule.loginlessPrivacyPolicyClick();
@@ -51,6 +53,10 @@ public class PSSAdminUtils {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
 			testData.setUrlIPD(accessrule.getIDPUrl());
 		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
 
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
@@ -63,7 +69,7 @@ public class PSSAdminUtils {
 			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
 				setRulesNoSpecialitySet1(patientflow);
 			}
-			Thread.sleep(9000);
+			Thread.sleep(4000);
 			Log4jUtil.log("Rule length : " + patientflow.getRule());
 			adminuser.setRule(patientflow.getRule());
 		}
@@ -79,8 +85,72 @@ public class PSSAdminUtils {
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		adminpatientmatching.logout();
-		Thread.sleep(9000);
+		Thread.sleep(4000);
 	}
+
+	// ****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************
+
+	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+
+
+		Log4jUtil.log("adminSettings Step 2: Navigate to ACCESS RULE tab in settings");
+		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+		Thread.sleep(2000);
+		Log4jUtil.log("Status of Enable Anonymous Flow = " + accessrule.isEnableAnonymousSelected());
+		Log4jUtil.log("Status of Display Privacy policy = " + accessrule.isDisplayPrivacypolicyAnonymous());
+		Log4jUtil.log("Status of Allow Duplicate Patient " + accessrule.isAllowDuplicatePatientAnonymous());
+		Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
+			testData.setUrlLoginLess(accessrule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.IDP)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getAnonymousUrl());
+			testData.setUrlAnonymous(accessrule.getAnonymousUrl());
+		}
+
+		accessrule.saveAnonymouSetting();
+		Log4jUtil.log("Click on Save Button");
+
+		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
+		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
+
+		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
+		Log4jUtil.log("length " + patientflow.ruleLength());
+		Log4jUtil.log("Rule length : " + patientflow.getRule());
+		if (patientflow.ruleLength() > 0) {
+			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
+				setRulesNoSpecialitySet1(patientflow);
+			}
+			Thread.sleep(4000);
+			Log4jUtil.log("Rule length : " + patientflow.getRule());
+			adminuser.setRule(patientflow.getRule());
+		}
+		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
+		// if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
+		// adminuser.setIsInsuranceDisplayed(false);
+		// }
+		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+			adminuser.setIsInsuranceDisplayed(false);
+		}
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		adminpatientmatching.logout();
+		Thread.sleep(4000);
+	}
+
+
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
 		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username=" + adminuser.getUser() + " and password="
@@ -94,9 +164,9 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(16000);
+		Thread.sleep(6000);
 		driver.navigate().refresh();
-		Thread.sleep(34000);
+		Thread.sleep(14000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
