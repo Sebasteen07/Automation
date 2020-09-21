@@ -8,13 +8,13 @@ package com.ng.product.integrationplatform.apiUtils;
  ************************/
 
 public enum apiConfig {
-	
-	QAMainEnterpriseUsername("MFapiuser1"),
-	QAMainEnterprisePassword("MFapiuser1!"),
-	QAMainEnterpriseEmail("MFapiuser1@yopmail.com"),	
-	SITEnterpriseUsername("AdminNew"),
-	SITEnterprisePassword("AdminNew"),
-	SITEnterpriseEmail("sitadminnew@yopmail.com");
+		
+	QAMainEnterpriseUsername("Apiuser5"),
+	QAMainEnterprisePassword("Apiuser5!"),
+	QAMainEnterpriseEmail("apiuserphoe05142020@yopmail.com"),
+	SITEnterpriseUsername("MFNGapiuser5"),
+	SITEnterprisePassword("MFNGapiuser5!"),
+	SITEnterpriseEmail("MFNGapiuser5sit@yopmail.com");
 	private String configProperty;
 
 	apiConfig(String configProperty) {

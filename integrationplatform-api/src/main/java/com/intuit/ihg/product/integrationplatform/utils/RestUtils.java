@@ -3343,4 +3343,19 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		}
 		Assert.assertTrue(found, "Patient was not found in the response XML");
 	}
+	
+	public static void verifyOnDemandRequestSubmitted(String xmlFileName, String patientId) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Boolean found = false;
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PATIENTID);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (nodes.item(i).getTextContent().equals(patientId)) {
+		  	Log4jUtil.log(nodes.item(i).getTextContent()+" Expectd Patient Id equals to Actual PatientId  : "+patientId);
+		  	found = true;
+		  	break;
+		    }
+		}
+		Assert.assertTrue(found, "CCDA Request was not found in the response XML");
+	}
 }

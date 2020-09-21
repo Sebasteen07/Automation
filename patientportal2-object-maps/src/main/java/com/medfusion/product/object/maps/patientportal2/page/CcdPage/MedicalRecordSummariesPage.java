@@ -106,6 +106,12 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Unmatched Condition']")
 	private WebElement unmatchedCondition;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[1]")
+	private WebElement requestCompleteRecord;
+	
+	@FindBy(how = How.ID, using = "requestCcdContinueButton")
+	private WebElement requestRecord;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -324,5 +330,12 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	public String getUnmatchedCondition() {
 		IHGUtil.waitForElement(driver, 60, unmatchedCondition);
 		return unmatchedCondition.getText();
+	}
+	
+	public void requestCompleteRecord() {
+		IHGUtil.waitForElement(driver, 60, requestCompleteRecord);
+		requestCompleteRecord.click();
+		IHGUtil.waitForElement(driver, 60, requestRecord);
+		requestRecord.click();
 	}
 }
