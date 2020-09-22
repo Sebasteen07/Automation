@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page;
 
 import java.util.ArrayList;
@@ -91,9 +91,9 @@ public class PSS2MenuPage extends PSS2MainPage {
 		log("logging out from admin...need to add logic to check which page it redirects too");
 		try {
 			settingsLogout.click();
-			logout.click();	
-		}catch(Exception E) {
-			log("Exception occured while logging out. "+E);
+			logout.click();
+		} catch (Exception E) {
+			log("Exception occured while logging out. " + E);
 		}
 	}
 

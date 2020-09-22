@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class AccessRules extends SettingsTab {
 
 	@FindAll({@FindBy(xpath = "//div[@class=\"col-md-12\"]/a")})
 	private List<WebElement> urlList;
-	
+
 	@FindBy(how = How.ID, using = "enableloginless")
 	private WebElement enableLoginless;
-	
+
 	// *******************WebElements for anonymous flow*****************************
 
 
@@ -157,7 +157,7 @@ public class AccessRules extends SettingsTab {
 	public String isLoginlessTrue() {
 		return enableLoginless.getAttribute("ng-reflect-model");
 	}
-	
+
 
 	public String getAnonymousUrl() {
 		log("Anonymous url is " + urlList.get(2).getText());
@@ -175,18 +175,17 @@ public class AccessRules extends SettingsTab {
 		commonMethods.highlightElement(displayPrivacyPolicyAnonymous);
 		return displayPrivacyPolicyAnonymous.getAttribute("ng-reflect-model");
 	}
-	
+
 	public String isAllowDuplicatePatientAnonymous() {
 		commonMethods.highlightElement(displayPrivacyPolicyAnonymous);
 		return displayPrivacyPolicyAnonymous.getAttribute("ng-reflect-model");
 	}
-	
+
 	public String isEnableOtpAnonymous() {
 		commonMethods.highlightElement(enableOTPAnonymous);
-
 		return enableOTPAnonymous.getAttribute("ng-reflect-model");
 	}
-	
+
 	public void saveAnonymouSetting() {
 		commonMethods.highlightElement(buttonSaveAnonymous);
 		buttonSaveAnonymous.click();
