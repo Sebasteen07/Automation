@@ -29,14 +29,6 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	// @Override
-	// public boolean areBasicPageElementsPresent() {
-	// ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-	// webElementsList.add(buttonAllGood);
-	// // webElementsList.add(appointmentScheduledDetails.get(0));
-	// return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	// }
-
 	@Override
 	public boolean areBasicPageElementsPresent() {
 

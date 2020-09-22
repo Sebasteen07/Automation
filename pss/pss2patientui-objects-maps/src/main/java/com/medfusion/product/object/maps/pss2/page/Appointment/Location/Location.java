@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Location;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class Location extends PSS2MainPage {
 
 	public Location(WebDriver driver) {
 		super(driver);
-		// PageFactory.initElements(driver, Location.class);
+
 	}
 
 	private String addressValue = null;
@@ -61,27 +62,17 @@ public class Location extends PSS2MainPage {
 
 
 	public Provider searchProvider(String locationName) throws InterruptedException {
-
 		log("In SearchProvider Method");
-		// isViewallmessagesButtonPresent(driver);
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location is ---> " + locationList.get(i).getText());
-
 				locationList.get(i).click();
-				// javascriptClick(locationList.get(i));
-				// getLocAddress(i);
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
 		return PageFactory.initElements(driver, Provider.class);
-
 	}
-
-
-
-
-
+	
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		isViewallmessagesButtonPresent(driver);
 		log("location " + dateTime);
@@ -108,39 +99,16 @@ public class Location extends PSS2MainPage {
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-.withTimeout(60, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(NoSuchFrameException.class)
-				.ignoring(WebDriverException.class);
-		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
-			     public Boolean apply(WebDriver driver) {			    	
+			public Boolean apply(WebDriver driver) {
 				return driver.findElement(By.className("locationlinkclick")).isDisplayed();
-			       }
-			     }
-				);
+			}
+		});
 		return result;
 	}
-
-
-	// public void getLocAddress(int indexValue) {
-	// try {
-	// Thread.sleep(9000);
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	// log(indexValue + " = " + locationAddress.size());
-	//
-	// for (int i = 0; i < locationAddress.size(); i++) {
-	// if (i == indexValue) {
-	// setAddressValue(locationAddress.get(i).getText());
-	// }
-	// }
-	//
-	// }
-
 
 	public String getAddressValue() {
 		return addressValue;
@@ -150,7 +118,7 @@ public class Location extends PSS2MainPage {
 	public void setAddressValue(String addressValue) {
 		this.addressValue = addressValue;
 	}
-	
+
 	public int getLocationListSize() {
 		return locationList.size();
 	}

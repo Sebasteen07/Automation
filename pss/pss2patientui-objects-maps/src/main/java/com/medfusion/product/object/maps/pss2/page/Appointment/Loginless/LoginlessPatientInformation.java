@@ -118,12 +118,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
 
 		inputEmail.sendKeys(email);
-		// Code Commented by SS
-		// inputStreet.sendKeys(street);
-		// inputCity.sendKeys(city);
-		// Select selectStateValue = new Select(selectState);
-		// selectStateValue.selectByValue("AZ");
-
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(5000);
 		inputZip.sendKeys(zipCodeValue);
@@ -140,39 +134,13 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 
 	public HomePage fillNewPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue, String phoneNumber)
 			throws InterruptedException {
-//		log("phoneNumber= " + phoneNumber);
-//		inputFirstName.sendKeys(firstName);
-//		inputLastName.sendKeys(lastName);
-//		datePicker.click();
-//
-//		DateMatcher dateMatcher = new DateMatcher();
-//		dateMatcher.selectDate(dob, driver);
-//
-//		selectGender.click();
-//		Select selectGenderType = new Select(selectGender);
-//		selectGenderType.selectByValue(gender);
-//		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
-//
-//		inputEmail.sendKeys(email);
-//		inputStreet.sendKeys(street);
-//		inputCity.sendKeys(city);
-//		Select selectStateValue = new Select(selectState);
-//		selectStateValue.selectByValue("AZ");
-//		inputZip.sendKeys(zipCodeValue);
-//		log("formfilled ...");
-//		buttonNext.click();
 		log("phoneNumber= " + phoneNumber);
-
 		inputFirstName.sendKeys(firstName);
 		log("firstName= " + firstName);
-
-
 		inputLastName.sendKeys(lastName);
 		log("lastName= " + lastName);
 		datePicker.click();
-
 		log("datePicker clicked ");
-
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
@@ -193,12 +161,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
 
 		inputEmail.sendKeys(email);
-		// Code Commented by SS
-		// inputStreet.sendKeys(street);
-		// inputCity.sendKeys(city);
-		// Select selectStateValue = new Select(selectState);
-		// selectStateValue.selectByValue("AZ");
-
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(3000);
 		inputZip.sendKeys(zipCodeValue);

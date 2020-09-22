@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
@@ -28,13 +29,11 @@ public class PSSAdminUtils {
 		Thread.sleep(2000);
 		Log4jUtil.log("New = " + accessrule.isLLNewPatientSelected());
 		Log4jUtil.log("Existing = " + accessrule.isLLExistingPatientSelected());
-		// Code changed by SS
-		// Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
+
 
 		Log4jUtil.log("isLLExistingPatientSelected " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
-			// Code Commented
-			// Log4jUtil.log("isLLInsurancePageSelected " + accessrule.isLLInsurancePageSelected());
+
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
 			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("true")) {
 				accessrule.loginlessPrivacyPolicyClick();
@@ -74,9 +73,7 @@ public class PSSAdminUtils {
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		// if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
-		// adminuser.setIsInsuranceDisplayed(false);
-		// }
+
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
@@ -136,9 +133,7 @@ public class PSSAdminUtils {
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		// if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
-		// adminuser.setIsInsuranceDisplayed(false);
-		// }
+
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}

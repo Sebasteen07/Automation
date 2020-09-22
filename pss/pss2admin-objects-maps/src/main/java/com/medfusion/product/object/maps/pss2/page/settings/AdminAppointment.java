@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.WebDriver;
@@ -29,10 +30,6 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "showproviderimage")
 	private WebElement showProviderImage;
-
-	// @FindBy(how = How.ID, using = "allowpcp")
-	// private WebElement allowPCP;
-
 
 	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Primary Care Provider')]")
 	private WebElement allowPCP;

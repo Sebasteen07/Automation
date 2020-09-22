@@ -1,3 +1,4 @@
+//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 
 	public AnonymousPatientInformation(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
+	
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);

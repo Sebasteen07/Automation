@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.ArrayList;
@@ -44,8 +45,6 @@ public class AccessRules extends SettingsTab {
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
 	private List<WebElement> buttonList;
 
-	// @FindAll({@FindBy(xpath = ".//*[@class=\"col-md-12\"]/a")})
-	// private List<WebElement> urlList;
 
 	@FindAll({@FindBy(xpath = "//div[@class=\"col-md-12\"]/a")})
 	private List<WebElement> urlList;
@@ -55,8 +54,6 @@ public class AccessRules extends SettingsTab {
 	
 	// *******************WebElements for anonymous flow*****************************
 
-	// @FindBy(how = How.XPATH, using = "//div[4]//div[1]//div[1]//div[1]//label[1]//i[1]")
-	// private WebElement enableAnonymous;
 
 	@FindBy(how = How.ID, using = "enableanonymous")
 	private WebElement enableAnonymous;
@@ -85,9 +82,7 @@ public class AccessRules extends SettingsTab {
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(urlList.get(0));
-		// webElementsList.add(selectIDPMedfusionSSO);
-		// webElementsList.add(buttonSaveLoginLess);
-		// webElementsList.add(buttonSaveIDP);
+
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 

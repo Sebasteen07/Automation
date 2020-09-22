@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -67,10 +68,6 @@ public class PSSPatientUtils {
 		System.out.println("startOrderOn " + startOrderOn);
 		if (startOrderOn.equalsIgnoreCase("true")) {
 
-			// Boolean insuranceEnabled = true;
-			// if (insuranceEnabled) {
-			// Thread.sleep(3500);
-			// }
 			Log4jUtil.log("Insurance is enabled");
 			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -234,7 +231,6 @@ public class PSSPatientUtils {
 				Thread.sleep(3500);
 			}
 
-			// StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
 			StartAppointmentInOrder startappointmentInOrder = homepage.updateInsuranceInfo(driver, PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
 					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
 			Thread.sleep(1000);
@@ -315,19 +311,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		Log4jUtil.log("--------Flow Starts---------------");
 		AppointmentPage appointment = null;
-		// if (startOrderOn.equalsIgnoreCase("true")) {
-		// Boolean insuranceEnabled = true;
-		// if (insuranceEnabled) {
-		// Thread.sleep(3500);
-		// }
-		// Speciality speciality = homepage.skipInsuranceForSpeciality(driver);
-		// StartAppointmentInOrder startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-		//
-		// Thread.sleep(5000);
-		// appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		// } else {
-		// appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
-		// }
+
 
 
 		appointment = homepage.selectAppointment(testData.getSpeciality());
@@ -342,8 +326,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation().trim());
 		String loc = testData.getLocation();
 		Log4jUtil.log(">>>>>>>>>> Is Location Search Enabled? " + location);
-		// location.isSearchLocationEnabled();
-		// assertTrue(location.areBasicPageElementsPresent());
+
 		Provider provider = location.searchProvider(loc);
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -353,21 +336,14 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 
-		// AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
 
-		// AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
 
-		// assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
 
-		// ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateAndTime(driver);
-
-		// confirmationpage.appointmentConfirmed();
-		// appointmentToScheduled(confirmationpage, testData);
 
 		clickOnSubmitAppt(true, aptDateTime, testData, driver);
-		// bookAppointment(false, aptDateTime, testData, driver);
+
 	}
 
 	public Boolean deleteFile(String fileName) {
@@ -414,11 +390,6 @@ public class PSSPatientUtils {
 
 		Thread.sleep(2000);
 
-		// Log4jUtil.log(">>>>>>>>>>>>> Maximum Appointment Day = " + aptDateTime.getAppointmentDateList());
-		// Log4jUtil.log(">>>>>>>>>>>>> Slot Size = " + aptDateTime.getAppointmentTimeList());
-		// testData.setCalanderDaysAvaiable(aptDateTime.getAppointmentDateList());
-		// testData.setDisplaySlotCountLength(aptDateTime.getAppointmentTimeList());
-		// if (aptDateTime.getAppointmentDateList() > 0) {
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
@@ -427,11 +398,7 @@ public class PSSPatientUtils {
 			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 			appointmentToScheduled(confirmationpage, testData);
 		}
-		// }
-		// else {
-		// Log4jUtil.log(">>>>>>>>>>>>> Calander Not displayed for the Patient. check appoointment rules in admin portal.");
-		// testData.setIsCalanderDateDisplayed(false);
-		// }
+
 	}
 
 	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
@@ -523,7 +490,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 14: Logout from PSS 2.0 Patient UI ");
 
 		OnlineAppointmentScheduling onlineappointmentscheduling = homePage.logout();
-		// Log4jUtil.log("PSS 2.0 Main Page loaded = " + onlineappointmentscheduling.areBasicPageElementsPresent());
+
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
@@ -531,10 +498,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("selectAFlow method started");
 		Thread.sleep(1000);
 		testData.setIsInsuranceEnabled(false);
-		// Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
-		// if (homepage.isPopUP()) {
-		// homepage.popUPClick();
-		// }
+
 		Thread.sleep(1000);
 		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
 

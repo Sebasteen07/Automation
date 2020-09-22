@@ -57,10 +57,7 @@ public class PrivacyPolicy extends PSS2MainPage {
 	public boolean areBasicPageElementsPresent() {
 		IHGUtil.PrintMethodName();
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-//		webElementsList.add(checkBoxAccept);
-//		webElementsList.add(buttonCancel);
-//		webElementsList.add(buttonPrevious);
-//		webElementsList.add(buttonSubmit);
+
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 

@@ -24,9 +24,6 @@ public class PSSPatientHeader extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "logoutbutton")
 	private WebElement nameSettings;
 
-	// @FindBy(how = How.XPATH, using = "//*[contains(text(),'Logout')]")
-	// private WebElement logout;
-
 	@FindBy(how = How.XPATH, using = "//li[@class='logoutborderline']")
 	private WebElement logout;
 

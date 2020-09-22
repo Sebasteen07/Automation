@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.AppointmentType;
 
 import java.util.ArrayList;
@@ -26,9 +27,6 @@ public class AppointmentPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
 	private WebElement gotoNextStep;
-
-//	@FindAll({@FindBy(css = ".btn")})
-//	private List<WebElement> appointmentTypeList;
 	
 	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> appointmentTypeList;	

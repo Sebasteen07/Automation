@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.DateTime;
 
 import static org.testng.Assert.assertTrue;
@@ -28,9 +29,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//a[@id='containerDiv']")})
 	public List<WebElement> appointmentTimeList;
-
-	// @FindAll({@FindBy(css = ".time-btn")})
-	// public List<WebElement> appointmentTimeList;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
 	private WebElement scrollBarCalander;
@@ -126,7 +124,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 			}
 		}
-		// appointmentTimeList.clear();
+
 		return PageFactory.initElements(driver, UpdateInsurancePage.class);
 	}
 

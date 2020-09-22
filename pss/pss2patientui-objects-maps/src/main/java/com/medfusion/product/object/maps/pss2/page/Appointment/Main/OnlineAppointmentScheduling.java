@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 
 public class OnlineAppointmentScheduling extends PSS2MainPage {
-	
-	//Code Change by SS
 
 	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement dismissBtn;
@@ -49,7 +48,6 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 
 	public LoginlessPatientInformation selectNewPatientLoginLess() {
 
-		// buttonNewPatient.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
 

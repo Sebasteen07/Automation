@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import java.util.ArrayList;
@@ -54,9 +55,6 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({@FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> selectSpecialityList;
 
-	// @FindAll({@FindBy(css = ".btn-link")})
-	// private List<WebElement> cancelAppointmentList;
-
 	@FindAll({@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]")})
 	private List<WebElement> cancelAppointmentList;
 
@@ -82,18 +80,12 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']//button[@class='dismissbuttons']")
 	private WebElement dismissIDPPopUp;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id=\"upcomingappoitment\"]/div[1]/div/div[3]/div[2]/div/div/div/div[3]/div[2]/button/span")
-	// private WebElement cancelModalPopup;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement cancelReason;
 
 	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
 	private WebElement cancelSubmit;
-
-
-	// @FindBy(how = How.CLASS_NAME, using = "okbuttons")
-	// private WebElement cancelAppointmentConfirmed;
 
 	@FindBy(how = How.XPATH, using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
 	private WebElement cancelAppointmentConfirmed;
@@ -176,7 +168,7 @@ public class HomePage extends PSS2MainPage {
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
 		}
-		// return null;
+
 		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
 

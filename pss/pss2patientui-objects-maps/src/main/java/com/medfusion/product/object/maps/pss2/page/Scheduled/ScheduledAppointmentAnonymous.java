@@ -1,3 +1,4 @@
+//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Scheduled;
 
 import java.util.ArrayList;
@@ -19,9 +20,6 @@ public class ScheduledAppointmentAnonymous extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@id='gotodashboard']")
 	private WebElement bookAnotherAppointment;
 
-	// @FindBy(how = How.CSS, using = ".btn-link.addCalendar")
-	// private WebElement linkAddToCalander;
-
 	@FindBy(how = How.XPATH, using = "//button[@class='btn-link addCalendar hidden-xs']/span")
 	private WebElement linkAddToCalander;
 
@@ -32,9 +30,6 @@ public class ScheduledAppointmentAnonymous extends PSS2MainPage {
 	// Web Element replaced by confirmationNumber
 	@FindBy(how = How.XPATH, using = "//h1[@class=\"schedule\"]/text()")
 	private WebElement appointmentID;
-
-	// @FindBy(how = How.XPATH, using = "//*[@id=\"appointmentconfirmationtop\"]/div/div[7]/div")
-	// private WebElement confirmationNumber;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']/h1/span[2]")
 	private WebElement confirmationNumber;

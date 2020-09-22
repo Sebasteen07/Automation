@@ -18,13 +18,11 @@ public class DismissPage extends PSS2MainPage {
 
 	public DismissPage(WebDriver driver, String url) {
 		super(driver, url);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		// TODO Auto-generated method stub
-
 		return true;
 
 	}

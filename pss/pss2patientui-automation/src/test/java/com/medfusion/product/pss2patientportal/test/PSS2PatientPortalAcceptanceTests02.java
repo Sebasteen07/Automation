@@ -1,3 +1,4 @@
+//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import org.testng.annotations.DataProvider;
@@ -31,9 +32,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
 
-		// propertyData.setAdminAthena(adminuser);
-		// propertyData.setAppointmentResponseAthena(testData);
-
 		adminuser.setIsAnonymousFlow(true);
 		adminuser.setIsExisting(true);
 
@@ -42,11 +40,10 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		adminUtils.adminSettingsAnonymous(driver, adminuser, testData, PSSConstants.ANONYMOUS);
 		log("Step 3: Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
-		//String rule = "T, L, B";
+		// String rule = "T, L, B";
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		// PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		// psspatientutils.setTestData(partnerPractice, testData, adminuser);
+
 		log("Step 4: Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
 
 		AnonymousDismissPage anonymousDismissPage = new AnonymousDismissPage(driver, testData.getUrlAnonymous());
@@ -58,7 +55,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {
 		Object[][] obj = new Object[][] {{"ATHENA"}, {"NG"}};
-		//Object[][] obj = new Object[][] {{"ATHENA"}};
+		// Object[][] obj = new Object[][] {{"ATHENA"}};
 		return obj;
 	}
 
