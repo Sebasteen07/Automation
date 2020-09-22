@@ -27,7 +27,6 @@ public class PSSPatientHeader extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//li[@class='logoutborderline']")
 	private WebElement logout;
 
-
 	public PSSPatientHeader(WebDriver driver) {
 		super(driver);
 	}

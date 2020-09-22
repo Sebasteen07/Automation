@@ -1,10 +1,9 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Dashboard;
 
 import org.openqa.selenium.WebDriver;
 
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
-
 
 public class PSS2AdminDashboard extends PSS2MainPage {
 

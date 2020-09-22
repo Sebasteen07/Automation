@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.List;
@@ -72,7 +72,6 @@ public class ExistingPatient extends PSS2MainPage {
 			Select selectGenderType = new Select(selectGender.get(0));
 			selectGenderType.selectByValue(gender);
 		}
-
 		buttonSubmit.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}

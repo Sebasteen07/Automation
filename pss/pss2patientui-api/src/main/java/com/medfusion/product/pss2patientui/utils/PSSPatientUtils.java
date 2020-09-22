@@ -39,7 +39,6 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
-import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
@@ -65,7 +64,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("LBTFlow");
 		Log4jUtil.log("Step 8: Select location for appointment.");
 		Location location = null;
-		System.out.println("startOrderOn " + startOrderOn);
+		Log4jUtil.log("startOrderOn " + startOrderOn);
 		if (startOrderOn.equalsIgnoreCase("true")) {
 
 			Log4jUtil.log("Insurance is enabled");
@@ -175,9 +174,6 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Appointment for appointment. startOrderon? " + startOrderOn);
 		Log4jUtil.log("--------Flow Starts---------------");
 		AppointmentPage appointment;
-
-		CommonMethods commonMethods = new CommonMethods(driver);
-
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			Boolean insuranceEnabled = true;
 			if (insuranceEnabled) {
@@ -201,8 +197,6 @@ public class PSSPatientUtils {
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
-		// AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
-
 		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
@@ -213,7 +207,6 @@ public class PSSPatientUtils {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
-			// bookAppointment(false, aptDateTime, testData, driver);
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 
@@ -317,7 +310,6 @@ public class PSSPatientUtils {
 		appointment = homepage.selectAppointment(testData.getSpeciality());
 
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		// assertTrue(appointment.areBasicPageElementsPresent());
 		Thread.sleep(1000);
 		appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Boolean Value of getIsAppointmentPopup   = " + Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -369,6 +361,7 @@ public class PSSPatientUtils {
 	public static File lastFileModified(String dir) {
 		File fl = new File(dir);
 		File[] files = fl.listFiles(new FileFilter() {
+			@Override
 			public boolean accept(File file) {
 				return file.isFile();
 			}
@@ -421,7 +414,6 @@ public class PSSPatientUtils {
 		Thread.sleep(2000);
 
 		if (isInsuranceDisplated) {
-			// UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
 			appointmentToScheduled(confirmationpage, testData);

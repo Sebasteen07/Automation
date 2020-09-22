@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Provider;
 
 import java.util.ArrayList;
@@ -88,22 +88,18 @@ public class Provider extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
-	
+
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(NoSuchFrameException.class)
-				.ignoring(WebDriverException.class);
-		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
-			     public Boolean apply(WebDriver driver) {			    	
+			@Override
+			public Boolean apply(WebDriver driver) {
 				return driver.findElement(By.cssSelector(".btn")).isDisplayed();
-			       }
-			     }
-				);
+			}
+		});
 		return result;
 	}
 
@@ -134,8 +130,6 @@ public class Provider extends PSS2MainPage {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
 		Thread.sleep(6000);
-
-
 		return providerList.size();
 	}
 }

@@ -40,7 +40,6 @@ public class NewPatientInsuranceInfo extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//a[@class='wizard-link']")
 	private WebElement patientInfoLink;
 
-
 	public NewPatientInsuranceInfo(WebDriver driver) {
 		super(driver);
 	}

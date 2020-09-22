@@ -1,12 +1,15 @@
 package com.intuit.ihg.common.utils.mail;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Date;
 
 import javax.mail.MessagingException;
 
-import static org.testng.Assert.*;
 import org.testng.annotations.Test;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 @Test
 public class GmailTest {
@@ -14,7 +17,7 @@ public class GmailTest {
 	public void testGmailInboxNewMessageCount() throws MessagingException {
 		Gmail gmail = new Gmail("ihgqa.dev3@gmail.com", "intuit123");
 		int count = gmail.getInboxNewMessageCount();
-		System.out.println("Message Count: " + count);
+		Log4jUtil.log("Message Count: " + count);
 		assertTrue(count >= 0, "There was an issue retrieving message count from Gmail.");
 	}
 

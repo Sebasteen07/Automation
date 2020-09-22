@@ -19,24 +19,17 @@ public class SelectProfilePage extends PSS2MainPage {
 
 	public SelectProfilePage(WebDriver driver) {
 		super(driver);
-
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		// TODO Auto-generated method stub
-
 		Assert.assertEquals("PSS2MainPage", selectProfileLabel.getText());
-
 		return true;
 	}
 
-
 	public HomePage selectProfile() {
-
 		log("On Select Profile Page");
 		primaryProfile.click();
-
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 }

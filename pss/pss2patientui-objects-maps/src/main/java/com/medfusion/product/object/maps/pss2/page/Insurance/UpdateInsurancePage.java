@@ -56,9 +56,8 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		webElementsList.add(buttonUpdateInsuranceInfo);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
-	CommonMethods commonMethods= new CommonMethods(driver);
 
-
+	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public ConfirmationPage skipInsuranceUpdate() throws InterruptedException {
 		jse.executeScript("window.scrollBy(0,350)", "");

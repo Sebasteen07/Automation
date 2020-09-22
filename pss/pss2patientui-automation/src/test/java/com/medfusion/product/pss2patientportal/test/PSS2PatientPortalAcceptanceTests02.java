@@ -1,4 +1,4 @@
-//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import org.testng.annotations.DataProvider;
@@ -26,9 +26,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-
 		testData.setAnonymousFlow(true);
-
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
 
