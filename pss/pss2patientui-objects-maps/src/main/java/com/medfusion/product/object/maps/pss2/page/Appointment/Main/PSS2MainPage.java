@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
 public abstract class PSS2MainPage extends BasePageObject {
-
 	public PSS2MainPage(WebDriver driver) {
 		super(driver);
 	}
@@ -35,7 +34,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 			e.printStackTrace();
 		}
 		PageFactory.initElements(driver, this);
-
 		if (!areBasicPageElementsPresent()) {
 			throw new UnsupportedOperationException("Page not loaded");
 		}
@@ -54,7 +52,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 
 	public boolean assessPageElements(ArrayList<WebElement> allElements) {
 		log("Checking page elements");
-
 		for (WebElement element : allElements) {
 			int attempt = 1;
 			while (attempt < 3) {

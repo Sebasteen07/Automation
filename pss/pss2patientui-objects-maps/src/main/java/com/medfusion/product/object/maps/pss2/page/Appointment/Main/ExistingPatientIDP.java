@@ -13,13 +13,10 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.SelectProfilePage;
 
 public class ExistingPatientIDP extends PSS2MainPage {
-
 	@FindBy(how = How.ID, using = "loginUsername")
 	private WebElement inputLoginUsername;
-
 	@FindBy(how = How.ID, using = "loginPassword")
 	private WebElement inputLoginPassword;
-
 	@FindBy(how = How.XPATH, using = "/html/body/div[3]/div[1]/div[1]/form/a/span")
 	private WebElement buttonSignIn;
 

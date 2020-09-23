@@ -26,13 +26,10 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
-
 	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 provider-width-btn']")})
 	private List<WebElement> providerList;
-
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
-
 	@FindAll({@FindBy(css = ".providerImage-width")})
 	private List<WebElement> providerImages;
 
@@ -90,10 +87,8 @@ public class Provider extends PSS2MainPage {
 	}
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
-
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
@@ -119,7 +114,6 @@ public class Provider extends PSS2MainPage {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
 		Thread.sleep(6000);
-
 		CommonMethods.highlightElement(providerList.get(0));
 		providerList.get(0).click();
 		log("Clicked on the Provider ");

@@ -17,7 +17,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 
 public class StartAppointmentInOrder extends PSS2MainPage {
-
 	@FindAll({@FindBy(xpath = "//a[@class='btn appointmentTypedashboardbtn']")})
 	private List<WebElement> startingWith;
 

@@ -9,52 +9,36 @@ import org.openqa.selenium.support.How;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AdminAppointment extends SettingsTab {
-
 	@FindBy(how = How.ID, using = "cancelappointment")
 	private WebElement cancelAppointment;
-
 	@FindBy(how = How.ID, using = "blockpatientmonths")
 	private WebElement blockPatientMonths;
-
 	@FindBy(how = How.ID, using = "slotcount")
 	private WebElement slotCount;
-
 	@FindBy(how = How.ID, using = "maxappt")
 	private WebElement maxAppt;
-
 	@FindBy(how = How.ID, using = "maxslotmonths")
 	private WebElement maxSlotMonths;
-
 	@FindBy(how = How.ID, using = "majorage")
 	private WebElement majorAge;
-
 	@FindBy(how = How.ID, using = "showproviderimage")
 	private WebElement showProviderImage;
-
 	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Primary Care Provider')]")
 	private WebElement allowPCP;
-
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
-
 	@FindBy(how = How.ID, using = "nextAvailable")
 	private WebElement nextavailable;
-
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
-
 	@FindBy(how = How.ID, using = "radior0")
 	private WebElement radioOption0;
-
 	@FindBy(how = How.ID, using = "radior1")
 	private WebElement radioOption1;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
 	private WebElement buttonSave;
-
 	@FindBy(how = How.XPATH, using = "//div[@id='appt']//div//form[@class='ng-untouched ng-pristine ng-valid']//button[@class='btn btn-primary']")
 	private WebElement careTeamConfgSave;
-
 
 	public AdminAppointment(WebDriver driver) {
 		super(driver);
@@ -66,7 +50,6 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public void clearAll() {
-
 		cancelAppointment.clear();
 		cancelAppointment.sendKeys("01:00");
 		blockPatientMonths.clear();
@@ -77,7 +60,6 @@ public class AdminAppointment extends SettingsTab {
 		maxAppt.sendKeys("1");
 		maxSlotMonths.clear();
 		maxSlotMonths.sendKeys("1");
-
 		majorAge.clear();
 		majorAge.sendKeys("18");
 		log("----------------------------------------------------------------------------------");
@@ -86,7 +68,6 @@ public class AdminAppointment extends SettingsTab {
 		log("searchLocation =" + searchLocation.isEnabled());
 		log("pastApptMonths text =" + pastApptMonths.getText());
 		log("----------------------------------------------------------------------------------");
-
 		if (showProviderImage.isEnabled() && showProviderImage.isDisplayed()) {
 			showProviderImage.click();
 		}
@@ -97,7 +78,6 @@ public class AdminAppointment extends SettingsTab {
 			searchLocation.click();
 		}
 		pastApptMonths.clear();
-
 		IHGUtil.waitForElement(driver, 60, buttonSave);
 		buttonSave.click();
 	}
@@ -145,7 +125,6 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public void toggleAllowPCP() throws InterruptedException {
-
 		jse.executeScript("window.scrollBy(0,2000)");
 		Thread.sleep(2000);
 		allowPCP.click();

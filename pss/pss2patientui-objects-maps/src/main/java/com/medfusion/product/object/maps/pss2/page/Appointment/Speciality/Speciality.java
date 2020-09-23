@@ -13,10 +13,8 @@ import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmen
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class Speciality extends PSS2MainPage {
-
 	@FindAll({@FindBy(xpath = "//a[@class='btn specialtybtndashboard handle-text-Overflow outer-div']")})
 	private List<WebElement> selectSpecialityList;
-
 	@FindBy(how = How.ID, using = "specailtydashboard")
 	private WebElement searchSpeciality;
 
@@ -33,7 +31,6 @@ public class Speciality extends PSS2MainPage {
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().contains(specialityName)) {
 				log("selectSpeciality Selected is " + selectSpecialityList.get(i).getText());
-
 				jse.executeScript("arguments[0].setAttribute('style', 'background: green; border: 3px solid blue;');", selectSpecialityList.get(i));
 				selectSpecialityList.get(i).click();
 				return PageFactory.initElements(driver, StartAppointmentInOrder.class);

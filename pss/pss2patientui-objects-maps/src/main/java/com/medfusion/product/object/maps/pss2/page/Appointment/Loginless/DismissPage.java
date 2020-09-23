@@ -9,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class DismissPage extends PSS2MainPage {
-
 	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement dismissBtn;
 
@@ -26,5 +25,4 @@ public class DismissPage extends PSS2MainPage {
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
-
 }

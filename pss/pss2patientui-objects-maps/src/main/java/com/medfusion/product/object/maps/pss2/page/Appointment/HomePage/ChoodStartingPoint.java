@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class ChoodStartingPoint extends PSS2MainPage {
-
 	@FindAll({@FindBy(xpath = "//div[@id='startingpointdashboard']//div//a")})
 	private List<WebElement> chooseStartPoint;
 

@@ -20,58 +20,40 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 
 public class HomePageSpeciality extends PSS2MainPage {
-
 	PSSPatientHeader patientheader;
 	PSSPatientFooter patientfooter;
-
 	@FindBy(how = How.CLASS_NAME, using = "topupcoming")
 	public WebElement topUpComingList;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[1]/div/div[2]/button/span[2]")
 	public WebElement buttonNameCircle;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[1]/div[1]/div/div[2]/button/span[1]")
 	public WebElement labelPatientName;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[2]/button/span")
 	public WebElement buttonCancelAppointment;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[3]/button/span")
 	public WebElement buttonRevertCancelAppointment;
-
 	@FindAll({@FindBy(css = ".btn.specialtybtndashboard.handle-text-Overflow")})
 	public List<WebElement> selectSpecialityList;
-
 	@FindAll({@FindBy(css = ".btn-link")})
 	public List<WebElement> cancelAppointmentList;
-
 	@FindAll({@FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div")})
 	public List<WebElement> selectUpcomingApptList;
-
 	@FindAll({@FindBy(xpath = "//*[@id=\"pastappointmentevent\"]/div/div")})
 	public List<WebElement> selectPastApptList;
-
 	@FindBy(how = How.XPATH, using = ".//*[@id='upcomingevents']/p/span")
 	public WebElement noUpcomingText;
-
 	@FindBy(how = How.ID, using = "searchspecialtydashboard")
 	public WebElement specialitySearch;
-
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	public WebElement noPastText;
-
 	@FindAll({@FindBy(css = ".dismissbuttons")})
 	public List<WebElement> dismissButtons;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModalsss\"]/div/div/div[3]/button/span")
 	public WebElement dismissIDPPopUp;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingappoitment\"]/div[1]/div/div[3]/div[2]/div/div/div/div[3]/div[2]/button/span")
 	public WebElement cancelModalPopup;
-
 	@FindBy(how = How.CLASS_NAME, using = "okbuttons")
 	public WebElement cancelAppointmentConfirmed;
-
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
 	public WebElement upCmgAptLabel;
 
@@ -102,7 +84,6 @@ public class HomePageSpeciality extends PSS2MainPage {
 
 	public Location selectLocation(String specialityText) {
 		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
-
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
 			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
 				selectSpecialityList.get(i).click();

@@ -15,7 +15,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AnonymousDismissPage extends PSS2MainPage {
-
 	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']//button[@class='dismissbuttons']")
 	private WebElement dismissBtn;
 
@@ -38,5 +37,4 @@ public class AnonymousDismissPage extends PSS2MainPage {
 		dismissBtn.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
 }

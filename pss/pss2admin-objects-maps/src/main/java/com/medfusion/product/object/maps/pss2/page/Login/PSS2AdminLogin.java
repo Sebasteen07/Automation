@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Login;
 
 import java.util.ArrayList;
@@ -13,15 +13,11 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 
-
 public class PSS2AdminLogin extends PSS2MainPage {
-
 	@FindBy(how = How.ID, using = "username")
 	private WebElement inputUserName;
-
 	@FindBy(how = How.ID, using = "password")
 	private WebElement inputPassword;
-
 	@FindBy(how = How.LINK_TEXT, using = "Login")
 	private WebElement buttonLogin;
 
@@ -48,5 +44,4 @@ public class PSS2AdminLogin extends PSS2MainPage {
 		buttonLogin.click();
 		return PageFactory.initElements(driver, PSS2PracticeConfiguration.class);
 	}
-
 }
