@@ -39,7 +39,6 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
-import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
@@ -174,7 +173,6 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Appointment for appointment. startOrderon? " + startOrderOn);
 		Log4jUtil.log("--------Flow Starts---------------");
 		AppointmentPage appointment;
-		CommonMethods commonMethods = new CommonMethods(driver);
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			Boolean insuranceEnabled = true;
 			if (insuranceEnabled) {
