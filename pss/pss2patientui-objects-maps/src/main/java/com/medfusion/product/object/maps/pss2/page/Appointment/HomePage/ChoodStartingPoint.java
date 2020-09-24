@@ -11,15 +11,21 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class ChoodStartingPoint extends PSS2MainPage {
 
+
+
 	@FindAll({@FindBy(xpath = "//div[@id='startingpointdashboard']//div//a")})
 	private List<WebElement> chooseStartPoint;
 
 	public ChoodStartingPoint(WebDriver driver) {
 		super(driver);
+		// TODO Auto-generated constructor stub
 	}
+
+
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -28,7 +34,11 @@ public class ChoodStartingPoint extends PSS2MainPage {
 		for (int i = 0; i < chooseStartPoint.size(); i++) {
 			if (chooseStartPoint.get(i).getText().equalsIgnoreCase(choosePoint)) {
 				chooseStartPoint.get(i).click();
+
 			}
 		}
+
 	}
+
+
 }

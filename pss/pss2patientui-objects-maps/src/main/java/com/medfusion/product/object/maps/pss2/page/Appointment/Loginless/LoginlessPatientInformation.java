@@ -19,6 +19,9 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class LoginlessPatientInformation extends PSS2MainPage {
+
+
+
 	@FindBy(how = How.NAME, using = "FN")
 	private WebElement inputFirstName;
 
@@ -84,19 +87,26 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	public NewPatientInsuranceInfo fillPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
 			String phoneNumber) throws InterruptedException {
 		log("phoneNumber= " + phoneNumber);
+
 		inputFirstName.sendKeys(firstName);
 		log("firstName= " + firstName);
+
+
 		inputLastName.sendKeys(lastName);
 		log("lastName= " + lastName);
 		datePicker.click();
+
 		log("datePicker clicked ");
+
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
 		selectGenderType.selectByValue(gender);
@@ -106,13 +116,16 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 			e.printStackTrace();
 		}
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+
 		inputEmail.sendKeys(email);
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(5000);
 		inputZip.sendKeys(zipCodeValue);
+
 		privacyPolicyCheckbox.click();
 		log("Check box clicked");
 		log("formfilled ...");
+
 		Thread.sleep(5000);
 		buttonNext.click();
 		return PageFactory.initElements(driver, NewPatientInsuranceInfo.class);
@@ -133,8 +146,10 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
 		selectGenderType.selectByValue(gender);
@@ -144,6 +159,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 			e.printStackTrace();
 		}
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+
 		inputEmail.sendKeys(email);
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(3000);
@@ -153,13 +169,17 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		log("formfilled ...");
 		Thread.sleep(5000);
 		log("first wait completed ...");
+
 		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
+
 		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
 		Thread.sleep(90000);
+
 		buttonNext.click();
 		log("Submit Button cliked ...");
 		return PageFactory.initElements(driver, HomePage.class);
 	}
+
 
 	public HomePage fillNewPatientFormToActivate(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
 			String phoneNumber, String city, String street) {
@@ -167,12 +187,15 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		inputFirstName.sendKeys(firstName);
 		inputLastName.sendKeys(lastName);
 		datePicker.click();
+
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
 		selectGenderType.selectByValue(gender);
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+
 		inputEmail.sendKeys(email);
 		inputStreet.sendKeys(street);
 		inputCity.sendKeys(city);
@@ -180,9 +203,11 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		selectStateValue.selectByValue("AZ");
 		inputZip.sendKeys(zipCodeValue);
 		log("formfilled ...");
+
 		buttonNext.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
+
 
 	public void isPageLoaded() {
 		IHGUtil.waitForElement(driver, 80, this.buttonNext);

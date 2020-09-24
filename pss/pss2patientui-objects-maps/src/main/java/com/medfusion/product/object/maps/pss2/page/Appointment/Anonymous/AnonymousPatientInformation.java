@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous;
 
 import java.util.ArrayList;
@@ -56,12 +56,14 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 
 	public AnonymousPatientInformation(WebDriver driver) {
 		super(driver);
+	
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		commonMethods.highlightElement(logoAthena);
 		webElementsList.add(logoAthena);
@@ -70,32 +72,41 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
-	public ConfirmationPage fillPatientForm(String firstName, String lastName, String dob, String email, String gender, String phoneNumber)
-			throws InterruptedException {
+	public ConfirmationPage fillPatientForm(String firstName, String lastName, String dob, String email, String gender,
+			String phoneNumber) throws InterruptedException {
 		log("phoneNumber= " + phoneNumber);
+
 		commonMethods.highlightElement(patientFatherName);
 		patientFatherName.sendKeys(firstName);
 		commonMethods.highlightElement(patientMotherName);
 		patientMotherName.sendKeys(lastName);
 		commonMethods.highlightElement(datePicker);
 		datePicker.click();
+
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+
 		commonMethods.highlightElement(selectGender);
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
 		selectGenderType.selectByValue(gender);
+
 		commonMethods.highlightElement(perferredPhoneNumber);
 		perferredPhoneNumber.sendKeys(phoneNumber);
+
 		commonMethods.highlightElement(inputEmail);
 		inputEmail.sendKeys(email);
 		jse.executeScript("window.scrollBy(0,350)", "");
 		Thread.sleep(2000);
 		driver.switchTo().frame(recaptchaFrame);
+
 		commonMethods.highlightElement(recaptchaBox);
+
 		recaptchaClick.click();
 		Thread.sleep(3000);
 		driver.switchTo().parentFrame();
+		// driver.switchTo().defaultContent();
+
 		log("formfilled ...");
 		Thread.sleep(4000);
 		commonMethods.highlightElement(submitBtn);

@@ -24,12 +24,14 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
+
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+
 		return true;
 	}
 
@@ -46,6 +48,11 @@ public class ConfirmationPage extends PSS2MainPage {
 	}
 
 	public List<WebElement> getAppointmentDetails() {
+		// for (int i = 0; i < appointmentScheduledDetails.size(); i++) {
+		//
+		// log("Appointment Details are -->");
+		// log(appointmentScheduledDetails.get(i).getText());
+		// }
 		return appointmentScheduledDetails;
 	}
 
