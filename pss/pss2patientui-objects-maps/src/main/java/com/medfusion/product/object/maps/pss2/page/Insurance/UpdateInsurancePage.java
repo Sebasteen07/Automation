@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Insurance;
 
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		super(driver);
 	}
 
+	CommonMethods commonMethods = new CommonMethods(driver);
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -56,9 +59,6 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		webElementsList.add(buttonUpdateInsuranceInfo);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
-	CommonMethods commonMethods= new CommonMethods(driver);
-
-
 
 	public ConfirmationPage skipInsuranceUpdate() throws InterruptedException {
 		jse.executeScript("window.scrollBy(0,350)", "");

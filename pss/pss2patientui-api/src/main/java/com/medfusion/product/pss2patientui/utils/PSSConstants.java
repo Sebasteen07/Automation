@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 public class PSSConstants {
@@ -28,7 +29,7 @@ public class PSSConstants {
 	public final static String STLB = "S,T,L,B";
 	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
-	
+
 	public final static String LOGINLESS = "loginless";
 	public final static String IDP = "idp";
 	public final static String ANONYMOUS = "anonymous";

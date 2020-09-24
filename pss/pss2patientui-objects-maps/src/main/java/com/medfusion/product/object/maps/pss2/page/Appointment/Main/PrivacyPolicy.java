@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import static org.testng.Assert.assertTrue;
@@ -17,19 +18,19 @@ public class PrivacyPolicy extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "privacyCheckbox")
 	private WebElement checkBoxAccept;
-	
+
 	@FindBy(how = How.ID, using = "existingCheckbox")
 	private WebElement checkBoxAcceptExistingPatient;
 
 	@FindBy(how = How.ID, using = "privacyCancelbutton")
 	private WebElement buttonCancel;
-	
+
 	@FindBy(how = How.ID, using = "privacyPreviousButton")
 	private WebElement buttonPrevious;
-	
+
 	@FindBy(how = How.ID, using = "privacySubmitButton")
 	private WebElement buttonSubmit;
-	
+
 	@FindBy(how = How.ID, using = "existingPrivacySubmitButton")
 	private WebElement buttonSubmitExistingPatient;
 

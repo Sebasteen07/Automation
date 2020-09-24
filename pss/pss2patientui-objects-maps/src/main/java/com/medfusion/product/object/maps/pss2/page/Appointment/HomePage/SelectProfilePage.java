@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import org.openqa.selenium.WebDriver;
@@ -19,24 +20,17 @@ public class SelectProfilePage extends PSS2MainPage {
 
 	public SelectProfilePage(WebDriver driver) {
 		super(driver);
-
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		// TODO Auto-generated method stub
-
 		Assert.assertEquals("PSS2MainPage", selectProfileLabel.getText());
-
 		return true;
 	}
 
-
 	public HomePage selectProfile() {
-
 		log("On Select Profile Page");
 		primaryProfile.click();
-
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 }

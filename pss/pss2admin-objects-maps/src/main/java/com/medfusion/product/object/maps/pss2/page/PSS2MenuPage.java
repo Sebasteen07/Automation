@@ -96,5 +96,4 @@ public class PSS2MenuPage extends PSS2MainPage {
 			log("Exception occured while logging out. " + E);
 		}
 	}
-
 }

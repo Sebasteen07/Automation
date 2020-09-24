@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.WebDriver;
@@ -96,9 +96,6 @@ public class AdminAppointment extends SettingsTab {
 		if (!searchLocation.isEnabled() && !searchLocation.isDisplayed()) {
 			searchLocation.click();
 		}
-		// if (!nextavailable.isEnabled()) {
-		// nextavailable.click();
-		// }
 		pastApptMonths.clear();
 
 		IHGUtil.waitForElement(driver, 60, buttonSave);

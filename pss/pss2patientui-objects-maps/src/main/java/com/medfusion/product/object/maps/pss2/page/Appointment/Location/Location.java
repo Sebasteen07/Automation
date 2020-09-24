@@ -41,7 +41,6 @@ public class Location extends PSS2MainPage {
 
 	public Location(WebDriver driver) {
 		super(driver);
-
 	}
 
 	private String addressValue = null;
@@ -52,14 +51,12 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				// getLocAddress(i + 1);
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
 		}
 		return null;
 	}
-
 
 	public Provider searchProvider(String locationName) throws InterruptedException {
 		log("In SearchProvider Method");
@@ -72,37 +69,31 @@ public class Location extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, Provider.class);
 	}
-	
+
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		isViewallmessagesButtonPresent(driver);
 		log("location " + dateTime);
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(dateTime)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				// getLocAddress(i);
-
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
 		return null;
-
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(locationList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-
 	}
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
-
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
+			@Override
 			public Boolean apply(WebDriver driver) {
 				return driver.findElement(By.className("locationlinkclick")).isDisplayed();
 			}
@@ -128,7 +119,6 @@ public class Location extends PSS2MainPage {
 	}
 
 	public Boolean isSearchLocationEnabled() {
-		// log("ZipSearch display =" + nearByZipCodeInput.isDisplayed() + " and Select Dropdown display=" + selectRadius.isDisplayed());
 		if (selectRadius.isDisplayed() && nearByZipCodeInput.isDisplayed()) {
 			log("selectRadius.isDisplayed  --->" + selectRadius.isDisplayed());
 			return true;

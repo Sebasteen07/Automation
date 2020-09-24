@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.ConfirmationPage;
 
 import java.util.List;
@@ -24,14 +25,12 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
-
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-
 		return true;
 	}
 
@@ -48,11 +47,6 @@ public class ConfirmationPage extends PSS2MainPage {
 	}
 
 	public List<WebElement> getAppointmentDetails() {
-		// for (int i = 0; i < appointmentScheduledDetails.size(); i++) {
-		//
-		// log("Appointment Details are -->");
-		// log(appointmentScheduledDetails.get(i).getText());
-		// }
 		return appointmentScheduledDetails;
 	}
 

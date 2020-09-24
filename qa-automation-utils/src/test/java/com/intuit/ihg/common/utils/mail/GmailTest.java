@@ -1,11 +1,13 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.mail;
+
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Date;
 
 import javax.mail.MessagingException;
 
-import static org.testng.Assert.*;
 import org.testng.annotations.Test;
 
 @Test

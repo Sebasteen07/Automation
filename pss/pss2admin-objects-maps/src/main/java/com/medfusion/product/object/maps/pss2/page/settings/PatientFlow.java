@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.ArrayList;
@@ -31,13 +31,13 @@ public class PatientFlow extends SettingsTab {
 
 	@FindBy(how = How.NAME, using = "profile")
 	private WebElement selectRuleType;
-	
+
 	@FindBy(how = How.XPATH, using = ".//form[@class='ng-touched ng-dirty ng-valid']/div/div/a/i")
 	private WebElement addRuleInOrder;
 
 	@FindAll({@FindBy(xpath = ".//select[@name=\"profile\"]/option")})
 	private List<WebElement> ruleList;
-	
+
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr")})
 	private List<WebElement> ruleLength;
 
@@ -68,7 +68,7 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public String isIsuranceDisplayed() {
-		System.out.println(insuranceToggle.getAttribute("ng-reflect-model"));
+		log(insuranceToggle.getAttribute("ng-reflect-model"));
 		return insuranceToggle.getAttribute("ng-reflect-model");
 	}
 
@@ -79,7 +79,7 @@ public class PatientFlow extends SettingsTab {
 	public void selectInsurance() {
 		log("insuranceToggle = " + insuranceToggle);
 		insuranceToggle.click();
-		System.out.println("Click on insuranceToggle ");
+		log("Click on insuranceToggle ");
 	}
 
 	@Override

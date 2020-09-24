@@ -1,4 +1,4 @@
-//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous;
 
 import java.util.ArrayList;
@@ -21,19 +21,16 @@ public class AnonymousDismissPage extends PSS2MainPage {
 
 	public AnonymousDismissPage(WebDriver driver, String url) {
 		super(driver, url);
-		
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-	
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(dismissBtn);
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
+
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(dismissBtn);
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
 
 	public HomePage clickDismiss() throws InterruptedException {
 		commonMethods.highlightElement(dismissBtn);

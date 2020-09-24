@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.DateTime;
 
 import static org.testng.Assert.assertTrue;
@@ -25,7 +25,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//div[@class='rbc-event-content']")})
 	public List<WebElement> appointmentList;
-	
 
 	@FindAll({@FindBy(xpath = "//a[@id='containerDiv']")})
 	public List<WebElement> appointmentTimeList;
@@ -46,7 +45,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 		for (int i = 0; i < appointmentList.size(); i++) {
 			webElementsList.add(appointmentList.get(i));
 		}
-
 		return assessPageElements(webElementsList);
 	}
 
@@ -62,9 +60,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
 				dt = appointmentList.get(i).getText();
-				//appointmentTimeList.clear();
 				return appointmentList.get(i).getText();
-				
 			}
 		}
 		return dt;
@@ -72,7 +68,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	public UpdateInsurancePage selectAppointmentTimeIns() {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
-
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
@@ -85,9 +80,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	}
 
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
-
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
-
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
@@ -100,9 +93,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	}
 
 	public AnonymousPatientInformation selectAppointmentTimeSlot(Boolean nextMonthBooking) {
-
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
-
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
@@ -115,16 +106,13 @@ public class AppointmentDateTime extends PSS2MainPage {
 	}
 
 	public UpdateInsurancePage selectAppointmentDateAndTime(WebDriver driver) {
-		// List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
 		log("Available time slots are " + appointmentTimeList.size());
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
-
 			}
 		}
-
 		return PageFactory.initElements(driver, UpdateInsurancePage.class);
 	}
 

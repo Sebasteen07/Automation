@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import java.util.ArrayList;
@@ -76,10 +76,8 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({@FindBy(xpath = "//div[@id='myModalsss']//button[@class='dismissbuttons']")})
 	private List<WebElement> dismissButtons;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id=\"myModalsss\"]/div/div/div[3]/button/span")
 	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']//button[@class='dismissbuttons']")
 	private WebElement dismissIDPPopUp;
-
 
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement cancelReason;
@@ -87,7 +85,8 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
 	private WebElement cancelSubmit;
 
-	@FindBy(how = How.XPATH, using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
+	@FindBy(how = How.XPATH,
+			using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
 	private WebElement cancelAppointmentConfirmed;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']//div[3]//div[4]//button//span[contains(text(),'Yes')]")
@@ -95,7 +94,6 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//button[@class='okbuttons']")
 	private WebElement okCancelBtn;
-
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
 	private WebElement upCmgAptLabel;
@@ -114,6 +112,7 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		if (selectSpecialityList.size() != 0) {
