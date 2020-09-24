@@ -21,32 +21,46 @@ import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.NAME, using = "FN")
 	private WebElement inputFirstName;
+
 	@FindBy(how = How.ID, using = "LN")
 	private WebElement inputLastName;
+
 	@FindBy(how = How.XPATH, using = "//div//span//span[@class='glyphicon glyphicon-calendar']")
 	private WebElement datePicker;
+
 	@FindBy(how = How.ID, using = "EMAIL")
 	private WebElement inputEmail;
+
 	@FindBy(how = How.ID, using = "GENDER")
 	private WebElement selectGender;
+
 	@FindBy(how = How.ID, using = "zip")
 	private WebElement inputZipCode;
+
 	@FindBy(how = How.ID, using = "PHONE")
 	private WebElement inputPrimaryPhoneNumber;
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
 	private WebElement buttonNext;
+
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexist")
 	private WebElement buttonCancel;
+
 	@FindBy(how = How.ID, using = "city")
 	private WebElement inputCity;
+
 	@FindBy(how = How.ID, using = "state")
 	private WebElement selectState;
+
 	@FindBy(how = How.XPATH, using = "//input[@id='ZIP']")
 	private WebElement inputZip;
+
 	@FindBy(how = How.ID, using = "street")
 	private WebElement inputStreet;
+
 	@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")
 	private WebElement privacyPolicyCheckbox;
+
 	@FindAll({@FindBy(css = ".dismissbuttons")})
 	public List<WebElement> dismissPopUpButton;
 
@@ -103,6 +117,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		buttonNext.click();
 		return PageFactory.initElements(driver, NewPatientInsuranceInfo.class);
 	}
+
 
 	public HomePage fillNewPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue, String phoneNumber)
 			throws InterruptedException {

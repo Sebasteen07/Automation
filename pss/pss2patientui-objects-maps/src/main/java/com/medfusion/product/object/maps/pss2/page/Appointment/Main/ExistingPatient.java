@@ -15,22 +15,31 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class ExistingPatient extends PSS2MainPage {
+
 	@FindAll({@FindBy(id = "existingfirstname")})
 	private List<WebElement> inputfirstname;
+
 	@FindAll({@FindBy(id = "existinglastname")})
 	private List<WebElement> inputlastName;
+
 	@FindAll({@FindBy(xpath = "/html/body/div[1]/div/div/div/div/div[5]/div/div[2]/div[3]/div/div/div/span/span")})
 	private List<WebElement> dateOfBirth;
+
 	@FindAll({@FindBy(css = "input[type='email']")})
 	private List<WebElement> inputEmail;
+
 	@FindAll({@FindBy(css = "select[name='gender']")})
 	private List<WebElement> selectGender;
+
 	@FindAll({@FindBy(css = "existingZip")})
 	private List<WebElement> zipCode;
+
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexistnext")
 	private WebElement buttonSubmit;
+
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexistnext")
 	private WebElement buttonCancel;
+
 	@FindAll({@FindBy(css = ".dismissbuttons")})
 	private List<WebElement> dismissButton;
 
@@ -99,4 +108,5 @@ public class ExistingPatient extends PSS2MainPage {
 			}
 		}
 	}
+
 }

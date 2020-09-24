@@ -11,7 +11,9 @@ import org.openqa.selenium.WebElement;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class DateMatcher {
-	public DateMatcher() {}
+	public DateMatcher() {
+
+	}
 
 	public void selectDate(String dob, WebDriver driver) {
 		String date_ent = dob;
@@ -26,10 +28,12 @@ public class DateMatcher {
 		Log4jUtil.log("Enabled ?" + driver.findElement(By.xpath(".//th[@title=\"Select Decade\"]")).isEnabled());
 		Log4jUtil.log("Displayed ? " + driver.findElement(By.xpath(".//th[@title=\"Select Decade\"]")).isDisplayed());
 		Log4jUtil.log("date >>>> " + date_pres);
+
 		String dp[] = date_pres.split("-");
 		Log4jUtil.log(shipFYear + "  " + dp[0]);
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		dp[0] = Integer.toString(currentYear);
+
 		if (Integer.parseInt(shipFYear) < Integer.parseInt(dp[0])) {
 			double diff = Double.parseDouble(dp[0]) - Double.parseDouble(shipFYear);
 			Log4jUtil.log("Difference is " + diff);
@@ -49,6 +53,7 @@ public class DateMatcher {
 					break;
 				}
 			}
+
 			// month
 			List<WebElement> monthElem = driver.findElements(By.xpath(".//span[@class=\"month\"]"));
 			for (WebElement e : monthElem) {
@@ -58,6 +63,7 @@ public class DateMatcher {
 					break;
 				}
 			}
+
 			// day
 			Boolean dayFound = false;
 			List<WebElement> dayElem = driver.findElements(By.xpath(".//td[@class=\"day\"]"));
@@ -69,6 +75,7 @@ public class DateMatcher {
 					break;
 				}
 			}
+
 			// day weekend
 			if (!dayFound) {
 				List<WebElement> dayWkElem = driver.findElements(By.xpath(".//td[@class=\"day weekend\"]"));
@@ -80,6 +87,7 @@ public class DateMatcher {
 					}
 				}
 			}
+
 			Log4jUtil.log("date is selected	");
 		}
 	}

@@ -17,28 +17,40 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class AnonymousPatientInformation extends PSS2MainPage {
+
 	@FindBy(how = How.XPATH, using = "//img[@class='logoforheader']")
 	private WebElement logoAthena;
+
 	@FindBy(how = How.XPATH, using = "//h1[@class='h3color']//span[contains(text(),'Patient information')]")
 	private WebElement pageHeading;
+
 	@FindBy(how = How.XPATH, using = "//input[@id='FN']")
 	private WebElement patientFatherName;
+
 	@FindBy(how = How.XPATH, using = "//input[@id='LN']")
 	private WebElement patientMotherName;
+
 	@FindBy(how = How.XPATH, using = "//span[@class='glyphicon glyphicon-calendar']")
 	private WebElement datePicker;
+
 	@FindBy(how = How.XPATH, using = "//select[@id='GENDER']")
 	private WebElement selectGender;
+
 	@FindBy(how = How.ID, using = "PHONE")
 	private WebElement perferredPhoneNumber;
+
 	@FindBy(how = How.ID, using = "EMAIL")
 	private WebElement inputEmail;
+
 	@FindBy(how = How.ID, using = "submitAnonymous")
 	private WebElement submitBtn;
+
 	@FindBy(how = How.XPATH, using = "//div[@id='g-recaptcha']//div//div//iframe[1]")
 	private WebElement recaptchaFrame;
+
 	@FindBy(how = How.XPATH, using = "//div[@id='rc-anchor-container']")
 	private WebElement recaptchaBox;
+
 	@FindBy(how = How.XPATH, using = "//span[@class='recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox']")
 	private WebElement recaptchaClick;
 
@@ -90,4 +102,5 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 		submitBtn.click();
 		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
+
 }

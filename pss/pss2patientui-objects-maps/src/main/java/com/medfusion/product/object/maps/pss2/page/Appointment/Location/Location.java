@@ -24,18 +24,24 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 
+
 public class Location extends PSS2MainPage {
+
 	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
 	private List<WebElement> locationList;
+
 	@FindAll({@FindBy(xpath = "//a[contains(text(),'River Oaks Main')]")})
 	private List<WebElement> locationRever;
+
 	@FindBy(how = How.XPATH, using = "//select[@id='sel1']")
 	private WebElement selectRadius;
+
 	@FindBy(how = How.XPATH, using = "//div[@class='col-sm-4 locationclass']//input[@placeholder='Zipcode']")
 	private WebElement nearByZipCodeInput;
 
 	public Location(WebDriver driver) {
 		super(driver);
+
 	}
 
 	private String addressValue = null;
@@ -54,6 +60,7 @@ public class Location extends PSS2MainPage {
 		return null;
 	}
 
+
 	public Provider searchProvider(String locationName) throws InterruptedException {
 		log("In SearchProvider Method");
 		for (int i = 0; i < locationList.size(); i++) {
@@ -65,7 +72,7 @@ public class Location extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, Provider.class);
 	}
-
+	
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		isViewallmessagesButtonPresent(driver);
 		log("location " + dateTime);
@@ -73,11 +80,13 @@ public class Location extends PSS2MainPage {
 			if (locationList.get(i).getText().contains(dateTime)) {
 				log("Location of user found at " + locationList.get(i).getText());
 				// getLocAddress(i);
+
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
 		return null;
+
 	}
 
 	@Override
@@ -85,13 +94,15 @@ public class Location extends PSS2MainPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		// webElementsList.add(locationList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+
 	}
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
+
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
-			@Override
 			public Boolean apply(WebDriver driver) {
 				return driver.findElement(By.className("locationlinkclick")).isDisplayed();
 			}
@@ -102,6 +113,7 @@ public class Location extends PSS2MainPage {
 	public String getAddressValue() {
 		return addressValue;
 	}
+
 
 	public void setAddressValue(String addressValue) {
 		this.addressValue = addressValue;

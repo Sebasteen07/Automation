@@ -11,14 +11,19 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class PSSPatientHeader extends PSS2MainPage {
+
 	@FindBy(how = How.ID, using = "headerlogo")
 	private WebElement companyLogo;
+
 	@FindBy(how = How.XPATH, using = "//*[@class=\"country-flag\"]/img")
 	private WebElement flagImage;
+
 	@FindBy(how = How.CLASS_NAME, using = "country-label")
 	private WebElement languageText;
+
 	@FindBy(how = How.ID, using = "logoutbutton")
 	private WebElement nameSettings;
+
 	@FindBy(how = How.XPATH, using = "//li[@class='logoutborderline']")
 	private WebElement logout;
 

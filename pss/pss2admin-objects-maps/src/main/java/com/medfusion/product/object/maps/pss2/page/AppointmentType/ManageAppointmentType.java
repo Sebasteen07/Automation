@@ -15,20 +15,28 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 
 public class ManageAppointmentType extends PSS2MenuPage {
+
 	@FindBy(how = How.ID, using = "search-appointmenttype")
 	private WebElement searchAppointment;
+
 	@FindAll({@FindBy(xpath = "//*[@class=\"table table-hover \"]/tbody/tr")})
 	private List<WebElement> appointmentTypeList;
+
 	@FindAll({@FindBy(xpath = "//*[@class=\"table table-hover \"]/tbody/tr/td/span/a")})
 	private List<WebElement> appointmentTypeNameList;
+
 	@FindBy(how = How.XPATH, using = "//table[@class=\"table table-hover \"]/tbody/tr/td[3]/a")
 	private WebElement aptTypeClose;
+
 	@FindBy(how = How.ID, using = "name")
 	private WebElement aptTypeName;
+
 	@FindBy(how = How.ID, using = "extAppointmentTypeId")
 	private WebElement aptTypeID;
+
 	@FindBy(how = How.ID, using = "appointmentType.displayNamesEN")
 	private WebElement aptTypeDisplayName;
+
 	@FindBy(how = How.ID, using = "categoryName")
 	private WebElement aptTypeCategoryName;
 

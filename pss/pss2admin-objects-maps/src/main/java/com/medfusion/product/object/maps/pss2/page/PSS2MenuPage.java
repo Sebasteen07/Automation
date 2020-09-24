@@ -18,20 +18,28 @@ import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 
 public class PSS2MenuPage extends PSS2MainPage {
+
 	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
 	private WebElement settingsLogout;
+
 	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
 	private WebElement logout;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/settings\"]")
 	private WebElement linkSettings;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/lockout\"]")
 	private WebElement linkLockout;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/specialty\"]")
 	private WebElement linkSpecialty;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/appointmenttype\"]")
 	private WebElement linkAppointmenttype;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
 	private WebElement linkResource;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
 	private WebElement linkLocation;
 
@@ -88,4 +96,5 @@ public class PSS2MenuPage extends PSS2MainPage {
 			log("Exception occured while logging out. " + E);
 		}
 	}
+
 }

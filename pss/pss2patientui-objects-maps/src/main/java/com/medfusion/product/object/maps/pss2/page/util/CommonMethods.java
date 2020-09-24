@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class CommonMethods extends PSS2MainPage {
+
 	public CommonMethods(WebDriver driver) {
 		super(driver);
 	}
@@ -19,4 +20,5 @@ public class CommonMethods extends PSS2MainPage {
 	public boolean areBasicPageElementsPresent() {
 		return true;
 	}
+
 }

@@ -7,16 +7,22 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class NewPatientIDP extends PSS2MainPage {
+
 	@FindBy(how = How.ID, using = "loginUsername")
 	private WebElement inputLoginUsername;
+
 	@FindBy(how = How.ID, using = "loginPassword")
 	private WebElement inputLoginPassword;
+
 	@FindBy(how = How.XPATH, using = "/html/body/div[3]/div[1]/div[1]/form/a/span")
 	private WebElement buttonSignIn;
+
 	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "Create a new account")
 	private WebElement createNewAccount;
+
 	@FindBy(how = How.LINK_TEXT, using = "Forgot username")
 	private WebElement forgotUserName;
+
 	@FindBy(how = How.LINK_TEXT, using = "Forgot password")
 	private WebElement forgotPassword;
 

@@ -15,32 +15,46 @@ import org.openqa.selenium.support.ui.Select;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PatientFlow extends SettingsTab {
+
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
+
 	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
 	private WebElement insuranceToggle;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
 	private WebElement addRule;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[1]/div/input")
 	private WebElement ruleName;
+
 	@FindBy(how = How.NAME, using = "profile")
 	private WebElement selectRuleType;
+
 	@FindBy(how = How.XPATH, using = ".//form[@class='ng-touched ng-dirty ng-valid']/div/div/a/i")
 	private WebElement addRuleInOrder;
+
 	@FindAll({@FindBy(xpath = ".//select[@name=\"profile\"]/option")})
 	private List<WebElement> ruleList;
+
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr")})
 	private List<WebElement> ruleLength;
+
 	@FindAll({@FindBy(xpath = "//*[@id=\"flow\"]/div[3]/div/table/tbody/tr/td[3]/a")})
 	private List<WebElement> deleteAllRules;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a")
 	private WebElement addRuleLink;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[1]/div/input")
 	private WebElement ruleNameInput;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[2]/div/select")
 	private WebElement ruleTypeSelect;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/div[2]/div/a")
 	private WebElement ruleAddLink;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/fieldset/div/div/button")
 	private WebElement saveRuleButton;
 
@@ -76,6 +90,7 @@ public class PatientFlow extends SettingsTab {
 
 	public void addNewRules(String[] ruleNameValue, String[] ruleNameType) {
 		addRule.click();
+
 		for (String ruleOption : ruleNameType) {
 			ruleName.sendKeys(ruleNameValue);
 			selectRuleType.click();
@@ -122,6 +137,7 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public void addNewRules(String ruleValue) {
+
 		Select oSelect = new Select(ruleTypeSelect);
 		oSelect.selectByValue(ruleValue);
 		javascriptClick(ruleAddLink);

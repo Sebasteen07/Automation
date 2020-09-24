@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.ArrayList;
@@ -13,13 +13,16 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 
 public class OnlineAppointmentScheduling extends PSS2MainPage {
+
 	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement dismissBtn;
+
 	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement buttonNewPatient;
+	
 	@FindBy(how = How.XPATH, using = ".//div[@class=\"col-sm-10\"]/div[2]/a/span")
 	private WebElement buttonExistingPatient;
-
+	
 	public OnlineAppointmentScheduling(WebDriver driver) {
 		super(driver);
 	}
@@ -44,14 +47,15 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 	}
 
 	public LoginlessPatientInformation selectNewPatientLoginLess() {
+
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
 
 	public LoginlessPatientInformation clickDismiss() {
+
 		buttonNewPatient.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
-
 	public ExistingPatientIDP selectExistingPatientIDP() {
 		buttonExistingPatient.click();
 		return PageFactory.initElements(driver, ExistingPatientIDP.class);
@@ -70,4 +74,5 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 		webElementsList.add(buttonExistingPatient);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
+
 }

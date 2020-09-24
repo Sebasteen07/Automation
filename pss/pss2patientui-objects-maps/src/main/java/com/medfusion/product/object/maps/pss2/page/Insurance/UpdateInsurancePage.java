@@ -16,20 +16,28 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class UpdateInsurancePage extends PSS2MainPage {
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"pssinsurance\"]/div[1]/form/div[1]/div/div/div/div[2]/input")
 	private WebElement selectInsuranceCarrier;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"pssinsurance\"]/div[1]/form/div[1]/div/div/span")
 	private WebElement selectArrow;
+
 	@FindBy(how = How.ID, using = "insurancecarrier")
 	private WebElement inputInsuranceCarrier;
+
 	@FindBy(how = How.ID, using = "memeberid")
 	private WebElement inputMemberID;
+
 	@FindBy(how = How.ID, using = "groupid")
 	private WebElement inputGroupID;
+
 	@FindBy(how = How.ID, using = "phoneNumber")
 	private WebElement inputInsurancePhone;
+
 	@FindBy(how = How.ID, using = "donotupdate")
 	private WebElement buttonDontUpdateInsurance;
+
 	@FindBy(how = How.ID, using = "updateinfo")
 	private WebElement buttonUpdateInsuranceInfo;
 

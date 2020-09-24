@@ -11,8 +11,10 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class PSSPatientFooter extends PSS2MainPage {
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[2]/footer/div[1]/object")
 	private WebElement imagePartner;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[2]/footer/div[2]/p")
 	private WebElement copyRightText;
 
@@ -28,4 +30,5 @@ public class PSSPatientFooter extends PSS2MainPage {
 		webElementsList.add(copyRightText);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
+
 }
