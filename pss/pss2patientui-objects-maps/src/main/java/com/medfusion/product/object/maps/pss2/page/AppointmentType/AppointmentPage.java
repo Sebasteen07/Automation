@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.AppointmentType;
 
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.CSS, using = ".btn")
 	private WebElement selectAppointment;
 
-	@FindBy(how = How.CSS, using = ".pull-right.gotobutton")
+	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
 	private WebElement gotoNextStep;
 
-	@FindAll({@FindBy(css = ".btn")})
+	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> appointmentTypeList;
 
 	public AppointmentPage(WebDriver driver) {
@@ -37,7 +38,7 @@ public class AppointmentPage extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(appointmentTypeList.get(0));
+		webElementsList.add(appointmentTypeList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
@@ -50,11 +51,10 @@ public class AppointmentPage extends PSS2MainPage {
 	}
 
 	public Provider selectTypeOfProvider(String providerConfig, Boolean isPopUpSelected) {
-		log("appointmentTypeList "+appointmentTypeList.size());
+		log("appointmentTypeList " + appointmentTypeList.size());
 		searchAppointment.sendKeys(providerConfig);
 		IHGUtil.waitForElement(driver, 30, selectAppointment);
 		javascriptClick(selectAppointment);
-
 		selectNextStep(isPopUpSelected);
 		return PageFactory.initElements(driver, Provider.class);
 	}
@@ -69,12 +69,13 @@ public class AppointmentPage extends PSS2MainPage {
 			}
 		}
 		log("no matching appointment found ");
-		return null;
+		return PageFactory.initElements(driver, Location.class);
 	}
 
 	public void selectNextStep(Boolean isPopUpSelected) {
 		if (isPopUpSelected) {
 			IHGUtil.waitForElement(driver, 30, gotoNextStep);
+			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');", gotoNextStep);
 			gotoNextStep.click();
 		}
 	}

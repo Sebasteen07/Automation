@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 public class PSSConstants {
@@ -28,13 +29,15 @@ public class PSSConstants {
 	public final static String STLB = "S,T,L,B";
 	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
-	
+
 	public final static String LOGINLESS = "loginless";
 	public final static String IDP = "idp";
+	public final static String ANONYMOUS = "anonymous";
 
 	public final static String GW = "GW";
 	public final static String GE = "GE";
 	public final static String NG = "NG";
+	public final static String ATHENA = "ATHENA";
 
 	public final static String NON_EXISTENCE_PATIENT_EMAIL = "mf.0611201888890@mailnator.com";
 	public final static String NON_EXISTENCE_FIRSTNAME = "mf.9876543210@mailnator.com";

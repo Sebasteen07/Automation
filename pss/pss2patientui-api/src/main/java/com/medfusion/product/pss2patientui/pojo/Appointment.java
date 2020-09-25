@@ -1,3 +1,4 @@
+//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.pojo;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class Appointment {
 	private String underAgePatientPassword;
 
 	private Boolean isCancelApt = true;
-	private Boolean isInsuranceEnabled = false;
+	private Boolean isInsuranceEnabled = true;
 
 	private String oldPatientUserName;
 	private String oldPatientPassword;
@@ -80,6 +81,13 @@ public class Appointment {
 	private Boolean isSearchLocationDisplayed;
 
 	private String providerImageAPI;
+	
+	private String urlAnonymous;
+	private String urlAnonymousNG;
+	private boolean isAnonymousFlow = false;
+
+
+
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -95,6 +103,30 @@ public class Appointment {
 	public Appointment() {
 	}
 
+	public String getUrlAnonymousNG() {
+		return urlAnonymousNG;
+	}
+
+	public void setUrlAnonymousNG(String urlAnonymousNG) {
+		this.urlAnonymousNG = urlAnonymousNG;
+	}
+
+
+	public boolean isAnonymousFlow() {
+		return isAnonymousFlow;
+	}
+
+	public void setAnonymousFlow(boolean isAnonymousFlow) {
+		this.isAnonymousFlow = isAnonymousFlow;
+	}
+
+	public String getUrlAnonymous() {
+		return urlAnonymous;
+	}
+
+	public void setUrlAnonymous(String urlAnonymous) {
+		this.urlAnonymous = urlAnonymous;
+	}
 	public String getProvider() {
 		return provider;
 	}
