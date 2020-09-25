@@ -2,6 +2,7 @@
 package com.medfusion.product.pss2patientportal.test;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -250,6 +251,51 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Login to PSS 2.0 Admin portal");
 		adminUtils.getAdminRule(driver, adminuser);
 		log("Fetch the rules set in Admin");
+	  String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		homepage.skipInsurance(driver);
+       Provider provider = homepage.selectStartPoint(PSSConstants.START_PROVIDER);
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), false);
+		AppointmentDateTime appointmentdatetime = location.selectDatTime(testData.getLocation());
+		appointmentdatetime.selectDate(testData.getIsNextDayBooking());
+		psspatientutils.bookAppointment(false, appointmentdatetime, testData, driver);
+	}
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testSSOFlowAllPartner(String partnerPractice) throws Exception {
+		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		log("Step 1: Login to Patient Portal 2.0");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.getAdminRule(driver, adminuser);
+
+		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
@@ -270,6 +316,53 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(12000);
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+		homepage.skipInsurance(driver);
+		Provider provider = homepage.selectStartPoint(PSSConstants.START_PROVIDER);
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), false);
+		AppointmentDateTime appointmentdatetime = location.selectDatTime(testData.getLocation());
+		appointmentdatetime.selectDate(testData.getIsNextDayBooking());
+		psspatientutils.bookAppointment(false, appointmentdatetime, testData, driver);
+	}
+
+	@Parameters({"partnerType"})
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testSSOFlowforOnePartner(String partnerPractice) throws Exception {
+		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		log("Step 1: Login to Patient Portal 2.0");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.getAdminRule(driver, adminuser);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		homepage.skipInsurance(driver);
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), false);
@@ -277,6 +370,46 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		appointmentdatetime.selectDate(testData.getIsNextDayBooking());
 		psspatientutils.bookAppointment(false, appointmentdatetime, testData, driver);
 	}
+
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testSSOforAllPartnerselectFlow(String partnerPractice) throws Exception {
+		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		log("Step 1: Login to Patient Portal 2.0");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+	  propertyData.setAppointmentResponseGW(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+	  PSSAdminUtils adminUtils = new PSSAdminUtils();
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.getAdminRule(driver, adminuser);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+	}
+
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowGE() throws Exception {
@@ -415,9 +548,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {
-		// Object[][] obj = new Object[][] { {"GW"}, {"GE"}, {"NG"}};
-		Object[][] obj = new Object[][] {{"GE"}};
-		return obj;
+		 Object[][] obj = new Object[][] { {"GW"}, {"GE"}, {"NG"},{"ATHENA"}};
+		 return obj;
 	}
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -1248,7 +1380,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
-		// log("Step 2: Login to Admin portal.");
+		log("Step 2: Login to Admin portal.");
 		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
 		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
 		adminappointment.areBasicPageElementsPresent();

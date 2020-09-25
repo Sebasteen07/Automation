@@ -122,7 +122,7 @@ public class PSSPatientUtils {
 			if (insuranceEnabled) {
 				Thread.sleep(3500);
 			}
-			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
+			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		} else {
 			provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
