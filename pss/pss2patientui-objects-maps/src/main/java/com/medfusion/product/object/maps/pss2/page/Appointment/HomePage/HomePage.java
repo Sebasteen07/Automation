@@ -54,6 +54,9 @@ public class HomePage extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> selectSpecialityList;
+	
+	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 startingpointdata']")})
+	private List<WebElement> selectstartpoint;
 
 	@FindAll({@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]")})
 	private List<WebElement> cancelAppointmentList;
@@ -156,6 +159,15 @@ public class HomePage extends PSS2MainPage {
 		return null;
 	}
 
+	public Provider selectStartPoint(String specialityText) {
+		for (int i = 0; i < selectstartpoint.size(); i++) {
+			if (selectstartpoint.get(i).getText().equalsIgnoreCase(specialityText)) {
+				selectstartpoint.get(i).click();
+				return PageFactory.initElements(driver, Provider.class);
+			}
+		}
+		return null;
+	}
 	public AppointmentPage selectAppointment(String specialityText) {
 		log(" selectSpecialityList " + selectSpecialityList.size());
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
