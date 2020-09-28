@@ -1,5 +1,5 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
-
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
@@ -368,7 +368,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}
