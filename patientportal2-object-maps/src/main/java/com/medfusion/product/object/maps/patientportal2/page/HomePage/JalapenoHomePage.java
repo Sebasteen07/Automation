@@ -368,7 +368,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}
