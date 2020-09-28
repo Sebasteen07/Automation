@@ -1,5 +1,5 @@
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
-
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
