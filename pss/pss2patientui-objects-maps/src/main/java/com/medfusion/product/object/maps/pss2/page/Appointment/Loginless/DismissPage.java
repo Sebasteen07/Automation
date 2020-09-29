@@ -9,6 +9,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class DismissPage extends PSS2MainPage {
 
@@ -19,12 +20,15 @@ public class DismissPage extends PSS2MainPage {
 		super(driver, url);
 	}
 
+	CommonMethods commonMethods = new CommonMethods(driver);
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		return true;
 	}
 
 	public LoginlessPatientInformation clickDismiss() {
+		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
