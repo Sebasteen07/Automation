@@ -123,7 +123,7 @@ public class PSSPropertyFileLoader {
 	}
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
-		Log4jUtil.log("Loading data for Next Gen appointment related cases..");
+		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);

@@ -15,8 +15,12 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AccessRules extends SettingsTab {
 
-	@FindBy(how = How.ID, using = "checkbox1")
+	@FindBy(how = How.XPATH, using = "//div//input[@id='checkbox1']")
 	private WebElement checkNewPatient;
+
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[3]/div[1]/label[1]")
+	private WebElement checkNewPatientLabel;
 
 	@FindBy(how = How.ID, using = "checkbox2")
 	private WebElement checkShowInsurancePage;
@@ -24,8 +28,33 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//fieldset//i")
 	private WebElement checkShowPrivacyPolicyPage;
 
-	@FindBy(how = How.ID, using = "checkbox4")
+	@FindBy(how = How.XPATH, using = "//input[@id='showPrivacyPolicyMessageConfig']")
+	private WebElement displayPrivacyPolicyLoginless;
+
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[1]/div[1]/div[1]/label[1]/i[1]")
+	private WebElement displayPrivacyPolicyLoginlessCheck;
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Display Privacy Policy')]")
+	private WebElement displayPrivacyPolicyLoginlesseLabel;
+
+	@FindBy(how = How.XPATH, using = "//div//input[@id='checkbox4']")
 	private WebElement checkLoginlessExistingPatient;
+
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[1]/div[1]/label[1]/i[1]")
+	private WebElement enableOTPCheck;
+
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[1]/div[1]/label[2]")
+	private WebElement enableOTPLabel;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='allowOtp']")
+	private WebElement enableOTP;
+
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[3]/div[2]/label[1]")
+	private WebElement checkLoginlessExistingPatientLabel;
 
 	@FindBy(how = How.ID, using = "radio0")
 	private WebElement selectIDPPatientSchedulingIdentity;
@@ -39,7 +68,8 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "radio1")
 	private WebElement selectIDPMedfusionSSO;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"par\"]/div[2]/div/div[2]/div/button")
+	@FindBy(how = How.XPATH,
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/button[1]")
 	private WebElement buttonSaveLoginLess;
 
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
@@ -87,41 +117,66 @@ public class AccessRules extends SettingsTab {
 	}
 
 	public String getLoginlessURL() {
+		commonMethods.highlightElement(urlList.get(0));
 		return urlList.get(0).getText();
 	}
 
 
 	public String isLLNewPatientSelected() {
+		commonMethods.highlightElement(checkNewPatientLabel);
+		commonMethods.highlightElement(checkNewPatient);
 		return checkNewPatient.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getCssValue("background-color"); //
 																														// .getAttribute("ng-reflect-model");
 	}
 
 
 	public String isLLInsurancePageSelected() {
+		commonMethods.highlightElement(checkShowInsurancePage);
 		return checkShowInsurancePage.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getAttribute("ng-reflect-model");
 	}
 
 	public String isLLPrivacyPolicySelected() {
-		return checkShowPrivacyPolicyPage.getCssValue("backgroundColor"); // .getAttribute("ng-reflect-model");
+		commonMethods.highlightElement(displayPrivacyPolicyLoginlesseLabel);
+		commonMethods.highlightElement(displayPrivacyPolicyLoginlessCheck);
+		return displayPrivacyPolicyLoginless.getAttribute("ng-reflect-model");
+	}
+
+	public String isEnableOTPSelected() {
+		commonMethods.highlightElement(enableOTPLabel);
+		commonMethods.highlightElement(enableOTPCheck);
+		return enableOTP.getAttribute("ng-reflect-model");
+	}
+
+	public void clickEnableOTP() {
+		commonMethods.highlightElement(enableOTPCheck);
+		enableOTPCheck.click();
+		commonMethods.highlightElement(buttonSaveLoginLess);
+		buttonSaveLoginLess.click();
 	}
 
 	public String isLLExistingPatientSelected() {
+		commonMethods.highlightElement(checkLoginlessExistingPatientLabel);
+		commonMethods.highlightElement(checkLoginlessExistingPatient);
 		return checkLoginlessExistingPatient.isSelected() ? "true" : "false"; // .getCssValue("backgroundColor"); // .getAttribute("ng-reflect-model");
 	}
 
 	public void selectLLNewPatient() {
+		commonMethods.highlightElement(checkNewPatient);
 		checkNewPatient.click();
 	}
 
 	public void selectLLShowInsurancePage() {
+		commonMethods.highlightElement(checkShowInsurancePage);
 		checkShowInsurancePage.click();
 	}
 
 	public void selectLLShowPrivacyPolicyPage() {
+		commonMethods.highlightElement(checkShowPrivacyPolicyPage);
 		checkShowPrivacyPolicyPage.click();
 	}
 
 	public void selectLLExistingPatient() {
+		commonMethods.highlightElement(checkLoginlessExistingPatient);
 		checkLoginlessExistingPatient.click();
 	}
 
@@ -146,6 +201,7 @@ public class AccessRules extends SettingsTab {
 	}
 
 	public void loginlessPrivacyPolicyClick() {
+		commonMethods.highlightElement(checkShowPrivacyPolicyPage);
 		javascriptClick(checkShowPrivacyPolicyPage);
 		javascriptClick(buttonSaveLoginLess);
 	}
@@ -155,6 +211,7 @@ public class AccessRules extends SettingsTab {
 	}
 
 	public String isLoginlessTrue() {
+		commonMethods.highlightElement(enableLoginless);
 		return enableLoginless.getAttribute("ng-reflect-model");
 	}
 
