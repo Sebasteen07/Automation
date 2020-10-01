@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.AppEntryPoint;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class StartAppointmentInOrder extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".btn")})
+	@FindAll({@FindBy(xpath = "//a[@class='btn appointmentTypedashboardbtn']")})
 	private List<WebElement> startingWith;
 
 	public StartAppointmentInOrder(WebDriver driver) {
@@ -27,14 +28,13 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(startingWith.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public Provider selectFirstProvider(String selectOrderWith) {
 		for (int i = 1; i <= startingWith.size(); i++) {
-
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				log("Starting Point Selected is " + startingWith.get(i).getText());
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
@@ -43,12 +43,13 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		return null;
 	}
 
-	public AppointmentPage selectFirstAppointment(String selectOrderWith) {
+	public AppointmentPage selectFirstAppointment(String selectOrderWith) throws InterruptedException {
 		log("size of list=" + startingWith.size());
 		log("selectOrderWith=" + selectOrderWith);
 		for (int i = 0; i < startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
 				log("selectOrderWith=" + selectOrderWith);
+				Thread.sleep(3000);
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
@@ -58,7 +59,6 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	}
 
 	public Location selectFirstLocation(String selectOrderWith) {
-
 		log("startingWith length " + startingWith.size());
 		for (int i = 1; i <= startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
