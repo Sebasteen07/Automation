@@ -84,7 +84,6 @@ public class PortalLoginPage extends BasePageObject {
 		String sanitizedUrl = baseURL.trim();
 		log("URL: " + sanitizedUrl);
 		driver.get(sanitizedUrl);
-		//driver.manage().window().maximize();
 		IHGUtil.printCookies(driver);
 		PageFactory.initElements(driver, this);
 	}

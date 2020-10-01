@@ -26,7 +26,6 @@ public class SecureExchangeEmailPage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Hi pmemrqa')]")
 	public WebElement userName;
 	
-	////*[@id="viewMessageBody"]
 	@FindBy(how = How.XPATH, using = "//*[@id=\"divMessageSelected\"]/section/div/article/div[3]/header/span")
 	public WebElement attachmentBody;
 	
@@ -54,14 +53,17 @@ public class SecureExchangeEmailPage {
 	}
 
 	public SecureExchangeEmailPage verifySecureEmail(String subject,String AttachmentType,String fileName,String toEmail,String fromEmail,String attachTOCName) {
-		
+		Log4jUtil.log("Switching frame");
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("webMailFrame");
+		Log4jUtil.log("SearchBy  "+searchOrder.getText());
 		WebElement secureEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
 		Log4jUtil.log("Verify Subject if matched actual "+secureEmail.getText()+" expected "+subject);
 		Assert.assertEquals(secureEmail.getText(),subject);
 		
 		Log4jUtil.log("Secure Exchange Step 1: Verfiy Secure Message ");
 		secureEmail.click();
-		if(AttachmentType!=null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
+		if(AttachmentType!=null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")){
 			WebElement attachmentName =driver.findElement(By.xpath("//*[contains(text(),'"+fileName+"')]"));
 			Log4jUtil.log("Actual name is "+attachmentName.getText()+" should contain name: "+fileName);
 			Assert.assertTrue(attachmentName.getText().contains(fileName), "filename not matched");
@@ -93,7 +95,10 @@ public class SecureExchangeEmailPage {
 			}
 			
 			// Perform the actions on new window
-			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");			
+			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");	
+			WebElement tocDocument= driver.findElement(By.xpath("//a[contains(text(),'Document')]"));
+			
+			tocDocument.click();
 			//wait for TOC to load
 			WebElement tocName= driver.findElement(By.xpath("//*[@id=\"contentDiv_1_SET_1_XML_FILE_1\"]/h1"));
 			Log4jUtil.log("Verify the TOC name Actual "+tocName.getText()+" expected name is "+attachTOCName);
@@ -107,14 +112,13 @@ public class SecureExchangeEmailPage {
 	
 	public SecureExchangeEmailPage SignOut()  {
 		driver.switchTo().defaultContent(); 
+		userName.click();
 		signOut.click();
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}
 	
 	public SecureExchangeEmailPage serchForDeleteMessage(String subject) throws InterruptedException {
 		Log4jUtil.log("Switching frame");
-		//driver.switchTo().defaultContent();
-		//driver.switchTo().frame("webMailFrame");
 		Log4jUtil.log("Searching for Email with subject "+subject);
 		try{
 			WebElement secureSendEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -266,30 +267,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
 		log("Step 18: Move to  Health Record page");
-		//messagesPage.backToHomePage(driver);
-        messagesPage.clickOnMenuHome();
-        Thread.sleep(4000);
-		//MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-        DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
-        
-		log("Step 19: Open Other Documents");
-		//MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+		messagesPage.backToHomePage(driver);
+		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
 
-		/*
+		log("Step 19: Open Other Documents");
+		MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+
 		log("Step 20: Verify name, from and catagory type");
 		String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
 		log("attachment details " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
 		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
 		MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
-*/
-		
-		
-		log("Step 20: Verify name, from and catagory type "+testData.fileName);
-		boolean attachmentData = MedicalRecordSummariesPageObject.checkLastImportedFileName(testData.fileName);
-        log("attachment details " + attachmentData);
-        //Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
-        Thread.sleep(5000);
-        MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 		if (driver instanceof FirefoxDriver) {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
@@ -311,7 +299,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		log("Logging out");
 		homePage.clickOnLogout();
-
+		
 	}
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -972,7 +960,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersionPIDC() {
 		Object[][] obj = new Object[][] { {"v1"}, {"v2"}}; 
-		//Object[][] obj = new Object[][] { {"v1"}};
 		return obj;
 	}
 
@@ -3000,23 +2987,33 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		log("Step 5: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
-		
 		Thread.sleep(6000);
+			
+		log("Step 6: Selecting the date range for the health Data Request");
 		
-		log("Step 6: Close the onDemand PopUp ");
+		MedicalRecordSummariesPageObject.filterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		MedicalRecordSummariesPageObject.requestCcdOnDemandFromPopUp();
+		Thread.sleep(5000);
+		
+		log("Step 7: Close the onDemand PopUp ");
 		MedicalRecordSummariesPageObject.closeOnDemandPopUpButton();
 		
-		log("Step 7: Logout");
+		log("Step 8: Logout");
 		homePage.clickOnLogout();
 		
-		log("Step 8: Setup Oauth Token");
+		log("Step 9: Setup Oauth Token");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 		
-		log("Step 9: Do the Get onDemand Health Data Get API Call.");
+		log("Step 10: Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(restApiCall+ "?since=" + millis + ",0", testData.ResponsePath);
 		
-		log("Step 10: Verify Patient Details in the Get Api Call.");
-		//RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+		log("Step 11: Verify Patient Details in the Get Api Call.");
+		RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+		
+		log("Step 12: verify the start date and the End date of the Request for health data");
+		RestUtils.verifyRequestStartDateAndEndDate(testData.ResponsePath,MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
 	}
 
 

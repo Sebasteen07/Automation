@@ -67,11 +67,10 @@ public class P2PUnseenMessageList {
 	}
 	
 	public void ExtractErrorMessage(String xmlFileName,String PatternToMatch,String invalidMessage) throws IOException {
-		
 		String responseInvalidPratice = ExternalFileReader.readFromFile(xmlFileName);
-		Log4jUtil.log("response "+responseInvalidPratice);
-		Log4jUtil.log("PatternToMatch "+PatternToMatch);
-		Log4jUtil.log("invalidMessage "+invalidMessage);
+		Log4jUtil.log("responseInvalidPratice :"+responseInvalidPratice);
+		Log4jUtil.log("PatternToMatch : "+PatternToMatch);
+		Log4jUtil.log("invalidMessage :"+invalidMessage);
 		Pattern TAG_REGEX = Pattern.compile(PatternToMatch);
 	 	final List<String> tagValues = new ArrayList<String>();
 	    final Matcher matcher = TAG_REGEX.matcher(responseInvalidPratice);
