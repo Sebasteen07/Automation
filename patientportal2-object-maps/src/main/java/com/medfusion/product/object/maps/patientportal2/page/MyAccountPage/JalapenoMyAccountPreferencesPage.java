@@ -127,6 +127,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		//this method is not working, the element is not select but something customized
 		@Deprecated
 		private void setStatementLanguageT(String statementLanguageType) throws InterruptedException {
+				//Select statementSelect = new Select(this.preferredLanguageSelect);
+				//statementSelect.selectByVisibleText(statementLanguageType);
 				log("Setting preferred language");
 				JavascriptExecutor jse = (JavascriptExecutor) driver;
 				jse.executeScript("window.scrollBy(0,150)", "");

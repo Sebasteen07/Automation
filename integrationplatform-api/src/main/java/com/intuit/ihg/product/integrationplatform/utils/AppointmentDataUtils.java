@@ -29,7 +29,7 @@ public class AppointmentDataUtils {
 		String appointmentDataPayload = apObj.getAppointmentDataPayload(testData);
 		Log4jUtil.log("appointmentDataPayload "+appointmentDataPayload);
 		
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 
 		Log4jUtil.log("Get Processing URL status");
 		Log4jUtil.log("RestURL : "+testData.AppointmentPath);

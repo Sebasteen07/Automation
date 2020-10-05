@@ -30,7 +30,7 @@ public class LoadPreTestData {
 		testData.From = propertyData.getFromCCD();
 		testData.IntegrationPracticeID = propertyData.getIntegrationPracticeIDCCD();
 		testData.Zip = propertyData.getCCDZIP();
-		
+
 		testData.deviceName = propertyData.getdeviceNameCCD();
 		testData.deviceVersion = propertyData.getdeviceVersionCCD();
 		testData.vendorName = propertyData.getvendorNameCCD();
