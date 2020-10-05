@@ -3,14 +3,15 @@
 <suite name="Suite">
 	<test name="pss-loginless-newpatient">
 		<classes>
-			<class
-				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" />
+			<class name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" >
 			<methods>
 				<include name="testE2ELoginlessForNewPatientNG" />
 				<include name="testE2ELoginlessForNewPatientGW" />
 				<include name="testE2ELoginlessForNewPatientGE" />
 				<include name="testE2ELoginlessForNewPatientAT" />
 			</methods>
+			
+			</class>
 		</classes>
 	</test> <!-- pss-loginless-newpatient -->
 </suite> <!-- Suite -->

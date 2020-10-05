@@ -195,12 +195,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
 
 		log("Set the Test Data for ATHENA ADMIN");
 		propertyData.setAdminAT(adminuser);
 
 		log("Set the Test Data for ATHENA APPOINTMENT");
 		propertyData.setAppointmentResponseAT(testData);
+		pssNewPatient.createPatientDetails(testData);
+
+
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
@@ -214,7 +218,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		PSSNewPatient pssnewpatient = new PSSNewPatient();
+
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
@@ -223,6 +227,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Clicked on Dismiss");
 
 		log("Step 6: Fill Patient criteria");
+		log("insuranceSelected--> OFF");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -236,11 +248,25 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
 					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
 		} else {
-			log("insuranceSelected--> OFF");
+
 			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		}
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+	}
+
+	@Test
+	public void testRough() {
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		Appointment testData = new Appointment();
+
+		pssNewPatient.createPatientDetails(testData);
+		log("" + testData.getFirstName());
+		log("" + testData.getLastName());
+		log("" + testData.getGender());
+		log(testData.getEmail());
+		log(testData.getPrimaryNumber());
+		log(testData.getDob());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
