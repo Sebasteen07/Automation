@@ -27,7 +27,7 @@ public class AppointmentDataUtils {
 		Log4jUtil.log("Generate Payload with Status as "+testData.Status);
 		AppointmentDataPayload apObj =new AppointmentDataPayload();
 		String appointmentDataPayload = apObj.getAppointmentDataPayload(testData);
-		//Log4jUtil.log("appointmentDataPayload "+appointmentDataPayload);
+		Log4jUtil.log("appointmentDataPayload "+appointmentDataPayload);
 		
 		Thread.sleep(5000);
 

@@ -76,13 +76,13 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		@FindBy(how = How.ID, using = "visa")
 		private WebElement visaCard;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[2]/a")
+		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[1]")
 		private WebElement statementDetails;
 
 		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")
 		private WebElement balanceDue;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[5]/span")
+		@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[6]/span")
 		private WebElement outstandingInsuranceBalance;
 
 		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")

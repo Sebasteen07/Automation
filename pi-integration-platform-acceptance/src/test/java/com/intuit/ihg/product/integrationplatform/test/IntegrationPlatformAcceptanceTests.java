@@ -28,6 +28,7 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
@@ -234,11 +235,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
-		String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
-		log("Link is " + link);
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+		log("Link is " + emailMessageLink);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Detecting if Home Page is opened");

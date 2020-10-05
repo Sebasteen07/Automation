@@ -56,7 +56,6 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 	}
 
 	public ExistingPatientIDP selectExistingPatientIDP() {
-		buttonExistingPatient.click();
 		return PageFactory.initElements(driver, ExistingPatientIDP.class);
 	}
 
@@ -67,7 +66,6 @@ public class OnlineAppointmentScheduling extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		IHGUtil.waitForElement(driver, 80, buttonNewPatient);
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(buttonNewPatient);
 		webElementsList.add(buttonExistingPatient);

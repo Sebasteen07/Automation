@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:PatientBatch xmlns:ns2="http://schema.intuit.com/health/patient/v1">
-    <BatchId>d6bec3f8-e0c0-4d07-bd2e-efb5b1e47cb6</BatchId>
-    <BatchSize>1</BatchSize>
-    <Sender deviceName="PIDC" deviceVersion="13.2" deviceLocalTime="2016-09-12T13:46:18" deviceUTCTime="2016-09-12T13:46:18" vendorName="Intuit"/>
+    <BatchId>a7dce3f9-e41f-4cf9-8f06-d22a59c06c89</BatchId>
+    <BatchSize>2</BatchSize>
+    <Sender deviceName="PIDC" deviceVersion="13.2" deviceLocalTime="2020-09-17T17:54:14" deviceUTCTime="2020-09-17T17:54:14" vendorName="Intuit"/>
     <Patient>
         <PatientIdentifier>
-            <PracticePatientId>Patient1473687873409</PracticePatientId>
+            <PracticePatientId>Name1600364919435</PracticePatientId>
             <PatientAccountNumber></PatientAccountNumber>
-            <IntuitPatientId>61886e9e-4c88-4ea9-9c8e-48901f0a0db2</IntuitPatientId>
-            <MedfusionPatientId>169568</MedfusionPatientId>
+            <IntuitPatientId>74bdb54c-b88a-4d02-8c26-9d951327e678</IntuitPatientId>
+            <MedfusionPatientId>368397</MedfusionPatientId>
         </PatientIdentifier>
         <PracticeIdentifier>
             <IntuitPracticeId>054e496b-5f73-429f-9bde-23a74dafd197</IntuitPracticeId>
@@ -20,24 +20,31 @@
         </PatientStatus>
         <Name>
             <Prefix></Prefix>
-            <FirstName>Name1473687873409</FirstName>
-            <MiddleName>middle</MiddleName>
-            <LastName>TestPatient11473687873409</LastName>
+            <FirstName>Name1600364919435</FirstName>
+            <MiddleName>MiddleName</MiddleName>
+            <LastName>TestPatient1600364919435</LastName>
             <Suffix></Suffix>
         </Name>
-        <DateOfBirth>1985-06-10T00:00:00</DateOfBirth>
+        <DateOfBirth>1987-11-01T00:00:00</DateOfBirth>
+        <Race>American Indian or Alaska Native</Race>
         <Ethnicity>Hispanic or Latino</Ethnicity>
         <Gender>MALE</Gender>
+        <PreferredLanguage>Arabic</PreferredLanguage>
         <PreferredCommunication>US Mail</PreferredCommunication>
+        <PreferredLocation>
+            <Id>17922</Id>
+            <ExternalId>179222016</ExternalId>
+            <Name>Automation-Location-24</Name>
+        </PreferredLocation>
         <SocialSecurityNumber>123456789</SocialSecurityNumber>
-        <EmailAddress>medqa.demo+896386954@gmail.com</EmailAddress>
+        <EmailAddress>Name1600364919435@mailinator.com</EmailAddress>
         <HomeAddress>
             <Line1>Line1</Line1>
             <Line2>Line2</Line2>
             <City>City</City>
-            <State>NC</State>
+            <State></State>
             <Country></Country>
-            <ZipCode>55555</ZipCode>
+            <ZipCode>27560</ZipCode>
         </HomeAddress>
         <WorkAddress>
             <Line1></Line1>
@@ -85,6 +92,7 @@
         <Billing>
             <AccountNumber></AccountNumber>
             <Guarantor>
+                <ExternalId></ExternalId>
                 <Name>
                     <Prefix></Prefix>
                     <FirstName></FirstName>
@@ -107,7 +115,7 @@
         </Billing>
         <PrimaryInsurance>
             <CompanyName>Aviva</CompanyName>
-            <PlanName>plan123</PlanName>
+            <PlanName>Plan123</PlanName>
             <GroupNumber>23123</GroupNumber>
             <PolicyNumber>PolicyNumber</PolicyNumber>
             <EffectiveDate>2001-12-31T00:00:00</EffectiveDate>
@@ -121,8 +129,203 @@
                 <Country>US</Country>
                 <ZipCode>27560</ZipCode>
             </ClaimsAddress>
-            <ClaimsPhone>ClaimsPhone</ClaimsPhone>
+            <ClaimsPhone>ClaimPhone</ClaimsPhone>
+            <MemberId>368397</MemberId>
+            <PayerId></PayerId>
+            <SubscriberId></SubscriberId>
+            <SubscriberName>
+                <Prefix></Prefix>
+                <FirstName>FirstName</FirstName>
+                <MiddleName></MiddleName>
+                <LastName>LastName</LastName>
+                <Suffix></Suffix>
+            </SubscriberName>
+            <SubscriberDateOfBirth>2001-12-31T00:00:00</SubscriberDateOfBirth>
+            <SubscriberSocialSecurityNumber>123456789</SubscriberSocialSecurityNumber>
+            <PatientRelationToSubscriber>SELF</PatientRelationToSubscriber>
+        </PrimaryInsurance>
+        <SecondaryInsurance>
+            <CompanyName></CompanyName>
+            <PlanName></PlanName>
+            <GroupNumber></GroupNumber>
+            <PolicyNumber></PolicyNumber>
+            <ClaimsAddress>
+                <Line1></Line1>
+                <Line2></Line2>
+                <City></City>
+                <State></State>
+                <Country></Country>
+                <ZipCode></ZipCode>
+            </ClaimsAddress>
+            <ClaimsPhone></ClaimsPhone>
             <MemberId></MemberId>
+            <PayerId></PayerId>
+            <SubscriberId></SubscriberId>
+            <SubscriberName>
+                <Prefix></Prefix>
+                <FirstName></FirstName>
+                <MiddleName></MiddleName>
+                <LastName></LastName>
+                <Suffix></Suffix>
+            </SubscriberName>
+            <SubscriberSocialSecurityNumber></SubscriberSocialSecurityNumber>
+        </SecondaryInsurance>
+        <TertiaryInsurance>
+            <CompanyName></CompanyName>
+            <PlanName></PlanName>
+            <GroupNumber></GroupNumber>
+            <PolicyNumber></PolicyNumber>
+            <ClaimsAddress>
+                <Line1></Line1>
+                <Line2></Line2>
+                <City></City>
+                <State></State>
+                <Country></Country>
+                <ZipCode></ZipCode>
+            </ClaimsAddress>
+            <ClaimsPhone></ClaimsPhone>
+            <MemberId></MemberId>
+            <PayerId></PayerId>
+            <SubscriberId></SubscriberId>
+            <SubscriberName>
+                <Prefix></Prefix>
+                <FirstName></FirstName>
+                <MiddleName></MiddleName>
+                <LastName></LastName>
+                <Suffix></Suffix>
+            </SubscriberName>
+            <SubscriberSocialSecurityNumber></SubscriberSocialSecurityNumber>
+        </TertiaryInsurance>
+        <ProviderAssociation/>
+    </Patient>
+    <Patient>
+        <PatientIdentifier>
+            <PracticePatientId>Name1600364924438</PracticePatientId>
+            <PatientAccountNumber></PatientAccountNumber>
+            <IntuitPatientId>67cba652-0744-4505-9887-00317f1c108b</IntuitPatientId>
+            <MedfusionPatientId>368398</MedfusionPatientId>
+        </PatientIdentifier>
+        <PracticeIdentifier>
+            <IntuitPracticeId>054e496b-5f73-429f-9bde-23a74dafd197</IntuitPracticeId>
+        </PracticeIdentifier>
+        <ResourceRequestId></ResourceRequestId>
+        <PatientStatus>
+            <Status>REGISTERED</Status>
+            <Description></Description>
+        </PatientStatus>
+        <Name>
+            <Prefix></Prefix>
+            <FirstName>Name1600364924438</FirstName>
+            <MiddleName>MiddleName</MiddleName>
+            <LastName>TestPatient1600364924438</LastName>
+            <Suffix></Suffix>
+        </Name>
+        <DateOfBirth>1987-11-01T00:00:00</DateOfBirth>
+        <Race>Asian</Race>
+        <Ethnicity>Not Hispanic or Latino</Ethnicity>
+        <Gender>MALE</Gender>
+        <PreferredLanguage>Chinese</PreferredLanguage>
+        <PreferredCommunication>Secure Email</PreferredCommunication>
+        <PreferredLocation>
+            <Id>17922</Id>
+            <ExternalId>179222016</ExternalId>
+            <Name>Automation-Location-24</Name>
+        </PreferredLocation>
+        <SocialSecurityNumber>123456789</SocialSecurityNumber>
+        <EmailAddress>Name1600364924438@mailinator.com</EmailAddress>
+        <HomeAddress>
+            <Line1>Line1</Line1>
+            <Line2>Line2</Line2>
+            <City>City</City>
+            <State>NC</State>
+            <Country></Country>
+            <ZipCode>27560</ZipCode>
+        </HomeAddress>
+        <WorkAddress>
+            <Line1></Line1>
+            <Line2></Line2>
+            <City></City>
+            <State></State>
+            <Country></Country>
+            <ZipCode></ZipCode>
+        </WorkAddress>
+        <HomePhone>1234567890</HomePhone>
+        <MobilePhone></MobilePhone>
+        <WorkPhone></WorkPhone>
+        <MaritalStatus>SINGLE</MaritalStatus>
+        <EmergencyContact>
+            <Name>
+                <Prefix></Prefix>
+                <FirstName>FirstName</FirstName>
+                <MiddleName></MiddleName>
+                <LastName>LastName</LastName>
+                <Suffix></Suffix>
+            </Name>
+            <Address>
+                <Line1>Line1</Line1>
+                <Line2>Line2</Line2>
+                <City>City</City>
+                <State>NC</State>
+                <Country>US</Country>
+                <ZipCode>27560</ZipCode>
+            </Address>
+            <Phone>321511126</Phone>
+            <EmailAddress></EmailAddress>
+        </EmergencyContact>
+        <Employment>
+            <Name></Name>
+            <Address>
+                <Line1></Line1>
+                <Line2></Line2>
+                <City></City>
+                <State></State>
+                <Country></Country>
+                <ZipCode></ZipCode>
+            </Address>
+            <Phone></Phone>
+        </Employment>
+        <Billing>
+            <AccountNumber></AccountNumber>
+            <Guarantor>
+                <ExternalId></ExternalId>
+                <Name>
+                    <Prefix></Prefix>
+                    <FirstName></FirstName>
+                    <MiddleName></MiddleName>
+                    <LastName></LastName>
+                    <Suffix></Suffix>
+                </Name>
+                <SocialSecurityNumber></SocialSecurityNumber>
+                <Address>
+                    <Line1></Line1>
+                    <Line2></Line2>
+                    <City></City>
+                    <State></State>
+                    <Country></Country>
+                    <ZipCode></ZipCode>
+                </Address>
+                <Phone></Phone>
+                <Email></Email>
+            </Guarantor>
+        </Billing>
+        <PrimaryInsurance>
+            <CompanyName>Aviva</CompanyName>
+            <PlanName>Plan123</PlanName>
+            <GroupNumber>23123</GroupNumber>
+            <PolicyNumber>PolicyNumber</PolicyNumber>
+            <EffectiveDate>2001-12-31T00:00:00</EffectiveDate>
+            <ExpirationDate>2001-12-31T00:00:00</ExpirationDate>
+            <Copay>0.20</Copay>
+            <ClaimsAddress>
+                <Line1>addLine1</Line1>
+                <Line2>addLine2</Line2>
+                <City>City1</City>
+                <State>NC</State>
+                <Country>US</Country>
+                <ZipCode>27560</ZipCode>
+            </ClaimsAddress>
+            <ClaimsPhone>ClaimPhone</ClaimsPhone>
+            <MemberId>368398</MemberId>
             <PayerId></PayerId>
             <SubscriberId></SubscriberId>
             <SubscriberName>

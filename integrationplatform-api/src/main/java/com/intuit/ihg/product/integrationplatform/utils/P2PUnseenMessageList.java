@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class P2PUnseenMessageList {
-	public void verifyUnseenMessage(SendDirectMessage testData) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public void verifyUnseenMessage(SendDirectMessage testData) throws ParserConfigurationException, SAXException, IOException, TransformerException, InterruptedException {
 		Log4jUtil.log("Step 6 : Check for new Unseen Message ");
 		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
 		
@@ -25,6 +25,7 @@ public class P2PUnseenMessageList {
 		getMessageBody = getMessageBody+"/"+msgUid;
 		
 		Log4jUtil.log("Step 8 : Get UnseenMessage Body ");
+		Thread.sleep(10000);
 		RestUtils.setupHttpGetRequest(getMessageBody, testData.ResponsePath);
 		
 		Log4jUtil.log("Step 9 : Verify UnseenMessage Body Cotent");
@@ -67,9 +68,13 @@ public class P2PUnseenMessageList {
 	
 	public void ExtractErrorMessage(String xmlFileName,String PatternToMatch,String invalidMessage) throws IOException {
 		String responseInvalidPratice = ExternalFileReader.readFromFile(xmlFileName);
-	 	Pattern TAG_REGEX = Pattern.compile(PatternToMatch);
+		Log4jUtil.log("responseInvalidPratice :"+responseInvalidPratice);
+		Log4jUtil.log("PatternToMatch : "+PatternToMatch);
+		Log4jUtil.log("invalidMessage :"+invalidMessage);
+		Pattern TAG_REGEX = Pattern.compile(PatternToMatch);
 	 	final List<String> tagValues = new ArrayList<String>();
 	    final Matcher matcher = TAG_REGEX.matcher(responseInvalidPratice);
+	    Log4jUtil.log("response "+responseInvalidPratice);	
 	    while (matcher.find()) {
 	        tagValues.add(matcher.group(1));
 	    }
