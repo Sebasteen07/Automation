@@ -64,15 +64,52 @@ public class PSSPatientUtils {
 		Log4jUtil.log("LBTFlow");
 		Log4jUtil.log("Step 8: Select location for appointment.");
 		Location location = null;
-		Log4jUtil.log("startOrderOn " + startOrderOn);
-		if (startOrderOn.equalsIgnoreCase("true")) {
-			Log4jUtil.log("Insurance is enabled");
-			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
-			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		} else {
-			Log4jUtil.log("Insurance is Disabled");
-			location = homepage.selectLocation(PSSConstants.START_LOCATION);
-		}
+//		Log4jUtil.log("startOrderOn " + startOrderOn);
+//		if (startOrderOn.equalsIgnoreCase("true")) {
+//			Log4jUtil.log("Insurance is enabled");
+//			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
+//			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+//		} else {
+//			Log4jUtil.log("Insurance is Disabled");
+//			location = homepage.selectLocation(PSSConstants.START_LOCATION);
+//		}
+		StartAppointmentInOrder startappointmentInOrder=null;
+		Boolean isInsuranceVisible = true;
+		Boolean	isstartPointpresent=true;
+		if (isInsuranceVisible) {
+			       Thread.sleep(3500);
+					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+             startappointmentInOrder =homepage.skipInsurance(driver);
+             if(isstartPointpresent)
+		         {
+  				    Log4jUtil.log("Starting point is present after insurance skipped ");
+  				    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+						  Log4jUtil.log("Successfully clicked on  "+PSSConstants.START_LOCATION);
+             }
+             else
+             {
+            	location=homepage.locationpage();
+  				    Log4jUtil.log("Starting point not Present going to select next provider ");
+             }
+             
+         	}
+		
+		    else {
+    	
+            if(isstartPointpresent)
+	  	      { 
+          	startappointmentInOrder=homepage.startpage();
+				    Log4jUtil.log("in else part  click on  "+PSSConstants.START_LOCATION);
+		  	    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			    	Log4jUtil.log("clicked on location ");
+			    	}
+	  	      else
+            {
+				    Log4jUtil.log("Start point not present");
+          	location=homepage.locationpage();
+            }
+          }
+		
 		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
@@ -91,16 +128,53 @@ public class PSSPatientUtils {
 	public void BLTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
-		if (startOrderOn.equalsIgnoreCase("true")) {
-			Boolean insuranceEnabled = true;
-			if (insuranceEnabled) {
-				Thread.sleep(3500);
-			}
-			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
-			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-		} else {
-			provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
-		}
+//		if (startOrderOn.equalsIgnoreCase("true")) {
+//			Boolean insuranceEnabled = true;
+//			if (insuranceEnabled) {
+//				Thread.sleep(3500);
+//			}
+//			StartAppointmentInOrder startappointmentInOrder = homepage.selectSpeciality(testData.getSpeciality());
+//			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+//		} else {
+//			provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
+//		}
+		StartAppointmentInOrder startappointmentInOrder=null;
+		Boolean isInsuranceVisible =false;
+		Boolean	isstartPointpresent=true;
+		if (isInsuranceVisible) {
+			       Thread.sleep(3500);
+					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+             startappointmentInOrder =homepage.skipInsurance(driver);
+             if(isstartPointpresent)
+		         {
+  				    Log4jUtil.log("Starting point is present after insurance skipped ");
+              provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+						  Log4jUtil.log("Successfully clicked on  "+PSSConstants.START_PROVIDER);
+             }
+             else
+             {
+            	provider=homepage.providerpage();
+  				    Log4jUtil.log("Starting point not Present going to select next provider ");
+             }
+             
+         	}
+		
+		    else {
+    	
+            if(isstartPointpresent)
+	  	      { 
+          	startappointmentInOrder=homepage.startpage();
+				    Log4jUtil.log("in else part  click on  "+PSSConstants.START_PROVIDER);
+		  	    provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			    	Log4jUtil.log("clicked on provider ");
+			    	}
+	  	      else
+            {
+				    Log4jUtil.log("Start point not present");
+          	provider=homepage.providerpage();
+            }
+          }
+		
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
 		Location location = provider.selectLocation(testData.getProvider());
@@ -108,8 +182,8 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), false);
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+  	aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
 		bookAppointment(false, aptDateTime, testData, driver);
 	}
@@ -117,18 +191,47 @@ public class PSSPatientUtils {
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
-		if (startOrderOn.equalsIgnoreCase("true")) {
-			Boolean insuranceEnabled = true;
-			if (insuranceEnabled) {
-				Thread.sleep(3500);
-			}
-			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
-			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-		} else {
-			provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
-		}
+		StartAppointmentInOrder startappointmentInOrder=null;
+		Boolean isInsuranceVisible = true;
+		Boolean	isstartPointpresent=true;
+		if (isInsuranceVisible) {
+			       Thread.sleep(3500);
+					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+             startappointmentInOrder =homepage.skipInsurance(driver);
+             if(isstartPointpresent)
+		         {
+  				    Log4jUtil.log("Starting point is present after insurance skipped ");
+              provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+						  Log4jUtil.log("Successfully clicked on  "+PSSConstants.START_PROVIDER);
+             }
+             else
+             {
+            	provider=homepage.providerpage();
+  				    Log4jUtil.log("Starting point not Present going to select next provider ");
+             }
+             
+         	}
+		
+		    else {
+    	
+            if(isstartPointpresent)
+	  	      { 
+          	startappointmentInOrder=homepage.startpage();
+				    Log4jUtil.log("in else part  click on  "+PSSConstants.START_PROVIDER);
+		  	    provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			    	Log4jUtil.log("clicked on provider ");
+			    	}
+	  	      else
+            {
+				    Log4jUtil.log("Start point not present");
+          	provider=homepage.providerpage();
+            }
+          }
+		
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
+	  Log4jUtil.log("going to choose an provider");
+   	assertTrue(provider.areBasicPageElementsPresent());
+	  Log4jUtil.log("basic element are present");
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		assertTrue(appointmentpage.areBasicPageElementsPresent());
@@ -143,16 +246,55 @@ public class PSSPatientUtils {
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Location for appointment.");
 		Location location = null;
-		if (startOrderOn.equalsIgnoreCase("true")) {
-			Boolean insuranceEnabled = true;
-			if (insuranceEnabled) {
-				Thread.sleep(3500);
-			}
-			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
-			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		} else {
-			location = homepage.selectLocation(PSSConstants.START_LOCATION);
-		}
+//		if (startOrderOn.equalsIgnoreCase("true")) {
+//			Boolean insuranceEnabled = true;
+//			if (insuranceEnabled) {
+//				Thread.sleep(3500);
+//			}
+//			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
+//			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+//		} else {
+//			location = homepage.selectLocation(PSSConstants.START_LOCATION);
+//		}
+		StartAppointmentInOrder startappointmentInOrder=null;
+		Boolean isInsuranceVisible = false;
+		Boolean	isstartPointpresent=false;
+		if (isInsuranceVisible) {
+			       Thread.sleep(3500);
+					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+             startappointmentInOrder =homepage.skipInsurance(driver);
+             if(isstartPointpresent)
+		         {
+  				    Log4jUtil.log("Starting point is present after insurance skipped ");
+  				    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+						  Log4jUtil.log("Successfully clicked on  "+PSSConstants.START_LOCATION);
+             }
+             else
+             {
+            	location=homepage.locationpage();
+  				    Log4jUtil.log("Starting point not Present going to select next provider ");
+             }
+             
+         	}
+		
+		    else {
+    	
+            if(isstartPointpresent)
+	  	      { 
+          	startappointmentInOrder=homepage.startpage();
+				    Log4jUtil.log("in else part  click on  "+PSSConstants.START_LOCATION);
+		  	    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			    	Log4jUtil.log("clicked on location ");
+			    	}
+	  	      else
+            {
+				    Log4jUtil.log("Start point not present");
+          	location=homepage.locationpage();
+            }
+          }
+		
+		
+		
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());

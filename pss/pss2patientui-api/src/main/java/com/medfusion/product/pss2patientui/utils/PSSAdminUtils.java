@@ -267,4 +267,24 @@ public class PSSAdminUtils {
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
 	}
+	public void getInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(6000);
+		Log4jUtil.log("isInsuranceToBeDisplayed=" + patientflow.isInsuranceToBeDisplayed());
+		if (!patientflow.isInsuranceToBeDisplayed()) {
+			patientflow.selectInsurance();
+		}
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		Log4jUtil.log("Patient Flow page Show Insurance= " + patientflow.isInsuranceToBeDisplayed());
+		Thread.sleep(6000);
+		InsuranceCarrier insurancecarrier = patientflow.gotoInsuranceCarrierTab();
+		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
+		insurancecarrier.enableshowInsuranceAtStart();
+		insurancecarrier.logout();
+	}
+
+	
+	
 }

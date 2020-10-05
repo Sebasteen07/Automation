@@ -20,7 +20,7 @@ public class PatientFlow extends SettingsTab {
 	private WebElement specialityRule;
 
 	// Code changed by SS
-	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
+	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/label[1]/i[1]")
 	private WebElement insuranceToggle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
@@ -73,6 +73,7 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public Boolean isInsuranceToBeDisplayed() {
+		log("inside the isInsuranceToBeDisplayed");
 		return insuranceToggle.isSelected();
 	}
 

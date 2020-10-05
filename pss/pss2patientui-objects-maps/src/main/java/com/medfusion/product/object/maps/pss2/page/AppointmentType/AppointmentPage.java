@@ -46,6 +46,7 @@ public class AppointmentPage extends PSS2MainPage {
 		searchAppointment.sendKeys(appointmentType);
 		IHGUtil.waitForElement(driver, 30, selectAppointment);
 		javascriptClick(selectAppointment);
+		log("click on next step if present");
 		selectNextStep(isPopUpSelected);
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
@@ -63,8 +64,9 @@ public class AppointmentPage extends PSS2MainPage {
 
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
-				javascriptClick(appointmentTypeList.get(i));
-				selectNextStep(isPopUpSelected);
+				//javascriptClick(appointmentTypeList.get(i));
+				 appointmentTypeList.get(i).click();
+       	selectNextStep(isPopUpSelected);
 				return PageFactory.initElements(driver, Location.class);
 			}
 		}
@@ -74,9 +76,13 @@ public class AppointmentPage extends PSS2MainPage {
 
 	public void selectNextStep(Boolean isPopUpSelected) {
 		if (isPopUpSelected) {
+			log("is popup");
 			IHGUtil.waitForElement(driver, 30, gotoNextStep);
 			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');", gotoNextStep);
 			gotoNextStep.click();
+			log("successfully clicked on next step");
+
+			
 		}
 	}
 

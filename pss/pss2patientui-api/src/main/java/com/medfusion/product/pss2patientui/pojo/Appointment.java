@@ -4,7 +4,6 @@ package com.medfusion.product.pss2patientui.pojo;
 import java.util.ArrayList;
 
 import com.medfusion.product.pss2patientui.utils.PatientMatch;
-
 public class Appointment {
 	private String dob;
 	private String city;
@@ -66,7 +65,7 @@ public class Appointment {
 	private String underAgePatientPassword;
 
 	private Boolean isCancelApt = true;
-	private Boolean isInsuranceEnabled = true;
+	private Boolean isInsuranceEnabled = false;
 
 	private String oldPatientUserName;
 	private String oldPatientPassword;
