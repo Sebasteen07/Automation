@@ -15,10 +15,10 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
-public class ScheduledAppointment extends PSS2MainPage {
+public class ScheduledAppointmentAnonymous extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//a[@id='gotodashboard']/span")
-	private WebElement buttonBackToAppointmentList;
+	@FindBy(how = How.XPATH, using = "//a[@id='gotodashboard']")
+	private WebElement bookAnotherAppointment;
 
 	@FindBy(how = How.XPATH, using = "//button[@class='btn-link addCalendar hidden-xs']/span")
 	private WebElement linkAddToCalander;
@@ -32,7 +32,7 @@ public class ScheduledAppointment extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']/h1/span[2]")
 	private WebElement confirmationNumber;
 
-	public ScheduledAppointment(WebDriver driver) {
+	public ScheduledAppointmentAnonymous(WebDriver driver) {
 		super(driver);
 	}
 
@@ -40,7 +40,7 @@ public class ScheduledAppointment extends PSS2MainPage {
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(linkAddToCalander);
-		webElementsList.add(buttonBackToAppointmentList);
+		webElementsList.add(bookAnotherAppointment);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
@@ -50,7 +50,7 @@ public class ScheduledAppointment extends PSS2MainPage {
 
 	public HomePage backtoHomePage() {
 		jse.executeScript("window.scrollBy(0,500)", "");
-		buttonBackToAppointmentList.click();
+		bookAnotherAppointment.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
