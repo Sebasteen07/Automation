@@ -82,6 +82,7 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("adminpasswordGW"));
 		adminuser.setRule(property.getProperty("rule"));
 		adminuser.setPracticeId(property.getProperty("practiceIdGW"));
+		adminuser.setIsInsuranceDisplayed(false);
 	}
 
 	public void setAdminGE(AdminUser adminuser) {

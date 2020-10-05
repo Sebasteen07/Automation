@@ -192,6 +192,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder=null;
+  //  boolean isinsuranceVisible=patientflow.insuracetogglestatus();
 		Boolean isInsuranceVisible = true;
 		Boolean	isstartPointpresent=true;
 		if (isInsuranceVisible) {
@@ -257,8 +258,8 @@ public class PSSPatientUtils {
 //			location = homepage.selectLocation(PSSConstants.START_LOCATION);
 //		}
 		StartAppointmentInOrder startappointmentInOrder=null;
-		Boolean isInsuranceVisible = false;
-		Boolean	isstartPointpresent=false;
+		Boolean isInsuranceVisible = true;
+		Boolean	isstartPointpresent=true;
 		if (isInsuranceVisible) {
 			       Thread.sleep(3500);
 					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
@@ -292,9 +293,6 @@ public class PSSPatientUtils {
           	location=homepage.locationpage();
             }
           }
-		
-		
-		
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
@@ -349,17 +347,17 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Test Case Passed");
 	}
 
-	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
+	  public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		Log4jUtil.log("--------Flow Starts---------------");
 		AppointmentPage appointment;
 		if (startOrderOn.equalsIgnoreCase("true")) {
-			Boolean insuranceEnabled = true;
-			if (insuranceEnabled) {
+		Boolean insuranceEnabled = true;
+		if (insuranceEnabled) {
 				Thread.sleep(3500);
 			}
 			StartAppointmentInOrder startappointmentInOrder = homepage.updateInsuranceInfo(driver, PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
+			PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
 			Thread.sleep(1000);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		} else {

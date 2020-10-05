@@ -80,7 +80,7 @@ public class PatientFlow extends SettingsTab {
 	public void selectInsurance() {
 		log("insuranceToggle = " + insuranceToggle);
 		insuranceToggle.click();
-		log("Click on insuranceToggle ");
+		log("Click on insuranceToggle");
 	}
 
 	@Override
@@ -153,5 +153,34 @@ public class PatientFlow extends SettingsTab {
 	public void saveRule() {
 		log("Saving above selected rule..");
 		javascriptClick(saveRuleButton);
+	}
+	
+	public boolean insuracetogglestatus() throws InterruptedException
+	{
+		 log("Inside insurance toggle method about to turn ON ");
+     Thread.sleep(2000);
+     String background_color = insuranceToggle.getCssValue("background-color");
+     log("verifying the color  : " +background_color);
+     if((background_color.equals("rgba(93, 143, 194, 1)")))
+     {
+       return true;	         
+     }
+     else
+     {
+    	 return false;   
+     }
+     
+	}
+	public boolean isstartpagepresent()
+	{
+		if(ruleLength.size()>1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 }
