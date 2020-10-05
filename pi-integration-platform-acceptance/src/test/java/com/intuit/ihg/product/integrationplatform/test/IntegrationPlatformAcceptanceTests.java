@@ -235,6 +235,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
+		//String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
 		Mailinator mail = new Mailinator();
 		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
 		String messageLink = "Sign in to view this message";
