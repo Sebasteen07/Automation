@@ -202,6 +202,8 @@ public class IntegrationConstants {
 		public static final String PATIENTID = "PatientId";
 		public static final String PRACTICEID = "PracticeId";
 		public static final String HEALTHDATA = "HealthData";
-		
+		public static final String STARTDATE = "StartDate";
+		public static final String ENDDATE = "EndDate";
+	
 }
 

@@ -84,12 +84,11 @@ public class MU2Utils {
 		
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
-		JavascriptExecutor jse = (JavascriptExecutor)driver;
-		jse.executeScript("window.scrollBy(0,400)", "");
-		
 		Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,400)", "");
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
 		Thread.sleep(5000);
@@ -398,9 +397,7 @@ public class MU2Utils {
 			
 			MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 			
-			JavascriptExecutor jse = (JavascriptExecutor)driver;
-			jse.executeScript("window.scrollBy(0,400)", "");
-			
+			JavascriptExecutor jse = (JavascriptExecutor)driver;		
 			Log4jUtil.log("mu2GetEventGuardian Step 3: Select first and second CCD from the list");
 			MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 			MedicalRecordSummariesPageObject.selectSecondVisibleCCD();

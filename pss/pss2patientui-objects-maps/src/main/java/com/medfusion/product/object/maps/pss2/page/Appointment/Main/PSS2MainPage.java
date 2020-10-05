@@ -36,10 +36,7 @@ public abstract class PSS2MainPage extends BasePageObject {
 			e.printStackTrace();
 		}
 		PageFactory.initElements(driver, this);
-
-		if (!areBasicPageElementsPresent()) {
-			throw new UnsupportedOperationException("Page not loaded");
-		}
+		
 	}
 
 	public void printCookies() {

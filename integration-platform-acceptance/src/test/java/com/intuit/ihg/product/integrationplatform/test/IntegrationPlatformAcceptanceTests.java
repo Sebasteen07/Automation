@@ -1443,7 +1443,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		log("Step 2: Fill in payment info and submit");
 		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
-		
 		log("Step 3: Verify payment OK");
 		
 		log("Step 4: Verify account set to N/A");

@@ -91,8 +91,9 @@ public class RestUtils {
 	 * @param responseFilePath path to save the response
 	 * @return
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
-	public static String setupHttpGetRequest(String strUrl, String responseFilePath) throws IOException {
+	public static String setupHttpGetRequest(String strUrl, String responseFilePath) throws IOException, InterruptedException {
 		IHGUtil.PrintMethodName();
 
 		IOAuthTwoLeggedClient oauthClient = new OAuth2Client();
@@ -100,8 +101,9 @@ public class RestUtils {
 		HttpGet httpGetReq = new HttpGet(strUrl);
 		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		// httpGetReq.addHeader("ExternalSystemId", "82");
+		Thread.sleep(10000);
 		HttpResponse resp = oauthClient.httpGetRequest(httpGetReq);
-		// Log4jUtil.log("Response" +resp);
+		Log4jUtil.log("Response" +resp);
 		HttpEntity entity = resp.getEntity();
 		String sResp = null;
 		if (entity != null) {
@@ -109,7 +111,8 @@ public class RestUtils {
 			Log4jUtil.log("Check for http 200 response");
 			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
 					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-
+			Thread.sleep(10000);
+			Log4jUtil.log("GET sResp="+sResp);
 			writeFile(responseFilePath, sResp);
 
 			if (resp.containsHeader(IntegrationConstants.TIMESTAMP_HEADER)) {
@@ -131,12 +134,13 @@ public class RestUtils {
 	 * @param xmlFilePath path where to store XML.
 	 * @param xml String xml to store
 	 */
-	private static void writeFile(String xmlFilePath, String xml) throws IOException {
+	public static void writeFile(String xmlFilePath, String xml) throws IOException {
 		FileWriter out = new FileWriter(xmlFilePath);
 		out.write(xml);
 		if (out != null) {
 			out.close();
 		}
+		IHGUtil.PrintMethodName();
 	}
 
 
@@ -408,7 +412,7 @@ public class RestUtils {
 			Log4jUtil.log("Post Request Url: " + strUrl);
 			HttpPost httpPostReq = new HttpPost(strUrl);
 			httpPostReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-
+			Thread.sleep(30000);
 			StringEntity se = new StringEntity(payload);
 			httpPostReq.setEntity(se);
 			httpPostReq.addHeader("Accept", "application/xml");
@@ -2287,7 +2291,7 @@ public class RestUtils {
 			Element FirstNameElem = (Element) DirInfo.getElementsByTagName("FirstName").item(0);
 			if(firstName !=null) {
 				Log4jUtil.log("FirstName : "+FirstNameElem.getTextContent()+"  :  "+firstName.trim());
-				Assert.assertEquals(FirstNameElem.getTextContent().toLowerCase(), firstName.trim().toLowerCase());
+				Assert.assertTrue(FirstNameElem.getTextContent().toLowerCase().contains(firstName.trim().toLowerCase()));
 			}
 			
 			Element LastNameElem = (Element) DirInfo.getElementsByTagName("LastName").item(0);
@@ -2335,7 +2339,7 @@ public class RestUtils {
 			Element CityElem = (Element) DirInfo.getElementsByTagName("City").item(0);
 			if(city!=null) {
 				Log4jUtil.log("City : "+CityElem.getTextContent()+"  :  "+city.trim());	
-				Assert.assertEquals(CityElem.getTextContent().toLowerCase(), city.trim().toLowerCase());
+				Assert.assertTrue(CityElem.getTextContent().toLowerCase().contains(city.trim().toLowerCase()));
 			}
 			
 			Element StateElem = (Element) DirInfo.getElementsByTagName("State").item(0);
@@ -2347,7 +2351,7 @@ public class RestUtils {
 			Element ZipCodeElem = (Element) DirInfo.getElementsByTagName("ZipCode").item(0);
 			if(zipCode!=null) {
 				Log4jUtil.log("ZipCode : "+ZipCodeElem.getTextContent()+"  :  "+zipCode.trim());
-				Assert.assertEquals(ZipCodeElem.getTextContent().toLowerCase(), zipCode.trim().toLowerCase());
+				Assert.assertTrue(ZipCodeElem.getTextContent().toLowerCase().contains(zipCode.trim().toLowerCase()));
 			}
 			
 			Element DirectAddressElem = (Element) DirInfo.getElementsByTagName("DirectAddress").item(0);
@@ -3343,4 +3347,25 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		}
 		Assert.assertTrue(found, "Patient was not found in the response XML");
 	}
+
+	public static boolean verifyRequestStartDateAndEndDate(String xmlFileName, String StartDate, String EndDate)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList Startdatenodes = doc.getElementsByTagName(IntegrationConstants.STARTDATE);
+		NodeList Enddatenodes = doc.getElementsByTagName(IntegrationConstants.ENDDATE);
+		{
+			Log4jUtil.log("Start Date for the Requested Health Data: "+StartDate);
+			Log4jUtil.log("Start Date returned in response: "+Startdatenodes.item(Startdatenodes.getLength()-1).getTextContent().substring(0, 10));
+			Assert.assertTrue(Startdatenodes.item(Startdatenodes.getLength()-1).getTextContent().substring(0, 10).equals(StartDate),"Start date should matched");
+		}
+		{
+			Log4jUtil.log("End Date for the Requested Health Data: "+EndDate);
+			Log4jUtil.log("End Date returned in response: "+Enddatenodes.item(Enddatenodes.getLength()-1).getTextContent().substring(0, 10));
+			Assert.assertTrue(Enddatenodes.item(Enddatenodes.getLength()-1).getTextContent().substring(0, 10).equals(EndDate),"End date should matched");
+		}
+		return true;
+	}
+	
+
 }
