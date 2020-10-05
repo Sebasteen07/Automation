@@ -1,4 +1,3 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
-import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.SelectProfilePage;
 
 public class ExistingPatientIDP extends PSS2MainPage {
 
@@ -28,8 +26,6 @@ public class ExistingPatientIDP extends PSS2MainPage {
 		super(driver);
 	}
 
-
-
 	public ExistingPatientIDP(WebDriver driver, String url) {
 		super(driver, url);
 		PageFactory.initElements(driver, this);
@@ -44,21 +40,11 @@ public class ExistingPatientIDP extends PSS2MainPage {
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
-	public HomePage patientSignIn1(String uname, String pwd) throws InterruptedException {
+	public HomePage patientSignIn(String uname, String pwd) {
 		inputLoginUsername.sendKeys(uname);
 		inputLoginPassword.sendKeys(pwd);
 		buttonSignIn.click();
-		Thread.sleep(4000);
-		log("Click on Submit Button for IDP");
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
-	public SelectProfilePage patientSignIn(String uname, String pwd) throws InterruptedException {
-		inputLoginUsername.sendKeys(uname);
-		inputLoginPassword.sendKeys(pwd);
-		buttonSignIn.click();
-		Thread.sleep(4000);
-		log("Click on Submit Button for IDP");
-		return PageFactory.initElements(driver, SelectProfilePage.class);
-	}
 }

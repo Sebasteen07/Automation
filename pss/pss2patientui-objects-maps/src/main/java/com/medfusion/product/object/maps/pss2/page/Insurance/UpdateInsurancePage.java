@@ -1,4 +1,3 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Insurance;
 
 import java.util.ArrayList;
@@ -11,10 +10,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
-import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class UpdateInsurancePage extends PSS2MainPage {
 
@@ -46,8 +43,6 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		super(driver);
 	}
 
-	CommonMethods commonMethods = new CommonMethods(driver);
-
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -60,27 +55,13 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
-	public ConfirmationPage skipInsuranceUpdate() throws InterruptedException {
-		jse.executeScript("window.scrollBy(0,350)", "");
-		commonMethods.highlightElement(buttonDontUpdateInsurance);
-		Thread.sleep(2000);
+	public ConfirmationPage skipInsuranceUpdate() {
 		buttonDontUpdateInsurance.click();
 		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
 
-	public HomePage skipInsuranceUpdateAnonymous() throws InterruptedException {
-		jse.executeScript("window.scrollBy(0,350)", "");
-		commonMethods.highlightElement(buttonDontUpdateInsurance);
-		Thread.sleep(2000);
-		buttonDontUpdateInsurance.click();
-		return PageFactory.initElements(driver, HomePage.class);
-	}
-
-	public void skipInsuranceUpdateOnHomePage() throws InterruptedException {
+	public void skipInsuranceUpdateOnHomePage() {
 		log("don't update Insurance");
-		Thread.sleep(2000);
-		jse.executeScript("window.scrollBy(0,450)", "");
-		commonMethods.highlightElement(buttonDontUpdateInsurance);
 		buttonDontUpdateInsurance.click();
 	}
 

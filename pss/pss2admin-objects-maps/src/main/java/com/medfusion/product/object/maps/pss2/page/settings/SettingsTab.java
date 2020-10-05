@@ -1,4 +1,3 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.WebDriver;
@@ -46,7 +45,6 @@ public class SettingsTab extends PSS2MenuPage {
 
 	public AccessRules gotoAccessTab() {
 		accessTab.click();
-		jse.executeScript("window.scrollBy(0,550)", "");
 		return PageFactory.initElements(driver, AccessRules.class);
 	}
 

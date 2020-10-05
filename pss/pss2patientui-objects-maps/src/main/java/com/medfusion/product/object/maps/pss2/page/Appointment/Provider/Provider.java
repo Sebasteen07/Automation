@@ -1,4 +1,3 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Provider;
 
 import java.util.ArrayList;
@@ -23,11 +22,10 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.Appointm
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
-import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
 
-	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 provider-width-btn']")})
+	@FindAll({@FindBy(css = ".btn")})
 	private List<WebElement> providerList;
 
 	@FindBy(how = How.ID, using = "providerserach")
@@ -43,10 +41,9 @@ public class Provider extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		// webElementsList.add(providerList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
-
-	CommonMethods CommonMethods = new CommonMethods(driver);
 
 	public Location selectLocation(String providerName) {
 		log("in selectLocation providerList" + providerName);
@@ -85,19 +82,24 @@ public class Provider extends PSS2MainPage {
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
-		return PageFactory.initElements(driver, AppointmentDateTime.class);
+		return null;
 	}
-
+	
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class)
+				.ignoring(WebDriverException.class);
+		
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
-			@Override
-			public Boolean apply(WebDriver driver) {
+			     public Boolean apply(WebDriver driver) {			    	
 				return driver.findElement(By.cssSelector(".btn")).isDisplayed();
-			}
-		});
+			       }
+			     }
+				);
 		return result;
 	}
 
@@ -113,20 +115,9 @@ public class Provider extends PSS2MainPage {
 		return providerList;
 	}
 
-	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
+	public int searchForProviderFromList(String providerName) {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
-		Thread.sleep(6000);
-		CommonMethods.highlightElement(providerList.get(0));
-		providerList.get(0).click();
-		log("Clicked on the Provider ");
-		return PageFactory.initElements(driver, AppointmentDateTime.class);
-	}
-
-	public int searchForProviderFromListt(String providerName) throws InterruptedException {
-		searchForProvider.sendKeys(providerName);
-		log("providerList = " + providerList.size());
-		Thread.sleep(6000);
 		return providerList.size();
 	}
 }

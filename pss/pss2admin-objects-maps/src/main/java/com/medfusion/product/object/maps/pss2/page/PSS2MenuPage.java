@@ -1,4 +1,3 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page;
 
 import java.util.ArrayList;
@@ -19,10 +18,10 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
+	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/a")
 	private WebElement settingsLogout;
 
-	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
+	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/ul/li/a/i")
 	private WebElement logout;
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/settings\"]")
@@ -91,9 +90,10 @@ public class PSS2MenuPage extends PSS2MainPage {
 		log("logging out from admin...need to add logic to check which page it redirects too");
 		try {
 			settingsLogout.click();
-			logout.click();
-		} catch (Exception E) {
-			log("Exception occured while logging out. " + E);
+			logout.click();	
+		}catch(Exception E) {
+			log("Exception occured while logging out. "+E);
 		}
 	}
+
 }

@@ -1,5 +1,5 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
+
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
@@ -40,9 +40,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
 
-	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
-	private WebElement sheduleanappointment;
-	
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
 	private WebElement appointments;
 
@@ -366,13 +363,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickFeaturedAppointmentsReq() {
-		javascriptClick(sheduleanappointment);
+		javascriptClick(appointments);
 		IHGUtil.waitForElement(driver, 80, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(sheduleanappointment);
+		javascriptClick(appointments);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}

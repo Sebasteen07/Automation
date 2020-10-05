@@ -1,4 +1,3 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Scheduled;
 
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
 public class ScheduledAppointment extends PSS2MainPage {
-
-	@FindBy(how = How.XPATH, using = "//a[@id='gotodashboard']/span")
+	
+	@FindBy(how = How.ID, using = "gotodashboard")
 	private WebElement buttonBackToAppointmentList;
 
-	@FindBy(how = How.XPATH, using = "//button[@class='btn-link addCalendar hidden-xs']/span")
+	@FindBy(how = How.CSS, using = ".btn-link.addCalendar")
 	private WebElement linkAddToCalander;
 
 	@FindAll({@FindBy(css = "value-classschedule")})
@@ -29,7 +28,7 @@ public class ScheduledAppointment extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//h1[@class=\"schedule\"]/text()")
 	private WebElement appointmentID;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']/h1/span[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"appointmentconfirmationtop\"]/div/div[7]/div")
 	private WebElement confirmationNumber;
 
 	public ScheduledAppointment(WebDriver driver) {
@@ -49,7 +48,6 @@ public class ScheduledAppointment extends PSS2MainPage {
 	}
 
 	public HomePage backtoHomePage() {
-		jse.executeScript("window.scrollBy(0,500)", "");
 		buttonBackToAppointmentList.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
