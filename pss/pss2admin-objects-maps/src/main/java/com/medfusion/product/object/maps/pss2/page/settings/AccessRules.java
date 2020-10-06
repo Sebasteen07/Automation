@@ -75,7 +75,6 @@ public class AccessRules extends SettingsTab {
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
 	private List<WebElement> buttonList;
 
-
 	@FindAll({@FindBy(xpath = "//div[@class=\"col-md-12\"]/a")})
 	private List<WebElement> urlList;
 
@@ -83,8 +82,6 @@ public class AccessRules extends SettingsTab {
 	private WebElement enableLoginless;
 
 	// *******************WebElements for anonymous flow*****************************
-
-
 	@FindBy(how = How.ID, using = "enableanonymous")
 	private WebElement enableAnonymous;
 
@@ -100,7 +97,6 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH,
 			using = "//div[@class='col-md-12']//div[@class='row']//div[@class='col-md-12']//button[@class='btn btn-primary'][contains(text(),'Save')]")
 	private WebElement buttonSaveAnonymous;
-
 
 	public AccessRules(WebDriver driver) {
 		super(driver);
@@ -121,14 +117,12 @@ public class AccessRules extends SettingsTab {
 		return urlList.get(0).getText();
 	}
 
-
 	public String isLLNewPatientSelected() {
 		commonMethods.highlightElement(checkNewPatientLabel);
 		commonMethods.highlightElement(checkNewPatient);
 		return checkNewPatient.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getCssValue("background-color"); //
 																														// .getAttribute("ng-reflect-model");
 	}
-
 
 	public String isLLInsurancePageSelected() {
 		commonMethods.highlightElement(checkShowInsurancePage);
@@ -215,12 +209,10 @@ public class AccessRules extends SettingsTab {
 		return enableLoginless.getAttribute("ng-reflect-model");
 	}
 
-
 	public String getAnonymousUrl() {
 		log("Anonymous url is " + urlList.get(2).getText());
 		commonMethods.highlightElement(urlList.get(2));
 		return urlList.get(2).getText();
-
 	}
 
 	public String isEnableAnonymousSelected() {
@@ -247,9 +239,5 @@ public class AccessRules extends SettingsTab {
 		commonMethods.highlightElement(buttonSaveAnonymous);
 		buttonSaveAnonymous.click();
 		log("buttonSaveAnonymous clicked Sucessfully ");
-
 	}
-
-
-
 }

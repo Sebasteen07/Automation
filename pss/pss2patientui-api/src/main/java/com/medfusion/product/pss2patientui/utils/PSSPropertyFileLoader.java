@@ -119,7 +119,6 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("adminpasswordAT " + adminuser.getPassword());
 		adminuser.setPracticeId(property.getProperty("practiceIdAT"));
 		adminuser.setRule(property.getProperty("rule"));
-
 	}
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
@@ -180,8 +179,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordAT"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIAT"));
 	}
-
-
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
@@ -312,6 +309,5 @@ public class PSSPropertyFileLoader {
 		appointValues.setZipCode(property.getProperty("zipCodeNG"));
 		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
 	}
-
 
 }

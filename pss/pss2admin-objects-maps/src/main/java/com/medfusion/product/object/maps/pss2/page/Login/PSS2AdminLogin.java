@@ -14,7 +14,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
-
 public class PSS2AdminLogin extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "username")

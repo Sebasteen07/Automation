@@ -20,7 +20,6 @@ public class PatientFlow extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-	// Code changed by SS
 	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
 	private WebElement insuranceToggle;
 
@@ -153,7 +152,6 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public void addNewRules(String ruleValue) {
-
 		Select oSelect = new Select(ruleTypeSelect);
 		oSelect.selectByValue(ruleValue);
 		javascriptClick(ruleAddLink);
