@@ -57,14 +57,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// if (patientflow.ruleLength() > 0) {
-		// if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
-		// setRulesNoSpecialitySet1(patientflow);
-		// }
-		// Thread.sleep(4000);
-		// Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// adminuser.setRule(patientflow.getRule());
-		// }
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
@@ -75,20 +67,13 @@ public class PSSAdminUtils {
 		adminpatientmatching.logout();
 		Thread.sleep(4000);
 	}
-
-	// ****************ADMIN SETTINGS FOR Loginless FLOW**************************
 	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
-
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
-
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
 		Thread.sleep(2000);
-
 		Log4jUtil.log("New_Patient Select Checkedbox = " + accessrule.isLLNewPatientSelected());
 		Log4jUtil.log("Existing_Patient Select Checkbox = " + accessrule.isLLExistingPatientSelected());
-
-
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
 			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("false")) {
@@ -100,7 +85,6 @@ public class PSSAdminUtils {
 				accessrule.selectLLExistingPatient();
 			}
 		}
-
 		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
 		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
 			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
@@ -109,7 +93,6 @@ public class PSSAdminUtils {
 		} else {
 			Log4jUtil.log("Enable OTP is already False no need to change");
 		}
-
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -128,14 +111,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// if (patientflow.ruleLength() > 0) {
-		// if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
-		// setRulesNoSpecialitySet1(patientflow);
-		// }
-		// Thread.sleep(4000);
-		// Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// adminuser.setRule(patientflow.getRule());
-		// }
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
@@ -146,9 +121,9 @@ public class PSSAdminUtils {
 		adminpatientmatching.logout();
 		Thread.sleep(4000);
 	}
-
-	// ****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************
+	
 	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
 		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		Log4jUtil.log("adminSettings Step 2: Navigate to ACCESS RULE tab in settings");
