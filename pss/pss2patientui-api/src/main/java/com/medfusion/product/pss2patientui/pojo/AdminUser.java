@@ -11,7 +11,16 @@ public class AdminUser {
 	private Boolean isIPDFLow;
 	private Boolean isLoginlessFlow;
 	private Boolean isAnonymousFlow;
+	private Boolean isstartpointPresent;
 
+
+	public Boolean getIsstartpointPresent() {
+		return isstartpointPresent;
+	}
+
+	public void setIsstartpointPresent(Boolean isstartpointPresent) {
+		this.isstartpointPresent = isstartpointPresent;
+	}
 
 	private String practiceId;
 

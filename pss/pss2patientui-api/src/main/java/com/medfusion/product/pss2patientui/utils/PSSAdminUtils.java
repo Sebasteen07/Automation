@@ -269,23 +269,22 @@ public class PSSAdminUtils {
 		
 	}
 	
-	public void getInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser,Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
-	  patientflow.insuracetogglestatus();
-    boolean isinsuranceVisible=adminuser.getIsInsuranceDisplayed();
-    isinsuranceVisible=patientflow.insuracetogglestatus();
-    Log4jUtil.log("Value of insurance is "+isinsuranceVisible);
-    boolean isstartpointVisile=patientflow.isstartpagepresent();
-    Log4jUtil.log("Value of startpoint is "+isstartpointVisile);
-    Log4jUtil.log("Insurance Displayed ? " + patientflow.insuracetogglestatus());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus()); 
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+		patientflow.logout();
+		
 		}
 
 	}
 
 	
 	
-}
+
  
