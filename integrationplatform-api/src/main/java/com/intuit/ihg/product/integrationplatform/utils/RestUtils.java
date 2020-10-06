@@ -3286,4 +3286,85 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
     	}
     	return isFileDeleted;
     }
+	
+	public static boolean isOnDemandRequestSubmitted(String xmlFileName, String patientId)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PATIENTID);
+		{
+			Log4jUtil.log(nodes.item(0).getTextContent()+" Expectd Patient Id and Actual PatientId  : "+patientId);
+			Assert.assertTrue(nodes.item(0).getTextContent().equals(patientId),
+					"The Patient Id should match");
+		}
+		return true;
+	}
+	
+	public static void isPatientDeactivatedorDeleted(String xmlFileName, String practicePatientId, String firstName, String lastName, String patientID,String portalStatus)
+			throws ParserConfigurationException, SAXException, IOException {
+		System.out.println(xmlFileName+" "+practicePatientId+" "+firstName+ " "+lastName+ " "+patientID);
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
+		boolean found = false;
+		for (int i = 0; i < patients.getLength(); i++) {
+			if (patients.item(i).getTextContent().equals(practicePatientId)) {
+				Log4jUtil.log("Searching: External Patient ID:" + practicePatientId + ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
+				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
+				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
+				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+						"Patient has different status than expected. Status is: " + status.getTextContent());
+				
+				Node portalstatus = patient.getElementsByTagName(IntegrationConstants.PORTALSTATUS).item(0);
+				if(portalStatus.equalsIgnoreCase("DEACTIVATED")){
+				Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DEACTIVATED,
+						"Patient has different portal status than expected. Portal Status is: " + portalstatus.getTextContent());
+				Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());}	
+				else if(portalStatus.equalsIgnoreCase("DELETED")){				
+				Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DELETED,
+						"Patient has different portal status than expected. Portal Status is: " + portalstatus.getTextContent());
+				Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());}
+				else{
+					Log4jUtil.log("Invalid Portal Status");
+				}
+				
+				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient FirstName:" + firstName + ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
+				Assert.assertEquals(nfirstName.getTextContent(), firstName,
+						"Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
+				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
+				Log4jUtil.log("Searching: Patient LastName:" + lastName + ", and Actual Patient LastName is:" + nlastName.getTextContent().toString());
+				Assert.assertEquals(nlastName.getTextContent(), lastName, "Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
+				if (patientID != null) {
+					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
+					Assert.assertEquals(nPatientId.getTextContent(), patientID,
+							"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: " + nPatientId.getTextContent());
+					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID + ", and Actual Medfusion Patient ID is:" + nPatientId.getTextContent().toString());
+				}
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Patient was not found in the response XML");
+	}
+
+	public static boolean verifyRequestStartDateAndEndDate(String xmlFileName, String StartDate, String EndDate)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		NodeList Startdatenodes = doc.getElementsByTagName(IntegrationConstants.STARTDATE);
+		NodeList Enddatenodes = doc.getElementsByTagName(IntegrationConstants.ENDDATE);
+		{
+			Log4jUtil.log("Start Date for the Requested Health Data: "+StartDate);
+			Log4jUtil.log("Start Date returned in response: "+Startdatenodes.item(Startdatenodes.getLength()-1).getTextContent().substring(0, 10));
+			Assert.assertTrue(Startdatenodes.item(Startdatenodes.getLength()-1).getTextContent().substring(0, 10).equals(StartDate),"Start date should matched");
+		}
+		{
+			Log4jUtil.log("End Date for the Requested Health Data: "+EndDate);
+			Log4jUtil.log("End Date returned in response: "+Enddatenodes.item(Enddatenodes.getLength()-1).getTextContent().substring(0, 10));
+			Assert.assertTrue(Enddatenodes.item(Enddatenodes.getLength()-1).getTextContent().substring(0, 10).equals(EndDate),"End date should matched");
+		}
+		return true;
+	}
+	
+
 }

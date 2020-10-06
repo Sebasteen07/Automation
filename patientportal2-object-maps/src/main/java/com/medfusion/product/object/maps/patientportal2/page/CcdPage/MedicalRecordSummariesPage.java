@@ -4,8 +4,10 @@ package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 import static org.testng.AssertJUnit.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,6 +108,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Unmatched Condition']")
 	private WebElement unmatchedCondition;
+	
+	@FindBy(how = How.ID, using = "requestCcdContinueButton")
+	private WebElement requestCcdContinueButton;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -250,7 +255,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		return convertedDate;
 	}
 
-	private void filterCCDs(String fromDate, String toDate) {
+	public void filterCCDs(String fromDate, String toDate) {
 		updateWebElement(this.fromDate, fromDate);
 		updateWebElement(this.toDate, toDate);
 	}
@@ -325,4 +330,24 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		IHGUtil.waitForElement(driver, 60, unmatchedCondition);
 		return unmatchedCondition.getText();
 	}
+
+	
+	public String getTodaysDateinYYYY_MM_DDFormat(){
+		LocalDateTime currentdatetime = LocalDateTime.now();
+		String TodaysDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(currentdatetime);
+		return TodaysDate;
+	}
+	
+	public String get3MonthsOldDateinYYYY_MM_DDFormat(){
+		LocalDateTime ThreeMonthsOldTodaysDate = LocalDateTime.now().minusMonths(3);
+		String ThreeMonthsOldDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(ThreeMonthsOldTodaysDate);
+		return ThreeMonthsOldDate;
+	}
+	public void requestCcdOnDemandFromPopUp() {
+		IHGUtil.waitForElement(driver, 60, requestCcdContinueButton);
+		requestCcdContinueButton.click();
+		log("Clicked on the Request Record button");
+	}
+	
+	
 }

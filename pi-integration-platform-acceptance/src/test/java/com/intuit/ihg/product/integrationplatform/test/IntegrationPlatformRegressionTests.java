@@ -3000,23 +3000,33 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		log("Step 5: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
-		
 		Thread.sleep(6000);
+			
+		log("Step 6: Selecting the date range for the health Data Request");
 		
-		log("Step 6: Close the onDemand PopUp ");
+		MedicalRecordSummariesPageObject.filterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		MedicalRecordSummariesPageObject.requestCcdOnDemandFromPopUp();
+		Thread.sleep(5000);
+		
+		log("Step 7: Close the onDemand PopUp ");
 		MedicalRecordSummariesPageObject.closeOnDemandPopUpButton();
 		
-		log("Step 7: Logout");
+		log("Step 8: Logout");
 		homePage.clickOnLogout();
 		
-		log("Step 8: Setup Oauth Token");
+		log("Step 9: Setup Oauth Token");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 		
-		log("Step 9: Do the Get onDemand Health Data Get API Call.");
+		log("Step 10: Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(restApiCall+ "?since=" + millis + ",0", testData.ResponsePath);
 		
-		log("Step 10: Verify Patient Details in the Get Api Call.");
-		//RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+		log("Step 11: Verify Patient Details in the Get Api Call.");
+		RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+		
+		log("Step 12: verify the start date and the End date of the Request for health data");
+		RestUtils.verifyRequestStartDateAndEndDate(testData.ResponsePath,MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
 	}
 
 
