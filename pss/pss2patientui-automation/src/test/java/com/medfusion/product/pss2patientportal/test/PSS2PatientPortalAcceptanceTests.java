@@ -1,6 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
+import java.util.ArrayList;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -257,16 +259,23 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test
 	public void testRough() {
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		Appointment testData = new Appointment();
-
-		pssNewPatient.createPatientDetails(testData);
-		log("" + testData.getFirstName());
-		log("" + testData.getLastName());
-		log("" + testData.getGender());
-		log(testData.getEmail());
-		log(testData.getPrimaryNumber());
-		log(testData.getDob());
+		
+		ArrayList<String> list= new ArrayList<String>();
+		list.add("Preferred Phone Number");
+		list.add("Insurance ID");
+		list.add("Zip Code");
+		
+		log("List ------>"+list);
+//		PSSNewPatient pssNewPatient = new PSSNewPatient();
+//		Appointment testData = new Appointment();
+//
+//		pssNewPatient.createPatientDetails(testData);
+//		log("" + testData.getFirstName());
+//		log("" + testData.getLastName());
+//		log("" + testData.getGender());
+//		log(testData.getEmail());
+//		log(testData.getPrimaryNumber());
+//		log(testData.getDob());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
