@@ -70,9 +70,9 @@ public class PSSPatientUtils {
   
 		if (testData.isIsinsuranceVisible()) {
 			       Thread.sleep(3500);
-					   Log4jUtil.log("insurance is present on home Page going to skip insurance page");
-             startappointmentInOrder =homepage.skipInsurance(driver);
-             if(testData.isIsstartpointPresent())
+							Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+							startappointmentInOrder = homepage.skipInsurance(driver);
+							if (testData.isIsstartpointPresent())
 		         {
   				    Log4jUtil.log("Starting point is present after insurance skipped ");
   				    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -95,7 +95,7 @@ public class PSSPatientUtils {
 		  	    location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 			    	Log4jUtil.log("clicked on location ");
 			    	}
-	  	      else
+						else
             {
 				    Log4jUtil.log("Start point not present");
           	location=homepage.locationpage();
@@ -134,7 +134,7 @@ public class PSSPatientUtils {
               provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 						  Log4jUtil.log("Successfully clicked on  "+PSSConstants.START_PROVIDER);
              }
-             else
+							else
              {
             	provider=homepage.providerpage();
   				    Log4jUtil.log("Starting point not Present going to select next provider ");

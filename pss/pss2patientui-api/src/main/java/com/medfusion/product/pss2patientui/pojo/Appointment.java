@@ -86,34 +86,8 @@ public class Appointment {
 	private boolean isinsuranceVisible=false;
 	private boolean isstartpointPresent=false;
 	
-	public boolean isIsstartpointPresent() {
-		return isstartpointPresent;
-	}
 
-	public void setIsstartpointPresent(boolean isstartpointPresent) {
-		this.isstartpointPresent = isstartpointPresent;
-	}
 
-	private AdminUser adminuser;
-
-  public boolean isIsinsuranceVisible() {
-		return isinsuranceVisible;
-	}
-
-	public void setIsinsuranceVisible(boolean isinsuranceVisible) {
-		this.isinsuranceVisible = isinsuranceVisible;
-	}
-
-	public AdminUser getAdminuser() {
-		return adminuser;
-	}
-
-	public void setAdminuser(AdminUser adminuser) {
-		this.adminuser = adminuser;
-	}
-
-	
- 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
@@ -124,9 +98,26 @@ public class Appointment {
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
 	}
-	
 
-	public Appointment() {
+
+	public Appointment() {}
+
+
+	public boolean isIsstartpointPresent() {
+		return isstartpointPresent;
+	}
+
+	public void setIsstartpointPresent(boolean isstartpointPresent) {
+		this.isstartpointPresent = isstartpointPresent;
+	}
+
+
+  public boolean isIsinsuranceVisible() {
+		return isinsuranceVisible;
+	}
+
+	public void setIsinsuranceVisible(boolean isinsuranceVisible) {
+		this.isinsuranceVisible = isinsuranceVisible;
 	}
 
 	public String getUrlAnonymousNG() {

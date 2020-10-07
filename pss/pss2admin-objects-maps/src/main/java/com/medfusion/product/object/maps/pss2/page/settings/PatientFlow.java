@@ -161,24 +161,20 @@ public class PatientFlow extends SettingsTab {
      Thread.sleep(2000);
      String background_color = insuranceToggle.getCssValue("background-color");
      log("verifying the color  : " +background_color);
-     if((background_color.equals("rgba(93, 143, 194, 1)")))
-     {
+			if ((background_color.equals("rgba(93, 143, 194, 1)"))) {
        return true;	         
      }
-     else
-     {
+			else {
     	 return false;   
      }
      
 	}
 	public boolean isstartpagepresent()
 	{
-		if(ruleLength.size()>1)
-		{
+		if (ruleLength.size() > 1) {
 			return true;
 		}
-		else
-		{
+		else {
 			return false;
 		}
 		
