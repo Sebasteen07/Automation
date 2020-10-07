@@ -57,14 +57,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// if (patientflow.ruleLength() > 0) {
-		// if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
-		// setRulesNoSpecialitySet1(patientflow);
-		// }
-		// Thread.sleep(4000);
-		// Log4jUtil.log("Rule length : " + patientflow.getRule());
-		// adminuser.setRule(patientflow.getRule());
-		// }
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
