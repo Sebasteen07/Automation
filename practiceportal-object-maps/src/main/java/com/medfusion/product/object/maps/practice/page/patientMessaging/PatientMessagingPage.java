@@ -38,6 +38,18 @@ public class PatientMessagingPage extends BasePageObject {
 	@FindBy(id = "msgattachment_1_1")
 	private WebElement messageAttachment;
 
+	@FindBy(xpath = "//input[@id='msgattachment_2_2']")
+	private WebElement attachment2;
+
+	@FindBy(xpath = "//input[@id='msgattachment_3_3']")
+	private WebElement attachment3;
+
+	@FindBy(xpath = "//small[text()='Add another attachment']")
+	private WebElement addAnotherAttachment;
+
+	@FindBy(xpath = "//a[@id='msgattachment_3_addlink']")
+	private WebElement addAnotherAttachment3;
+
 	@FindBy(xpath = "//table[@class='searchForm']//select[@name='recipienttype']")
 	private WebElement recipientType;
 
@@ -76,16 +88,16 @@ public class PatientMessagingPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[contains(text(),'Message Published Successfully')]")
 	private WebElement messagePublishedSuccessfully;
-	
+
 	@FindBy(xpath = "//table[@class='searchForm'][2]//tbody//a")
 	private WebElement messageURL;
 
 	@FindBy(xpath = "//td[@id='htmlTemplate']")
 	private WebElement messageBody;
-	
+
 	@FindBy(xpath = "//fieldset//div//p")
 	private WebElement patientReply;
-	
+
 	private static int maxCount = 10;
 
 	public PatientMessagingPage(WebDriver driver) {
@@ -232,7 +244,7 @@ public class PatientMessagingPage extends BasePageObject {
 		setDeliveryMode();
 		setMessageType();
 		setTemplate();
-		
+
 		setSubject();
 
 		URL QuickSendPDFUrl = ClassLoader.getSystemResource(PracticeConstants.QUICK_SEND_PDF_FILE_PATH);
@@ -259,36 +271,72 @@ public class PatientMessagingPage extends BasePageObject {
 		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
 	}
 
-	public ArrayList<String> setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
-		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName, subjectText);
+	public ArrayList<String> setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName,
+			String subjectText) {
+		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
+				templateName, subjectText);
 	}
-	
-	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
+
+	public ArrayList<String> setFieldsAndPublishMessageAttachment(PropertyFileLoader testData, String templateName,
+			String subjectText, String filePath) {
+		return setFieldsAndPublishMessageAttachment(testData.getFirstName(), testData.getLastName(),
+				testData.getEmail(), templateName, subjectText, filePath);
+	}
+
+	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
+			String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
-		
+
 		setMessageFields(templateName, subjectText);
 		setRecipient(firstName, lastName, email);
-		String msgurl= checkMessageURL();
-		String msgBody= checkMessageBody();
-		
+		String msgurl = checkMessageURL();
+		String msgBody = checkMessageBody();
 		ArrayList<String> messages = new ArrayList<String>();
 		messages.add(msgurl);
 		messages.add(msgBody);
 		publishMessage();
 		return messages;
-	
+
 	}
 
-	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
+	public ArrayList<String> setFieldsAndPublishMessageAttachment(String firstName, String lastName, String email,
+			String templateName, String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
-		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		setMessageFields(templateName, subjectText);
+		setRecipient(firstName, lastName, email);
+		String msgurl = checkMessageURL();
+		String msgBody = checkMessageBody();
+		ArrayList<String> messages = new ArrayList<String>();
+		messages.add(msgurl);
+		messages.add(msgBody);
 		messageAttachment.sendKeys(filePath);
-		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"), testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
+
+		for (int i = 0; i <= 1; i++) {
+			if (i == 0) {
+				assertTrue(addAnotherAttachment.isDisplayed());
+				addAnotherAttachment.click();
+				attachment2.sendKeys(filePath);
+				continue;
+			}
+			if (i == 1) {
+				assertTrue(addAnotherAttachment3.isDisplayed());
+				addAnotherAttachment3.click();
+				attachment3.sendKeys(filePath);
+				continue;
+			}
+
+			else {
+				log("Three files uploaded Add another attachment text is not present");
+			}
+
+		}
+		publishMessage();
+		return messages;
 
 	}
-	
-	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName, String subjectText, String filePath) {
+
+	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName,
+			String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
@@ -359,20 +407,20 @@ public class PatientMessagingPage extends BasePageObject {
 	public String checkMessageURL() {
 
 		log("Checking if the URL is present in message to be sent");
-		assertTrue(messageURL.isDisplayed());	
-		log("The URL in Messsage Body sent from Practice Portal is: "+messageURL.getText());
+		assertTrue(messageURL.isDisplayed());
+		log("The URL in Messsage Body sent from Practice Portal is: " + messageURL.getText());
 		return messageURL.getText();
-		
+
 	}
-    
+
 	public String checkMessageBody() {
-	    log("The message sent to the patient is: "+messageBody.getText());
-	    return messageBody.getText();
-		
+		log("The message sent to the patient is: " + messageBody.getText());
+		return messageBody.getText();
+
 	}
-	
+
 	public String checkReplyContent() {
-		log("The patient reply Content is: "+patientReply.getText());
+		log("The patient reply Content is: " + patientReply.getText());
 		return patientReply.getText();
 	}
 
