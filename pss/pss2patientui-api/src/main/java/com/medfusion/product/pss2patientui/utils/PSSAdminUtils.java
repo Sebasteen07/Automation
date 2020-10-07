@@ -57,14 +57,14 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
-//		if (patientflow.ruleLength() > 0) {
-//			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
-//				setRulesNoSpecialitySet1(patientflow);
-//			}
-//			Thread.sleep(4000);
-//			Log4jUtil.log("Rule length : " + patientflow.getRule());
-//			adminuser.setRule(patientflow.getRule());
-//		}
+		// if (patientflow.ruleLength() > 0) {
+		// if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
+		// setRulesNoSpecialitySet1(patientflow);
+		// }
+		// Thread.sleep(4000);
+		// Log4jUtil.log("Rule length : " + patientflow.getRule());
+		// adminuser.setRule(patientflow.getRule());
+		// }
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
@@ -266,25 +266,22 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
-		
+
 	}
-	
-	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser,Appointment appointment) throws Exception {
+
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
-		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus()); 
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
 		patientflow.logout();
-		
-		}
 
 	}
 
-	
-	
+}
 
- 
+

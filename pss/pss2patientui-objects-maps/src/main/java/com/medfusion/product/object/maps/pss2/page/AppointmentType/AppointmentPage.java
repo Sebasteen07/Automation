@@ -64,8 +64,8 @@ public class AppointmentPage extends PSS2MainPage {
 
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
-				 appointmentTypeList.get(i).click();
-       	selectNextStep(isPopUpSelected);
+				appointmentTypeList.get(i).click();
+				selectNextStep(isPopUpSelected);
 				return PageFactory.initElements(driver, Location.class);
 			}
 		}
@@ -81,7 +81,7 @@ public class AppointmentPage extends PSS2MainPage {
 			gotoNextStep.click();
 			log("successfully clicked on next step");
 
-			
+
 		}
 	}
 

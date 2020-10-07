@@ -21,7 +21,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//a[@class='btn appointmentTypedashboardbtn' or @class='btn startingpoint-btn']")})
 	private List<WebElement> startingWith;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Choose a starting point')]")
 	private WebElement chooseStartPoint;
 
@@ -74,9 +74,9 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		log("Location Not found");
 		return null;
 	}
-	
+
 	public Boolean isstartPointpresent() {
-		return chooseStartPoint.isDisplayed();	
+		return chooseStartPoint.isDisplayed();
 	}
 
 }
