@@ -57,14 +57,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
-//		if (patientflow.ruleLength() > 0) {
-//			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
-//				setRulesNoSpecialitySet1(patientflow);
-//			}
-//			Thread.sleep(4000);
-//			Log4jUtil.log("Rule length : " + patientflow.getRule());
-//			adminuser.setRule(patientflow.getRule());
-//		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
@@ -75,9 +67,63 @@ public class PSSAdminUtils {
 		adminpatientmatching.logout();
 		Thread.sleep(4000);
 	}
-
-	// ****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************
+	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+		Thread.sleep(2000);
+		Log4jUtil.log("New_Patient Select Checkedbox = " + accessrule.isLLNewPatientSelected());
+		Log4jUtil.log("Existing_Patient Select Checkbox = " + accessrule.isLLExistingPatientSelected());
+		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
+			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
+			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("false")) {
+				accessrule.loginlessPrivacyPolicyClick();
+				Log4jUtil.log("PrivacyPolicySelected is set TRUE");
+			}
+		} else {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+				accessrule.selectLLExistingPatient();
+			}
+		}
+		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
+		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
+			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
+			accessrule.clickEnableOTP();
+			Log4jUtil.log("Enable OTP is set False");
+		} else {
+			Log4jUtil.log("Enable OTP is already False no need to change");
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
+			testData.setUrlLoginLess(accessrule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.IDP)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
+		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
+		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
+		Log4jUtil.log("length " + patientflow.ruleLength());
+		Log4jUtil.log("Rule length : " + patientflow.getRule());
+		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
+		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+			adminuser.setIsInsuranceDisplayed(false);
+		}
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		adminpatientmatching.logout();
+		Thread.sleep(4000);
+	}
+	
 	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
 		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		Log4jUtil.log("adminSettings Step 2: Navigate to ACCESS RULE tab in settings");

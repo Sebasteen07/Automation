@@ -13,15 +13,21 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class PatientFlow extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-	// Code changed by SS
 	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
 	private WebElement insuranceToggle;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
+	private WebElement insuranceToggleCheckBox;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label[2]")
+	private WebElement insuranceToggleLabe;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
 	private WebElement addRule;
@@ -63,21 +69,29 @@ public class PatientFlow extends SettingsTab {
 		super(driver);
 	}
 
+	CommonMethods commonMethods = new CommonMethods(driver);
+
 	public String getRule() {
+		commonMethods.highlightElement(specialityRule);
 		return specialityRule.getText();
 	}
 
 	public String isIsuranceDisplayed() {
+		commonMethods.highlightElement(insuranceToggleLabe);
+		commonMethods.highlightElement(insuranceToggleCheckBox);
 		log(insuranceToggle.getAttribute("ng-reflect-model"));
 		return insuranceToggle.getAttribute("ng-reflect-model");
 	}
 
 	public Boolean isInsuranceToBeDisplayed() {
+		commonMethods.highlightElement(insuranceToggle);
 		return insuranceToggle.isSelected();
 	}
 
 	public void selectInsurance() {
 		log("insuranceToggle = " + insuranceToggle);
+		commonMethods.highlightElement(insuranceToggleLabe);
+		commonMethods.highlightElement(insuranceToggleCheckBox);
 		insuranceToggle.click();
 		log("Click on insuranceToggle ");
 	}
@@ -138,7 +152,6 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public void addNewRules(String ruleValue) {
-
 		Select oSelect = new Select(ruleTypeSelect);
 		oSelect.selectByValue(ruleValue);
 		javascriptClick(ruleAddLink);

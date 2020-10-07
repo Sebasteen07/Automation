@@ -37,7 +37,7 @@ public class PSSConstants {
 	public final static String GW = "GW";
 	public final static String GE = "GE";
 	public final static String NG = "NG";
-	public final static String ATHENA = "ATHENA";
+	public final static String AT = "AT";
 
 	public final static String NON_EXISTENCE_PATIENT_EMAIL = "mf.0611201888890@mailnator.com";
 	public final static String NON_EXISTENCE_FIRSTNAME = "mf.9876543210@mailnator.com";

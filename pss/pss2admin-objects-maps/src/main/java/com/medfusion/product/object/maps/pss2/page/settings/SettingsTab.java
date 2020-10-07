@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.WebDriver;
@@ -8,6 +8,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class SettingsTab extends PSS2MenuPage {
 
@@ -39,12 +40,16 @@ public class SettingsTab extends PSS2MenuPage {
 		super(driver);
 	}
 
+	CommonMethods commonMethods = new CommonMethods(driver);
+
 	public PatientFlow gotoPatientFlowTab() {
+		commonMethods.highlightElement(patientFlowTab);
 		patientFlowTab.click();
 		return PageFactory.initElements(driver, PatientFlow.class);
 	}
 
 	public AccessRules gotoAccessTab() {
+		commonMethods.highlightElement(accessTab);
 		accessTab.click();
 		jse.executeScript("window.scrollBy(0,550)", "");
 		return PageFactory.initElements(driver, AccessRules.class);
@@ -74,7 +79,7 @@ public class SettingsTab extends PSS2MenuPage {
 		appointmentTab.click();
 		return PageFactory.initElements(driver, AdminAppointment.class);
 	}
-	
+
 	public InsuranceCarrier gotoInsuranceCarrierTab() {
 		insuranceCarrierTab.click();
 		return PageFactory.initElements(driver, InsuranceCarrier.class);

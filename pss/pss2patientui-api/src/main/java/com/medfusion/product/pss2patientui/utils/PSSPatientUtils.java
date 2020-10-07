@@ -740,9 +740,9 @@ public class PSSPatientUtils {
 			propertyData.setAdminNG(adminuser);
 			propertyData.setAppointmentResponseNG(testData);
 		}
-		if (partnerPractice.equalsIgnoreCase(PSSConstants.ATHENA)) {
-			propertyData.setAdminAthena(adminuser);
-			propertyData.setAppointmentResponseAthena(testData);;
+		if (partnerPractice.equalsIgnoreCase(PSSConstants.AT)) {
+			propertyData.setAdminAT(adminuser);
+			propertyData.setAppointmentResponseAT(testData);
 		}
 	}
 
