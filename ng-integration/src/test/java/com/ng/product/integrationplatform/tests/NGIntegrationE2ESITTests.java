@@ -57,7 +57,6 @@ import com.ng.product.integrationplatform.apiUtils.apiRoutes;
 import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.pojo.NewPatient;
-import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
