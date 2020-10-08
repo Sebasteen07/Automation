@@ -548,7 +548,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {
-		Object[][] obj = new Object[][] {{"GW"}, {"GE"}, {"NG"}, {"ATHENA"}};
+		Object[][] obj = new Object[][] {{"GW"}, {"GE"}, {"NG"}, {"AT"}};
 		return obj;
 	}
 

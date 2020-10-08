@@ -13,15 +13,27 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class PatientFlow extends SettingsTab {
+
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
+	private WebElement insuranceToggleCheckBox;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label[2]")
+	private WebElement insuranceToggleLabe;
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/label[1]/i[1]")
+	// @FindBy(how = How.XPATH,
+	// using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/label[1]/i[1]")
+	// private WebElement insuranceToggle;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
 	private WebElement insuranceToggle;
+
+
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
 	private WebElement addRule;
@@ -62,6 +74,8 @@ public class PatientFlow extends SettingsTab {
 	public PatientFlow(WebDriver driver) {
 		super(driver);
 	}
+
+	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public String getRule() {
 		return specialityRule.getText();
@@ -156,16 +170,20 @@ public class PatientFlow extends SettingsTab {
 	}
 
 	public boolean insuracetogglestatus() throws InterruptedException {
-		log("Inside insurance toggle method about to turn ON ");
-		Thread.sleep(2000);
-		String background_color = insuranceToggle.getCssValue("background-color");
-		log("verifying the color  : " + background_color);
-		if ((background_color.equals("rgba(93, 143, 194, 1)"))) {
-			return true;
-		} else {
-			return false;
-		}
-
+		// log("Inside insurance toggle method about to turn ON ");
+		// Thread.sleep(2000);
+		// String background_color = insuranceToggle.getCssValue("background-color");
+		// log("verifying the color : " + background_color);
+		// if ((background_color.equals("rgba(93, 143, 194, 1)"))) {
+		// return true;
+		// } else {
+		// return false;
+		// }
+		commonMethods.highlightElement(insuranceToggleLabe);
+		commonMethods.highlightElement(insuranceToggleCheckBox);
+		log(insuranceToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(insuranceToggle.getAttribute("ng-reflect-model"));
+		return bool;
 	}
 
 	public boolean isstartpagepresent() {
