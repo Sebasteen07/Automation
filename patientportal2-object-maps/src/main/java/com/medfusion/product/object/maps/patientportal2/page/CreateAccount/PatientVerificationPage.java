@@ -75,6 +75,7 @@ public class PatientVerificationPage extends MedfusionPage {
 
 		public AuthUserLinkAccountPage fillDependentInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) throws InterruptedException {
 				fillPatientIdentifyInfo(zipCode, dobMonth, dobDay, dobYear);
+				Thread.sleep(3000);
 				continueButton.click();
 				return PageFactory.initElements(driver, AuthUserLinkAccountPage.class);
 		}
@@ -83,17 +84,15 @@ public class PatientVerificationPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 
 				log("Fill inputs with ZIP: " + zipCode + " and DOB: " + month + "/" + day + "/" + year);
-				IHGUtil.waitForElement(driver, 10, zipCodeInput);
 				zipCodeInput.sendKeys(zipCode);
-				IHGUtil.waitForElement(driver, 10, dateOfBirthMonthSelect);
+				Thread.sleep(1000);
+		
 				Select dobMonth = new Select(dateOfBirthMonthSelect);
 				if (month.startsWith("0")) {
 						month = month.substring(1);
 				}
 				dobMonth.selectByValue(month);
-				IHGUtil.waitForElement(driver, 10, dateOfBirthDayInput);
 				dateOfBirthDayInput.sendKeys(day);
-				IHGUtil.waitForElement(driver, 10, dateOfBirthYearInput);
 				dateOfBirthYearInput.sendKeys(year);
 		}
 }
