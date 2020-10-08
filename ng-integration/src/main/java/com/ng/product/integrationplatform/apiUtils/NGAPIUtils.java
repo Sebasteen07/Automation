@@ -282,7 +282,7 @@ public class NGAPIUtils {
 	        if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
 	        	Log4jUtil.log("Post request completed successfully");
 	        }else{
-	        	Log4jUtil.log("Unable to post the request");
+	        	Log4jUtil.log("Unable to post the request, Response is \n"+EntityUtils.toString(httpResponse.getEntity()));
 	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }}
 	        

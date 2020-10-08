@@ -32,7 +32,11 @@ public enum apiRoutes {
 	AddLabOrderTest("api/persons/personId/chart/lab/orders/orderId/tests"),
 	AddObservationPanel("api/persons/personId/chart/lab/panels"),
 	AddObservationResults("api/persons/personId/chart/lab/panels/panelId/results"),
-	UpdateLabOrder("api/persons/personId/chart/lab/orders/orderId");
+	UpdateLabOrder("api/persons/personId/chart/lab/orders/orderId"),
+	PostCCDARequest("api/ccda-requests"),
+	CheckOutEncounter("api/persons/personId/chart/encounters/encounterId/checkout"),
+	CheckInEncounter("api/persons/personId/chart/encounters/encounterId/checkin"),
+	UpdateEncounter("api/persons/personId/chart/encounters/encounterId");
 	
 	private String routeURL;
 
