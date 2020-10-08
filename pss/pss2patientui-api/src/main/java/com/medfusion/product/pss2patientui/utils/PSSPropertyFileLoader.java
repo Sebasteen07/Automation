@@ -22,6 +22,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGW(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
+		appointValues.setIsinsuranceVisible(false);
+		appointValues.setIsstartpointPresent(false);
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));
 		appointValues.setLocation(property.getProperty("locationGW"));
@@ -82,6 +84,9 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("adminpasswordGW"));
 		adminuser.setRule(property.getProperty("rule"));
 		adminuser.setPracticeId(property.getProperty("practiceIdGW"));
+		adminuser.setIsInsuranceDisplayed(false);
+		adminuser.setIsstartpointPresent(false);
+
 	}
 
 	public void setAdminGE(AdminUser adminuser) {
