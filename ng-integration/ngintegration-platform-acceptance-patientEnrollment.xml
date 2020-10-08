@@ -20,6 +20,19 @@
 	    		<include name="testLACreateTrustedRepresentativeOnly"/>	
 	    		<include name="testEnrollPatientHavingInvalidZipToMFPortal"/>
 	    		<include name="testDeactivatePatientEnrollment"/>
+	    		<include name="testELEAutoPatientEnrollmentP2"/>
+	    		<include name="testELEAutoPatientEnrollmentP1"/>   
+	    		<include name="testELEDeleteP3AutoPatientEnrollmentP1"/> 
+	    		<include name="testELEDeactivateReactivateP3AutoPatientEnrollmentP1"/> 
+	    		<include name="testELEPatientEnrollmentPracticeLevelE1P4"/> 
+	    		<include name="testELEDeleteP2PatientEnrolledP1P2P3"/> 
+	    		<include name="testELEDeactivateP2PatientEnrolledP1P2P3"/>
+	    		<include name="testELEPatientEnrollmentE1P1TrustedRepresentativeE1P4"/>	
+	    		<include name="testELEPatientEnrollmentE1P1TrustedRepresentativeE1P2"/>
+	    		<include name="testELEPatientEnrollmentE1P4TrustedRepresentativeE1P5"/>
+	    		<include name="testELEPatientStatusE2P1EnrolledinE1P1"/>
+	    		<include name="testCreateDependentAndGuardianP1P2P3"/>
+	    		<include name="testCreateGuardianAndDependentANDEnrollOnlyDependentToP1P2P3"/>
       	</methods>
 	</classes>
 </test>
