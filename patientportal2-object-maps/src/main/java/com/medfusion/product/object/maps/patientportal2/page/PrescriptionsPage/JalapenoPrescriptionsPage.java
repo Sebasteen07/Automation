@@ -14,7 +14,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
 public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
@@ -42,7 +45,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 		private WebElement radioButton;
 		
-		@FindBy(how = How.XPATH, using = "//input[@value='radio1']")
+		@FindBy(how = How.XPATH, using = "//input[@value='radio2']")
 		private WebElement AddradioButton; //For add a New Pharmacy
 
 		@FindBy(how = How.LINK_TEXT, using = "Home")
@@ -53,6 +56,27 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//select[@name='providerContainer:providerDD']")
 		private WebElement providerDropdown;
+		
+		@FindBy(how = How.XPATH, using ="//input[@name='cccontainer:ccpanel:newccdetails:nameOnCreditCard']")
+		private WebElement cardholdername;
+
+		@FindBy(how = How.XPATH, using ="//input[@name='cccontainer:ccpanel:newccdetails:creditCardNumber']")
+		private WebElement cardnumber;
+		
+		@FindBy(how = How.XPATH, using ="//select[@name='cccontainer:ccpanel:newccdetails:creditCardType']")
+		private WebElement carddropdown;
+		
+		@FindBy(how = How.XPATH, using ="//select[@name='cccontainer:ccpanel:newccdetails:expirationMonth']")
+		private WebElement monthdd;
+		
+		@FindBy(how = How.XPATH, using ="//select[@name='cccontainer:ccpanel:newccdetails:expirationYear']")
+		private WebElement yeardd;
+		
+		@FindBy(how = How.XPATH, using ="//input[@name='cccontainer:ccpanel:newccdetails:newccdetailscvv:cvvCode']")
+		private WebElement cardcvv;
+		
+		@FindBy(how = How.XPATH, using ="//input[@name='cccontainer:ccpanel:newccdetails:addressZip']")
+		private WebElement cardzip;
 
 		public JalapenoPrescriptionsPage(WebDriver driver) {
 				super(driver);
@@ -100,7 +124,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				this.dosage.sendKeys(dosage);
 				this.quantity.sendKeys(Integer.toString(quantity));
 				log("Insert pharmacy information");
+				Thread.sleep(1000);
 				AddradioButton.click();// Clicking on Add a pharmacy radio button
+				Thread.sleep(1000);
 				pharmacyName.sendKeys("PharmacyName");
 				pharmacyPhone.sendKeys("3216549870");
 				log("Click on Continue button");
@@ -120,6 +146,35 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				driver.switchTo().defaultContent();
 
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
+		
+		public void prescriptionPayment() throws Exception
+		{
+			PropertyFileLoader testData = new PropertyFileLoader();
+			
+			driver.switchTo().frame("iframebody");
+			String name = "TestPatient CreditCard";
+			cardholdername.sendKeys(name);
+			
+			CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+			cardnumber.sendKeys(creditCard.getCardNumber());
+			
+			Select cardSelect = new Select(carddropdown);
+			cardSelect.selectByIndex(3);
+			
+			//System.out.println("Expiry month of card is " +testData.getProperty("cardExpiryMonthText"));
+			Select monthSelect = new Select(monthdd);
+			monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
+			
+			Select yearSelect = new Select(yeardd);
+			yearSelect.selectByValue(creditCard.getExpYear());
+			
+			System.out.println("Prescription carnumber is ");
+			cardcvv.sendKeys(creditCard.getCvvCode());
+			
+			System.out.println("Prescription car cvv code isis ");
+			cardzip.sendKeys(creditCard.getZipCode());
+			
 		}
 
 }
