@@ -17,6 +17,7 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class PatientFlow extends SettingsTab {
 
+
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
@@ -87,13 +88,12 @@ public class PatientFlow extends SettingsTab {
 		commonMethods.highlightElement(insuranceToggle);
 		return insuranceToggle.isSelected();
 	}
-
 	public void selectInsurance() {
 		log("insuranceToggle = " + insuranceToggle);
 		commonMethods.highlightElement(insuranceToggleLabe);
 		commonMethods.highlightElement(insuranceToggleCheckBox);
 		insuranceToggle.click();
-		log("Click on insuranceToggle ");
+		log("Click on insuranceToggle");
 	}
 
 	@Override
@@ -165,5 +165,23 @@ public class PatientFlow extends SettingsTab {
 	public void saveRule() {
 		log("Saving above selected rule..");
 		javascriptClick(saveRuleButton);
+	}
+
+	public boolean insuracetogglestatus() throws InterruptedException {
+
+		commonMethods.highlightElement(insuranceToggleLabe);
+		commonMethods.highlightElement(insuranceToggleCheckBox);
+		log(insuranceToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(insuranceToggle.getAttribute("ng-reflect-model"));
+		return bool;
+	}
+
+	public boolean isstartpagepresent() {
+		if (ruleLength.size() > 1) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

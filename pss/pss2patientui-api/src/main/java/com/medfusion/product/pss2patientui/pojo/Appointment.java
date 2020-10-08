@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.pojo;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class Appointment {
 	private String associatedLocation1;
 	private String associatedSpeciality1;
 	private String associatedApt1;
-	
+
 	private String associatedProvider2;
 	private String associatedLocation2;
 	private String associatedSpeciality2;
@@ -66,7 +66,7 @@ public class Appointment {
 	private String underAgePatientPassword;
 
 	private Boolean isCancelApt = true;
-	private Boolean isInsuranceEnabled = true;
+	private Boolean isInsuranceEnabled = false;
 
 	private String oldPatientUserName;
 	private String oldPatientPassword;
@@ -81,11 +81,12 @@ public class Appointment {
 	private Boolean isSearchLocationDisplayed;
 
 	private String providerImageAPI;
-	
+
 	private String urlAnonymous;
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
-
+	private boolean isinsuranceVisible = false;
+	private boolean isstartpointPresent = false;
 
 
 
@@ -100,7 +101,25 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {
+
+	public Appointment() {}
+
+
+	public boolean isIsstartpointPresent() {
+		return isstartpointPresent;
+	}
+
+	public void setIsstartpointPresent(boolean isstartpointPresent) {
+		this.isstartpointPresent = isstartpointPresent;
+	}
+
+
+	public boolean isIsinsuranceVisible() {
+		return isinsuranceVisible;
+	}
+
+	public void setIsinsuranceVisible(boolean isinsuranceVisible) {
+		this.isinsuranceVisible = isinsuranceVisible;
 	}
 
 	public String getUrlAnonymousNG() {
@@ -127,45 +146,59 @@ public class Appointment {
 	public void setUrlAnonymous(String urlAnonymous) {
 		this.urlAnonymous = urlAnonymous;
 	}
+
 	public String getProvider() {
 		return provider;
 	}
+
 	public void setProvider(String provider) {
 		this.provider = provider;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 	public String getDatetime() {
 		return datetime;
 	}
+
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
+
 	public String getAppointmenttype() {
 		return appointmenttype;
 	}
+
 	public void setAppointmenttype(String appointmenttype) {
 		this.appointmenttype = appointmenttype;
 	}
+
 	public String getSpeciality() {
 		return speciality;
 	}
+
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}

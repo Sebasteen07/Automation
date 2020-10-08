@@ -31,6 +31,10 @@ public class HomePage extends PSS2MainPage {
 	PSSPatientHeader patientheader;
 	PSSPatientFooter patientfooter;
 
+
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Insurance information')]")
+	private WebElement insurancetext;
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"root\"]/div/div/div/div[1]/div[2]/div[3]/div/div[2]/div/a[1]")
 	private WebElement buttonSpeciality1;
 
@@ -54,7 +58,10 @@ public class HomePage extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> selectSpecialityList;
-	
+
+	@FindAll({@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
+	private List<WebElement> selectproviderList;
+
 	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 startingpointdata']")})
 	private List<WebElement> selectstartpoint;
 
@@ -150,9 +157,9 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public Provider selectProvider(String specialityText) {
-		for (int i = 0; i < selectSpecialityList.size(); i++) {
-			if (selectSpecialityList.get(i).getText().equalsIgnoreCase(specialityText)) {
-				selectSpecialityList.get(i).click();
+		for (int i = 0; i < selectproviderList.size(); i++) {
+			if (selectproviderList.get(i).getText().equalsIgnoreCase(specialityText)) {
+				selectproviderList.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -168,6 +175,8 @@ public class HomePage extends PSS2MainPage {
 		}
 		return null;
 	}
+
+
 	public AppointmentPage selectAppointment(String specialityText) {
 		log(" selectSpecialityList " + selectSpecialityList.size());
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
@@ -204,6 +213,10 @@ public class HomePage extends PSS2MainPage {
 		return false;
 	}
 
+	public Boolean isInsuranceVisible() {
+		return insurancetext.isDisplayed();
+	}
+
 	public void popUPClick() {
 		for (int j = 0; j < dismissButtons.size(); j++) {
 			if (dismissButtons.get(j).isDisplayed() == true) {
@@ -216,6 +229,8 @@ public class HomePage extends PSS2MainPage {
 		return dismissIDPPopUp.isDisplayed();
 	}
 
+
+
 	public void popUPIDPClick() {
 		dismissIDPPopUp.click();;
 	}
@@ -227,6 +242,8 @@ public class HomePage extends PSS2MainPage {
 	public int getPastAppointmentListSize() {
 		return selectPastApptList.size();
 	}
+
+
 
 	public Boolean cancelAppointment(String popupTextMessage) throws InterruptedException {
 
@@ -282,7 +299,6 @@ public class HomePage extends PSS2MainPage {
 
 	public StartAppointmentInOrder skipInsurance(WebDriver driver) throws InterruptedException {
 		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
-
 		updateinsurancepage.skipInsuranceUpdateOnHomePage();
 		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
 	}
@@ -305,5 +321,25 @@ public class HomePage extends PSS2MainPage {
 		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
 		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
 		return PageFactory.initElements(driver, Speciality.class);
+	}
+
+	public StartAppointmentInOrder startpage() {
+		log("It returns the StartAppointmentInOrder page ");
+		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
+	}
+
+	public Provider providerpage() {
+		log("it returns on provider present and return to provider page");
+		return PageFactory.initElements(driver, Provider.class);
+	}
+
+	public Location locationpage() {
+		log("it returns on provider present and return to provider page");
+		return PageFactory.initElements(driver, Location.class);
+	}
+
+	public AppointmentPage appointmentpage() {
+		log("it returns on provider present and return to provider page");
+		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
 }

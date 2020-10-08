@@ -433,7 +433,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminGW(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
 		log("Login to PSS 2.0 Admin portal");
@@ -528,7 +527,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
 		log("Login to PSS 2.0 Admin portal");
-		adminUtils.getAdminRule(driver, adminuser);
+		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
