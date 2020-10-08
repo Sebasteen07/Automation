@@ -17,20 +17,18 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class PatientFlow extends SettingsTab {
 
-	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
-	private WebElement insuranceToggleCheckBox;
-
-
-	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label[2]")
-	private WebElement insuranceToggleLabe;
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-
 	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
 	private WebElement insuranceToggle;
 
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
+	private WebElement insuranceToggleCheckBox;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label[2]")
+	private WebElement insuranceToggleLabe;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
 	private WebElement addRule;
