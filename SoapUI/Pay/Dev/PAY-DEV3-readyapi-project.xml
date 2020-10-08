@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="ee6764c2-8713-46be-8ba6-42998e99f423" created="2.8.2" activeEnvironment="Default environment" name="PAY DEV3" resourceRoot="" updated="2.8.2 2019-08-27T17:04:01Z" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:testSuite id="3662043f-b730-4237-82de-f31dae1d30ff" name="QBPAY Dev3"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="fba8e5ed-f0af-422a-a994-97ed9cf078dd" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="QBPAY Authorize" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">false</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="8c4b5382-0f51-4f2e-9e01-15bec2f1c044"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>orderId</con:name><con:value>"97798626217-385633"</con:value></con:property><con:property><con:name>threadId</con:name><con:value>"789-716646661853969972456"</con:value></con:property><con:property><con:name>externalTransactionId</con:name><con:value>"E1VW082DSYRJ"</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="04588e21-4ad6-492a-8c24-18e752d813b3"><con:settings/><con:config><script>
+<con:soapui-project id="ee6764c2-8713-46be-8ba6-42998e99f423" created="2.8.2" activeEnvironment="Default environment" name="PAY DEV3" resourceRoot="" updated="2.8.2 2019-08-27T17:04:01Z" encryptionMode="Not encrypted" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:testSuite id="3662043f-b730-4237-82de-f31dae1d30ff" name="QBPAY Dev3"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="fba8e5ed-f0af-422a-a994-97ed9cf078dd" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="QBPAY Authorize" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword=""><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">false</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="8c4b5382-0f51-4f2e-9e01-15bec2f1c044"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>orderId</con:name><con:value>"31846644923429--51"</con:value></con:property><con:property><con:name>threadId</con:name><con:value>"62-51764-7723484392642664"</con:value></con:property><con:property><con:name>externalTransactionId</con:name><con:value>"EFKRIXDZAORZ"</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="04588e21-4ad6-492a-8c24-18e752d813b3"><con:settings/><con:config><script>
 
 def generator2 = { String alphabet, int n ->
   new Random().with {
@@ -6469,7 +6469,7 @@ testRunner.testCase.getTestStepByName( "Properties" ).setPropertyValue("orderId"
         "consumerId": null
   },
   "comment": "test"
-}</con:request><con:assertion type="Valid HTTP Status Codes" id="220de80a-cef7-4cd8-9b7d-c4dcc8ad65b0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="dfe0e906-a4a8-4042-8e9e-68b8f1ecbd48" name="Match content of [orderId]"><con:configuration><path>$['orderId']</path><content>${Properties#orderId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="5e0ae5b0-acb1-4174-85f6-4b70b4da930e" name="Check for existence of [responseTime]"><con:configuration><path>$['responseTime']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="19de85bd-2210-4186-92fe-6a40617c252a" name="Match content of [responseCode]"><con:configuration><path>$['responseCode']</path><content>000</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="65363f31-8408-460a-8e7a-82d776acc864" name="Check for existence of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>88f53514-663f-4299-aeac-1bd3a68390d8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ab89491a-e9c4-438c-9bdc-b2aa379cb986</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:testCase id="5e488491-d7ba-41d2-9ee9-ae451456440b" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="QBPAY Sale with trackData" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" zephyrTestName="" zephyrTestId=""><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="20c06a0b-498b-4016-a16a-c06e83d54a3c"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>orderId</con:name><con:value>"5867474197-7831921"</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="2816de69-6506-4926-8411-21d20aa0d5ed"><con:settings/><con:config><script>
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="220de80a-cef7-4cd8-9b7d-c4dcc8ad65b0" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="dfe0e906-a4a8-4042-8e9e-68b8f1ecbd48" name="Match content of [orderId]"><con:configuration><path>$['orderId']</path><content>${Properties#orderId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="5e0ae5b0-acb1-4174-85f6-4b70b4da930e" name="Check for existence of [responseTime]"><con:configuration><path>$['responseTime']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="19de85bd-2210-4186-92fe-6a40617c252a" name="Match content of [responseCode]"><con:configuration><path>$['responseCode']</path><content>000</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="65363f31-8408-460a-8e7a-82d776acc864" name="Check for existence of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>88f53514-663f-4299-aeac-1bd3a68390d8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ab89491a-e9c4-438c-9bdc-b2aa379cb986</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:testCase id="5e488491-d7ba-41d2-9ee9-ae451456440b" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="QBPAY Sale with trackData" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" zephyrTestName="" zephyrTestId=""><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="20c06a0b-498b-4016-a16a-c06e83d54a3c"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>orderId</con:name><con:value>"544778286937667826"</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="2816de69-6506-4926-8411-21d20aa0d5ed"><con:settings/><con:config><script>
 
 def generator2 = { String alphabet, int n ->
   new Random().with {
@@ -12206,7 +12206,7 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("expressNetworkTran
       "principlePhoneNumber" : "",
       "principleAddress" : null
    }
-}</con:request><con:assertion type="Valid HTTP Status Codes" id="1caa8af7-c439-4aed-a92e-08cad16d82d2" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="99719208-bc50-4471-bca6-37885110b091" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>6848a849-0135-4043-81f6-b30a2688b76c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="ef720d84-bd78-4fc8-9f7a-155729b89a49" name="gateway proxy"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="1d65619d-c509-4957-a77b-2614d71eaf2d" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="dev" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="09d7d283-6d57-492f-933e-0026d7926afc"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties/></con:config></con:testStep><con:testStep type="httprequest" name="POST token" id="9298031c-03f9-446f-9488-82ab57d86e26"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="c382f4f4-c4df-47b4-9797-f46fe36ec207" name="POST token" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080/api-customer/services/v1/customers/87b7e73a-ddab-4849-9af9-467b32c95ef2/tokens</con:endpoint><con:request>{
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1caa8af7-c439-4aed-a92e-08cad16d82d2" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="99719208-bc50-4471-bca6-37885110b091" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>6848a849-0135-4043-81f6-b30a2688b76c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="ef720d84-bd78-4fc8-9f7a-155729b89a49" name="gateway proxy"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="1d65619d-c509-4957-a77b-2614d71eaf2d" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="dev" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="09d7d283-6d57-492f-933e-0026d7926afc"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>orderId</con:name><con:value>"8a7f7812-a7dd-4339-a2c7-b"</con:value></con:property><con:property><con:name>externalTransactionId</con:name><con:value>"61177567"</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="POST token" id="9298031c-03f9-446f-9488-82ab57d86e26"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="c382f4f4-c4df-47b4-9797-f46fe36ec207" name="POST token" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-pt-aws01.dev.medfusion.net:8080/api-customer/services/v1/customers/87b7e73a-ddab-4849-9af9-467b32c95ef2/tokens</con:endpoint><con:request>{
   "clientId": "PayApiClient",
   "clientSecret": "XFXNlyJL40mZk5PTH7GRKhqGt7EDVvesElr3tpTPgpq9PQ2yXgUQOK8ll0InQyzo",
   "scope": "api:pay"
@@ -12332,10 +12332,10 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "comment2": " Test",
 "amount": 9000,
 "externalTransactionId":${Properties#externalTransactionId},
-"initialTransactionInSeries":true,
+"initialTransactionInSeries":true
 
 }
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid authorize 2" id="4a41e70e-168a-43d1-91aa-6653ed186fc1"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid authorize 2" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/authorize</con:endpoint><con:request>{
+</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f1e7bb97-3502-41b2-84e9-721a0dd53397" name="Check for existence of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid authorize 2" id="4a41e70e-168a-43d1-91aa-6653ed186fc1"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid authorize 2" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/authorize</con:endpoint><con:request>{
 	"mfGatewayConsumer": {
 "accountNumber": "23345",
 "consumerName": "Test patient"
@@ -12438,7 +12438,7 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "comment2": " Test",
 "amount": 900,
 "externalTransactionId":${Properties#externalTransactionId},
-"initialTransactionInSeries":true,
+"initialTransactionInSeries":true
 
 }
 </con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale" id="86184344-de39-4404-aaca-e9bd7e54fc10"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
@@ -12545,7 +12545,7 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "comment2": " Test",
 "amount": 900,
 "externalTransactionId":"928459045",
-"initialTransactionInSeries":true,
+"initialTransactionInSeries":true
 
 }
 </con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>500</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Void without security" id="d0cc9368-5d5e-4b5b-bdcd-c8340be62799"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Void without security" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/void</con:endpoint><con:request>{
@@ -12563,22 +12563,35 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "externalTransactionId":${Properties#externalTransactionId}
 
 }
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:testStep type="httprequest" name="Void the sale" id="42fe435e-9507-4054-83e7-e541275b5410"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Void the sale" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/void</con:endpoint><con:request>{
-"orderId": null,
-"threadId":null,
-"mfGatewayConsumer": {
-"accountNumber": "23345",
-"consumerName": "Test patient"
-},
-"mfGatewayMerchant": {
-"paymentSource": "VCS"
-},
-"comment1": "hello",
-"comment2": " Test",
-"externalTransactionId":${Properties#externalTransactionId}
+</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:testStep type="groovy" name="Get original sale order id" id="d29b7e37-adab-4b8e-943c-363c77e2b177"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+import java.net.URLEncoder;
 
-}
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale 2" id="b166d75c-03ab-44cf-94f1-eec08f659fdb"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale 2" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
+def id = context.expand( '${Valid sale#Response#$.orderId}' )
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["Valid sale"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper!=null
+def orderid = jsonSlurper.orderId
+assert orderid!=null
+log.info orderid
+testRunner.testCase.testSteps["Properties"].setPropertyValue("orderId",'"'+orderid+'"')
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="Void the sale" id="42fe435e-9507-4054-83e7-e541275b5410"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Void the sale" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/void</con:endpoint><con:request>{
+  "comment": "Voiding original transaction",
+  "customerId": 20624,
+  "externalTransactionId":${Properties#externalTransactionId},
+  "originalOrderId": ${Properties#orderId}
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Void the sale again" id="4c53d8b5-e530-422c-8224-1fa1706269a5"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Void the sale again" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/void</con:endpoint><con:request>{
+  "comment": "Voiding original transaction",
+  "customerId": 20624,
+  "externalTransactionId":${Properties#externalTransactionId},
+  "originalOrderId": ${Properties#orderId}
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="f7ca7118-c256-4e09-b423-7603655f5b02" name="Match content of [message]"><con:configuration><path>$['message']</path><content>"Invalid Transaction Status"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6a585977-42be-44d5-89c1-d66508f76a84" name="Match content of [responseCode]"><con:configuration><path>$['responseCode']</path><content>"-1"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="6b0108ef-f3a3-48ed-ba45-c14da64bb88a" name="Match content of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>${Properties#externalTransactionId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale 2" id="b166d75c-03ab-44cf-94f1-eec08f659fdb"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale 2" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
 	"mfGatewayConsumer": {
 "accountNumber": "23345",
 "consumerName": "Test patient"
@@ -12614,7 +12627,25 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "phone": ""
 }
 	}
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Get transaction id for credit" id="7384a688-58f6-4109-9fea-29bb91996e70"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Get original sale order id for refund" id="90bd53f9-77b8-4aef-b4db-f486c9784d07"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+import java.net.URLEncoder;
+
+def id = context.expand( '${Valid sale 2#Response#$.orderId}' )
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["Valid sale 2"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper!=null
+def orderid = jsonSlurper.orderId
+assert orderid!=null
+log.info orderid
+testRunner.testCase.testSteps["Properties"].setPropertyValue("orderId",'"'+orderid+'"')
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="Get transaction id for credit" id="7384a688-58f6-4109-9fea-29bb91996e70"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
 import groovy.json.JsonSlurper
 import com.eviware.soapui.support.XmlHolder
 import net.sf.*;
@@ -12648,21 +12679,12 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "externalTransactionId":${Properties#externalTransactionId}
 }
 </con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:config></con:testStep><con:testStep type="httprequest" name="Full credit" id="0c520ed5-729f-47b1-9183-f6587e130e4b"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Full credit" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/credit</con:endpoint><con:request>{
-"orderId": null,
-"threadId":null,
-"mfGatewayConsumer": {
-"accountNumber": "23345",
-"consumerName": "Test patient"
-},
-"mfGatewayMerchant": {
-"paymentSource": "VCS"
-},
-"comment1": "hello",
-"comment2": " Test",
-"transactionAmount":7900,
-"externalTransactionId":${Properties#externalTransactionId}
-}
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale 3" id="838cef83-d266-42a6-818c-31dd58afabe4"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale 3" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
+  "comment": "Amount to be refunded",
+  "customerId": 20624,
+  "externalTransactionId":${Properties#externalTransactionId},
+  "originalOrderId": ${Properties#orderId},
+  "transactionAmount": 7900
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="67829a5a-7b18-45d6-93a2-5b18139c4bb8" name="Match content of [message]"><con:configuration><path>$['message']</path><content>"Approved"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale 3" id="838cef83-d266-42a6-818c-31dd58afabe4"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale 3" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
 	"mfGatewayConsumer": {
 "accountNumber": "23345",
 "consumerName": "Test patient"
@@ -12698,7 +12720,25 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 "phone": ""
 }
 	}
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Copy of Get transaction id for credit" id="63f37b91-645c-4365-8a70-56934fe03a3a"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Get  sale order id for refund" id="b19a7b56-10a7-4b9e-92ef-01d0d3064446"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+import java.net.URLEncoder;
+
+def id = context.expand( '${Valid sale 3#Response#$.orderId}' )
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["Valid sale 3"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper!=null
+def orderid = jsonSlurper.orderId
+assert orderid!=null
+log.info orderid
+testRunner.testCase.testSteps["Properties"].setPropertyValue("orderId",'"'+orderid+'"')
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="Copy of Get transaction id for credit" id="63f37b91-645c-4365-8a70-56934fe03a3a"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
 import groovy.json.JsonSlurper
 import com.eviware.soapui.support.XmlHolder
 import net.sf.*;
@@ -12717,36 +12757,1715 @@ log.info transid
 testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactionId",'"'+transid+'"')
 
 </script></con:config></con:testStep><con:testStep type="httprequest" name="Refund more than the payment" id="9f8e10b6-165c-4d95-9218-da6a6c55c56c"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Refund more than the payment" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/credit</con:endpoint><con:request>{
-"orderId": null,
-"threadId":null,
-"mfGatewayConsumer": {
+  "comment": "Amount to be refunded",
+  "customerId": 20624,
+  "externalTransactionId":${Properties#externalTransactionId},
+  "originalOrderId": ${Properties#orderId},
+  "transactionAmount": 8200
+  
+  }</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="cde80728-e465-4185-8b60-ee579febfa10" name="Match content of [message]"><con:configuration><path>$['message']</path><content>"RETURN AMOUNT EXCEEDS ORIGINAL TRANSACTION AMOUNT"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="df0413e3-7c00-420d-9d66-0104029a34e4" name="Match content of [responseCode]"><con:configuration><path>$['responseCode']</path><content>"-1"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="75d5de10-e902-46dd-9379-abe481af5b55" name="Match content of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>${Properties#externalTransactionId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Valid sale 4" id="ce8f69e9-c358-4109-a727-4f3985fbdf2f"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Valid sale 4" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/sale</con:endpoint><con:request>{
+	"mfGatewayConsumer": {
 "accountNumber": "23345",
 "consumerName": "Test patient"
 },
 "mfGatewayMerchant": {
 "paymentSource": "VCS"
 },
-"comment1": "hello",
-"comment2": " Test",
-"transactionAmount":77800,
-"externalTransactionId":${Properties#externalTransactionId}
-}
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>500</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Partial credit" id="3a9f57d4-1bba-4751-88da-125268245ebe"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Partial credit" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/credit</con:endpoint><con:request>{
-"orderId": null,
-"threadId":null,
-"mfGatewayConsumer": {
-"accountNumber": "23345",
-"consumerName": "Test patient"
+"transactionAmount": 8100,
+"initialTransactionInSeries": true,
+"card": {
+"cvvNumber": "901",
+"type": "VI",
+"accountNumber": "4960049010100011",
+"expirationDate": "1225",
+"trackData": null,
+"bin": "496004",
+"cardPresent": false
 },
-"mfGatewayMerchant": {
-"paymentSource": "VCS"
-},
-"comment1": "hello",
-"comment2": " Test",
-"transactionAmount":700,
-"externalTransactionId":${Properties#externalTransactionId}
+"billToAddress": {
+"name": "Test",
+"zipCode": "87239",
+"middleInitial": null,
+"lastName": "Patient",
+"companyName": "Some company",
+"addressLine1": "123 Rainbow dr",
+"addressLine2": "",
+"addressLine3": null,
+"city": "cary",
+"state": "NC",
+"country": "US",
+"zipCode": "27518",
+"email": "",
+"phone": ""
 }
-</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>e751e354-df4c-40c2-b898-79249a214ecd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>59461958-95ff-41df-9aab-20aa5ca695c2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c0309204-dd7c-4775-9019-33c379cb347e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8028b69c-e770-46c5-9911-a3c276444d76</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>320019ee-2d3a-45d5-aa28-3673c751c9ed</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>39ab582d-9063-4464-8173-f48c8d3c02da</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9e1afe42-fac6-40ee-9ec9-fd3eca680aef</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e793bcc6-d14d-4830-b497-f5ae1a3244d8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:xmlTemplates/><con:parameters/></con:reporting><con:eventHandlers type="RequestFilter.filterRequest" name="RequestFilter.filterRequest"><con:script>// Sample event script to add custom HTTP header to all outgoing REST, SOAP and HTTP(S) calls
+	}
+</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="groovy" name="Copy of Get  sale order id for refund" id="56813240-a62c-4554-a6f1-9c7552eea9e6"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+import java.net.URLEncoder;
+
+def id = context.expand( '${Valid sale 4#Response#$.orderId}' )
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["Valid sale 4"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper!=null
+def orderid = jsonSlurper.orderId
+assert orderid!=null
+log.info orderid
+testRunner.testCase.testSteps["Properties"].setPropertyValue("orderId",'"'+orderid+'"')
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="Copy of Copy of Get transaction id for credit" id="003fdc18-d108-4630-bdc4-200b1db5bd4b"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestStepResult.TestStepStatus
+import groovy.json.JsonSlurper
+import com.eviware.soapui.support.XmlHolder
+import net.sf.*;
+import net.sf.json.*;
+import net.sf.json.groovy.*;
+import java.net.URLEncoder;
+
+def id = context.expand( '${Valid sale 4#Response#$.externalTransactionId}' )
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+def ResponseMessage = testRunner.testCase.testSteps["Valid sale 4"].testRequest.response.contentAsString
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+assert jsonSlurper!=null
+def transid = jsonSlurper.externalTransactionId
+assert transid!=null
+log.info transid
+testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactionId",'"'+transid+'"')
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="Partial credit" id="3a9f57d4-1bba-4751-88da-125268245ebe"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="eb58b763-c20a-449c-b9aa-306d8349bbdc" name="Partial credit" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/credit</con:endpoint><con:request>{
+  "comment": "Amount to be refunded",
+  "customerId": 20624,
+  "externalTransactionId":${Properties#externalTransactionId},
+  "originalOrderId": ${Properties#orderId},
+  "transactionAmount": 700
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="c893f517-bdff-470b-84e9-059ab6cef232" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Notify" id="a7e0ae25-f757-4c65-8db7-e64d968989d3"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="1e9e2140-8d94-4661-b348-c052746b4375" name="Notify" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8083/gateway-proxy/services/v1/customer/87b7e73a-ddab-4849-9af9-467b32c95ef2/merchant/2560791218/notify</con:endpoint><con:request>{
+  "applicationID": "83984",
+  "applicationName": "terminal",
+  "approvalNumber": "aid90",
+  
+  "card": {
+    "accountNumber": "4111111111111111",
+    "bin": "411111",
+    "cardPresent": true,
+    "cvvNumber": "string",
+    "expirationDate": "string",
+    "trackData": ";4111111111111111=17081014764094900000?",
+    "type": "MC"
+  },
+
+  "customerId": 20624,
+  "emvTags": "0",
+"hostResponseMessage": "Approved",
+  "initialTransactionInSeries": true,
+  "message": "This is a POS payment",
+  "mfGatewayConsumer": {
+    "accountNumber": "KJHK890",
+    "consumerId": "8990",
+    "consumerName": "JANE"
+  },
+  "mfGatewayMerchant": {
+   
+    "paymentSource": "TRML"
+
+  },
+  
+  
+  "paymentMethod": "POS",
+  "paymentType": "SALE",
+  "pinVerified": "true",
+  "requestType": "string",
+  
+  "transactionAmount": 22,
+  "transactionType": "SALE"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="691010fe-0705-4673-94ee-3eaaa7bf8664" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Bearer ${POST token#Response#$['token']}</con:value><con:style>HEADER</con:style><con:default>Bearer ${POST token#Response#$['token']}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>e751e354-df4c-40c2-b898-79249a214ecd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>59461958-95ff-41df-9aab-20aa5ca695c2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c0309204-dd7c-4775-9019-33c379cb347e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8028b69c-e770-46c5-9911-a3c276444d76</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>320019ee-2d3a-45d5-aa28-3673c751c9ed</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>39ab582d-9063-4464-8173-f48c8d3c02da</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9e1afe42-fac6-40ee-9ec9-fd3eca680aef</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e793bcc6-d14d-4830-b497-f5ae1a3244d8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d29b7e37-adab-4b8e-943c-363c77e2b177</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4c53d8b5-e530-422c-8224-1fa1706269a5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>90bd53f9-77b8-4aef-b4db-f486c9784d07</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b19a7b56-10a7-4b9e-92ef-01d0d3064446</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ce8f69e9-c358-4109-a727-4f3985fbdf2f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>56813240-a62c-4554-a6f1-9c7552eea9e6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>003fdc18-d108-4630-bdc4-200b1db5bd4b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="b04acfc7-cf72-4fc7-b952-19a66edec342" name="PAY EXTERNAL API"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="063057c1-c76a-44ed-bd83-c2251e752965" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="EXTERNAL API" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="properties" name="Properties" id="92044f3b-a216-4aa3-aef7-800af02ea97c"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>mmid</con:name><con:value>2560791218</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="Create partner credentials- as finance" id="c374f7f2-6fa2-4f76-ab13-1a35432b9b32"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Create partner credentials- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername456"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="254185d8-3647-4293-b23d-56f7b64c568f" name="Match content of [username]"><con:configuration><path>$['username']</path><content>${Create partner credentials- as finance#RawRequest#$['username']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="9daca940-01c1-4edb-a129-f92d9ab87953" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="MessageContentAssertion" id="3c3b7cc6-d8bd-4dbe-a1e1-8ca431e5ca03" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:id[1]</con:xpath><con:element>id</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>false</con:enabled><con:expectedValue>40090</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:username[1]</con:xpath><con:element>username</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>false</con:enabled><con:expectedValue>testusername123</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:password[1]</con:xpath><con:element>password</con:element><con:type xsi:nil="true"/><con:operator>!=</con:operator><con:enabled>true</con:enabled><con:expectedValue>testusername123</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners">
+   <id>40090</id>
+   <username>testusername123</username>
+   <password>c5ZYPLfus18wKyC</password>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="GET partner credentials- as finance" id="a1c151eb-f57d-4dca-81f7-583837df4167"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="GET partner credentials- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Check GET partner credentials- as finance" id="fe225d8f-d021-4568-b52b-36edc08d35f8"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Check GET partner credentials- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/check</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>${Create partner credentials- as finance#Response#$['username']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as finance#Response#$['username']}</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>${Create partner credentials- as finance#Response#$['password']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as finance#Response#$['password']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Update partner credentials- as finance" id="81d654b1-46e7-49dd-8b8c-72587f1d5471"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Update partner credentials- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as finance#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="a523843c-b0b5-4781-b62c-94e659645a0c" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Create partner credentials- as finance#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5c213617-58c0-45e9-a130-f28bb5dce295" name="Match content of [username]"><con:configuration><path>$['username']</path><content>"Nextgenuser123"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f94496ec-e2cf-4bd4-9db4-0f836d23334a" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>Nextgenuser123</con:value><con:style>QUERY</con:style><con:default>Nextgenuser123</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>Nextgenpassword</con:value><con:style>QUERY</con:style><con:default>Nextgenpassword</con:default></con:parameter><con:parameter><con:name>id</con:name><con:value>${Create partner credentials- as finance#Response#$['id']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as finance#Response#$['id']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Reset partner credentials- as finance" id="b3ada6e4-c037-4f37-8933-b7713413562c"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Reset partner credentials- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as finance#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="a523843c-b0b5-4781-b62c-94e659645a0c" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Create partner credentials- as finance#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5c213617-58c0-45e9-a130-f28bb5dce295" name="Match content of [username]"><con:configuration><path>$['username']</path><content>"Nextgenuser123"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f94496ec-e2cf-4bd4-9db4-0f836d23334a" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Delete partner - as finance" id="e0bdd0dc-1f6e-482b-bf24-66736d51271e"><con:settings/><con:config method="DELETE" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Delete partner - as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as finance#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="GET partner after delete- as finance" id="a0f19b23-c32a-453b-ac15-1a51806180ce"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="GET partner after delete- as finance" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/check</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>${Update partner credentials- as finance#Response#$['username']}</con:value><con:style>QUERY</con:style><con:default>${Update partner credentials- as finance#Response#$['username']}</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>nextgenpassword</con:value><con:style>QUERY</con:style><con:default>nextgenpassword</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Create partner credentials- as implementation" id="253571fc-c000-4390-933a-331302f4e061"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Create partner credentials- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername1567"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="254185d8-3647-4293-b23d-56f7b64c568f" name="Match content of [username]"><con:configuration><path>$['username']</path><content>${Create partner credentials- as implementation#RawRequest#$['username']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="9daca940-01c1-4edb-a129-f92d9ab87953" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="MessageContentAssertion" id="3c3b7cc6-d8bd-4dbe-a1e1-8ca431e5ca03" name="Message Content Assertion"><con:configuration xsi:type="con:MessageContentAssertion"><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:id[1]</con:xpath><con:element>id</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>false</con:enabled><con:expectedValue>40090</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:username[1]</con:xpath><con:element>username</con:element><con:type xsi:nil="true"/><con:operator>=</con:operator><con:enabled>false</con:enabled><con:expectedValue>testusername123</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:elements><con:xpath>declare namespace ns1='http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners';
+//ns1:Response[1]/ns1:password[1]</con:xpath><con:element>password</con:element><con:type xsi:nil="true"/><con:operator>!=</con:operator><con:enabled>true</con:enabled><con:expectedValue>testusername123</con:expectedValue><con:hasValue>false</con:hasValue><con:numberType>false</con:numberType></con:elements><con:originalMessage><![CDATA[<Response xmlns="http://d3-py-pay01.dev.medfusion.net/provisioning/services/v6/application/rcm/merchants/2560791218/partners">
+   <id>40090</id>
+   <username>testusername123</username>
+   <password>c5ZYPLfus18wKyC</password>
+</Response>]]></con:originalMessage></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="GET partner credentials- as implementation" id="27121cae-1a6e-47ea-bc6a-2d990eec380a"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="GET partner credentials- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Check GET partner credentials- as implementation" id="daed3e34-8c3e-4db4-a7ee-17c7ad888d7c"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Check GET partner credentials- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/check</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>${Create partner credentials- as implementation#Response#$['username']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as implementation#Response#$['username']}</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>${Create partner credentials- as implementation#Response#$['password']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as implementation#Response#$['password']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Update partner credentials- as implementation" id="f24e852e-f9f8-4e36-889f-bcdfd266cac3"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Update partner credentials- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as implementation#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="a523843c-b0b5-4781-b62c-94e659645a0c" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Create partner credentials- as implementation#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5c213617-58c0-45e9-a130-f28bb5dce295" name="Match content of [username]"><con:configuration><path>$['username']</path><content>"Nextgenuser3456"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f94496ec-e2cf-4bd4-9db4-0f836d23334a" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>Nextgenuser3456</con:value><con:style>QUERY</con:style><con:default>Nextgenuser3456</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>Nextgenpassword</con:value><con:style>QUERY</con:style><con:default>Nextgenpassword</con:default></con:parameter><con:parameter><con:name>id</con:name><con:value>${Create partner credentials- as implementation#Response#$['id']}</con:value><con:style>QUERY</con:style><con:default>${Create partner credentials- as implementation#Response#$['id']}</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Reset partner credentials- as implementation" id="cb8bd551-0fa1-43f2-9173-4317b8349bbe"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Reset partner credentials- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as implementation#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="a523843c-b0b5-4781-b62c-94e659645a0c" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Create partner credentials- as implementation#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="5c213617-58c0-45e9-a130-f28bb5dce295" name="Match content of [username]"><con:configuration><path>$['username']</path><content>"Nextgenuser3456"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="f94496ec-e2cf-4bd4-9db4-0f836d23334a" name="Check for existence of [password]"><con:configuration><path>$['password']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Delete partner - as implementation" id="daf13da3-5d79-49df-a4c9-8dc9cfabe8be"><con:settings/><con:config method="DELETE" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="Delete partner - as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/${Create partner credentials- as implementation#Response#$['id']}</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="GET partner after delete- as implementation" id="8c3b1f83-9a4d-46b4-bf16-30958fc95b36"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="605f4115-9831-43f2-97db-811bf93c1305" name="GET partner after delete- as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/v6/application/rcm/merchants/${Properties#mmid}/partners/check</con:endpoint><con:request>{
+  
+  "password": "testpassword",
+  "username": "testusername123"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="6025613a-ecee-4a05-9936-7ef1fe1be451" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>401</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>username</con:name><con:value>${Update partner credentials- as implementation#Response#$['username']}</con:value><con:style>QUERY</con:style><con:default>${Update partner credentials- as implementation#Response#$['username']}</con:default></con:parameter><con:parameter><con:name>password</con:name><con:value>nextgenpassword</con:value><con:style>QUERY</con:style><con:default>nextgenpassword</con:default></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="HTTP POST sale" id="4885f1fc-bf88-460b-ae5b-ede9562258f2"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="7cdacece-972a-41fe-8cde-0a808ace0548" name="HTTP POST sale" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay03.dev.medfusion.net:8106/mfpay/services/mfgateway/v1/merchants/2560791218/sales</con:endpoint><con:request>{
+  "transactionAmount": 32,
+  "card": {
+    "type": "VI",
+    "accountNumber": "4111111111111111",
+    "expirationDate": "1225",
+    "trackData": "",
+    "ccvNumber": "233",
+    "bin": "411111",
+    "cardPresent": false
+  },
+  "billToAddress": {
+    "name": "Jane test",
+    "firstName": "jane",
+    "middleInitial": "",
+    "lastName": "test",
+    "addressLine1": "123 Rainbow dr",
+    "addressLine2": "",
+    "city": "cary",
+    "state": "nc",
+    "country": "United states",
+    "zipCode": "27539"
+  },
+  "orderId": "",
+  "customerId": "20624",
+  "mfGatewayConsumer": {
+    "accountNumber": "accountkjd03",
+    "consumerName": "jane",
+    "consumerId": "3434"
+  },
+  "mfGatewayMerchant": {
+    "merchantLocation": "",
+    "merchantLocationId": "",
+    "merchantName": "Jakub's 20624 2",
+    "staffId": "",
+    "staffName": "Gilbert",
+    "paymentSource": ""
+  }
+}</con:request><con:assertion type="JsonPath Existence Match" id="e9f129dd-d73e-4230-83e7-8ee12bc4b371" name="Check for existence of [externalTransactionId]"><con:configuration><path>$['externalTransactionId']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="d42e743a-a2b4-462c-8e76-16b8b940b6b1" name="Match content of [message]"><con:configuration><path>$['message']</path><content>"Approved"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="2c3fb280-5215-4426-aae7-8409c50faea9" name="Check for existence of [orderId]"><con:configuration><path>$['orderId']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="5aaf2ccb-d4a2-47bd-b261-38c2c276c6d0" name="Check for existence of [responseTime]"><con:configuration><path>$['responseTime']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="904d9fdd-1ede-4009-a491-4a1426c136ae" name="Match content of [responseCode]"><con:configuration><path>$['responseCode']</path><content>"000"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic SkFORTo4ekVrR0RvWk0ya3ZYQ3Q=</con:value><con:style>HEADER</con:style><con:default>Basic SkFORTo4ekVrR0RvWk0ya3ZYQ3Q=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>92044f3b-a216-4aa3-aef7-800af02ea97c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:testSuite id="f2bb951e-51e3-4bf0-9624-41e0724afbf2" name="New Merchant provisioning"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="864c0455-0bea-4643-a22e-4011d56f7a88" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Internal" searchProperties="true" timeout="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="httprequest" name="Provision a new merchant as finance without infi id" id="1f4cfe3b-b05e-499f-afaf-e9693207d49f"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Provision a new merchant as finance without infi id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  "merchantName": "Di Di Di Di merchant",
+  "merchantLegalName": "infi merchant testing 2",
+  "doingBusinessAs": "Robert Pine Realty",
+  "externalMerchantId": "12345",
+  
+   "merchantAddress": {
+      "address1": "100 West St",
+      "city": "Anchorage",
+      "state": "AK",
+      "zip": 99501,
+      "country": "US",
+      "worldPayAddressType": "Physical"
+  },
+  "acceptedCreditCards": [
+    "VISA",
+    "MCARD"
+  ],
+  "accountDetails": {
+    "preferredProcessor": "element",
+    "accountNumber": "4344421",
+    "routingNumber": "064103707",
+    "accountType": "C",
+    "checkingDepositType" : "CommercialChecking",
+    "federalTaxId": "123456789",
+    "worldPayAccountDetails": {
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "businessEstablishedDate": "03/16/2020",
+      "websiteURL": "https://payfacsm.com",
+      "mccCode": "8021",
+      "beneficialOwners": [
+        {
+          "title": "President",
+          "firstName": "John",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135551234",
+          "email": "jsmith@payfacsm.com",
+          "percentOwned": 51,
+          "ssn": "123456789",
+          "dateOfBirth": "12/05/1989",
+          "addressLine1": "123 South St",
+          "addressLine2": "Apt 500",
+          "city": "Anchorage",
+          "state": "AK",
+          "country": "US",
+	      "zipCode": "99501",
+          "ownerType": "ControlOwner"
+        }
+      ],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+    }
+  },
+  "maxTransactionLimit": 100,
+  "principleDetails": {
+    "principleName": "Julio Jones",
+    "principleTitle": "Sr. Principle Engineer",
+    "principleSocialSecurityNumber": "123456789"
+  },
+  "primaryContactFirstName": "Ken",
+  "primaryContactLastName": "Jennings",
+  "primaryContactEmail": "dudeBro75@hotmail.com",
+  "primaryContactPhoneNumber": "2521543586",
+  "contractedRates" : {
+  	"perTransAuthFee" : 1,
+  	"perTransRefundFee" : 1,
+  	"qualifiedUpperBoundaryPercent" : 1,
+  	"qualifiedFeePercent" : 1,
+  	"midQualifiedUpperBoundaryPercent" : 1,
+  	"midQualifiedFeePercent" : 1,
+  	"nonQualifiedUpperBoundaryPercent" : 1,
+  	"nonQualifiedFeePercent" : 1,
+  	"amexPercent" : 1
+  }
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get a merchant without infinicept id" id="7a3f34b3-fad1-484f-9a04-07dc75b0a8c9"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Get a merchant without infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/2560807043</con:endpoint><con:request>
+{
+  "merchantName": "WP Test merchant 3",
+  "merchantLegalName": "WP Test merchant inc",
+  "doingBusinessAs": "WP Test merchant 3",
+  "externalMerchantId": "39484",
+  
+   "merchantAddress": {
+      "address1": "100 West St",
+      "city": "Berea",
+      "state": "OH",
+      "zip": 44017,
+      "country": "US",
+      "worldPayAddressType": "Physical"
+  },
+  "acceptedCreditCards": [
+    "VISA",
+    "MCARD", 
+"AMEX",
+"DISCV"
+  ],
+  "accountDetails": {
+    "preferredProcessor": "ELEMENT",
+    "accountNumber": "4344421",
+    "routingNumber": "064103707",
+    "accountType": "C",
+    "checkingDepositType" : "CommercialChecking",
+    "federalTaxId": "123456789",
+    "worldPayAccountDetails": {
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "businessEstablishedDate": "06/05/2020",
+      "websiteURL": "https://payfacsm.com",
+      "mccCode": "8021",
+      "beneficialOwners": [
+        {
+          "title": "President",
+          "firstName": "John",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135551234",
+          "email": "jsmith@payfacsm.com",
+          "percentOwned": 51,
+          "ssn": "123456789",
+          "dateOfBirth": "12/05/1948",
+          "addressLine1": "123 South St",
+          "addressLine2": "Apt 500",
+          "city": "Anchorage",
+          "state": "AK",
+          "country": "US",
+	      "zipCode": "99501",
+          "ownerType": "ControlOwner"
+        }
+      ],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+    }
+  },
+  "maxTransactionLimit": 100000,
+  "principleDetails": {
+    "principleName": "Julio Jones",
+    "principleTitle": "Sr. Principle Engineer",
+    "principleSocialSecurityNumber": "123456789"
+  },
+  "primaryContactFirstName": "Matt",
+  "primaryContactLastName": "Jennings",
+  "primaryContactEmail": "dudeBro75@hotmail.com",
+  "primaryContactPhoneNumber": "2521543586",
+  "contractedRates" : {
+  	"perTransAuthFee" : 1,
+  	"perTransRefundFee" : 1,
+  	"qualifiedUpperBoundaryPercent" : 1,
+  	"qualifiedFeePercent" : 1,
+  	"midQualifiedUpperBoundaryPercent" : 1,
+  	"midQualifiedFeePercent" : 1,
+  	"nonQualifiedUpperBoundaryPercent" : 1,
+  	"nonQualifiedFeePercent" : 1,
+  	"amexPercent" : 1
+  },
+  "infiniceptMerchantApplicationId":"1111"
+}
+
+
+</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="176a773c-e5eb-4f00-9fa7-a5eac285eca9" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>null</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Edit  merchant as finance without infi id" id="d066b100-4a43-40e7-9ea7-6c5a3a9878ba"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Edit  merchant as finance without infi id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance without infi id#Response#$['id']}/wpSubMerchant?updateType=GENERAL_INFO</con:endpoint><con:request>{
+  "merchantName": "Di da merchant",
+  "merchantLegalName": "infi merchant testing 2",
+  "doingBusinessAs": "Robert Pine Realty",
+  "externalMerchantId": "12345",
+  
+   "merchantAddress": {
+      "address1": "100 West St",
+      "city": "Anchorage",
+      "state": "AK",
+      "zip": 99501,
+      "country": "US",
+      "worldPayAddressType": "Physical"
+  },
+  "acceptedCreditCards": [
+    "VISA",
+    "MCARD"
+  ],
+  "accountDetails": {
+    "preferredProcessor": "element",
+    "accountNumber": "4344421",
+    "routingNumber": "064103707",
+    "accountType": "C",
+    "checkingDepositType" : "CommercialChecking",
+    "federalTaxId": "123456789",
+    "worldPayAccountDetails": {
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "businessEstablishedDate": "03/16/2020",
+      "websiteURL": "https://payfacsm.com",
+      "mccCode": "8021",
+      "beneficialOwners": [
+        {
+          "title": "President",
+          "firstName": "John",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135551234",
+          "email": "jsmith@payfacsm.com",
+          "percentOwned": 51,
+          "ssn": "123456789",
+          "dateOfBirth": "12/05/1989",
+          "addressLine1": "123 South St",
+          "addressLine2": "Apt 500",
+          "city": "Anchorage",
+          "state": "AK",
+          "country": "US",
+	      "zipCode": "99501",
+          "ownerType": "ControlOwner"
+        }
+      ],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+    }
+  },
+  "maxTransactionLimit": 100,
+  "principleDetails": {
+    "principleName": "Julio Jones",
+    "principleTitle": "Sr. Principle Engineer",
+    "principleSocialSecurityNumber": "123456789"
+  },
+  "primaryContactFirstName": "Ken",
+  "primaryContactLastName": "Jennings",
+  "primaryContactEmail": "dudeBro75@hotmail.com",
+  "primaryContactPhoneNumber": "2521543586",
+  "contractedRates" : {
+  	"perTransAuthFee" : 1,
+  	"perTransRefundFee" : 1,
+  	"qualifiedUpperBoundaryPercent" : 1,
+  	"qualifiedFeePercent" : 1,
+  	"midQualifiedUpperBoundaryPercent" : 1,
+  	"midQualifiedFeePercent" : 1,
+  	"nonQualifiedUpperBoundaryPercent" : 1,
+  	"nonQualifiedFeePercent" : 1,
+  	"amexPercent" : 1
+  }
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Provision a new merchant as finance with infinicept id" id="928a62be-c736-49a1-ad7e-73fc677a8fec"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Provision a new merchant as finance with infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "98898900"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="2e77a4b0-0b85-4e4a-8f0a-91924608292c" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="07a00f40-7660-4950-88f2-4650f0567066" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get merchant created" id="083778b9-f110-414b-a1e7-672eeb14a7ee"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Get merchant created" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}</con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "98898900"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="2e77a4b0-0b85-4e4a-8f0a-91924608292c" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="3adcc3a7-9eaa-4647-8c5b-b56937e16090" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Edit general merchant details" id="02303d20-da1d-48a0-8cee-39ffb0d33229"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Edit general merchant details" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/wpSubMerchant?updateType=GENERAL_INFO</con:endpoint><con:request>{
+	"id":${Provision a new merchant as finance with infinicept id#Response#$['id']},
+	"merchantName":"provisioning merchant test",
+	"doingBusinessAs":"MEDFUSION",
+	"alsoKnownAsName":"MP merchant",
+	"externalMerchantId":38949,
+	 "infiniceptMerchantApplicationId": "12344",
+	"customerAccountNumber":"93844454",
+	"phoneNumber":"1234567891",
+	"maxTransactionLimit":59996,
+	"primaryContactFirstName":"Nia",
+	"primaryContactLastName":"Lahi",
+	"primaryContactEmail":"test@gmail.com",
+	"primaryContactPhoneNumber":"3878377373",
+	"merchantAddress":{
+		"address1":"5501 DILLARD DR",
+		"address2":null,
+		"city":"Cary",
+		"zip":"27518",
+		"country":"US",
+		"state":"NC"
+		},
+		"remitToAddress":{
+			"address1":"address1",
+			"address2":"address2",
+			"city":"city",
+			"zip":"276074",
+			"country":"US",
+			"state":"NC",
+			"merchantName":"Test"
+			},
+			"merchantLegalName":"MedFusion, Inc.",
+			"legalEntityPhoneNumber":"",
+			"legalEntityAddress":{},
+			"acceptedCreditCards":["VISA","MCARD","AMEX","DISCV"],
+			"accountDetails":{
+				"accountType":"C",
+				"routingNumber":"042000314",
+				"accountNumber":"7027485577",
+				"federalTaxId":"562224713",
+				"preferredProcessor":"ELEMENT",
+				"checkingDepositType":"PrivateChecking",
+				"worldPayAccountDetails":{
+					"chainCode":"0N3859",
+					"billingDescriptor":"PFA*SM",
+					"businessEstablishedDate":"12/12/1990",
+					"businessType":"ECommerce",
+					"ownershipType":"PublicCorporation",
+					"websiteURL":"www.bkj@example.orfg",
+					"mccCode":"8011",
+					"beneficialOwners":[]
+					}
+					},
+					"contractedRates":null
+					}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="2e77a4b0-0b85-4e4a-8f0a-91924608292c" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Edit general merchant details#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="07a00f40-7660-4950-88f2-4650f0567066" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get edited merchant" id="628ac0f6-e785-4e86-a6d4-41d5dea0e65e"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Get edited merchant" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Edit general merchant details#Response#$['id']}</con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "98898900"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="2e77a4b0-0b85-4e4a-8f0a-91924608292c" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="3adcc3a7-9eaa-4647-8c5b-b56937e16090" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Deactivate merchant" id="6c254e75-f7f8-4511-bf45-5ef721144dfe"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Deactivate merchant" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/status</con:endpoint><con:request>{"status":"INACTIVE"}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e9626b59-4a22-4d63-8201-dad0c535b88b" name="Match content of [status]"><con:configuration><path>$['status']</path><content>"INACTIVE"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="b04f9e38-f6f5-4712-a359-a973c6fac559" name="Check for existence of [deactivatedDate]"><con:configuration><path>$['deactivatedDate']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Reactivate merchant" id="cc794ff7-477d-4098-959c-36a633a0d9b3"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Reactivate merchant" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/status</con:endpoint><con:request>{"status":"ACTIVE"}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e9626b59-4a22-4d63-8201-dad0c535b88b" name="Match content of [status]"><con:configuration><path>$['status']</path><content>"ACTIVE"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="b04f9e38-f6f5-4712-a359-a973c6fac559" name="Check for existence of [deactivatedDate]"><con:configuration><path>$['deactivatedDate']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Set status to TEST" id="06764493-7023-41d0-81a9-141320384bd9"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Set status to TEST" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/status</con:endpoint><con:request>{"status":"TEST"}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e9626b59-4a22-4d63-8201-dad0c535b88b" name="Match content of [status]"><con:configuration><path>$['status']</path><content>"TEST"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="b04f9e38-f6f5-4712-a359-a973c6fac559" name="Check for existence of [deactivatedDate]"><con:configuration><path>$['deactivatedDate']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="WP health check" id="e8f2835c-0b76-4087-9a72-02233e0a9cae"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="WP health check" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/wphealthcheck</con:endpoint><con:request>{"status":"TEST"}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="e9626b59-4a22-4d63-8201-dad0c535b88b" name="Match content of [status]"><con:configuration><path>$['status']</path><content>"UP"</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get underwriting status" id="3396af89-074f-4a53-9bb5-8315532dccfd"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Get underwriting status" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/status</con:endpoint><con:request>{"status":"TEST"}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="6bd2ec01-666b-4c30-a2a8-819633d762a8" name="Check for existence of [status]"><con:configuration><path>$['status']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="89cf1bd5-b171-4120-9048-8e2caa2183b3" name="Check for existence of [reason]"><con:configuration><path>$['reason']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Edit customer contact details" id="fc5ebc1b-8720-4b18-b190-c3102ef17446"><con:settings/><con:config method="PUT" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Edit customer contact details" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}/wpSubMerchant?updateType=CONTACTS</con:endpoint><con:request>{
+	"id":${Provision a new merchant as finance with infinicept id#Response#$['id']},
+	"merchantName":"provisioning merchant test",
+	"doingBusinessAs":"MEDFUSION test",
+	"alsoKnownAsName":"MP merchant",
+	"externalMerchantId":38949,
+	"customerAccountNumber":"93844454",
+	"phoneNumber":"1234567891",
+	"maxTransactionLimit":59996,
+	"primaryContactFirstName":"Nate",
+	"primaryContactLastName":"Lahi",
+	"primaryContactEmail":"testnate@gmail.com",
+	"primaryContactPhoneNumber":"3878377373",
+	"merchantAddress":{
+		"address1":"5501 DILLARD DR",
+		"address2":null,
+		"city":"Cary",
+		"zip":"27518",
+		"country":"US",
+		"state":"NC"
+		},
+		"remitToAddress":{
+			"address1":"address1",
+			"address2":"address2",
+			"city":"city",
+			"zip":"276074",
+			"country":"US",
+			"state":"NC",
+			"merchantName":"Test"
+			},
+			"merchantLegalName":"MedFusion, Inc.",
+			"legalEntityPhoneNumber":"",
+			"legalEntityAddress":{},
+			"acceptedCreditCards":["VISA","MCARD","AMEX","DISCV"],
+			"accountDetails":{
+				"accountType":"C",
+				"routingNumber":"042000314",
+				"accountNumber":"7027485577",
+				"federalTaxId":"562224713",
+				"preferredProcessor":"ELEMENT",
+				"checkingDepositType":"PrivateChecking",
+				"worldPayAccountDetails":{
+					"chainCode":"0N3859",
+					"billingDescriptor":"PFA*SM",
+					"businessEstablishedDate":"12/12/1990",
+					"businessType":"AutoRental",
+					"ownershipType":"PublicCorporation",
+					"websiteURL":"www.bkj@example.orfg",
+					"mccCode":"8011",
+					"beneficialOwners":[]
+					}
+					},
+					"contractedRates":null
+					}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="32ecdf74-c686-4ba3-a61a-212fed3dd6f1" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="2e77a4b0-0b85-4e4a-8f0a-91924608292c" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>null</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="07a00f40-7660-4950-88f2-4650f0567066" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Provision a new merchant as implementation with infinicept id" id="1e359a69-f03a-48a8-a17e-e2435653a894"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Provision a new merchant as implementation with infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "98898900"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>403</codes></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Get merchant with infinicept id as implementation" id="04fa1101-8770-4e2b-ba45-844fef689c49"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Get merchant with infinicept id as implementation" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants/${Provision a new merchant as finance with infinicept id#Response#$['id']}</con:endpoint><con:request>
+{
+  "merchantName": "WP Test merchant 3",
+  "merchantLegalName": "WP Test merchant inc",
+  "doingBusinessAs": "WP Test merchant 3",
+  "externalMerchantId": "39484",
+  
+   "merchantAddress": {
+      "address1": "100 West St",
+      "city": "Berea",
+      "state": "OH",
+      "zip": 44017,
+      "country": "US",
+      "worldPayAddressType": "Physical"
+  },
+  "acceptedCreditCards": [
+    "VISA",
+    "MCARD", 
+"AMEX",
+"DISCV"
+  ],
+  "accountDetails": {
+    "preferredProcessor": "ELEMENT",
+    "accountNumber": "4344421",
+    "routingNumber": "064103707",
+    "accountType": "C",
+    "checkingDepositType" : "CommercialChecking",
+    "federalTaxId": "123456789",
+    "worldPayAccountDetails": {
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "businessEstablishedDate": "06/05/2020",
+      "websiteURL": "https://payfacsm.com",
+      "mccCode": "8021",
+      "beneficialOwners": [
+        {
+          "title": "President",
+          "firstName": "John",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135551234",
+          "email": "jsmith@payfacsm.com",
+          "percentOwned": 51,
+          "ssn": "123456789",
+          "dateOfBirth": "12/05/1948",
+          "addressLine1": "123 South St",
+          "addressLine2": "Apt 500",
+          "city": "Anchorage",
+          "state": "AK",
+          "country": "US",
+	      "zipCode": "99501",
+          "ownerType": "ControlOwner"
+        }
+      ],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+    }
+  },
+  "maxTransactionLimit": 100000,
+  "principleDetails": {
+    "principleName": "Julio Jones",
+    "principleTitle": "Sr. Principle Engineer",
+    "principleSocialSecurityNumber": "123456789"
+  },
+  "primaryContactFirstName": "Matt",
+  "primaryContactLastName": "Jennings",
+  "primaryContactEmail": "dudeBro75@hotmail.com",
+  "primaryContactPhoneNumber": "2521543586",
+  "contractedRates" : {
+  	"perTransAuthFee" : 1,
+  	"perTransRefundFee" : 1,
+  	"qualifiedUpperBoundaryPercent" : 1,
+  	"qualifiedFeePercent" : 1,
+  	"midQualifiedUpperBoundaryPercent" : 1,
+  	"midQualifiedFeePercent" : 1,
+  	"nonQualifiedUpperBoundaryPercent" : 1,
+  	"nonQualifiedFeePercent" : 1,
+  	"amexPercent" : 1
+  },
+  "infiniceptMerchantApplicationId":"1111"
+}
+
+
+</con:request><con:assertion type="Valid HTTP Status Codes" id="1f1e8a5f-16ed-4269-9bec-23e553871475" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="176a773c-e5eb-4f00-9fa7-a5eac285eca9" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="050286c1-99c0-464c-ae18-46a0682d03fd" name="Match content of [id]"><con:configuration><path>$['id']</path><content>${Provision a new merchant as finance with infinicept id#Response#$['id']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdEltcGxlbWVudGF0aW9uMTpuRzk7JihMJjM5bWo=</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Provision a new merchant as finance with alpha numeric infinicept id" id="ffe80016-9cce-4c24-b2d0-380ba16232cf"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Provision a new merchant as finance with alpha numeric infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test alpha numeric",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "98898900jhe9k03924_ajd893498203_masd09"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7765aa56-7498-41d8-9b17-9aa7cdf9e99d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="ddd7bc93-5183-4dbc-ad8c-4d458d6f0cb5" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="8d39a070-07f7-41b7-90a8-44701b55d0ee" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with alpha numeric infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="Provision a new merchant as finance with  infinicept id starting with zero" id="3cabad6f-d20c-4ba9-ae01-cb9d1934a8e0"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="Provision a new merchant as finance with  infinicept id starting with zero" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test alpha numeric",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": "082374"
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7765aa56-7498-41d8-9b17-9aa7cdf9e99d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="ddd7bc93-5183-4dbc-ad8c-4d458d6f0cb5" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="8d39a070-07f7-41b7-90a8-44701b55d0ee" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${Provision a new merchant as finance with  infinicept id starting with zero#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="provision a new merchant as finance with a null infinicept id" id="44ae7cc4-8a6b-4adf-9d29-67721f7db53a"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="provision a new merchant as finance with a null infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test alpha numeric",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId": null
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7765aa56-7498-41d8-9b17-9aa7cdf9e99d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="ddd7bc93-5183-4dbc-ad8c-4d458d6f0cb5" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="8d39a070-07f7-41b7-90a8-44701b55d0ee" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content>${provision a new merchant as finance with a null infinicept id#RawRequest#$['infiniceptMerchantApplicationId']}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:testStep type="httprequest" name="provision a new merchant as finance with an empty string infinicept id" id="737eaf56-fbab-459f-ad19-b73b0954a52b"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="707ed2f1-1939-4de2-aa9e-c7060bf5c264" name="provision a new merchant as finance with an empty string infinicept id" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://d3-py-pay01.dev.medfusion.net:8080/provisioning/services/internal/merchants </con:endpoint><con:request>{
+  
+  "merchantName": "provisioning merchant test alpha numeric",
+  "merchantLegalName": "MedFusion, Inc.",
+  "doingBusinessAs": "MEDFUSION",
+  "externalMerchantId": 38949,
+  "merchantAddress": {
+    "address1": "5501 DILLARD DR",
+    "address2": null,
+    "city": "Cary",
+    "state": "NC",
+    "zip": "27518",
+    "country": "US"
+  },
+  "remitToAddress": {
+    "address1": "address1",
+    "address2": "address2",
+    "city": "city",
+    "state": "NC",
+    "zip": "276074",
+    "country": "US",
+    "merchantName": "Test"
+  },
+  "statementOptions": {
+    "BILLQUERYHOURS": "23",
+    "DISPLAYDETACHRETURNBYMAIL": "true",
+    "STMTDUEDATELEADDAYS": "2",
+    "PAYBYPHONENO": "2882882828",
+    "DISPLAYSTMTDETAIL": "true",
+    "PAYBYPHONEHOURS": "2",
+    "PAYBYCHECKOK": "true",
+    "DISPLAYINSAGEBRACKETS": "false",
+    "BILLQUERYPHONENO": "22229292929",
+    "MERCHANTTAGLINE": "blop",
+    "STMTTESTMODE": "false",
+    "DISPLAYMERCHANTNAME": "true",
+    "DISPLAYGUARAGEBRACKETS": "true",
+    "PAYBYMONEYORDEROK": "true"
+  },
+  "acceptedCreditCards": [
+    "AMEX",
+    "DISCV",
+    "MCARD",
+    "VISA"
+  ],
+  "phoneNumber": "1234567891",
+  "maxTransactionLimit": 59996,
+  "accountDetails": {
+    "routingNumber": "042000314",
+    "accountNumber": "7027485577",
+    "accountType": "C",
+    "checkingDepositType": "PrivateChecking",
+    "amexSid": "555",
+    "preferredProcessor": "ELEMENT",
+    "federalTaxId": "562224713",
+    "worldPayAccountDetails": {
+
+      "chainCode": "0N3859",
+      "billingDescriptor": "PFA*SM",
+      "ownershipType": "PublicCorporation",
+      "businessType": "ECommerce",
+      "mccCode": "8011",
+      "businessEstablishedDate": "12/12/1990",
+      "websiteURL": "www.bkj@example.orfg",
+      "beneficialOwners": [],
+      "contact": [
+        {
+          "title": "Relationship Manager",
+          "firstName": "Jane",
+          "middleInitial": "S",
+          "lastName": "Smith",
+          "phoneNumber": "5135559876",
+          "phoneNumberExt": "5432",
+          "email": "jasmith@payfacsm.com",
+          "faxNumber": "5135559876",
+          "type": "CustomerService"
+        }
+      ]
+}
+      
+    },
+    
+  "contractedRates": {
+    "perTransAuthFee": 30,
+    "perTransRefundFee": 30,
+    "qualifiedUpperBoundaryPercent": 0.5,
+    "qualifiedFeePercent": 50,
+    "midQualifiedUpperBoundaryPercent": 2,
+    "midQualifiedFeePercent": 50,
+    "nonQualifiedUpperBoundaryPercent": 3,
+    "nonQualifiedFeePercent": 50,
+    "amexPercent": 5,
+    "suppressFeeSettlement": false
+  },
+  "status": "TEST",
+  "fraudVars": {
+    "duplicateDollarTxCount": 0,
+    "duplicateDollarTxAmount": 0,
+    "excessiveVolumeIncreasePercent1vs90": 100,
+    "excessiveVolumeIncreaseAmount1vs90": 0,
+    "excessiveVolumeIncreasePercent1vs30": 100,
+    "excessiveVolumeIncreaseAmount1vs30": 0,
+    "excessiveVolumeIncreasePercent1vs7": 100,
+    "excessiveVolumeIncreaseAmount1vs7": 0,
+    "excessiveVolumeIncreasePercent7vs90": 100,
+    "excessiveVolumeIncreaseAmount7vs90": 0,
+    "dailyUnmatchedCreditsCount": 0,
+    "dailyUnmatchedCreditsAmount": 0,
+    "sameCardTxCount": 0,
+    "sameCardTxAmount": 0,
+    "totalDailyForeignCardCount": 0,
+    "totalDailyForeignCardTxAmount": 0,
+    "txLimitToAlert": 0,
+    "singleForcedTxAmount": 0,
+    "aggregateForcedTxAmount": 0,
+    "staleTxDays": 0
+  },
+  
+  "customerAccountNumber": "93844",
+  "alsoKnownAsName": "",
+
+  "primaryContactFirstName": "Nia",
+  "primaryContactLastName": "Lahi",
+  "primaryContactEmail": "test@gmail.com",
+  "primaryContactPhoneNumber": "3878377373",
+  
+  "legalEntityPhoneNumber": "",
+  "infiniceptMerchantApplicationId":""
+}</con:request><con:assertion type="Valid HTTP Status Codes" id="7765aa56-7498-41d8-9b17-9aa7cdf9e99d" name="Valid HTTP Status Codes"><con:settings/><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="JsonPath Existence Match" id="ddd7bc93-5183-4dbc-ad8c-4d458d6f0cb5" name="Check for existence of [id]"><con:configuration><path>$['id']</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="8d39a070-07f7-41b7-90a8-44701b55d0ee" name="Match content of [infiniceptMerchantApplicationId]"><con:configuration><path>$['infiniceptMerchantApplicationId']</path><content/><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:value><con:style>HEADER</con:style><con:default>Basic dGVzdHVzZXJGaW5hbmNlMTpGczNKbjImTQ==</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>d066b100-4a43-40e7-9ea7-6c5a3a9878ba</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>628ac0f6-e785-4e86-a6d4-41d5dea0e65e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:requirements/><con:properties><con:property><con:name>Authorization</con:name><con:value>opentoken T1RLAQIBCHIHnUkVaTX3xqxoXRNCA9KI2BBCUmLZFKXT4pPq4IW5WMyFAADwufMenY2yl-7-gVY2HXL9JI6HGYT_NEZnO2EOqWY0ZzqUpH0UDGxmMmJV9SqECN5srUkvIEwthHeh5xq0Pgbrn_UV5aH_4XeA25K5rr4kM3AcWFCDMVHWvFjK0WzlHOlXLqFOVwzyOa80dLdMTwaW00dibEdzsxSGh6NVD9-1qthmbMjUiMlCXKm5kSGV_eKTKCPjxNMYZ9dov4P2xKeBMxhs6Kz3S5P0_FmnUdT9jY9xHKJJ37sCF9ji_hrMPaQF-NX_h44mY_fWogL75Z9ZMlcHys52ZfnG3BiV-MguGmDmU2-IT-FdwcSGk7AQBYu8</con:value></con:property></con:properties><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer><con:oAuth2Profile><con:name>dev gwr</con:name><con:type>OAuth 2.0</con:type><con:accessTokenPosition>HEADER</con:accessTokenPosition><con:refreshAccessTokenMethod>AUTOMATIC</con:refreshAccessTokenMethod></con:oAuth2Profile></con:oAuth2ProfileContainer><con:oAuth1ProfileContainer/><con:reporting><con:reportTemplates/><con:xmlTemplates/><con:xmlTemplates/><con:parameters/><con:parameters/></con:reporting><con:reporting/><con:eventHandlers type="RequestFilter.filterRequest" name="RequestFilter.filterRequest"><con:script>// Sample event script to add custom HTTP header to all outgoing REST, SOAP and HTTP(S) calls
 // This code is often used for adding custom authentication to SoapUI Pro tests
 
 // If hardcoding the token, uncomment and change line 5
@@ -12769,4 +14488,4 @@ testRunner.testCase.testSteps["Properties"].setPropertyValue("externalTransactio
 // pw = new PrintWriter(fos)
 // testStepResult.writeTo(pw)
 // pw.close()
-// fos.close()</con:script></con:eventHandlers><con:authRepository/><con:tags/></con:soapui-project>
+// fos.close()</con:script></con:eventHandlers><con:authRepository><con:oAuth20AuthEntry><con:name>dev gwr</con:name><con:type>OAuth 2.0</con:type><con:accessTokenPosition>HEADER</con:accessTokenPosition><con:refreshAccessTokenMethod>AUTOMATIC</con:refreshAccessTokenMethod></con:oAuth20AuthEntry></con:authRepository><con:loadUiTest name="dev LoadTest" id="33c53aed-6fec-4892-9e30-3a6d855f46f2"><con:settings><con:setting id="soapUIObjectSourceId">1d65619d-c509-4957-a77b-2614d71eaf2d</con:setting><con:setting id="soapUIObjectSourceType">soapUIObjectSourceType_TestCase</con:setting></con:settings><con1:loadui-project id="e3874914-801c-4cc1-a65a-810452f7fc03" label="dev LoadTest" xmlns:con1="http://eviware.com/loadui/config"><con1:properties><con1:property propagates="true" key="ModelItem.description" type="java.lang.String"/><con1:property propagates="true" key="CanvasItem.abortOnFinish" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="ModelItem.saveReport" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="ModelItem.reportFolder" type="java.lang.String"/><con1:property propagates="true" key="ModelItem.reportFormat" type="java.lang.String"/><con1:property propagates="true" key="Temporary project" type="java.lang.String"/><con1:property propagates="true" key="ModelItem.rate" type="java.lang.Long">10</con1:property><con1:property propagates="true" key="ModelItem.loadDistributionType" type="com.smartbear.load.facade.LoadDistributionType">PerScenario</con1:property><con1:property propagates="true" key="ModelItem.remoteMode" type="java.lang.String"/></con1:properties><con1:attributes/><con1:addons/><con1:scene label="New Scenario" id="390dc64a-8960-405c-8f51-e0b1cab4744c"><con1:properties><con1:property propagates="true" key="ModelItem.description" type="java.lang.String"/><con1:property propagates="true" key="CanvasItem.abortOnFinish" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="SceneItem.followProject" type="java.lang.Boolean">true</con1:property><con1:property propagates="true" key="SceneItem.scenarioRatePercentage" type="java.lang.Long">100</con1:property><con1:property propagates="true" key="SceneItem.scenarioRateSpecific" type="java.lang.Long">10</con1:property><con1:property propagates="true" key="ModelItem.samplerOutputLevel" type="com.eviware.loadui.api.component.SoapUISamplerOutputLevel">TestCaseAndAllTestSteps</con1:property></con1:properties><con1:attributes/><con1:addons/><con1:component type="com.eviware.loadui.impl.component.IntervalComponent" label="Interval 1" id="56a76ec3-d890-494b-8570-6e7b2354240e" category="Scheduler"><con1:properties><con1:property propagates="true" key="ModelItem.description" type="java.lang.String"/><con1:property propagates="true" key="stateProperty" type="java.lang.Boolean">true</con1:property><con1:property propagates="true" key="startAt" type="java.lang.Long">0</con1:property><con1:property propagates="true" key="duration" type="java.lang.Long">5</con1:property><con1:property propagates="true" key="unit" type="java.lang.String">Sec</con1:property><con1:property propagates="true" key="mode" type="java.lang.String">Single</con1:property><con1:property propagates="true" key="defaultMode" type="java.lang.Boolean">true</con1:property></con1:properties><con1:attributes><con1:property key="com.eviware.loadui.api.model.ComponentItem@type">Interval</con1:property></con1:attributes><con1:addons/></con1:component><con1:component type="com.eviware.loadui.impl.component.generators.FixedVU" label="Fixed Load 1" id="56477b58-ca14-48d5-94fb-073d183bdd74" category="Generators"><con1:properties><con1:property propagates="true" key="ModelItem.description" type="java.lang.String"/><con1:property propagates="true" key="stateProperty" type="java.lang.Boolean">true</con1:property><con1:property propagates="true" key="limitVU" type="java.lang.Long">10</con1:property><con1:property propagates="true" key="load" type="java.lang.Long">5</con1:property><con1:property propagates="true" key="interval" type="java.lang.Long">1000</con1:property></con1:properties><con1:attributes><con1:property key="com.eviware.loadui.api.model.ComponentItem@type">Fixed Load</con1:property></con1:attributes><con1:addons/></con1:component><con1:component type="com.eviware.loadui.components.soapui.SoapUISamplerComponent" label="gateway proxy:dev" id="543b75fd-1d3d-4374-886a-505ddb056ae2" category="Runners"><con1:properties><con1:property propagates="true" key="ModelItem.description" type="java.lang.String"/><con1:property propagates="true" key="concurrentSamples" type="java.lang.Long">1000</con1:property><con1:property propagates="true" key="property_name_is_not_relevant_for_private_property" type="java.lang.Long">9223372036854775807</con1:property><con1:property propagates="true" key="maxQueueSize" type="java.lang.Long">1000</con1:property><con1:property propagates="true" key="countDiscarded" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="disabledTestSteps" type="java.lang.String"/><con1:property propagates="true" key="_thinkTime" type="java.lang.Long">0</con1:property><con1:property propagates="true" key="ReadyApiTestCase" type="com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase">1d65619d-c509-4957-a77b-2614d71eaf2d</con1:property><con1:property propagates="true" key="raiseError" type="java.lang.Boolean">true</con1:property><con1:property propagates="true" key="outputTestCaseProperties" type="java.lang.Boolean">true</con1:property><con1:property propagates="true" key="OutputLevel" type="java.lang.String">TestCase only</con1:property><con1:property propagates="true" key="closeConnectionsAfterRequest" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="disableSoapuiAssertions" type="java.lang.Boolean">false</con1:property><con1:property propagates="true" key="forceShareDatasources" type="java.lang.Boolean">true</con1:property></con1:properties><con1:attributes><con1:property key="com.eviware.loadui.api.model.ComponentItem@type">Ready API TestCase Runner</con1:property></con1:attributes><con1:addons/></con1:component><con1:connection outputTerminalId="56a76ec3-d890-494b-8570-6e7b2354240e/outgoingTerminal" inputTerminalId="56477b58-ca14-48d5-94fb-073d183bdd74/stateTerminal"/><con1:connection outputTerminalId="56477b58-ca14-48d5-94fb-073d183bdd74/triggerTerminal" inputTerminalId="543b75fd-1d3d-4374-886a-505ddb056ae2/triggerTerminal"/><con1:connection outputTerminalId="543b75fd-1d3d-4374-886a-505ddb056ae2/runningTerminal" inputTerminalId="56477b58-ca14-48d5-94fb-073d183bdd74/Sample Count"/></con1:scene><con1:statistics><con1:page title="DefaultLoadUIStatisticPage"><con1:chartGroup type="com.eviware.loadui.api.statistics.model.chart.line.LineChartView" title="" groupType="Monitors"><con1:attributes><con1:property key="GroupId">6adaff24-523e-47a6-9a28-0aea0db6c269</con1:property></con1:attributes></con1:chartGroup></con1:page></con1:statistics></con1:loadui-project><con:loadUITestScenario projectId="e3874914-801c-4cc1-a65a-810452f7fc03" scenarioId="390dc64a-8960-405c-8f51-e0b1cab4744c" name="New Scenario" id="d082bc6c-2c9d-4444-a1c5-878954ce5070"><con:settings/></con:loadUITestScenario><con:loadUIPanelData id="8f65aaa2-1f1c-4b7e-96ff-97db4471f8c5"><con:panel>Log</con:panel><con:data><con:paramName>column_width@Timestamp</con:paramName><con:paramValue>84</con:paramValue></con:data><con:data><con:paramName>column_visible@Timestamp</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@ID</con:paramName><con:paramValue>74</con:paramValue></con:data><con:data><con:paramName>column_visible@ID</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@Test step status</con:paramName><con:paramValue>120</con:paramValue></con:data><con:data><con:paramName>column_visible@Test step status</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@TriggerTimestamp</con:paramName><con:paramValue>84</con:paramValue></con:data><con:data><con:paramName>column_visible@TriggerTimestamp</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@TimeTaken</con:paramName><con:paramValue>115</con:paramValue></con:data><con:data><con:paramName>column_visible@TimeTaken</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@_wait_time_</con:paramName><con:paramValue>106</con:paramValue></con:data><con:data><con:paramName>column_visible@_wait_time_</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@Bytes</con:paramName><con:paramValue>52</con:paramValue></con:data><con:data><con:paramName>column_visible@Bytes</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@HTTP Status</con:paramName><con:paramValue>90</con:paramValue></con:data><con:data><con:paramName>column_visible@HTTP Status</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@CurrentlyRunning</con:paramName><con:paramValue>75</con:paramValue></con:data><con:data><con:paramName>column_visible@CurrentlyRunning</con:paramName><con:paramValue>true</con:paramValue></con:data><con:data><con:paramName>column_width@Request</con:paramName><con:paramValue>67</con:paramValue></con:data><con:data><con:paramName>column_visible@Request</con:paramName><con:paramValue>false</con:paramValue></con:data><con:data><con:paramName>column_width@Response</con:paramName><con:paramValue>77</con:paramValue></con:data><con:data><con:paramName>column_visible@Response</con:paramName><con:paramValue>false</con:paramValue></con:data></con:loadUIPanelData><con:reportParameters/></con:loadUiTest><con:tags/></con:soapui-project>

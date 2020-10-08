@@ -70,6 +70,7 @@ import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
@@ -265,17 +266,30 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
 		log("Step 18: Move to  Health Record page");
-		messagesPage.backToHomePage(driver);
-		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-
+		//messagesPage.backToHomePage(driver);
+        messagesPage.clickOnMenuHome();
+        Thread.sleep(4000);
+		//MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+        DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
+        
 		log("Step 19: Open Other Documents");
-		MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+		//MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
 
+		/*
 		log("Step 20: Verify name, from and catagory type");
 		String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
 		log("attachment details " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
 		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
 		MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
+*/
+		
+		
+		log("Step 20: Verify name, from and catagory type "+testData.fileName);
+		boolean attachmentData = MedicalRecordSummariesPageObject.checkLastImportedFileName(testData.fileName);
+        log("attachment details " + attachmentData);
+        //Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
+        Thread.sleep(5000);
+        MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 		if (driver instanceof FirefoxDriver) {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
@@ -567,69 +581,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAppointmentRequestForExistingPatient() throws Exception {
-		log("Test Case: Appointment Request for Existing Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
-		AppointmentData testData = new AppointmentData();
-		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
-		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
-
-		String workingDir = System.getProperty("user.dir");
-		workingDir = workingDir + testData.csvFilePath;
-		aDUtils.csvFileReader(testData, workingDir);
-
-		testData.Status = "NEW";
-		testData.FirstName = testData.FirstName;
-		testData.LastName = testData.LastName;
-		testData.EmailUserName = testData.EmailUserName;
-		testData.BatchSize = "2";
-
-		testData.Time = testData.appointmentDetailList.get(1).getTime();
-		testData.appointmentType = "FUTURE";
-		testData.Location = "NEW";
-
-		testData.Type = testData.appointmentDetailList.get(1).getType();
-		testData.Reason = testData.appointmentDetailList.get(1).getReason();
-		testData.Description = testData.appointmentDetailList.get(1).getDescription();
-
-		log("Step 2: Setup Oauth client");
-		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
-
-		aDUtils.checkAppointment(testData, driver);
-		Thread.sleep(6000);
-		// homePage.clickOnLogout();
-		Thread.sleep(3000);
-
-		testData.Status = "UPDATE";
-		testData.Time = testData.appointmentDetailList.get(3).getTime();
-		testData.Location = "Update";
-		testData.appointmentType = "FUTURE";
-
-		testData.Type = testData.appointmentDetailList.get(3).getType();
-		testData.Reason = testData.appointmentDetailList.get(3).getReason();
-		testData.Description = testData.appointmentDetailList.get(3).getDescription();
-		testData.BatchSize = "1";
-
-		aDUtils.checkAppointment(testData, driver);
-		Thread.sleep(3000);
-
-		testData.Status = "CANCEL";
-		testData.Time = testData.appointmentDetailList.get(4).getTime();
-		testData.Location = "Cancel";
-		testData.appointmentType = "FUTURE";
-
-		testData.Type = testData.appointmentDetailList.get(4).getType();
-		testData.Reason = testData.appointmentDetailList.get(4).getReason();
-		testData.Description = testData.appointmentDetailList.get(4).getDescription();
-		testData.BatchSize = "1";
-
-		aDUtils.checkAppointment(testData, driver);
-
-	}
-
-	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForNewSelfPatient() throws Exception {
 		log("Test Case: Appointment Request for New Patient From Partner");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -748,7 +699,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String editPatientID = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
 		driver.findElement(By.xpath(editPatientID)).click();
 		Thread.sleep(3000);
-		String onDemandID = "//*[@id=\"content\"]/form/table/tbody/tr[7]/td[2]/input";
+		String onDemandID = "//*[@name=\"emrid\"]";
 		String patientExternalID = driver.findElement(By.xpath(onDemandID)).getAttribute("value");
 
 		log("Actual patient ID " + patientExternalID);
@@ -1020,7 +971,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { {"v1"}, {"v2"}};
+		Object[][] obj = new Object[][] { {"v1"}, {"v2"}}; 
+		//Object[][] obj = new Object[][] { {"v1"}};
 		return obj;
 	}
 
@@ -1204,6 +1156,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		log("Step 4: Click on Preferences Tab");
 		JalapenoMyAccountPreferencesPage myPreferencePage = accountProfilePageObject.goToPreferencesTab(driver);
+		Thread.sleep(10000);
 		String[] languageType = testData.getPreferredLanguageType().split(",");
 		Long since1 = timestamp / 1000L - 60 * 24;
 		for (int v = 0; v < languageType.length; v++) {
@@ -1434,7 +1387,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3 : Get Unseen Message Header and Verify For Invalid PracticeID");
 		int responseCode = RestUtils.setupHttpGetRequestInvalid(invalidPracticeId, testData.ResponsePath);
 		Assert.assertEquals(responseCode, 400);
-		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<h1>(.+?)</h1>", testData.invalidPracticeMessageHeaderURL);
+		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<body>(.+?)</body>", testData.invalidPracticeMessageHeaderURL);
 
 		log("Step 4 : Get Unseen Message Header and Verify For Invalid Email ID");
 		String invalidEmailID = testData.messageHeaderURL + testData.validPracticeID + "/directmessageheaders/" + testData.invalidEmailMessageHeaderURL;
@@ -1575,7 +1528,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("subject2 " + subject2);
 		log("Step 6 : Check for new Unseen Message 2 ");
 		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
-
+		Thread.sleep(15000);
 		log("Step 7 : Verify UnseenMessage and get its UID ");
 		String msgUid1 = RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath, testData.Subject);
 		String getMessageBody1 = testData.unseenMessageBody;
@@ -2790,6 +2743,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		log("Step 5: Do a get pidc call to get medfusion member id");
+		Thread.sleep(5000);
 		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
 		Thread.sleep(2000);
 		
@@ -2896,6 +2850,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
+		Thread.sleep(10000);
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
@@ -3045,23 +3000,97 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		log("Step 5: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
-		
 		Thread.sleep(6000);
+			
+		log("Step 6: Selecting the date range for the health Data Request");
 		
-		log("Step 6: Close the onDemand PopUp ");
+		MedicalRecordSummariesPageObject.filterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
+		log(MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		MedicalRecordSummariesPageObject.requestCcdOnDemandFromPopUp();
+		Thread.sleep(5000);
+		
+		log("Step 7: Close the onDemand PopUp ");
 		MedicalRecordSummariesPageObject.closeOnDemandPopUpButton();
 		
-		log("Step 7: Logout");
+		log("Step 8: Logout");
 		homePage.clickOnLogout();
 		
-		log("Step 8: Setup Oauth Token");
+		log("Step 9: Setup Oauth Token");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 		
-		log("Step 9: Do the Get onDemand Health Data Get API Call.");
+		log("Step 10: Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(restApiCall+ "?since=" + millis + ",0", testData.ResponsePath);
 		
-		log("Step 10: Verify Patient Details in the Get Api Call.");
+		log("Step 11: Verify Patient Details in the Get Api Call.");
 		RestUtils.isOnDemandRequestSubmitted(testData.ResponsePath, testData.PracticePatientId);
+		
+		log("Step 12: verify the start date and the End date of the Request for health data");
+		RestUtils.verifyRequestStartDateAndEndDate(testData.ResponsePath,MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+	}
+
+
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForExistingPatient() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+	
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+	
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "2";
+	
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+	
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+	
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+	
+		aDUtils.checkAppointment(testData, driver);
+		Thread.sleep(6000);
+		// homePage.clickOnLogout();
+		Thread.sleep(3000);
+	
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime();
+		testData.Location = "Update";
+		testData.appointmentType = "FUTURE";
+	
+		testData.Type = testData.appointmentDetailList.get(3).getType();
+		testData.Reason = testData.appointmentDetailList.get(3).getReason();
+		testData.Description = testData.appointmentDetailList.get(3).getDescription();
+		testData.BatchSize = "1";
+	
+		aDUtils.checkAppointment(testData, driver);
+		Thread.sleep(3000);
+	
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime();
+		testData.Location = "Cancel";
+		testData.appointmentType = "FUTURE";
+	
+		testData.Type = testData.appointmentDetailList.get(4).getType();
+		testData.Reason = testData.appointmentDetailList.get(4).getReason();
+		testData.Description = testData.appointmentDetailList.get(4).getDescription();
+		testData.BatchSize = "1";
+	
+		aDUtils.checkAppointment(testData, driver);
+	
 	}
 		
 }

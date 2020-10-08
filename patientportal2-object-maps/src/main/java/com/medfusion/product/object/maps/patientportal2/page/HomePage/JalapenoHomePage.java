@@ -1,6 +1,5 @@
-//Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
-
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -44,6 +43,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
 
+	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+	private WebElement sheduleanappointment;
+	
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
 	private WebElement appointments;
 
@@ -109,9 +111,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[@id='switchingPracticeContinueButton']")
 	private WebElement switchButtonContinue;
-	
-	@FindBy(how = How.XPATH, using = "//span[@class='ui-select-match-text pull-left']//span")
-	private WebElement selectedPractice;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -177,6 +176,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
 		log("Clicking on Medical Record Summaries button on dashboard");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
@@ -184,6 +185,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public DocumentsPage goToDocumentsPage() {
 
 		log("Clicking on Health Record menu button");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		try {
 			WebElement otherDocumentsButton = new WebDriverWait(driver, 30)
@@ -366,13 +369,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickFeaturedAppointmentsReq() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}

@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Menu;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class PSSPatientHeader extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "logoutbutton")
 	private WebElement nameSettings;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Logout')]")
+	@FindBy(how = How.XPATH, using = "//li[@class='logoutborderline']")
 	private WebElement logout;
+
 
 	public PSSPatientHeader(WebDriver driver) {
 		super(driver);
@@ -41,8 +43,12 @@ public class PSSPatientHeader extends PSS2MainPage {
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
-	public void logout() {
+	public void logout() throws InterruptedException {
+		Thread.sleep(1000);
+		jse.executeScript("window.scrollBy(1000,0)");
+		Thread.sleep(1000);
 		nameSettings.click();
+		Thread.sleep(1000);
 		IHGUtil.waitForElement(driver, 60, logout);
 		logout.click();
 	}

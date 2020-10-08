@@ -46,7 +46,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 */
 	public void setFirstName(String input) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		//PortalUtil.setquestionnarieFrame(driver);
 		firstName.clear();
 		firstName.sendKeys(input);
 	}
@@ -68,7 +68,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 */
 	public void setLastName(String input) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		//PortalUtil.setquestionnarieFrame(driver);
 		lastName.clear();
 		lastName.sendKeys(input);
 	}
@@ -85,7 +85,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 */
 	public void setRelation(String type) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		//PortalUtil.setquestionnarieFrame(driver);
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(type);
 	}
@@ -104,7 +104,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 */
 	public void setPrimaryPhone(String input, String phoneType) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		//PortalUtil.setquestionnarieFrame(driver);
 		primaryPhone.clear();
 		primaryPhone.sendKeys(input);
 		Select selector = new Select(primaryPhoneType);
@@ -126,7 +126,7 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 */
 	public void setEmail(String input) throws Exception {
 		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		//PortalUtil.setquestionnarieFrame(driver);
 		email.clear();
 		email.sendKeys(input);
 	}

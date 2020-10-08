@@ -13,6 +13,7 @@ public class PSSNewPatient {
 		Long timeStamp = System.currentTimeMillis();
 		String firstName = "firstName";
 		appointment.setFirstName(firstName + timeStamp);
+		appointment.setGender("M");
 		appointment.setLastName("lastName" + timeStamp);
 		appointment.setDob(PSSConstants.DOB);
 		appointment.setPrimaryNumber(randomNumbers(10));

@@ -41,6 +41,7 @@ public class SendDirectMessageUtils {
 	 	SendDirectMessagePayload directMessagePayload = new SendDirectMessagePayload();
 	 	String payload = directMessagePayload.getSendDirectMessagePayload(testData);
 	 	Thread.sleep(10);
+	 	//Log4jUtil.log("payload"+payload);
 	 	Log4jUtil.log("postSecureMessage Step 3: Setup Oauth client");
 	 	Log4jUtil.log("Message Subject  "+testData.Subject);
 	 	RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);

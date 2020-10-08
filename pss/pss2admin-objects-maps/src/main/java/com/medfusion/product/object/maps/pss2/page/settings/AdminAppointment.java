@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.WebDriver;
@@ -14,43 +15,47 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "blockpatientmonths")
 	private WebElement blockPatientMonths;
-	
+
 	@FindBy(how = How.ID, using = "slotcount")
 	private WebElement slotCount;
-	
+
 	@FindBy(how = How.ID, using = "maxappt")
 	private WebElement maxAppt;
-	
+
 	@FindBy(how = How.ID, using = "maxslotmonths")
 	private WebElement maxSlotMonths;
-	
+
 	@FindBy(how = How.ID, using = "majorage")
 	private WebElement majorAge;
 
 	@FindBy(how = How.ID, using = "showproviderimage")
 	private WebElement showProviderImage;
-	
-	@FindBy(how = How.ID, using = "allowpcp")
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Primary Care Provider')]")
 	private WebElement allowPCP;
-	
+
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
-	
+
 	@FindBy(how = How.ID, using = "nextAvailable")
 	private WebElement nextavailable;
-	
+
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
-	
+
 	@FindBy(how = How.ID, using = "radior0")
 	private WebElement radioOption0;
-	
+
 	@FindBy(how = How.ID, using = "radior1")
 	private WebElement radioOption1;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
 	private WebElement buttonSave;
-	
+
+	@FindBy(how = How.XPATH, using = "//div[@id='appt']//div//form[@class='ng-untouched ng-pristine ng-valid']//button[@class='btn btn-primary']")
+	private WebElement careTeamConfgSave;
+
+
 	public AdminAppointment(WebDriver driver) {
 		super(driver);
 	}
@@ -59,7 +64,7 @@ public class AdminAppointment extends SettingsTab {
 	public boolean areBasicPageElementsPresent() {
 		return true;
 	}
-	
+
 	public void clearAll() {
 		// 01:00 1 1 5 1 18
 		cancelAppointment.clear();
@@ -91,9 +96,6 @@ public class AdminAppointment extends SettingsTab {
 		if (!searchLocation.isEnabled() && !searchLocation.isDisplayed()) {
 			searchLocation.click();
 		}
-		// if (!nextavailable.isEnabled()) {
-		// nextavailable.click();
-		// }
 		pastApptMonths.clear();
 
 		IHGUtil.waitForElement(driver, 60, buttonSave);
@@ -142,9 +144,16 @@ public class AdminAppointment extends SettingsTab {
 		buttonSave.click();
 	}
 
-	public void toggleAllowPCP() {
+	public void toggleAllowPCP() throws InterruptedException {
+
+		jse.executeScript("window.scrollBy(0,2000)");
+		Thread.sleep(2000);
 		allowPCP.click();
-		buttonSave.click();
+		log("Clicked on allow PCP");
+		Thread.sleep(200);
+		jse.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", careTeamConfgSave);
+		Thread.sleep(1000);
+		careTeamConfgSave.click();
 	}
 
 	public void toggleSearchLocation() {
@@ -178,7 +187,7 @@ public class AdminAppointment extends SettingsTab {
 			buttonSave.click();
 		}
 	}
-	
+
 	public void saveSlotSettings() {
 		javascriptClick(buttonSave);
 	}

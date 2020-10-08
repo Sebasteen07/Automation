@@ -1,14 +1,21 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -54,10 +61,10 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	// (based on Linked Account settings)
 	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount']/a")
 	private WebElement accountButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdown']/a")
 	private WebElement accountDropdownButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdownlog']/a")
 	private WebElement accountDropdownLinkedButton;
 
@@ -72,10 +79,10 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
 	private WebElement rightDropdownLinkedButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//li[@id='signout_dropdown']")
 	private WebElement signoutDropdownButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//li[@id='signout_dropdownlog']")
 	private WebElement signoutDropdownLinkedButton;
 
@@ -178,18 +185,18 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		try {
 			JavascriptExecutor ex = (JavascriptExecutor) driver;
 			ex.executeScript("arguments[0].click();", accountButton);
-			
+
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownButton));
 			accountDropdownButton.click();
-		} catch  (ElementNotInteractableException ex) {
+		} catch (ElementNotInteractableException ex) {
 			log("Did not find Account button, trying mobile version size for linked Account");
 			rightDropdownButton.click();
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownLinkedButton));
 			accountDropdownLinkedButton.click();
-			
+
 		}
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
 	}
@@ -213,7 +220,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		try {
 			javascriptClick(signout);
-			
+
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
 			rightDropdownButton.click();
@@ -247,8 +254,8 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		log("Clicking on Health Record menu button");
 		healthRecordMenu.click();
 		try {
-			WebElement otherDocumentsButton = new WebDriverWait(driver, 30)
-					.until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Other documents"))));
+			WebElement otherDocumentsButton =
+					new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Other documents"))));
 			otherDocumentsButton.click();
 		} catch (NoSuchElementException e) {
 			log("Other documents button not found within 30 seconds, are you on the correct page?");
@@ -267,30 +274,30 @@ public abstract class JalapenoMenu extends MedfusionPage {
 			healthRecordMenu.click();
 		}
 	}
-	
+
 	public NGLoginPage LogoutfromNGMFPortal() {
 
 		log("Clicking on Logout button - regular resolution");
 
 		try {
-			    javascriptClick(signout);
+			javascriptClick(signout);
 		} catch (NoSuchElementException ex) {
-				log("Did not find Logout button, trying mobile version size");
-				rightDropdownButton.click();
-				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-				signoutDropdownButton.click();
+			log("Did not find Logout button, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
 		} catch (ElementNotVisibleException ex) {
-				log("Element is not currently visible, trying mobile version size");
-				rightDropdownButton.click();
-				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-				signoutDropdownButton.click();
+			log("Element is not currently visible, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
 		} catch (ElementNotInteractableException ex) {
-				log("Element is not currently not intractable, trying mobile version size");
-				rightDropdownButton.click();
-				new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-				signoutDropdownButton.click();
+			log("Element is not currently not intractable, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
 		}
 
 		return PageFactory.initElements(driver, NGLoginPage.class);
-        }
+	}
 }
