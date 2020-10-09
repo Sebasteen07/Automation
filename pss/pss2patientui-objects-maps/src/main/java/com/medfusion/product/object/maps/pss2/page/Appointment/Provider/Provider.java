@@ -26,8 +26,8 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
-
-	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 provider-width-btn']")})
+	@FindAll({@FindBy(
+			xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
 	private List<WebElement> providerList;
 
 	@FindBy(how = How.ID, using = "providerserach")
@@ -42,7 +42,11 @@ public class Provider extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
+		log("inside the are basic element");
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		log("Checking provider list");
+		webElementsList.add(providerList.get(0));
+		log("First provider is" + providerList.get(0).getText());
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 

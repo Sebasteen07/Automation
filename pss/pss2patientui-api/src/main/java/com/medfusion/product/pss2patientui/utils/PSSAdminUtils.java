@@ -312,5 +312,22 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
+
 	}
+
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+		patientflow.logout();
+
+	}
+
 }
+
+
