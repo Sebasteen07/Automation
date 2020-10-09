@@ -12,6 +12,8 @@ public class EncounterPojo {
 private String renderingProviderId;
 private String locationId;
 private Boolean isClinical = true;
+private Boolean isBillable = false;
+private Boolean isOptical = false;
 
 public String getRenderingProviderId() {
 return renderingProviderId;
@@ -35,6 +37,22 @@ return isClinical;
 
 public void setIsClinical(Boolean isClinical) {
 this.isClinical = isClinical;
+}
+
+public Boolean getIsBillable() {
+return isBillable;
+}
+
+public void setIsBillable(Boolean isBillable) {
+this.isBillable = isBillable;
+}
+
+public Boolean getIsOptical() {
+return isOptical;
+}
+
+public void setIsOptical(Boolean isOptical) {
+this.isOptical = isOptical;
 }
 
 }

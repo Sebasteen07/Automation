@@ -1430,4 +1430,95 @@ public class PropertyFileLoader {
 	public String getNGEPMRenderingProviderName() {
 		return property.getProperty("EPMRenderingProviderName");
 	}
+//	NG Enterprise Enrollment
+	public String getNGEnterpiseEnrollmentE1() {
+		return property.getProperty("NGEnterpiseEnrollmentEnterprise1");
+	}
+	public String getNGEnterpiseEnrollmentE2() {
+		return property.getProperty("NGEnterpiseEnrollmentEnterprise2");
+	}	
+	public String getNGEnterpiseEnrollmentE1P1() {
+		return property.getProperty("NGEnterprise1Practice1");
+	}
+	public String getNGEnterpiseEnrollmentE1P2() {
+		return property.getProperty("NGEnterprise1Practice2");
+	}
+	public String getNGEnterpiseEnrollmentE1P3() {
+		return property.getProperty("NGEnterprise1Practice3");
+	}
+	public String getNGEnterpiseEnrollmentE1P4() {
+		return property.getProperty("NGEnterprise1Practice4");
+	}
+	public String getNGEnterpiseEnrollmentE1P5() {
+		return property.getProperty("NGEnterprise1Practice5");
+	}
+	public String getNGEnterpiseEnrollmentE2P1() {
+		return property.getProperty("NGEnterprise2Practice1");
+	}
+	public String getNGEnterpiseEnrollmentE2P2() {
+		return property.getProperty("NGEnterprise2Practice2");
+	}	
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P1() {
+		return property.getProperty("integrationPracticeIDE1P1");
+	}
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P2() {
+		return property.getProperty("integrationPracticeIDE1P2");
+	}	
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P3() {
+		return property.getProperty("integrationPracticeIDE1P3");
+	}	
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P4() {
+		return property.getProperty("integrationPracticeIDE1P4");
+	}	
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P5() {
+		return property.getProperty("integrationPracticeIDE1P5");
+	}
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE2P1() {
+		return property.getProperty("integrationPracticeIDE2P1");
+	}
+	public String getNGEnterpiseEnrollmentintegrationPracticeIDE2P2() {
+		return property.getProperty("integrationPracticeIDE2P2");
+	}
+	public String getNGE1P1Provider() {
+		return property.getProperty("NGE1P1Provider");
+	}
+	public String getNGE1P2Provider() {
+		return property.getProperty("NGE1P2Provider");
+	}
+	public String getNGE1P3Provider() {
+		return property.getProperty("NGE1P3Provider");
+	}
+	public String getNGE1P4Provider() {
+		return property.getProperty("NGE1P4Provider");
+	}
+	public String getNGE1P5Provider() {
+		return property.getProperty("NGE1P5Provider");
+	}
+	public String getNGE2P1Provider() {
+		return property.getProperty("NGE2P1Provider");
+	}
+	public String getNGE2P2Provider() {
+		return property.getProperty("NGE2P2Provider");
+	}
+	public String getNGE1P1Location() {
+		return property.getProperty("NGE1P1Location");
+	}
+	public String getNGE1P2Location() {
+		return property.getProperty("NGE1P2Location");
+	}
+	public String getNGE1P3Location() {
+		return property.getProperty("NGE1P3Location");
+	}
+	public String getNGE1P4Location() {
+		return property.getProperty("NGE1P4Location");
+	}
+	public String getNGE1P5Location() {
+		return property.getProperty("NGE1P5Location");
+	}
+	public String getNGE2P1Location() {
+		return property.getProperty("NGE2P1Location");
+	}
+	public String getNGE2P2Location() {
+		return property.getProperty("NGE2P2Location");
+	}
 }
