@@ -29,6 +29,7 @@ import com.intuit.ihg.product.integrationplatform.utils.FormExportTestData;
 import com.intuit.ihg.product.integrationplatform.utils.GE;
 import com.intuit.ihg.product.integrationplatform.utils.GETestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
+import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.PayNow;
@@ -71,6 +72,9 @@ import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
@@ -392,6 +396,75 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCAskQuestionP2() throws Exception {
+
+		log("Test Case: AMDC Ask Question");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Step 1: Get Data from Excel");
+		AMDC AMDCData = new AMDC();
+		AMDCTestData testData = new AMDCTestData(AMDCData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 3: Click Ask A Staff");
+		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskAStaff(driver);
+		
+		Thread.sleep(8000);
+		log("Step 4: fill and complete the of Ask A Staff");
+		boolean askStaff2 = askStaff1.fillAndSubmitAskAStaff(driver);
+
+		
+		log("Step 6: Validate entry is on Ask A Staff History page");
+		homePage.clickOnAskAStaff(driver);
+		boolean aasHistory = askStaff1.checkHistory(driver);
+		Thread.sleep(7000);
+		verifyTrue(aasHistory);
+
+		log("Step 7: Logout of Patient Portal");
+		homePage.clickOnLogout();
+
+		log("Step 8: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
+		// OAuthPropertyManager.init(testData.getOAuthProperty());
+
+		log("Step 9: Get AMDC Rest call");
+		// get only messages from last day in epoch time to avoid transferring
+		// lot of data
+		Long since = askStaff1.getCreatedTimeStamp() / 1000L;
+
+		log("Getting messages since timestamp: " + since);
+
+		// do the call and save xml, ",0" is there because of the since
+		// attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		log("Step 10: Checking validity of the response xml");
+		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
+	}
+
+
+	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessageWithReadCommnunication() throws Exception {
 		log("Test Case: AMDC Secure Message with Read Communication");

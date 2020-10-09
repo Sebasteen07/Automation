@@ -108,6 +108,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[@id='switchingPracticeContinueButton']")
 	private WebElement switchButtonContinue;
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Staff\"]")
+	private WebElement askAStaffButtonOnPopup;
+	
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -293,6 +298,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public JalapenoAskAStaffPage clickOnAskAStaff(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		askAQuestion.click();
+		askAStaffButtonOnPopup.click();
 
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
 	}

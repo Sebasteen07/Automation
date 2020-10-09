@@ -657,10 +657,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		// wait 90 seconds so the email-notification is delivered
 		Thread.sleep(90000);
-
+/*
 		log("Step 13: Check secure message in patient gmail inbox");
 		RestUtils.verifyEmailNotification(OLBPData.getGmailUserName(), OLBPData.getGmailPassword(), OLBPData.getPracticeName(), 3, "Portal 2.0");
-
+*/
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
 		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, OLBPData.getUrl());
