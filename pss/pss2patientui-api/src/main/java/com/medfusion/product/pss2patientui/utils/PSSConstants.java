@@ -61,4 +61,7 @@ public class PSSConstants {
 	public final static String CANCEL_APT_UPTO_HRS = "06:00";
 	public final static String MAJOR_AGE = "50";
 	public final static String MAX_BLOCK_MONTHS = "1";
+	public final static String selectRCPorPCP = "rcp";
+	public final static String PCP_AVAILABILITY_DURATION = "29";
+	public final static String FCT_AVAILABILITY_DURATION = "1";
 }

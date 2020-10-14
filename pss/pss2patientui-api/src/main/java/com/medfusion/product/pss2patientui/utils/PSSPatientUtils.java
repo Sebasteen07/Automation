@@ -252,7 +252,7 @@ public class PSSPatientUtils {
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(22000);
-		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);

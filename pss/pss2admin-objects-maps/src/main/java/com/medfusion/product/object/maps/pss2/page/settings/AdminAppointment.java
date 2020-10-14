@@ -1,6 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,7 +33,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "showproviderimage")
 	private WebElement showProviderImage;
 
-	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Primary Care Provider')]")
+	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[5]/div[1]/form[1]/div[3]/div[1]/div[1]/label[1]/i[1]")
 	private WebElement allowPCP;
 
 	@FindBy(how = How.ID, using = "searchlocation")
@@ -43,18 +45,26 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
 
-	@FindBy(how = How.ID, using = "radior0")
-	private WebElement radioOption0;
+	@FindBy(how = How.ID, using = "radioc0")
+	private WebElement radioOptionRCP;
 
-	@FindBy(how = How.ID, using = "radior1")
-	private WebElement radioOption1;
+	@FindBy(how = How.ID, using = "radioc1")
+	private WebElement radioOptionPCP;
+
+	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[5]/div[1]/form[2]/div[1]/div[2]/div[1]/div[1]/label[1]/i[1]")
+	private WebElement allowFCT;
+
+	@FindBy(how = How.ID, using = "forceCareteamDuration")
+	private WebElement fCTAvailibilityDuration;
+
+	@FindBy(how = How.ID, using = "pcpAvailabilityDuration")
+	private WebElement pcpAvailabilityDuration;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='basic']//div//fieldset//button[@class='btn btn-primary'][contains(text(),'Save')]")
+	private WebElement buttonSaveResourceConfg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
 	private WebElement buttonSave;
-
-	@FindBy(how = How.XPATH, using = "//div[@id='appt']//div//form[@class='ng-untouched ng-pristine ng-valid']//button[@class='btn btn-primary']")
-	private WebElement careTeamConfgSave;
-
 
 	public AdminAppointment(WebDriver driver) {
 		super(driver);
@@ -144,18 +154,6 @@ public class AdminAppointment extends SettingsTab {
 		buttonSave.click();
 	}
 
-	public void toggleAllowPCP() throws InterruptedException {
-
-		jse.executeScript("window.scrollBy(0,2000)");
-		Thread.sleep(2000);
-		allowPCP.click();
-		log("Clicked on allow PCP");
-		Thread.sleep(200);
-		jse.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", careTeamConfgSave);
-		Thread.sleep(1000);
-		careTeamConfgSave.click();
-	}
-
 	public void toggleSearchLocation() {
 		log("is search location Enabled" + searchLocation.isEnabled());
 		if (!searchLocation.isEnabled()) {
@@ -174,21 +172,117 @@ public class AdminAppointment extends SettingsTab {
 		buttonSave.click();
 	}
 
-	public void selectAppointmentComments() {
-		if (radioOption0.isSelected() == false) {
-			radioOption0.click();
-			buttonSave.click();
+	public void pageDown() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+	}
+
+	public void toggleAllowPCP() throws InterruptedException {
+		pageDown();
+		log("Inside toggleAllowPCP method about to turn ON ENABLE CARE TEAMS.");
+		String background_color = allowPCP.getCssValue("background-color");
+		log("verifying the color of ENABLE CARE TEAM : " + background_color);
+		Thread.sleep(1000);
+		if (background_color.equals("rgba(93, 143, 194, 1)")) {
+			log("ENABLE CARE TEAMS is ALREADY turned ON..");
+			Thread.sleep(1000);
+			toggleAllowFCT();
+		} else if (allowPCP.isEnabled() && (background_color.equals("rgba(0, 0, 0, 0)"))) {
+			javascriptClick(allowPCP);
+			log("ENABLE CARE TEAMS turned ON.");
+			toggleAllowFCT();
+		} else {
+			log("CARE TEAMs is NOT turned ON.");
 		}
 	}
 
-	public void selectChiefComplaint() {
-		if (radioOption1.isSelected() == false) {
-			radioOption1.click();
-			buttonSave.click();
+	public void toggleAllowFCT() throws InterruptedException {
+		log("Inside toggleallowFCT method about to turn ON FORCE CARE TEAMS.");
+		Thread.sleep(2000);
+		String background_color = allowFCT.getCssValue("background-color");
+		log("verifying the color of FORCE CARE TEAM : " + background_color);
+		if ((background_color.equals("rgba(93, 143, 194, 1)"))) {
+			log("Inside toggleallowFCT but FCT is Aleady Turned ON.");
+		} else if (allowFCT.isEnabled() && (background_color.equals("rgba(0, 0, 0, 0)"))) {
+			javascriptClick(allowFCT);
+			log("FORCE CARE TEAMS turned ON.");
+		} else {
+			log("Inside toggleAllowFCT but FORCE CARE TEAMS NOT turned ON.");
+		}
+	}
+
+	public void chooseRCPorPCP(String selectRCPorPCP) throws InterruptedException {
+		if (selectRCPorPCP.equalsIgnoreCase("RCP")) {
+			selectResponsibleCareProvider();
+		} else if (selectRCPorPCP.equalsIgnoreCase("PCP")) {
+			selectPrimaryCareProvider();
+		} else {
+			log("None of the CheckBox is selected");
+		}
+	}
+
+	public void selectResponsibleCareProvider() throws InterruptedException {
+		log("Inside Responsible care Provider method.");
+		if (radioOptionRCP.isSelected() == false) {
+			javascriptClick(radioOptionRCP);
+		}
+		radioOptionRCP.sendKeys(Keys.ENTER);
+		Thread.sleep(1000);
+		saveSlotSettingsResourceConfg();
+		log("RCP Selected.");
+	}
+
+	public void selectPrimaryCareProvider() throws InterruptedException {
+		log("Inside Primary care Provider method.");
+		if (radioOptionPCP.isSelected() == false) {
+			javascriptClick(radioOptionPCP);
+		}
+		radioOptionPCP.sendKeys(Keys.ENTER);
+		Thread.sleep(1000);
+		saveSlotSettingsResourceConfg();
+		log("PCP Selected.");
+	}
+
+	public void pCPAvailabilityDuration(String PCPAvailabilityDuration) throws InterruptedException {
+		log("Inside method(pCPAvailabilityDuration)");
+		if (pcpAvailabilityDuration.isEnabled()) {
+			javascriptClick(pcpAvailabilityDuration);
+			Thread.sleep(1000);
+			pcpAvailabilityDuration.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			pcpAvailabilityDuration.sendKeys(Keys.chord(Keys.DELETE));
+			pcpAvailabilityDuration.sendKeys(PCPAvailabilityDuration);
+			Thread.sleep(1000);
+			pcpAvailabilityDuration.sendKeys(Keys.ENTER);
+			Thread.sleep(1000);
+			log("PCP text field updated :" + PCPAvailabilityDuration);
+			saveSlotSettingsResourceConfg();
+			Thread.sleep(1000);
+		}
+	}
+
+	public void forceCareteamDuration(String forceCareTeamDuration) throws InterruptedException {
+		log("Inside method(forceCareteamDuration)");
+		if (fCTAvailibilityDuration.isEnabled() && (forceCareTeamDuration != "0")) {
+			javascriptClick(fCTAvailibilityDuration);
+			Thread.sleep(1000);
+			fCTAvailibilityDuration.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			fCTAvailibilityDuration.sendKeys(Keys.chord(Keys.DELETE));
+			Thread.sleep(1000);
+			fCTAvailibilityDuration.sendKeys(forceCareTeamDuration);
+			Thread.sleep(1000);
+			pcpAvailabilityDuration.sendKeys(Keys.ENTER);
+			Thread.sleep(1000);
+			log("FCT text field updated :" + forceCareTeamDuration);
+			saveSlotSettingsResourceConfg();
+			Thread.sleep(1000);
 		}
 	}
 
 	public void saveSlotSettings() {
 		javascriptClick(buttonSave);
+	}
+
+	public void saveSlotSettingsResourceConfg() {
+		javascriptClick(buttonSaveResourceConfg);
 	}
 }
