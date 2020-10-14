@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.tests;
 
 import static org.testng.Assert.assertNotNull;
@@ -35,6 +36,137 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		if (checkDetails)
 			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+	
+	public long ProceedAppoitmentRequesAttachmentt(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
+			String doctorPassword,String MessageErrorfilePath,String MessagefilePath) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmitAttachment(MessageErrorfilePath,MessagefilePath);
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+	
+	public long ProceedAppoitmentRequestcancel(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
+			String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForApprovedApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+		Thread.sleep(8000);
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseRequestCancelAndSubmit();
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+	
+	public long ProceedAppoitmentRequestCommunicateOnly(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
+			String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForCancelledApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+		Thread.sleep(8000);
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseCommunicateAndSubmit();
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+	
+	public long ProceedAppoitmentRequestUpdate(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
+			String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForApprovedApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+		Thread.sleep(8000);
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseUpdateAppointmentAndSubmit();
 
 		log("Confirm response details to patient");
 		apptSearch = detailStep2.processApptRequest();
