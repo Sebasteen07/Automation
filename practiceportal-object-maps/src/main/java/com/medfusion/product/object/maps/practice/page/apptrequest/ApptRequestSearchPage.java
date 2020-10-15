@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 import java.text.SimpleDateFormat;
@@ -108,6 +109,19 @@ public class ApptRequestSearchPage extends BasePageObject {
 		PracticeUtil.setPracticeFrame(driver);
 
 		searchForApptRequests(ApptRequestStatus.OPEN, null, null);
+	}
+	
+	public void searchForApprovedApptRequests() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		searchForApptRequests(ApptRequestStatus.APPROVED, null, null);
+	}
+
+	public void searchForCancelledApptRequests() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		searchForApptRequests(ApptRequestStatus.CANCELLED, null, null);
 	}
 
 	/**
