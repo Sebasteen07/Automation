@@ -277,11 +277,7 @@ public class PatientMessagingPage extends BasePageObject {
 				templateName, subjectText);
 	}
 
-	public ArrayList<String> setFieldsAndPublishMessageAttachment(PropertyFileLoader testData, String templateName,
-			String subjectText, String filePath) {
-		return setFieldsAndPublishMessageAttachment(testData.getFirstName(), testData.getLastName(),
-				testData.getEmail(), templateName, subjectText, filePath);
-	}
+	
 
 	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
 			String templateName, String subjectText) {
@@ -298,43 +294,7 @@ public class PatientMessagingPage extends BasePageObject {
 		return messages;
 
 	}
-
-	public ArrayList<String> setFieldsAndPublishMessageAttachment(String firstName, String lastName, String email,
-			String templateName, String subjectText, String filePath) {
-		IHGUtil.PrintMethodName();
-		setMessageFields(templateName, subjectText);
-		setRecipient(firstName, lastName, email);
-		String msgurl = checkMessageURL();
-		String msgBody = checkMessageBody();
-		ArrayList<String> messages = new ArrayList<String>();
-		messages.add(msgurl);
-		messages.add(msgBody);
-		messageAttachment.sendKeys(filePath);
-
-		for (int i = 0; i <= 1; i++) {
-			if (i == 0) {
-				assertTrue(addAnotherAttachment.isDisplayed());
-				addAnotherAttachment.click();
-				attachment2.sendKeys(filePath);
-				continue;
-			}
-			if (i == 1) {
-				assertTrue(addAnotherAttachment3.isDisplayed());
-				addAnotherAttachment3.click();
-				attachment3.sendKeys(filePath);
-				continue;
-			}
-
-			else {
-				log("Three files uploaded Add another attachment text is not present");
-			}
-
-		}
-		publishMessage();
-		return messages;
-
-	}
-
+ 
 	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName,
 			String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();

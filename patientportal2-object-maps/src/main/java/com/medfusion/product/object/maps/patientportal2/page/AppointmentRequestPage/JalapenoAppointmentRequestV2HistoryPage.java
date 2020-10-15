@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
 
 import java.util.ArrayList;
@@ -59,8 +60,9 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 				}
 		}
 
-		public boolean checkAppointmentDetails(String appointmentReason) {
+		public boolean checkAppointmentDetails(String appointmentReason) throws InterruptedException {
 				IHGUtil.PrintMethodName();
+				Thread.sleep(5000);
 				new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(reason));
 				try {
 						return (reason.getText().contains(appointmentReason) && preferredTime.getText().contains("Early Morning, Late Afternoon") && requestedDay.getText()

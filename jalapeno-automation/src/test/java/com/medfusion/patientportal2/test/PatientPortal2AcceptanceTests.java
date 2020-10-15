@@ -114,12 +114,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
 	private static final String questionText = "wat";
-	private static String ErrorfilePath = System.getProperty("user.dir")
+	private static final String ErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
-	private static String CorrectfilePath = System.getProperty("user.dir")
+	private static final String CorrectfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
-	private static String MessagefilePath = System.getProperty("user.dir")
+	private static final String MessagefilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\documents\\QuickSend.pdf";
+	private static final String MessageErrorfilePath=System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\documents\\SecureMessageFile.pdf";
 
 	private PropertyFileLoader testData;
 	private Patient patient = null;
@@ -2262,69 +2264,191 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Auto Enrolment of Guardian and Dependent to Second Practice is completed");
 	}
 
-	@Test
-	public void testMessagingAttachment() throws Exception {
-		String messageSubject = "Namaste " + System.currentTimeMillis();
+	/**
+	 * Adding attachments to the Secure message appointment request while processing
+	 * them with the following appointment statuses (Cancel, Communicate Only
+	 *
+	 */
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestCancelAttachment() throws Exception {
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 		String attachmentFile = "QuickSend.pdf";
 
-		logStep("Login physician");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-		Instant messageBuildingStart = Instant.now();
-		logStep("Send a new secure message to static patient with attachment");
-		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		ArrayList<String> practicePortalMessage = patientMessagingPage.setFieldsAndPublishMessageAttachment(testData,
-				"TestingMessage", messageSubject, MessagefilePath);
-
-		logStep("Login patient");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-		logStep("Click on messages solution");
+		logStep("Click appointment request");
+		homePage.clickOnAppointmentV2(driver);
+
+		// workaround for extra appointments list when multiple appointments solutions
+		// are on
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");
+		}
+
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
+		logStep("Assess Elements and choose provider");
+		appointmentRequestStep1.chooseFirstProvider();
+
+		logStep("Continue to step 2.: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayd");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+		assertTrue(historyPage.areBasicPageElementsPresent());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.clickOnMenuHome();
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal to Approved the request with adding Attachment");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequesAttachmentt(driver, true, appointmentReason,
+				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword(), MessageErrorfilePath,
+				MessagefilePath);
+
+		logStep("Login back to patient portal to check the Approved status");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent());
 
-		logStep("Waiting for message from practice portal");
-		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
+		logStep("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
 
-		logStep("Veriying the length of the subject at Patient Portal");
-		int subjectLength = messagesPage.checkSubjectLength();
-		assertEquals(messageSubject.length(), subjectLength);
+		logStep("Verify the Attachmnet file Text");
+		assertEquals(attachmentFile, messagesPage.getAttachmentPdfFile());
+		homePage.clickOnLogout();
 
-		logStep("Verifying the content of the Message at Patient Portal");
-		assertEquals(practicePortalMessage.get(1), messagesPage.getMessageBody());
+		logStep("Proceed in Practice Portal second time to cancel the Approved status ");
+		AppoitmentRequest practicePortalApproved = new AppoitmentRequest();
+		long tsPracticePortalCancel = practicePortalApproved.ProceedAppoitmentRequestcancel(driver, true,
+				appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
-		logStep("Verifying that URL is present in Patient inbox as sent from Practice Portal");
-		assertEquals(practicePortalMessage.get(0), messagesPage.getMessageURL());
+		logStep("Login back to patient portal second time to verify the Cancel status");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoMessagesPage messagesPageCancel = homePage.showMessages(driver);
 
-		logStep("Verifying that URL is present in Patient inbox as sent from Practice Portal");
-		assertEquals(attachmentFile, messagesPage.getAttachmentPdfFile().replaceAll("\\d", ""));
+		logStep("Looking for appointment Cancel from doctor ");
+		assertTrue(messagesPageCancel.isMessageDisplayed(driver, "Cancel " + tsPracticePortalCancel));
+		homePage.clickOnLogout();
 
-		logStep("Response to the message");
-		assertTrue(messagesPage.replyToMessage(driver));
+		logStep("Proceed in Practice Portal third time to communicate the cancel status ");
+		AppoitmentRequest practicePortalCommunicate = new AppoitmentRequest();
+		long tsPracticePortalcommunicate = practicePortalCommunicate.ProceedAppoitmentRequestCommunicateOnly(driver,
+				true, appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(),
+				testData.getDoctorPassword());
 
-		logStep("Back to the practice portal");
-		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		logStep("Login back to patient portal third time to verify the communicate only status");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoMessagesPage messagesPageCommunicate = homePage.showMessages(driver);
 
-		patientMessagingPage = practiceHome.clickPatientMessagingTab();
-		assertTrue(patientMessagingPage.findMyMessage(messageSubject));
+		logStep("Looking for appointment Communicate only status from doctor");
+		assertTrue(
+				messagesPageCommunicate.isMessageDisplayed(driver, "Communicate only " + tsPracticePortalcommunicate));
+		homePage.clickOnLogout();
+	}
 
-		logStep("Verifying Reply Content at Practice Portal");
-		String replyContent = patientMessagingPage.checkReplyContent();
-		assertEquals(replyContent, JalapenoMessagesPage.getPatientReply());
+	/**
+	 * Updating appointment request while processing them with the following
+	 * appointment statuses Update Appointment.
+	 *
+	 */
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestUpdate() throws Exception {
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
-		// TODO: Edit navigation on portal and search by date to search exact day
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-		logStep("Check email for notification for new message");
-		String notificationEmailSubject = "New message from " + testData.getPracticeName();
-		String[] mailAddress = testData.getEmail().split("@");
-		Email email = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(notificationEmailSubject, 90,
-				testSecondsTaken(messageBuildingStart));
-		assertNotNull(email, "Error: No new message notification recent enough found");
-		String emailBody = email.getBody();
-		assertTrue(emailBody.contains("Sign in to view this message"));
+		logStep("Click appointment request");
+		homePage.clickOnAppointmentV2(driver);
+
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");
+		}
+
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
+		logStep("Assess Elements and choose provider");
+		appointmentRequestStep1.chooseFirstProvider();
+
+		logStep("Continue to step 2.: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayd");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+		assertTrue(historyPage.areBasicPageElementsPresent());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.clickOnMenuHome();
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
+				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal for second time ");
+		AppoitmentRequest practicePortalApproved = new AppoitmentRequest();
+		long tsPracticePortalUpdate = practicePortalApproved.ProceedAppoitmentRequestUpdate(driver, true,
+				appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal for update Appointment ");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoMessagesPage messagesPageUpdate = homePage.showMessages(driver);
+
+		logStep("Looking for appointment approval from doctor");
+		assertTrue(messagesPageUpdate.isMessageDisplayed(driver, "Update Appointment " + tsPracticePortalUpdate));
+		homePage.clickOnLogout();
 	}
 	
 	
