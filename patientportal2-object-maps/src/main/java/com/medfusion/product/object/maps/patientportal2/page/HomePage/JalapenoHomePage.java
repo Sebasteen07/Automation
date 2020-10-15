@@ -4,10 +4,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -25,7 +23,6 @@ import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
-import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
@@ -116,6 +113,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Staff\"]")
 	private WebElement askAStaffButtonOnPopup;
 	
+	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask Ur Doc\"]")
+	private WebElement askADocButtonOnPopup;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -464,4 +463,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 			log("Switch to the practice "+practice+" is completed");
 			}
 	}
+
+	public JalapenoAskAStaffPage clickOnAskADoc(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		askAQuestion.click();
+		askADocButtonOnPopup.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+
+
 }

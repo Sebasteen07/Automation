@@ -2,10 +2,7 @@ package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Calendar;
-import java.util.List;
 
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -17,8 +14,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoAskAStaffPage extends JalapenoMenu {
@@ -174,4 +173,23 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 				IHGUtil.setDefaultFrame(driver);
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
+
+	public boolean fillAndSubmitAskyourDocUnpaid(WebDriver driver) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+
+		log("Fill message and continue");
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
+		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
+		question.sendKeys("Ola Doc! Please help meh.");
+		Thread.sleep(3000);
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,400)");
+		IHGUtil.waitForElement(driver, 2, continueButton);
+		continueButton.click();
+		IHGUtil.waitForElement(driver, 2, continueButton);
+		continueButton.click();
+		new WebDriverWait(driver, 20)
+				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
+		return true;
+	}
 }
