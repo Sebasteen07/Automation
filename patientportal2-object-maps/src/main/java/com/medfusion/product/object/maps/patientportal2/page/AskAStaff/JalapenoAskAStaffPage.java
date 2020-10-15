@@ -85,15 +85,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 
 		public boolean fillAndSubmitAskAStaff(WebDriver driver) throws InterruptedException {
 				IHGUtil.PrintMethodName();
-				/*
-				try {
-						askPaidTab.click();
-				} catch (org.openqa.selenium.NoSuchElementException e0) {
-						log("--------------------------------------------------------------");
-						log("I couldn't find 'Ask (paid)' button, please check at practice!");
-						return false;
-				}
-				*/
+
 				log("Fill message and continue");
 				new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
 				subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
