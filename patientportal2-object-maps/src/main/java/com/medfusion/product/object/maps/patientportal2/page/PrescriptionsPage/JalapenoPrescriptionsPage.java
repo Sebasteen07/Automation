@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -45,7 +46,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 		private WebElement radioButton;
 		
-		@FindBy(how = How.XPATH, using = "//input[@value='radio2']")
+		@FindBy(how = How.XPATH, using = "//input[@value='radio9']")
 		private WebElement AddradioButton; //For add a New Pharmacy
 
 		@FindBy(how = How.LINK_TEXT, using = "Home")
