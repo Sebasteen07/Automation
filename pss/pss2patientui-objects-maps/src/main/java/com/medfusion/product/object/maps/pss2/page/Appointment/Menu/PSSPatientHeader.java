@@ -25,9 +25,8 @@ public class PSSPatientHeader extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "logoutbutton")
 	private WebElement nameSettings;
 
-	@FindBy(how = How.XPATH, using = "//li[@class='logoutborderline']")
+	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
 	private WebElement logout;
-
 
 	public PSSPatientHeader(WebDriver driver) {
 		super(driver);

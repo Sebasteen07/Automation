@@ -111,6 +111,12 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	
 	@FindBy(how = How.ID, using = "requestCcdContinueButton")
 	private WebElement requestCcdContinueButton;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[1]")
+	private WebElement requestCompleteRecord;
+	
+	@FindBy(how = How.ID, using = "requestCcdContinueButton")
+	private WebElement requestRecord;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -349,5 +355,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		log("Clicked on the Request Record button");
 	}
 	
-	
+	public void requestCompleteRecord() {
+		IHGUtil.waitForElement(driver, 60, requestCompleteRecord);
+		requestCompleteRecord.click();
+		IHGUtil.waitForElement(driver, 60, requestRecord);
+		requestRecord.click();
+	}
 }

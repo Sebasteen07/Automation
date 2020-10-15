@@ -31,7 +31,6 @@ public class HomePage extends PSS2MainPage {
 	PSSPatientHeader patientheader;
 	PSSPatientFooter patientfooter;
 
-
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Insurance information')]")
 	private WebElement insurancetext;
 
@@ -56,22 +55,24 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[3]/button/span")
 	private WebElement buttonRevertCancelAppointment;
 
-	@FindAll({@FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
+	@FindAll({ @FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
 	private List<WebElement> selectSpecialityList;
 
-	@FindAll({@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
+	@FindAll({
+			@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div ']") })
 	private List<WebElement> selectproviderList;
 
-	@FindAll({@FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 startingpointdata']")})
+	@FindAll({ @FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 startingpointdata']") })
 	private List<WebElement> selectstartpoint;
 
-	@FindAll({@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]")})
+	@FindAll({
+			@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]") })
 	private List<WebElement> cancelAppointmentList;
 
-	@FindAll({@FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div")})
+	@FindAll({ @FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div") })
 	private List<WebElement> selectUpcomingApptList;
 
-	@FindAll({@FindBy(xpath = "//*[@id=\"pastappointmentevent\"]/div/div")})
+	@FindAll({ @FindBy(xpath = "//*[@id=\"pastappointmentevent\"]/div/div") })
 	private List<WebElement> selectPastApptList;
 
 	@FindBy(how = How.XPATH, using = ".//*[@id='upcomingevents']/p/span")
@@ -83,11 +84,11 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	private WebElement noPastText;
 
-	@FindAll({@FindBy(xpath = "//div[@id='myModalsss']//button[@class='dismissbuttons']")})
+	@FindAll({ @FindBy(xpath = "//button[@id='closeAlertPopup'][@class='dismissbuttons']") })
 	private List<WebElement> dismissButtons;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']//button[@class='dismissbuttons']")
-	private WebElement dismissIDPPopUp;
+	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
+	private WebElement dismissPopUp;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement cancelReason;
@@ -95,8 +96,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
 	private WebElement cancelSubmit;
 
-	@FindBy(how = How.XPATH,
-			using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
+	@FindBy(how = How.XPATH, using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
 	private WebElement cancelAppointmentConfirmed;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']//div[3]//div[4]//button//span[contains(text(),'Yes')]")
@@ -176,7 +176,6 @@ public class HomePage extends PSS2MainPage {
 		return null;
 	}
 
-
 	public AppointmentPage selectAppointment(String specialityText) {
 		log(" selectSpecialityList " + selectSpecialityList.size());
 		for (int i = 0; i < selectSpecialityList.size(); i++) {
@@ -226,13 +225,12 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	public Boolean isIDPPopUp() {
-		return dismissIDPPopUp.isDisplayed();
+		return dismissPopUp.isDisplayed();
 	}
 
-
-
 	public void popUPIDPClick() {
-		dismissIDPPopUp.click();;
+		dismissPopUp.click();
+		;
 	}
 
 	public int getFutureAppointmentListSize() {
@@ -242,8 +240,6 @@ public class HomePage extends PSS2MainPage {
 	public int getPastAppointmentListSize() {
 		return selectPastApptList.size();
 	}
-
-
 
 	public Boolean cancelAppointment(String popupTextMessage) throws InterruptedException {
 
@@ -277,7 +273,8 @@ public class HomePage extends PSS2MainPage {
 
 	public void verifyAppointmentScheduledInPMSystem(String dateTimeText) {
 		log("input text cancellationText " + dateTimeText);
-		List<WebElement> upcomingAptDateTime = driver.findElements(By.xpath("//*[@id=\"upcomingappoitment\"]/div/div/div[1]/div[1]"));
+		List<WebElement> upcomingAptDateTime = driver
+				.findElements(By.xpath("//*[@id=\"upcomingappoitment\"]/div/div/div[1]/div[1]"));
 		for (int i = 0; i < upcomingAptDateTime.size(); i++) {
 
 			if (dateTimeText.contains(upcomingAptDateTime.get(i).getText())) {
@@ -309,14 +306,16 @@ public class HomePage extends PSS2MainPage {
 		return PageFactory.initElements(driver, Speciality.class);
 	}
 
-	public StartAppointmentInOrder updateInsuranceInfo(WebDriver driver, String insuranceName, String memberID, String groupID, String phone) {
+	public StartAppointmentInOrder updateInsuranceInfo(WebDriver driver, String insuranceName, String memberID,
+			String groupID, String phone) {
 		log("In updateInsuranceInfo of HomePage.");
 		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
 		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
 		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
 	}
 
-	public Speciality updateInsuranceForSpeciality(WebDriver driver, String insuranceName, String memberID, String groupID, String phone) {
+	public Speciality updateInsuranceForSpeciality(WebDriver driver, String insuranceName, String memberID,
+			String groupID, String phone) {
 		log("In updateInsuranceForSpeciality of HomePage.");
 		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
 		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);

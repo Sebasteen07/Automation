@@ -1,5 +1,7 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
@@ -17,6 +19,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
@@ -425,5 +428,40 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		}
 
+	}
+	
+	public void VerifyMuiltiplePracticeToggle() {
+		log("Verify Practice toggle Search is not present");
+		try{
+		Boolean status =practiceToggleSearch.isDisplayed();
+		if(!status)
+			log("Practice toggle Search is not displayed as expected");
+		else{
+			log("Practice toggle Search is displayed");
+			assertTrue(!status);
+		}
+		}
+		catch(NoSuchElementException e)
+		{
+			log("Step Passed: Practice toggle Search is not displayed");
+		}
+	}
+	
+	public void switchToPractice(String practice){
+		try{
+			WebElement verifySelectedPractice= driver.findElement((By.xpath("(//span[@title='"+practice+"'])[2]")));
+			Boolean status =IHGUtil.waitForElement(driver, 15, verifySelectedPractice);
+			if(status)
+				log(practice+" is already selected as expected");}
+		catch(NoSuchElementException e){
+			Log4jUtil.log(e.getMessage());
+			log("Clicking on Practice toggle Search");	
+			practiceToggleSearch.click();
+		 	practiceInput.sendKeys(practice);
+			practiceInput.sendKeys(Keys.ENTER);
+			IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+			switchButtonContinue.click();
+			log("Switch to the practice "+practice+" is completed");
+			}
 	}
 }

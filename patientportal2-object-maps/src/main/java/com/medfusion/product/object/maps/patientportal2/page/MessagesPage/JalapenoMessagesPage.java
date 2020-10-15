@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.NGCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -67,6 +68,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(xpath = "//div[@class='messageContent ng-binding']")
 	private WebElement inboxMessageBody;
+	
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
+	private WebElement archiveButton;
 
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
@@ -213,5 +217,19 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	public String getAttachmentPdfFile() {
 		return attachmentPdfFile.getText();
+	}
+	
+	public void archiveMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, archiveButton);
+		archiveButton.click();
+	}
+	
+	public NGCcdViewerPage findNGCcdMessage(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+
+		ccdDocument.click();
+
+		return PageFactory.initElements(driver, NGCcdViewerPage.class);
 	}
 }
