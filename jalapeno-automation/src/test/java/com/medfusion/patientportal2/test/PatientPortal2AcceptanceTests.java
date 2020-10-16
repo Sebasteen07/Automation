@@ -224,6 +224,36 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = jalapenoHomePage.clickOnLogout();
 		assertTrue(loginPage.areBasicPageElementsPresent());
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)	
+	public void testLoginRememberUserName() throws Exception
+	{
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.areBasicPageElementsPresent());
+		logStep("Fill in credentials and log in");
+		JalapenoHomePage jalapenoHomePage = loginPage.RememberUserName(testData.getUserId(), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());	
+		logStep("Log out");
+		loginPage = jalapenoHomePage.clickOnLogout();
+		
+	     logStep("Since remember username checkbox is not checked - user name field is empty");
+	     
+		assertTrue(loginPage.getUserNameFieldText().equals(""));
+		logStep("Load login page");
+		
+		logStep("Fill in credentials and log in");
+		
+		jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+		logStep("Log out");
+		loginPage = jalapenoHomePage.clickOnLogout();
+		
+		logStep("Since remember username checkbox is checked - user name field is prepopulated");
+		String userNameText= loginPage.getUserNameFieldText();
+		assertTrue(loginPage.getUserNameFieldText().contains(userNameText));	
+		
+	}
 
 	/**
 	 * TODO: Uncomment when someone merges development into master at qa-main
@@ -266,6 +296,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage.loginUnsuccessfuly(testData.getUserId(), "InvalidPassword");
 		assertTrue(jalapenoLoginPage.areBasicPageElementsPresent());
 	}
+	
+
 
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatient() throws Exception {
@@ -455,6 +487,37 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String emailBody = email.getBody();
 		assertTrue(emailBody.contains("Sign in to view this message"));
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMessageArchiving() throws Exception {
+	
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+		assertTrue(messagesPage.returnSubjectMessage().length()>0);
+		
+		logStep("Go to archived messages tab");
+		messagesPage.goToArchivedMessages();
+	
+		int messageCount = messagesPage.MessageCount();
+		logStep("Go to Inbox messages tab");
+		messagesPage.goToInboxMessage();
+		logStep("Click on Archive Button on open email");
+		messagesPage.archiveOpenMessage();
+		
+		logStep("Click on Archived folder");
+		messagesPage.goToArchivedMessages();
+		int y = messagesPage.MessageCount();   
+		logStep("Message archicved Successfuly");
+       assertTrue(y>messageCount);
+       
+	}
+	
+	
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {

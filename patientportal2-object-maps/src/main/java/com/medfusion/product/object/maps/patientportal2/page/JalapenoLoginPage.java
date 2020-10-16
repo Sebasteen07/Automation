@@ -128,4 +128,23 @@ public class JalapenoLoginPage extends MedfusionPage {
 	    }
 	    return false;
 	}
+	
+public JalapenoHomePage RememberUserName(String username, String password) {
+		
+		rememberUserNameCheckbox.click();
+		
+		log("unchecking the Remember username checkbox");
+		makeLogin(username, password);
+		log("User is logged in");
+		handleWeNeedToConfirmSomethingModal();
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+
+public String getUserNameFieldText()
+{
+	return inputUserName.getText();
+	
 }
+}
+
+

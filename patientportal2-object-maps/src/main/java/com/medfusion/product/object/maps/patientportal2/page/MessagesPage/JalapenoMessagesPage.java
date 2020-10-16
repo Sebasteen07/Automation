@@ -2,6 +2,7 @@
 package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -74,6 +75,12 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject ng-binding'])[1]")
+	private WebElement messageSubjectText;
+	
+	@FindBy(how = How.ID, using = "messages")
+	private WebElement messageList;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -183,8 +190,17 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public void archiveOpenMessage() {
 		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
 		archiveMessageButton.click();
-
 	}
+	public void goToInboxMessage() {
+		log("Navigating to Inbox folder");
+		inboxFolder.click();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();}
+		}
+	
 
 	public String returnMessageSentDate() {
 		IHGUtil.PrintMethodName();
@@ -223,6 +239,29 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, archiveButton);
 		archiveButton.click();
+	}
+	
+	public void goToArchivedMessages() {
+		log("Navigating to Archived folder");
+		archiveFolder.click();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();}
+		}
+	
+public String returnSubjectMessage() {
+	log("Getting email subject text");
+	return messageSubjectText.getText().toString();
+	
+}
+	public int MessageCount()
+	{
+		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
+        List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
+        return (li_All.size());      		
+		
 	}
 	
 	public NGCcdViewerPage findNGCcdMessage(WebDriver driver) {
