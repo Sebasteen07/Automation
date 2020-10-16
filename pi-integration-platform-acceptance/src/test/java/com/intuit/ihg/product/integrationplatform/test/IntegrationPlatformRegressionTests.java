@@ -328,7 +328,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
 		String message = AMDCPayload.getAMDCPayload(testData);
-		// log("message :- "+message);
+		log("message :- " + message);
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
 
@@ -403,9 +403,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 14: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
-		// log("Logging out");
-		// homePage.clickOnLogout();
-
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
@@ -415,31 +412,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
-		log("Step 18: Move to  Health Record page");
-		messagesPage.backToHomePage(driver);
-		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+		log("Step 18: Move to Health Record page ");
+		messagesPage.menuHealthRecordClickOnly();
 
 		log("Step 19: Open Other Documents");
-		MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+		DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPageFromMenu();
 
 		log("Step 20: Verify name, from and catagory type");
-		String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
-		log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
-		// Assert.assertTrue(attachmentData.toLowerCase().contains(testData.categoryType.toLowerCase()), "category type not found");
-		String[] attachmentResult = attachmentData.split("\n");
-		String[] catEnum = testData.portalCategoryType.split(",");
+		MedicalRecordSummariesPageObject.verifyName_From_CategoryType(testData.From, testData.categoryType, testData.fileName);
 
-		for (int j = 0; j < attachmentResult.length; j++) {
-			// log(attachmentResult[j]);
-			for (int m = 0; m < catEnum.length; m++) {
-				catEnum[m] = catEnum[m].replaceAll("_", " ").toLowerCase();
-				if (attachmentResult[j].toLowerCase().contains(catEnum[m]) && j <= catEnum.length) {
-					log("attachment matched : " + attachmentResult[j].toLowerCase());
-				}
-			}
-		}
-		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
 		log("Logging out");
 		homePage.clickOnLogout();
 
