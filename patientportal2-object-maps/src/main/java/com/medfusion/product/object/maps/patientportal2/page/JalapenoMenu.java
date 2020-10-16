@@ -240,6 +240,33 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
 	}
+	
+	public JalapenoLoginEnrollment clickOnLogoutEnrollment() {
+
+		log("Clicking on Logout button - regular resolution");
+
+		try {
+			javascriptClick(signout);
+
+		} catch (NoSuchElementException ex) {
+			log("Did not find Logout button, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
+		} catch (ElementNotVisibleException ex) {
+			log("Element is not currently visible, trying mobile version size");
+			rightDropdownButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
+			signoutDropdownButton.click();
+		} catch (ElementNotInteractableException ex) {
+			log("Element is not currently not intractable, trying mobile version size");
+			rightDropdownLinkedButton.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownLinkedButton));
+			signoutDropdownLinkedButton.click();
+		}
+
+		return PageFactory.initElements(driver, JalapenoLoginEnrollment.class);
+	}
 
 	public MedicalRecordSummariesPage goToHealthRecordsPage() {
 		openMenuIfClosed();
