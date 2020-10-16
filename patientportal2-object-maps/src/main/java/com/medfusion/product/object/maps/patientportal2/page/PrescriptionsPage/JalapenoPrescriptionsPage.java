@@ -46,7 +46,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 		private WebElement radioButton;
 		
-		@FindBy(how = How.XPATH, using = "//input[@value='radio9']")
+		@FindBy(how = How.XPATH, using = "//div[@class='fieldWrapper switchLabelAndField']//input")
 		private WebElement AddradioButton; //For add a New Pharmacy
 
 		@FindBy(how = How.LINK_TEXT, using = "Home")
