@@ -299,20 +299,39 @@ public class PSSPatientUtils {
 
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
-		Log4jUtil.log("--------Flow Starts---------------");
 		AppointmentPage appointment;
-		if (startOrderOn.equalsIgnoreCase("true")) {
-			Boolean insuranceEnabled = true;
-			if (insuranceEnabled) {
-				Thread.sleep(3500);
+		StartAppointmentInOrder startappointmentInOrder = null;
+		Log4jUtil.log("Insurance is Disabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("start is Disabled " + testData.isIsstartpointPresent());
+		if (testData.isIsinsuranceVisible()) {
+			Thread.sleep(3500);
+			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			if (testData.isIsstartpointPresent()) {
+
+				Log4jUtil.log("Starting point is present after insurance skipped ");
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			} else {
+				appointment = homepage.appointmentpage();
+				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-			StartAppointmentInOrder startappointmentInOrder = homepage.updateInsuranceInfo(driver, PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
-			Thread.sleep(1000);
-			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		} else {
-			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
+
 		}
+
+		else {
+
+			if (testData.isIsstartpointPresent()) {
+				startappointmentInOrder = homepage.startpage();
+				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				Log4jUtil.log("clicked on Appointment ");
+			} else {
+				Log4jUtil.log("Start point not present");
+				appointment = homepage.appointmentpage();
+			}
+		}
+
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		Log4jUtil.log("does apt has a pop up? " + testData.getIsAppointmentPopup());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
