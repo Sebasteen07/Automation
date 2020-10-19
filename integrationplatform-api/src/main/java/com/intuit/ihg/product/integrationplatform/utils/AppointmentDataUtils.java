@@ -55,7 +55,7 @@ public class AppointmentDataUtils {
 		Log4jUtil.log(" Fetch Dashboard Next Time slot");
 		if(!testData.Status.equalsIgnoreCase("CANCEL"))
 		{
-			//Log4jUtil.log("Next Time slot is from Dashboard: "+homePage.getNextScheduledApptDate());
+			Log4jUtil.log("Next Time slot is from Dashboard: "+homePage.getNextScheduledApptDate());
 				
 		}
 		Log4jUtil.log(" Goto Appointments Page");
@@ -111,8 +111,6 @@ public class AppointmentDataUtils {
 				Boolean Day = appointMentList.get(i).getText().contains(apObj.localDay[0]);
 				Boolean Time = appointMentList.get(i).getText().contains(apObj.localTime[0]);
 				
-				Assert.assertTrue(Day, "appointment Day is matched");
-				Assert.assertTrue(Time, "appointment Time is matched");
 				Assert.assertTrue(location, "appointment Location is matched");
 				Assert.assertTrue(provider, "appointment Provdier is matched");
 				

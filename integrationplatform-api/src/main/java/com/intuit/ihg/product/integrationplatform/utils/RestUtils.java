@@ -35,7 +35,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -68,6 +67,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.portal.utils.PortalConstants;
 // import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
 
 
@@ -2846,7 +2846,11 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	public static void comparePDFfiles(String file1, String file2) throws Exception {
 		String pdfFromPortal=ExternalFileReader.base64Encoder(file1,false);
 		String pdfFromGet=ExternalFileReader.base64Encoder(file2,false);
-		
+		Log4jUtil.log("pdfFromPortal----------------");
+		Log4jUtil.log(pdfFromPortal);
+		Log4jUtil.log("pdfFromGet----------------");
+		Log4jUtil.log(pdfFromGet);
+		Log4jUtil.log("----------------------------");
 		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
 		Log4jUtil.log("Is Pdf Matched : "+pdfMatch);
 		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
