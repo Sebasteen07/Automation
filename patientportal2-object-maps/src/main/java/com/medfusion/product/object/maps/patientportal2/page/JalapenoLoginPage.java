@@ -20,9 +20,15 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "userid")
 	private WebElement inputUserName;
+	
+	@FindBy(how = How.ID, using = "userid_error")
+	private WebElement userNameError;
 
 	@FindBy(how = How.ID, using = "password")
 	private WebElement inputPassword;
+	
+	@FindBy(how = How.ID, using = "password_error")
+	private WebElement passwordError;
 
 	@FindBy(how = How.ID, using = "signin_btn")
 	private WebElement buttonSignIn;
@@ -75,6 +81,11 @@ public class JalapenoLoginPage extends MedfusionPage {
 		handleWeNeedToConfirmSomethingModal();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
+	
+	public  void loginEmptyCredentials() {
+		makeLogin("", "");
+		log("User clicked Signin in with empty credentials");		
+			}
 
 	public JalapenoLoginPage loginUnsuccessfuly(String username, String password) {
 		makeLogin(username, password);
@@ -89,6 +100,16 @@ public class JalapenoLoginPage extends MedfusionPage {
 		clickOnElement(buttonSignIn);
 	}
 
+	public String getUserErrorText() {
+		return userNameError.getText();
+		
+	}
+	
+	public String getPasswordErrorText() {
+		return passwordError.getText();
+		
+	}
+	
 	public PatientDemographicPage clickCreateANewAccountButton() {
 
 		IHGUtil.PrintMethodName();

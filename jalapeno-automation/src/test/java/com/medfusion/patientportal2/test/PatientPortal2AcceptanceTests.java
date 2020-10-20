@@ -254,6 +254,24 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.getUserNameFieldText().contains(userNameText));	
 		
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLoginEmptyUserName() throws Exception
+	{
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage.areBasicPageElementsPresent());
+		
+		logStep("Fill in empty credentials and log in");
+		loginPage.loginEmptyCredentials();
+	
+		logStep("empty username error displayed");
+	    assertTrue(loginPage.getUserErrorText().contentEquals("Please enter a user name."));
+	
+	    logStep("empty password error displayed");
+	    assertTrue(loginPage.getPasswordErrorText().contentEquals("Please enter a password."));
+		
+	}
 
 	/**
 	 * TODO: Uncomment when someone merges development into master at qa-main
@@ -506,14 +524,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		int messageCount = messagesPage.MessageCount();
 		logStep("Go to Inbox messages tab");
 		messagesPage.goToInboxMessage();
+		
 		logStep("Click on Archive Button on open email");
 		messagesPage.archiveOpenMessage();
 		
 		logStep("Click on Archived folder");
 		messagesPage.goToArchivedMessages();
 		int y = messagesPage.MessageCount();   
+		
 		logStep("Message archicved Successfuly");
-       assertTrue(y>messageCount);
+        assertTrue(y>messageCount);
        
 	}
 	

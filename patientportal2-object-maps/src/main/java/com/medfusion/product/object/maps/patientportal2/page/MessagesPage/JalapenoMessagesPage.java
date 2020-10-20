@@ -51,7 +51,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
 	private WebElement archiveMessageButton;
-
+	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
 	private WebElement lableSent;
 
@@ -194,11 +194,8 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public void goToInboxMessage() {
 		log("Navigating to Inbox folder");
 		inboxFolder.click();
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();}
+		IHGUtil.waitForElement(driver, 10000, archiveButton);
+	
 		}
 	
 
@@ -235,27 +232,19 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		return attachmentPdfFile.getText();
 	}
 	
-	public void archiveMessage() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 60, archiveButton);
-		archiveButton.click();
-	}
 	
 	public void goToArchivedMessages() {
 		log("Navigating to Archived folder");
 		archiveFolder.click();
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();}
+		IHGUtil.waitForElement(driver, 10000, msgSubject);
+		
 		}
 	
-public String returnSubjectMessage() {
+    public String returnSubjectMessage() {
 	log("Getting email subject text");
 	return messageSubjectText.getText().toString();
 	
-}
+        }
 	public int MessageCount()
 	{
 		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
