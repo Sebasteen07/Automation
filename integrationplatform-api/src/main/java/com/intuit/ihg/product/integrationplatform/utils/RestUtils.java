@@ -2877,10 +2877,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		{
 			Log4jUtil.log("http 204 response is empty");
 		}
-		
-		//Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
-		//		"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-		writeFile(responseFilePath, sResp);
+			writeFile(responseFilePath, sResp);
 		return resp.getStatusLine().getStatusCode();
 	}
 	
