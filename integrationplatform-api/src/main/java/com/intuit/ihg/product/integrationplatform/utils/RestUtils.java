@@ -68,7 +68,6 @@ import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalConstants;
-// import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
 
 
 public class RestUtils {
