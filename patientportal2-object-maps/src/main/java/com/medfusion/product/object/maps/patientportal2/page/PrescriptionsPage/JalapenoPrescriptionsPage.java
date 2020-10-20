@@ -46,7 +46,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 		private WebElement radioButton;
 		
-		@FindBy(how = How.XPATH, using = "//input[@value='radio9']")
+		@FindBy(how = How.XPATH, using = "//div[@class='fieldWrapper switchLabelAndField']//input")
 		private WebElement AddradioButton; //For add a New Pharmacy
 
 		@FindBy(how = How.LINK_TEXT, using = "Home")
@@ -163,17 +163,14 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			Select cardSelect = new Select(carddropdown);
 			cardSelect.selectByIndex(3);
 			
-			//System.out.println("Expiry month of card is " +testData.getProperty("cardExpiryMonthText"));
+		
 			Select monthSelect = new Select(monthdd);
 			monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
 			
 			Select yearSelect = new Select(yeardd);
 			yearSelect.selectByValue(creditCard.getExpYear());
 			
-			System.out.println("Prescription carnumber is ");
 			cardcvv.sendKeys(creditCard.getCvvCode());
-			
-			System.out.println("Prescription car cvv code isis ");
 			cardzip.sendKeys(creditCard.getZipCode());
 			
 		}
