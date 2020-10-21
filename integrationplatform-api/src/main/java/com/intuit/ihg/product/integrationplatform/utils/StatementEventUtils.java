@@ -62,7 +62,7 @@ public class StatementEventUtils {
 		Log4jUtil.log("Statement Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername,
 				testData.OAuthPassword);
-		
+		Log4jUtil.log("Payload-------------" + statement);
 		Log4jUtil.log("Statement Step 2: Do a POST call and get processing status URL");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, statement, testData.ResponsePath);
 		Log4jUtil.log("processing Status"+processingUrl);

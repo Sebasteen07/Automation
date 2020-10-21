@@ -116,6 +116,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask Ur Doc\"]")
 	private WebElement askADocButtonOnPopup;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
+	private WebElement nextAppointmentSchedule;
+
+
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -469,6 +473,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		askAQuestion.click();
 		askADocButtonOnPopup.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+
+	public String getNextScheduledApptDate() {
+
+		String nextAppointmentScheduleText = nextAppointmentSchedule.getText();
+		return nextAppointmentScheduleText;
 	}
 
 
