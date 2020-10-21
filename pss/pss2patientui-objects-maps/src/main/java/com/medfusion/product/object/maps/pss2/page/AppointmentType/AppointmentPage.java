@@ -53,15 +53,6 @@ public class AppointmentPage extends PSS2MainPage {
 
 	public Provider selectTypeOfProvider(String providerConfig, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());
-//		searchAppointment.sendKeys(providerConfig);
-//		log("Successfully send the value in textfield of appointment type");
-//		IHGUtil.waitForElement(driver, 30, selectAppointment);
-//		//javascriptClick(selectAppointment);
-//		
-//		log("Clicked on Appointment type");
-//		selectNextStep(isPopUpSelected);
-//		return PageFactory.initElements(driver, Provider.class);
-
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
 				appointmentTypeList.get(i).click();
