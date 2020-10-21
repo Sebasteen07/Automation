@@ -229,23 +229,22 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testLoginRememberUserName() throws Exception
 	{
 		logStep("Load login page");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.areBasicPageElementsPresent());
-		logStep("Fill in credentials and log in");
-		JalapenoHomePage jalapenoHomePage = loginPage.RememberUserName(testData.getUserId(), testData.getPassword());
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());	
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());		
+		
+		logStep("Fill in credentials, Remember username unchecked and log in");
+		loginPage.unCheckRememberUserName();
+		JalapenoHomePage jalapenoHomePage = loginPage.RememberUserName(testData.getUserId(), testData.getPassword());		
+		
 		logStep("Log out");
 		loginPage = jalapenoHomePage.clickOnLogout();
 		
-	     logStep("Since remember username checkbox is not checked - user name field is empty");
-	     
-		assertTrue(loginPage.getUserNameFieldText().equals(""));
-		logStep("Load login page");
-		
-		logStep("Fill in credentials and log in");
-		
-		jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+	    logStep("Since remember username checkbox is not checked - user name field is empty");	     
+		assertTrue(loginPage.getUserNameFieldText().equals(""));		
+			
+		logStep("Fill in credentials, Remember username checked and log in");	
+		loginPage.checkRememberUserName();
+		loginPage.RememberUserName(testData.getUserId(), testData.getPassword());	
+			
 		logStep("Log out");
 		loginPage = jalapenoHomePage.clickOnLogout();
 		

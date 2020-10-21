@@ -150,11 +150,8 @@ public class JalapenoLoginPage extends MedfusionPage {
 	    return false;
 	}
 	
-public JalapenoHomePage RememberUserName(String username, String password) {
+public JalapenoHomePage RememberUserName(String username, String password) {		
 		
-		rememberUserNameCheckbox.click();
-		
-		log("unchecking the Remember username checkbox");
 		makeLogin(username, password);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
@@ -166,6 +163,23 @@ public String getUserNameFieldText()
 	return inputUserName.getText();
 	
 }
-}
 
+public void checkRememberUserName()
+{
+	if(rememberUserNameCheckbox.isSelected())
+	{
+		//already checked
+	}
+	}
+
+
+public void unCheckRememberUserName()
+{
+	if(rememberUserNameCheckbox.isSelected()== true)
+	{
+		rememberUserNameCheckbox.click();
+	}
+	}
+
+}
 
