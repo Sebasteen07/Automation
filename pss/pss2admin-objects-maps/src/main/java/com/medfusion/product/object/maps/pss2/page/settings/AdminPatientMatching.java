@@ -37,6 +37,9 @@ public class AdminPatientMatching extends SettingsTab {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("Preferred Phone Number");
 		list.add("Zip Code");
+		list.add("Date Of Birth");
+		list.add("Sex assigned at birth");
+		list.add("Email Address");
 		log("List ------>" + list);
 		for (int i = 0; i < patientMatchingList.size(); i++) {
 			log("Size of patientMatchingList -- " + patientMatchingList.size());

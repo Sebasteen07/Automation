@@ -189,7 +189,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
-		appointValues.setLocation(property.getProperty("location"));
+		appointValues.setLocation(property.getProperty("locationGE"));
 		appointValues.setPassword(property.getProperty("passwordGE"));
 		appointValues.setProvider(property.getProperty("providerGE"));
 		appointValues.setSpeciality(property.getProperty("specialityGE"));

@@ -85,8 +85,8 @@ public class Appointment {
 	private String urlAnonymous;
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
-	private boolean isinsuranceVisible = false;
-	private boolean isstartpointPresent = false;
+	private boolean isinsuranceVisible = true;
+	private boolean isstartpointPresent = true;
 
 
 

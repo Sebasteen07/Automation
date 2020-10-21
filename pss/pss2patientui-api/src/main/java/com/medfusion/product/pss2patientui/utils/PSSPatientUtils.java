@@ -84,7 +84,6 @@ public class PSSPatientUtils {
 		}
 
 		else {
-
 			if (testData.isIsstartpointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
@@ -130,11 +129,7 @@ public class PSSPatientUtils {
 				provider = homepage.providerpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-
-		}
-
-		else {
-
+		} else {
 			if (testData.isIsstartpointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
@@ -150,13 +145,15 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		// bookAppointment(false, aptDateTime, testData, driver);
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -205,7 +202,8 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		// bookAppointment(false, aptDateTime, testData, driver);
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -449,7 +447,7 @@ public class PSSPatientUtils {
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
 			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-			appointmentToScheduled(confirmationpage, testData);
+			// appointmentToScheduled(confirmationpage, testData);
 		}
 	}
 

@@ -67,6 +67,7 @@ public class PSSAdminUtils {
 		adminpatientmatching.logout();
 		Thread.sleep(4000);
 	}
+
 	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -108,20 +109,26 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
 		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
+
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
-		Log4jUtil.log("length " + patientflow.ruleLength());
-		Log4jUtil.log("Rule length : " + patientflow.getRule());
-		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
-			adminuser.setIsInsuranceDisplayed(false);
-		}
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+
+		Log4jUtil.log("AdminSettings Step 5: Fetch the Insurance Status");
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
+
+		Log4jUtil.log("AdminSettings Step 6: Fetch the Starting Point Status");
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		adminpatientmatching.logout();
 		Thread.sleep(4000);
 	}
-	
+
 	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
 		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
