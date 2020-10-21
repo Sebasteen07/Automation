@@ -2811,15 +2811,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		patient.setUrl(testData.Url);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
 		Thread.sleep(5000);
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 		Thread.sleep(12000);
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
-
-		Long timestamp = System.currentTimeMillis();
-		Long since = timestamp / 1000L;
-		Log4jUtil.log("Getting patients since timestamp: " + since);
 
 		StatementEventUtils sEventObj = new StatementEventUtils();
 		Thread.sleep(12000);
