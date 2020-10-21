@@ -29,6 +29,8 @@ public class PSSConstants {
 	public final static String STLB = "S,T,L,B";
 	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
+	public final static String SLBT = "S,L,B,T";
+
 
 	public final static String LOGINLESS = "loginless";
 	public final static String IDP = "idp";
