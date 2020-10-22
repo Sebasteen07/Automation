@@ -61,7 +61,20 @@ public class PSSConstants {
 	public final static String CANCEL_APT_UPTO_HRS = "06:00";
 	public final static String MAJOR_AGE = "50";
 	public final static String MAX_BLOCK_MONTHS = "1";
-	public final static String selectRCPorPCP = "rcp";
-	public final static String PCP_AVAILABILITY_DURATION = "29";
-	public final static String FCT_AVAILABILITY_DURATION = "1";
+	
+	public final static String selectRCPorPCP_GE = "rcp";
+	public final static String PCP_AVAILABILITY_DURATION_GE = "29";
+	public final static String FCT_AVAILABILITY_DURATION_GE = "1";
+	
+	public final static String selectRCPorPCP_GW = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_GW = "29";
+	public final static String FCT_AVAILABILITY_DURATION_GW = "1";
+	
+	public final static String selectRCPorPCP_NG = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_NG = "29";
+	public final static String FCT_AVAILABILITY_DURATION_NG = "1";
+	
+	public final static String selectRCPorPCP_AT = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_AT = "29";
+	public final static String FCT_AVAILABILITY_DURATION_AT = "1";
 }

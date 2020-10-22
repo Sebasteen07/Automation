@@ -609,6 +609,67 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homepage.areBasicPageElementsPresent());
 	}
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EBookAppointmentSSOFlowGE() throws Exception {
+		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal GE.");
+		log("Step 1: Login to Patient Portal 2.0");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		/*
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.getAdminRule(driver, adminuser);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		*/
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");	
+		Thread.sleep(6000);
+
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		
+		if (homepage.isPopUP()) 
+		{
+			homepage.popUPClick();
+		}
+	
+		Thread.sleep(12000);
+		
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		
+		log("Now proceeding towards booking an appointment");
+		log("Verify PSS2 can select a speciality from below list::");
+		
+		//homepage.skipInsurance(driver);
+		StartAppointmentInOrder startappointmentinorder = homepage.selectSpeciality(testData.getSpeciality());
+		log("Choose a starting point:: 1.Appointment type 2. Provider. In our case 'Provider' ::");
+		Provider provider = startappointmentinorder.selectFirstProvider(PSSConstants.START_PROVIDER);
+		Location location = provider.selectLocation(testData.getProvider().trim());
+		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
+		AppointmentDateTime appointmentDateTime = appointmentPage.selectTypeOfAppointment(testData.getAppointmenttype(), true);
+		appointmentDateTime.selectDate(testData.getIsNextDayBooking());
+	    psspatientutils.bookAppointment(true, appointmentDateTime, testData, driver);
+		Thread.sleep(3000);
+		
+	}
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNewPatientWithoutEMRIDGW() throws Exception {
 		log("Test To Verify if a newly created Patient without EMRID unable to loginto SSO Flow from Patient 2.0 portal.");
@@ -1686,9 +1747,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
 		adminappointment.toggleAllowPCP();
-		adminappointment.pCPAvailabilityDuration(PSSConstants.PCP_AVAILABILITY_DURATION);
-		adminappointment.forceCareteamDuration(PSSConstants.FCT_AVAILABILITY_DURATION);
-		adminappointment.chooseRCPorPCP(PSSConstants.selectRCPorPCP);
+		adminappointment.pCPAvailabilityDuration(PSSConstants.PCP_AVAILABILITY_DURATION_GE);
+		adminappointment.forceCareteamDuration(PSSConstants.FCT_AVAILABILITY_DURATION_GE);
+		adminappointment.chooseRCPorPCP(PSSConstants.selectRCPorPCP_GE);
 
 		log("Step 5: Fetching the rule and insurance.");
 		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
@@ -1744,6 +1805,255 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAllowPCPBookingGW() throws Exception {
+		log(" To Verify that PCP is followed for patient on PSS2.0 patient portal UI");
+		log("Step 1: Load test Data from External Property file.");
+		log("Step 1.1: set test data for existing patient. ");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		adminuser.setIsExisting(true);
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		log("Step 3: Clicking to Appointment tab.");
+		adminappointment.areBasicPageElementsPresent();
+
+		log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
+		adminappointment.toggleAllowPCP();
+		adminappointment.pCPAvailabilityDuration(PSSConstants.PCP_AVAILABILITY_DURATION_GW);
+		adminappointment.forceCareteamDuration(PSSConstants.FCT_AVAILABILITY_DURATION_GW);
+		adminappointment.chooseRCPorPCP(PSSConstants.selectRCPorPCP_GW);
+
+		log("Step 5: Fetching the rule and insurance.");
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		log("Insurance Status = " + patientflow.insuracetogglestatus());
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		log("Startpoint  Status = " + patientflow.isstartpagepresent());
+		adminappointment.logout();
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 6: PSS patient Portal 2.0 to book an Appointment - " + testData.getPatientPortalURL());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+
+		log("Step 7: Opening the Patient Portal URL and Logging in : ");
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
+				testData.getPatientPortalPassword());
+
+		log("Step 8: Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		Thread.sleep(1000);
+
+		log("Step 9: Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+
+		log("Switching tabs::::::::");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1000);
+
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(6000);
+
+		log("Step 10: Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+
+		log("Step 11: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 12: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 13: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+		
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAllowPCPBookingNG() throws Exception {
+		log(" To Verify that PCP is followed for patient on PSS2.0 patient portal UI");
+		log("Step 1: Load test Data from External Property file.");
+		log("Step 1.1: set test data for existing patient. ");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminuser.setIsExisting(true);
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		log("Step 3: Clicking to Appointment tab.");
+		adminappointment.areBasicPageElementsPresent();
+
+		log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
+		adminappointment.toggleAllowPCP();
+		adminappointment.pCPAvailabilityDuration(PSSConstants.PCP_AVAILABILITY_DURATION_NG);
+		adminappointment.forceCareteamDuration(PSSConstants.FCT_AVAILABILITY_DURATION_NG);
+		adminappointment.chooseRCPorPCP(PSSConstants.selectRCPorPCP_NG);
+
+		log("Step 5: Fetching the rule and insurance.");
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		log("Insurance Status = " + patientflow.insuracetogglestatus());
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		log("Startpoint  Status = " + patientflow.isstartpagepresent());
+		adminappointment.logout();
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 6: PSS patient Portal 2.0 to book an Appointment - " + testData.getPatientPortalURL());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+
+		log("Step 7: Opening the Patient Portal URL and Logging in : ");
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
+		testData.getPatientPortalPassword());
+
+		log("Step 8: Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		Thread.sleep(1000);
+
+		log("Step 9: Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+
+		log("Switching tabs::::::::");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1000);
+
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(6000);
+
+		log("Step 10: Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+
+		log("Step 11: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 12: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 13: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAllowPCPBookingAT() throws Exception {
+		log(" To Verify that PCP is followed for patient on PSS2.0 patient portal UI");
+		log("Step 1: Load test Data from External Property file.");
+		log("Step 1.1: set test data for existing patient. ");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		adminuser.setIsExisting(true);
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = pssadminutils.loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		log("Step 3: Clicking to Appointment tab.");
+		adminappointment.areBasicPageElementsPresent();
+
+		log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
+		adminappointment.toggleAllowPCP();
+		adminappointment.pCPAvailabilityDuration(PSSConstants.PCP_AVAILABILITY_DURATION_AT);
+		adminappointment.forceCareteamDuration(PSSConstants.FCT_AVAILABILITY_DURATION_AT);
+		adminappointment.chooseRCPorPCP(PSSConstants.selectRCPorPCP_AT);
+
+		log("Step 5: Fetching the rule and insurance.");
+		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		String rule = patientflow.getRule();
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		log("Insurance Status = " + patientflow.insuracetogglestatus());
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		log("Startpoint  Status = " + patientflow.isstartpagepresent());
+		adminappointment.logout();
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 6: PSS patient Portal 2.0 to book an Appointment - " + testData.getPatientPortalURL());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+
+		log("Step 7: Opening the Patient Portal URL and Logging in : ");
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
+		testData.getPatientPortalPassword());
+
+		log("Step 8: Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		Thread.sleep(1000);
+
+		log("Step 9: Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+
+		log("Switching tabs::::::::");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1000);
+
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(6000);
+
+		log("Step 10: Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+
+		log("Step 11: Verify Future appointment type for existence");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+
+		log("Step 12: Verify Past appointment type for existence");
+		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+
+		log("rule from admin=" + rule);
+		testData.setIsNextDayBooking(false);
+		log("Step 13: Select the flow as per the rule.");
+		testData.setIsCancelApt(false);
+
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+	
 	@Test(enabled = true, dataProvider = "partnerType", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testShowSearchLocation(String partnerPractice) throws Exception {
