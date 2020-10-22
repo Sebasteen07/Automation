@@ -15,7 +15,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 
 public class Speciality extends PSS2MainPage {
 
-	@FindAll({@FindBy(xpath = "//a[@class='btn specialtybtndashboard handle-text-Overflow outer-div']")})
+	@FindAll({@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 margin-right-specailty' or @class='btn specialtybtndashboard handle-text-Overflow outer-div']")})
 	private List<WebElement> selectSpecialityList;
 
 	@FindBy(how = How.ID, using = "specailtydashboard")

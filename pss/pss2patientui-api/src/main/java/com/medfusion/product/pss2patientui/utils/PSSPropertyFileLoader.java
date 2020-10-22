@@ -52,7 +52,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGE"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGW"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
