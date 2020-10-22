@@ -71,7 +71,6 @@ public class Location extends PSS2MainPage {
 	}
 
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
-		isViewallmessagesButtonPresent(driver);
 		log("location is  ");
 		log("location " + dateTime);
 		for (int i = 0; i < locationList.size(); i++) {

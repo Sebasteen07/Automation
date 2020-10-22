@@ -341,11 +341,8 @@ public class HomePage extends PSS2MainPage {
 		log("it returns on provider present and return to provider page");
 		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
-	public Speciality specilitypage()
-	{
-		log("it returns on Speciality present and return to provider page");
+	public Speciality specilitypage() {
+		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);
-
 	}
-	
 }
