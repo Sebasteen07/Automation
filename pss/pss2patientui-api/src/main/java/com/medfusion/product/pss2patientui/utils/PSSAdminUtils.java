@@ -329,9 +329,9 @@ public class PSSAdminUtils {
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
-		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
-		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint is Enabled= " + patientflow.isstartpagepresent());
 		patientflow.logout();
 
 	}

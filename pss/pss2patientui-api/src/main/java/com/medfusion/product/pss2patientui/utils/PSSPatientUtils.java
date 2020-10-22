@@ -81,20 +81,14 @@ public class PSSPatientUtils {
 				location = homepage.locationpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-
-		}
-
-		else {
-
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
-				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("clicked on location ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				location = homepage.locationpage();
-			}
+		} else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			Log4jUtil.log("clicked on location ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			location = homepage.locationpage();
 		}
 
 		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
@@ -134,20 +128,15 @@ public class PSSPatientUtils {
 				provider = homepage.providerpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
+		} else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
+			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			Log4jUtil.log("clicked on provider ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			provider = homepage.providerpage();
 
-		}
-
-		else {
-
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
-				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("clicked on provider ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				provider = homepage.providerpage();
-			}
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
@@ -184,20 +173,16 @@ public class PSSPatientUtils {
 				provider = homepage.providerpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-
 		}
 
-		else {
-
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
-				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("clicked on provider ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				provider = homepage.providerpage();
-			}
+		else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
+			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			Log4jUtil.log("clicked on provider ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			provider = homepage.providerpage();
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
@@ -238,19 +223,15 @@ public class PSSPatientUtils {
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
 
-		}
+		} else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			Log4jUtil.log("clicked on location ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			location = homepage.locationpage();
 
-		else {
-
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
-				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("clicked on location ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				location = homepage.locationpage();
-			}
 		}
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
@@ -272,7 +253,6 @@ public class PSSPatientUtils {
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
 			throws Exception {
-
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
@@ -294,17 +274,15 @@ public class PSSPatientUtils {
 
 		}
 
-		else {
+		else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			Log4jUtil.log("clicked on Appointment ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			appointment = homepage.appointmentpage();
 
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				Log4jUtil.log("clicked on Appointment ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				appointment = homepage.appointmentpage();
-			}
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
@@ -343,7 +321,6 @@ public class PSSPatientUtils {
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isIsstartpointPresent()) {
-
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
@@ -354,17 +331,15 @@ public class PSSPatientUtils {
 
 		}
 
-		else {
+		else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			Log4jUtil.log("select the starting point & click on  " + PSSConstants.START_APPOINTMENT);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			Log4jUtil.log("clicked on Appointment ");
+		} else {
+			Log4jUtil.log("Start point not present");
+			appointment = homepage.appointmentpage();
 
-			if (testData.isIsstartpointPresent()) {
-				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("select the starting point & click on  " + PSSConstants.START_APPOINTMENT);
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				Log4jUtil.log("clicked on Appointment ");
-			} else {
-				Log4jUtil.log("Start point not present");
-				appointment = homepage.appointmentpage();
-			}
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());

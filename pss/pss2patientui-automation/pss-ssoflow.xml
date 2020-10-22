@@ -19,8 +19,6 @@
 					<include name="testSSOFlowGE" />
 					<include name="testSSOFlowNG" />
 					<include name="testSSOforAllPartnerselectFlow" />
-					<include name="testSSOFlowAllPartner" />
-
 				</methods>
 			</class>
 		</classes>
