@@ -3,20 +3,15 @@ package com.intuit.ihg.product.integrationplatform.test;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.List;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -65,6 +60,7 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -332,7 +328,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
 		String message = AMDCPayload.getAMDCPayload(testData);
-		// log("message :- "+message);
+		log("message :- " + message);
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
 
@@ -407,9 +403,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 14: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
-		// log("Logging out");
-		// homePage.clickOnLogout();
-
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
@@ -419,31 +412,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
-		log("Step 18: Move to  Health Record page");
-		messagesPage.backToHomePage(driver);
-		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+		log("Step 18: Move to Health Record page ");
+		messagesPage.menuHealthRecordClickOnly();
 
 		log("Step 19: Open Other Documents");
-		MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+		DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPageFromMenu();
 
 		log("Step 20: Verify name, from and catagory type");
-		String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
-		log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
-		// Assert.assertTrue(attachmentData.toLowerCase().contains(testData.categoryType.toLowerCase()), "category type not found");
-		String[] attachmentResult = attachmentData.split("\n");
-		String[] catEnum = testData.portalCategoryType.split(",");
+		MedicalRecordSummariesPageObject.verifyName_From_CategoryType(testData.From, testData.categoryType, testData.fileName);
 
-		for (int j = 0; j < attachmentResult.length; j++) {
-			// log(attachmentResult[j]);
-			for (int m = 0; m < catEnum.length; m++) {
-				catEnum[m] = catEnum[m].replaceAll("_", " ").toLowerCase();
-				if (attachmentResult[j].toLowerCase().contains(catEnum[m]) && j <= catEnum.length) {
-					log("attachment matched : " + attachmentResult[j].toLowerCase());
-				}
-			}
-		}
-		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
 		log("Logging out");
 		homePage.clickOnLogout();
 
@@ -2729,11 +2706,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
-		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
-
 		Long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L;
 		Log4jUtil.log("Getting patients since timestamp: " + since);
+
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
 
 		log("Step 3: logout");
 		Thread.sleep(6000);
@@ -2743,7 +2720,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		log("Step 5: Do a get pidc call to get medfusion member id");
-		Thread.sleep(5000);
 		RestUtils.setupHttpGetRequest(testData.RestURLPIDC + "?since=" + since + ",0", testData.ResponsePath);
 		Thread.sleep(2000);
 		
@@ -2765,7 +2741,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
 		String statement =SMPObj.getStatementsMessagePayload(testData);
-		
+		log("Statement Payload----------------" + statement);
 		log("Step 8: Post statement to patient");
 		sEventObj.postStatement(testData, statement);
 		
@@ -2835,15 +2811,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		patient.setUrl(testData.Url);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
 		Thread.sleep(5000);
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientData(patient);
 		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 		Thread.sleep(12000);
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(), patient.getPassword(), testDataPFL);
-
-		Long timestamp = System.currentTimeMillis();
-		Long since = timestamp / 1000L;
-		Log4jUtil.log("Getting patients since timestamp: " + since);
 
 		StatementEventUtils sEventObj = new StatementEventUtils();
 		Thread.sleep(12000);

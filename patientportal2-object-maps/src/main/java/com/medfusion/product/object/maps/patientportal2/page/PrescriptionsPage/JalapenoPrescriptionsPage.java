@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
 import org.openqa.selenium.StaleElementReferenceException;
@@ -19,7 +20,7 @@ import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//input[@value='Continue']")
-	private WebElement continueButton;
+		private WebElement continueButton;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[1]/div/div[2]/input")
 	private WebElement medicationName;
@@ -119,12 +120,12 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			} catch (StaleElementReferenceException ex) {
 				log("Dont know what's going on here");
 			}
-		}
 
 		log("Clicking on continue button");
 		javascriptClick(continueButton);
 
 		driver.switchTo().defaultContent();
+		}
 	}
 
 	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
@@ -183,17 +184,14 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		Select cardSelect = new Select(carddropdown);
 		cardSelect.selectByIndex(3);
 
-		// System.out.println("Expiry month of card is " +testData.getProperty("cardExpiryMonthText"));
 		Select monthSelect = new Select(monthdd);
 		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
 
 		Select yearSelect = new Select(yeardd);
 		yearSelect.selectByValue(creditCard.getExpYear());
 
-		System.out.println("Prescription carnumber is ");
 		cardcvv.sendKeys(creditCard.getCvvCode());
 
-		System.out.println("Prescription car cvv code isis ");
 		cardzip.sendKeys(creditCard.getZipCode());
 
 	}

@@ -26,7 +26,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormAllergiesPage;
@@ -199,7 +198,7 @@ public class FormsExportUtils {
 				    Log4jUtil.log("File location is "+pdfFileLocation);
 				}
 				if(driver instanceof ChromeDriver) {
-					testData.responsePDF_FE = "./true/CCDExchangePdfBatch.pdf";
+					testData.responsePDF_FE = "./src/test/resources/common/CCDExchangePdfBatch.pdf";
 					String home = System.getProperty("user.home");
 					String fileName = externalPatientID+"_General_Registration_and_Health_History_"+currentDate;
 					File file = new File(home+"/Downloads/" + fileName + ".pdf");
