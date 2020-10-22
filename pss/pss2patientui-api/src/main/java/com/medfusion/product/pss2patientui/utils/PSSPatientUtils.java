@@ -66,8 +66,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select location for appointment.");
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance Status " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage Status " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
@@ -113,8 +113,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Disabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("start is Disabled " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
@@ -159,8 +159,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Disabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("start is Disabled " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
@@ -207,8 +207,8 @@ public class PSSPatientUtils {
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Disabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("start is Disabled " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("start is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
@@ -256,8 +256,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Disabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("start is Disabled " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
@@ -314,8 +314,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance Status " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage Status " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
@@ -385,8 +385,8 @@ public class PSSPatientUtils {
 		AppointmentPage appointment = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		Speciality speciality = null;
-		Log4jUtil.log("Insurance Status " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage Status " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
@@ -398,17 +398,12 @@ public class PSSPatientUtils {
 			} else {
 				Log4jUtil.log("StartPage Not Present");
 				appointment = homepage.appointmentpage();
-
 			}
-		}
-
-		else {
+		} else {
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-
 			if (testData.isIsstartpointPresent()) {
-
 				Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 
@@ -417,7 +412,6 @@ public class PSSPatientUtils {
 				speciality = homepage.specilitypage();
 				appointment = homepage.appointmentpage();
 				startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-
 			}
 
 		}
@@ -445,8 +439,8 @@ public class PSSPatientUtils {
 		AppointmentPage appointment = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		Speciality speciality = null;
-		Log4jUtil.log("Insurance Status " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage Status " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
@@ -477,11 +471,8 @@ public class PSSPatientUtils {
 				speciality = homepage.specilitypage();
 				appointment = homepage.appointmentpage();
 				startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-
 			}
-
 		}
-
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
