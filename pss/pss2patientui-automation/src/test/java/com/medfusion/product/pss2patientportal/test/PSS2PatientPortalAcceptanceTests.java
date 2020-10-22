@@ -766,7 +766,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 
 		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
+		log("Appointment Type- " + testData.getAppointmenttype());
+		log("Location- " + testData.getLocation());
+		log("Provider Name- " + testData.getProvider());
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		log("--------Admin Setting for Loginless Flow Starts----------");
