@@ -264,12 +264,13 @@ public class PSSPatientUtils {
 		Thread.sleep(15000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(22000);
+		Thread.sleep(2000);
 		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		// bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
