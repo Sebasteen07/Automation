@@ -127,8 +127,66 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().defaultContent();
 		}
 	}
-
 	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
+
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame("iframebody");
+
+		log("Insert medication info");
+		this.medicationName.sendKeys(medication);
+		this.dosage.sendKeys(dosage);
+		this.quantity.sendKeys(Integer.toString(quantity));
+		log("Insert pharmacy information");
+		Thread.sleep(1000);
+		AddradioButton.click();// Clicking on Add a pharmacy radio button
+		Thread.sleep(1000);
+		pharmacyName.sendKeys("PharmacyName");
+		pharmacyPhone.sendKeys("3216549870");
+		log("Click on Continue button");
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+		javascriptClick(continueButton);
+		Thread.sleep(1000);
+
+
+		log("Click on Submit button");
+		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+		javascriptClick(submitButton);
+
+		log("Return to Home Dashboard");
+		wait.until(ExpectedConditions.elementToBeClickable(homeButton));
+		javascriptClick(homeButton);
+
+		driver.switchTo().defaultContent();
+
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+
+	public void prescriptionPayment() throws Exception {
+		PropertyFileLoader testData = new PropertyFileLoader();
+
+		driver.switchTo().frame("iframebody");
+		String name = "TestPatient CreditCard";
+		cardholdername.sendKeys(name);
+
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+		cardnumber.sendKeys(creditCard.getCardNumber());
+
+		Select cardSelect = new Select(carddropdown);
+		cardSelect.selectByIndex(3);
+
+
+		Select monthSelect = new Select(monthdd);
+		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
+
+		Select yearSelect = new Select(yeardd);
+		yearSelect.selectByValue(creditCard.getExpYear());
+
+		cardcvv.sendKeys(creditCard.getCvvCode());
+		cardzip.sendKeys(creditCard.getZipCode());
+
+	}
+
+	public JalapenoHomePage fillThePrescriptionforExisitngUser(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
@@ -169,31 +227,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().defaultContent();
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
-
-	public void prescriptionPayment() throws Exception {
-		PropertyFileLoader testData = new PropertyFileLoader();
-
-		driver.switchTo().frame("iframebody");
-		String name = "TestPatient CreditCard";
-		cardholdername.sendKeys(name);
-
-		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
-		cardnumber.sendKeys(creditCard.getCardNumber());
-
-		Select cardSelect = new Select(carddropdown);
-		cardSelect.selectByIndex(3);
-
-		Select monthSelect = new Select(monthdd);
-		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
-
-		Select yearSelect = new Select(yeardd);
-		yearSelect.selectByValue(creditCard.getExpYear());
-
-		cardcvv.sendKeys(creditCard.getCvvCode());
-
-		cardzip.sendKeys(creditCard.getZipCode());
-
 	}
 
 }
