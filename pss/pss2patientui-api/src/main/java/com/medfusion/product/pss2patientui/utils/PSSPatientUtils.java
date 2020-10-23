@@ -371,7 +371,9 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		bookAppointment(false, aptDateTime, testData, driver);
+		// bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		Log4jUtil.log("Test Case Passed");
 	}
 
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment, WebDriver driver) throws Exception {
@@ -443,15 +445,16 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		bookAppointment(false, aptDateTime, testData, driver);
+		// bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		Log4jUtil.log("--------Flow Starts---------------");
-		AppointmentPage appointment = null;
-		StartAppointmentInOrder startappointmentInOrder = null;
-		Speciality speciality = null;
+		AppointmentPage appointment;
+		StartAppointmentInOrder startappointmentInOrder;
+		Speciality speciality;
 		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
 		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 
