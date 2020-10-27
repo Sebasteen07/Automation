@@ -28,7 +28,7 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
 	private WebElement gotoNextStep;
 
-	@FindAll({ @FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
+	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
 	private List<WebElement> appointmentTypeList;
 
 	public AppointmentPage(WebDriver driver) {
