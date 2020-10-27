@@ -66,7 +66,6 @@ public class AppointmentPage extends PSS2MainPage {
 
 	public Location selectTypeOfLocation(String locationConfig, Boolean isPopUpSelected) {
 		log("appointment type is " + locationConfig);
-		// searchAppointment.sendKeys(locationConfig);
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
 				appointmentTypeList.get(i).click();
