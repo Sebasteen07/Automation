@@ -85,8 +85,6 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	private WebElement noPastText;
 
-	// //div[@class='modal fade
-	// in']//div//div//div[3]//span[contains(text(),'Dismiss')]
 	@FindAll({
 			@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]") })
 	private List<WebElement> dismissButtons;
