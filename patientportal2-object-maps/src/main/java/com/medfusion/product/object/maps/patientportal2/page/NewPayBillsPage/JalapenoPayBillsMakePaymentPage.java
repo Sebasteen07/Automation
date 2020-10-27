@@ -1,8 +1,9 @@
 package com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage;
 
+import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -15,10 +16,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
-
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
 
 public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
@@ -87,6 +87,9 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 		private WebElement balanceDueDate;
+
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
+	private WebElement confirmationNumberMsg;
 
 		public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 				super(driver);
@@ -283,4 +286,11 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		public String getBalanceDueDate() {
 				return balanceDueDate.getText();
 		}
+
+	public String readConfirmationNumber() {
+		String confirmationNumberMsgstring = confirmationNumberMsg.getText();
+		String confirmationNumber = confirmationNumberMsgstring.substring(28, 40);
+		return confirmationNumber;
+
+	}
 }

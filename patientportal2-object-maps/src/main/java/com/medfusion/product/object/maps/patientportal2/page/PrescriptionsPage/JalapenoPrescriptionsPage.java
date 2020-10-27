@@ -12,12 +12,15 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
 public class JalapenoPrescriptionsPage extends JalapenoMenu {
+
+	private long createdTs;
 
 	@FindBy(how = How.XPATH, using = "//input[@value='Continue']")
 		private WebElement continueButton;
@@ -47,7 +50,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	private WebElement AddradioButton; // For add a New Pharmacy
 
 	@FindBy(how = How.LINK_TEXT, using = "Home")
-	private WebElement homeButton; // this is not home button in Jalapeno Menu
+	public WebElement homeButton; // this is not home button in Jalapeno Menu
 
 	@FindBy(how = How.XPATH, using = "//select[@name='locationContainer:locationDD']")
 	private WebElement locationDropdown;
@@ -88,13 +91,29 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(@name,'0:addMedPanel:medForm:addEditMedicationQuantityWrapper:_body:addEditMedicationQuantity')]")
 	private WebElement medicationQuantity;
 
+	@FindBy(how = How.XPATH, using = "//*[contains(@name,'0:addMedPanel:medForm:addEditMedicationRefillsWrapper:_body:addEditMedicationRefills')]")
+	private WebElement numberOfRefills;
+
+	@FindBy(how = How.XPATH, using = "//*[contains(@name,'0:addMedPanel:medForm:addEditMedicationRxNumWrapper:_body:addEditMedicationRxNum')]")
+	private WebElement prescriptionNumber;
+
+	@FindBy(how = How.XPATH, using = "//*[contains(@name,'0:additionalInfoForAddWrapper:_body:additionalInfoForAdd')]")
+	private WebElement additionalInformation;
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Add a Pharmacy')]/preceding-sibling::input[@name='pharmacyPanel:radioGroup']")
 	private WebElement addNewPharamcyRadioBtn;
+	
+
+	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
+	public WebElement renewalConfirmationmessage;
+
+
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
+		createdTs = System.currentTimeMillis();
+
 	}
 
 	@Override
@@ -186,7 +205,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	}
 
-	public JalapenoHomePage fillThePrescriptionforExisitngUser(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
+	public void fillThePrescriptionforExisitngUser() throws InterruptedException {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
@@ -194,19 +213,20 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		addAnotherMedicationBtn.click();
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 10, medicationNameField);
-		log("Insert Medication Details");
-		this.medicationNameField.sendKeys(medication);
-		this.medicationDosage.sendKeys(dosage);
-		this.medicationQuantity.sendKeys(Integer.toString(quantity));
+		log("Step 5: Insert Medication Details");
+		medicationNameField.sendKeys(PortalConstants.MedicationName + "" + createdTs);
+		medicationDosage.sendKeys(PortalConstants.Dosage);
+		medicationQuantity.sendKeys(PortalConstants.Quantity);
+		numberOfRefills.sendKeys(PortalConstants.No_Of_Refills);
+		prescriptionNumber.sendKeys(PortalConstants.Prescription_No);
+		additionalInformation.sendKeys(PortalConstants.Additional_Info);
 
 
-		log("Insert Pharmacy Details");
+		log("Step 6: Insert Pharmacy Details");
 		jse.executeScript("window.scrollBy(0,200)", "");
 		Thread.sleep(2000);
 		// Clicking on Add a pharmacy radio button to add new Pharmacy
-		jse.executeScript("window.scrollBy(0,200)", "");
-		Thread.sleep(2000);
-		jse.executeScript("window.scrollBy(0,200)", "");
+		jse.executeScript("window.scrollBy(0,400)", "");
 		addNewPharamcyRadioBtn.click();
 		pharmacyName.sendKeys("PharmacyName");
 		pharmacyPhone.sendKeys("3216549870");
@@ -215,18 +235,17 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		javascriptClick(continueButton);
 		Thread.sleep(2000);
 
-
 		log("Click on Submit button");
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 		javascriptClick(submitButton);
 
-		log("Return to Home Dashboard");
-		wait.until(ExpectedConditions.elementToBeClickable(homeButton));
-		javascriptClick(homeButton);
-
-		driver.switchTo().defaultContent();
-
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
+
+	public long getCreatedTs() {
+		IHGUtil.PrintMethodName();
+		return createdTs;
+	}
+
+
 
 }

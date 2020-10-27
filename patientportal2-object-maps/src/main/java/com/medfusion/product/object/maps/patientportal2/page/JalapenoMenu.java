@@ -24,6 +24,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoA
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
@@ -131,11 +132,11 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
-	public JalapenoAppointmentsPage clickOnMenuMessages() {
+	public JalapenoMessagesPage clickOnMenuMessages() {
 		openMenuIfClosed();
 		log("Clicking on Messages menu button");
 		messagesMenu.click();
-		return PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
+		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
 	public JalapenoAppointmentsPage clickOnMenuAppointments() {
