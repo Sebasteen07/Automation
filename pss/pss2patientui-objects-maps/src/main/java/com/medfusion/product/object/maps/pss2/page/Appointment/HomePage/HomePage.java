@@ -15,6 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
@@ -55,7 +56,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"myModal\"]/div/div/div[3]/div[3]/button/span")
 	private WebElement buttonRevertCancelAppointment;
 
-	@FindAll({ @FindBy(xpath = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
+	@FindAll({ @FindBy(xpath = "//a[@class='btn specialtybtndashboard handle-text-Overflow outer-div']") })
 	private List<WebElement> selectSpecialityList;
 
 	@FindAll({
@@ -84,7 +85,8 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	private WebElement noPastText;
 
-	@FindAll({ @FindBy(xpath = "//button[@id='closeAlertPopup'][@class='dismissbuttons']") })
+	@FindAll({
+			@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]") })
 	private List<WebElement> dismissButtons;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
@@ -341,6 +343,7 @@ public class HomePage extends PSS2MainPage {
 		log("it returns on provider present and return to provider page");
 		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
+
 	public Speciality specilitypage() {
 		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);

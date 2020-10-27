@@ -13,12 +13,13 @@
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
-					<include name="testSSOFlowNewPatientWithoutEMRIDGW" />
-					<include name="testSSOFlowNewPatientWithoutEMRIDGE" />
+					
 					<include name="testSSOFlowGW" />
 					<include name="testSSOFlowGE" />
 					<include name="testSSOFlowNG" />
 					<include name="testSSOforAllPartnerselectFlow" />
+					<include name="testSSOFlowNewPatientWithoutEMRIDGW" />
+					<include name="testSSOFlowNewPatientWithoutEMRIDGE" />
 				</methods>
 			</class>
 		</classes>
