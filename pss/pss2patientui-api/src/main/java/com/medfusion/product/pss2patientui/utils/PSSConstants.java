@@ -30,6 +30,10 @@ public class PSSConstants {
 	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
 	public final static String SLBT = "S,L,B,T";
+	public final static String SBLT = "S,B,L,T";
+	public final static String SBTL = "S,B,T,L";
+
+
 
 
 	public final static String LOGINLESS = "loginless";
