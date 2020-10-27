@@ -16,6 +16,7 @@ import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Lockout.ManageLockoutRules;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
+import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
@@ -40,6 +41,9 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
 	private WebElement linkResource;
 
+	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
+	private WebElement linkCareTeam;
+
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
 	private WebElement linkLocation;
 
@@ -60,10 +64,12 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	public void gotoSettings() {
 		javascriptClick(linkSettings);
+		log("Settings Tab clicked.....");
 	}
 
 	public ManageLocation gotoLocation() {
 		javascriptClick(linkLocation);
+		log("Location Tab clicked.....");
 		return PageFactory.initElements(driver, ManageLocation.class);
 	}
 
@@ -74,17 +80,26 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	public ManageSpecialty gotoSpeciality() {
 		javascriptClick(linkSpecialty);
+		log("Speciality Tab clicked.....");
 		return PageFactory.initElements(driver, ManageSpecialty.class);
 	}
 
 	public ManageAppointmentType gotoAppointment() {
 		javascriptClick(linkAppointmenttype);
+		log("Appointment Type Tab clicked.....");
 		return PageFactory.initElements(driver, ManageAppointmentType.class);
 	}
 
 	public ManageResource gotoResource() {
 		javascriptClick(linkResource);
+		log("Resource Tab clicked.....");
 		return PageFactory.initElements(driver, ManageResource.class);
+	}
+
+	public ManageCareTeam gotoCareTeam() {
+		javascriptClick(linkCareTeam);
+		log("Care Team Tab clicked.....");
+		return PageFactory.initElements(driver, ManageCareTeam.class);
 	}
 
 	public void logout() {

@@ -88,10 +88,8 @@ public class Appointment {
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
 
-
-
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
-			String appointmentConfig, String specialityConfig) {
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -101,9 +99,8 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-
-	public Appointment() {}
-
+	public Appointment() {
+	}
 
 	public boolean isIsstartpointPresent() {
 		return isstartpointPresent;
@@ -112,7 +109,6 @@ public class Appointment {
 	public void setIsstartpointPresent(boolean isstartpointPresent) {
 		this.isstartpointPresent = isstartpointPresent;
 	}
-
 
 	public boolean isIsinsuranceVisible() {
 		return isinsuranceVisible;
@@ -129,7 +125,6 @@ public class Appointment {
 	public void setUrlAnonymousNG(String urlAnonymousNG) {
 		this.urlAnonymousNG = urlAnonymousNG;
 	}
-
 
 	public boolean isAnonymousFlow() {
 		return isAnonymousFlow;
