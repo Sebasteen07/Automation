@@ -28,7 +28,7 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
 	private WebElement gotoNextStep;
 
-	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
+	@FindAll({ @FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
 	private List<WebElement> appointmentTypeList;
 
 	public AppointmentPage(WebDriver driver) {
@@ -64,8 +64,9 @@ public class AppointmentPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, Provider.class);
 	}
 
-	public Location selectTypeOfLocation(String locationConfig, Boolean isPopUpSelected)  {
-       log("appointment type is " +locationConfig);
+	public Location selectTypeOfLocation(String locationConfig, Boolean isPopUpSelected) {
+		log("appointment type is " + locationConfig);
+		// searchAppointment.sendKeys(locationConfig);
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(locationConfig)) {
 				appointmentTypeList.get(i).click();
@@ -81,10 +82,10 @@ public class AppointmentPage extends PSS2MainPage {
 		if (isPopUpSelected) {
 			log("is popup");
 			IHGUtil.waitForElement(driver, 60, gotoNextStep);
-			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');", gotoNextStep);
+			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');",
+					gotoNextStep);
 			gotoNextStep.click();
 			log("successfully clicked on next step");
-
 
 		}
 	}

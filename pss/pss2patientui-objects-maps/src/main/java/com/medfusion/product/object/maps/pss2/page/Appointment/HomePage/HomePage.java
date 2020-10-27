@@ -85,8 +85,10 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	private WebElement noPastText;
 
-	// //div[@class='modal fade in']//div//div//div[3]//span[contains(text(),'Dismiss')]
-	@FindAll({ @FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]")})
+	// //div[@class='modal fade
+	// in']//div//div//div[3]//span[contains(text(),'Dismiss')]
+	@FindAll({
+			@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]") })
 	private List<WebElement> dismissButtons;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
@@ -145,7 +147,6 @@ public class HomePage extends PSS2MainPage {
 		}
 		return null;
 	}
-	
 
 	public Location selectLocation(String specialityText) {
 		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
@@ -344,6 +345,7 @@ public class HomePage extends PSS2MainPage {
 		log("it returns on provider present and return to provider page");
 		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
+
 	public Speciality specilitypage() {
 		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);

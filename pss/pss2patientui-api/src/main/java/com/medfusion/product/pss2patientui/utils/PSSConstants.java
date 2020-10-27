@@ -67,7 +67,7 @@ public class PSSConstants {
 	public final static String FCT_AVAILABILITY_DURATION_GE = "1";
 	
 	public final static String selectRCPorPCP_GW = "pcp";
-	public final static String PCP_AVAILABILITY_DURATION_GW = "29";
+	public final static String PCP_AVAILABILITY_DURATION_GW = "100";
 	public final static String FCT_AVAILABILITY_DURATION_GW = "1";
 	
 	public final static String selectRCPorPCP_NG = "pcp";

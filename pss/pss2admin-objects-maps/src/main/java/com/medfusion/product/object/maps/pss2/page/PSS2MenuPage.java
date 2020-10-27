@@ -40,7 +40,7 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
 	private WebElement linkResource;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
 	private WebElement linkCareTeam;
 
