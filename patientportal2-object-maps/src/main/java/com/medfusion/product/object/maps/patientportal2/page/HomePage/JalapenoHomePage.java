@@ -70,18 +70,18 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "inprogressformbutton")
 	private WebElement continueRegistrationButton;
 
-	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble']")
+	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble ng-binding']")
 	private WebElement bubble;
 
-	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
+	@FindBy(how = How.ID, using = "currentPatientBubble-grp")
 	private WebElement mobileViewBubble;
 
-	@FindBy(how = How.ID, using = "listBadgedependent")
+	@FindBy(how = How.XPATH, using = "//span[@class='badge listBadge listBadgedependent ng-binding']")
 	private WebElement viewDifferentPatientButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='open-top-grp']/span[@id='listB-grp']")
+	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp ng-scope']")
 	private WebElement mobileViewDifferentPatientButton;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
 
@@ -115,6 +115,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask Ur Doc\"]")
 	private WebElement askADocButtonOnPopup;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='menu']//li[@id='home']")
+	private WebElement homeButton;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
 	private WebElement nextAppointmentSchedule;
@@ -127,6 +130,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		WebDriverWait wait= new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
@@ -284,9 +289,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		if (button) { 
-	        log("Regular Resolution Bubble is visible " + isElementVisible(bubble, 5));
-	        log("Mobile Resolution Bubble is visible " + isElementVisible(mobileViewBubble, 5));
-	        if (isElementVisible(bubble, 5)==true) {
+	        log("Regular Resolution Bubble is visible " + isElementVisible(bubble, 10));
+	        log("Mobile Resolution Bubble is visible " + isElementVisible(mobileViewBubble, 10));
+	        if (isElementVisible(bubble, 10)==true) {
 	            webElementsList.add(bubble);
 	        log("Regular size resolution Bubble added to the webElement List");
 	        }    
@@ -421,9 +426,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public void clickOnDifferentPatientView() {
 		log("Clicking on LinkedPatient icon - regular resolution");
 		try {
-			JavascriptExecutor ex = (JavascriptExecutor) driver;
-			ex.executeScript("arguments[0].click();", viewDifferentPatientButton);
-
+			javascriptClick(viewDifferentPatientButton);
 		} catch (NoSuchElementException ex) {
 			log("Did not find LinkedPatient icon, trying mobile version size");
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(mobileViewDifferentPatientButton));
@@ -473,6 +476,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 		askAQuestion.click();
 		askADocButtonOnPopup.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	
+	public void clickonHomeButton()
+	{
+		homeButton.click();	
 	}
 
 	public String getNextScheduledApptDate() {
