@@ -2,47 +2,66 @@ package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
-
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+
 public class DocumentsPage extends JalapenoMenu {
 
-		@FindBy(how = How.ID, using = "from-date-lbl")
-		private WebElement dateFrom;
+	@FindBy(how = How.ID, using = "from-date-lbl")
+	private WebElement dateFrom;
 
-		@FindBy(how = How.ID, using = "downloadBtn0")
-		private WebElement downloadBtn;
+	@FindBy(how = How.ID, using = "downloadBtn0")
+	private WebElement downloadBtn;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='documentsTable']/tbody[1]/tr/td[1]")
-		private WebElement fileName;
-		
-		;
+	@FindBy(how = How.XPATH, using = "//*[@id='documentsTable']/tbody[1]/tr/td[1]")
+	private WebElement fileName;
 
-		public DocumentsPage(WebDriver driver) {
-				super(driver);
-		}
+	@FindBy(how = How.XPATH, using = "//*[@id='documentsTable']/tbody[1]/tr/td[2]")
+	private WebElement from;
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(dateFrom);
-				return assessPageElements(webElementsList);
-		}
+	@FindBy(how = How.XPATH, using = "//*[@id='documentsTable']/tbody[1]/tr/td[4]")
+	private WebElement categoryType;
 
-		public boolean checkLastImportedFileName(String name) {
-				return name.equals(fileName.getText());
-		}
+	;
 
-		public void downloadSecureMessageAttachment() {    
-		 JavascriptExecutor jse = (JavascriptExecutor)driver;
-	     jse.executeScript("window.scrollBy(0,200)", "");
-			downloadBtn.click();
-        }
+	public DocumentsPage(WebDriver driver) {
+		super(driver);
+	}
+
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(dateFrom);
+		return assessPageElements(webElementsList);
+	}
+
+	public boolean checkLastImportedFileName(String name) {
+		return name.equals(fileName.getText());
+	}
+
+	public void downloadSecureMessageAttachment() {
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,200)", "");
+		downloadBtn.click();
+	}
+
+	public void verifyName_From_CategoryType(String from2, String categoryType2, String fileName2) {
+
+		Log4jUtil.log("From name on Portal " + from.getText() + " For From Name Posted " + from2);
+
+		categoryType2.equalsIgnoreCase(categoryType.getText());
+		Log4jUtil.log("CategoryType posted: " + categoryType2 + " Matches with the categoryType on portal : " + categoryType.getText());
+
+		fileName2.equalsIgnoreCase(fileName.getText());
+		Log4jUtil.log("File name posted: " + fileName2 + " Matches with the Filename on portal : " + fileName.getText());
+
+	}
 
 
 

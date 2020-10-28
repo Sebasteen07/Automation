@@ -163,17 +163,14 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			Select cardSelect = new Select(carddropdown);
 			cardSelect.selectByIndex(3);
 			
-			//System.out.println("Expiry month of card is " +testData.getProperty("cardExpiryMonthText"));
+		
 			Select monthSelect = new Select(monthdd);
 			monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
 			
 			Select yearSelect = new Select(yeardd);
 			yearSelect.selectByValue(creditCard.getExpYear());
 			
-			System.out.println("Prescription carnumber is ");
 			cardcvv.sendKeys(creditCard.getCvvCode());
-			
-			System.out.println("Prescription car cvv code isis ");
 			cardzip.sendKeys(creditCard.getZipCode());
 			
 		}

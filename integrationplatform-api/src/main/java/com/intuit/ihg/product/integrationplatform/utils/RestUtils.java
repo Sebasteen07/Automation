@@ -35,7 +35,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -68,7 +67,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
-// import com.intuit.ihg.product.integrationplatform.utils.PatientDetails;
+import com.medfusion.portal.utils.PortalConstants;
 
 
 public class RestUtils {
@@ -2846,7 +2845,11 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 	public static void comparePDFfiles(String file1, String file2) throws Exception {
 		String pdfFromPortal=ExternalFileReader.base64Encoder(file1,false);
 		String pdfFromGet=ExternalFileReader.base64Encoder(file2,false);
-		
+		Log4jUtil.log("pdfFromPortal----------------");
+		Log4jUtil.log(pdfFromPortal);
+		Log4jUtil.log("pdfFromGet----------------");
+		Log4jUtil.log(pdfFromGet);
+		Log4jUtil.log("----------------------------");
 		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
 		Log4jUtil.log("Is Pdf Matched : "+pdfMatch);
 		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
@@ -2873,10 +2876,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		{
 			Log4jUtil.log("http 204 response is empty");
 		}
-		
-		//Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
-		//		"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-		writeFile(responseFilePath, sResp);
+			writeFile(responseFilePath, sResp);
 		return resp.getStatusLine().getStatusCode();
 	}
 	

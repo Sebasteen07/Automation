@@ -230,7 +230,42 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
+	
+	/**
+	 * Will mark request as Proccessed Externally to next step
+	 * 
+	 * @return appt request search page
+	 * @throws InterruptedException
+	 */
 
+	public ApptRequestDetailStep2Page chooseprocessedExternallyAndSubmit() throws InterruptedException {
+		Thread.sleep(5000);
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		ApptRequestEntity entity = new ApptRequestEntity();
+		entity.setProcessOption(ApptRequestProcessOption.PROCESS_EXTERNALLY).setApptDate(entity.getApptDate())
+				.setSubject("Process Externally").setBody("This is a response from the Practice").setNoReply(false);
+		processApptAndSubmit(entity);
+		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
+	}
+
+	/**
+	 * Will mark request as Proccessed Externally to next step
+	 * 
+	 * @return appt request search page
+	 * @throws InterruptedException
+	 */
+
+	public ApptRequestDetailStep2Page chooseSetToPendingAndSubmit() throws InterruptedException {
+		Thread.sleep(5000);
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		ApptRequestEntity entity = new ApptRequestEntity();
+		entity.setProcessOption(ApptRequestProcessOption.SET_PENDING).setApptDate(entity.getApptDate())
+				.setSubject("Set to Pending").setBody("This is a response from the Practice").setNoReply(false);
+		processApptAndSubmit(entity);
+		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
+	}
 	/**
 	 * Will mark request as cancelled and continue to next step
 	 * 
