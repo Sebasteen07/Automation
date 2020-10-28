@@ -55,6 +55,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
@@ -236,11 +237,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
-		Thread.sleep(9000);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
 
 		log("Step 4: Create random  addresses to update");
 		Random random = new Random();
@@ -250,10 +251,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Address 1: " + firstLine + "\nAddress 2: " + secondLine);
 		Thread.sleep(9000);
 		log("Step 5: Modify address line 1 and 2 on MyAccountPage");
-		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
+		myAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
 
 		log("Step 6: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		myAccountPage.clickOnLogout();
 
 		log("Step 7: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
@@ -1126,6 +1127,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
+		String Subject = "Test " + timestamp;
 		String message =
 				RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getIntegrationPracticeID(), testData.getUserName(), "Test " + timestamp, null);
 
@@ -1151,24 +1153,25 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Check secure message in patient gmail inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
+		log("Link is " + emailMessageLink);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		Thread.sleep(9000);
-		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-		Thread.sleep(12000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+		assertTrue(homePage.isHomeButtonPresent(driver));
 
-		log("Step 8: Find message in Inbox");
-		String messageIdentifier = Long.toString(timestamp);
+		Thread.sleep(9000);
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
-		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+		Long since = timestamp / 1000L - 60 * 24;
 
-		log("Step 9: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(messageIdentifier));
+		log("Step 8: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, Subject), "Message received with timestamp");
 
 	}
 

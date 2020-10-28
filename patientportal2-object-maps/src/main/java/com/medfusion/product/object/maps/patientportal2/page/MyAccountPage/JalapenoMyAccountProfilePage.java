@@ -1,10 +1,13 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.medfusion.pojos.Patient;
 import org.apache.commons.lang.StringUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -17,7 +20,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.pojos.Patient;
 
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
@@ -381,4 +384,13 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 				zipCodeTextbox.sendKeys(updateData.get(11));
 				saveMyChanges.click();
 		}
+
+	public void modifyAndSubmitAddressLines(String firstLine, String secondLine) {
+		IHGUtil.PrintMethodName();
+		address1Textbox.clear();
+		address1Textbox.sendKeys(firstLine);
+		address2Textbox.clear();
+		address2Textbox.sendKeys(secondLine);
+		saveMyChanges.click();
+	}
 }
