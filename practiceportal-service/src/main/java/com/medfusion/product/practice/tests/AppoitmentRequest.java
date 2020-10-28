@@ -15,8 +15,8 @@ import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSe
 
 public class AppoitmentRequest extends BaseTestNGWebDriver {
 
-	public long ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
-			String doctorPassword) throws Exception {
+	public long ProceedAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason,
+			String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
 
 		log("Login to Practice Portal");
@@ -34,7 +34,8 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
 		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
 
 		log("Confirm response details to patient");
@@ -46,9 +47,10 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 
 		return detailStep1.getCreatedTs();
 	}
-	
-	public long ProceedAppoitmentRequesAttachmentt(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
-			String doctorPassword,String MessageErrorfilePath,String MessagefilePath) throws Exception {
+
+	public long ProceedAppoitmentRequesAttachmentt(WebDriver driver, Boolean checkDetails, String appointmentReason,
+			String portalUrl, String doctorLogin, String doctorPassword, String MessageErrorfilePath,
+			String MessagefilePath) throws Exception {
 		IHGUtil.PrintMethodName();
 
 		log("Login to Practice Portal");
@@ -66,8 +68,10 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
 		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
-		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmitAttachment(MessageErrorfilePath,MessagefilePath);
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmitAttachment(MessageErrorfilePath,
+				MessagefilePath);
 
 		log("Confirm response details to patient");
 		apptSearch = detailStep2.processApptRequest();
@@ -78,9 +82,9 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 
 		return detailStep1.getCreatedTs();
 	}
-	
-	public long ProceedAppoitmentRequestcancel(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
-			String doctorPassword) throws Exception {
+
+	public long ProceedAppoitmentRequestcancel(WebDriver driver, Boolean checkDetails, String appointmentReason,
+			String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
 
 		log("Login to Practice Portal");
@@ -98,7 +102,8 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
 		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
 		Thread.sleep(8000);
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseRequestCancelAndSubmit();
 
@@ -111,9 +116,9 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 
 		return detailStep1.getCreatedTs();
 	}
-	
-	public long ProceedAppoitmentRequestCommunicateOnly(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
-			String doctorPassword) throws Exception {
+
+	public long ProceedAppoitmentRequestCommunicateOnly(WebDriver driver, Boolean checkDetails,
+			String appointmentReason, String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
 
 		log("Login to Practice Portal");
@@ -131,7 +136,8 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
 		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
 		Thread.sleep(8000);
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseCommunicateAndSubmit();
 
@@ -144,9 +150,9 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 
 		return detailStep1.getCreatedTs();
 	}
-	
-	public long ProceedAppoitmentRequestUpdate(WebDriver driver, Boolean checkDetails, String appointmentReason, String portalUrl, String doctorLogin,
-			String doctorPassword) throws Exception {
+
+	public long ProceedAppoitmentRequestUpdate(WebDriver driver, Boolean checkDetails, String appointmentReason,
+			String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
 		IHGUtil.PrintMethodName();
 
 		log("Login to Practice Portal");
@@ -164,9 +170,124 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 		log("Choose process option and respond to patient");
 		Thread.sleep(1000);
 		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday", "Early Morning, Late Afternoon", appointmentReason));
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
 		Thread.sleep(8000);
 		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseUpdateAppointmentAndSubmit();
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+
+	public long ProceedAppoitmentProcessExternallyRequest(WebDriver driver, Boolean checkDetails,
+			String appointmentReason, String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseprocessedExternallyAndSubmit();
+
+		log("Confirm response details to patient");
+		apptSearch = detailStep2.processApptRequest();
+		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
+
+		log("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		return detailStep1.getCreatedTs();
+	}
+
+	public void ProceedAppoitmentRequestExternalProcess(WebDriver driver, Boolean checkDetails,
+			String appointmentReason, String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForExternalProcessApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+		
+		log("Choose process option and Verify the Request is present ");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
+
+	}
+	
+	public void ProceedAppoitmentRequestSetToPending(WebDriver driver, Boolean checkDetails,
+			String appointmentReason, String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForPendingApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+		
+		log("Choose process option and Verify the Request is present ");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
+
+	}
+	
+	public long ProceedAppoitmentSetToPendingRequest(WebDriver driver, Boolean checkDetails,
+			String appointmentReason, String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
+		IHGUtil.PrintMethodName();
+
+		log("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		log("Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+
+		log("Search for appt requests");
+		apptSearch.searchForApptRequests();
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+
+		log("Choose process option and respond to patient");
+		Thread.sleep(1000);
+		if (checkDetails)
+			assertTrue(detailStep1.checkAppointmentDetails("Any", "Monday,Tuesday,Wednesday,Thursday",
+					"Early Morning, Late Afternoon", appointmentReason));
+		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseSetToPendingAndSubmit();
 
 		log("Confirm response details to patient");
 		apptSearch = detailStep2.processApptRequest();
