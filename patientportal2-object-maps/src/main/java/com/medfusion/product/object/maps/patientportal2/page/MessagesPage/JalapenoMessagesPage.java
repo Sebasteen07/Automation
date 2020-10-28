@@ -261,3 +261,4 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		return PageFactory.initElements(driver, NGCcdViewerPage.class);
 	}
 }
+
