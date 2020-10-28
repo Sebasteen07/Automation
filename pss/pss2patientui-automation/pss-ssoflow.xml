@@ -17,7 +17,7 @@
 					<include name="testSSOFlowGW" />
 					<include name="testSSOFlowGE" />
 					<include name="testSSOFlowNG" />
-					<include name="testSSOforAllPartnerselectFlow" />
+				    <include name="testSSOFlowAT" />
 					<include name="testSSOFlowNewPatientWithoutEMRIDGW" />
 					<include name="testSSOFlowNewPatientWithoutEMRIDGE" />
 				</methods>
