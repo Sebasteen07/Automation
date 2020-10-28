@@ -174,12 +174,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Click Ask A Staff");
 		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskAStaff(driver);
-		
+
 		Thread.sleep(8000);
 		log("Step 4: fill and complete the of Ask A Staff");
 		boolean askStaff2 = askStaff1.fillAndSubmitAskAStaff(driver);
 
-		
+
 		log("Step 6: Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskAStaff(driver);
 		boolean aasHistory = askStaff1.checkHistory(driver);
@@ -341,7 +341,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				pCreateAccountPage.fillPatientActivaion(zip, email, testData.getNewPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer());
 		Thread.sleep(9000);
 		log("Step 8: Assert Webelements in MyPatientPage");
-		//assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
+		// assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
 
 		log("Step 9: Signing out of the Patient Portal");
 		myPatientPage.clickLogout(driver);
@@ -421,13 +421,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 		Thread.sleep(9000);
-	
+
 		log("Step 4: Click on PrescriptionRenewal Link ");
 		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
 		Thread.sleep(15000);
 		prescriptionsPage.clickContinueButton(driver);
 		Thread.sleep(15000);
-		
+
 		log("Getting Medication Name ");
 		long time = prescriptionsPage.getCreatedTs();
 		String medicationName = PortalConstants.MedicationName.toString() + String.valueOf(time);
@@ -450,11 +450,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Logout of Patient Portal");
 		homePage.clickOnLogout();
-		
+
 		log("Step 9: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
-	
+
 		log("Step 10: Get Prescription Rest call");
 		// get only messages from last hour in epoch time to avoid transferring
 		// lot of data
@@ -543,7 +543,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testOnlineBillPayment() throws Exception {
-
 
 		log("Test Case: testOnlineBillPayment");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -727,10 +726,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
 		Thread.sleep(3000);
 		log("Step 2: Fill in payment info and submit");
-		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
+		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
+				testcasesData.getEmail()));
 		Thread.sleep(90000);
 		log("Step 3: Verify payment OK");
-		
+
 		log("Step 4: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A."));
 
@@ -808,7 +808,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNow payNowData = new PayNow();
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
-		
+
 		log("Step 1: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
@@ -927,7 +927,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 6: Logout from Patient portal");
 		myAccountPage.logout(driver);
-		
+
 		Thread.sleep(5000);
 		log("Step 7: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());

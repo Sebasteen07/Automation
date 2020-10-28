@@ -23,7 +23,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	private long createdTs;
 
 	@FindBy(how = How.XPATH, using = "//input[@value='Continue']")
-		private WebElement continueButton;
+	private WebElement continueButton;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[1]/div/div[2]/input")
 	private WebElement medicationName;
@@ -102,7 +102,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Add a Pharmacy')]/preceding-sibling::input[@name='pharmacyPanel:radioGroup']")
 	private WebElement addNewPharamcyRadioBtn;
-	
+
 
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
@@ -118,7 +118,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		// TODO
 		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
 		return true;
 	}
@@ -140,12 +139,13 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				log("Dont know what's going on here");
 			}
 
-		log("Clicking on continue button");
-		javascriptClick(continueButton);
+			log("Clicking on continue button");
+			javascriptClick(continueButton);
 
-		driver.switchTo().defaultContent();
+			driver.switchTo().defaultContent();
 		}
 	}
+
 	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
 
 		driver.switchTo().defaultContent();
