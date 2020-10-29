@@ -123,6 +123,20 @@ public class ApptRequestSearchPage extends BasePageObject {
 
 		searchForApptRequests(ApptRequestStatus.CANCELLED, null, null);
 	}
+	
+	public void searchForExternalProcessApptRequests() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		searchForApptRequests(ApptRequestStatus.PROCESSED_EXTERNALLY, null, null);
+	}
+	
+	public void searchForPendingApptRequests() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+
+		searchForApptRequests(ApptRequestStatus.PENDING, null, null);
+	}
 
 	/**
 	 * Searches for requests using default options on the page. Also sets the to and from month value same - Effectively searching only for the day's appointments
