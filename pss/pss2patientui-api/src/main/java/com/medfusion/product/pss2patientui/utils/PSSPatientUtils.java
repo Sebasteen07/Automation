@@ -80,21 +80,7 @@ public class PSSPatientUtils {
 				location = homepage.locationpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-			// <<<<<<< HEAD
-			//
-			// }
-			//
-			// else {
-			// if (testData.isIsstartpointPresent()) {
-			// startappointmentInOrder = homepage.startpage();
-			// Log4jUtil.log("in else part click on " + PSSConstants.START_LOCATION);
-			// location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-			// Log4jUtil.log("clicked on location ");
-			// } else {
-			// Log4jUtil.log("Start point not present");
-			// location = homepage.locationpage();
-			// }
-			// =======
+
 		} else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
@@ -103,7 +89,6 @@ public class PSSPatientUtils {
 		} else {
 			Log4jUtil.log("Start point not present");
 			location = homepage.locationpage();
-			// >>>>>>> f2e45b13e3e8f1e2af82ee3f025cbc240d7fa30b
 		}
 
 		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
@@ -140,18 +125,6 @@ public class PSSPatientUtils {
 				provider = homepage.providerpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-			// <<<<<<< HEAD
-			// } else {
-			// if (testData.isIsstartpointPresent()) {
-			// startappointmentInOrder = homepage.startpage();
-			// Log4jUtil.log("in else part click on " + PSSConstants.START_PROVIDER);
-			// provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-			// Log4jUtil.log("clicked on provider ");
-			// } else {
-			// Log4jUtil.log("Start point not present");
-			// provider = homepage.providerpage();
-			// }
-			// =======
 		} else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
@@ -160,15 +133,12 @@ public class PSSPatientUtils {
 		} else {
 			Log4jUtil.log("Start point not present");
 			provider = homepage.providerpage();
-
-			// >>>>>>> f2e45b13e3e8f1e2af82ee3f025cbc240d7fa30b
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
-
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
@@ -176,7 +146,6 @@ public class PSSPatientUtils {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
-		// bookAppointment(false, aptDateTime, testData, driver);
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -222,7 +191,6 @@ public class PSSPatientUtils {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
-		// bookAppointment(false, aptDateTime, testData, driver);
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -269,7 +237,6 @@ public class PSSPatientUtils {
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		// bookAppointment(false, aptDateTime, testData, driver);
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
@@ -303,9 +270,7 @@ public class PSSPatientUtils {
 		} else {
 			Log4jUtil.log("Start point not present");
 			appointment = homepage.appointmentpage();
-
 		}
-
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
