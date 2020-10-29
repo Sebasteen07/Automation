@@ -559,7 +559,7 @@ public class PSSPatientUtils {
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
 			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-			// appointmentToScheduled(confirmationpage, testData);
+			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
 
