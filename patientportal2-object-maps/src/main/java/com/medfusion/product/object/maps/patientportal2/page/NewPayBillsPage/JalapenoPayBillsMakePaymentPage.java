@@ -1,8 +1,9 @@
 package com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage;
 
+import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -15,272 +16,281 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
-
 public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
-		@FindBy(how = How.ID, using = "payment_amount")
-		private WebElement paymentAmount;
+	@FindBy(how = How.ID, using = "payment_amount")
+	private WebElement paymentAmount;
 
-		@FindBy(how = How.ID, using = "creditCardAddButton")
-		private WebElement addNewCardButton;
+	@FindBy(how = How.ID, using = "creditCardAddButton")
+	private WebElement addNewCardButton;
 
-		@FindBy(how = How.ID, using = "removeCardOkButton")
-		private WebElement removeCardOkButton;
+	@FindBy(how = How.ID, using = "removeCardOkButton")
+	private WebElement removeCardOkButton;
 
-		@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'pay_history']")
-		private WebElement payHistoryButton;
+	@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'pay_history']")
+	private WebElement payHistoryButton;
 
-		@FindBy(how = How.ID, using = "accountNumber")
-		private WebElement accountNumber;
+	@FindBy(how = How.ID, using = "accountNumber")
+	private WebElement accountNumber;
 
-		@FindBy(how = How.ID, using = "cvv")
-		private WebElement confirmCVV;
+	@FindBy(how = How.ID, using = "cvv")
+	private WebElement confirmCVV;
 
-		@FindBy(how = How.ID, using = "make_payment_submit")
-		private WebElement continueButton;
+	@FindBy(how = How.ID, using = "make_payment_submit")
+	private WebElement continueButton;
 
-		@FindBy(how = How.ID, using = "nameOnCard")
-		private WebElement nameOnCard;
+	@FindBy(how = How.ID, using = "nameOnCard")
+	private WebElement nameOnCard;
 
-		@FindBy(how = How.ID, using = "bill_zipcode")
-		private WebElement bill_zipcode;
+	@FindBy(how = How.ID, using = "bill_zipcode")
+	private WebElement bill_zipcode;
 
-		@FindBy(how = How.ID, using = "cardNumber")
-		private WebElement cardNumber;
+	@FindBy(how = How.ID, using = "cardNumber")
+	private WebElement cardNumber;
 
-		@FindBy(how = How.ID, using = "expirationDate_month")
-		private WebElement expirationMonth;
+	@FindBy(how = How.ID, using = "expirationDate_month")
+	private WebElement expirationMonth;
 
-		@FindBy(how = How.ID, using = "expirationDate_year")
-		private WebElement expirationYear;
+	@FindBy(how = How.ID, using = "expirationDate_year")
+	private WebElement expirationYear;
 
-		@FindBy(how = How.ID, using = "creditCardCVV")
-		private WebElement creditCardCVV;
+	@FindBy(how = How.ID, using = "creditCardCVV")
+	private WebElement creditCardCVV;
 
-		@FindBy(how = How.ID, using = "cardSubmitButton")
-		private WebElement submitNewCard;
+	@FindBy(how = How.ID, using = "cardSubmitButton")
+	private WebElement submitNewCard;
 
-		@FindBy(how = How.ID, using = "amex")
-		private WebElement amexCard;
+	@FindBy(how = How.ID, using = "amex")
+	private WebElement amexCard;
 
-		@FindBy(how = How.ID, using = "discover")
-		private WebElement discoverCard;
+	@FindBy(how = How.ID, using = "discover")
+	private WebElement discoverCard;
 
-		@FindBy(how = How.ID, using = "mastercard")
-		private WebElement mastercardCard;
+	@FindBy(how = How.ID, using = "mastercard")
+	private WebElement mastercardCard;
 
-		@FindBy(how = How.ID, using = "visa")
-		private WebElement visaCard;
+	@FindBy(how = How.ID, using = "visa")
+	private WebElement visaCard;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[1]")
-		private WebElement statementDetails;
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span[1]")
+	private WebElement statementDetails;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")
-		private WebElement balanceDue;
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")
+	private WebElement balanceDue;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[6]/span")
-		private WebElement outstandingInsuranceBalance;
+	@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[6]/span")
+	private WebElement outstandingInsuranceBalance;
 
-		@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
-		private WebElement balanceDueDate;
+	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
+	private WebElement balanceDueDate;
 
-		public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
-				super(driver);
-				IHGUtil.PrintMethodName();
-				driver.manage().window().maximize();
-				PageFactory.initElements(driver, this);
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
+	private WebElement confirmationNumberMsg;
+
+	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
+		super(driver);
+		IHGUtil.PrintMethodName();
+		driver.manage().window().maximize();
+		PageFactory.initElements(driver, this);
+	}
+
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
+		webElementsList.add(paymentAmount);
+		webElementsList.add(payHistoryButton);
+		webElementsList.add(addNewCardButton);
+		webElementsList.add(accountNumber);
+		webElementsList.add(continueButton);
+		return assessPageElements(webElementsList);
+	}
+
+	private void fillNewCardInformation(CreditCard card) throws InterruptedException {
+		log("Verify all elements of lightbox are visible");
+		assertTrue(areAddNewCreditCardLightboxElementsPresent());
+
+		log("Filling info about new credit card");
+		log("Name on card: " + card.getName());
+		Thread.sleep(2000);
+		nameOnCard.sendKeys(card.getName());
+		log("ZipCode: " + card.getZipCode());
+		bill_zipcode.sendKeys(card.getZipCode());
+
+		log("Card number: " + card.getCardNumber());
+		cardNumber.sendKeys(card.getCardNumber());
+
+		log("Expiration: " + card.getExpMonth() + "/" + card.getExpYear());
+
+		Select selectMonth = new Select(expirationMonth);
+		selectMonth.selectByVisibleText(card.getExpMonth());
+
+		Select selectYear = new Select(expirationYear);
+		selectYear.selectByVisibleText(card.getExpYear());
+		log("CVV: " + card.getCvvCode());
+		creditCardCVV.sendKeys(card.getCvvCode());
+
+		log("Checking if " + card.getType() + " card type is selected");
+		assert isCardTypeSelected(card.getType()) : "Wrong card type was selected.";
+
+		log("Submit new card");
+		submitNewCard.click();
+		Thread.sleep(3000);
+	}
+
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) throws InterruptedException {
+		return fillPaymentInfo(amount, accNumber, creditCard, "");
+	}
+
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		log("Click on Add New Card");
+		wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
+		addNewCardButton.sendKeys(Keys.ENTER);
+		fillNewCardInformation(creditCard);
+
+		log("Insert Payment amount: " + amount);
+		paymentAmount.sendKeys(amount);
+
+		log("Insert account number: " + accNumber);
+		accountNumber.sendKeys(accNumber);
+
+		log("Insert CVV code: " + creditCard.getCvvCode());
+		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
+
+		confirmCVV.sendKeys(creditCard.getCvvCode());
+
+		if (!location.equals("")) {
+			log("Location not empty, selecting");
+			Select selectLoc = new Select(driver.findElement(By.name("location")));
+			selectLoc.selectByVisibleText(location);
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		log("Click on Continue button");
+		// Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+		continueButton.sendKeys(Keys.ENTER);
 
-				webElementsList.add(paymentAmount);
-				webElementsList.add(payHistoryButton);
-				webElementsList.add(addNewCardButton);
-				webElementsList.add(accountNumber);
-				webElementsList.add(continueButton);
-				return assessPageElements(webElementsList);
-		}
+		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
+	}
 
-		private void fillNewCardInformation(CreditCard card) throws InterruptedException {
-				log("Verify all elements of lightbox are visible");
-				assertTrue(areAddNewCreditCardLightboxElementsPresent());
+	private ArrayList<WebElement> getCreditCards() {
+		return (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
+	}
 
-				log("Filling info about new credit card");
-				log("Name on card: " + card.getName());
-				Thread.sleep(2000);
-				nameOnCard.sendKeys(card.getName());
-				log("ZipCode: " + card.getZipCode());
-				bill_zipcode.sendKeys(card.getZipCode());
+	public boolean isAnyCardPresent() {
+		return getCreditCards().size() > 0;
+	}
 
-				log("Card number: " + card.getCardNumber());
-				cardNumber.sendKeys(card.getCardNumber());
-				
-				log("Expiration: " + card.getExpMonth() + "/" + card.getExpYear());
+	public void removeAllCards() throws InterruptedException {
+		log("Removing of displayed cards");
+		ArrayList<WebElement> cards = getCreditCards();
 
-				Select selectMonth = new Select(expirationMonth);
-				selectMonth.selectByVisibleText(card.getExpMonth());
+		if (cards.size() > 0) {
+			log("Count of displayed cards: " + cards.size());
+			int removedCards = 0;
 
-				Select selectYear = new Select(expirationYear);
-				selectYear.selectByVisibleText(card.getExpYear());
-				log("CVV: " + card.getCvvCode());
-				creditCardCVV.sendKeys(card.getCvvCode());
-
-				log("Checking if " + card.getType() + " card type is selected");
-				assert isCardTypeSelected(card.getType()) : "Wrong card type was selected.";
-
-				log("Submit new card");
-				submitNewCard.click();
-				Thread.sleep(3000);
-		}
-
-		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) throws InterruptedException {
-				return fillPaymentInfo(amount, accNumber, creditCard, "");
-		}
-
-		public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) throws InterruptedException {
-
-				WebDriverWait wait = new WebDriverWait(driver, 10);
-
-				log("Click on Add New Card");
-				wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
-				addNewCardButton.sendKeys(Keys.ENTER);
-				fillNewCardInformation(creditCard);
-
-				log("Insert Payment amount: " + amount);
-				paymentAmount.sendKeys(amount);
-
-				log("Insert account number: " + accNumber);
-				accountNumber.sendKeys(accNumber);
-
-				log("Insert CVV code: " + creditCard.getCvvCode());
-				wait.until(ExpectedConditions.visibilityOf(confirmCVV));
-				
-				confirmCVV.sendKeys(creditCard.getCvvCode());
-
-				if (!location.equals("")) {
-						log("Location not empty, selecting");
-						Select selectLoc = new Select(driver.findElement(By.name("location")));
-						selectLoc.selectByVisibleText(location);
+			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
+			for (int i = 0; i < removeButtons.size(); i++) {
+				if (removeButtons.get(i).isDisplayed()) {
+					removeCreditCard(removeButtons.get(i));
+					log("Card #" + ++removedCards + " removed");
+					// need to sleep because of modal disappearing time
+					Thread.sleep(2000);
 				}
-
-				log("Click on Continue button");
-				// Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
-				wait.until(ExpectedConditions.elementToBeClickable(continueButton));
-				continueButton.sendKeys(Keys.ENTER);
-
-				return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
+			}
+		} else {
+			log("No previous card is displayed");
 		}
+	}
 
-		private ArrayList<WebElement> getCreditCards() {
-				return (ArrayList<WebElement>) driver.findElements(By.xpath("//li[contains(@class, 'toggleCheck')]"));
+	private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
+		removeButton.click();
+
+		wait.until(ExpectedConditions.elementToBeClickable(removeCardOkButton));
+		removeCardOkButton.click();
+
+		return this;
+	}
+
+	private boolean isCardTypeSelected(CardType type) {
+		switch (type) {
+			case Visa:
+				return visaCard.getAttribute("class").contains("ccselected");
+			case Mastercard:
+				return mastercardCard.getAttribute("class").contains("ccselected");
+			case Discover:
+				return discoverCard.getAttribute("class").contains("ccselected");
+			case Amex:
+				return amexCard.getAttribute("class").contains("ccselected");
+			default:
+				log("Unknown card type was inserted");
+				return false;
 		}
+	}
 
-		public boolean isAnyCardPresent() {
-				return getCreditCards().size() > 0;
-		}
+	// modified assess to see if it will work without waitForElement and moved allElementsDisplayed=true at the end
+	@Deprecated // same functionality as areBasicElementPresent
+	public boolean assessPayBillsMakePaymentPageElements() {
 
-		public void removeAllCards() throws InterruptedException {
-				log("Removing of displayed cards");
-				ArrayList<WebElement> cards = getCreditCards();
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
-				if (cards.size() > 0) {
-						log("Count of displayed cards: " + cards.size());
-						int removedCards = 0;
+		webElementsList.add(paymentAmount);
+		webElementsList.add(payHistoryButton);
+		webElementsList.add(addNewCardButton);
+		webElementsList.add(accountNumber);
+		webElementsList.add(continueButton);
 
-						ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
-						for (int i = 0; i < removeButtons.size(); i++) {
-								if (removeButtons.get(i).isDisplayed()) {
-										removeCreditCard(removeButtons.get(i));
-										log("Card #" + ++removedCards + " removed");
-										// need to sleep because of modal disappearing time
-										Thread.sleep(2000);
-								}
-						}
-				} else {
-						log("No previous card is displayed");
-				}
-		}
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
 
-		private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
-				removeButton.click();
+	private boolean areAddNewCreditCardLightboxElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(nameOnCard);
+		webElementsList.add(bill_zipcode);
+		webElementsList.add(cardNumber);
+		webElementsList.add(expirationMonth);
+		webElementsList.add(expirationYear);
+		webElementsList.add(creditCardCVV);
+		webElementsList.add(submitNewCard);
+		webElementsList.add(amexCard);
+		webElementsList.add(discoverCard);
+		webElementsList.add(mastercardCard);
+		webElementsList.add(visaCard);
 
-				wait.until(ExpectedConditions.elementToBeClickable(removeCardOkButton));
-				removeCardOkButton.click();
+		return assessPageElements(webElementsList);
+	}
 
-				return this;
-		}
+	public void gotoStatementDetail() {
+		statementDetails.click();
+	}
 
-		private boolean isCardTypeSelected(CardType type) {
-				switch (type) {
-						case Visa:
-								return visaCard.getAttribute("class").contains("ccselected");
-						case Mastercard:
-								return mastercardCard.getAttribute("class").contains("ccselected");
-						case Discover:
-								return discoverCard.getAttribute("class").contains("ccselected");
-						case Amex:
-								return amexCard.getAttribute("class").contains("ccselected");
-						default:
-								log("Unknown card type was inserted");
-								return false;
-				}
-		}
+	public String getAccountNumber() {
+		return accountNumber.getAttribute("value");
+	}
 
-		// modified assess to see if it will work without waitForElement and moved allElementsDisplayed=true at the end
-		@Deprecated //same functionality as areBasicElementPresent
-		public boolean assessPayBillsMakePaymentPageElements() {
+	public String getBalanceDue() {
+		return balanceDue.getText();
+	}
 
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+	public String getOutstandingInsuranceBalance() {
+		return outstandingInsuranceBalance.getText();
+	}
 
-				webElementsList.add(paymentAmount);
-				webElementsList.add(payHistoryButton);
-				webElementsList.add(addNewCardButton);
-				webElementsList.add(accountNumber);
-				webElementsList.add(continueButton);
+	public String getBalanceDueDate() {
+		return balanceDueDate.getText();
+	}
 
-				return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-		}
+	public String readConfirmationNumber() {
+		String confirmationNumberMsgstring = confirmationNumberMsg.getText();
+		String confirmationNumber = confirmationNumberMsgstring.substring(28, 40);
+		return confirmationNumber;
 
-		private boolean areAddNewCreditCardLightboxElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(nameOnCard);
-				webElementsList.add(bill_zipcode);
-				webElementsList.add(cardNumber);
-				webElementsList.add(expirationMonth);
-				webElementsList.add(expirationYear);
-				webElementsList.add(creditCardCVV);
-				webElementsList.add(submitNewCard);
-				webElementsList.add(amexCard);
-				webElementsList.add(discoverCard);
-				webElementsList.add(mastercardCard);
-				webElementsList.add(visaCard);
-
-				return assessPageElements(webElementsList);
-		}
-
-		public void gotoStatementDetail() {
-				statementDetails.click();
-		}
-
-		public String getAccountNumber() {
-				return accountNumber.getAttribute("value");
-		}
-
-		public String getBalanceDue() {
-				return balanceDue.getText();
-		}
-
-		public String getOutstandingInsuranceBalance() {
-				return outstandingInsuranceBalance.getText();
-		}
-
-		public String getBalanceDueDate() {
-				return balanceDueDate.getText();
-		}
+	}
 }
