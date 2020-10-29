@@ -3274,5 +3274,4 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "EncounterHavingALLData","");
 		log("Test Case End: The Patient is able to receive Locked Encounter CCD successfully");
 	    }
-
 }
