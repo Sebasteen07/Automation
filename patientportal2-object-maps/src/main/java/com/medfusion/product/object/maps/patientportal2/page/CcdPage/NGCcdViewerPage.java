@@ -310,7 +310,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(problems);
 			webElementsList.add(medication);
 			webElementsList.add(allergies);
-//			webElementsList.add(pastMedicalHistory);
 			webElementsList.add(procedures);
 			webElementsList.add(vitalSigns);
 			webElementsList.add(results);
@@ -320,7 +319,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(immunizations);
 			webElementsList.add(payer);
 			webElementsList.add(socialHistory);
-//			webElementsList.add(chiefComplaintAndReasonForVisit);
 			webElementsList.add(reasonForReferral);
 			webElementsList.add(planOfTreatment);
 			webElementsList.add(functionalStatus);
@@ -331,8 +329,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(medicalEquipment);
 			webElementsList.add(mentalStatus);
 			webElementsList.add(healthConcerns);
-//			webElementsList.add(generalStatus);
-//			webElementsList.add(reviewOfSystem);
 
 			return assessPageElements(webElementsList);
 	}
