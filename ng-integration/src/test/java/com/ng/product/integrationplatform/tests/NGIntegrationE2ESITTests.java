@@ -57,6 +57,7 @@ import com.ng.product.integrationplatform.apiUtils.apiRoutes;
 import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.pojo.NewPatient;
+import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
@@ -3173,7 +3174,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify CCD received in the Get Api Call.");
 		RestUtils.verifyOnDemandRequestSubmitted(PropertyLoaderObj.getResponsePath(), person_nbr.trim().replace("\t", ""));
 		
-		Thread.sleep(60000);
+		Thread.sleep(80000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, personId,practiceId1, integrationPracticeId1, 2);
 		
 		logStep("Verify OnDemand CCD is received by Trusted Representative for Practice 1");
@@ -3274,4 +3275,196 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "EncounterHavingALLData","");
 		log("Test Case End: The Patient is able to receive Locked Encounter CCD successfully");
 	    }
+	
+	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUnSignedOffLabResultInCCD() throws Throwable{
+		log("Test Case: Verify the Un signed off Lab results are not displayed in CCD.");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		String locationName =PropertyLoaderObj.getNGE1P1Location();
+		String providerName =PropertyLoaderObj.getNGE1P1Provider();
+        String practiceId =PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1();
+        String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");	
+        String enterpriseID =PropertyLoaderObj.getNGEnterpiseEnrollmentE1();
+        String practiceName = PropertyLoaderObj.getProperty("practiceName1");
+        String URL = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		String person_id = createCommonPatient(PropertyLoaderObj,enterpriseID,practiceId, practiceName, integrationPracticeId);
+		String username = DBUtils.executeQueryOnDB("NGCoreDB","select email_address from person where person_id = '"+person_id+"'");
+		
+		Thread.sleep(60000);
+		logStep("Verify the processing status of CCD");
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 1);
+		
+		logStep("Verify the patient is able to receive CCD");
+		Thread.sleep(10000);
+		CommonFlows.IsCCDReceived(driver, URL,username, PropertyLoaderObj.getPassword(), "","");
+		
+		logStep("Adding Test data to patient CCD "+person_id);
+		  Log4jUtil.log("Step Begins: Add Chart to patient");
+		  NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
+		
+		  Log4jUtil.log("Step Begins: Add Encounter to patient chart");
+		  String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
+		  
+		  Log4jUtil.log("Step Begins: Add Diagnosis to created encounter");
+		  String diagnosis_id = NGAPIFlows.addDiagnosis(practiceId, person_id, encounter_id);
+		
+		  Log4jUtil.log("Step Begins: Add Medication to created encounter");
+		  String medication_id = NGAPIFlows.addMedication(practiceId,locationName,providerName, "Active", person_id, encounter_id,"R07.9",286939);
+		
+		  Log4jUtil.log("Step Begins: Add allergy to created encounter");
+		  String allergy_id = NGAPIFlows.addAllergy(locationName,providerName,person_id, encounter_id,"1000",2);
+		
+		  Log4jUtil.log("Step Begins: Add Problem to patient chart");
+		  String problem_id = NGAPIFlows.addProblem(locationName,providerName,  person_id,"420543008","55561003","Active");
+			
+		  Log4jUtil.log("Step Begins: Add lab Order and lab results to patient CCD");
+		  String labOrder_id = NGAPIFlows.addLabOrder(locationName,providerName, person_id, encounter_id);		
+		  String labOrderTest_id = NGAPIFlows.addLabOrderTest(person_id, labOrder_id,"NG001032");
+		  String ObsPanel_id = NGAPIFlows.addObsPanel(person_id, labOrder_id);
+		  String labResult_id = NGAPIFlows.addLabResult(person_id, ObsPanel_id,"75325-1");
+		  Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter without signing off lab order"+encounter_id);
+		
+		logStep("Request for Locked Encounter CCD");
+		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
+		
+		Thread.sleep(60000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
+		
+		logStep("Verify the patient is able to receive Locked Encounter CCD");
+		Thread.sleep(10000);
+		CommonFlows.IsCCDReceived(driver, URL,username, PropertyLoaderObj.getPassword(), "HavingUnSignedOffResult","");
+		log("Test Case End: The Un signed off Lab results are not displayed in CCD.");
+	}
+	
+	public String createCommonPatient(PropertyFileLoader PropertyLoaderObj,String enterpriseID,String practiceID,String practiceName,String integrationPacticeID) throws NullPointerException, Throwable{
+		String person_id = null;
+		try{
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseID, practiceID);
+			Log4jUtil.log("Create the Patient in NG EPM");
+			NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+		    String requestbody = new ObjectMapper().defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+		    Log4jUtil.log("Common Patient Request Body is \n" + requestbody);
+			String finalURL =EnterprisebaseURL + apiRoutes.valueOf("AddEnterprisePerson").getRouteURL();	
+			person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
+			Log4jUtil.log("Step End: Common Patient created with id "+person_id);
+			
+			enrollPatientWithoutGetProcessingStatusValidation(createPatient, person_id, practiceName,integrationPacticeID,enterpriseID, practiceID); 
+		} catch (Exception e) {
+			Log4jUtil.log(e.getMessage());
+	    }
+	return person_id;
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSensitiveMSUONDemandLockedEncounterCCD() throws Throwable{
+		log("Test Case: Verify the details are not there when the Encounter is sensitive.");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+				
+		String locationName =PropertyLoaderObj.getNGE1P1Location();
+		String providerName =PropertyLoaderObj.getNGE1P1Provider();
+		String practiceId =PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1();
+		String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+		String enterpriseID =PropertyLoaderObj.getNGEnterpiseEnrollmentE1();
+		String practiceName = PropertyLoaderObj.getProperty("practiceName1");
+		String URL = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseID, practiceId);		
+		String person_id = createCommonPatient(PropertyLoaderObj,enterpriseID,practiceId, practiceName, integrationPracticeId);
+		String username = DBUtils.executeQueryOnDB("NGCoreDB","select email_address from person where person_id = '"+person_id+"'");
+		
+		Thread.sleep(40000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 1);
+		
+		logStep("Verify the patient is able to receive CCD");
+		CommonFlows.IsCCDReceived(driver, URL,username, PropertyLoaderObj.getPassword(), "","");
+		
+		Log4jUtil.log("Step Begins: Add Chart to patient");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		   
+		   logStep("Add Encounter to patient chart");		
+		   String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id); 
+		
+		   Log4jUtil.log("Step Begins: Add Diagnosis to created encounter");
+		   String diagnosis_id = NGAPIFlows.addDiagnosis(practiceId, person_id, encounter_id);
+		
+		   Log4jUtil.log("Step Begins: Add Medication to created encounter");
+		   String medication_id = NGAPIFlows.addMedication(practiceId,locationName,providerName, "Active", person_id, encounter_id,"R07.9",286939);
+		
+		   Log4jUtil.log("Step Begins: Add allergy to created encounter");
+		   String allergy_id = NGAPIFlows.addAllergy(locationName,providerName,person_id, encounter_id,"1000",2);
+		
+		   Log4jUtil.log("Step Begins: Add Problem to patient chart");
+		   String problem_id = NGAPIFlows.addProblem(locationName,providerName,  person_id,"420543008","55561003","Active");
+
+		   Log4jUtil.log("Step Begins: Add lab Order and lab results to patient CCD");
+		   String labOrder_id = NGAPIFlows.addLabOrder(locationName,providerName, person_id, encounter_id);		
+		   String labOrderTest_id = NGAPIFlows.addLabOrderTest(person_id, labOrder_id,"NG001032");
+		   String ObsPanel_id = NGAPIFlows.addObsPanel(person_id, labOrder_id);
+		   String labResult_id = NGAPIFlows.addLabResult(person_id, ObsPanel_id,"75325-1");
+		   String updatelabOrder_id = NGAPIFlows.updateLabOrder(locationName, providerName, person_id, labOrder_id);
+		   Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter "+encounter_id);
+		
+		NGAPIFlows.updateToSensitiveEncounter(locationName,providerName, person_id, encounter_id);
+//		NGAPIFlows.checkINEncounter(person_id, encounter_id);
+//		NGAPIFlows.checkOutEncounter(person_id, encounter_id);
+		
+//		logStep("Request for Locked Encounter CCD");
+//		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
+//				
+//		Thread.sleep(60000);
+//		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
+//		
+//		logStep("Verify the patient is able to receive Locked Encounter CCD");
+//		Thread.sleep(10000);
+//		CommonFlows.IsCCDReceived(driver,URL,username, PropertyLoaderObj.getPassword(), "HavingSensitiveEncounterMSU","");
+		
+		logStep("Request for MSU CCD");
+		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"MedicalSummaryUtility", encounter_id);
+		
+		Thread.sleep(60000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 5);
+		
+		logStep("Verify the patient is able to receive MSU CCD");
+		Thread.sleep(10000);
+		CommonFlows.IsCCDReceived(driver,URL,username, PropertyLoaderObj.getPassword(), "HavingSensitiveEncounterMSU","");
+		
+		logStep("Generate Since time for the GET API Call.");
+		LocalTime midnight = LocalTime.MIDNIGHT;
+		LocalDate today = LocalDate.now(ZoneId.of("America/New_York"));
+		LocalDateTime todayMidnight = LocalDateTime.of(today, midnight);
+		ZonedDateTime zdt = todayMidnight.atZone(ZoneId.of("America/New_York"));
+		long since = zdt.toInstant().toEpochMilli() / 1000;
+		log("midnight"+since);
+		
+		Thread.sleep(5000);
+		logStep("Request for OnDemand CCD");
+		CommonFlows.requestCCD(driver,URL,username, PropertyLoaderObj.getPassword(),"","");
+		
+		logStep("Setup Oauth Token");
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+
+		Thread.sleep(60000);
+		logStep("Do the Get onDemand Health Data Get API Call.");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeId) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+		
+		String person_nbr = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
+		
+		logStep("Verify CCD received in the Get Api Call.");
+		RestUtils.verifyOnDemandRequestSubmitted(PropertyLoaderObj.getResponsePath(), person_nbr.trim().replace("\t", ""));
+		
+		Thread.sleep(60000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id,practiceId, integrationPracticeId, 2);
+		
+		logStep("Verify OnDemand CCD is received by patient");
+		Thread.sleep(10000);
+		CommonFlows.IsCCDReceived(driver, URL,username, PropertyLoaderObj.getPassword(), "HavingSensitiveEncounterONDemand","");
+
+		log("Test Case End: The details are not present when the Encounter is sensitive.");
+	}
+
 }

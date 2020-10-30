@@ -196,8 +196,10 @@ public class CommonFlows {
 	
        Log4jUtil.log("Step Begins: Verify all elements are present in CCD Viewer and click Close Viewer");
 	   ngCcdPage.verifyCCDPageElementsPresent();
-	   if(personType.equalsIgnoreCase("HavingSensitiveEncounter"))
-	       ngCcdPage.verifySensitiveCCDElementsContent(driver);
+	   if(personType.equalsIgnoreCase("HavingSensitiveEncounterONDemand"))
+	       ngCcdPage.verifySensitiveONDemandCCDElementsContent(driver);
+	   else if(personType.equalsIgnoreCase("HavingSensitiveEncounterMSU"))
+	       ngCcdPage.verifySensitiveMSUCCDElementsContent(driver);
 	   else if(personType.equalsIgnoreCase("EncounterHavingALLData"))
 		   ngCcdPage.verifyCCDElementsContent(driver,"guaifenesin","Lipitor 10 mg tablet","Chest pain, unspecified","Panel Description: Glucose [Mass/volume] in Serum or Plasma","Chest pain, unspecified");
 	   else if(personType.equalsIgnoreCase("HavingUnSignedOffResult"))

@@ -37,10 +37,10 @@
 	    		<include name="testCreateDependentAndGuardianP1P2P3"/>
 	    		<include name="testCreateGuardianAndDependentANDEnrollOnlyDependentToP1P2P3"/>	    		
 	    		<include name="testPracticeLevelEnrollmentOnDemandCCD"/>
-	    		<include name="testGuardianDependentCCD"/> 
-	    		<include name="testCCDTrustedRepresentativeWithoutMFAccount"/> 
 	    		<include name="testMSUCCD"/> 
 	    		<include name="testLockedEncounterCCD"/>
+	    		<include name="testGuardianDependentCCD"/> 
+	    		<include name="testCCDTrustedRepresentativeWithoutMFAccount"/>
       	</methods>
 	</classes>
 </test>
